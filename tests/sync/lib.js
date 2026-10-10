@@ -9,7 +9,11 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 
-const CHROME = process.env.GQ_CHROME || 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe';
+const WIN = process.platform === 'win32';
+const CHROME = process.env.GQ_CHROME || (WIN ? 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe' : 'google-chrome');
+/* Optional: serve this file as /community-config.js (e.g. a local Supabase test stack) without
+   touching the repository's community-config.js. */
+const CONFIG_OVERRIDE = process.env.GQ_COMMUNITY_CONFIG || '';
 /* Safety guard: only these disposable account ids may ever be touched (GQ_TEST_IDS, comma
    separated, required); GQ_PROTECTED_IDS lists accounts that must never be used. */
 const idList = (v) => String(v || '').split(',').map((s) => s.trim()).filter(Boolean);
@@ -35,8 +39,8 @@ function startServer(port, roots) {
     let p = decodeURIComponent(u.pathname);
     if (p.endsWith('/')) p += 'index.html';
     const base = path.resolve(roots[current]);
-    const fp = path.resolve(path.join(base, p));
-    if (!fp.startsWith(base)) { res.writeHead(403); res.end(); return; }
+    const fp = CONFIG_OVERRIDE && p === '/community-config.js' ? path.resolve(CONFIG_OVERRIDE) : path.resolve(path.join(base, p));
+    if (!fp.startsWith(base) && fp !== path.resolve(CONFIG_OVERRIDE || '\0')) { res.writeHead(403); res.end(); return; }
     fs.readFile(fp, (err, buf) => {
       if (err) { res.writeHead(404); res.end('not found'); return; }
       res.writeHead(200, { 'Content-Type': TYPES[path.extname(fp)] || 'application/octet-stream', 'Cache-Control': 'no-store' });
@@ -209,7 +213,7 @@ class Browser {
     const args = ['--headless=new', '--user-data-dir=' + this.dir, '--remote-debugging-port=' + this.port, '--no-first-run',
       '--no-default-browser-check', '--disable-features=Translate,MediaRouter', '--password-store=basic', '--disable-background-timer-throttling',
       '--disable-renderer-backgrounding', 'about:blank'];
-    this.proc = spawn(CHROME, args, { stdio: 'ignore' });
+    this.proc = spawn(CHROME, args, { stdio: 'ignore', detached: !WIN });   // own process group on POSIX (killHard)
     this.exited = new Promise((r) => this.proc.once('exit', r));
     const list = await waitFor(async () => {
       const l = await (await fetch('http://127.0.0.1:' + this.port + '/json/list')).json();
@@ -247,7 +251,10 @@ class Browser {
   /* Process kill (simulated crash / power loss of the browser process). */
   killHard(quiet) {
     if (!this.proc) return;
-    try { execSync('taskkill /PID ' + this.proc.pid + ' /T /F', { stdio: 'ignore' }); } catch (e) { if (!quiet) {} }
+    try {
+      if (WIN) execSync('taskkill /PID ' + this.proc.pid + ' /T /F', { stdio: 'ignore' });
+      else process.kill(-this.proc.pid, 'SIGKILL');
+    } catch (e) { if (!quiet) {} }
     this.proc = null;
   }
   async restart(graceful) {
@@ -258,7 +265,7 @@ class Browser {
 
 /* ---------- independent cloud observer (test accounts only, own JWT) ---------- */
 function readPublicConfig(repoDir) {
-  const src = fs.readFileSync(path.join(repoDir, 'community-config.js'), 'utf8');
+  const src = fs.readFileSync(CONFIG_OVERRIDE || path.join(repoDir, 'community-config.js'), 'utf8');
   return { url: /supabaseUrl:\s*'([^']+)'/.exec(src)[1], anon: /supabaseAnonKey:\s*'([^']+)'/.exec(src)[1] };
 }
 class Observer {

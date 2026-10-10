@@ -4,9 +4,10 @@
 // Privileged. Two modes, both authenticated by the caller's JWT:
 //
 //   mode = 'community'  -> "Leave Community": removes the caller's posts,
-//                          community/avatar media, reports and blocks, and
-//                          clears bio + avatar. KEEPS the auth account and the
-//                          private cloud backup. (No auth user deletion.)
+//                          community/avatar media, reports, blocks, follows
+//                          (both directions), likes, shares and spam-limit
+//                          events, and clears bio + avatar. KEEPS the auth
+//                          account and the private cloud backup.
 //
 //   mode = 'full'       -> "Delete my account and all cloud data": removes the
 //                          caller's community artifacts AND the private backup
@@ -68,21 +69,46 @@ Deno.serve(async (req: Request) => {
     }
   }
 
-  // 3. Community content: posts, reports and blocks authored/owned by the caller.
-  await admin.from('posts').delete().eq('user_id', uid);
-  await admin.from('reports').delete().eq('reporter_id', uid);
-  await admin.from('blocks').delete().eq('blocker_id', uid);
-  await admin.from('blocks').delete().eq('blocked_id', uid);
+  // 3. Community content: posts (their extra photos, likes, shares and counters
+  //    cascade), reports and blocks authored/owned by the caller. Every failure
+  //    is reported — never a false "done".
+  const steps: Array<[string, string, boolean]> = [
+    ['posts', 'user_id', false],
+    ['reports', 'reporter_id', false],
+    ['blocks', 'blocker_id', false],
+    ['blocks', 'blocked_id', false],
+  ];
+  if (mode === 'community') {
+    // Leave Community keeps the auth account, so the social rows tied to the
+    // profile must go explicitly (a full delete removes them by cascade):
+    steps.push(
+      ['follows', 'follower_id', true],   // whom the caller follows
+      ['follows', 'followee_id', true],   // who follows the caller
+      ['likes', 'user_id', true],         // the caller's likes on other posts
+      ['reposts', 'user_id', true],       // the caller's shares of other posts
+      ['rate_events', 'user_id', true],   // spam-limit activity log
+    );
+    // Kept on purpose: community_consents (account-level 16+ confirmation, also
+    // used by private sync), moderation_actions (a safety record must not be
+    // erasable by leaving and rejoining), username_changes (the username stays).
+  }
+  for (const [table, column, social] of steps) {
+    const failed = await deleteRows(admin, table, column, uid, social);
+    if (failed) return json({ error: 'db_delete_failed', table: failed }, 500);
+  }
 
   if (mode === 'community') {
     // Keep the account and the private backup; just clear the public profile bits.
-    await admin.from('profiles').update({ bio: '', avatar_path: null }).eq('id', uid);
+    const { error: profErr } = await admin.from('profiles').update({ bio: '', avatar_path: null }).eq('id', uid);
+    if (profErr) return json({ error: 'db_update_failed', table: 'profiles' }, 500);
     return json({ ok: true, mode: 'community' }, 200);
   }
 
   // 4. Full delete: private backup row (cascade) + the auth user.
-  //    profiles/posts/reports/blocks cascade from auth.users.
-  await admin.from('backups').delete().eq('user_id', uid);
+  //    profiles and everything referencing them (posts, reports, blocks, follows,
+  //    likes, shares, consents, moderation history, rate events) cascade from auth.users.
+  const backupFailed = await deleteRows(admin, 'backups', 'user_id', uid, false);
+  if (backupFailed) return json({ error: 'db_delete_failed', table: backupFailed }, 500);
   const { error: delErr } = await admin.auth.admin.deleteUser(uid);
   if (delErr) return json({ error: 'delete_failed' }, 500);
 
@@ -105,6 +131,17 @@ async function listAllRecursive(admin: ReturnType<typeof createClient>, bucket: 
     offset += data.length;                        // paginate
   }
   return out;
+}
+
+// Deletes the caller's rows; returns the table name on failure, null on success.
+// `social` tables come from migration 0005: when they do not exist (before the
+// migration, or after its rollback) there is nothing to delete.
+async function deleteRows(admin: ReturnType<typeof createClient>, table: string, column: string, uid: string,
+                          social: boolean): Promise<string | null> {
+  const { error } = await admin.from(table).delete().eq(column, uid);
+  if (!error) return null;
+  if (social && (error.code === 'PGRST205' || error.code === '42P01')) return null;
+  return table;
 }
 
 function json(body: unknown, status: number): Response {

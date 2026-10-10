@@ -42,7 +42,9 @@ async function openSignInForm(p) {
     for (let i = 0; i < 200 && !document.getElementById('community-email'); i++) await new Promise((r) => setTimeout(r, 50)); return true; })()`);
 }
 async function fill(p, email, password) {
-  await p.eval(`(() => { document.getElementById('community-email').value = ${JSON.stringify(email)}; document.getElementById('community-password').value = ${JSON.stringify(password)}; return true; })()`);
+  await p.eval(`(() => { document.getElementById('community-email').value = ${JSON.stringify(email)}; document.getElementById('community-password').value = ${JSON.stringify(password)};
+    const age = document.getElementById('community-age16'); if (age && !age.checked) age.click();   /* v47+: signup requires the 16+ confirmation */
+    return true; })()`);
 }
 const communityMsg = (p) => p.eval(`(document.getElementById('community-status') || {}).textContent || ''`);
 const authMsg = (p) => p.eval(`(document.getElementById('auth-status') && !document.getElementById('auth-status').hidden ? document.getElementById('auth-status').textContent : '') || ((document.querySelector('#auth-body .card-note') || {}).textContent || '')`);
@@ -95,16 +97,22 @@ function cors() {
 const RATE = { status: 429, body: { code: 'over_email_send_rate_limit', msg: 'For security purposes, you can only request this after 42 seconds.' } };
 const SEND_FAIL = { status: 500, body: { code: 'unexpected_failure', msg: 'Error sending confirmation email' } };
 
+/* GQ_GENLINK: a PowerShell script (Windows) or a Node script (*.js, e.g. for a local test stack). */
+function genlinkExec(cmd, args, opts) {
+  return /\.c?js$/i.test(cmd)
+    ? execFileSync(process.execPath, [cmd].concat(args), opts)
+    : execFileSync('powershell', ['-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', cmd].concat(args), opts);
+}
 function genLink(type, email, out) {
   const cmd = process.env.GQ_GENLINK;
   if (!cmd) throw new Error('GQ_GENLINK not set');
-  execFileSync('powershell', ['-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', cmd, '-Type', type, '-Email', email, '-Redirect', BASE, '-Out', out], { stdio: 'ignore' });
+  genlinkExec(cmd, ['-Type', type, '-Email', email, '-Redirect', BASE, '-Out', out], { stdio: 'ignore' });
   const link = fs.readFileSync(out, 'utf8').trim();
   fs.unlinkSync(out);
   return link;
 }
 function userStatus(id) {
-  const out = execFileSync('powershell', ['-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', process.env.GQ_GENLINK, '-StatusId', id], { encoding: 'utf8' });
+  const out = genlinkExec(process.env.GQ_GENLINK, ['-StatusId', id], { encoding: 'utf8' });
   return JSON.parse(out.trim().split(/\r?\n/).pop());
 }
 async function openLink(p, link) {

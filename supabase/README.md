@@ -12,11 +12,12 @@ exactly as before: fully offline, no accounts, no network requests. Nothing belo
    (Project settings → API). These two are safe in frontend code.
 
 ## 2. Run the database migrations
-Run **all four** migrations, in order:
+Run **all five** migrations, in order:
 1. [`migrations/0001_community.sql`](./migrations/0001_community.sql) — tables, functions, triggers, RLS, buckets.
 2. [`migrations/0002_community_grants.sql`](./migrations/0002_community_grants.sql) — explicit `GRANT`s.
 3. [`migrations/0003_community_moderation_and_upload_caps.sql`](./migrations/0003_community_moderation_and_upload_caps.sql) — moderator suspension policy and a per-user Storage object cap.
 4. [`migrations/0004_private_backup.sql`](./migrations/0004_private_backup.sql) — private per-user cloud backup: `backups` + `backup_versions` tables, `save_backup()` (revision/conflict), and a private `backups` Storage bucket with **owner-only** policies (no moderator access).
+5. [`migrations/0005_social_feed.sql`](./migrations/0005_social_feed.sql) — social feed (Release 1): one-way follows, likes, internal shares, the *Following* feed, profile counts and lists, text-only posts and posts with 1–4 photos, a 16+ confirmation for every account (no birth date stored), spam limits, block clean-up, hidden suspended authors, moderation history and report review. It also closes four gaps in 0001–0004: post text is locked after review, photo paths must start with the author's id (and a referenced path can never be re-uploaded), signed-out (`anon`) access to Community tables is removed, and usernames get a reserved list plus a 30-day rename limit. Every new post still waits for a moderator.
 
 SQL editor → paste a file → Run, **or** with the CLI: `supabase db push`.
 
@@ -36,6 +37,29 @@ profile, role/suspension guard, post guard), all RLS policies, and the two Stora
 re-run an already-applied migration** (run only the files not yet applied — for example `0004` if `0001`–`0003` are already in place).
 
 Verify afterwards: **Storage** shows `community` (private, 6 MB limit) and `avatars` (public, 2 MB).
+
+**0005 on an existing project.** Production has no CLI migration history, so do **not** use
+`supabase db push` (it would try to re-run 0001–0004). Run `0005_social_feed.sql` once, as one
+transaction (SQL editor or the Management API). Before that, check read-only that no post points at a
+photo outside its author's folder — the new `posts_paths_own` constraint makes 0005 refuse to apply
+(nothing changes) while such a row exists:
+
+```sql
+select id from public.posts
+ where image_path is not null and (split_part(image_path, '/', 1) <> user_id::text
+                                   or split_part(thumb_path, '/', 1) <> user_id::text);
+```
+
+Release order: the app (v47+) first — it sends the 16+ confirmation at signup and hides social
+features until 0005 exists — then 0005, then the `delete-account` function.
+
+**Rollback:** [`rollback/0005_down.sql`](./rollback/0005_down.sql) (one transaction) restores the
+exact pre-0005 functions, policies and `anon` privileges. It **keeps all data**: posts stay (also
+text-only posts — the photo columns then stay nullable), and follows, likes, shares, 16+ confirmations,
+moderation history, spam counters, rename dates and photos 2–4 move to the unexposed schema
+`community_rollback` (deleting an account still removes them). Re-running 0005 moves them back and
+rebuilds the counters. While rolled back, photos 2–4 of a post are visible only to the author and
+moderators. Run the rollback file only from `supabase/rollback/` — never place it in `migrations/`.
 
 ## 3. Authentication (email + password)
 1. **Authentication → Providers → Email**: enable **Email** and keep **Confirm email** ON.
@@ -84,14 +108,16 @@ posts, feed visibility, profile, reports, blocking, quotas, and account deletion
 - No nudity, harassment, hate, or medical/body-shaming claims. Moderators may remove content and
   suspend accounts.
 - **Community is online and public.** Everything else in GymQuest — workouts, history, measurements,
-  timers, and your **private Progress photos** — stays on your device and is never uploaded unless you
-  explicitly choose **Share to Community** for one photo.
+  timers, and your **private Progress photos** — stays on your device (or, with sync, in your private
+  account) and is never published. Only the text and the photos you explicitly put in a post are
+  uploaded, and only after a moderator approves the post do others see it.
 - Removing your account deletes your community profile, posts and stored community media. It cannot
   recall copies others already saved, and it never touches your private on-device data.
 
 ## Owner decisions / legal (not asserted)
-- **Minors:** do not open the beta to minors until you have decided and documented an eligibility age
-  and the moderation capacity to support it.
+- **Minimum age: 16** (decided). Every account confirms it at signup (server-enforced, only the fact is
+  stored, never a birth date); accounts created before 0005 confirm once before they can see or
+  interact with other people's posts. Private sync works without it.
 - **Moderation capacity & response times**, a takedown/appeal process, a content policy and a privacy
   notice are **your** decisions. This repository provides the mechanism, not legal compliance.
 - **Data residency / GDPR-style obligations** for public user content depend on your jurisdiction —
@@ -100,5 +126,9 @@ posts, feed visibility, profile, reports, blocking, quotas, and account deletion
 ## Limits (Free-plan friendly)
 - ~5 MB maximum upload copy (the app already compresses and generates thumbnails); buckets cap at
   6 MB (`community`) and 2 MB (`avatars`).
-- **10 active (pending + approved) photo posts per user**, enforced server-side.
-- Feed is paginated and only ever requests thumbnails for cards — never full-size originals.
+- **10 active (pending + approved) posts per user**, **at most 4 photos per post** and **40 stored files
+  per user** (20 photos + thumbnails), enforced server-side.
+- Spam limits (server-side): 200 follows/day, 300 likes/hour, 50 shares/day, 20 reports/day, 20 posts/day.
+- Feed is paginated and only ever requests thumbnails for cards; signed photo links last **10 minutes**
+  and are refreshed when a feed reloads. Shares point to the original post — nothing is copied and
+  there are no public or external links.

@@ -36,8 +36,14 @@ function check(name, cond, detail) {
   console.log((cond ? '  PASS ' : '  FAIL ') + name + (cond || detail === undefined ? '' : '  -> ' + String(JSON.stringify(detail)).slice(0, 400)));
   return !!cond;
 }
+/* GQ_GENLINK: a PowerShell script (Windows) or a Node script (*.js, e.g. for a local test stack). */
+function genlinkExec(cmd, args, opts) {
+  return /\.c?js$/i.test(cmd)
+    ? execFileSync(process.execPath, [cmd].concat(args), opts)
+    : execFileSync('powershell', ['-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', cmd].concat(args), opts);
+}
 function status() {
-  const out = execFileSync('powershell', ['-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', process.env.GQ_GENLINK, '-InboxStatus', EMAIL], { encoding: 'utf8' });
+  const out = genlinkExec(process.env.GQ_GENLINK, ['-InboxStatus', EMAIL], { encoding: 'utf8' });
   const s = JSON.parse(out.trim().split(/\r?\n/).pop());
   if (s.exists && PROTECTED.includes(s.id)) throw new Error('refusing protected account');
   return s;

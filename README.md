@@ -635,13 +635,19 @@ an **optimized copy and a thumbnail** are kept (the original file is not stored)
 metadata is never shown or exported.
 
 **Community (optional, online).** GymQuest can also host an **opt-in** community: a moderated,
-paginated feed of **approved photo posts**, profiles with a public username (never an email),
-blocking, reporting, and a moderator queue. It is **off by default** and stays off until the owner
-configures a Supabase project (`community-config.js`) *and* the user explicitly enables it — the app
-makes **no network requests** before that. Only a photo you pick from your private gallery and
-explicitly choose **Share to Community** is uploaded (EXIF-stripped, resized, pending review); your
-workouts, measurements and private gallery are never uploaded. Setup, security (RLS/Storage policies,
-server-side quotas), and the owner steps are in [`supabase/README.md`](supabase/README.md).
+paginated **Everyone** feed of approved posts, a **Following** feed (posts and shares from people you
+follow), public profiles with a username (never an email), follower and following counts and lists,
+**likes**, internal **shares** (inside GymQuest only — no public links), blocking, reporting with a
+reason, and a moderator queue. A post is text, 1–4 photos, or both; **every new post is reviewed by a
+moderator** before others see it, and its text can no longer be edited after review. Accounts are for
+people aged **16 or older** (confirmed once; no birth date is stored). Community is **off by default**
+and stays off until the owner configures a Supabase project (`community-config.js`) *and* the user
+explicitly enables it — the app makes **no network requests** before that. Only the text and photos
+you put in a post are uploaded — photos from your device or your private gallery, re-saved in the app
+without location or camera data — never your workouts, plans, measurements, calendar, backup or the
+rest of your gallery. Blocking someone hides your profiles and posts from each other and removes the
+follows between you. Setup, security (RLS/Storage policies, server-side quotas and spam limits), the
+rollback and the owner steps are in [`supabase/README.md`](supabase/README.md).
 
 **Swipe between media** with your finger, or use the **‹ ›** buttons, the dots, the counter or the arrow
 keys. Each item has a **caption** in every supported language, and the **creator and licence are printed

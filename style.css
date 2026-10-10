@@ -3194,6 +3194,65 @@ label.btn { cursor: pointer; }
 .community-status-badge { font-size: var(--fs-xs); color: var(--accent); margin: 0; }
 #community-body .goal-chips { margin-bottom: var(--sp-2); }
 
+/* Community – sociálne funkcie (sledovanie, páči sa mi, zdieľanie, 1–4 fotky). */
+.community-name-btn {
+  background: none; border: 0; padding: 0; color: inherit; font: inherit; font-weight: var(--fw-bold);
+  cursor: pointer; text-align: start; min-width: 0;
+}
+.community-name-btn:hover, .community-name-btn:focus-visible { text-decoration: underline; }
+.community-badge {
+  font-size: var(--fs-xs); font-weight: var(--fw-bold); color: var(--accent); background: var(--accent-soft);
+  border: 1px solid var(--accent-line); border-radius: var(--r-full); padding: 1px var(--sp-2); white-space: nowrap;
+}
+.community-shared { margin: 0; font-size: var(--fs-xs); color: var(--text-dim); }
+.community-photos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--sp-1); }
+.community-photos[data-count="1"] { grid-template-columns: minmax(0, 1fr); }
+.community-photo-btn { padding: 0; border: 0; background: none; cursor: zoom-in; display: block; min-width: 0; }
+.community-photos:not([data-count="1"]) .community-photo { aspect-ratio: 1 / 1; object-fit: cover; max-height: none; }
+.community-photo-missing { display: flex; align-items: center; justify-content: center; aspect-ratio: 1 / 1; font-size: 24px; color: var(--text-faint); }
+.community-social-row { display: flex; gap: var(--sp-2); align-items: center; flex-wrap: wrap; }
+.community-social-row .btn { min-height: 36px; padding: var(--sp-1) var(--sp-3); }
+.community-like[aria-pressed="true"], .community-share[aria-pressed="true"] { color: var(--accent); border-color: var(--accent-line); }
+.community-count-static { font-size: var(--fs-sm); color: var(--text-dim); padding: 0 var(--sp-2); }
+/* Secondary card actions (Block / Report / Delete / Remove) stay on one compact row. */
+#community-body .community-card > .plan-actions { margin-top: var(--sp-1); margin-bottom: 0; }
+#community-body .community-card > .plan-actions .btn {
+  flex: 1 1 0; min-height: 36px; padding: var(--sp-1) var(--sp-2); font-size: var(--fs-sm);
+}
+.community-counts { display: flex; flex-wrap: wrap; gap: var(--sp-2); margin-top: var(--sp-3); }
+.community-count-btn {
+  background: var(--surface-3); border: 1px solid var(--border); border-radius: var(--r-full); color: var(--text);
+  font: inherit; font-size: var(--fs-sm); padding: var(--sp-1) var(--sp-3);
+}
+button.community-count-btn { cursor: pointer; }
+button.community-count-btn:hover { border-color: var(--border-strong); }
+.community-list-row {
+  display: flex; align-items: center; gap: var(--sp-2); padding: var(--sp-2) 0; border-bottom: 1px solid var(--border);
+}
+.community-list-row .btn { margin-inline-start: auto; }
+.community-check { display: flex; align-items: flex-start; gap: var(--sp-2); margin-top: var(--sp-3); cursor: pointer; }
+.community-check input { width: 20px; height: 20px; margin: 2px 0 0; flex: none; accent-color: var(--accent); }
+.community-compose-text { min-height: 96px; resize: vertical; font: inherit; }
+.community-draft-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--sp-2); margin-top: var(--sp-2); }
+.community-draft-item { position: relative; aspect-ratio: 1 / 1; background: var(--surface-3); border-radius: var(--r-sm); overflow: hidden; }
+.community-draft-thumb, .community-draft-thumb img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.community-draft-remove { position: absolute; top: 4px; inset-inline-end: 4px; width: 28px; height: 28px; min-width: 0; padding: 0; }
+.community-picker-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(72px, 1fr)); gap: var(--sp-2); margin-top: var(--sp-3); }
+.community-pick {
+  aspect-ratio: 1 / 1; padding: 0; border: 1px solid var(--border); border-radius: var(--r-sm);
+  background: var(--surface-3); overflow: hidden; cursor: pointer;
+}
+.community-pick img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.community-pick:focus-visible, .community-pick:hover { border-color: var(--accent); }
+#modal-community label.btn.disabled { opacity: 0.5; pointer-events: none; }
+.community-lightbox {
+  position: fixed; inset: 0; z-index: 1000; background: rgba(0, 0, 0, 0.92);
+  display: flex; align-items: center; justify-content: center; padding: var(--sp-4); cursor: zoom-out;
+}
+.community-lightbox[hidden] { display: none; }
+.community-lightbox img { max-width: 100%; max-height: 100%; object-fit: contain; border-radius: var(--r-sm); }
+.community-lightbox-close { position: absolute; top: var(--sp-3); inset-inline-end: var(--sp-3); }
+
 /* ===== Community modal: mobile spacing, alignment, destructive separation =====
    Scoped to #modal-community so the shared .modal-sheet / .sheet-head /
    .sheet-scroll (also used by the exercise library) are left untouched. */

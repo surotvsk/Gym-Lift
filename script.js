@@ -7151,6 +7151,298 @@ const AUTH_MAIL_I18N = {
   },
 };
 for (const lang of Object.keys(AUTH_MAIL_I18N)) Object.assign(I18N[lang] || (I18N[lang] = {}), AUTH_MAIL_I18N[lang]);
+/* Preklady sociálnych funkcií Community (migrácia 0005) a potvrdenia 16+ – všetkých 6 jazykov. */
+const SOCIAL_I18N = {
+  sk: {
+    'auth.age16Label': 'Mám 16 alebo viac rokov',
+    'auth.age16Note': 'Účty GymQuest sú pre ľudí od 16 rokov. Ukladáme len to, že si to potvrdil(a), nikdy nie dátum narodenia.',
+    'auth.errAge16': 'Potvrď, že máš 16 alebo viac rokov.',
+    'community.tabEveryone': 'Všetci', 'community.tabFollowing': 'Sledovaní', 'community.newPost': 'Nový príspevok',
+    'community.followingEmpty': 'Tu uvidíš príspevky a zdieľania ľudí, ktorých sleduješ. Otvor niečí profil a ťukni na Sledovať.',
+    'community.userPostsEmpty': 'Zatiaľ žiadne schválené príspevky.', 'community.moderatorShort': 'Moderátor',
+    'community.photoOf': 'Fotka {i} z {n}', 'community.sharedBy': '{name} zdieľal(a)',
+    'community.likeAria': 'Páči sa mi ({n})', 'community.unlikeAria': 'Zrušiť páči sa mi ({n})', 'community.sharesAria': 'Zdieľania: {n}',
+    'community.shareAria': 'Zdieľať ({n})', 'community.unshareAria': 'Zrušiť zdieľanie ({n})',
+    'community.removePost': 'Odstrániť', 'community.shared': 'Zdieľané s tvojimi sledujúcimi.',
+    'community.shareConfirmTitle': 'Zdieľať tento príspevok?', 'community.shareAction': 'Zdieľať',
+    'community.shareConfirmBody': 'Ukáže sa tvojim sledujúcim v ich zozname Sledovaní – len v GymQuest, nikdy mimo neho. Zdieľanie môžeš kedykoľvek zrušiť.',
+    'community.profileUnavailable': 'Tento profil nie je dostupný.',
+    'community.postsCount': 'Príspevky: {n}', 'community.followersCount': 'Sledujúci: {n}', 'community.followingCount': 'Sleduje: {n}',
+    'community.follow': 'Sledovať', 'community.followingBtn': 'Sleduješ ✓', 'community.reportUser': 'Nahlásiť profil',
+    'community.reportUserTitle': 'Nahlásiť tento profil?', 'community.back': 'Späť',
+    'community.followersTitle': 'Sledujúci', 'community.followingTitle': 'Sleduje', 'community.listEmpty': 'Zatiaľ nikto.',
+    'community.renameNote': 'Používateľské meno môžeš zmeniť raz za 30 dní.',
+    'community.editText': 'Upraviť text',
+    'community.lockedNote': 'Skontrolovaný príspevok sa už nedá upraviť. Ak ho chceš zmeniť, zmaž ho a pridaj nový.',
+    'community.composeReview': 'Každý nový príspevok najprv skontroluje moderátor, až potom ho uvidia ostatní.',
+    'community.composeText': 'Text (nepovinné, ak pridáš fotku)', 'community.composeCount': '{n} / {max} znakov',
+    'community.composePhotos': 'Fotky: {n} z {max}', 'community.composeRemovePhoto': 'Odobrať fotku',
+    'community.composeAddDevice': 'Pridať fotky zo zariadenia', 'community.composeAddProgress': 'Pridať fotky progresu',
+    'community.composeProgressEmpty': 'Zatiaľ nemáš žiadne fotky progresu.',
+    'community.composePrivacy': 'Zverejní sa len tento text a vybrané fotky – nie tvoje plány, merania, kalendár ani záloha. Fotky sa pred nahratím nanovo uložia bez údajov o polohe a fotoaparáte.',
+    'community.composePublish': 'Odoslať na kontrolu', 'community.composePublishing': 'Odosiela sa…',
+    'community.errTooMany': 'Najviac {n} fotky v jednom príspevku.', 'community.errFileType': 'Dajú sa pridať len fotky JPEG, PNG alebo WebP.',
+    'community.errFileTooLarge': 'Fotka je väčšia ako {mb} MB.', 'community.errEmptyPost': 'Napíš text alebo pridaj aspoň jednu fotku.',
+    'community.errTextTooLong': 'Text môže mať najviac {n} znakov.',
+    'community.reportOnPost': 'Príspevok od {name}', 'community.reportOnUser': 'Profil: {name}', 'community.reportReasonLine': 'Dôvod: {reason}',
+    'community.dismiss': 'Zamietnuť nahlásenie', 'community.upholdRemove': 'Potvrdiť a odstrániť príspevok', 'community.upholdSuspend': 'Potvrdiť a pozastaviť účet',
+    'community.liftSuspension': 'Zrušiť pozastavenie', 'community.suspendedTitle': 'Pozastavené účty', 'community.suspendedEmpty': 'Žiadne pozastavené účty.',
+    'community.ageTitle': 'Potvrď svoj vek',
+    'community.ageBody': 'Community je pre ľudí od 16 rokov. Raz to potvrď a uvidíš príspevky ostatných a budeš môcť reagovať. Tvoje súkromné dáta a synchronizácia fungujú tak či tak.',
+    'community.ageNoBirthdate': 'Ukladáme len to, že si to potvrdil(a), nikdy nie dátum narodenia.', 'community.ageConfirm': 'Mám 16 alebo viac rokov',
+    'community.errRateLimited': 'Príliš veľa akcií za krátky čas. Skús to neskôr.',
+    'community.errLocked': 'Skontrolovaný príspevok sa už nedá upraviť.',
+    'community.errReserved': 'Toto meno je vyhradené. Vyber si iné.',
+    'community.errRenameCooldown': 'Meno môžeš znova zmeniť od {date}.',
+    'community.errDuplicate': 'To už je uložené.', 'community.errUsernameFormat': 'Meno musí mať 3–30 znakov: písmená, číslice, _ . -',
+    'community.errChanged': 'Príspevok sa medzitým zmenil. Pozri si ho znova a až potom ho schváľ.',
+    'community.blockConfirmSocial': 'Navzájom už neuvidíte svoje profily ani príspevky a zrušia sa sledovania medzi vami. Blokovanie je súkromné.',
+    'community.reportReason': 'Dôvod', 'community.reason_spam': 'Spam alebo reklama', 'community.reason_harassment': 'Obťažovanie alebo nenávisť',
+    'community.reason_impersonation': 'Vydáva sa za niekoho iného', 'community.reason_sexual': 'Nahota alebo sexuálny obsah',
+    'community.reason_violence': 'Násilie alebo nebezpečné správanie', 'community.reason_other': 'Iné',
+  },
+  en: {
+    'auth.age16Label': 'I am 16 or older',
+    'auth.age16Note': 'GymQuest accounts are for people aged 16 or older. We store only that you confirmed, never a birth date.',
+    'auth.errAge16': 'Please confirm that you are 16 or older.',
+    'community.tabEveryone': 'Everyone', 'community.tabFollowing': 'Following', 'community.newPost': 'New post',
+    'community.followingEmpty': 'Posts and shares from people you follow appear here. Open someone’s profile and tap Follow.',
+    'community.userPostsEmpty': 'No approved posts yet.', 'community.moderatorShort': 'Moderator',
+    'community.photoOf': 'Photo {i} of {n}', 'community.sharedBy': '{name} shared',
+    'community.likeAria': 'Like ({n})', 'community.unlikeAria': 'Remove like ({n})', 'community.sharesAria': 'Shares: {n}',
+    'community.shareAria': 'Share ({n})', 'community.unshareAria': 'Remove share ({n})',
+    'community.removePost': 'Remove', 'community.shared': 'Shared with your followers.',
+    'community.shareConfirmTitle': 'Share this post?', 'community.shareAction': 'Share',
+    'community.shareConfirmBody': 'It appears in your followers’ Following feed — inside GymQuest only, never outside it. You can remove the share at any time.',
+    'community.profileUnavailable': 'This profile is not available.',
+    'community.postsCount': 'Posts: {n}', 'community.followersCount': 'Followers: {n}', 'community.followingCount': 'Following: {n}',
+    'community.follow': 'Follow', 'community.followingBtn': 'Following ✓', 'community.reportUser': 'Report profile',
+    'community.reportUserTitle': 'Report this profile?', 'community.back': 'Back',
+    'community.followersTitle': 'Followers', 'community.followingTitle': 'Following', 'community.listEmpty': 'Nobody here yet.',
+    'community.renameNote': 'You can change your username once every 30 days.',
+    'community.editText': 'Edit text',
+    'community.lockedNote': 'A reviewed post can no longer be edited. To change it, delete it and post again.',
+    'community.composeReview': 'A moderator reviews every new post before others can see it.',
+    'community.composeText': 'Text (optional if you add a photo)', 'community.composeCount': '{n} / {max} characters',
+    'community.composePhotos': 'Photos: {n} of {max}', 'community.composeRemovePhoto': 'Remove photo',
+    'community.composeAddDevice': 'Add photos from device', 'community.composeAddProgress': 'Add progress photos',
+    'community.composeProgressEmpty': 'You have no progress photos yet.',
+    'community.composePrivacy': 'Only this text and the photos you pick are published — never your plans, measurements, calendar or backup. Photos are re-saved before upload, without location or camera data.',
+    'community.composePublish': 'Submit for review', 'community.composePublishing': 'Submitting…',
+    'community.errTooMany': 'At most {n} photos per post.', 'community.errFileType': 'Only JPEG, PNG or WebP photos can be added.',
+    'community.errFileTooLarge': 'That photo is larger than {mb} MB.', 'community.errEmptyPost': 'Write some text or add at least one photo.',
+    'community.errTextTooLong': 'The text can be at most {n} characters.',
+    'community.reportOnPost': 'Post by {name}', 'community.reportOnUser': 'Profile: {name}', 'community.reportReasonLine': 'Reason: {reason}',
+    'community.dismiss': 'Dismiss report', 'community.upholdRemove': 'Uphold and remove post', 'community.upholdSuspend': 'Uphold and suspend account',
+    'community.liftSuspension': 'Lift suspension', 'community.suspendedTitle': 'Suspended accounts', 'community.suspendedEmpty': 'No suspended accounts.',
+    'community.ageTitle': 'Confirm your age',
+    'community.ageBody': 'Community is for people aged 16 or older. Confirm once to see and interact with other people’s posts. Your private data and sync keep working either way.',
+    'community.ageNoBirthdate': 'We store only that you confirmed, never a birth date.', 'community.ageConfirm': 'I am 16 or older',
+    'community.errRateLimited': 'Too many actions in a short time. Please try again later.',
+    'community.errLocked': 'A reviewed post can no longer be edited.',
+    'community.errReserved': 'That name is reserved. Please choose another one.',
+    'community.errRenameCooldown': 'You can change your name again from {date}.',
+    'community.errDuplicate': 'That is already saved.', 'community.errUsernameFormat': 'Names need 3–30 characters: letters, digits, _ . -',
+    'community.errChanged': 'The post changed in the meantime. Look at it again before approving.',
+    'community.blockConfirmSocial': 'You will no longer see each other’s profiles or posts, and follows between you are removed. Blocking is private.',
+    'community.reportReason': 'Reason', 'community.reason_spam': 'Spam or advertising', 'community.reason_harassment': 'Harassment or hate',
+    'community.reason_impersonation': 'Pretending to be someone else', 'community.reason_sexual': 'Nudity or sexual content',
+    'community.reason_violence': 'Violence or dangerous behaviour', 'community.reason_other': 'Other',
+  },
+  es: {
+    'auth.age16Label': 'Tengo 16 años o más',
+    'auth.age16Note': 'Las cuentas de GymQuest son para personas de 16 años o más. Solo guardamos que lo confirmaste, nunca una fecha de nacimiento.',
+    'auth.errAge16': 'Confirma que tienes 16 años o más.',
+    'community.tabEveryone': 'Todos', 'community.tabFollowing': 'Siguiendo', 'community.newPost': 'Nueva publicación',
+    'community.followingEmpty': 'Aquí aparecen las publicaciones y lo que comparten las personas que sigues. Abre un perfil y toca Seguir.',
+    'community.userPostsEmpty': 'Todavía no hay publicaciones aprobadas.', 'community.moderatorShort': 'Moderador',
+    'community.photoOf': 'Foto {i} de {n}', 'community.sharedBy': '{name} compartió',
+    'community.likeAria': 'Me gusta ({n})', 'community.unlikeAria': 'Quitar me gusta ({n})', 'community.sharesAria': 'Compartido: {n}',
+    'community.shareAria': 'Compartir ({n})', 'community.unshareAria': 'Dejar de compartir ({n})',
+    'community.removePost': 'Retirar', 'community.shared': 'Compartido con tus seguidores.',
+    'community.shareConfirmTitle': '¿Compartir esta publicación?', 'community.shareAction': 'Compartir',
+    'community.shareConfirmBody': 'Aparecerá en la pestaña Siguiendo de tus seguidores, solo dentro de GymQuest, nunca fuera. Puedes dejar de compartirla cuando quieras.',
+    'community.profileUnavailable': 'Este perfil no está disponible.',
+    'community.postsCount': 'Publicaciones: {n}', 'community.followersCount': 'Seguidores: {n}', 'community.followingCount': 'Siguiendo: {n}',
+    'community.follow': 'Seguir', 'community.followingBtn': 'Siguiendo ✓', 'community.reportUser': 'Denunciar perfil',
+    'community.reportUserTitle': '¿Denunciar este perfil?', 'community.back': 'Volver',
+    'community.followersTitle': 'Seguidores', 'community.followingTitle': 'Siguiendo', 'community.listEmpty': 'Todavía nadie.',
+    'community.renameNote': 'Puedes cambiar tu nombre de usuario una vez cada 30 días.',
+    'community.editText': 'Editar texto',
+    'community.lockedNote': 'Una publicación revisada ya no se puede editar. Para cambiarla, bórrala y publica de nuevo.',
+    'community.composeReview': 'Un moderador revisa cada publicación nueva antes de que otros puedan verla.',
+    'community.composeText': 'Texto (opcional si añades una foto)', 'community.composeCount': '{n} / {max} caracteres',
+    'community.composePhotos': 'Fotos: {n} de {max}', 'community.composeRemovePhoto': 'Quitar foto',
+    'community.composeAddDevice': 'Añadir fotos del dispositivo', 'community.composeAddProgress': 'Añadir fotos de progreso',
+    'community.composeProgressEmpty': 'Todavía no tienes fotos de progreso.',
+    'community.composePrivacy': 'Solo se publican este texto y las fotos que elijas, nunca tus planes, medidas, calendario ni copia de seguridad. Las fotos se vuelven a guardar antes de subirlas, sin datos de ubicación ni de la cámara.',
+    'community.composePublish': 'Enviar a revisión', 'community.composePublishing': 'Enviando…',
+    'community.errTooMany': 'Como máximo {n} fotos por publicación.', 'community.errFileType': 'Solo se pueden añadir fotos JPEG, PNG o WebP.',
+    'community.errFileTooLarge': 'Esa foto ocupa más de {mb} MB.', 'community.errEmptyPost': 'Escribe un texto o añade al menos una foto.',
+    'community.errTextTooLong': 'El texto puede tener como máximo {n} caracteres.',
+    'community.reportOnPost': 'Publicación de {name}', 'community.reportOnUser': 'Perfil: {name}', 'community.reportReasonLine': 'Motivo: {reason}',
+    'community.dismiss': 'Descartar denuncia', 'community.upholdRemove': 'Confirmar y retirar publicación', 'community.upholdSuspend': 'Confirmar y suspender cuenta',
+    'community.liftSuspension': 'Levantar suspensión', 'community.suspendedTitle': 'Cuentas suspendidas', 'community.suspendedEmpty': 'No hay cuentas suspendidas.',
+    'community.ageTitle': 'Confirma tu edad',
+    'community.ageBody': 'Comunidad es para personas de 16 años o más. Confírmalo una vez para ver las publicaciones de otras personas e interactuar. Tus datos privados y la sincronización siguen funcionando en cualquier caso.',
+    'community.ageNoBirthdate': 'Solo guardamos que lo confirmaste, nunca una fecha de nacimiento.', 'community.ageConfirm': 'Tengo 16 años o más',
+    'community.errRateLimited': 'Demasiadas acciones en poco tiempo. Inténtalo más tarde.',
+    'community.errLocked': 'Una publicación revisada ya no se puede editar.',
+    'community.errReserved': 'Ese nombre está reservado. Elige otro.',
+    'community.errRenameCooldown': 'Podrás cambiar tu nombre de nuevo a partir del {date}.',
+    'community.errDuplicate': 'Eso ya está guardado.', 'community.errUsernameFormat': 'El nombre necesita 3–30 caracteres: letras, números, _ . -',
+    'community.errChanged': 'La publicación cambió mientras tanto. Revísala de nuevo antes de aprobarla.',
+    'community.blockConfirmSocial': 'Ya no veréis vuestros perfiles ni publicaciones, y se eliminan los seguimientos entre vosotros. El bloqueo es privado.',
+    'community.reportReason': 'Motivo', 'community.reason_spam': 'Spam o publicidad', 'community.reason_harassment': 'Acoso u odio',
+    'community.reason_impersonation': 'Se hace pasar por otra persona', 'community.reason_sexual': 'Desnudez o contenido sexual',
+    'community.reason_violence': 'Violencia o conducta peligrosa', 'community.reason_other': 'Otro',
+  },
+  'pt-BR': {
+    'auth.age16Label': 'Tenho 16 anos ou mais',
+    'auth.age16Note': 'As contas do GymQuest são para pessoas com 16 anos ou mais. Guardamos apenas que você confirmou, nunca uma data de nascimento.',
+    'auth.errAge16': 'Confirme que você tem 16 anos ou mais.',
+    'community.tabEveryone': 'Todos', 'community.tabFollowing': 'Seguindo', 'community.newPost': 'Novo post',
+    'community.followingEmpty': 'Aqui aparecem os posts e compartilhamentos de quem você segue. Abra um perfil e toque em Seguir.',
+    'community.userPostsEmpty': 'Ainda não há posts aprovados.', 'community.moderatorShort': 'Moderador',
+    'community.photoOf': 'Foto {i} de {n}', 'community.sharedBy': '{name} compartilhou',
+    'community.likeAria': 'Curtir ({n})', 'community.unlikeAria': 'Descurtir ({n})', 'community.sharesAria': 'Compartilhamentos: {n}',
+    'community.shareAria': 'Compartilhar ({n})', 'community.unshareAria': 'Desfazer compartilhamento ({n})',
+    'community.removePost': 'Remover', 'community.shared': 'Compartilhado com seus seguidores.',
+    'community.shareConfirmTitle': 'Compartilhar este post?', 'community.shareAction': 'Compartilhar',
+    'community.shareConfirmBody': 'Ele aparece na aba Seguindo dos seus seguidores — só dentro do GymQuest, nunca fora dele. Você pode desfazer o compartilhamento quando quiser.',
+    'community.profileUnavailable': 'Este perfil não está disponível.',
+    'community.postsCount': 'Posts: {n}', 'community.followersCount': 'Seguidores: {n}', 'community.followingCount': 'Seguindo: {n}',
+    'community.follow': 'Seguir', 'community.followingBtn': 'Seguindo ✓', 'community.reportUser': 'Denunciar perfil',
+    'community.reportUserTitle': 'Denunciar este perfil?', 'community.back': 'Voltar',
+    'community.followersTitle': 'Seguidores', 'community.followingTitle': 'Seguindo', 'community.listEmpty': 'Ninguém ainda.',
+    'community.renameNote': 'Você pode mudar seu nome de usuário uma vez a cada 30 dias.',
+    'community.editText': 'Editar texto',
+    'community.lockedNote': 'Um post revisado não pode mais ser editado. Para mudá-lo, apague e publique de novo.',
+    'community.composeReview': 'Um moderador revisa cada post novo antes que outras pessoas possam vê-lo.',
+    'community.composeText': 'Texto (opcional se você adicionar uma foto)', 'community.composeCount': '{n} / {max} caracteres',
+    'community.composePhotos': 'Fotos: {n} de {max}', 'community.composeRemovePhoto': 'Remover foto',
+    'community.composeAddDevice': 'Adicionar fotos do aparelho', 'community.composeAddProgress': 'Adicionar fotos de progresso',
+    'community.composeProgressEmpty': 'Você ainda não tem fotos de progresso.',
+    'community.composePrivacy': 'Só este texto e as fotos que você escolher são publicados — nunca seus planos, medidas, calendário ou backup. As fotos são salvas de novo antes do envio, sem dados de localização ou da câmera.',
+    'community.composePublish': 'Enviar para revisão', 'community.composePublishing': 'Enviando…',
+    'community.errTooMany': 'No máximo {n} fotos por post.', 'community.errFileType': 'Só é possível adicionar fotos JPEG, PNG ou WebP.',
+    'community.errFileTooLarge': 'Essa foto tem mais de {mb} MB.', 'community.errEmptyPost': 'Escreva um texto ou adicione pelo menos uma foto.',
+    'community.errTextTooLong': 'O texto pode ter no máximo {n} caracteres.',
+    'community.reportOnPost': 'Post de {name}', 'community.reportOnUser': 'Perfil: {name}', 'community.reportReasonLine': 'Motivo: {reason}',
+    'community.dismiss': 'Descartar denúncia', 'community.upholdRemove': 'Confirmar e remover post', 'community.upholdSuspend': 'Confirmar e suspender conta',
+    'community.liftSuspension': 'Retirar suspensão', 'community.suspendedTitle': 'Contas suspensas', 'community.suspendedEmpty': 'Nenhuma conta suspensa.',
+    'community.ageTitle': 'Confirme sua idade',
+    'community.ageBody': 'A Comunidade é para pessoas com 16 anos ou mais. Confirme uma vez para ver e interagir com os posts de outras pessoas. Seus dados privados e a sincronização continuam funcionando de qualquer forma.',
+    'community.ageNoBirthdate': 'Guardamos apenas que você confirmou, nunca uma data de nascimento.', 'community.ageConfirm': 'Tenho 16 anos ou mais',
+    'community.errRateLimited': 'Muitas ações em pouco tempo. Tente de novo mais tarde.',
+    'community.errLocked': 'Um post revisado não pode mais ser editado.',
+    'community.errReserved': 'Esse nome é reservado. Escolha outro.',
+    'community.errRenameCooldown': 'Você poderá mudar seu nome de novo a partir de {date}.',
+    'community.errDuplicate': 'Isso já está salvo.', 'community.errUsernameFormat': 'O nome precisa de 3–30 caracteres: letras, números, _ . -',
+    'community.errChanged': 'O post mudou nesse meio-tempo. Veja de novo antes de aprovar.',
+    'community.blockConfirmSocial': 'Vocês não verão mais os perfis nem os posts um do outro, e os seguimentos entre vocês são removidos. O bloqueio é privado.',
+    'community.reportReason': 'Motivo', 'community.reason_spam': 'Spam ou propaganda', 'community.reason_harassment': 'Assédio ou ódio',
+    'community.reason_impersonation': 'Fingindo ser outra pessoa', 'community.reason_sexual': 'Nudez ou conteúdo sexual',
+    'community.reason_violence': 'Violência ou comportamento perigoso', 'community.reason_other': 'Outro',
+  },
+  fr: {
+    'auth.age16Label': 'J’ai 16 ans ou plus',
+    'auth.age16Note': 'Les comptes GymQuest sont réservés aux personnes de 16 ans ou plus. Nous enregistrons seulement que tu l’as confirmé, jamais une date de naissance.',
+    'auth.errAge16': 'Confirme que tu as 16 ans ou plus.',
+    'community.tabEveryone': 'Tout le monde', 'community.tabFollowing': 'Abonnements', 'community.newPost': 'Nouvelle publication',
+    'community.followingEmpty': 'Les publications et partages des personnes que tu suis apparaissent ici. Ouvre un profil et touche S’abonner.',
+    'community.userPostsEmpty': 'Pas encore de publication approuvée.', 'community.moderatorShort': 'Modérateur',
+    'community.photoOf': 'Photo {i} sur {n}', 'community.sharedBy': '{name} a partagé',
+    'community.likeAria': 'J’aime ({n})', 'community.unlikeAria': 'Retirer le j’aime ({n})', 'community.sharesAria': 'Partages : {n}',
+    'community.shareAria': 'Partager ({n})', 'community.unshareAria': 'Retirer le partage ({n})',
+    'community.removePost': 'Retirer', 'community.shared': 'Partagé avec tes abonnés.',
+    'community.shareConfirmTitle': 'Partager cette publication ?', 'community.shareAction': 'Partager',
+    'community.shareConfirmBody': 'Elle apparaît dans l’onglet Abonnements de tes abonnés — uniquement dans GymQuest, jamais à l’extérieur. Tu peux retirer le partage à tout moment.',
+    'community.profileUnavailable': 'Ce profil n’est pas disponible.',
+    'community.postsCount': 'Publications : {n}', 'community.followersCount': 'Abonnés : {n}', 'community.followingCount': 'Abonnements : {n}',
+    'community.follow': 'S’abonner', 'community.followingBtn': 'Abonné ✓', 'community.reportUser': 'Signaler le profil',
+    'community.reportUserTitle': 'Signaler ce profil ?', 'community.back': 'Retour',
+    'community.followersTitle': 'Abonnés', 'community.followingTitle': 'Abonnements', 'community.listEmpty': 'Personne pour l’instant.',
+    'community.renameNote': 'Tu peux changer ton nom d’utilisateur une fois tous les 30 jours.',
+    'community.editText': 'Modifier le texte',
+    'community.lockedNote': 'Une publication vérifiée ne peut plus être modifiée. Pour la changer, supprime-la et publie à nouveau.',
+    'community.composeReview': 'Un modérateur vérifie chaque nouvelle publication avant que les autres puissent la voir.',
+    'community.composeText': 'Texte (facultatif si tu ajoutes une photo)', 'community.composeCount': '{n} / {max} caractères',
+    'community.composePhotos': 'Photos : {n} sur {max}', 'community.composeRemovePhoto': 'Retirer la photo',
+    'community.composeAddDevice': 'Ajouter des photos de l’appareil', 'community.composeAddProgress': 'Ajouter des photos de progression',
+    'community.composeProgressEmpty': 'Tu n’as pas encore de photos de progression.',
+    'community.composePrivacy': 'Seuls ce texte et les photos choisies sont publiés — jamais tes plans, mesures, calendrier ou sauvegarde. Les photos sont réenregistrées avant l’envoi, sans données de localisation ni d’appareil photo.',
+    'community.composePublish': 'Envoyer pour vérification', 'community.composePublishing': 'Envoi…',
+    'community.errTooMany': '{n} photos au maximum par publication.', 'community.errFileType': 'Seules les photos JPEG, PNG ou WebP peuvent être ajoutées.',
+    'community.errFileTooLarge': 'Cette photo dépasse {mb} Mo.', 'community.errEmptyPost': 'Écris un texte ou ajoute au moins une photo.',
+    'community.errTextTooLong': 'Le texte peut contenir au maximum {n} caractères.',
+    'community.reportOnPost': 'Publication de {name}', 'community.reportOnUser': 'Profil : {name}', 'community.reportReasonLine': 'Motif : {reason}',
+    'community.dismiss': 'Rejeter le signalement', 'community.upholdRemove': 'Confirmer et retirer la publication', 'community.upholdSuspend': 'Confirmer et suspendre le compte',
+    'community.liftSuspension': 'Lever la suspension', 'community.suspendedTitle': 'Comptes suspendus', 'community.suspendedEmpty': 'Aucun compte suspendu.',
+    'community.ageTitle': 'Confirme ton âge',
+    'community.ageBody': 'La Communauté est réservée aux personnes de 16 ans ou plus. Confirme-le une fois pour voir les publications des autres et interagir. Tes données privées et la synchronisation fonctionnent dans tous les cas.',
+    'community.ageNoBirthdate': 'Nous enregistrons seulement que tu l’as confirmé, jamais une date de naissance.', 'community.ageConfirm': 'J’ai 16 ans ou plus',
+    'community.errRateLimited': 'Trop d’actions en peu de temps. Réessaie plus tard.',
+    'community.errLocked': 'Une publication vérifiée ne peut plus être modifiée.',
+    'community.errReserved': 'Ce nom est réservé. Choisis-en un autre.',
+    'community.errRenameCooldown': 'Tu pourras changer ton nom à nouveau à partir du {date}.',
+    'community.errDuplicate': 'C’est déjà enregistré.', 'community.errUsernameFormat': 'Le nom doit compter 3 à 30 caractères : lettres, chiffres, _ . -',
+    'community.errChanged': 'La publication a changé entre-temps. Regarde-la à nouveau avant de l’approuver.',
+    'community.blockConfirmSocial': 'Vous ne verrez plus vos profils ni vos publications respectifs, et les abonnements entre vous sont supprimés. Le blocage est privé.',
+    'community.reportReason': 'Motif', 'community.reason_spam': 'Spam ou publicité', 'community.reason_harassment': 'Harcèlement ou haine',
+    'community.reason_impersonation': 'Se fait passer pour quelqu’un d’autre', 'community.reason_sexual': 'Nudité ou contenu sexuel',
+    'community.reason_violence': 'Violence ou comportement dangereux', 'community.reason_other': 'Autre',
+  },
+  ar: {
+    'auth.age16Label': 'عمري 16 عامًا أو أكثر',
+    'auth.age16Note': 'حسابات GymQuest مخصّصة لمن تبلغ أعمارهم 16 عامًا أو أكثر. نحفظ فقط أنك أكّدت ذلك، ولا نحفظ تاريخ الميلاد أبدًا.',
+    'auth.errAge16': 'يُرجى تأكيد أن عمرك 16 عامًا أو أكثر.',
+    'community.tabEveryone': 'الجميع', 'community.tabFollowing': 'المتابَعون', 'community.newPost': 'منشور جديد',
+    'community.followingEmpty': 'تظهر هنا منشورات من تتابعهم وما يشاركونه. افتح ملفًا شخصيًا واضغط متابعة.',
+    'community.userPostsEmpty': 'لا توجد منشورات معتمدة بعد.', 'community.moderatorShort': 'مشرف',
+    'community.photoOf': 'الصورة {i} من {n}', 'community.sharedBy': 'شاركه {name}',
+    'community.likeAria': 'إعجاب ({n})', 'community.unlikeAria': 'إلغاء الإعجاب ({n})', 'community.sharesAria': 'المشاركات: {n}',
+    'community.shareAria': 'مشاركة ({n})', 'community.unshareAria': 'إلغاء المشاركة ({n})',
+    'community.removePost': 'إزالة', 'community.shared': 'تمت المشاركة مع متابعيك.',
+    'community.shareConfirmTitle': 'مشاركة هذا المنشور؟', 'community.shareAction': 'مشاركة',
+    'community.shareConfirmBody': 'سيظهر في تبويب المتابَعين لدى متابعيك — داخل GymQuest فقط، ولا يُشارَك خارجه أبدًا. يمكنك إلغاء المشاركة في أي وقت.',
+    'community.profileUnavailable': 'هذا الملف الشخصي غير متاح.',
+    'community.postsCount': 'المنشورات: {n}', 'community.followersCount': 'المتابِعون: {n}', 'community.followingCount': 'يتابع: {n}',
+    'community.follow': 'متابعة', 'community.followingBtn': 'تتابعه ✓', 'community.reportUser': 'الإبلاغ عن الملف',
+    'community.reportUserTitle': 'الإبلاغ عن هذا الملف الشخصي؟', 'community.back': 'رجوع',
+    'community.followersTitle': 'المتابِعون', 'community.followingTitle': 'يتابع', 'community.listEmpty': 'لا أحد بعد.',
+    'community.renameNote': 'يمكنك تغيير اسم المستخدم مرة واحدة كل 30 يومًا.',
+    'community.editText': 'تعديل النص',
+    'community.lockedNote': 'لا يمكن تعديل منشور تمت مراجعته. لتغييره، احذفه وانشر من جديد.',
+    'community.composeReview': 'يراجع مشرفٌ كل منشور جديد قبل أن يراه الآخرون.',
+    'community.composeText': 'النص (اختياري إذا أضفت صورة)', 'community.composeCount': '{n} / {max} حرفًا',
+    'community.composePhotos': 'الصور: {n} من {max}', 'community.composeRemovePhoto': 'إزالة الصورة',
+    'community.composeAddDevice': 'إضافة صور من الجهاز', 'community.composeAddProgress': 'إضافة صور التقدّم',
+    'community.composeProgressEmpty': 'ليست لديك صور تقدّم بعد.',
+    'community.composePrivacy': 'يُنشر هذا النص والصور التي تختارها فقط — لا خططك ولا قياساتك ولا تقويمك ولا نسختك الاحتياطية أبدًا. تُحفظ الصور من جديد قبل الرفع، بلا بيانات الموقع أو الكاميرا.',
+    'community.composePublish': 'إرسال للمراجعة', 'community.composePublishing': 'جارٍ الإرسال…',
+    'community.errTooMany': '{n} صور كحدٍّ أقصى في المنشور الواحد.', 'community.errFileType': 'يمكن إضافة صور JPEG أو PNG أو WebP فقط.',
+    'community.errFileTooLarge': 'حجم هذه الصورة أكبر من {mb} ميغابايت.', 'community.errEmptyPost': 'اكتب نصًا أو أضف صورة واحدة على الأقل.',
+    'community.errTextTooLong': 'يمكن أن يحتوي النص على {n} حرفًا كحدٍّ أقصى.',
+    'community.reportOnPost': 'منشور من {name}', 'community.reportOnUser': 'الملف الشخصي: {name}', 'community.reportReasonLine': 'السبب: {reason}',
+    'community.dismiss': 'رفض البلاغ', 'community.upholdRemove': 'تأكيد البلاغ وإزالة المنشور', 'community.upholdSuspend': 'تأكيد البلاغ وإيقاف الحساب',
+    'community.liftSuspension': 'رفع الإيقاف', 'community.suspendedTitle': 'الحسابات الموقوفة', 'community.suspendedEmpty': 'لا توجد حسابات موقوفة.',
+    'community.ageTitle': 'أكّد عمرك',
+    'community.ageBody': 'المجتمع مخصّص لمن تبلغ أعمارهم 16 عامًا أو أكثر. أكّد ذلك مرة واحدة لترى منشورات الآخرين وتتفاعل معها. بياناتك الخاصة والمزامنة تعمل في كل الأحوال.',
+    'community.ageNoBirthdate': 'نحفظ فقط أنك أكّدت ذلك، ولا نحفظ تاريخ الميلاد أبدًا.', 'community.ageConfirm': 'عمري 16 عامًا أو أكثر',
+    'community.errRateLimited': 'إجراءات كثيرة في وقت قصير. حاول لاحقًا.',
+    'community.errLocked': 'لا يمكن تعديل منشور تمت مراجعته.',
+    'community.errReserved': 'هذا الاسم محجوز. اختر اسمًا آخر.',
+    'community.errRenameCooldown': 'يمكنك تغيير اسمك مجددًا ابتداءً من {date}.',
+    'community.errDuplicate': 'هذا محفوظ بالفعل.', 'community.errUsernameFormat': 'يحتاج الاسم إلى 3–30 حرفًا: أحرف وأرقام و _ . -',
+    'community.errChanged': 'تغيّر المنشور في هذه الأثناء. راجعه مرة أخرى قبل اعتماده.',
+    'community.blockConfirmSocial': 'لن يرى أيٌّ منكما ملف الآخر أو منشوراته بعد الآن، وتُزال المتابعات بينكما. الحظر خاص.',
+    'community.reportReason': 'السبب', 'community.reason_spam': 'رسائل مزعجة أو إعلانات', 'community.reason_harassment': 'تحرّش أو كراهية',
+    'community.reason_impersonation': 'انتحال شخصية أخرى', 'community.reason_sexual': 'عُري أو محتوى جنسي',
+    'community.reason_violence': 'عنف أو سلوك خطِر', 'community.reason_other': 'أخرى',
+  },
+};
+for (const lang of Object.keys(SOCIAL_I18N)) Object.assign(I18N[lang] || (I18N[lang] = {}), SOCIAL_I18N[lang]);
 
 function t(key, vars) {
   const dict = I18N[activeLang()] || I18N.en;
@@ -12204,11 +12496,36 @@ let communityFeed = { items: [], offset: 0, done: false, loading: false };
 let communityView = 'feed';
 let communityMessage = '';
 
+/* ---------- Sociálne funkcie (migrácia 0005) ----------
+   Zapnú sa iba vtedy, keď server má funkcie z 0005 (community_social_version);
+   inak Community beží presne ako predtým (staré zobrazenia a toky). */
+const COMMUNITY_MAX_PHOTOS = 4;
+const COMMUNITY_MAX_FILE_BYTES = 6 * 1024 * 1024;
+const COMMUNITY_FILE_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
+const COMMUNITY_LINK_TTL = 600;          // podpísané odkazy na fotky: 10 minút, obnovia sa pri načítaní
+const COMMUNITY_TEXT_MAX = 500;
+const COMMUNITY_REPORT_REASONS = ['spam', 'harassment', 'impersonation', 'sexual', 'violence', 'other'];
+let communitySocial = null;              // null = ešte nezistené; true / false
+let communityConsent = null;             // 16+ potvrdenie prihláseného účtu
+let communityViewUser = null;            // profil pri pohľadoch 'user' a 'list'
+let communityListKind = 'followers';
+let communityList = { rows: [], done: false };
+let communityDraft = { text: '', photos: [] };   // rozpísaný príspevok – len v pamäti
+let communityDraftUrls = [];
+let communityPosting = false;
+let communityAge16 = false;              // zaškrtávacie políčko 16+ pri registrácii
+let communityModCaptions = {};           // text, ktorý moderátor videl (schválenie len bez zmeny)
+
 function communityCfg() { return (typeof window !== 'undefined' && window.GYMQUEST_COMMUNITY) || {}; }
+/* Produkcia: iba https://<projekt>.supabase.co. Lokálny testovací server (http://localhost /
+   127.0.0.1) sa prijme len vtedy, keď aj samotná aplikácia beží z localhost. */
 function communityConfigured() {
   const c = communityCfg();
   const url = String(c.supabaseUrl || '').replace(/\/+$/, '');
-  return !!(url && c.supabaseAnonKey && /^https:\/\/[a-z0-9-]+\.supabase\.co$/i.test(url));
+  if (!url || !c.supabaseAnonKey) return false;
+  if (/^https:\/\/[a-z0-9-]+\.supabase\.co$/i.test(url)) return true;
+  const localPage = typeof location !== 'undefined' && /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
+  return localPage && /^http:\/\/(localhost|127\.0\.0\.1):\d+$/i.test(url);
 }
 function communityOptIn() { return state.settings.communityOptIn === true; }
 /* Jediný Supabase klient pre celú auth (aj pred zapnutím Community).
@@ -12237,9 +12554,53 @@ function communityPublicUrl(sb, bucket, path) {
 async function communitySignedUrl(sb, path) {
   if (!sb || !path) return '';
   try {
-    const { data } = await sb.storage.from('community').createSignedUrl(path, 3600);
+    const { data } = await sb.storage.from('community').createSignedUrl(path, COMMUNITY_LINK_TTL);
     return (data && data.signedUrl) || '';
   } catch (e) { return ''; }
+}
+/* Viac podpísaných odkazov jednou požiadavkou; vráti { cesta: url }. */
+async function communitySignedUrls(sb, paths) {
+  const list = Array.from(new Set((paths || []).filter(Boolean)));
+  const out = {};
+  if (!sb || !list.length) return out;
+  try {
+    const { data } = await sb.storage.from('community').createSignedUrls(list, COMMUNITY_LINK_TTL);
+    (data || []).forEach((d) => { if (d && !d.error && d.signedUrl) out[d.path] = d.signedUrl; });
+  } catch (e) {}
+  return out;
+}
+/* Server nemá funkciu (0005 ešte nie je, alebo bola vrátená) – nie sieťová chyba. */
+function communityMissingFn(error) {
+  const code = String((error && error.code) || '');
+  return code === 'PGRST202' || code === '42883' || Number(error && error.status) === 404;
+}
+async function communityDetectSocial(sb) {
+  if (communitySocial !== null) return communitySocial;
+  let r;
+  try { r = await sb.rpc('community_social_version'); } catch (e) { r = { error: e }; }
+  if (r && !r.error) communitySocial = true;
+  else if (communityMissingFn(r && r.error)) communitySocial = false;
+  else return false;   // sieť: teraz staré zobrazenie, pri ďalšom vykreslení sa skúsi znova
+  return communitySocial;
+}
+async function communityLoadConsent(sb) {
+  let r;
+  try { r = await sb.rpc('has_age_consent'); } catch (e) { r = { error: e }; }
+  communityConsent = !!(r && !r.error && r.data === true);
+}
+/* Chyba servera → kľúč správy (nikdy nepravdivé „uložené“). */
+function communityErrText(error, fallbackKey) {
+  const m = String((error && error.message) || '');
+  if (/rate_limited/.test(m)) return t('community.errRateLimited');
+  if (/post_locked/.test(m)) return t('community.errLocked');
+  if (/username_reserved/.test(m)) return t('community.errReserved');
+  const cd = /username_cooldown:(\S+)/.exec(m);
+  if (cd) { const d = new Date(cd[1]); return t('community.errRenameCooldown', { date: isNaN(d) ? cd[1] : formatDate(localDateKey(d)) }); }
+  if (/too_many_photos/.test(m)) return t('community.errTooMany', { n: COMMUNITY_MAX_PHOTOS });
+  if ((error && error.code) === '23505' || /duplicate|unique/i.test(m)) return t(fallbackKey === 'community.errUsername' ? 'community.errUsername' : 'community.errDuplicate');
+  if (/profiles_username_(len|chars)/.test(m)) return t('community.errUsernameFormat');
+  if (/age_confirmation_required/.test(m)) return t('auth.errAge16');
+  return t(fallbackKey || 'community.errNetwork');
 }
 function communityOpen() { document.getElementById('modal-community').hidden = false; refreshUpdateBanner(); renderCommunity(); }
 function communityClose() { document.getElementById('modal-community').hidden = true; refreshUpdateBanner(); }
@@ -12257,6 +12618,8 @@ function communityDisable() {
   communityProfile = null;
   communityBlocked = new Set();
   communityFeed = { items: [], offset: 0, done: false, loading: false };
+  communitySocial = null;
+  communityConsent = null;
   communityClose();
 }
 function communitySetView(view) { communityView = view; renderCommunity(); }
@@ -12277,10 +12640,25 @@ async function renderCommunity() {
     if (!session) { body.innerHTML = communityAuthHtml(); return; }
     await communityEnsureProfile(sb, session.user);
     await communityLoadBlocks(sb, session.user.id);
+    const social = await communityDetectSocial(sb);
+    if (social) await communityLoadConsent(sb);
+    else if (['following', 'user', 'list', 'compose'].indexOf(communityView) >= 0) communityView = 'feed';
     if (communityView === 'myposts') { body.innerHTML = await communityMyPostsHtml(sb, session.user); return; }
     if (communityView === 'moderate') { body.innerHTML = await communityModerateHtml(sb, session.user); return; }
     if (communityView === 'profile') { body.innerHTML = await communityProfileHtml(sb, session.user); return; }
-    communityFeed = { items: [], offset: 0, done: false, loading: false };
+    if (communityView === 'compose') { body.innerHTML = communityComposeHtml(); communityMountDraft(); return; }
+    const ownProfile = communityView === 'user' && communityProfile && communityViewUser === communityProfile.id;
+    if (social && !communityConsent && !ownProfile) { body.innerHTML = communityTabbar() + communityAgeCardHtml(); return; }
+    if (communityView === 'list') { body.innerHTML = await communityListHtml(sb, true); return; }
+    if (communityView === 'user') {
+      const head = await communityUserHtml(sb, communityViewUser);
+      if (!head) { body.innerHTML = communityTabbar() + communityNote('community.profileUnavailable'); return; }
+      communityFeed = { items: [], offset: 0, done: false, loading: false, scope: 'user', user: communityViewUser };
+      body.innerHTML = head + communityFeedListHtml();
+      await communityLoadFeed(sb, true);
+      return;
+    }
+    communityFeed = { items: [], offset: 0, done: false, loading: false, scope: communityView === 'following' ? 'following' : 'everyone', user: null };
     body.innerHTML = communityFeedShellHtml();
     await communityLoadFeed(sb, true);
   } catch (e) {
@@ -12293,9 +12671,26 @@ function communityNote(key) {
 }
 function communityTabbar() {
   const tab = (v, key) => '<button type="button" class="goal-chip' + (communityView === v ? ' active' : '') + '" data-community-view="' + v + '">' + esc(t(key)) + '</button>';
+  if (communitySocial) {
+    return '<div class="goal-chips" id="community-tabs">'
+      + tab('feed', 'community.tabEveryone') + tab('following', 'community.tabFollowing')
+      + tab('myposts', 'community.tabMyPosts') + tab('profile', 'community.tabProfile') + '</div>';
+  }
   return '<div class="goal-chips" id="community-tabs">'
     + tab('feed', 'community.tabFeed') + tab('myposts', 'community.tabMyPosts')
     + tab('profile', 'community.tabProfile') + '</div>';
+}
+function communityStatusHtml() {
+  return '<p class="media-status" id="community-status" role="status" ' + (communityMessage ? '' : 'hidden') + '>' + esc(communityMessage) + '</p>';
+}
+/* Jednorazové potvrdenie 16+ pre účty vytvorené pred touto verziou. Bez neho sa
+   nezobrazia príspevky iných ľudí; súkromné dáta a synchronizácia fungujú ďalej. */
+function communityAgeCardHtml() {
+  return '<div class="card"><h3 class="card-title">' + esc(t('community.ageTitle')) + '</h3>'
+    + '<p class="card-note">' + esc(t('community.ageBody')) + '</p>'
+    + '<p class="card-note">' + esc(t('community.ageNoBirthdate')) + '</p>'
+    + communityStatusHtml()
+    + '<div class="plan-actions"><button type="button" class="btn btn-primary" data-community-action="accept-age">' + esc(t('community.ageConfirm')) + '</button></div></div>';
 }
 function communitySetupHtml() {
   return '<div class="card"><h3 class="card-title">' + esc(t('community.setupTitle')) + '</h3>'
@@ -12320,6 +12715,9 @@ function communityAuthHtml() {
     + '<input type="email" class="modal-input" id="community-email" autocomplete="email" value="' + escAttr(authLastEmail) + '">'
     + '<label class="modal-label" for="community-password">' + esc(t('community.password')) + '</label>'
     + '<input type="password" class="modal-input" id="community-password" autocomplete="current-password">'
+    + '<label class="community-check" for="community-age16"><input type="checkbox" id="community-age16"' + (communityAge16 ? ' checked' : '') + '>'
+    + '<span>' + esc(t('auth.age16Label')) + '</span></label>'
+    + '<p class="card-note">' + esc(t('auth.age16Note')) + '</p>'
     + '<p class="media-status" id="community-status" role="status" ' + (communityMessage ? '' : 'hidden') + '>' + esc(communityMessage) + '</p>'
     + '<div class="plan-actions">'
     + '<button type="button" class="btn btn-primary" data-community-action="signin">' + esc(t('community.signIn')) + '</button>'
@@ -12333,6 +12731,7 @@ function communityAuthHtml() {
 }
 function communityFeedShellHtml() {
   return communityTabbar()
+    + (communitySocial ? '<div class="plan-actions"><button type="button" class="btn btn-primary" data-community-view="compose">' + esc(t('community.newPost')) + '</button></div>' : '')
     + '<p class="media-status" id="community-status" role="status" ' + (communityMessage ? '' : 'hidden') + '>' + esc(communityMessage) + '</p>'
     + '<div id="community-feed">' + communityFeedItemsHtml() + '</div>'
     + '<div class="plan-actions">'
@@ -12341,9 +12740,69 @@ function communityFeedShellHtml() {
     + '<button type="button" class="btn btn-secondary" data-community-action="disable">' + esc(t('community.disable')) + '</button>'
     + '</div>';
 }
+/* Zoznam príspevkov bez kariet navigácie (pod hlavičkou profilu). */
+function communityFeedListHtml() {
+  return '<div id="community-feed">' + communityFeedItemsHtml() + '</div>'
+    + '<div class="plan-actions"><button type="button" class="btn btn-secondary" id="community-more" data-community-action="more"' + (communityFeed.done ? ' hidden' : '') + '>' + esc(t('community.loadMore')) + '</button></div>';
+}
 function communityFeedItemsHtml() {
-  if (!communityFeed.items.length) return '<p class="empty-state">' + esc(t('community.feedEmpty')) + '</p>';
-  return communityFeed.items.map(communityCardHtml).join('');
+  if (!communityFeed.items.length) {
+    const key = !communitySocial ? 'community.feedEmpty'
+      : communityFeed.scope === 'following' ? 'community.followingEmpty'
+      : communityFeed.scope === 'user' ? 'community.userPostsEmpty' : 'community.feedEmpty';
+    return communityFeed.loading ? '' : '<p class="empty-state">' + esc(t(key)) + '</p>';
+  }
+  return communityFeed.items.map(communitySocial ? communitySocialCardHtml : communityCardHtml).join('');
+}
+function communityRefreshFeed() {
+  const feed = document.getElementById('community-feed');
+  if (feed) feed.innerHTML = communityFeedItemsHtml();
+  const more = document.getElementById('community-more');
+  if (more) more.hidden = communityFeed.done;
+  const st = document.getElementById('community-status');
+  if (st) { st.textContent = communityMessage; st.hidden = !communityMessage; }
+}
+function communityAvatarHtml(path) {
+  const url = path ? communityPublicUrl(communityClient(), 'avatars', path) : '';
+  return url ? '<img class="community-avatar" src="' + escAttr(url) + '" alt="">' : '<span class="community-avatar community-avatar-empty" aria-hidden="true">🙂</span>';
+}
+function communityNameButton(userId, name, isModerator) {
+  return '<button type="button" class="community-name community-name-btn" data-community-action="open-user" data-user="' + escAttr(userId) + '">' + esc(name || t('community.unknownUser')) + '</button>'
+    + (isModerator ? '<span class="community-badge">' + esc(t('community.moderatorShort')) + '</span>' : '');
+}
+/* Fotky príspevku: náhľady (podpísané na 10 minút); ťuknutím sa otvorí plná veľkosť. */
+function communityPhotosHtml(photos, urls) {
+  if (!photos || !photos.length) return '';
+  return '<div class="community-photos" data-count="' + photos.length + '">'
+    + photos.map((ph, i) => '<button type="button" class="community-photo-btn" data-community-action="view-photo" data-path="' + escAttr(ph.image) + '"'
+      + ' aria-label="' + escAttr(t('community.photoOf', { i: i + 1, n: photos.length })) + '">'
+      + (urls[ph.thumb] ? '<img class="community-photo" loading="lazy" decoding="async" src="' + escAttr(urls[ph.thumb]) + '" alt="">' : '<span class="community-photo community-photo-missing" aria-hidden="true">🖼️</span>')
+      + '</button>').join('')
+    + '</div>';
+}
+function communitySocialCardHtml(p) {
+  const mine = communityProfile && p.user_id === communityProfile.id;
+  const mod = communityProfile && communityProfile.role === 'moderator' && !communityProfile.suspended;
+  const date = p.published ? formatDate(localDateKey(new Date(p.published))) : '';
+  return '<div class="community-card" data-post="' + escAttr(p.id) + '">'
+    + (p.reposted_by ? '<p class="community-shared">🔁 ' + esc(t('community.sharedBy', { name: p.reposted_by_name || t('community.unknownUser') })) + '</p>' : '')
+    + '<div class="community-head">' + communityAvatarHtml(p.avatar) + communityNameButton(p.user_id, p.name, p.mod)
+    + '<span class="community-date">' + esc(date) + '</span></div>'
+    + communityPhotosHtml(p.photos, p.urls || {})
+    + (p.caption ? '<p class="community-caption">' + esc(p.caption) + '</p>' : '')
+    + '<div class="community-social-row">'
+    + '<button type="button" class="btn btn-secondary community-like" data-community-action="like" data-post="' + escAttr(p.id) + '" aria-pressed="' + (p.liked ? 'true' : 'false') + '"'
+    + ' aria-label="' + escAttr(t(p.liked ? 'community.unlikeAria' : 'community.likeAria', { n: p.likes })) + '">' + (p.liked ? '♥' : '♡') + ' ' + p.likes + '</button>'
+    + (mine ? '<span class="community-count-static" aria-label="' + escAttr(t('community.sharesAria', { n: p.reposts })) + '">🔁 ' + p.reposts + '</span>'
+      : '<button type="button" class="btn btn-secondary community-share" data-community-action="share" data-post="' + escAttr(p.id) + '" aria-pressed="' + (p.reposted ? 'true' : 'false') + '"'
+        + ' aria-label="' + escAttr(t(p.reposted ? 'community.unshareAria' : 'community.shareAria', { n: p.reposts })) + '">🔁 ' + p.reposts + '</button>')
+    + '</div>'
+    + '<div class="plan-actions">'
+    + (mine ? '<button type="button" class="btn btn-secondary" data-community-action="delete-post" data-post="' + escAttr(p.id) + '">' + esc(t('community.deletePost')) + '</button>'
+      : '<button type="button" class="btn btn-secondary" data-community-action="block" data-user="' + escAttr(p.user_id) + '" data-name="' + escAttr(p.name || '') + '">' + esc(t('community.block')) + '</button>'
+        + '<button type="button" class="btn btn-secondary" data-community-action="report-post" data-post="' + escAttr(p.id) + '">' + esc(t('community.report')) + '</button>')
+    + (mod && !mine ? '<button type="button" class="btn btn-secondary" data-community-action="mod-remove" data-post="' + escAttr(p.id) + '">' + esc(t('community.removePost')) + '</button>' : '')
+    + '</div></div>';
 }
 function communityCardHtml(p) {
   const name = (p.profiles && p.profiles.username) || t('community.unknownUser');
@@ -12366,6 +12825,7 @@ function communityCardHtml(p) {
     + '</div></div>';
 }
 async function communityLoadFeed(sb, reset) {
+  if (communitySocial) return communityLoadSocialFeed(sb, reset);
   if (communityFeed.loading || (communityFeed.done && !reset)) return;
   communityFeed.loading = true;
   const from = reset ? 0 : communityFeed.offset;
@@ -12386,6 +12846,81 @@ async function communityLoadFeed(sb, reset) {
   const more = document.getElementById('community-more');
   if (more) more.hidden = communityFeed.done;
 }
+/* Sociálny prehľad (Všetci / Sledovaní / profil): server vráti len to, čo smieš vidieť
+   (schválené, bez blokovaných a pozastavených autorov); stránkovanie podľa poslednej položky. */
+async function communityLoadSocialFeed(sb, reset) {
+  if (communityFeed.loading || (communityFeed.done && !reset)) return;
+  communityFeed.loading = true;
+  const last = reset ? null : communityFeed.items[communityFeed.items.length - 1];
+  let res;
+  try {
+    res = await sb.rpc('community_feed', { p_scope: communityFeed.scope || 'everyone', p_user: communityFeed.user || null,
+      p_before: last ? last.at : null, p_before_id: last ? last.id : null, p_limit: COMMUNITY_PAGE });
+  } catch (e) { res = { error: e }; }
+  communityFeed.loading = false;
+  if (res.error) { communitySetMessageText(communityErrText(res.error)); communityRefreshFeed(); return; }
+  const items = (res.data || []).map((r) => ({
+    id: r.post_id, user_id: r.author_id, name: r.author_name, avatar: r.author_avatar, mod: !!r.author_moderator,
+    caption: r.caption || '', photos: Array.isArray(r.photos) ? r.photos : [], at: r.activity_at, published: r.activity_at,
+    reposted_by: r.reposted_by, reposted_by_name: r.reposted_by_name,
+    likes: Number(r.likes) || 0, reposts: Number(r.reposts) || 0, liked: !!r.liked_by_me, reposted: !!r.reposted_by_me,
+  }));
+  const urls = await communitySignedUrls(sb, [].concat(...items.map((p) => p.photos.map((ph) => ph.thumb))));
+  items.forEach((p) => { p.urls = urls; });
+  communityFeed.items = reset ? items : communityFeed.items.concat(items);
+  communityFeed.done = items.length < COMMUNITY_PAGE;
+  communityRefreshFeed();
+}
+function communityFeedItem(postId) { return communityFeed.items.find((p) => p.id === postId) || null; }
+async function communityToggleLike(postId) {
+  const sb = communityClient(); const p = communityFeedItem(postId);
+  if (!sb || !p || p.busy || !communityProfile) return;
+  p.busy = true;
+  const res = p.liked
+    ? await sb.from('likes').delete().eq('post_id', postId).eq('user_id', communityProfile.id)
+    : await sb.from('likes').insert({ post_id: postId, user_id: communityProfile.id });
+  p.busy = false;
+  if (res.error) communitySetMessageText(communityErrText(res.error));
+  else { p.liked = !p.liked; p.likes = Math.max(0, p.likes + (p.liked ? 1 : -1)); communitySetMessage(''); }
+  communityRefreshFeed();
+}
+async function communityShareNow(postId, on) {
+  const sb = communityClient(); const p = communityFeedItem(postId);
+  if (!sb || !p || p.busy || !communityProfile) return;
+  p.busy = true;
+  const res = on
+    ? await sb.from('reposts').insert({ user_id: communityProfile.id, post_id: postId })
+    : await sb.from('reposts').delete().eq('user_id', communityProfile.id).eq('post_id', postId);
+  p.busy = false;
+  if (res.error) communitySetMessageText(communityErrText(res.error));
+  else { p.reposted = on; p.reposts = Math.max(0, p.reposts + (on ? 1 : -1)); communitySetMessage(on ? 'community.shared' : ''); }
+  communityRefreshFeed();
+}
+/* Zdieľanie je len vnútri GymQuest: príspevok sa ukáže sledujúcim v „Sledovaní“. */
+function communityToggleShare(postId) {
+  const p = communityFeedItem(postId);
+  if (!p) return;
+  if (p.reposted) { communityShareNow(postId, false); return; }
+  showGeneric(t('community.shareConfirmTitle'), t('community.shareAction'), () => communityShareNow(postId, true), esc(t('community.shareConfirmBody')));
+}
+/* Plná veľkosť fotky v jednoduchom prehliadači (podpísaný odkaz na 10 minút). */
+async function communityViewPhoto(path) {
+  const sb = communityClient(); if (!sb || !path) return;
+  const url = await communitySignedUrl(sb, path);
+  if (!url) { communitySetMessage('community.errImage'); communityRefreshFeed(); return; }
+  const host = document.getElementById('modal-community');
+  let box = document.getElementById('community-lightbox');
+  if (!box) {
+    box = document.createElement('div');
+    box.id = 'community-lightbox'; box.className = 'community-lightbox';
+    box.setAttribute('role', 'dialog'); box.setAttribute('aria-modal', 'true');
+    box.addEventListener('click', () => { box.hidden = true; box.innerHTML = ''; });
+    host.appendChild(box);
+  }
+  box.innerHTML = '<img src="' + escAttr(url) + '" alt="">'
+    + '<button type="button" class="btn-icon community-lightbox-close" aria-label="' + escAttr(t('common.close')) + '">✕</button>';
+  box.hidden = false;
+}
 async function communityLoadBlocks(sb, uid) {
   const { data } = await sb.from('blocks').select('blocked_id').eq('blocker_id', uid);
   communityBlocked = new Set((data || []).map((b) => b.blocked_id));
@@ -12394,13 +12929,91 @@ async function communityEnsureProfile(sb, user) {
   const { data } = await sb.from('profiles').select('id,username,bio,avatar_path,role,suspended').eq('id', user.id).maybeSingle();
   communityProfile = data || null;
 }
+async function communityProfileCard(sb, uid) {
+  let r;
+  try { r = await sb.rpc('profile_card', { p_user: uid }); } catch (e) { r = { error: e }; }
+  return r && !r.error && r.data && r.data[0] ? r.data[0] : null;
+}
+function communityCountsHtml(card) {
+  const n = (k, v, kind) => kind
+    ? '<button type="button" class="community-count-btn" data-community-action="open-list" data-kind="' + kind + '" data-user="' + escAttr(card.id) + '">' + esc(t(k, { n: v })) + '</button>'
+    : '<span class="community-count-btn">' + esc(t(k, { n: v })) + '</span>';
+  return '<div class="community-counts">' + n('community.postsCount', card.posts) + n('community.followersCount', card.followers, 'followers')
+    + n('community.followingCount', card.following, 'following') + '</div>';
+}
+/* Verejný profil iného člena: meno, avatar, bio, počty, sledovanie a jeho schválené príspevky.
+   Nikdy žiadne súkromné tréningy, merania, kalendár ani zálohy – tie na serveri vôbec nie sú. */
+async function communityUserHtml(sb, uid) {
+  const card = uid ? await communityProfileCard(sb, uid) : null;
+  if (!card) return null;
+  const mine = communityProfile && card.id === communityProfile.id;
+  return communityTabbar()
+    + '<div class="card community-profile">'
+    + '<div class="community-head">' + communityAvatarHtml(card.avatar_path)
+    + '<span class="community-name">' + esc(card.username || t('community.unknownUser')) + '</span>'
+    + (card.moderator ? '<span class="community-badge">' + esc(t('community.moderatorShort')) + '</span>' : '') + '</div>'
+    + (card.bio ? '<p class="community-caption">' + esc(card.bio) + '</p>' : '')
+    + communityCountsHtml(card)
+    + communityStatusHtml()
+    + (mine ? '' : '<div class="plan-actions">'
+      + '<button type="button" class="btn ' + (card.i_follow ? 'btn-secondary' : 'btn-primary') + '" data-community-action="follow" data-user="' + escAttr(card.id) + '" data-on="' + (card.i_follow ? '0' : '1') + '" aria-pressed="' + (card.i_follow ? 'true' : 'false') + '">'
+      + esc(t(card.i_follow ? 'community.followingBtn' : 'community.follow')) + '</button>'
+      + '<button type="button" class="btn btn-secondary" data-community-action="block" data-user="' + escAttr(card.id) + '" data-name="' + escAttr(card.username || '') + '">' + esc(t('community.block')) + '</button>'
+      + '<button type="button" class="btn btn-secondary" data-community-action="report-user" data-user="' + escAttr(card.id) + '">' + esc(t('community.reportUser')) + '</button>'
+      + '</div>')
+    + '</div>';
+}
+async function communityFollow(uid, on) {
+  const sb = communityClient(); if (!sb || !communityProfile || !uid) return;
+  const res = on
+    ? await sb.from('follows').insert({ follower_id: communityProfile.id, followee_id: uid })
+    : await sb.from('follows').delete().eq('follower_id', communityProfile.id).eq('followee_id', uid);
+  communitySetMessageText(res.error ? communityErrText(res.error) : '');
+  renderCommunity();
+}
+function communityOpenUser(uid) {
+  if (!uid) return;
+  communityViewUser = uid;
+  communityView = 'user';
+  communitySetMessage('');
+  renderCommunity();
+}
+function communityOpenList(uid, kind) {
+  communityViewUser = uid;
+  communityListKind = kind === 'following' ? 'following' : 'followers';
+  communityView = 'list';
+  renderCommunity();
+}
+/* Zoznam sledujúcich / sledovaných (viditeľný prihláseným členom, bez blokovaných ľudí). */
+async function communityListHtml(sb, reset) {
+  if (reset) communityList = { rows: [], done: false };
+  const last = communityList.rows[communityList.rows.length - 1];
+  let res;
+  try { res = await sb.rpc('follow_list', { p_user: communityViewUser, p_kind: communityListKind, p_before: last ? last.followed_at : null, p_limit: 50 }); }
+  catch (e) { res = { error: e }; }
+  if (res.error) communitySetMessageText(communityErrText(res.error));
+  const rows = (res && res.data) || [];
+  communityList.rows = communityList.rows.concat(rows);
+  communityList.done = rows.length < 50;
+  const items = communityList.rows.map((r) => '<div class="community-list-row">' + communityAvatarHtml(r.avatar_path)
+    + communityNameButton(r.user_id, r.username, r.moderator) + '</div>').join('');
+  return communityTabbar()
+    + '<div class="plan-actions"><button type="button" class="btn btn-secondary" data-community-action="open-user" data-user="' + escAttr(communityViewUser) + '">' + esc(t('community.back')) + '</button></div>'
+    + '<h3 class="card-title">' + esc(t(communityListKind === 'following' ? 'community.followingTitle' : 'community.followersTitle')) + '</h3>'
+    + communityStatusHtml()
+    + (items || '<p class="empty-state">' + esc(t('community.listEmpty')) + '</p>')
+    + (communityList.done ? '' : '<div class="plan-actions"><button type="button" class="btn btn-secondary" data-community-action="list-more">' + esc(t('community.loadMore')) + '</button></div>');
+}
 async function communityProfileHtml(sb, user) {
   const p = communityProfile || {};
+  const card = communitySocial ? await communityProfileCard(sb, user.id) : null;
   const masked = t('community.emailHidden');
   return communityTabbar()
     + '<div class="card"><h3 class="card-title">' + esc(t('community.tabProfile')) + '</h3>'
+    + (card ? communityCountsHtml(card) : '')
     + '<label class="modal-label" for="community-username">' + esc(t('community.username')) + '</label>'
     + '<input type="text" class="modal-input" id="community-username" maxlength="30" value="' + escAttr(p.username || '') + '">'
+    + (communitySocial ? '<p class="card-note">' + esc(t('community.renameNote')) + '</p>' : '')
     + '<label class="modal-label" for="community-bio">' + esc(t('community.bio')) + '</label>'
     + '<input type="text" class="modal-input" id="community-bio" maxlength="300" value="' + escAttr(p.bio || '') + '">'
     + '<p class="card-note">' + esc(masked) + '</p>'
@@ -12421,7 +13034,19 @@ async function communityProfileHtml(sb, user) {
     + '<button type="button" class="btn btn-secondary" data-community-action="signout">' + esc(t('community.signOut')) + '</button>'
     + '</div></div>';
 }
+/* Fotky príspevkov: prvá v posts, 2.–4. v post_media. Vráti { postId: [{ image, thumb }] }. */
+async function communityPostPhotos(sb, posts) {
+  const out = {};
+  posts.forEach((p) => { out[p.id] = p.image_path ? [{ image: p.image_path, thumb: p.thumb_path }] : []; });
+  const ids = posts.filter((p) => p.image_path).map((p) => p.id);
+  if (communitySocial && ids.length) {
+    const { data } = await sb.from('post_media').select('post_id,position,image_path,thumb_path').in('post_id', ids).order('position');
+    (data || []).forEach((m) => { if (out[m.post_id]) out[m.post_id].push({ image: m.image_path, thumb: m.thumb_path }); });
+  }
+  return out;
+}
 async function communityMyPostsHtml(sb, user) {
+  if (communitySocial) return communityMyPostsSocialHtml(sb, user);
   const { data } = await sb.from('posts').select('id,status,caption,thumb_path,created_at').eq('user_id', user.id).order('created_at', { ascending: false });
   const rows = data || [];
   await Promise.all(rows.map(async (p) => { p.thumb_url = await communitySignedUrl(sb, p.thumb_path); }));
@@ -12441,7 +13066,159 @@ async function communityMyPostsHtml(sb, user) {
     + '<p class="media-status" id="community-status" role="status" ' + (communityMessage ? '' : 'hidden') + '>' + esc(communityMessage) + '</p>'
     + (rows.length ? rows.map(card).join('') : '<p class="empty-state">' + esc(t('community.myPostsEmpty')) + '</p>');
 }
+async function communityMyPostsSocialHtml(sb, user) {
+  const { data } = await sb.from('posts').select('id,status,caption,image_path,thumb_path,created_at').eq('user_id', user.id).order('created_at', { ascending: false });
+  const rows = data || [];
+  const photos = await communityPostPhotos(sb, rows);
+  const urls = await communitySignedUrls(sb, [].concat(...Object.values(photos).map((l) => l.map((ph) => ph.thumb))));
+  const card = (p) => '<div class="community-card" data-post="' + escAttr(p.id) + '">'
+    + communityPhotosHtml(photos[p.id], urls)
+    + '<p class="community-status-badge">' + esc(t('community.status' + p.status.charAt(0).toUpperCase() + p.status.slice(1))) + '</p>'
+    + (p.caption ? '<p class="community-caption">' + esc(p.caption) + '</p>' : '')
+    + (p.status !== 'pending' ? '<p class="card-note">' + esc(t('community.lockedNote')) + '</p>' : '')
+    + '<div class="plan-actions">'
+    + (p.status === 'pending' ? '<button type="button" class="btn btn-secondary" data-community-action="edit-caption" data-post="' + escAttr(p.id) + '">' + esc(t('community.editText')) + '</button>' : '')
+    + '<button type="button" class="btn btn-secondary" data-community-action="delete-post" data-post="' + escAttr(p.id) + '">' + esc(t('community.deletePost')) + '</button>'
+    + '</div></div>';
+  return communityTabbar()
+    + '<div class="plan-actions"><button type="button" class="btn btn-primary" data-community-view="compose">' + esc(t('community.newPost')) + '</button></div>'
+    + '<p class="card-note">' + esc(t('community.composeReview')) + '</p>'
+    + communityStatusHtml()
+    + (rows.length ? rows.map(card).join('') : '<p class="empty-state">' + esc(t('community.myPostsEmpty')) + '</p>');
+}
+
+/* ---------- Nový príspevok: text a/alebo 1–4 fotky ----------
+   Každá fotka sa pred nahratím v aplikácii nanovo nakreslí (max. 1280 px, JPEG), čím sa
+   odstránia údaje o polohe a fotoaparáte. Nahrá sa len do vlastného priečinka. */
+function communityDraftReleaseUrls() {
+  communityDraftUrls.forEach((u) => { try { URL.revokeObjectURL(u); } catch (e) {} });
+  communityDraftUrls = [];
+}
+function communityComposeHtml() {
+  const d = communityDraft;
+  const full = d.photos.length >= COMMUNITY_MAX_PHOTOS;
+  return communityTabbar()
+    + '<div class="card community-compose"><h3 class="card-title">' + esc(t('community.newPost')) + '</h3>'
+    + '<label class="modal-label" for="community-compose-text">' + esc(t('community.composeText')) + '</label>'
+    + '<textarea class="modal-input community-compose-text" id="community-compose-text" maxlength="' + COMMUNITY_TEXT_MAX + '" rows="4">' + esc(d.text) + '</textarea>'
+    + '<p class="card-note" id="community-compose-count">' + esc(t('community.composeCount', { n: d.text.length, max: COMMUNITY_TEXT_MAX })) + '</p>'
+    + '<p class="card-note">' + esc(t('community.composePhotos', { n: d.photos.length, max: COMMUNITY_MAX_PHOTOS })) + '</p>'
+    + '<div class="community-draft-grid" id="community-draft-grid">'
+    + d.photos.map((ph, i) => '<div class="community-draft-item" data-index="' + i + '"><span class="community-draft-thumb"></span>'
+      + '<button type="button" class="btn-icon community-draft-remove" data-community-action="compose-remove" data-index="' + i + '" aria-label="' + escAttr(t('community.composeRemovePhoto')) + '">✕</button></div>').join('')
+    + '</div>'
+    + '<input type="file" id="community-compose-files" accept="' + COMMUNITY_FILE_TYPES.join(',') + '" multiple hidden>'
+    + '<div class="plan-actions">'
+    + '<label class="btn btn-secondary' + (full ? ' disabled' : '') + '" for="community-compose-files"' + (full ? ' aria-disabled="true"' : '') + '>' + esc(t('community.composeAddDevice')) + '</label>'
+    + '<button type="button" class="btn btn-secondary" data-community-action="compose-progress"' + (full ? ' disabled' : '') + '>' + esc(t('community.composeAddProgress')) + '</button>'
+    + '</div>'
+    + '<div class="community-picker-grid" id="community-progress-picker" hidden></div>'
+    + '<p class="card-note">' + esc(t('community.composePrivacy')) + '</p>'
+    + '<p class="card-note">' + esc(t('community.composeReview')) + '</p>'
+    + communityStatusHtml()
+    + '<div class="plan-actions">'
+    + '<button type="button" class="btn btn-primary" data-community-action="compose-publish"' + (communityPosting ? ' disabled' : '') + '>' + esc(t(communityPosting ? 'community.composePublishing' : 'community.composePublish')) + '</button>'
+    + '<button type="button" class="btn btn-secondary" data-community-action="compose-cancel">' + esc(t('common.cancel')) + '</button>'
+    + '</div></div>';
+}
+/* Náhľady rozpísaných fotiek (lokálne object URL; nič sa zatiaľ neposiela). */
+async function communityMountDraft() {
+  communityDraftReleaseUrls();
+  const cells = document.querySelectorAll('#community-draft-grid .community-draft-item');
+  for (const cell of cells) {
+    const ph = communityDraft.photos[Number(cell.dataset.index)];
+    if (!ph) continue;
+    let blob = ph.file || null;
+    if (!blob && ph.progressId) { try { const rec = await idbGetProgress(ph.progressId); blob = rec && (rec.thumb || rec.blob); } catch (e) {} }
+    if (!blob || !cell.isConnected) continue;
+    const u = URL.createObjectURL(blob);
+    communityDraftUrls.push(u);
+    const img = document.createElement('img');
+    img.alt = ''; img.src = u;
+    cell.querySelector('.community-draft-thumb').appendChild(img);
+  }
+}
+function communityDraftAddFiles(files) {
+  let msg = '';
+  for (const f of Array.from(files || [])) {
+    if (communityDraft.photos.length >= COMMUNITY_MAX_PHOTOS) { msg = t('community.errTooMany', { n: COMMUNITY_MAX_PHOTOS }); break; }
+    if (COMMUNITY_FILE_TYPES.indexOf(f.type) < 0) { msg = t('community.errFileType'); continue; }
+    if (f.size > COMMUNITY_MAX_FILE_BYTES) { msg = t('community.errFileTooLarge', { mb: 6 }); continue; }
+    communityDraft.photos.push({ file: f });
+  }
+  communitySetMessageText(msg);
+  renderCommunity();
+}
+function communityDraftAddProgress(id) {
+  if (!id) return;
+  if (communityDraft.photos.length >= COMMUNITY_MAX_PHOTOS) { communitySetMessageText(t('community.errTooMany', { n: COMMUNITY_MAX_PHOTOS })); renderCommunity(); return; }
+  if (!communityDraft.photos.some((p) => p.progressId === id)) communityDraft.photos.push({ progressId: id });
+  communitySetMessage('');
+  renderCommunity();
+}
+async function communityShowProgressPicker() {
+  const box = document.getElementById('community-progress-picker');
+  if (!box) return;
+  if (!box.hidden) { box.hidden = true; box.innerHTML = ''; return; }
+  try {
+    if (!mediaDb) mediaDb = await openMediaDb();
+    progressMeta = (await idbGetAll(PROGRESS_META_STORE)).map(cleanProgressMeta).filter(Boolean);
+  } catch (e) {}
+  const list = progressSorted().reverse();
+  box.innerHTML = list.length
+    ? list.map((m) => '<button type="button" class="community-pick" data-community-action="compose-add-progress" data-photo-id="' + escAttr(m.id) + '"'
+      + ' aria-label="' + escAttr(formatDate(m.date)) + '"></button>').join('')
+    : '<p class="empty-state">' + esc(t('community.composeProgressEmpty')) + '</p>';
+  box.hidden = false;
+  box.querySelectorAll('.community-pick').forEach((el) => mountProgressThumb(el, el.dataset.photoId));
+}
+function communitySubmitPost() {
+  if (communityPosting) return;
+  communityPosting = true;
+  renderCommunity();
+  communitySubmitPostNow().catch(() => { communitySetMessage('community.errUpload'); })
+    .finally(() => { communityPosting = false; renderCommunity(); });
+}
+async function communitySubmitPostNow() {
+  const sb = communityClient(); if (!sb || !communityProfile) return;
+  const text = String(communityDraft.text || '').trim();
+  if (!text && !communityDraft.photos.length) { communitySetMessage('community.errEmptyPost'); return; }
+  if (text.length > COMMUNITY_TEXT_MAX) { communitySetMessageText(t('community.errTextTooLong', { n: COMMUNITY_TEXT_MAX })); return; }
+  const folder = communityProfile.id + '/' + uid();
+  const uploaded = [];
+  const photos = [];
+  const fail = async (key) => {
+    if (uploaded.length) { try { await sb.storage.from('community').remove(uploaded); } catch (e) {} }   // nič osirotené
+    communitySetMessageText(key);
+  };
+  for (let i = 0; i < communityDraft.photos.length; i++) {
+    const ph = communityDraft.photos[i];
+    let src = ph.file || null;
+    if (!src && ph.progressId) { try { const rec = await idbGetProgress(ph.progressId); src = rec && rec.blob; } catch (e) {} }
+    const dec = src ? await decodeImageForProgress(src) : null;
+    if (!dec) { await fail(t('community.errImage')); return; }
+    const full = await drawScaledP(dec.src, dec.w, dec.h, COMMUNITY_UPLOAD_EDGE, 'image/jpeg', 0.82);
+    const thumb = await drawScaledP(dec.src, dec.w, dec.h, 400, 'image/jpeg', 0.8);
+    if (dec.close) dec.close();
+    if (!full.blob || !thumb.blob || full.blob.size > COMMUNITY_MAX_UPLOAD_BYTES) { await fail(t('community.errTooLarge')); return; }
+    const image = folder + '/' + i + '.jpg', th = folder + '/' + i + '_thumb.jpg';
+    const up1 = await sb.storage.from('community').upload(image, full.blob, { contentType: 'image/jpeg' });
+    if (up1.error) { await fail(t('community.errUpload')); return; }
+    uploaded.push(image);
+    const up2 = await sb.storage.from('community').upload(th, thumb.blob, { contentType: 'image/jpeg' });
+    if (up2.error) { await fail(t('community.errUpload')); return; }
+    uploaded.push(th);
+    photos.push({ image, thumb: th });
+  }
+  const res = await sb.rpc('create_post', { p_text: text, p_photos: photos });
+  if (res.error) { await fail(communityErrText(res.error, 'community.errUpload')); return; }
+  communityDraftReleaseUrls();
+  communityDraft = { text: '', photos: [] };
+  communityView = 'myposts';
+  communitySetMessage('community.submitted');
+}
 async function communityModerateHtml(sb, user) {
+  if (communitySocial) return communityModerateSocialHtml(sb);
   const pend = await sb.from('posts').select('id,user_id,caption,thumb_path,created_at,profiles(username)').eq('status', 'pending').order('created_at', { ascending: true }).limit(50);
   const reps = await sb.from('reports').select('id,post_id,reported_user_id,reason,created_at').eq('status', 'open').order('created_at', { ascending: true }).limit(50);
   const pendingRows = pend.data || [];
@@ -12469,6 +13246,66 @@ async function communityModerateHtml(sb, user) {
     + '<h3 class="card-title">' + esc(t('community.reportsTitle')) + '</h3>'
     + (reports || '<p class="empty-state">' + esc(t('community.reportsEmpty')) + '</p>')
     + '<p class="media-status" id="community-status" role="status" ' + (communityMessage ? '' : 'hidden') + '>' + esc(communityMessage) + '</p>';
+}
+
+/* Moderovanie (sociálny režim): čakajúce príspevky so všetkými fotkami, nahlásenia s
+   obsahom (namiesto interných ID) a pozastavené účty. Moderátor vidí len verejný
+   obsah Community a nahlásenia – nikdy zálohy, plány, merania, kalendár, súkromné
+   fotky, lajky ani zoznamy priateľov. */
+function communityReasonText(reason) {
+  return COMMUNITY_REPORT_REASONS.indexOf(reason) >= 0 ? t('community.reason_' + reason) : String(reason || '');
+}
+async function communityModerateSocialHtml(sb) {
+  const pend = await sb.from('posts').select('id,user_id,caption,image_path,thumb_path,created_at,profiles(username)').eq('status', 'pending').order('created_at', { ascending: true }).limit(50);
+  const reps = await sb.from('reports').select('id,post_id,reported_user_id,reason,created_at').eq('status', 'open').order('created_at', { ascending: true }).limit(50);
+  const susp = await sb.from('profiles').select('id,username').eq('suspended', true).order('username').limit(100);
+  const pendingRows = pend.data || [];
+  const reportRows = reps.data || [];
+  const postIds = Array.from(new Set(reportRows.map((r) => r.post_id).filter(Boolean)));
+  const repPosts = postIds.length ? ((await sb.from('posts').select('id,user_id,caption,image_path,thumb_path,status,profiles(username)').in('id', postIds)).data || []) : [];
+  const userIds = Array.from(new Set(reportRows.map((r) => r.reported_user_id).filter(Boolean)));
+  const repUsers = userIds.length ? ((await sb.from('profiles').select('id,username').in('id', userIds)).data || []) : [];
+  const photos = await communityPostPhotos(sb, pendingRows.concat(repPosts));
+  const urls = await communitySignedUrls(sb, [].concat(...Object.values(photos).map((l) => l.map((ph) => ph.thumb))));
+  communityModCaptions = {};
+  pendingRows.forEach((p) => { communityModCaptions[p.id] = p.caption || ''; });
+  const name = (p) => (p && p.profiles && p.profiles.username) || t('community.unknownUser');
+  const pending = pendingRows.map((p) => '<div class="community-card" data-post="' + escAttr(p.id) + '">'
+    + '<div class="community-head"><span class="community-name">' + esc(name(p)) + '</span><span class="community-date">' + esc(formatDate(String(p.created_at).slice(0, 10))) + '</span></div>'
+    + communityPhotosHtml(photos[p.id], urls)
+    + (p.caption ? '<p class="community-caption">' + esc(p.caption) + '</p>' : '')
+    + '<div class="plan-actions">'
+    + '<button type="button" class="btn btn-primary" data-community-action="approve" data-post="' + escAttr(p.id) + '">' + esc(t('community.approve')) + '</button>'
+    + '<button type="button" class="btn btn-secondary" data-community-action="reject" data-post="' + escAttr(p.id) + '">' + esc(t('community.reject')) + '</button>'
+    + '<button type="button" class="btn btn-secondary" data-community-action="suspend" data-user="' + escAttr(p.user_id) + '">' + esc(t('community.suspend')) + '</button>'
+    + '</div></div>').join('');
+  const reports = reportRows.map((r) => {
+    const post = repPosts.find((p) => p.id === r.post_id);
+    const target = r.reported_user_id ? repUsers.find((u) => u.id === r.reported_user_id) : null;
+    const authorId = post ? post.user_id : r.reported_user_id;
+    const what = post ? t('community.reportOnPost', { name: name(post) })
+      : t('community.reportOnUser', { name: (target && target.username) || t('community.unknownUser') });
+    return '<div class="community-card">'
+      + '<p class="community-caption"><strong>' + esc(what) + '</strong></p>'
+      + '<p class="card-note">' + esc(t('community.reportReasonLine', { reason: communityReasonText(r.reason) })) + '</p>'
+      + (post ? communityPhotosHtml(photos[post.id], urls) + (post.caption ? '<p class="community-caption">' + esc(post.caption) + '</p>' : '')
+        + (post.status !== 'approved' ? '<p class="community-status-badge">' + esc(t('community.status' + post.status.charAt(0).toUpperCase() + post.status.slice(1))) + '</p>' : '') : '')
+      + '<div class="plan-actions">'
+      + '<button type="button" class="btn btn-secondary" data-community-action="report-dismiss" data-report="' + escAttr(r.id) + '">' + esc(t('community.dismiss')) + '</button>'
+      + (post && post.status === 'approved' ? '<button type="button" class="btn btn-primary" data-community-action="report-uphold-remove" data-report="' + escAttr(r.id) + '">' + esc(t('community.upholdRemove')) + '</button>' : '')
+      + (authorId ? '<button type="button" class="btn btn-secondary" data-community-action="report-uphold-suspend" data-report="' + escAttr(r.id) + '" data-user="' + escAttr(authorId) + '">' + esc(t('community.upholdSuspend')) + '</button>' : '')
+      + '</div></div>';
+  }).join('');
+  const suspended = (susp.data || []).map((u) => '<div class="community-list-row"><span class="community-name">' + esc(u.username) + '</span>'
+    + '<button type="button" class="btn btn-secondary" data-community-action="unsuspend" data-user="' + escAttr(u.id) + '">' + esc(t('community.liftSuspension')) + '</button></div>').join('');
+  return communityTabbar()
+    + communityStatusHtml()
+    + '<h3 class="card-title">' + esc(t('community.pendingTitle')) + '</h3>'
+    + (pending || '<p class="empty-state">' + esc(t('community.pendingEmpty')) + '</p>')
+    + '<h3 class="card-title">' + esc(t('community.reportsTitle')) + '</h3>'
+    + (reports || '<p class="empty-state">' + esc(t('community.reportsEmpty')) + '</p>')
+    + '<h3 class="card-title">' + esc(t('community.suspendedTitle')) + '</h3>'
+    + (suspended || '<p class="empty-state">' + esc(t('community.suspendedEmpty')) + '</p>');
 }
 
 /* ---------- Akcie ---------- */
@@ -12574,12 +13411,21 @@ async function communitySignUpNow() {
   communitySetMessage('');
   if (!authEmailValid(c.email)) { communitySetMessageText(t('auth.errInvalidEmail')); renderCommunity(); return; }
   if (c.password.length < AUTH_MIN_PASSWORD) { communitySetMessageText(t('auth.errWeakPassword', { n: AUTH_MIN_PASSWORD })); renderCommunity(); return; }
+  /* Každý účet GymQuest (aj iba na synchronizáciu) je pre ľudí od 16 rokov. Uloží sa
+     len fakt potvrdenia, nikdy dátum narodenia; server registráciu bez neho odmietne. */
+  const age = document.getElementById('community-age16');
+  communityAge16 = !!(age && age.checked);
+  if (!communityAge16) { communitySetMessageText(t('auth.errAge16')); renderCommunity(); return; }
   await syncQuiesce();
   let res;
-  try { res = await sb.auth.signUp({ email: c.email, password: c.password, options: { emailRedirectTo: authRedirectUrl() } }); }
+  try { res = await sb.auth.signUp({ email: c.email, password: c.password, options: { emailRedirectTo: authRedirectUrl(), data: { age_16_confirmed: true } } }); }
   catch (e) { res = { error: e }; }
   syncResume();
-  if (res.error) { communitySetMessageText(authErrorText(res.error, 'community.errSignUp')); renderCommunity(); return; }
+  if (res.error) {
+    const ageRefused = /age_confirmation_required/.test(String(res.error.message || ''));
+    communitySetMessageText(ageRefused ? t('auth.errAge16') : authErrorText(res.error, 'community.errSignUp'));
+    renderCommunity(); return;
+  }
   if (res.data && res.data.session) {   // potvrdenie vypnuté na serveri: už prihlásený
     renderCommunity();
     await wsBindSession(true);
@@ -12619,6 +13465,10 @@ async function communitySignOut() {
   persistState();
   try { await sb.auth.signOut({ scope: 'local' }); } catch (e) {}
   communityProfile = null;
+  communityConsent = null;
+  communityView = 'feed';
+  communityDraftReleaseUrls();
+  communityDraft = { text: '', photos: [] };
   communityFeed = { items: [], offset: 0, done: false, loading: false };
   const guest = wsRegistry.guest;
   if (wsSlot.id !== guest) { await wsSwitchTo(guest); return; }
@@ -12634,7 +13484,14 @@ async function communitySaveProfile() {
   const username = (u ? u.value.trim() : '');
   const bio = (b ? b.value.trim() : '');
   const { error } = await sb.from('profiles').update({ username, bio }).eq('id', communityProfile.id);
-  communitySetMessage(error ? (String(error.message || '').indexOf('duplicate') >= 0 ? 'community.errUsername' : 'community.errNetwork') : 'community.saved');
+  communitySetMessageText(error ? communityErrText(error, 'community.errUsername') : t('community.saved'));
+  renderCommunity();
+}
+async function communityAcceptAge() {
+  const sb = communityClient(); if (!sb) return;
+  let r;
+  try { r = await sb.rpc('accept_age_requirement'); } catch (e) { r = { error: e }; }
+  communitySetMessageText(r.error ? communityErrText(r.error) : '');
   renderCommunity();
 }
 async function communityUploadAvatar(file) {
@@ -12679,7 +13536,17 @@ async function communityShareProgressPhoto(id) {
     communitySetMessage('community.submitted');
   } catch (e) { communitySetMessage('community.errUpload'); }
 }
-function communityAskShare(id) {
+async function communityAskShare(id) {
+  /* So sociálnymi funkciami sa fotka pridá do rozpísaného príspevku (text + až 4 fotky);
+     nič sa nenahrá, kým ho používateľ neodošle. */
+  const sb = communityClient();
+  if (sb && await communityDetectSocial(sb)) {
+    if (communityDraft.photos.length >= COMMUNITY_MAX_PHOTOS) communitySetMessageText(t('community.errTooMany', { n: COMMUNITY_MAX_PHOTOS }));
+    else if (!communityDraft.photos.some((p) => p.progressId === id)) { communityDraft.photos.push({ progressId: id }); communitySetMessage(''); }
+    communityView = 'compose';
+    communityOpen();
+    return;
+  }
   showGeneric(t('community.shareTitle'), t('community.shareConfirm'), () => {
     communityShareProgressPhoto(id).then(() => {
       if (isOpen('modal-community')) renderCommunity();
@@ -12691,29 +13558,35 @@ let communityCaptionPostId = null;
 function communityEditCaption(postId) {
   communityCaptionPostId = postId;
   const inp = document.getElementById('community-caption-input');
-  if (inp) inp.value = '';
+  if (inp) {
+    inp.value = '';
+    const sb = communityClient();
+    if (sb) sb.from('posts').select('caption').eq('id', postId).maybeSingle().then((r) => { if (r && r.data && communityCaptionPostId === postId) inp.value = r.data.caption || ''; });
+  }
   document.getElementById('modal-community-caption').hidden = false;
 }
 async function communitySaveCaption() {
   const sb = communityClient();
   if (!sb || !communityCaptionPostId) return;
-  const val = (((document.getElementById('community-caption-input') || {}).value) || '').slice(0, 500);
+  const val = (((document.getElementById('community-caption-input') || {}).value) || '').slice(0, COMMUNITY_TEXT_MAX);
   const { error } = await sb.from('posts').update({ caption: val }).eq('id', communityCaptionPostId);
   communityCaptionPostId = null;
   document.getElementById('modal-community-caption').hidden = true;
-  communitySetMessage(error ? 'community.errNetwork' : 'community.saved');
+  communitySetMessageText(error ? communityErrText(error) : t('community.saved'));
   renderCommunity();
 }
 function communityDeletePost(postId) {
   showGeneric(t('community.deletePostTitle'), t('community.deletePost'), () => {
     const sb = communityClient(); if (!sb) return;
-    sb.from('posts').select('image_path,thumb_path').eq('id', postId).maybeSingle().then((res) => {
+    sb.from('posts').select('id,image_path,thumb_path').eq('id', postId).maybeSingle().then(async (res) => {
       const p = res.data || {};
-      sb.from('posts').delete().eq('id', postId).then(() => {
-        if (p.image_path) sb.storage.from('community').remove([p.image_path, p.thumb_path].filter(Boolean));
-        communitySetMessage('community.deleted');
-        renderCommunity();
-      });
+      const photos = p.id ? (await communityPostPhotos(sb, [p]))[p.id] || [] : [];
+      const del = await sb.from('posts').delete().eq('id', postId).select('id');
+      if (del.error || !(del.data || []).length) { communitySetMessage('community.errNetwork'); renderCommunity(); return; }
+      const files = [].concat(...photos.map((ph) => [ph.image, ph.thumb])).filter(Boolean);
+      if (files.length) await sb.storage.from('community').remove(files);
+      communitySetMessage('community.deleted');
+      renderCommunity();
     });
   }, esc(t('community.deletePostConfirm')));
 }
@@ -12724,35 +13597,62 @@ function communityBlock(userId, name) {
       if (res && res.error) { communitySetMessage('community.errNetwork'); renderCommunity(); return; }
       communityBlocked.add(userId);
       communityFeed.items = communityFeed.items.filter((p) => p.user_id !== userId);
+      if (communityView === 'user' || communityView === 'list') communityView = 'feed';
       communitySetMessage('community.blocked');
       renderCommunity();
     });
-  }, esc(t('community.blockConfirm', { name: name || '' })));
+  }, esc(t(communitySocial ? 'community.blockConfirmSocial' : 'community.blockConfirm', { name: name || '' })));
+}
+/* Dôvod nahlásenia: pevné kategórie (moderátor ich vidí vo svojom jazyku). */
+function communityReasonSelectHtml() {
+  return '<label class="modal-label" for="community-report-reason">' + esc(t('community.reportReason')) + '</label>'
+    + '<select class="modal-input" id="community-report-reason">'
+    + COMMUNITY_REPORT_REASONS.map((r) => '<option value="' + r + '">' + esc(t('community.reason_' + r)) + '</option>').join('') + '</select>';
+}
+function communitySendReport(row) {
+  const sb = communityClient(); if (!sb || !communityProfile) return;
+  const sel = document.getElementById('community-report-reason');
+  const reason = communitySocial ? ((sel && COMMUNITY_REPORT_REASONS.indexOf(sel.value) >= 0) ? sel.value : 'other') : t('community.reportReasonDefault');
+  sb.from('reports').insert(Object.assign({ reporter_id: communityProfile.id, reason }, row)).then((res) => {
+    communitySetMessageText(res && res.error ? communityErrText(res.error) : t('community.reported'));
+    renderCommunity();
+  });
 }
 function communityReportPost(postId) {
-  showGeneric(t('community.reportTitle'), t('community.report'), () => {
-    const sb = communityClient(); if (!sb || !communityProfile) return;
-    sb.from('reports').insert({ reporter_id: communityProfile.id, post_id: postId, reason: t('community.reportReasonDefault') }).then((res) => {
-      if (res && res.error) { communitySetMessage('community.errNetwork'); renderCommunity(); return; }
-      communitySetMessage('community.reported');
-      renderCommunity();
-    });
-  }, esc(t('community.reportConfirm')));
+  showGeneric(t('community.reportTitle'), t('community.report'), () => communitySendReport({ post_id: postId }),
+    esc(t('community.reportConfirm')) + (communitySocial ? communityReasonSelectHtml() : ''));
 }
-async function communityModerate(action, id) {
+function communityReportUser(userId) {
+  showGeneric(t('community.reportUserTitle'), t('community.report'), () => communitySendReport({ reported_user_id: userId }),
+    esc(t('community.reportConfirm')) + communityReasonSelectHtml());
+}
+async function communityModerate(action, id, extra) {
   const sb = communityClient(); if (!sb) return;
   let res = { error: null, data: [{ ok: 1 }] };
-  if (action === 'approve' || action === 'reject') {
+  if (action === 'approve' && communitySocial) {
+    /* Schváli sa len text, ktorý moderátor videl: ak ho autor medzitým zmenil, nič sa neschváli. */
+    res = await sb.from('posts').update({ status: 'approved', published_at: new Date().toISOString() })
+      .eq('id', id).eq('status', 'pending').eq('caption', communityModCaptions[id] || '').select('id');
+    if (!res.error && Array.isArray(res.data) && res.data.length === 0) { communitySetMessage('community.errChanged'); renderCommunity(); return; }
+  } else if (action === 'approve' || action === 'reject') {
     const patch = action === 'approve' ? { status: 'approved', published_at: new Date().toISOString() } : { status: 'rejected' };
     res = await sb.from('posts').update(patch).eq('id', id).select('id');
+  } else if (action === 'mod-remove') {
+    res = await sb.from('posts').update({ status: 'rejected' }).eq('id', id).eq('status', 'approved').select('id');
   } else if (action === 'resolve-report') {
     res = await sb.from('reports').update({ status: 'resolved' }).eq('id', id).select('id');
-  } else if (action === 'suspend') {
-    res = await sb.from('profiles').update({ suspended: true }).eq('id', id).select('id');
+  } else if (action === 'report-dismiss' || action === 'report-uphold-remove' || action === 'report-uphold-suspend') {
+    res = await sb.rpc('resolve_report', { p_report: id, p_outcome: action === 'report-dismiss' ? 'dismissed' : 'upheld',
+      p_remove_post: action === 'report-uphold-remove' });
+    if (!res.error && action === 'report-uphold-suspend' && extra) res = await sb.from('profiles').update({ suspended: true }).eq('id', extra).select('id');
+    else if (!res.error) res = { error: null, data: [{ ok: 1 }] };
+  } else if (action === 'suspend' || action === 'unsuspend') {
+    res = await sb.from('profiles').update({ suspended: action === 'suspend' }).eq('id', id).select('id');
   }
   /* RLS can filter the update to 0 rows without an error — report that honestly. */
   const denied = res && (res.error || (Array.isArray(res.data) && res.data.length === 0));
   communitySetMessage(denied ? 'community.errNotAllowed' : 'community.saved');
+  if (action === 'mod-remove' && !denied) communityFeed.items = communityFeed.items.filter((p) => p.id !== id);
   renderCommunity();
 }
 /* Opustenie Community: odstráni príspevky a verejné údaje, ale ZACHOVÁ účet aj
@@ -12763,6 +13663,8 @@ function communityLeaveCommunity() {
     sb.functions.invoke('delete-account', { method: 'POST', body: { mode: 'community' } }).then((res) => {
       if (res && res.error) { communitySetMessage('community.errNetwork'); renderCommunity(); return null; }
       communityProfile = null;
+      communityConsent = null;
+      communityView = 'feed';
       communitySetMessage('community.leftCommunity');
       renderCommunity();
     }).catch(() => { communitySetMessage('community.errNetwork'); renderCommunity(); });
@@ -18092,9 +18994,24 @@ function setupEvents() {
     else if (act === 'delete-post') communityDeletePost(a.dataset.post);
     else if (act === 'block') communityBlock(a.dataset.user, a.dataset.name);
     else if (act === 'report-post') communityReportPost(a.dataset.post);
-    else if (act === 'approve' || act === 'reject') communityModerate(act, a.dataset.post);
-    else if (act === 'resolve-report') communityModerate('resolve-report', a.dataset.report);
-    else if (act === 'suspend') communityModerate('suspend', a.dataset.user);
+    else if (act === 'report-user') communityReportUser(a.dataset.user);
+    else if (act === 'approve' || act === 'reject' || act === 'mod-remove') communityModerate(act, a.dataset.post);
+    else if (act === 'resolve-report' || act === 'report-dismiss' || act === 'report-uphold-remove') communityModerate(act, a.dataset.report);
+    else if (act === 'report-uphold-suspend') communityModerate(act, a.dataset.report, a.dataset.user);
+    else if (act === 'suspend' || act === 'unsuspend') communityModerate(act, a.dataset.user);
+    else if (act === 'accept-age') communityAcceptAge();
+    else if (act === 'like') communityToggleLike(a.dataset.post);
+    else if (act === 'share') communityToggleShare(a.dataset.post);
+    else if (act === 'view-photo') communityViewPhoto(a.dataset.path);
+    else if (act === 'open-user') communityOpenUser(a.dataset.user);
+    else if (act === 'open-list') communityOpenList(a.dataset.user, a.dataset.kind);
+    else if (act === 'list-more') { const sb = communityClient(); if (sb) communityListHtml(sb, false).then((h) => { document.getElementById('community-body').innerHTML = h; }); }
+    else if (act === 'follow') communityFollow(a.dataset.user, a.dataset.on === '1');
+    else if (act === 'compose-remove') { communityDraft.photos.splice(Number(a.dataset.index), 1); renderCommunity(); }
+    else if (act === 'compose-progress') communityShowProgressPicker();
+    else if (act === 'compose-add-progress') communityDraftAddProgress(a.dataset.photoId);
+    else if (act === 'compose-publish') communitySubmitPost();
+    else if (act === 'compose-cancel') { communityDraftReleaseUrls(); communityDraft = { text: '', photos: [] }; communitySetMessage(''); communitySetView('myposts'); }
     else if (act === 'leave') communityLeaveCommunity();
     else if (act === 'delete-account') communityDeleteAccount();
     else if (act === 'forgot') { const em = document.getElementById('community-email'); authAskReset(em ? em.value.trim() : ''); }
@@ -18106,7 +19023,20 @@ function setupEvents() {
       e.target.value = '';
       communityUploadAvatar(f);
     }
+    if (e.target && e.target.id === 'community-compose-files' && e.target.files) {
+      const files = Array.from(e.target.files);
+      e.target.value = '';
+      communityDraftAddFiles(files);
+    }
+    if (e.target && e.target.id === 'community-age16') communityAge16 = !!e.target.checked;
   }, 'change');
+  on('community-body', (e) => {
+    if (e.target && e.target.id === 'community-compose-text') {
+      communityDraft.text = String(e.target.value || '').slice(0, COMMUNITY_TEXT_MAX);
+      const c = document.getElementById('community-compose-count');
+      if (c) c.textContent = t('community.composeCount', { n: communityDraft.text.length, max: COMMUNITY_TEXT_MAX });
+    }
+  }, 'input');
   on('btn-community-caption-cancel', () => { communityCaptionPostId = null; document.getElementById('modal-community-caption').hidden = true; });
   on('btn-community-caption-save', communitySaveCaption);
 
