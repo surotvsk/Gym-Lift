@@ -6,7 +6,9 @@
 //   mode = 'community'  -> "Leave Community": removes the caller's posts,
 //                          community/avatar media, reports, blocks, follows
 //                          (both directions), likes, shares and spam-limit
-//                          events, and clears bio + avatar. KEEPS the auth
+//                          events, friends, friend requests, chats and
+//                          comments (0008), takes the caller out of the user
+//                          search, and clears bio + avatar. KEEPS the auth
 //                          account and the private cloud backup.
 //
 //   mode = 'full'       -> "Delete my account and all cloud data": removes the
@@ -98,6 +100,13 @@ Deno.serve(async (req: Request) => {
   }
 
   if (mode === 'community') {
+    // Phase 2 (migration 0008): friendships, friend requests, chats (messages and
+    // read markers cascade), the caller's comments and the search listing. Not
+    // there before 0008 or after its rollback — then there is nothing to remove.
+    const { error: cleanErr } = await admin.rpc('community_leave_cleanup', { p_user: uid });
+    if (cleanErr && cleanErr.code !== 'PGRST202' && cleanErr.code !== '42883') {
+      return json({ error: 'db_delete_failed', table: 'community_leave_cleanup' }, 500);
+    }
     // Keep the account and the private backup; just clear the public profile bits.
     const { error: profErr } = await admin.from('profiles').update({ bio: '', avatar_path: null }).eq('id', uid);
     if (profErr) return json({ error: 'db_update_failed', table: 'profiles' }, 500);

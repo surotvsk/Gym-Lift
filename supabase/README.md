@@ -12,7 +12,7 @@ exactly as before: fully offline, no accounts, no network requests. Nothing belo
    (Project settings → API). These two are safe in frontend code.
 
 ## 2. Run the database migrations
-Run **all six** migrations, in order:
+Run **all** migrations, in order (there is no 0007 — the number is reserved):
 1. [`migrations/0001_community.sql`](./migrations/0001_community.sql) — tables, functions, triggers, RLS, buckets.
 2. [`migrations/0002_community_grants.sql`](./migrations/0002_community_grants.sql) — explicit `GRANT`s.
 3. [`migrations/0003_community_moderation_and_upload_caps.sql`](./migrations/0003_community_moderation_and_upload_caps.sql) — moderator suspension policy and a per-user Storage object cap.
@@ -20,6 +20,7 @@ Run **all six** migrations, in order:
 5. [`migrations/0005_social_feed.sql`](./migrations/0005_social_feed.sql) — social feed (Release 1): one-way follows, likes, internal shares, the *Following* feed, profile counts and lists, text-only posts and posts with 1–4 photos, a 16+ confirmation for every account (no birth date stored), spam limits, block clean-up, hidden suspended authors, moderation history and report review. It also closes four gaps in 0001–0004: post text is locked after review, photo paths must start with the author's id (and a referenced path can never be re-uploaded), signed-out (`anon`) access to Community tables is removed, and usernames get a reserved list plus a 30-day rename limit. Every new post still waits for a moderator.
 
 6. [`migrations/0006_delete_account_grants.sql`](./migrations/0006_delete_account_grants.sql) — the privileges the `delete-account` function needs on the 0001/0004 tables (see below). Independent of 0005.
+7. [`migrations/0008_social_phase2.sql`](./migrations/0008_social_phase2.sql) — Community Phase 2: user search (Community members only, "Show me in search" on by default), friend requests and private friend lists, friends-only posts, comments, one-to-one live chat between friends (Supabase Realtime; moderators can never read chats), message/comment reports that store only a copy of the reported item, and a daily `pg_cron` purge. Needs 0005 and 0006 and the `pg_cron` extension (Database → Extensions).
 
 SQL editor → paste a file → Run, **or** with the CLI: `supabase db push`.
 
@@ -83,6 +84,25 @@ Afterwards reload the API schema cache (`NOTIFY pgrst, 'reload schema';`). **Kee
 `delete-account` function**: the function works while 0005 is rolled back (it skips the moved social
 tables) and `0005_down` never touches the 0006 privileges. Do not redeploy the pre-v47 function and do
 not run `0006_down`. The app (v47+) falls back to the pre-0005 Community by itself.
+
+**0008 — friends, chat, comments, search.** Run it once, as one transaction, after 0005 and 0006
+(it refuses to run without 0005, without `pg_cron`, or a second time). Release order: the app (v49+)
+first — it shows the new features only when `community_social_version()` answers 2 and otherwise keeps
+the Release-1 Community — then 0008, then the `delete-account` function that calls
+`community_leave_cleanup` (the older function keeps working, but *Leave Community* then leaves the
+user's friendships, chats and comments until full deletion). Retention, enforced by the daily job
+`gymquest-chat-purge` (03:23 UTC): a chat closed by unfriending is deleted after 30 days, messages
+after 12 months, report copies 90 days after the report is resolved. Deleting a message or a chat
+removes it for both people; blocking removes the friendship, requests and the chat. Afterwards reload
+the API schema cache (`NOTIFY pgrst, 'reload schema';`) and check Database → Replication shows
+`messages` and `friend_requests` in `supabase_realtime`.
+
+**0008 rollback:** [`rollback/0008_down.sql`](./rollback/0008_down.sql) (one transaction) restores the
+0005 functions and policies and removes the purge job. Friend requests, friendships, chats, messages
+and comments move to `community_rollback` (deleting an account still removes them; re-running 0008
+moves them back). Friends-only posts stay visible only to their author and moderators. The copies of
+reported messages/comments are dropped. Roll back **0008 before 0005** — never run `0005_down` while
+0008 is applied. Keep 0006 and the `delete-account` function; the v49 app falls back by itself.
 
 ## 3. Authentication (email + password)
 1. **Authentication → Providers → Email**: enable **Email** and keep **Confirm email** ON.

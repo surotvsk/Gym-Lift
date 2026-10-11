@@ -7438,6 +7438,287 @@ const SOCIAL_I18N = {
 };
 for (const lang of Object.keys(SOCIAL_I18N)) Object.assign(I18N[lang] || (I18N[lang] = {}), SOCIAL_I18N[lang]);
 
+/* Texty pre priateľov, správy, komentáre a hľadanie (migrácia 0008) – 6 jazykov. */
+const SOCIAL2_I18N = {
+  sk: {
+    'community2.navHome': 'Domov', 'community2.navSearch': 'Hľadať', 'community2.navChats': 'Správy', 'community2.navProfile': 'Profil',
+    'community2.back': 'Späť', 'community2.menuAria': 'Ďalšie možnosti', 'community2.timeNow': 'teraz', 'community2.delete': 'Vymazať',
+    'community2.scopeFriends': 'Priatelia', 'community2.friendsOnly': 'Len priatelia',
+    'community2.friendsFeedEmpty': 'Tu uvidíš príspevky svojich priateľov – aj tie len pre priateľov. Priateľov nájdeš cez Hľadať.',
+    'community2.statPosts': 'príspevky', 'community2.statFollowers': 'sledujúci', 'community2.statFollowing': 'sleduje', 'community2.statFriends': 'priatelia',
+    'community2.editProfile': 'Upraviť profil', 'community2.privacyTitle': 'Súkromie',
+    'community2.searchable': 'Zobrazovať ma vo vyhľadávaní',
+    'community2.searchableNote': 'Keď je to vypnuté, ostatní ťa nenájdu cez Hľadať. Tvoje príspevky a profil ostávajú viditeľné ako doteraz.',
+    'community2.searchableOn': 'Zobrazuješ sa vo vyhľadávaní.', 'community2.searchableOff': 'Už sa nezobrazuješ vo vyhľadávaní.',
+    'community2.searchPlaceholder': 'Hľadať ľudí', 'community2.searchHint': 'Napíš aspoň 2 znaky mena.', 'community2.searchEmpty': 'Nikoho sme nenašli.',
+    'community2.searchNote': 'Nájdeš tu členov Community, ktorí majú zapnuté „Zobrazovať ma vo vyhľadávaní“.',
+    'community2.addFriend': 'Pridať priateľa', 'community2.requested': 'Žiadosť odoslaná', 'community2.cancelRequest': 'Zrušiť žiadosť',
+    'community2.accept': 'Prijať', 'community2.decline': 'Odmietnuť', 'community2.friendsBtn': 'Priatelia ✓', 'community2.message': 'Správa',
+    'community2.requestSent': 'Žiadosť o priateľstvo bola odoslaná.', 'community2.friendAdded': 'Teraz ste priatelia.', 'community2.unfriended': 'Už nie ste priatelia.',
+    'community2.unfriend': 'Odobrať', 'community2.unfriendTitle': 'Odobrať z priateľov',
+    'community2.unfriendConfirm': 'Odobrať {name} z priateľov? Váš chat bude len na čítanie a o 30 dní sa vymaže.',
+    'community2.friendsTitle': 'Priatelia', 'community2.incoming': 'Žiadosti o priateľstvo', 'community2.outgoing': 'Odoslané žiadosti',
+    'community2.friendsListTitle': 'Tvoji priatelia', 'community2.friendsListEmpty': 'Zatiaľ nemáš priateľov. Nájdi ľudí cez Hľadať.',
+    'community2.friendsPrivate': 'Tvoj zoznam priateľov vidíš len ty.',
+    'community2.chatsTitle': 'Správy', 'community2.newChat': 'Nová správa', 'community2.chatYou': 'Ty: ', 'community2.chatNoMessages': 'Zatiaľ žiadne správy',
+    'community2.chatClosedShort': 'len na čítanie',
+    'community2.chatsEmpty': 'Zatiaľ žiadne správy. Písať si môžeš s priateľmi – otvor priateľa a ťukni na Správa.',
+    'community2.chatPrivacy': 'Správy vidíte len vy dvaja – moderátori ich nevidia. Správy staršie ako 12 mesiacov sa automaticky vymažú.',
+    'community2.chatPlaceholder': 'Napíš správu…', 'community2.send': 'Odoslať', 'community2.chatEmpty': 'Napíš prvú správu.',
+    'community2.chatGone': 'Tento chat už neexistuje.', 'community2.chatCannotSend': 'Do tohto chatu teraz nemôžeš písať.',
+    'community2.chatClosed': 'Už nie ste priatelia, chat je len na čítanie. O 30 dní sa vymaže.',
+    'community2.deleteChat': 'Vymazať chat', 'community2.deleteChatTitle': 'Vymazať chat',
+    'community2.deleteChatConfirm': 'Vymazať celý chat a všetky správy pre oboch? Nedá sa to vrátiť.', 'community2.chatDeleted': 'Chat bol vymazaný.',
+    'community2.deleteMessageTitle': 'Vymazať správu', 'community2.deleteMessageConfirm': 'Vymazať túto správu pre oboch?',
+    'community2.reportMessageTitle': 'Nahlásiť správu', 'community2.reportMessageNote': 'Moderátor uvidí len túto jednu správu, nie celý chat.',
+    'community2.messageReported': 'Správa bola nahlásená moderátorom.',
+    'community2.commentsTitle': 'Komentáre', 'community2.commentsEmpty': 'Zatiaľ žiadne komentáre.', 'community2.commentPlaceholder': 'Pridaj komentár…',
+    'community2.commentSend': 'Uverejniť', 'community2.viewComments': 'Zobraziť komentáre ({n})', 'community2.addComment': 'Pridať komentár',
+    'community2.commentsAria': 'Komentáre ({n})', 'community2.deleteCommentTitle': 'Vymazať komentár', 'community2.deleteCommentConfirm': 'Vymazať tento komentár?',
+    'community2.reportCommentTitle': 'Nahlásiť komentár', 'community2.commentReported': 'Komentár bol nahlásený moderátorom.',
+    'community2.visibilityLabel': 'Kto to uvidí', 'community2.visibilityPublic': 'Všetci', 'community2.visibilityFriends': 'Len priatelia',
+    'community2.visibilityNote': 'Príspevky „Len priatelia“ uvidia iba tvoji priatelia; nezobrazia sa vo Všetci ani Sledovaní a nedajú sa zdieľať. Aj tak ich najprv schváli moderátor.',
+    'community2.reportOnMessage': 'Nahlásená správa od {name}', 'community2.reportOnComment': 'Nahlásený komentár od {name}',
+    'community2.reportMessageModNote': 'Vidíš len túto jednu nahlásenú správu – konverzácia zostáva súkromná.',
+    'community2.excerptGone': '(kópia už bola vymazaná)', 'community2.upholdRemoveComment': 'Potvrdiť a odstrániť komentár',
+    'community2.errNotAllowed': 'Toto teraz nie je možné.', 'community2.errRateMessage': 'Posielaš správy príliš rýchlo. Chvíľu počkaj.',
+    'community2.errRateComment': 'Píšeš príliš veľa komentárov. Skús to o chvíľu.',
+    'community2.errRateFriend': 'Dnes si poslal(a) priveľa žiadostí o priateľstvo. Skús to zajtra.',
+    'community2.errRateFriendSame': 'Tejto osobe si už poslal(a) priveľa žiadostí. Skús to neskôr.',
+  },
+  en: {
+    'community2.navHome': 'Home', 'community2.navSearch': 'Search', 'community2.navChats': 'Messages', 'community2.navProfile': 'Profile',
+    'community2.back': 'Back', 'community2.menuAria': 'More options', 'community2.timeNow': 'now', 'community2.delete': 'Delete',
+    'community2.scopeFriends': 'Friends', 'community2.friendsOnly': 'Friends only',
+    'community2.friendsFeedEmpty': 'Here you’ll see your friends’ posts – including friends-only ones. Find friends with Search.',
+    'community2.statPosts': 'posts', 'community2.statFollowers': 'followers', 'community2.statFollowing': 'following', 'community2.statFriends': 'friends',
+    'community2.editProfile': 'Edit profile', 'community2.privacyTitle': 'Privacy',
+    'community2.searchable': 'Show me in search',
+    'community2.searchableNote': 'When this is off, others can’t find you with Search. Your posts and profile stay visible as before.',
+    'community2.searchableOn': 'You appear in search.', 'community2.searchableOff': 'You no longer appear in search.',
+    'community2.searchPlaceholder': 'Search people', 'community2.searchHint': 'Type at least 2 characters of a name.', 'community2.searchEmpty': 'No one found.',
+    'community2.searchNote': 'Shows Community members who have “Show me in search” turned on.',
+    'community2.addFriend': 'Add friend', 'community2.requested': 'Request sent', 'community2.cancelRequest': 'Cancel request',
+    'community2.accept': 'Accept', 'community2.decline': 'Decline', 'community2.friendsBtn': 'Friends ✓', 'community2.message': 'Message',
+    'community2.requestSent': 'Friend request sent.', 'community2.friendAdded': 'You are now friends.', 'community2.unfriended': 'You are no longer friends.',
+    'community2.unfriend': 'Remove', 'community2.unfriendTitle': 'Remove friend',
+    'community2.unfriendConfirm': 'Remove {name} from your friends? Your chat becomes read-only and is deleted after 30 days.',
+    'community2.friendsTitle': 'Friends', 'community2.incoming': 'Friend requests', 'community2.outgoing': 'Sent requests',
+    'community2.friendsListTitle': 'Your friends', 'community2.friendsListEmpty': 'No friends yet. Find people with Search.',
+    'community2.friendsPrivate': 'Only you can see your friend list.',
+    'community2.chatsTitle': 'Messages', 'community2.newChat': 'New message', 'community2.chatYou': 'You: ', 'community2.chatNoMessages': 'No messages yet',
+    'community2.chatClosedShort': 'read-only',
+    'community2.chatsEmpty': 'No messages yet. You can chat with friends – open a friend and tap Message.',
+    'community2.chatPrivacy': 'Only the two of you can see these messages – moderators can’t. Messages older than 12 months are deleted automatically.',
+    'community2.chatPlaceholder': 'Write a message…', 'community2.send': 'Send', 'community2.chatEmpty': 'Send the first message.',
+    'community2.chatGone': 'This chat no longer exists.', 'community2.chatCannotSend': 'You can’t write in this chat right now.',
+    'community2.chatClosed': 'You are no longer friends, so this chat is read-only. It will be deleted in 30 days.',
+    'community2.deleteChat': 'Delete chat', 'community2.deleteChatTitle': 'Delete chat',
+    'community2.deleteChatConfirm': 'Delete the whole chat and all messages for both of you? This can’t be undone.', 'community2.chatDeleted': 'Chat deleted.',
+    'community2.deleteMessageTitle': 'Delete message', 'community2.deleteMessageConfirm': 'Delete this message for both of you?',
+    'community2.reportMessageTitle': 'Report message', 'community2.reportMessageNote': 'The moderator sees only this one message, not the whole chat.',
+    'community2.messageReported': 'Message reported to the moderators.',
+    'community2.commentsTitle': 'Comments', 'community2.commentsEmpty': 'No comments yet.', 'community2.commentPlaceholder': 'Add a comment…',
+    'community2.commentSend': 'Post', 'community2.viewComments': 'View comments ({n})', 'community2.addComment': 'Add a comment',
+    'community2.commentsAria': 'Comments ({n})', 'community2.deleteCommentTitle': 'Delete comment', 'community2.deleteCommentConfirm': 'Delete this comment?',
+    'community2.reportCommentTitle': 'Report comment', 'community2.commentReported': 'Comment reported to the moderators.',
+    'community2.visibilityLabel': 'Who can see this', 'community2.visibilityPublic': 'Everyone', 'community2.visibilityFriends': 'Friends only',
+    'community2.visibilityNote': '“Friends only” posts are seen only by your friends; they don’t appear in Everyone or Following and can’t be shared. A moderator still reviews them first.',
+    'community2.reportOnMessage': 'Reported message from {name}', 'community2.reportOnComment': 'Reported comment from {name}',
+    'community2.reportMessageModNote': 'You see only this one reported message – the conversation stays private.',
+    'community2.excerptGone': '(the copy has been deleted)', 'community2.upholdRemoveComment': 'Uphold and remove comment',
+    'community2.errNotAllowed': 'That isn’t possible right now.', 'community2.errRateMessage': 'You’re sending messages too fast. Wait a moment.',
+    'community2.errRateComment': 'You’re posting too many comments. Try again in a little while.',
+    'community2.errRateFriend': 'You’ve sent too many friend requests today. Try again tomorrow.',
+    'community2.errRateFriendSame': 'You’ve already sent this person too many requests. Try again later.',
+  },
+  es: {
+    'community2.navHome': 'Inicio', 'community2.navSearch': 'Buscar', 'community2.navChats': 'Mensajes', 'community2.navProfile': 'Perfil',
+    'community2.back': 'Atrás', 'community2.menuAria': 'Más opciones', 'community2.timeNow': 'ahora', 'community2.delete': 'Eliminar',
+    'community2.scopeFriends': 'Amigos', 'community2.friendsOnly': 'Solo amigos',
+    'community2.friendsFeedEmpty': 'Aquí verás las publicaciones de tus amigos, también las de solo amigos. Encuentra amigos con Buscar.',
+    'community2.statPosts': 'publicaciones', 'community2.statFollowers': 'seguidores', 'community2.statFollowing': 'seguidos', 'community2.statFriends': 'amigos',
+    'community2.editProfile': 'Editar perfil', 'community2.privacyTitle': 'Privacidad',
+    'community2.searchable': 'Mostrarme en la búsqueda',
+    'community2.searchableNote': 'Si está desactivado, nadie te encontrará con Buscar. Tus publicaciones y tu perfil siguen visibles como antes.',
+    'community2.searchableOn': 'Apareces en la búsqueda.', 'community2.searchableOff': 'Ya no apareces en la búsqueda.',
+    'community2.searchPlaceholder': 'Buscar personas', 'community2.searchHint': 'Escribe al menos 2 caracteres de un nombre.', 'community2.searchEmpty': 'No se encontró a nadie.',
+    'community2.searchNote': 'Muestra a los miembros de la Comunidad que tienen activado «Mostrarme en la búsqueda».',
+    'community2.addFriend': 'Añadir amigo', 'community2.requested': 'Solicitud enviada', 'community2.cancelRequest': 'Cancelar solicitud',
+    'community2.accept': 'Aceptar', 'community2.decline': 'Rechazar', 'community2.friendsBtn': 'Amigos ✓', 'community2.message': 'Mensaje',
+    'community2.requestSent': 'Solicitud de amistad enviada.', 'community2.friendAdded': 'Ahora sois amigos.', 'community2.unfriended': 'Ya no sois amigos.',
+    'community2.unfriend': 'Quitar', 'community2.unfriendTitle': 'Quitar de amigos',
+    'community2.unfriendConfirm': '¿Quitar a {name} de tus amigos? Vuestro chat quedará en solo lectura y se eliminará en 30 días.',
+    'community2.friendsTitle': 'Amigos', 'community2.incoming': 'Solicitudes de amistad', 'community2.outgoing': 'Solicitudes enviadas',
+    'community2.friendsListTitle': 'Tus amigos', 'community2.friendsListEmpty': 'Aún no tienes amigos. Encuentra personas con Buscar.',
+    'community2.friendsPrivate': 'Solo tú ves tu lista de amigos.',
+    'community2.chatsTitle': 'Mensajes', 'community2.newChat': 'Nuevo mensaje', 'community2.chatYou': 'Tú: ', 'community2.chatNoMessages': 'Aún no hay mensajes',
+    'community2.chatClosedShort': 'solo lectura',
+    'community2.chatsEmpty': 'Aún no hay mensajes. Puedes chatear con tus amigos: abre un amigo y toca Mensaje.',
+    'community2.chatPrivacy': 'Solo vosotros dos veis estos mensajes; los moderadores no. Los mensajes de más de 12 meses se eliminan automáticamente.',
+    'community2.chatPlaceholder': 'Escribe un mensaje…', 'community2.send': 'Enviar', 'community2.chatEmpty': 'Envía el primer mensaje.',
+    'community2.chatGone': 'Este chat ya no existe.', 'community2.chatCannotSend': 'Ahora no puedes escribir en este chat.',
+    'community2.chatClosed': 'Ya no sois amigos, así que este chat es de solo lectura. Se eliminará en 30 días.',
+    'community2.deleteChat': 'Eliminar chat', 'community2.deleteChatTitle': 'Eliminar chat',
+    'community2.deleteChatConfirm': '¿Eliminar todo el chat y todos los mensajes para los dos? No se puede deshacer.', 'community2.chatDeleted': 'Chat eliminado.',
+    'community2.deleteMessageTitle': 'Eliminar mensaje', 'community2.deleteMessageConfirm': '¿Eliminar este mensaje para los dos?',
+    'community2.reportMessageTitle': 'Denunciar mensaje', 'community2.reportMessageNote': 'El moderador solo verá este mensaje, no todo el chat.',
+    'community2.messageReported': 'Mensaje denunciado a los moderadores.',
+    'community2.commentsTitle': 'Comentarios', 'community2.commentsEmpty': 'Aún no hay comentarios.', 'community2.commentPlaceholder': 'Añade un comentario…',
+    'community2.commentSend': 'Publicar', 'community2.viewComments': 'Ver comentarios ({n})', 'community2.addComment': 'Añadir un comentario',
+    'community2.commentsAria': 'Comentarios ({n})', 'community2.deleteCommentTitle': 'Eliminar comentario', 'community2.deleteCommentConfirm': '¿Eliminar este comentario?',
+    'community2.reportCommentTitle': 'Denunciar comentario', 'community2.commentReported': 'Comentario denunciado a los moderadores.',
+    'community2.visibilityLabel': 'Quién puede verlo', 'community2.visibilityPublic': 'Todos', 'community2.visibilityFriends': 'Solo amigos',
+    'community2.visibilityNote': 'Las publicaciones «Solo amigos» solo las ven tus amigos; no aparecen en Todos ni en Siguiendo y no se pueden compartir. Igualmente las revisa antes un moderador.',
+    'community2.reportOnMessage': 'Mensaje denunciado de {name}', 'community2.reportOnComment': 'Comentario denunciado de {name}',
+    'community2.reportMessageModNote': 'Solo ves este mensaje denunciado; la conversación sigue siendo privada.',
+    'community2.excerptGone': '(la copia ya se eliminó)', 'community2.upholdRemoveComment': 'Confirmar y eliminar comentario',
+    'community2.errNotAllowed': 'Ahora no es posible.', 'community2.errRateMessage': 'Estás enviando mensajes demasiado rápido. Espera un momento.',
+    'community2.errRateComment': 'Estás publicando demasiados comentarios. Inténtalo en un rato.',
+    'community2.errRateFriend': 'Hoy has enviado demasiadas solicitudes de amistad. Inténtalo mañana.',
+    'community2.errRateFriendSame': 'Ya has enviado demasiadas solicitudes a esta persona. Inténtalo más tarde.',
+  },
+  'pt-BR': {
+    'community2.navHome': 'Início', 'community2.navSearch': 'Buscar', 'community2.navChats': 'Mensagens', 'community2.navProfile': 'Perfil',
+    'community2.back': 'Voltar', 'community2.menuAria': 'Mais opções', 'community2.timeNow': 'agora', 'community2.delete': 'Excluir',
+    'community2.scopeFriends': 'Amigos', 'community2.friendsOnly': 'Só amigos',
+    'community2.friendsFeedEmpty': 'Aqui você vê os posts dos seus amigos, inclusive os só para amigos. Encontre amigos em Buscar.',
+    'community2.statPosts': 'posts', 'community2.statFollowers': 'seguidores', 'community2.statFollowing': 'seguindo', 'community2.statFriends': 'amigos',
+    'community2.editProfile': 'Editar perfil', 'community2.privacyTitle': 'Privacidade',
+    'community2.searchable': 'Mostrar-me na busca',
+    'community2.searchableNote': 'Desativado, ninguém encontra você em Buscar. Seus posts e seu perfil continuam visíveis como antes.',
+    'community2.searchableOn': 'Você aparece na busca.', 'community2.searchableOff': 'Você não aparece mais na busca.',
+    'community2.searchPlaceholder': 'Buscar pessoas', 'community2.searchHint': 'Digite pelo menos 2 caracteres de um nome.', 'community2.searchEmpty': 'Ninguém encontrado.',
+    'community2.searchNote': 'Mostra membros da Comunidade que ativaram “Mostrar-me na busca”.',
+    'community2.addFriend': 'Adicionar amigo', 'community2.requested': 'Pedido enviado', 'community2.cancelRequest': 'Cancelar pedido',
+    'community2.accept': 'Aceitar', 'community2.decline': 'Recusar', 'community2.friendsBtn': 'Amigos ✓', 'community2.message': 'Mensagem',
+    'community2.requestSent': 'Pedido de amizade enviado.', 'community2.friendAdded': 'Agora vocês são amigos.', 'community2.unfriended': 'Vocês não são mais amigos.',
+    'community2.unfriend': 'Remover', 'community2.unfriendTitle': 'Remover amigo',
+    'community2.unfriendConfirm': 'Remover {name} dos seus amigos? O chat de vocês fica só para leitura e é excluído em 30 dias.',
+    'community2.friendsTitle': 'Amigos', 'community2.incoming': 'Pedidos de amizade', 'community2.outgoing': 'Pedidos enviados',
+    'community2.friendsListTitle': 'Seus amigos', 'community2.friendsListEmpty': 'Você ainda não tem amigos. Encontre pessoas em Buscar.',
+    'community2.friendsPrivate': 'Só você vê sua lista de amigos.',
+    'community2.chatsTitle': 'Mensagens', 'community2.newChat': 'Nova mensagem', 'community2.chatYou': 'Você: ', 'community2.chatNoMessages': 'Ainda sem mensagens',
+    'community2.chatClosedShort': 'só leitura',
+    'community2.chatsEmpty': 'Ainda sem mensagens. Você pode conversar com amigos: abra um amigo e toque em Mensagem.',
+    'community2.chatPrivacy': 'Só vocês dois veem estas mensagens; os moderadores não. Mensagens com mais de 12 meses são excluídas automaticamente.',
+    'community2.chatPlaceholder': 'Escreva uma mensagem…', 'community2.send': 'Enviar', 'community2.chatEmpty': 'Envie a primeira mensagem.',
+    'community2.chatGone': 'Este chat não existe mais.', 'community2.chatCannotSend': 'Você não pode escrever neste chat agora.',
+    'community2.chatClosed': 'Vocês não são mais amigos, então este chat é só leitura. Ele será excluído em 30 dias.',
+    'community2.deleteChat': 'Excluir chat', 'community2.deleteChatTitle': 'Excluir chat',
+    'community2.deleteChatConfirm': 'Excluir o chat inteiro e todas as mensagens para os dois? Não dá para desfazer.', 'community2.chatDeleted': 'Chat excluído.',
+    'community2.deleteMessageTitle': 'Excluir mensagem', 'community2.deleteMessageConfirm': 'Excluir esta mensagem para os dois?',
+    'community2.reportMessageTitle': 'Denunciar mensagem', 'community2.reportMessageNote': 'O moderador vê só esta mensagem, não o chat inteiro.',
+    'community2.messageReported': 'Mensagem denunciada aos moderadores.',
+    'community2.commentsTitle': 'Comentários', 'community2.commentsEmpty': 'Ainda sem comentários.', 'community2.commentPlaceholder': 'Adicione um comentário…',
+    'community2.commentSend': 'Publicar', 'community2.viewComments': 'Ver comentários ({n})', 'community2.addComment': 'Adicionar comentário',
+    'community2.commentsAria': 'Comentários ({n})', 'community2.deleteCommentTitle': 'Excluir comentário', 'community2.deleteCommentConfirm': 'Excluir este comentário?',
+    'community2.reportCommentTitle': 'Denunciar comentário', 'community2.commentReported': 'Comentário denunciado aos moderadores.',
+    'community2.visibilityLabel': 'Quem pode ver', 'community2.visibilityPublic': 'Todos', 'community2.visibilityFriends': 'Só amigos',
+    'community2.visibilityNote': 'Posts “Só amigos” são vistos apenas pelos seus amigos; não aparecem em Todos nem em Seguindo e não podem ser compartilhados. Um moderador ainda os revisa antes.',
+    'community2.reportOnMessage': 'Mensagem denunciada de {name}', 'community2.reportOnComment': 'Comentário denunciado de {name}',
+    'community2.reportMessageModNote': 'Você vê apenas esta mensagem denunciada; a conversa continua privada.',
+    'community2.excerptGone': '(a cópia já foi excluída)', 'community2.upholdRemoveComment': 'Confirmar e remover comentário',
+    'community2.errNotAllowed': 'Isso não é possível agora.', 'community2.errRateMessage': 'Você está enviando mensagens rápido demais. Espere um pouco.',
+    'community2.errRateComment': 'Você está publicando comentários demais. Tente daqui a pouco.',
+    'community2.errRateFriend': 'Você enviou pedidos de amizade demais hoje. Tente amanhã.',
+    'community2.errRateFriendSame': 'Você já enviou pedidos demais para esta pessoa. Tente mais tarde.',
+  },
+  fr: {
+    'community2.navHome': 'Accueil', 'community2.navSearch': 'Rechercher', 'community2.navChats': 'Messages', 'community2.navProfile': 'Profil',
+    'community2.back': 'Retour', 'community2.menuAria': 'Plus d’options', 'community2.timeNow': 'maintenant', 'community2.delete': 'Supprimer',
+    'community2.scopeFriends': 'Amis', 'community2.friendsOnly': 'Amis uniquement',
+    'community2.friendsFeedEmpty': 'Ici, tu verras les publications de tes amis, y compris celles réservées aux amis. Trouve des amis avec Rechercher.',
+    'community2.statPosts': 'publications', 'community2.statFollowers': 'abonnés', 'community2.statFollowing': 'abonnements', 'community2.statFriends': 'amis',
+    'community2.editProfile': 'Modifier le profil', 'community2.privacyTitle': 'Confidentialité',
+    'community2.searchable': 'M’afficher dans la recherche',
+    'community2.searchableNote': 'Désactivé, personne ne te trouve avec Rechercher. Tes publications et ton profil restent visibles comme avant.',
+    'community2.searchableOn': 'Tu apparais dans la recherche.', 'community2.searchableOff': 'Tu n’apparais plus dans la recherche.',
+    'community2.searchPlaceholder': 'Rechercher des personnes', 'community2.searchHint': 'Saisis au moins 2 caractères d’un nom.', 'community2.searchEmpty': 'Personne trouvé.',
+    'community2.searchNote': 'Affiche les membres de la Communauté qui ont activé « M’afficher dans la recherche ».',
+    'community2.addFriend': 'Ajouter en ami', 'community2.requested': 'Demande envoyée', 'community2.cancelRequest': 'Annuler la demande',
+    'community2.accept': 'Accepter', 'community2.decline': 'Refuser', 'community2.friendsBtn': 'Amis ✓', 'community2.message': 'Message',
+    'community2.requestSent': 'Demande d’ami envoyée.', 'community2.friendAdded': 'Vous êtes maintenant amis.', 'community2.unfriended': 'Vous n’êtes plus amis.',
+    'community2.unfriend': 'Retirer', 'community2.unfriendTitle': 'Retirer des amis',
+    'community2.unfriendConfirm': 'Retirer {name} de tes amis ? Votre discussion passera en lecture seule et sera supprimée dans 30 jours.',
+    'community2.friendsTitle': 'Amis', 'community2.incoming': 'Demandes d’ami', 'community2.outgoing': 'Demandes envoyées',
+    'community2.friendsListTitle': 'Tes amis', 'community2.friendsListEmpty': 'Pas encore d’amis. Trouve des personnes avec Rechercher.',
+    'community2.friendsPrivate': 'Toi seul(e) vois ta liste d’amis.',
+    'community2.chatsTitle': 'Messages', 'community2.newChat': 'Nouveau message', 'community2.chatYou': 'Toi : ', 'community2.chatNoMessages': 'Pas encore de messages',
+    'community2.chatClosedShort': 'lecture seule',
+    'community2.chatsEmpty': 'Pas encore de messages. Tu peux discuter avec tes amis : ouvre un ami et touche Message.',
+    'community2.chatPrivacy': 'Vous seuls voyez ces messages ; les modérateurs non. Les messages de plus de 12 mois sont supprimés automatiquement.',
+    'community2.chatPlaceholder': 'Écris un message…', 'community2.send': 'Envoyer', 'community2.chatEmpty': 'Envoie le premier message.',
+    'community2.chatGone': 'Cette discussion n’existe plus.', 'community2.chatCannotSend': 'Tu ne peux pas écrire dans cette discussion pour le moment.',
+    'community2.chatClosed': 'Vous n’êtes plus amis : cette discussion est en lecture seule. Elle sera supprimée dans 30 jours.',
+    'community2.deleteChat': 'Supprimer la discussion', 'community2.deleteChatTitle': 'Supprimer la discussion',
+    'community2.deleteChatConfirm': 'Supprimer toute la discussion et tous les messages pour vous deux ? C’est définitif.', 'community2.chatDeleted': 'Discussion supprimée.',
+    'community2.deleteMessageTitle': 'Supprimer le message', 'community2.deleteMessageConfirm': 'Supprimer ce message pour vous deux ?',
+    'community2.reportMessageTitle': 'Signaler le message', 'community2.reportMessageNote': 'Le modérateur ne voit que ce message, pas toute la discussion.',
+    'community2.messageReported': 'Message signalé aux modérateurs.',
+    'community2.commentsTitle': 'Commentaires', 'community2.commentsEmpty': 'Pas encore de commentaires.', 'community2.commentPlaceholder': 'Ajouter un commentaire…',
+    'community2.commentSend': 'Publier', 'community2.viewComments': 'Voir les commentaires ({n})', 'community2.addComment': 'Ajouter un commentaire',
+    'community2.commentsAria': 'Commentaires ({n})', 'community2.deleteCommentTitle': 'Supprimer le commentaire', 'community2.deleteCommentConfirm': 'Supprimer ce commentaire ?',
+    'community2.reportCommentTitle': 'Signaler le commentaire', 'community2.commentReported': 'Commentaire signalé aux modérateurs.',
+    'community2.visibilityLabel': 'Qui peut voir', 'community2.visibilityPublic': 'Tout le monde', 'community2.visibilityFriends': 'Amis uniquement',
+    'community2.visibilityNote': 'Les publications « Amis uniquement » ne sont vues que par tes amis ; elles n’apparaissent ni dans Tout le monde ni dans Abonnements et ne peuvent pas être partagées. Un modérateur les examine quand même d’abord.',
+    'community2.reportOnMessage': 'Message signalé de {name}', 'community2.reportOnComment': 'Commentaire signalé de {name}',
+    'community2.reportMessageModNote': 'Tu ne vois que ce message signalé ; la conversation reste privée.',
+    'community2.excerptGone': '(la copie a été supprimée)', 'community2.upholdRemoveComment': 'Confirmer et supprimer le commentaire',
+    'community2.errNotAllowed': 'Ce n’est pas possible pour le moment.', 'community2.errRateMessage': 'Tu envoies des messages trop vite. Patiente un instant.',
+    'community2.errRateComment': 'Tu publies trop de commentaires. Réessaie dans un moment.',
+    'community2.errRateFriend': 'Tu as envoyé trop de demandes d’ami aujourd’hui. Réessaie demain.',
+    'community2.errRateFriendSame': 'Tu as déjà envoyé trop de demandes à cette personne. Réessaie plus tard.',
+  },
+  ar: {
+    'community2.navHome': 'الرئيسية', 'community2.navSearch': 'بحث', 'community2.navChats': 'الرسائل', 'community2.navProfile': 'الملف الشخصي',
+    'community2.back': 'رجوع', 'community2.menuAria': 'خيارات أخرى', 'community2.timeNow': 'الآن', 'community2.delete': 'حذف',
+    'community2.scopeFriends': 'الأصدقاء', 'community2.friendsOnly': 'للأصدقاء فقط',
+    'community2.friendsFeedEmpty': 'هنا ترى منشورات أصدقائك، بما فيها المنشورات المخصّصة للأصدقاء. ابحث عن أصدقاء عبر «بحث».',
+    'community2.statPosts': 'منشورات', 'community2.statFollowers': 'متابِعون', 'community2.statFollowing': 'يتابع', 'community2.statFriends': 'أصدقاء',
+    'community2.editProfile': 'تعديل الملف الشخصي', 'community2.privacyTitle': 'الخصوصية',
+    'community2.searchable': 'أظهرني في البحث',
+    'community2.searchableNote': 'عند إيقافه لن يجدك الآخرون عبر «بحث». تبقى منشوراتك وملفك الشخصي ظاهرة كما كانت.',
+    'community2.searchableOn': 'أنت تظهر في البحث.', 'community2.searchableOff': 'لم تعد تظهر في البحث.',
+    'community2.searchPlaceholder': 'ابحث عن أشخاص', 'community2.searchHint': 'اكتب حرفين على الأقل من الاسم.', 'community2.searchEmpty': 'لم يُعثر على أحد.',
+    'community2.searchNote': 'يعرض أعضاء المجتمع الذين فعّلوا «أظهرني في البحث».',
+    'community2.addFriend': 'إضافة صديق', 'community2.requested': 'أُرسل الطلب', 'community2.cancelRequest': 'إلغاء الطلب',
+    'community2.accept': 'قبول', 'community2.decline': 'رفض', 'community2.friendsBtn': 'أصدقاء ✓', 'community2.message': 'رسالة',
+    'community2.requestSent': 'أُرسل طلب الصداقة.', 'community2.friendAdded': 'أصبحتما صديقين الآن.', 'community2.unfriended': 'لم تعودا صديقين.',
+    'community2.unfriend': 'إزالة', 'community2.unfriendTitle': 'إزالة من الأصدقاء',
+    'community2.unfriendConfirm': 'إزالة {name} من أصدقائك؟ ستصبح محادثتكما للقراءة فقط وتُحذف بعد 30 يومًا.',
+    'community2.friendsTitle': 'الأصدقاء', 'community2.incoming': 'طلبات الصداقة', 'community2.outgoing': 'الطلبات المُرسلة',
+    'community2.friendsListTitle': 'أصدقاؤك', 'community2.friendsListEmpty': 'ليس لديك أصدقاء بعد. ابحث عن أشخاص عبر «بحث».',
+    'community2.friendsPrivate': 'قائمة أصدقائك لا يراها أحد سواك.',
+    'community2.chatsTitle': 'الرسائل', 'community2.newChat': 'رسالة جديدة', 'community2.chatYou': 'أنت: ', 'community2.chatNoMessages': 'لا رسائل بعد',
+    'community2.chatClosedShort': 'للقراءة فقط',
+    'community2.chatsEmpty': 'لا رسائل بعد. يمكنك المراسلة مع أصدقائك: افتح صديقًا واضغط «رسالة».',
+    'community2.chatPrivacy': 'لا يرى هذه الرسائل سواكما، ولا يراها المشرفون. تُحذف الرسائل الأقدم من 12 شهرًا تلقائيًا.',
+    'community2.chatPlaceholder': 'اكتب رسالة…', 'community2.send': 'إرسال', 'community2.chatEmpty': 'أرسل أول رسالة.',
+    'community2.chatGone': 'هذه المحادثة لم تعد موجودة.', 'community2.chatCannotSend': 'لا يمكنك الكتابة في هذه المحادثة الآن.',
+    'community2.chatClosed': 'لم تعودا صديقين، لذا هذه المحادثة للقراءة فقط وستُحذف بعد 30 يومًا.',
+    'community2.deleteChat': 'حذف المحادثة', 'community2.deleteChatTitle': 'حذف المحادثة',
+    'community2.deleteChatConfirm': 'حذف المحادثة كاملة وجميع الرسائل لكليكما؟ لا يمكن التراجع.', 'community2.chatDeleted': 'حُذفت المحادثة.',
+    'community2.deleteMessageTitle': 'حذف الرسالة', 'community2.deleteMessageConfirm': 'حذف هذه الرسالة لكليكما؟',
+    'community2.reportMessageTitle': 'الإبلاغ عن الرسالة', 'community2.reportMessageNote': 'لن يرى المشرف إلا هذه الرسالة وحدها، لا المحادثة كاملة.',
+    'community2.messageReported': 'أُبلغ المشرفون عن الرسالة.',
+    'community2.commentsTitle': 'التعليقات', 'community2.commentsEmpty': 'لا تعليقات بعد.', 'community2.commentPlaceholder': 'أضف تعليقًا…',
+    'community2.commentSend': 'نشر', 'community2.viewComments': 'عرض التعليقات ({n})', 'community2.addComment': 'إضافة تعليق',
+    'community2.commentsAria': 'التعليقات ({n})', 'community2.deleteCommentTitle': 'حذف التعليق', 'community2.deleteCommentConfirm': 'حذف هذا التعليق؟',
+    'community2.reportCommentTitle': 'الإبلاغ عن التعليق', 'community2.commentReported': 'أُبلغ المشرفون عن التعليق.',
+    'community2.visibilityLabel': 'من يمكنه الرؤية', 'community2.visibilityPublic': 'الجميع', 'community2.visibilityFriends': 'للأصدقاء فقط',
+    'community2.visibilityNote': 'منشورات «للأصدقاء فقط» لا يراها إلا أصدقاؤك؛ لا تظهر في «الجميع» ولا في «المتابَعون» ولا يمكن مشاركتها. ومع ذلك يراجعها مشرف أولًا.',
+    'community2.reportOnMessage': 'رسالة مُبلّغ عنها من {name}', 'community2.reportOnComment': 'تعليق مُبلّغ عنه من {name}',
+    'community2.reportMessageModNote': 'ترى هذه الرسالة المُبلّغ عنها فقط؛ تبقى المحادثة خاصة.',
+    'community2.excerptGone': '(حُذفت النسخة)', 'community2.upholdRemoveComment': 'تأكيد وحذف التعليق',
+    'community2.errNotAllowed': 'هذا غير ممكن الآن.', 'community2.errRateMessage': 'ترسل الرسائل بسرعة كبيرة. انتظر قليلًا.',
+    'community2.errRateComment': 'تنشر تعليقات كثيرة جدًا. حاول بعد قليل.',
+    'community2.errRateFriend': 'أرسلت طلبات صداقة كثيرة اليوم. حاول غدًا.',
+    'community2.errRateFriendSame': 'أرسلت بالفعل طلبات كثيرة لهذا الشخص. حاول لاحقًا.',
+  },
+};
+for (const lang of Object.keys(SOCIAL2_I18N)) Object.assign(I18N[lang] || (I18N[lang] = {}), SOCIAL2_I18N[lang]);
+
 function t(key, vars) {
   const dict = I18N[activeLang()] || I18N.en;
   let s = dict[key];
@@ -12506,6 +12787,7 @@ let communityListKind = 'followers';
 let communityList = { rows: [], done: false };
 let communityDraft = { text: '', photos: [] };   // rozpísaný príspevok – len v pamäti
 let communityDraftUrls = [];
+let communityPickerOpen = false;   // výber z fotiek pokroku ostane otvorený aj po prekreslení
 let communityPosting = false;
 let communityAge16 = false;              // zaškrtávacie políčko 16+ pri registrácii
 let communityModCaptions = {};           // text, ktorý moderátor videl (schválenie len bez zmeny)
@@ -12572,7 +12854,7 @@ async function communityDetectSocial(sb) {
   if (communitySocial !== null) return communitySocial;
   let r;
   try { r = await sb.rpc('community_social_version'); } catch (e) { r = { error: e }; }
-  if (r && !r.error) communitySocial = true;
+  if (r && !r.error) { communitySocial = true; communityVersion = Number(r.data) || 1; }
   else if (communityMissingFn(r && r.error)) communitySocial = false;
   else return false;   // sieť: teraz staré zobrazenie, pri ďalšom vykreslení sa skúsi znova
   return communitySocial;
@@ -12585,6 +12867,10 @@ async function communityLoadConsent(sb) {
 /* Chyba servera → kľúč správy (nikdy nepravdivé „uložené“). */
 function communityErrText(error, fallbackKey) {
   const m = String((error && error.message) || '');
+  if (/rate_limited:message/.test(m)) return t('community2.errRateMessage');
+  if (/rate_limited:comment/.test(m)) return t('community2.errRateComment');
+  if (/rate_limited:friend_request_same/.test(m)) return t('community2.errRateFriendSame');
+  if (/rate_limited:friend_request/.test(m)) return t('community2.errRateFriend');
   if (/rate_limited/.test(m)) return t('community.errRateLimited');
   if (/post_locked/.test(m)) return t('community.errLocked');
   if (/username_reserved/.test(m)) return t('community.errReserved');
@@ -12594,10 +12880,12 @@ function communityErrText(error, fallbackKey) {
   if ((error && error.code) === '23505' || /duplicate|unique/i.test(m)) return t(fallbackKey === 'community.errUsername' ? 'community.errUsername' : 'community.errDuplicate');
   if (/profiles_username_(len|chars)/.test(m)) return t('community.errUsernameFormat');
   if (/age_confirmation_required/.test(m)) return t('auth.errAge16');
+  if (communityV2() && !fallbackKey && ((error && error.code) === '42501' || /not_allowed|row-level security/.test(m))) return t('community2.errNotAllowed');
   return t(fallbackKey || 'community.errNetwork');
 }
-function communityOpen() { document.getElementById('modal-community').hidden = false; refreshUpdateBanner(); renderCommunity(); }
-function communityClose() { document.getElementById('modal-community').hidden = true; refreshUpdateBanner(); }
+/* Community je karta v spodnom paneli (nie okno). */
+function communityOpen() { switchTab('komunita'); }
+function communityClose() { switchTab('dnes'); }
 function communityEnable() {
   state.settings.communityOptIn = true;
   saveState();
@@ -12613,50 +12901,606 @@ function communityDisable() {
   communityBlocked = new Set();
   communityFeed = { items: [], offset: 0, done: false, loading: false };
   communitySocial = null;
+  communityVersion = 0;
   communityConsent = null;
+  communityResetSocial2();
   communityClose();
 }
-function communitySetView(view) { communityView = view; renderCommunity(); }
+function communitySetView(view) { communityBack = []; communityView = view; renderCommunity(); }
 function communitySetMessage(key) { communityMessage = key ? t(key) : ''; }
 
+/* ---------- Priatelia, správy, komentáre a hľadanie (migrácia 0008) ----------
+   Zapnú sa iba vtedy, keď server vráti community_social_version() >= 2; inak
+   Community beží presne ako s 0005. Správy a žiadosti o priateľstvo prichádzajú
+   naživo cez Supabase Realtime – server ich pošle len tomu, kto ich smie čítať
+   (rovnaké pravidlá ako dotazy: správy vidia iba dvaja účastníci chatu). */
+const COMMUNITY_COMMENT_MAX = 1000;
+const COMMUNITY_MESSAGE_MAX = 2000;
+let communityVersion = 0;               // 0 = nezistené, 1 = 0005, 2 = 0008
+let communityScope = 'everyone';        // Domov: everyone | following | friends
+let communityBack = [];                 // predchádzajúce pohľady (tlačidlo Späť)
+let communityPostId = null;             // pohľad 'comments'
+let communityChatId = null;             // pohľad 'chat'
+let communityChatMeta = null;           // riadok z chat_list (druhá osoba, dá sa písať?)
+let communityChatMsgs = [];
+let communityRealtime = null;           // { uid, channel } – živé správy a žiadosti
+let communityBadges = { chats: 0, requests: 0 };
+let communitySearchQuery = '';
+let communitySearchTimer = null;
+let communitySearchSeq = 0;
+let communityJoinedFor = null;          // účet, pre ktorý už prebehlo community_join
+let communityVisibility = 'public';     // voľba v editore príspevku
+let communitySending = false;
+
+function communityV2() { return communitySocial === true && communityVersion >= 2; }
+
+const COMMUNITY_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">';
+const COMMUNITY_ICONS = {
+  home: '<path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M9.5 21v-5.5h5V21"/>',
+  search: '<circle cx="11" cy="11" r="7"/><path d="m20.5 20.5-4-4"/>',
+  plus: '<rect x="3" y="3" width="18" height="18" rx="5"/><path d="M12 8v8"/><path d="M8 12h8"/>',
+  chat: '<path d="M21 11.5a8.5 8.5 0 0 1-12.6 7.4L3 20.5l1.6-5A8.5 8.5 0 1 1 21 11.5z"/>',
+  user: '<circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4.2-6 8-6s7 2 8 6"/>',
+  heart: '<path d="M12 20.5s-7.6-4.6-9.3-9.5C1.5 7.5 3.8 4.5 7.2 4.5c2 0 3.6 1.1 4.8 2.8 1.2-1.7 2.8-2.8 4.8-2.8 3.4 0 5.7 3 4.5 6.5-1.7 4.9-9.3 9.5-9.3 9.5z"/>',
+  share: '<path d="M17 3l4 4-4 4"/><path d="M3 12v-1a4 4 0 0 1 4-4h14"/><path d="M7 21l-4-4 4-4"/><path d="M21 12v1a4 4 0 0 1-4 4H3"/>',
+  more: '<circle cx="5" cy="12" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="19" cy="12" r="1.2"/>',
+  friends: '<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.6-3.6 3.2-5.5 6.5-5.5s5.9 1.9 6.5 5.5"/><circle cx="17" cy="9" r="2.5"/><path d="M16 14.6c2.8.1 4.8 1.7 5.4 4.9"/>',
+  stack: '<rect x="7" y="7" width="13" height="13" rx="2"/><path d="M4 16V6a2 2 0 0 1 2-2h10"/>',
+  send: '<path d="M21 3 10.5 13.5"/><path d="M21 3l-6.5 18-4-7.5L3 9.5 21 3z"/>',
+};
+function communityIcon(name) { return COMMUNITY_SVG + (COMMUNITY_ICONS[name] || '') + '</svg>'; }
+
+/* Navigácia vo vnútri Community (ako Instagram): Domov, Hľadať, Nový, Správy, Profil. */
+function communityNavHtml() {
+  const v = communityView;
+  const ownUser = v === 'user' && communityProfile && communityViewUser === communityProfile.id;
+  const item = (view, icon, key, active, badge) => '<button type="button" class="cnav-btn' + (active ? ' active' : '') + '" data-community-view="' + view + '"'
+    + ' aria-label="' + escAttr(t(key)) + '"' + (active ? ' aria-current="page"' : '') + '>'
+    + '<span class="cnav-icon">' + communityIcon(icon) + '</span><span class="cnav-label">' + esc(t(key)) + '</span>'
+    + (badge ? '<span class="cnav-badge">' + (badge > 99 ? '99+' : badge) + '</span>' : '') + '</button>';
+  return '<nav class="cnav" id="community-tabs">'
+    + item('feed', 'home', 'community2.navHome', ['feed', 'following', 'comments'].indexOf(v) >= 0 || (v === 'user' && !ownUser))
+    + item('search', 'search', 'community2.navSearch', v === 'search')
+    + item('compose', 'plus', 'community.newPost', v === 'compose')
+    + item('chats', 'chat', 'community2.navChats', v === 'chats' || v === 'chat', communityBadges.chats)
+    + item('profile', 'user', 'community2.navProfile', ['profile', 'myposts', 'friends', 'list', 'moderate'].indexOf(v) >= 0 || ownUser, communityBadges.requests)
+    + '</nav>';
+}
+/* Hlavička podpohľadu: Späť + názov (+ voliteľné tlačidlá vpravo). */
+function communitySubHead(titleHtml, extra, noBack) {
+  return '<div class="csub-head">'
+    + (noBack ? '' : '<button type="button" class="btn-icon csub-back" data-community-action="back" aria-label="' + escAttr(t('community2.back')) + '">←</button>')
+    + '<div class="csub-title">' + titleHtml + '</div>' + (extra || '') + '</div>';
+}
+/* Prechod do podpohľadu s možnosťou návratu. */
+function communityGo(view, apply) {
+  communityBack.push({ view: communityView, user: communityViewUser, post: communityPostId, chat: communityChatId });
+  if (communityBack.length > 30) communityBack.shift();
+  if (apply) apply();
+  communityView = view;
+  communitySetMessage('');
+  renderCommunity();
+}
+function communityGoBack() {
+  const prev = communityBack.pop();
+  communitySetMessage('');
+  if (!prev) { communityView = 'feed'; renderCommunity(); return; }
+  communityViewUser = prev.user; communityPostId = prev.post; communityChatId = prev.chat;
+  communityView = prev.view;
+  renderCommunity();
+}
+/* "pred 5 min", "pred 3 h", inak dátum – podľa jazyka aplikácie. */
+function communityTimeAgo(iso) {
+  if (!iso) return '';
+  const d = new Date(iso);
+  const sec = Math.round((Date.now() - d.getTime()) / 1000);
+  if (!isFinite(sec)) return '';
+  if (sec < 45) return t('community2.timeNow');
+  let rtf = null;
+  try { rtf = new Intl.RelativeTimeFormat(langMeta(activeLang()).locale, { numeric: 'always', style: 'short' }); } catch (e) {}
+  const f = (v, unit) => (rtf ? rtf.format(-v, unit) : v + ' ' + unit);
+  if (sec < 3600) return f(Math.max(1, Math.round(sec / 60)), 'minute');
+  if (sec < 86400) return f(Math.round(sec / 3600), 'hour');
+  if (sec < 7 * 86400) return f(Math.round(sec / 86400), 'day');
+  return formatDate(localDateKey(d));
+}
+function communityShowStatus() {
+  const st = document.getElementById('community-status');
+  if (st) { st.textContent = communityMessage; st.hidden = !communityMessage; }
+}
+function communityScopeChipsHtml() {
+  const chip = (s, key) => '<button type="button" class="goal-chip' + (communityScope === s ? ' active' : '') + '" data-community-action="scope" data-scope="' + s + '"'
+    + ' aria-pressed="' + (communityScope === s ? 'true' : 'false') + '">' + esc(t(key)) + '</button>';
+  return '<div class="goal-chips cscope">' + chip('everyone', 'community.tabEveryone') + chip('following', 'community.tabFollowing')
+    + chip('friends', 'community2.scopeFriends') + '</div>';
+}
+
+/* ---------- Prihlásenie: vstup do Community, živé udalosti, odznaky ---------- */
+async function communityAfterSignIn(sb, user) {
+  if (communityJoinedFor !== user.id) {
+    communityJoinedFor = user.id;
+    try { await sb.rpc('community_join'); } catch (e) {}
+  }
+  communityStartRealtime(sb, user.id);
+  communityRefreshBadges(sb, user.id);
+}
+function communityStartRealtime(sb, uid) {
+  if (communityRealtime && communityRealtime.uid === uid) return;
+  communityStopRealtime();
+  try {
+    const ch = sb.channel('gq-inbox-' + uid)
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, (p) => communityOnMessage(p && p.new))
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'friend_requests' }, () => {
+        communityRefreshBadges();
+        if (activeTab === 'komunita' && communityView === 'friends') renderCommunity();
+      })
+      .subscribe();
+    communityRealtime = { uid, channel: ch };
+  } catch (e) { communityRealtime = null; }
+}
+function communityStopRealtime() {
+  if (communityRealtime) {
+    try { const sb = communitySb(); if (sb) sb.removeChannel(communityRealtime.channel); } catch (e) {}
+  }
+  communityRealtime = null;
+}
+/* Po odhlásení, opustení Community či vypnutí: žiadne živé spojenie ani odznaky. */
+function communityResetSocial2() {
+  communityStopRealtime();
+  communityBadges = { chats: 0, requests: 0 };
+  communityShowBadges();
+  communityJoinedFor = null;
+  communityBack = [];
+  communityChatId = null; communityChatMeta = null; communityChatMsgs = [];
+  communityPostId = null;
+}
+async function communityRefreshBadges(sb, uid) {
+  sb = sb || communityClient();
+  const me = uid || (communityProfile && communityProfile.id) || (communityRealtime && communityRealtime.uid);
+  if (!sb || !me || !communityV2()) return;
+  let chats = 0;
+  let requests = 0;
+  try { const r = await sb.rpc('chat_unread_total'); if (!r.error) chats = Number(r.data) || 0; } catch (e) {}
+  try {
+    const r = await sb.from('friend_requests').select('id', { count: 'exact', head: true }).eq('to_id', me);
+    if (!r.error) requests = r.count || 0;
+  } catch (e) {}
+  communityBadges = { chats, requests };
+  communityShowBadges();
+}
+function communityShowBadges() {
+  const total = communityBadges.chats + communityBadges.requests;
+  const b = document.getElementById('tab-community-badge');
+  if (b) { b.hidden = !total; b.textContent = total > 99 ? '99+' : String(total); }
+  const nav = document.getElementById('community-tabs');
+  if (nav && communityV2() && nav.classList.contains('cnav')) nav.outerHTML = communityNavHtml();
+}
+/* Pri štarte aplikácie (ak je Community zapnutá a účet prihlásený): odznaky a živé správy. */
+async function communityBackgroundStart() {
+  if (!communityConfigured() || !communityOptIn()) return;
+  const sb = communityClient(); if (!sb) return;
+  try {
+    const res = await sb.auth.getSession();
+    const s = res && res.data ? res.data.session : null;
+    if (!s) return;
+    if (!(await communityDetectSocial(sb)) || !communityV2()) return;
+    await communityLoadConsent(sb);
+    if (!communityConsent) return;
+    communityStartRealtime(sb, s.user.id);
+    communityRefreshBadges(sb, s.user.id);
+  } catch (e) {}
+}
+
+/* ---------- Komentáre ---------- */
+function communityOpenComments(postId) {
+  if (!postId) return;
+  communityGo('comments', () => { communityPostId = postId; });
+}
+function communityComposerHtml(id, phKey, max, action, btnKey) {
+  return '<div class="ccomposer"><textarea class="modal-input ccomposer-input" id="' + id + '" rows="1" maxlength="' + max + '"'
+    + ' placeholder="' + escAttr(t(phKey)) + '" aria-label="' + escAttr(t(phKey)) + '"></textarea>'
+    + '<button type="button" class="btn btn-primary ccomposer-send" data-community-action="' + action + '" aria-label="' + escAttr(t(btnKey)) + '">'
+    + communityIcon('send') + '<span class="ccomposer-send-label">' + esc(t(btnKey)) + '</span></button></div>';
+}
+function communityCommentHtml(c) {
+  const mine = communityProfile && c.user_id === communityProfile.id;
+  return '<div class="ccomment" data-comment="' + escAttr(c.id) + '">'
+    + '<button type="button" class="cpost-avatar" data-community-action="open-user" data-user="' + escAttr(c.user_id) + '" aria-label="' + escAttr(c.username || t('community.unknownUser')) + '">'
+    + communityAvatarHtml(c.avatar_path) + '</button>'
+    + '<div class="ccomment-body"><p class="ccomment-text">' + communityNameButton(c.user_id, c.username, c.moderator) + ' ' + esc(c.body) + '</p>'
+    + '<div class="ccomment-meta"><span>' + esc(communityTimeAgo(c.created_at)) + '</span>'
+    + (c.can_delete ? '<button type="button" class="clink" data-community-action="comment-delete" data-comment="' + escAttr(c.id) + '">' + esc(t('community2.delete')) + '</button>' : '')
+    + (mine ? '' : '<button type="button" class="clink" data-community-action="comment-report" data-comment="' + escAttr(c.id) + '">' + esc(t('community.report')) + '</button>')
+    + '</div></div></div>';
+}
+async function communityCommentsHtml(sb) {
+  const post = communityFeedItem(communityPostId);
+  let res;
+  try { res = await sb.rpc('post_comments_list', { p_post: communityPostId, p_limit: 100 }); } catch (e) { res = { error: e }; }
+  if (res.error) communitySetMessageText(communityErrText(res.error));
+  const items = (res && res.data) || [];
+  if (post) post.comments = items.length;
+  return communityTabbar()
+    + communitySubHead(esc(t('community2.commentsTitle')))
+    + (post ? communitySocialCardHtml(post, true) : '')
+    + '<div class="ccomments" id="community-comments">'
+    + (items.length ? items.map(communityCommentHtml).join('') : '<p class="empty-state">' + esc(t('community2.commentsEmpty')) + '</p>')
+    + '</div>'
+    + communityStatusHtml()
+    + communityComposerHtml('community-comment-text', 'community2.commentPlaceholder', COMMUNITY_COMMENT_MAX, 'comment-send', 'community2.commentSend');
+}
+async function communitySendComment() {
+  const sb = communityClient();
+  const el = document.getElementById('community-comment-text');
+  if (!sb || !communityProfile || !el || communitySending || !communityPostId) return;
+  const body = el.value.trim();
+  if (!body) return;
+  communitySending = true;
+  let res;
+  try { res = await sb.from('post_comments').insert({ post_id: communityPostId, user_id: communityProfile.id, body: body.slice(0, COMMUNITY_COMMENT_MAX) }); }
+  catch (e) { res = { error: e }; }
+  communitySending = false;
+  if (res.error) { communitySetMessageText(communityErrText(res.error)); communityShowStatus(); return; }
+  communitySetMessage('');
+  renderCommunity();
+}
+function communityDeleteComment(id) {
+  showGeneric(t('community2.deleteCommentTitle'), t('community2.delete'), async () => {
+    const sb = communityClient(); if (!sb) return;
+    const res = await sb.from('post_comments').delete().eq('id', id).select('id');
+    communitySetMessageText(res.error || !(res.data || []).length ? communityErrText(res.error) : '');
+    renderCommunity();
+  }, esc(t('community2.deleteCommentConfirm')));
+}
+function communityReportComment(id) {
+  showGeneric(t('community2.reportCommentTitle'), t('community.report'), async () => {
+    const sb = communityClient(); if (!sb) return;
+    const sel = document.getElementById('community-report-reason');
+    const reason = (sel && COMMUNITY_REPORT_REASONS.indexOf(sel.value) >= 0) ? sel.value : 'other';
+    const res = await sb.rpc('report_comment', { p_comment: id, p_reason: reason });
+    communitySetMessageText(res.error ? communityErrText(res.error) : t('community2.commentReported'));
+    communityShowStatus();
+  }, esc(t('community.reportConfirm')) + communityReasonSelectHtml());
+}
+
+/* ---------- Hľadanie ľudí (len členovia Community so zapnutým "Zobrazovať ma") ---------- */
+function communitySearchHtml() {
+  return communityTabbar()
+    + '<div class="csearch"><span class="csearch-icon">' + communityIcon('search') + '</span>'
+    + '<input type="search" class="modal-input csearch-input" id="community-search" maxlength="30" autocomplete="off" enterkeyhint="search"'
+    + ' placeholder="' + escAttr(t('community2.searchPlaceholder')) + '" aria-label="' + escAttr(t('community2.searchPlaceholder')) + '" value="' + escAttr(communitySearchQuery) + '"></div>'
+    + '<p class="card-note">' + esc(t('community2.searchNote')) + '</p>'
+    + communityStatusHtml()
+    + '<div class="cpeople" id="community-search-results"></div>';
+}
+function communityQueueSearch(q) {
+  communitySearchQuery = String(q || '').slice(0, 30);
+  clearTimeout(communitySearchTimer);
+  communitySearchTimer = setTimeout(() => communityRunSearch(false), 250);
+}
+async function communityRunSearch(focus) {
+  if (focus) {
+    const i = document.getElementById('community-search');
+    if (i) { i.focus(); const n = i.value.length; try { i.setSelectionRange(n, n); } catch (e) {} }
+  }
+  const box = document.getElementById('community-search-results');
+  const sb = communityClient();
+  if (!box || !sb) return;
+  const q = communitySearchQuery.trim();
+  if (q.length < 2) { box.innerHTML = '<p class="empty-state">' + esc(t('community2.searchHint')) + '</p>'; return; }
+  const seq = ++communitySearchSeq;
+  let res;
+  try { res = await sb.rpc('search_users', { p_query: q, p_limit: 20 }); } catch (e) { res = { error: e }; }
+  if (seq !== communitySearchSeq || !document.getElementById('community-search-results')) return;
+  if (res.error) { box.innerHTML = '<p class="empty-state">' + esc(communityErrText(res.error)) + '</p>'; return; }
+  const rows = res.data || [];
+  box.innerHTML = rows.length ? rows.map((r) => communityPersonRowHtml({ user_id: r.id, username: r.username, avatar_path: r.avatar_path, moderator: r.moderator },
+    communityFriendButtonHtml(r.id, r.friend_state, r.username, true))).join('')
+    : '<p class="empty-state">' + esc(t('community2.searchEmpty')) + '</p>';
+}
+/* Riadok osoby: avatar + meno (otvorí profil) a tlačidlá vpravo. */
+function communityPersonRowHtml(r, buttons) {
+  return '<div class="cperson">'
+    + '<button type="button" class="cperson-main" data-community-action="open-user" data-user="' + escAttr(r.user_id) + '">'
+    + communityAvatarHtml(r.avatar_path) + '<span class="cperson-name">' + esc(r.username || t('community.unknownUser')) + '</span>'
+    + (r.moderator ? '<span class="community-badge">' + esc(t('community.moderatorShort')) + '</span>' : '') + '</button>'
+    + '<div class="cperson-actions">' + (buttons || '') + '</div></div>';
+}
+
+/* ---------- Priatelia ---------- */
+function communityFriendButtonHtml(uid, state, name, compact) {
+  const b = (act, key, cls) => '<button type="button" class="btn ' + (cls || 'btn-secondary') + (compact ? ' btn-sm' : '') + '" data-community-action="' + act + '"'
+    + ' data-user="' + escAttr(uid) + '" data-name="' + escAttr(name || '') + '">' + esc(t(key)) + '</button>';
+  if (state === 'self') return '';
+  if (state === 'friends') return b('unfriend-ask', 'community2.friendsBtn');
+  if (state === 'outgoing') return b('friend-cancel', 'community2.requested');
+  if (state === 'incoming') return b('friend-accept', 'community2.accept', 'btn-primary') + (compact ? '' : b('friend-decline', 'community2.decline'));
+  return b('friend-add', 'community2.addFriend', 'btn-primary');
+}
+async function communityFriendAction(act, uid) {
+  const sb = communityClient();
+  if (!sb || !communityProfile || !uid) return;
+  const me = communityProfile.id;
+  let res = { error: null };
+  try {
+    if (act === 'friend-add') res = await sb.from('friend_requests').insert({ from_id: me, to_id: uid });
+    else if (act === 'friend-cancel') res = await sb.from('friend_requests').delete().eq('from_id', me).eq('to_id', uid);
+    else if (act === 'friend-decline') res = await sb.from('friend_requests').delete().eq('from_id', uid).eq('to_id', me);
+    else if (act === 'friend-accept') {
+      const q = await sb.from('friend_requests').select('id').eq('from_id', uid).eq('to_id', me).maybeSingle();
+      res = q.error ? q : (q.data ? await sb.rpc('accept_friend_request', { p_request: q.data.id }) : { error: { message: 'not_found' } });
+    } else if (act === 'unfriend') {
+      const pair = [me, uid].sort();   // uložené v pevnom poradí (user_a < user_b)
+      res = await sb.from('friendships').delete().eq('user_a', pair[0]).eq('user_b', pair[1]);
+    }
+  } catch (e) { res = { error: e }; }
+  const ok = { 'friend-add': 'community2.requestSent', 'friend-accept': 'community2.friendAdded', unfriend: 'community2.unfriended' };
+  communitySetMessageText(res.error ? communityErrText(res.error) : (ok[act] ? t(ok[act]) : ''));
+  communityRefreshBadges(sb, me);
+  if (communityView === 'search') { communityShowStatus(); communityRunSearch(false); return; }
+  renderCommunity();
+}
+function communityAskUnfriend(uid, name) {
+  showGeneric(t('community2.unfriendTitle'), t('community2.unfriend'), () => communityFriendAction('unfriend', uid),
+    esc(t('community2.unfriendConfirm', { name: name || t('community.unknownUser') })));
+}
+async function communityFriendsHtml(sb) {
+  let reqs, friends;
+  try { [reqs, friends] = await Promise.all([sb.rpc('friend_requests_list'), sb.rpc('friends_list')]); }
+  catch (e) { reqs = { error: e }; friends = { error: e }; }
+  if (reqs.error || friends.error) communitySetMessageText(communityErrText(reqs.error || friends.error));
+  const all = reqs.data || [];
+  const inc = all.filter((r) => r.direction === 'incoming');
+  const out = all.filter((r) => r.direction === 'outgoing');
+  const fr = friends.data || [];
+  const btn = (act, uid, name, key, cls) => '<button type="button" class="btn ' + (cls || 'btn-secondary') + ' btn-sm" data-community-action="' + act + '"'
+    + ' data-user="' + escAttr(uid) + '" data-name="' + escAttr(name || '') + '">' + esc(t(key)) + '</button>';
+  return communityTabbar()
+    + communitySubHead(esc(t('community2.friendsTitle')))
+    + communityStatusHtml()
+    + (inc.length ? '<h3 class="csection">' + esc(t('community2.incoming')) + ' <span class="cnav-badge cbadge-inline">' + inc.length + '</span></h3>'
+      + inc.map((r) => communityPersonRowHtml(r, btn('friend-accept', r.user_id, r.username, 'community2.accept', 'btn-primary')
+        + btn('friend-decline', r.user_id, r.username, 'community2.decline'))).join('') : '')
+    + (out.length ? '<h3 class="csection">' + esc(t('community2.outgoing')) + '</h3>'
+      + out.map((r) => communityPersonRowHtml(r, btn('friend-cancel', r.user_id, r.username, 'community2.cancelRequest'))).join('') : '')
+    + '<h3 class="csection">' + esc(t('community2.friendsListTitle')) + '</h3>'
+    + (fr.length ? fr.map((r) => communityPersonRowHtml(r, btn('message', r.user_id, r.username, 'community2.message', 'btn-primary')
+      + btn('unfriend-ask', r.user_id, r.username, 'community2.friendsBtn'))).join('')
+      : '<p class="empty-state">' + esc(t('community2.friendsListEmpty')) + '</p>')
+    + '<p class="card-note">' + esc(t('community2.friendsPrivate')) + '</p>';
+}
+
+/* ---------- Správy (chat medzi priateľmi) ---------- */
+async function communityMessageUser(uid) {
+  const sb = communityClient(); if (!sb || !uid) return;
+  let r;
+  try { r = await sb.rpc('open_chat', { p_friend: uid }); } catch (e) { r = { error: e }; }
+  if (r.error) { communitySetMessageText(communityErrText(r.error)); renderCommunity(); return; }
+  communityOpenChat(r.data);
+}
+function communityOpenChat(cid) {
+  if (!cid) return;
+  communityGo('chat', () => { communityChatId = cid; communityChatMeta = null; communityChatMsgs = []; });
+}
+async function communityChatsHtml(sb) {
+  let res;
+  try { res = await sb.rpc('chat_list'); } catch (e) { res = { error: e }; }
+  if (res.error) communitySetMessageText(communityErrText(res.error));
+  const rows = res.data || [];
+  const item = (c) => '<button type="button" class="cchat-row' + (c.unread ? ' unread' : '') + '" data-community-action="open-chat" data-chat="' + escAttr(c.conversation_id) + '">'
+    + communityAvatarHtml(c.other_avatar, 'md')
+    + '<span class="cchat-text"><span class="cchat-name">' + esc(c.other_name || t('community.unknownUser')) + '</span>'
+    + '<span class="cchat-last">' + esc(c.last_body ? (c.last_from_me ? t('community2.chatYou') : '') + c.last_body : t('community2.chatNoMessages')) + '</span></span>'
+    + '<span class="cchat-side"><span class="cchat-time">' + esc(communityTimeAgo(c.last_message_at)) + '</span>'
+    + (c.unread ? '<span class="cnav-badge cchat-badge">' + c.unread + '</span>' : '')
+    + (c.closed ? '<span class="cchat-closed">' + esc(t('community2.chatClosedShort')) + '</span>' : '') + '</span></button>';
+  return communityTabbar()
+    + communitySubHead(esc(t('community2.chatsTitle')),
+      '<button type="button" class="btn btn-secondary btn-sm" data-community-action="go-friends">' + esc(t('community2.newChat')) + '</button>', true)
+    + communityStatusHtml()
+    + (rows.length ? '<div class="cchat-list">' + rows.map(item).join('') + '</div>' : '<p class="empty-state">' + esc(t('community2.chatsEmpty')) + '</p>')
+    + '<p class="card-note">' + esc(t('community2.chatPrivacy')) + '</p>';
+}
+function communityChatMsgsHtml() {
+  if (!communityChatMsgs.length) return '<p class="empty-state">' + esc(t('community2.chatEmpty')) + '</p>';
+  const me = communityProfile && communityProfile.id;
+  return communityChatMsgs.map((m) => {
+    const mine = m.sender_id === me;
+    return '<div class="cmsg' + (mine ? ' mine' : '') + '"><button type="button" class="cmsg-bubble" data-community-action="msg-menu" data-msg="' + escAttr(m.id) + '" data-mine="' + (mine ? '1' : '0') + '">'
+      + esc(m.body) + '</button><span class="cmsg-time">' + esc(communityTimeAgo(m.created_at)) + '</span></div>';
+  }).join('');
+}
+async function communityChatHtml(sb) {
+  const cid = communityChatId;
+  let list, msgs;
+  try {
+    [list, msgs] = await Promise.all([sb.rpc('chat_list'),
+      sb.from('messages').select('id,conversation_id,sender_id,body,created_at').eq('conversation_id', cid).order('id', { ascending: false }).limit(100)]);
+  } catch (e) { list = { error: e }; msgs = { error: e }; }
+  const meta = ((list && list.data) || []).find((c) => c.conversation_id === cid);
+  if (!meta) return communityTabbar() + communitySubHead('') + communityNote('community2.chatGone');
+  communityChatMeta = meta;
+  communityChatMsgs = ((msgs && msgs.data) || []).slice().reverse();
+  return communityTabbar()
+    + communitySubHead('<button type="button" class="cchat-who" data-community-action="open-user" data-user="' + escAttr(meta.other_id) + '">'
+      + communityAvatarHtml(meta.other_avatar) + '<span>' + esc(meta.other_name || t('community.unknownUser')) + '</span></button>',
+      '<button type="button" class="btn-icon" data-community-action="chat-menu" aria-label="' + escAttr(t('community2.menuAria')) + '">' + communityIcon('more') + '</button>')
+    + '<div class="plan-actions cchat-menu" id="community-chat-menu" hidden>'
+    + '<button type="button" class="btn btn-secondary btn-sm" data-community-action="chat-delete">' + esc(t('community2.deleteChat')) + '</button>'
+    + '<button type="button" class="btn btn-secondary btn-sm" data-community-action="block" data-user="' + escAttr(meta.other_id) + '" data-name="' + escAttr(meta.other_name || '') + '">' + esc(t('community.block')) + '</button>'
+    + '</div>'
+    + '<div class="cchat-msgs" id="community-chat-msgs" aria-live="polite">' + communityChatMsgsHtml() + '</div>'
+    + communityStatusHtml()
+    + (meta.can_send ? communityComposerHtml('community-chat-text', 'community2.chatPlaceholder', COMMUNITY_MESSAGE_MAX, 'chat-send', 'community2.send')
+      : '<p class="card-note cchat-closed-note">' + esc(t(meta.closed ? 'community2.chatClosed' : 'community2.chatCannotSend')) + '</p>')
+    + '<p class="card-note">' + esc(t('community2.chatPrivacy')) + '</p>';
+}
+function communityAfterChatRender(sb) {
+  const box = document.getElementById('community-chat-msgs');
+  if (box) box.scrollTop = box.scrollHeight;
+  communityMarkChatRead(sb);
+}
+async function communityMarkChatRead(sb) {
+  sb = sb || communityClient();
+  if (!sb || !communityChatId) return;
+  const last = communityChatMsgs.length ? communityChatMsgs[communityChatMsgs.length - 1].id : null;
+  try { await sb.rpc('mark_read', { p_conversation: communityChatId, p_last_id: last }); } catch (e) {}
+  communityRefreshBadges(sb);
+}
+function communityAddChatMsg(m) {
+  if (!m || communityChatMsgs.some((x) => String(x.id) === String(m.id))) return;
+  communityChatMsgs.push(m);
+  const box = document.getElementById('community-chat-msgs');
+  if (box) { box.innerHTML = communityChatMsgsHtml(); box.scrollTop = box.scrollHeight; }
+}
+async function communitySendMessage() {
+  const sb = communityClient();
+  const el = document.getElementById('community-chat-text');
+  if (!sb || !communityProfile || !el || communitySending || !communityChatId) return;
+  const body = el.value.trim();
+  if (!body) return;
+  communitySending = true;
+  let res;
+  try {
+    res = await sb.from('messages').insert({ conversation_id: communityChatId, sender_id: communityProfile.id, body: body.slice(0, COMMUNITY_MESSAGE_MAX) })
+      .select('id,conversation_id,sender_id,body,created_at').single();
+  } catch (e) { res = { error: e }; }
+  communitySending = false;
+  if (res.error) { communitySetMessageText(communityErrText(res.error)); communityShowStatus(); return; }
+  el.value = '';
+  communitySetMessage(''); communityShowStatus();
+  communityAddChatMsg(res.data);
+}
+/* Živá správa: v otvorenom chate sa hneď pridá (a označí ako prečítaná), inak len odznak. */
+function communityOnMessage(m) {
+  if (!m) return;
+  const inChat = activeTab === 'komunita' && communityView === 'chat' && m.conversation_id === communityChatId && !document.hidden;
+  if (inChat) {
+    communityAddChatMsg(m);
+    if (communityProfile && m.sender_id !== communityProfile.id) communityMarkChatRead();
+    return;
+  }
+  communityRefreshBadges();
+  if (activeTab === 'komunita' && communityView === 'chats') renderCommunity();
+}
+function communityMessageMenu(id, mine) {
+  if (mine) {
+    showGeneric(t('community2.deleteMessageTitle'), t('community2.delete'), async () => {
+      const sb = communityClient(); if (!sb) return;
+      const res = await sb.from('messages').delete().eq('id', id).select('id');
+      if (res.error || !(res.data || []).length) { communitySetMessageText(communityErrText(res.error)); communityShowStatus(); return; }
+      communityChatMsgs = communityChatMsgs.filter((m) => String(m.id) !== String(id));
+      const box = document.getElementById('community-chat-msgs');
+      if (box) box.innerHTML = communityChatMsgsHtml();
+    }, esc(t('community2.deleteMessageConfirm')));
+    return;
+  }
+  showGeneric(t('community2.reportMessageTitle'), t('community.report'), async () => {
+    const sb = communityClient(); if (!sb) return;
+    const sel = document.getElementById('community-report-reason');
+    const reason = (sel && COMMUNITY_REPORT_REASONS.indexOf(sel.value) >= 0) ? sel.value : 'other';
+    const res = await sb.rpc('report_message', { p_message: Number(id), p_reason: reason });
+    communitySetMessageText(res.error ? communityErrText(res.error) : t('community2.messageReported'));
+    communityShowStatus();
+  }, esc(t('community2.reportMessageNote')) + communityReasonSelectHtml());
+}
+function communityDeleteChat() {
+  showGeneric(t('community2.deleteChatTitle'), t('community2.delete'), async () => {
+    const sb = communityClient(); if (!sb || !communityChatId) return;
+    const res = await sb.from('conversations').delete().eq('id', communityChatId).select('id');
+    if (res.error || !(res.data || []).length) { communitySetMessageText(communityErrText(res.error)); communityShowStatus(); return; }
+    communityChatId = null; communityChatMsgs = [];
+    communityBack = [];
+    communitySetMessage('community2.chatDeleted');
+    communityView = 'chats';
+    renderCommunity();
+    communityRefreshBadges(sb);
+  }, esc(t('community2.deleteChatConfirm')));
+}
+async function communitySetSearchable(on) {
+  const sb = communityClient(); if (!sb) return;
+  let res;
+  try { res = await sb.rpc('set_searchable', { p_on: !!on }); } catch (e) { res = { error: e }; }
+  communitySetMessageText(res.error ? communityErrText(res.error) : t(on ? 'community2.searchableOn' : 'community2.searchableOff'));
+  communityShowStatus();
+}
+function communityTogglePostMenu(btn) {
+  const card = btn.closest('.cpost');
+  const menu = card ? card.querySelector('.cpost-menu') : null;
+  if (!menu) return;
+  menu.hidden = !menu.hidden;
+  btn.setAttribute('aria-expanded', menu.hidden ? 'false' : 'true');
+}
+/* Hlavička profilu (ako Instagram): avatar, počty, meno a bio. */
+function communityProfileHeadHtml(card, mine) {
+  const stat = (n, key, act, kind) => {
+    const inner = '<span class="cstat-n">' + (Number(n) || 0) + '</span><span class="cstat-l">' + esc(t(key)) + '</span>';
+    return act ? '<button type="button" class="cstat" data-community-action="' + act + '"' + (kind ? ' data-kind="' + kind + '"' : '') + ' data-user="' + escAttr(card.id) + '">' + inner + '</button>'
+      : '<span class="cstat">' + inner + '</span>';
+  };
+  return '<div class="cprofile">'
+    + '<div class="cprofile-top">' + communityAvatarHtml(card.avatar_path, 'lg')
+    + '<div class="cprofile-stats">' + stat(card.posts, 'community2.statPosts')
+    + stat(card.followers, 'community2.statFollowers', 'open-list', 'followers')
+    + stat(card.following, 'community2.statFollowing', 'open-list', 'following')
+    + (mine && card.friends !== null && card.friends !== undefined ? stat(card.friends, 'community2.statFriends', 'go-friends') : '')
+    + '</div></div>'
+    + '<div class="cprofile-name">' + esc(card.username || t('community.unknownUser'))
+    + (card.moderator ? ' <span class="community-badge">' + esc(t('community.moderatorShort')) + '</span>' : '') + '</div>'
+    + (card.bio ? '<p class="cprofile-bio">' + esc(card.bio) + '</p>' : '')
+    + '</div>';
+}
+
 /* ---------- Vykreslenie ---------- */
+let communityRenderSeq = 0;
 async function renderCommunity() {
   const body = document.getElementById('community-body');
   if (!body) return;
-  if (!communityConfigured()) { body.innerHTML = communitySetupHtml(); return; }
-  if (!communityOptIn()) { body.innerHTML = communityIntroHtml(); return; }
+  /* Novšie vykreslenie vždy vyhrá: pomalšia staršia odpoveď už nič neprepíše. */
+  const seq = ++communityRenderSeq;
+  const put = (html) => { if (seq !== communityRenderSeq) return false; body.innerHTML = html; return true; };
+  if (!communityConfigured()) { put(communitySetupHtml()); return; }
+  if (!communityOptIn()) { put(communityIntroHtml()); return; }
   const sb = communityClient();
-  if (!sb) { body.innerHTML = communityNote('community.errUnavailable'); return; }
-  body.innerHTML = communityNote('community.loading');
+  if (!sb) { put(communityNote('community.errUnavailable')); return; }
+  if (!body.innerHTML) put(communityNote('community.loading'));
   try {
     const res = await sb.auth.getSession();
     const session = res && res.data ? res.data.session : null;
-    if (!session) { body.innerHTML = communityAuthHtml(); return; }
+    if (!session) { put(communityAuthHtml()); return; }
     await communityEnsureProfile(sb, session.user);
     await communityLoadBlocks(sb, session.user.id);
     const social = await communityDetectSocial(sb);
     if (social) await communityLoadConsent(sb);
     else if (['following', 'user', 'list', 'compose'].indexOf(communityView) >= 0) communityView = 'feed';
-    if (communityView === 'myposts') { body.innerHTML = await communityMyPostsHtml(sb, session.user); return; }
-    if (communityView === 'moderate') { body.innerHTML = await communityModerateHtml(sb, session.user); return; }
-    if (communityView === 'profile') { body.innerHTML = await communityProfileHtml(sb, session.user); return; }
-    if (communityView === 'compose') { body.innerHTML = communityComposeHtml(); communityMountDraft(); return; }
+    if (!communityV2() && ['search', 'friends', 'chats', 'chat', 'comments'].indexOf(communityView) >= 0) communityView = 'feed';
+    if (communityV2() && communityView === 'following') { communityScope = 'following'; communityView = 'feed'; }
+    if (communityV2() && communityConsent) await communityAfterSignIn(sb, session.user);
+    if (seq !== communityRenderSeq) return;
+    if (communityView === 'myposts') { put(await communityMyPostsHtml(sb, session.user)); return; }
+    if (communityView === 'moderate') { put(await communityModerateHtml(sb, session.user)); return; }
+    if (communityView === 'profile') { put(await communityProfileHtml(sb, session.user)); return; }
+    if (communityView === 'compose') { if (put(communityComposeHtml())) communityMountDraft(); return; }
     const ownProfile = communityView === 'user' && communityProfile && communityViewUser === communityProfile.id;
-    if (social && !communityConsent && !ownProfile) { body.innerHTML = communityTabbar() + communityAgeCardHtml(); return; }
-    if (communityView === 'list') { body.innerHTML = await communityListHtml(sb, true); return; }
+    if (social && !communityConsent && !ownProfile) { put(communityTabbar() + communityAgeCardHtml()); return; }
+    if (communityView === 'search') { if (put(communitySearchHtml())) communityRunSearch(true); return; }
+    if (communityView === 'friends') { put(await communityFriendsHtml(sb)); return; }
+    if (communityView === 'chats') { put(await communityChatsHtml(sb)); return; }
+    if (communityView === 'chat') { if (put(await communityChatHtml(sb))) communityAfterChatRender(sb); return; }
+    if (communityView === 'comments') { put(await communityCommentsHtml(sb)); return; }
+    if (communityView === 'list') { put(await communityListHtml(sb, true)); return; }
     if (communityView === 'user') {
       const head = await communityUserHtml(sb, communityViewUser);
-      if (!head) { body.innerHTML = communityTabbar() + communityNote('community.profileUnavailable'); return; }
+      if (!head) { put(communityTabbar() + communityNote('community.profileUnavailable')); return; }
       communityFeed = { items: [], offset: 0, done: false, loading: false, scope: 'user', user: communityViewUser };
-      body.innerHTML = head + communityFeedListHtml();
-      await communityLoadFeed(sb, true);
+      if (put(head + communityFeedListHtml())) await communityLoadFeed(sb, true);
       return;
     }
-    communityFeed = { items: [], offset: 0, done: false, loading: false, scope: communityView === 'following' ? 'following' : 'everyone', user: null };
-    body.innerHTML = communityFeedShellHtml();
-    await communityLoadFeed(sb, true);
+    const scope = communityV2() ? communityScope : (communityView === 'following' ? 'following' : 'everyone');
+    communityFeed = { items: [], offset: 0, done: false, loading: false, scope, user: null };
+    if (put(communityFeedShellHtml())) await communityLoadFeed(sb, true);
   } catch (e) {
-    body.innerHTML = communityNote('community.errNetwork');
+    put(communityNote('community.errNetwork'));
   }
 }
 function communityNote(key) {
@@ -12664,6 +13508,7 @@ function communityNote(key) {
     + (communityMessage ? '<p class="media-status" role="status">' + esc(communityMessage) + '</p>' : '');
 }
 function communityTabbar() {
+  if (communityV2()) return communityNavHtml();
   const tab = (v, key) => '<button type="button" class="goal-chip' + (communityView === v ? ' active' : '') + '" data-community-view="' + v + '">' + esc(t(key)) + '</button>';
   if (communitySocial) {
     return '<div class="goal-chips" id="community-tabs">'
@@ -12724,6 +13569,13 @@ function communityAuthHtml() {
     + '<div class="plan-actions"><button type="button" class="btn btn-secondary" data-community-action="close">' + esc(t('common.close')) + '</button></div></div>';
 }
 function communityFeedShellHtml() {
+  if (communityV2()) {
+    return communityTabbar()
+      + communityScopeChipsHtml()
+      + '<p class="media-status" id="community-status" role="status" ' + (communityMessage ? '' : 'hidden') + '>' + esc(communityMessage) + '</p>'
+      + '<div id="community-feed" class="cfeed">' + communityFeedItemsHtml() + '</div>'
+      + '<div class="plan-actions"><button type="button" class="btn btn-secondary" id="community-more" data-community-action="more"' + (communityFeed.done ? ' hidden' : '') + '>' + esc(t('community.loadMore')) + '</button></div>';
+  }
   return communityTabbar()
     + (communitySocial ? '<div class="plan-actions"><button type="button" class="btn btn-primary" data-community-view="compose">' + esc(t('community.newPost')) + '</button></div>' : '')
     + '<p class="media-status" id="community-status" role="status" ' + (communityMessage ? '' : 'hidden') + '>' + esc(communityMessage) + '</p>'
@@ -12743,6 +13595,7 @@ function communityFeedItemsHtml() {
   if (!communityFeed.items.length) {
     const key = !communitySocial ? 'community.feedEmpty'
       : communityFeed.scope === 'following' ? 'community.followingEmpty'
+      : communityFeed.scope === 'friends' ? 'community2.friendsFeedEmpty'
       : communityFeed.scope === 'user' ? 'community.userPostsEmpty' : 'community.feedEmpty';
     return communityFeed.loading ? '' : '<p class="empty-state">' + esc(t(key)) + '</p>';
   }
@@ -12756,9 +13609,10 @@ function communityRefreshFeed() {
   const st = document.getElementById('community-status');
   if (st) { st.textContent = communityMessage; st.hidden = !communityMessage; }
 }
-function communityAvatarHtml(path) {
+function communityAvatarHtml(path, size) {
   const url = path ? communityPublicUrl(communityClient(), 'avatars', path) : '';
-  return url ? '<img class="community-avatar" src="' + escAttr(url) + '" alt="">' : '<span class="community-avatar community-avatar-empty" aria-hidden="true">🙂</span>';
+  const cls = 'community-avatar' + (size ? ' community-avatar-' + size : '');
+  return url ? '<img class="' + cls + '" src="' + escAttr(url) + '" alt="">' : '<span class="' + cls + ' community-avatar-empty" aria-hidden="true">🙂</span>';
 }
 function communityNameButton(userId, name, isModerator) {
   return '<button type="button" class="community-name community-name-btn" data-community-action="open-user" data-user="' + escAttr(userId) + '">' + esc(name || t('community.unknownUser')) + '</button>'
@@ -12768,35 +13622,48 @@ function communityNameButton(userId, name, isModerator) {
 function communityPhotosHtml(photos, urls) {
   if (!photos || !photos.length) return '';
   return '<div class="community-photos" data-count="' + photos.length + '">'
+    + (photos.length > 1 ? '<span class="cpost-multi" aria-hidden="true">' + communityIcon('stack') + photos.length + '</span>' : '')
     + photos.map((ph, i) => '<button type="button" class="community-photo-btn" data-community-action="view-photo" data-path="' + escAttr(ph.image) + '"'
       + ' aria-label="' + escAttr(t('community.photoOf', { i: i + 1, n: photos.length })) + '">'
       + (urls[ph.thumb] ? '<img class="community-photo" loading="lazy" decoding="async" src="' + escAttr(urls[ph.thumb]) + '" alt="">' : '<span class="community-photo community-photo-missing" aria-hidden="true">🖼️</span>')
       + '</button>').join('')
     + '</div>';
 }
-function communitySocialCardHtml(p) {
+function communitySocialCardHtml(p, inComments) {
   const mine = communityProfile && p.user_id === communityProfile.id;
   const mod = communityProfile && communityProfile.role === 'moderator' && !communityProfile.suspended;
-  const date = p.published ? formatDate(localDateKey(new Date(p.published))) : '';
-  return '<div class="community-card" data-post="' + escAttr(p.id) + '">'
-    + (p.reposted_by ? '<p class="community-shared">🔁 ' + esc(t('community.sharedBy', { name: p.reposted_by_name || t('community.unknownUser') })) + '</p>' : '')
-    + '<div class="community-head">' + communityAvatarHtml(p.avatar) + communityNameButton(p.user_id, p.name, p.mod)
-    + '<span class="community-date">' + esc(date) + '</span></div>'
-    + communityPhotosHtml(p.photos, p.urls || {})
-    + (p.caption ? '<p class="community-caption">' + esc(p.caption) + '</p>' : '')
-    + '<div class="community-social-row">'
-    + '<button type="button" class="btn btn-secondary community-like" data-community-action="like" data-post="' + escAttr(p.id) + '" aria-pressed="' + (p.liked ? 'true' : 'false') + '"'
-    + ' aria-label="' + escAttr(t(p.liked ? 'community.unlikeAria' : 'community.likeAria', { n: p.likes })) + '">' + (p.liked ? '♥' : '♡') + ' ' + p.likes + '</button>'
-    + (mine ? '<span class="community-count-static" aria-label="' + escAttr(t('community.sharesAria', { n: p.reposts })) + '">🔁 ' + p.reposts + '</span>'
-      : '<button type="button" class="btn btn-secondary community-share" data-community-action="share" data-post="' + escAttr(p.id) + '" aria-pressed="' + (p.reposted ? 'true' : 'false') + '"'
-        + ' aria-label="' + escAttr(t(p.reposted ? 'community.unshareAria' : 'community.shareAria', { n: p.reposts })) + '">🔁 ' + p.reposts + '</button>')
-    + '</div>'
-    + '<div class="plan-actions">'
-    + (mine ? '<button type="button" class="btn btn-secondary" data-community-action="delete-post" data-post="' + escAttr(p.id) + '">' + esc(t('community.deletePost')) + '</button>'
+  const v2 = communityV2();
+  const friendsOnly = p.visibility === 'friends';
+  const when = communityTimeAgo(p.published);
+  const shareable = !mine && !friendsOnly;
+  const menu = (mine ? '<button type="button" class="btn btn-secondary" data-community-action="delete-post" data-post="' + escAttr(p.id) + '">' + esc(t('community.deletePost')) + '</button>'
       : '<button type="button" class="btn btn-secondary" data-community-action="block" data-user="' + escAttr(p.user_id) + '" data-name="' + escAttr(p.name || '') + '">' + esc(t('community.block')) + '</button>'
         + '<button type="button" class="btn btn-secondary" data-community-action="report-post" data-post="' + escAttr(p.id) + '">' + esc(t('community.report')) + '</button>')
-    + (mod && !mine ? '<button type="button" class="btn btn-secondary" data-community-action="mod-remove" data-post="' + escAttr(p.id) + '">' + esc(t('community.removePost')) + '</button>' : '')
-    + '</div></div>';
+    + (mod && !mine ? '<button type="button" class="btn btn-secondary" data-community-action="mod-remove" data-post="' + escAttr(p.id) + '">' + esc(t('community.removePost')) + '</button>' : '');
+  return '<article class="community-card cpost" data-post="' + escAttr(p.id) + '">'
+    + (p.reposted_by ? '<p class="community-shared cpost-shared">' + communityIcon('share') + ' ' + esc(t('community.sharedBy', { name: p.reposted_by_name || t('community.unknownUser') })) + '</p>' : '')
+    + '<header class="cpost-head">'
+    + '<button type="button" class="cpost-avatar" data-community-action="open-user" data-user="' + escAttr(p.user_id) + '" aria-label="' + escAttr(p.name || t('community.unknownUser')) + '">' + communityAvatarHtml(p.avatar) + '</button>'
+    + '<div class="cpost-who">' + communityNameButton(p.user_id, p.name, p.mod)
+    + '<span class="cpost-meta">' + esc(when) + (friendsOnly ? ' · <span class="cpost-friends">' + communityIcon('friends') + esc(t('community2.friendsOnly')) + '</span>' : '') + '</span></div>'
+    + '<button type="button" class="btn-icon cpost-more" data-community-action="post-menu" data-post="' + escAttr(p.id) + '" aria-label="' + escAttr(t('community2.menuAria')) + '" aria-expanded="false">' + communityIcon('more') + '</button>'
+    + '</header>'
+    + communityPhotosHtml(p.photos, p.urls || {})
+    + (!p.photos.length && p.caption ? '<p class="community-caption cpost-text">' + esc(p.caption) + '</p>' : '')
+    + '<div class="community-social-row cpost-actions">'
+    + '<button type="button" class="cpost-act community-like' + (p.liked ? ' on' : '') + '" data-community-action="like" data-post="' + escAttr(p.id) + '" aria-pressed="' + (p.liked ? 'true' : 'false') + '"'
+    + ' aria-label="' + escAttr(t(p.liked ? 'community.unlikeAria' : 'community.likeAria', { n: p.likes })) + '">' + communityIcon('heart') + '<span>' + p.likes + '</span></button>'
+    + (v2 ? '<button type="button" class="cpost-act" data-community-action="comments" data-post="' + escAttr(p.id) + '" aria-label="' + escAttr(t('community2.commentsAria', { n: p.comments || 0 })) + '"' + (inComments ? ' disabled' : '') + '>'
+      + communityIcon('chat') + '<span>' + (p.comments || 0) + '</span></button>' : '')
+    + (shareable ? '<button type="button" class="cpost-act community-share' + (p.reposted ? ' on' : '') + '" data-community-action="share" data-post="' + escAttr(p.id) + '" aria-pressed="' + (p.reposted ? 'true' : 'false') + '"'
+        + ' aria-label="' + escAttr(t(p.reposted ? 'community.unshareAria' : 'community.shareAria', { n: p.reposts })) + '">' + communityIcon('share') + '<span>' + p.reposts + '</span></button>'
+      : '<span class="cpost-act community-count-static" aria-label="' + escAttr(t('community.sharesAria', { n: p.reposts })) + '">' + communityIcon('share') + '<span>' + p.reposts + '</span></span>')
+    + '</div>'
+    + (p.caption && p.photos.length ? '<p class="community-caption cpost-caption"><span class="cpost-caption-name">' + esc(p.name || '') + '</span> ' + esc(p.caption) + '</p>' : '')
+    + (v2 && !inComments ? '<button type="button" class="cpost-comments-link" data-community-action="comments" data-post="' + escAttr(p.id) + '">'
+      + esc(p.comments ? t('community2.viewComments', { n: p.comments }) : t('community2.addComment')) + '</button>' : '')
+    + '<div class="plan-actions cpost-menu" hidden>' + menu + '</div>'
+    + '</article>';
 }
 function communityCardHtml(p) {
   const name = (p.profiles && p.profiles.username) || t('community.unknownUser');
@@ -12858,6 +13725,7 @@ async function communityLoadSocialFeed(sb, reset) {
     caption: r.caption || '', photos: Array.isArray(r.photos) ? r.photos : [], at: r.activity_at, published: r.activity_at,
     reposted_by: r.reposted_by, reposted_by_name: r.reposted_by_name,
     likes: Number(r.likes) || 0, reposts: Number(r.reposts) || 0, liked: !!r.liked_by_me, reposted: !!r.reposted_by_me,
+    comments: Number(r.comments) || 0, visibility: r.visibility || 'public',
   }));
   const urls = await communitySignedUrls(sb, [].concat(...items.map((p) => p.photos.map((ph) => ph.thumb))));
   items.forEach((p) => { p.urls = urls; });
@@ -12902,7 +13770,7 @@ async function communityViewPhoto(path) {
   const sb = communityClient(); if (!sb || !path) return;
   const url = await communitySignedUrl(sb, path);
   if (!url) { communitySetMessage('community.errImage'); communityRefreshFeed(); return; }
-  const host = document.getElementById('modal-community');
+  const host = document.body;
   let box = document.getElementById('community-lightbox');
   if (!box) {
     box = document.createElement('div');
@@ -12941,6 +13809,24 @@ async function communityUserHtml(sb, uid) {
   const card = uid ? await communityProfileCard(sb, uid) : null;
   if (!card) return null;
   const mine = communityProfile && card.id === communityProfile.id;
+  if (communityV2()) {
+    const friends = card.friend_state === 'friends';
+    return communityTabbar()
+      + communitySubHead(esc(card.username || t('community.unknownUser')))
+      + communityProfileHeadHtml(card, mine)
+      + communityStatusHtml()
+      + (mine ? '' : '<div class="cprofile-actions">'
+        + '<button type="button" class="btn ' + (card.i_follow ? 'btn-secondary' : 'btn-primary') + ' btn-sm" data-community-action="follow" data-user="' + escAttr(card.id) + '" data-on="' + (card.i_follow ? '0' : '1') + '" aria-pressed="' + (card.i_follow ? 'true' : 'false') + '">'
+        + esc(t(card.i_follow ? 'community.followingBtn' : 'community.follow')) + '</button>'
+        + (card.member ? communityFriendButtonHtml(card.id, card.friend_state, card.username, false) : '')
+        + (friends ? '<button type="button" class="btn btn-secondary btn-sm" data-community-action="message" data-user="' + escAttr(card.id) + '">' + esc(t('community2.message')) + '</button>' : '')
+        + '<button type="button" class="btn-icon cpost-more" data-community-action="profile-menu" aria-label="' + escAttr(t('community2.menuAria')) + '">' + communityIcon('more') + '</button>'
+        + '</div>'
+        + '<div class="plan-actions cprofile-menu" id="community-profile-menu" hidden>'
+        + '<button type="button" class="btn btn-secondary btn-sm" data-community-action="block" data-user="' + escAttr(card.id) + '" data-name="' + escAttr(card.username || '') + '">' + esc(t('community.block')) + '</button>'
+        + '<button type="button" class="btn btn-secondary btn-sm" data-community-action="report-user" data-user="' + escAttr(card.id) + '">' + esc(t('community.reportUser')) + '</button>'
+        + '</div>');
+  }
   return communityTabbar()
     + '<div class="card community-profile">'
     + '<div class="community-head">' + communityAvatarHtml(card.avatar_path)
@@ -12967,14 +13853,14 @@ async function communityFollow(uid, on) {
 }
 function communityOpenUser(uid) {
   if (!uid) return;
-  communityViewUser = uid;
-  communityView = 'user';
-  communitySetMessage('');
-  renderCommunity();
+  if (communityView === 'user' && communityViewUser === uid) return;
+  if (communityView === 'user' || !communityV2()) { communityViewUser = uid; communityView = 'user'; communitySetMessage(''); renderCommunity(); return; }
+  communityGo('user', () => { communityViewUser = uid; });
 }
 function communityOpenList(uid, kind) {
-  communityViewUser = uid;
   communityListKind = kind === 'following' ? 'following' : 'followers';
+  if (communityV2()) { communityGo('list', () => { communityViewUser = uid; }); return; }
+  communityViewUser = uid;
   communityView = 'list';
   renderCommunity();
 }
@@ -12991,9 +13877,11 @@ async function communityListHtml(sb, reset) {
   communityList.done = rows.length < 50;
   const items = communityList.rows.map((r) => '<div class="community-list-row">' + communityAvatarHtml(r.avatar_path)
     + communityNameButton(r.user_id, r.username, r.moderator) + '</div>').join('');
+  const title = esc(t(communityListKind === 'following' ? 'community.followingTitle' : 'community.followersTitle'));
   return communityTabbar()
-    + '<div class="plan-actions"><button type="button" class="btn btn-secondary" data-community-action="open-user" data-user="' + escAttr(communityViewUser) + '">' + esc(t('community.back')) + '</button></div>'
-    + '<h3 class="card-title">' + esc(t(communityListKind === 'following' ? 'community.followingTitle' : 'community.followersTitle')) + '</h3>'
+    + (communityV2() ? communitySubHead(title)
+      : '<div class="plan-actions"><button type="button" class="btn btn-secondary" data-community-action="open-user" data-user="' + escAttr(communityViewUser) + '">' + esc(t('community.back')) + '</button></div>'
+        + '<h3 class="card-title">' + title + '</h3>')
     + communityStatusHtml()
     + (items || '<p class="empty-state">' + esc(t('community.listEmpty')) + '</p>')
     + (communityList.done ? '' : '<div class="plan-actions"><button type="button" class="btn btn-secondary" data-community-action="list-more">' + esc(t('community.loadMore')) + '</button></div>');
@@ -13002,6 +13890,43 @@ async function communityProfileHtml(sb, user) {
   const p = communityProfile || {};
   const card = communitySocial ? await communityProfileCard(sb, user.id) : null;
   const masked = t('community.emailHidden');
+  if (communityV2() && card) {
+    return communityTabbar()
+      + communityProfileHeadHtml(card, true)
+      + '<div class="cprofile-actions">'
+      + '<button type="button" class="btn btn-secondary btn-sm" data-community-action="go-friends">' + esc(t('community2.friendsTitle'))
+      + (communityBadges.requests ? ' <span class="cnav-badge cbadge-inline">' + communityBadges.requests + '</span>' : '') + '</button>'
+      + '<button type="button" class="btn btn-secondary btn-sm" data-community-view="myposts">' + esc(t('community.tabMyPosts')) + '</button>'
+      + (p.role === 'moderator' ? '<button type="button" class="btn btn-secondary btn-sm" data-community-view="moderate">' + esc(t('community.tabModerate')) + '</button>' : '')
+      + '</div>'
+      + communityStatusHtml()
+      + '<div class="card"><h3 class="card-title">' + esc(t('community2.editProfile')) + '</h3>'
+      + '<label class="modal-label" for="community-username">' + esc(t('community.username')) + '</label>'
+      + '<input type="text" class="modal-input" id="community-username" maxlength="30" value="' + escAttr(p.username || '') + '">'
+      + '<p class="card-note">' + esc(t('community.renameNote')) + '</p>'
+      + '<label class="modal-label" for="community-bio">' + esc(t('community.bio')) + '</label>'
+      + '<input type="text" class="modal-input" id="community-bio" maxlength="300" value="' + escAttr(p.bio || '') + '">'
+      + '<input type="file" id="community-avatar" accept="image/*" hidden>'
+      + '<div class="plan-actions community-actions-primary">'
+      + '<button type="button" class="btn btn-primary" data-community-action="save-profile">' + esc(t('common.save')) + '</button>'
+      + '<label class="btn btn-secondary" for="community-avatar">' + esc(t('community.changeAvatar')) + '</label>'
+      + '</div></div>'
+      + '<div class="card"><h3 class="card-title">' + esc(t('community2.privacyTitle')) + '</h3>'
+      + '<label class="community-check" for="community-searchable"><input type="checkbox" id="community-searchable"' + (card.searchable !== false ? ' checked' : '') + '>'
+      + '<span>' + esc(t('community2.searchable')) + '</span></label>'
+      + '<p class="card-note">' + esc(t('community2.searchableNote')) + '</p>'
+      + '<p class="card-note">' + esc(t('community2.friendsPrivate')) + '</p>'
+      + '<p class="card-note">' + esc(masked) + '</p>'
+      + (p.role === 'moderator' ? '<p class="card-note">' + esc(t('community.moderatorBadge')) + '</p>' : '')
+      + (p.suspended ? '<p class="card-note">' + esc(t('community.suspendedBadge')) + '</p>' : '')
+      + '</div>'
+      + '<div class="card"><div class="plan-actions community-danger-row">'
+      + '<button type="button" class="btn btn-danger" data-community-action="delete-account">' + esc(t('community.deleteAccount')) + '</button>'
+      + '</div><div class="plan-actions">'
+      + '<button type="button" class="btn btn-secondary" data-community-action="leave">' + esc(t('community.leave')) + '</button>'
+      + '<button type="button" class="btn btn-secondary" data-community-action="signout">' + esc(t('community.signOut')) + '</button>'
+      + '</div></div>';
+  }
   return communityTabbar()
     + '<div class="card"><h3 class="card-title">' + esc(t('community.tabProfile')) + '</h3>'
     + (card ? communityCountsHtml(card) : '')
@@ -13107,6 +14032,10 @@ function communityComposeHtml() {
     + '<button type="button" class="btn btn-secondary" data-community-action="compose-progress"' + (full ? ' disabled' : '') + '>' + esc(t('community.composeAddProgress')) + '</button>'
     + '</div>'
     + '<div class="community-picker-grid" id="community-progress-picker" hidden></div>'
+    + (communityV2() ? '<fieldset class="cvis"><legend class="modal-label">' + esc(t('community2.visibilityLabel')) + '</legend>'
+      + ['public', 'friends'].map((v) => '<label class="cvis-opt"><input type="radio" name="community-visibility" value="' + v + '"' + (communityVisibility === v ? ' checked' : '') + '>'
+        + '<span>' + esc(t(v === 'public' ? 'community2.visibilityPublic' : 'community2.visibilityFriends')) + '</span></label>').join('')
+      + '</fieldset><p class="card-note">' + esc(t('community2.visibilityNote')) + '</p>' : '')
     + '<p class="card-note">' + esc(t('community.composePrivacy')) + '</p>'
     + '<p class="card-note">' + esc(t('community.composeReview')) + '</p>'
     + communityStatusHtml()
@@ -13118,6 +14047,7 @@ function communityComposeHtml() {
 /* Náhľady rozpísaných fotiek (lokálne object URL; nič sa zatiaľ neposiela). */
 async function communityMountDraft() {
   communityDraftReleaseUrls();
+  if (communityPickerOpen) communityShowProgressPicker(false);
   const cells = document.querySelectorAll('#community-draft-grid .community-draft-item');
   for (const cell of cells) {
     const ph = communityDraft.photos[Number(cell.dataset.index)];
@@ -13147,17 +14077,21 @@ function communityDraftAddProgress(id) {
   if (!id) return;
   if (communityDraft.photos.length >= COMMUNITY_MAX_PHOTOS) { communitySetMessageText(t('community.errTooMany', { n: COMMUNITY_MAX_PHOTOS })); renderCommunity(); return; }
   if (!communityDraft.photos.some((p) => p.progressId === id)) communityDraft.photos.push({ progressId: id });
+  communityPickerOpen = false;
   communitySetMessage('');
   renderCommunity();
 }
-async function communityShowProgressPicker() {
-  const box = document.getElementById('community-progress-picker');
+async function communityShowProgressPicker(toggle) {
+  if (toggle) communityPickerOpen = !communityPickerOpen;
+  let box = document.getElementById('community-progress-picker');
   if (!box) return;
-  if (!box.hidden) { box.hidden = true; box.innerHTML = ''; return; }
+  if (!communityPickerOpen) { box.hidden = true; box.innerHTML = ''; return; }
   try {
     if (!mediaDb) mediaDb = await openMediaDb();
     progressMeta = (await idbGetAll(PROGRESS_META_STORE)).map(cleanProgressMeta).filter(Boolean);
   } catch (e) {}
+  box = document.getElementById('community-progress-picker');
+  if (!box || !communityPickerOpen) return;
   const list = progressSorted().reverse();
   box.innerHTML = list.length
     ? list.map((m) => '<button type="button" class="community-pick" data-community-action="compose-add-progress" data-photo-id="' + escAttr(m.id) + '"'
@@ -13204,10 +14138,13 @@ async function communitySubmitPostNow() {
     uploaded.push(th);
     photos.push({ image, thumb: th });
   }
-  const res = await sb.rpc('create_post', { p_text: text, p_photos: photos });
+  const args = { p_text: text, p_photos: photos };
+  if (communityV2()) args.p_visibility = communityVisibility === 'friends' ? 'friends' : 'public';
+  const res = await sb.rpc('create_post', args);
   if (res.error) { await fail(communityErrText(res.error, 'community.errUpload')); return; }
   communityDraftReleaseUrls();
-  communityDraft = { text: '', photos: [] };
+  communityDraft = { text: '', photos: [] }; communityPickerOpen = false;
+  communityVisibility = 'public';
   communityView = 'myposts';
   communitySetMessage('community.submitted');
 }
@@ -13251,7 +14188,8 @@ function communityReasonText(reason) {
 }
 async function communityModerateSocialHtml(sb) {
   const pend = await sb.from('posts').select('id,user_id,caption,image_path,thumb_path,created_at,profiles(username)').eq('status', 'pending').order('created_at', { ascending: true }).limit(50);
-  const reps = await sb.from('reports').select('id,post_id,reported_user_id,reason,created_at').eq('status', 'open').order('created_at', { ascending: true }).limit(50);
+  const reps = await sb.from('reports').select('id,post_id,reported_user_id,reason,created_at' + (communityV2() ? ',message_excerpt,comment_excerpt,message_id,comment_id' : ''))
+    .eq('status', 'open').order('created_at', { ascending: true }).limit(50);
   const susp = await sb.from('profiles').select('id,username').eq('suspended', true).order('username').limit(100);
   const pendingRows = pend.data || [];
   const reportRows = reps.data || [];
@@ -13274,19 +14212,25 @@ async function communityModerateSocialHtml(sb) {
     + '<button type="button" class="btn btn-secondary" data-community-action="suspend" data-user="' + escAttr(p.user_id) + '">' + esc(t('community.suspend')) + '</button>'
     + '</div></div>').join('');
   const reports = reportRows.map((r) => {
-    const post = repPosts.find((p) => p.id === r.post_id);
+    const isMsg = !!r.message_id;
+    const isCom = !!r.comment_id;
+    const post = isMsg || isCom ? null : repPosts.find((p) => p.id === r.post_id);
     const target = r.reported_user_id ? repUsers.find((u) => u.id === r.reported_user_id) : null;
     const authorId = post ? post.user_id : r.reported_user_id;
-    const what = post ? t('community.reportOnPost', { name: name(post) })
-      : t('community.reportOnUser', { name: (target && target.username) || t('community.unknownUser') });
+    const who = (target && target.username) || t('community.unknownUser');
+    const what = isMsg ? t('community2.reportOnMessage', { name: who }) : isCom ? t('community2.reportOnComment', { name: who })
+      : post ? t('community.reportOnPost', { name: name(post) }) : t('community.reportOnUser', { name: who });
     return '<div class="community-card">'
       + '<p class="community-caption"><strong>' + esc(what) + '</strong></p>'
       + '<p class="card-note">' + esc(t('community.reportReasonLine', { reason: communityReasonText(r.reason) })) + '</p>'
+      + (isMsg || isCom ? '<blockquote class="cquote">' + esc(r.message_excerpt || r.comment_excerpt || t('community2.excerptGone')) + '</blockquote>'
+        + (isMsg ? '<p class="card-note">' + esc(t('community2.reportMessageModNote')) + '</p>' : '') : '')
       + (post ? communityPhotosHtml(photos[post.id], urls) + (post.caption ? '<p class="community-caption">' + esc(post.caption) + '</p>' : '')
         + (post.status !== 'approved' ? '<p class="community-status-badge">' + esc(t('community.status' + post.status.charAt(0).toUpperCase() + post.status.slice(1))) + '</p>' : '') : '')
       + '<div class="plan-actions">'
       + '<button type="button" class="btn btn-secondary" data-community-action="report-dismiss" data-report="' + escAttr(r.id) + '">' + esc(t('community.dismiss')) + '</button>'
       + (post && post.status === 'approved' ? '<button type="button" class="btn btn-primary" data-community-action="report-uphold-remove" data-report="' + escAttr(r.id) + '">' + esc(t('community.upholdRemove')) + '</button>' : '')
+      + (isCom ? '<button type="button" class="btn btn-primary" data-community-action="report-uphold-remove" data-report="' + escAttr(r.id) + '">' + esc(t('community2.upholdRemoveComment')) + '</button>' : '')
       + (authorId ? '<button type="button" class="btn btn-secondary" data-community-action="report-uphold-suspend" data-report="' + escAttr(r.id) + '" data-user="' + escAttr(authorId) + '">' + esc(t('community.upholdSuspend')) + '</button>' : '')
       + '</div></div>';
   }).join('');
@@ -13457,12 +14401,13 @@ async function communitySignOut() {
   const sb = communitySb(); if (!sb) return;
   await syncQuiesce();
   persistState();
+  communityResetSocial2();
   try { await sb.auth.signOut({ scope: 'local' }); } catch (e) {}
   communityProfile = null;
   communityConsent = null;
   communityView = 'feed';
   communityDraftReleaseUrls();
-  communityDraft = { text: '', photos: [] };
+  communityDraft = { text: '', photos: [] }; communityPickerOpen = false;
   communityFeed = { items: [], offset: 0, done: false, loading: false };
   const guest = wsRegistry.guest;
   if (wsSlot.id !== guest) { await wsSwitchTo(guest); return; }
@@ -13495,10 +14440,16 @@ async function communityUploadAvatar(file) {
     if (!dec) { communitySetMessage('community.errImage'); renderCommunity(); return; }
     const out = await drawScaledP(dec.src, dec.w, dec.h, 400, 'image/jpeg', 0.8);
     if (dec.close) dec.close();
-    const path = communityProfile.id + '/avatar.jpg';
-    const up = await sb.storage.from('avatars').upload(path, out.blob, { upsert: true, contentType: 'image/jpeg' });
+    /* Vždy nový súbor: prepísanie (upsert) by potrebovalo právo čítať priečinok, ktoré
+       bucket avatars nemá, a nový názov zároveň obíde starú fotku v cache. Stará sa potom zmaže. */
+    const old = communityProfile.avatar_path || '';
+    const path = communityProfile.id + '/avatar-' + Date.now().toString(36) + '.jpg';
+    const up = await sb.storage.from('avatars').upload(path, out.blob, { contentType: 'image/jpeg' });
     if (up.error) { communitySetMessage('community.errUpload'); renderCommunity(); return; }
-    await sb.from('profiles').update({ avatar_path: path }).eq('id', communityProfile.id);
+    const res = await sb.from('profiles').update({ avatar_path: path }).eq('id', communityProfile.id);
+    if (res.error) { try { await sb.storage.from('avatars').remove([path]); } catch (e) {} communitySetMessage('community.errUpload'); renderCommunity(); return; }
+    communityProfile.avatar_path = path;
+    if (old && old !== path && old.indexOf(communityProfile.id + '/') === 0) { try { await sb.storage.from('avatars').remove([old]); } catch (e) {} }
     communitySetMessage('community.saved');
   } catch (e) { communitySetMessage('community.errImage'); }
   renderCommunity();
@@ -13543,7 +14494,7 @@ async function communityAskShare(id) {
   }
   showGeneric(t('community.shareTitle'), t('community.shareConfirm'), () => {
     communityShareProgressPhoto(id).then(() => {
-      if (isOpen('modal-community')) renderCommunity();
+      if (activeTab === 'komunita') renderCommunity();
       else showPhotoStatus('community.submitted');
     });
   }, esc(t('community.shareBody')));
@@ -13592,6 +14543,8 @@ function communityBlock(userId, name) {
       communityBlocked.add(userId);
       communityFeed.items = communityFeed.items.filter((p) => p.user_id !== userId);
       if (communityView === 'user' || communityView === 'list') communityView = 'feed';
+      if (communityView === 'chat') { communityView = 'chats'; communityChatId = null; communityBack = []; }
+      communityRefreshBadges(sb);
       communitySetMessage('community.blocked');
       renderCommunity();
     });
@@ -13656,6 +14609,7 @@ function communityLeaveCommunity() {
     const sb = communityClient(); if (!sb) return;
     sb.functions.invoke('delete-account', { method: 'POST', body: { mode: 'community' } }).then((res) => {
       if (res && res.error) { communitySetMessage('community.errNetwork'); renderCommunity(); return null; }
+      communityResetSocial2();
       communityProfile = null;
       communityConsent = null;
       communityView = 'feed';
@@ -13860,7 +14814,7 @@ async function initAuthCallback() {
 }
 
 function setPokrokView(view) {
-  pokrokView = (view === 'body' || view === 'food' || view === 'photos') ? view : 'progress';
+  pokrokView = (view === 'body' || view === 'food' || view === 'photos' || view === 'motivation') ? view : 'progress';
   renderPokrok();
   refreshUpdateBanner();
 }
@@ -13873,7 +14827,7 @@ function renderPokrokSubtabs() {
     b.classList.toggle('active', on);
     b.setAttribute('aria-selected', on ? 'true' : 'false');
   });
-  for (const v of ['progress', 'body', 'food', 'photos']) {
+  for (const v of ['progress', 'body', 'food', 'photos', 'motivation']) {
     const el = document.getElementById('subview-' + v);
     if (el) el.hidden = v !== pokrokView;
   }
@@ -15177,7 +16131,7 @@ function renderAll() {
 
 function switchTab(tab) {
   activeTab = tab;
-  for (const s of ['dnes', 'trening', 'pokrok', 'motivacia', 'kalendar']) {
+  for (const s of ['dnes', 'trening', 'pokrok', 'kalendar', 'komunita']) {
     document.getElementById(`screen-${s}`).hidden = s !== tab;
   }
   document.querySelectorAll('.tab').forEach(el => {
@@ -15186,6 +16140,8 @@ function switchTab(tab) {
   if (tab === 'trening') renderTrening();
   if (tab === 'pokrok') renderPokrok();
   if (tab === 'kalendar') renderKalendar();
+  if (tab === 'komunita') renderCommunity();
+  refreshUpdateBanner();
 }
 
 /* ---------- Ukončenie tréningu ---------- */
@@ -18645,15 +19601,6 @@ function syncRender() {
   show('btn-cloud-backup-now', signedSlot && !m.disabled);
   show('btn-cloud-restore', signedSlot);
   show('btn-cloud-delete', signedSlot);
-  const chip = document.getElementById('btn-sync-chip');
-  if (chip) {
-    chip.hidden = !(signedSlot || wsLinkUser);
-    const icon = key === 'sync.st.synced' ? '☁️' : (key === 'sync.st.syncing' || key === 'sync.st.loading' || key === 'sync.st.pending') ? '🔄'
-      : (key.indexOf('offline') >= 0 || key === 'sync.st.off' || key === 'sync.st.signedout') ? '📴' : '⚠️';
-    chip.textContent = icon;
-    chip.title = cloudText;
-    chip.setAttribute('aria-label', cloudText);
-  }
 }
 /* Spätná kompatibilita názvu: volá sa z applyStaticI18n a openSettings. */
 function renderCloudBackupSetting() { syncRender(); }
@@ -18874,7 +19821,6 @@ function setupEvents() {
   on('btn-sync-resolve', () => { syncConflictShown = false; syncOpenConflictDialog(true); });
   on('btn-sync-link', syncOpenLinkDialog);
   on('btn-sync-recovery', syncOpenRecoveryList);
-  on('btn-sync-chip', openSettings);
   on('modal-sync', syncModalAction);
   on('backup-dismiss', () => {
     backupDismissed = true;      // len do konca tejto relácie
@@ -18964,13 +19910,9 @@ function setupEvents() {
   });
 
   /* ---------- Pokrok: podpohľady, telo a jedlo ---------- */
-  on('btn-community', communityOpen);
   on('btn-community-settings', communityOpen);
   on('btn-photo-viewer-share', () => { const id = currentViewerPhotoId(); if (id) communityAskShare(id); });
-  /* Delegated on the whole modal (not just #community-body): the header ✕ lives
-     in .sheet-head, a sibling of #community-body, so a body-only listener never
-     received its clicks and the close button did nothing on a tap. */
-  on('modal-community', (e) => {
+  on('screen-komunita', (e) => {
     const tab = e.target.closest ? e.target.closest('[data-community-view]') : null;
     if (tab && tab.dataset.communityView) { communitySetView(tab.dataset.communityView); return; }
     const a = e.target.closest ? e.target.closest('[data-community-action]') : null;
@@ -19002,14 +19944,31 @@ function setupEvents() {
     else if (act === 'list-more') { const sb = communityClient(); if (sb) communityListHtml(sb, false).then((h) => { document.getElementById('community-body').innerHTML = h; }); }
     else if (act === 'follow') communityFollow(a.dataset.user, a.dataset.on === '1');
     else if (act === 'compose-remove') { communityDraft.photos.splice(Number(a.dataset.index), 1); renderCommunity(); }
-    else if (act === 'compose-progress') communityShowProgressPicker();
+    else if (act === 'compose-progress') communityShowProgressPicker(true);
     else if (act === 'compose-add-progress') communityDraftAddProgress(a.dataset.photoId);
     else if (act === 'compose-publish') communitySubmitPost();
-    else if (act === 'compose-cancel') { communityDraftReleaseUrls(); communityDraft = { text: '', photos: [] }; communitySetMessage(''); communitySetView('myposts'); }
+    else if (act === 'compose-cancel') { communityDraftReleaseUrls(); communityDraft = { text: '', photos: [] }; communityPickerOpen = false; communitySetMessage(''); communitySetView('myposts'); }
     else if (act === 'leave') communityLeaveCommunity();
     else if (act === 'delete-account') communityDeleteAccount();
     else if (act === 'forgot') { const em = document.getElementById('community-email'); authAskReset(em ? em.value.trim() : ''); }
     else if (act === 'resend-confirm') communityResendConfirmation();
+    else if (act === 'back') communityGoBack();
+    else if (act === 'scope') { communityScope = ['following', 'friends'].indexOf(a.dataset.scope) >= 0 ? a.dataset.scope : 'everyone'; communitySetView('feed'); }
+    else if (act === 'post-menu') communityTogglePostMenu(a);
+    else if (act === 'profile-menu') { const m = document.getElementById('community-profile-menu'); if (m) m.hidden = !m.hidden; }
+    else if (act === 'comments') communityOpenComments(a.dataset.post);
+    else if (act === 'comment-send') communitySendComment();
+    else if (act === 'comment-delete') communityDeleteComment(a.dataset.comment);
+    else if (act === 'comment-report') communityReportComment(a.dataset.comment);
+    else if (act === 'friend-add' || act === 'friend-cancel' || act === 'friend-accept' || act === 'friend-decline') communityFriendAction(act, a.dataset.user);
+    else if (act === 'unfriend-ask') communityAskUnfriend(a.dataset.user, a.dataset.name);
+    else if (act === 'message') communityMessageUser(a.dataset.user);
+    else if (act === 'go-friends') communityGo('friends');
+    else if (act === 'open-chat') communityOpenChat(a.dataset.chat);
+    else if (act === 'chat-send') communitySendMessage();
+    else if (act === 'chat-menu') { const m = document.getElementById('community-chat-menu'); if (m) m.hidden = !m.hidden; }
+    else if (act === 'chat-delete') communityDeleteChat();
+    else if (act === 'msg-menu') communityMessageMenu(a.dataset.msg, a.dataset.mine === '1');
   });
   on('community-body', (e) => {
     if (e.target && e.target.id === 'community-avatar' && e.target.files && e.target.files[0]) {
@@ -19023,6 +19982,8 @@ function setupEvents() {
       communityDraftAddFiles(files);
     }
     if (e.target && e.target.id === 'community-age16') communityAge16 = !!e.target.checked;
+    if (e.target && e.target.id === 'community-searchable') communitySetSearchable(!!e.target.checked);
+    if (e.target && e.target.name === 'community-visibility') communityVisibility = e.target.value === 'friends' ? 'friends' : 'public';
   }, 'change');
   on('community-body', (e) => {
     if (e.target && e.target.id === 'community-compose-text') {
@@ -19030,7 +19991,22 @@ function setupEvents() {
       const c = document.getElementById('community-compose-count');
       if (c) c.textContent = t('community.composeCount', { n: communityDraft.text.length, max: COMMUNITY_TEXT_MAX });
     }
+    if (e.target && e.target.id === 'community-search') communityQueueSearch(e.target.value);
+    if (e.target && e.target.classList && e.target.classList.contains('ccomposer-input')) {
+      e.target.style.height = 'auto';
+      e.target.style.height = Math.min(e.target.scrollHeight, 140) + 'px';
+    }
   }, 'input');
+  /* Enter odošle správu / komentár (Shift+Enter = nový riadok). */
+  on('community-body', (e) => {
+    if (e.key !== 'Enter' || e.shiftKey || e.isComposing || !e.target || !e.target.classList) return;
+    if (!e.target.classList.contains('ccomposer-input')) return;
+    e.preventDefault();
+    if (e.target.id === 'community-chat-text') communitySendMessage();
+    else if (e.target.id === 'community-comment-text') communitySendComment();
+  }, 'keydown');
+  /* Po návrate do aplikácie: odznaky neprečítaných správ a žiadostí. */
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) communityRefreshBadges(); });
   on('btn-community-caption-cancel', () => { communityCaptionPostId = null; document.getElementById('modal-community-caption').hidden = true; });
   on('btn-community-caption-save', communitySaveCaption);
 
@@ -19237,11 +20213,12 @@ function isBusy() {
   const forms = ['modal-confirm', 'modal-history-edit', 'modal-settings', 'modal-setup', 'modal-generic',
     'modal-planchoice', 'modal-fullbody', 'modal-lang', 'modal-measure', 'modal-food',
     'modal-library', 'modal-exercise', 'modal-photo-add', 'modal-photo', 'modal-photo-compare',
-    'modal-community', 'modal-community-caption', 'modal-auth', 'modal-sync'];
+    'modal-community-caption', 'modal-auth', 'modal-sync'];
   for (const id of forms) {
     const el = document.getElementById(id);
     if (el && !el.hidden) return true;                   // otvorený formulár / dialóg
   }
+  if (activeTab === 'komunita' && ['compose', 'chat', 'comments'].indexOf(communityView) >= 0) return true;   // písanie v Community
   return false;
 }
 
@@ -19395,6 +20372,8 @@ function appStart() {
   verifyI18n();
   switchTab('dnes');
   renderAll();
+  /* Community (ak je zapnutá a účet prihlásený): odznaky a živé správy – neblokujúco. */
+  communityBackgroundStart();
   /* Vlastné médiá cvikov (IndexedDB) sa načítajú neblokujúco po prvom vykreslení. */
   initPersonalMedia();
   /* Fotky progresu (IndexedDB) – tiež neblokujúco. */

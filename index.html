@@ -11,15 +11,13 @@
   <title>GymQuest</title>
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
-  <link rel="stylesheet" href="style.css?v=52">
+  <link rel="stylesheet" href="style.css?v=53">
 </head>
 <body>
 
   <header class="app-header">
     <h1 class="app-title">GymQuest</h1>
     <div class="header-actions">
-      <button class="btn-icon" id="btn-sync-chip" type="button" hidden>☁️</button>
-      <button class="btn-icon" id="btn-community" data-i18n-title="community.open" data-i18n-aria="community.open">🌐</button>
       <button class="btn-icon" id="btn-settings" data-i18n-title="header.settingsTitle">⚙️</button>
       <div class="header-level" id="header-level" data-i18n-title="header.levelTitle">Úr. 0</div>
     </div>
@@ -220,6 +218,7 @@
         <button type="button" class="subtab" data-pokrok="body" role="tab" aria-selected="false" data-i18n="pokrok.subBody">Telo</button>
         <button type="button" class="subtab" data-pokrok="food" role="tab" aria-selected="false" data-i18n="pokrok.subFood">Jedlo</button>
         <button type="button" class="subtab" data-pokrok="photos" role="tab" aria-selected="false" data-i18n="photos.subtab">Fotky progresu</button>
+        <button type="button" class="subtab" data-pokrok="motivation" role="tab" aria-selected="false" data-i18n="tab.motivacia">Motivácia</button>
       </div>
 
       <!-- ---- podpohľad: Pokrok (pôvodný obsah, nezmenený) ---- -->
@@ -389,25 +388,29 @@
 
         <div class="photo-grid" id="photos-grid"></div>
       </div>
+
+      <!-- ---- podpohľad: Motivácia (úroveň a úspechy, pôvodne samostatná karta) ---- -->
+      <div class="subview" id="subview-motivation" hidden>
+        <div class="card">
+          <div class="card-head">
+            <span class="card-title" data-i18n="motivacia.levelTitle">Úroveň</span>
+            <span class="card-value" id="level-value">0</span>
+          </div>
+          <div class="progress"><div class="progress-fill" id="level-progress"></div></div>
+          <p class="card-sub" id="level-sub">Potrebuješ 100 XP na ďalšiu úroveň.</p>
+        </div>
+
+        <div class="card">
+          <h3 class="card-title" data-i18n="motivacia.achTitle">🎖️ Úspechy</h3>
+          <div class="achievements" id="achievements-list"></div>
+        </div>
+      </div>
+
     </section>
 
-    <!-- ============ MOTIVÁCIA ============ -->
-    <section class="screen" id="screen-motivacia" hidden>
-      <h2 class="screen-title" data-i18n="tab.motivacia">Motivácia</h2>
-
-      <div class="card">
-        <div class="card-head">
-          <span class="card-title" data-i18n="motivacia.levelTitle">Úroveň</span>
-          <span class="card-value" id="level-value">0</span>
-        </div>
-        <div class="progress"><div class="progress-fill" id="level-progress"></div></div>
-        <p class="card-sub" id="level-sub">Potrebuješ 100 XP na ďalšiu úroveň.</p>
-      </div>
-
-      <div class="card">
-        <h3 class="card-title" data-i18n="motivacia.achTitle">🎖️ Úspechy</h3>
-        <div class="achievements" id="achievements-list"></div>
-      </div>
+    <!-- ============ COMMUNITY (karta v spodnom paneli) ============ -->
+    <section class="screen screen-komunita" id="screen-komunita" hidden>
+      <div class="community-screen" id="community-body"></div>
     </section>
 
     <!-- ============ KALENDÁR ============ -->
@@ -443,8 +446,8 @@
     <button class="tab active" data-tab="dnes"><span class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M9 21v-6h6v6"/></svg></span><span data-i18n="tab.dnes">Dnes</span></button>
     <button class="tab" data-tab="trening"><span class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6.5 6.5 17.5 17.5"/><path d="M7 4 4 7l13 13 3-3L7 4z"/><path d="M11 8 8 11"/><path d="M16 13l-3 3"/></svg></span><span data-i18n="tab.trening">Tréning</span></button>
     <button class="tab" data-tab="pokrok"><span class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10"/><path d="M10 20V4"/><path d="M16 20v-8"/><path d="M22 20H2"/></svg></span><span data-i18n="tab.pokrok">Pokrok</span></button>
-    <button class="tab" data-tab="motivacia"><span class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 4.5 13.5H11L9.5 22 19 10h-6.5L13 2z"/></svg></span><span data-i18n="tab.motivacia">Motivácia</span></button>
     <button class="tab" data-tab="kalendar"><span class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18"/><path d="M8 3v4"/><path d="M16 3v4"/></svg></span><span data-i18n="tab.kalendar">Kalendár</span></button>
+    <button class="tab" data-tab="komunita"><span class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.6-3.6 3.2-5.5 6.5-5.5s5.9 1.9 6.5 5.5"/><circle cx="17" cy="9" r="2.5"/><path d="M16 14.6c2.8.1 4.8 1.7 5.4 4.9"/></svg><span class="tab-badge" id="tab-community-badge" hidden></span></span><span data-i18n="community.title">Community</span></button>
   </nav>
 
   <!-- ============ MODAL: potvrdenie dokončenia ============ -->
@@ -884,17 +887,6 @@
 
   <input type="file" id="file-media" accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm,video/quicktime" multiple hidden>
   <input type="file" id="file-progress-photos" accept="image/*" multiple hidden>
-  <!-- ============ MODAL: Community (voliteľná online) ============ -->
-  <div class="modal-backdrop" id="modal-community" hidden>
-    <div class="modal modal-sheet">
-      <div class="sheet-head">
-        <h3 data-i18n="community.title">Community</h3>
-        <button type="button" class="btn-icon" data-community-action="close" data-i18n-title="common.close" data-i18n-aria="common.close">✕</button>
-      </div>
-      <div class="sheet-scroll" id="community-body"></div>
-    </div>
-  </div>
-
   <!-- ============ MODAL: popis príspevku ============ -->
   <div class="modal-backdrop" id="modal-community-caption" hidden>
     <div class="modal">
@@ -916,8 +908,8 @@
     </div>
   </div>
 
-  <script src="community-config.js?v=52"></script>
-  <script src="vendor/supabase-js.js?v=52"></script>
-  <script src="script.js?v=52"></script>
+  <script src="community-config.js?v=53"></script>
+  <script src="vendor/supabase-js.js?v=53"></script>
+  <script src="script.js?v=53"></script>
 </body>
 </html>

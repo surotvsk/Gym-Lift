@@ -119,7 +119,7 @@ scenario('smoke: new build loads cleanly in a fresh profile', async (ctx) => {
   const warn = d.p.console.filter((l) => /chýbajúce preklady|missing/i.test(l));
   check('no missing-translation warnings', warn.length === 0, warn);
   check('local-save line visible and separate from cloud line', s.localLine.length > 0 && s.cloudLine.length > 0 && s.localLine !== s.cloudLine, s);
-  check('sync chip hidden while signed out', s.chipHidden === true, s.chipHidden);
+  check('no sync status chip in the header (status lives in Settings)', s.chipHidden === undefined, s.chipHidden);
 });
 
 scenario('D1+auto-load: fresh device with setup+reload before sign-in loads every section and media automatically', async (ctx) => {

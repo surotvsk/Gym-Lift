@@ -20,6 +20,9 @@ const L = require('./lib');
 const { check, section, sql, sqlVal, lit } = L;
 
 const SOCIAL = sqlVal("select to_regclass('public.follows') is not null") === 't';
+/* 0008: Leave Community first runs community_leave_cleanup (security definer, runs as its owner), which also
+   updates the profile row; the function's own profile update runs as service_role. */
+const PHASE2 = sqlVal("select to_regprocedure('public.community_leave_cleanup(uuid)') is not null") === 't';
 const FN = L.URL_ + '/functions/v1/delete-account';
 const ANON = process.env.GQ_LOCAL_ANON;
 let fx, M, O, F;   // O: blocked both ways by the seeded user; F: unblocked, for follows/likes/shares
@@ -251,7 +254,7 @@ function inject(table, timing, cond, superuser) {
     ['community', 'reports', 'public.reports', 'delete', 'old.reporter_id = $ID', 'db_delete_failed'],
     ['community', 'blocks', 'public.blocks', 'delete', 'old.blocker_id = $ID', 'db_delete_failed'],
     ['community', 'blocks', 'public.blocks', 'delete', 'old.blocked_id = $ID', 'db_delete_failed'],
-    ['community', 'profiles', 'public.profiles', 'update', 'new.id = $ID', 'db_update_failed'],
+    ['community', 'profiles', 'public.profiles', 'update', PHASE2 ? "new.id = $ID and current_user = 'service_role'" : 'new.id = $ID', 'db_update_failed'],
     ['full', 'posts', 'public.posts', 'delete', 'old.user_id = $ID', 'db_delete_failed'],
     ['full', 'reports', 'public.reports', 'delete', 'old.reporter_id = $ID', 'db_delete_failed'],
     ['full', 'blocks', 'public.blocks', 'delete', 'old.blocker_id = $ID', 'db_delete_failed'],
@@ -265,6 +268,8 @@ function inject(table, timing, cond, superuser) {
     ['community', 'likes', 'public.likes', 'delete', 'old.user_id = $ID', 'db_delete_failed'],
     ['community', 'reposts', 'public.reposts', 'delete', 'old.user_id = $ID', 'db_delete_failed'],
     ['community', 'rate_events', 'public.rate_events', 'delete', 'old.user_id = $ID', 'db_delete_failed']);
+  if (PHASE2) steps.push(
+    ['community', 'community_leave_cleanup', 'public.profiles', 'update', "new.id = $ID and current_user <> 'service_role'", 'db_delete_failed']);
   let n = 0;
   for (const [mode, label, table, timing, cond, err] of steps) {
     const U = await seed('inj' + (n++));
@@ -273,7 +278,7 @@ function inject(table, timing, cond, superuser) {
     try { r = await invoke(U, mode); } finally { undo(); }
     const s = state(U.id);
     const named = label === null ? !r.body.table : r.body.table === label;
-    check(`${mode}: failure in ${table} (${cond.replace(' = $ID', '')}) → 500 ${err}${label ? ' (' + label + ')' : ''}, no ok`,
+    check(`${mode}: failure in ${table} (${cond.replace(/ = \$ID/, '')}) → 500 ${err}${label ? ' (' + label + ')' : ''}, no ok`,
       r.status === 500 && r.body && r.body.error === err && named && r.body.ok !== true, J(r));
     if (mode === 'full') check('   ... the account still exists (not reported or done as deleted)', s.auth === 1, J(s));
     const retry = await invoke(U, mode);

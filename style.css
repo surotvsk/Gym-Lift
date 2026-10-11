@@ -3244,7 +3244,7 @@ button.community-count-btn:hover { border-color: var(--border-strong); }
 }
 .community-pick img { display: block; width: 100%; height: 100%; object-fit: cover; }
 .community-pick:focus-visible, .community-pick:hover { border-color: var(--accent); }
-#modal-community label.btn.disabled { opacity: 0.5; pointer-events: none; }
+#community-body label.btn.disabled { opacity: 0.5; pointer-events: none; }
 .community-lightbox {
   position: fixed; inset: 0; z-index: 1000; background: rgba(0, 0, 0, 0.92);
   display: flex; align-items: center; justify-content: center; padding: var(--sp-4); cursor: zoom-out;
@@ -3324,3 +3324,192 @@ button.community-count-btn:hover { border-color: var(--border-strong); }
   .card-value { font-size: var(--fs-2xl); }
   .stat-value { font-size: var(--fs-xl); }
 }
+
+/* ===== Community ako karta (priatelia, správy, komentáre, hľadanie – migrácia 0008) ===== */
+.tab-icon { position: relative; }
+.tab-badge {
+  position: absolute; top: -6px; inset-inline-end: -10px; min-width: 18px; height: 18px; padding: 0 5px;
+  border-radius: var(--r-full); background: var(--accent); color: #fff; font-size: 10px; font-weight: var(--fw-bold);
+  line-height: 18px; text-align: center; letter-spacing: 0; box-shadow: 0 0 0 2px var(--bg);
+}
+.tab-badge[hidden] { display: none; }
+.btn-sm { min-height: 36px; padding: var(--sp-1) var(--sp-3); font-size: var(--fs-sm); }
+.community-screen { display: flex; flex-direction: column; gap: var(--sp-3); }
+.community-avatar-md { width: 44px; height: 44px; }
+.community-avatar-lg { width: 84px; height: 84px; font-size: 40px; }
+
+/* Horná navigácia Community: Domov, Hľadať, Nový, Správy, Profil. */
+.cnav {
+  position: sticky; top: 0; z-index: 5; display: flex; justify-content: space-between; gap: var(--sp-1);
+  margin: calc(-1 * var(--sp-2)) calc(-1 * var(--sp-5)) 0; padding: var(--sp-2) var(--sp-4);
+  background: rgba(12, 13, 16, 0.94); border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+}
+.cnav-btn {
+  position: relative; flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; align-items: center; gap: 2px;
+  padding: var(--sp-1) 0; background: none; border: 0; color: var(--text-dim); font: inherit; font-size: 10px;
+  font-weight: var(--fw-bold); letter-spacing: 0.02em; cursor: pointer; border-radius: var(--r-sm);
+}
+.cnav-btn:hover { color: var(--text); }
+.cnav-btn.active { color: var(--accent); }
+.cnav-btn:focus-visible { outline: 2px solid var(--accent-line); outline-offset: 2px; }
+.cnav-icon svg { width: 24px; height: 24px; display: block; }
+.cnav-label { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cnav-badge {
+  display: inline-flex; align-items: center; justify-content: center; min-width: 18px; height: 18px; padding: 0 5px;
+  border-radius: var(--r-full); background: var(--accent); color: #fff; font-size: 10px; font-weight: var(--fw-bold); line-height: 1;
+}
+.cnav-btn .cnav-badge { position: absolute; top: 0; inset-inline-start: calc(50% + 6px); }
+.cbadge-inline { vertical-align: middle; margin-inline-start: var(--sp-1); }
+.cscope { margin: 0; }
+
+/* Hlavička podpohľadu (Späť + názov). */
+.csub-head { display: flex; align-items: center; gap: var(--sp-2); min-height: 44px; }
+.csub-title { flex: 1 1 auto; min-width: 0; font-size: var(--fs-lg); font-weight: var(--fw-bold); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.csub-back { font-size: var(--fs-lg); }
+[dir="rtl"] .csub-back { transform: scaleX(-1); }
+.csection { margin: var(--sp-3) 0 var(--sp-1); font-size: var(--fs-md); font-weight: var(--fw-bold); }
+
+/* Príspevok (ako Instagram): hlavička, fotka cez celú šírku, akcie, popis. */
+.community-card.cpost { padding: 0; gap: 0; margin-top: 0; overflow: hidden; background: var(--surface); }
+.cpost-shared { display: flex; align-items: center; gap: var(--sp-1); padding: var(--sp-2) var(--sp-3) 0; }
+.cpost-shared svg { width: 14px; height: 14px; }
+.cpost-head { display: flex; align-items: center; gap: var(--sp-2); padding: var(--sp-3); }
+.cpost-avatar { padding: 0; border: 0; background: none; cursor: pointer; border-radius: var(--r-full); flex: none; line-height: 0; }
+.cpost-who { display: flex; flex-direction: column; min-width: 0; flex: 1 1 auto; }
+.cpost-meta { font-size: var(--fs-xs); color: var(--text-faint); display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
+.cpost-friends { display: inline-flex; align-items: center; gap: 3px; color: var(--blue); }
+.cpost-friends svg { width: 13px; height: 13px; }
+.cpost-more { margin-inline-start: auto; color: var(--text-dim); }
+.cpost-more svg { width: 22px; height: 22px; display: block; }
+.cpost .community-photos { position: relative; display: flex; gap: 0; overflow-x: auto; scroll-snap-type: x mandatory; background: #000; scrollbar-width: none; }
+.cpost .community-photos::-webkit-scrollbar { display: none; }
+.cpost .community-photo-btn { flex: 0 0 100%; scroll-snap-align: center; }
+.cpost .community-photo { border-radius: 0; max-height: 75vh; width: 100%; }
+.cpost .community-photos:not([data-count="1"]) .community-photo { aspect-ratio: 1 / 1; object-fit: cover; }
+.cpost-multi {
+  position: absolute; top: var(--sp-2); inset-inline-end: var(--sp-2); z-index: 1; display: inline-flex; align-items: center; gap: 3px;
+  padding: 2px var(--sp-2); border-radius: var(--r-full); background: rgba(0, 0, 0, 0.6); color: #fff; font-size: var(--fs-xs); font-weight: var(--fw-bold);
+}
+.cpost-multi svg { width: 13px; height: 13px; }
+.cpost-actions { display: flex; align-items: center; gap: var(--sp-4); padding: var(--sp-2) var(--sp-3) 0; }
+.cpost-act {
+  display: inline-flex; align-items: center; gap: 6px; padding: var(--sp-1) 0; background: none; border: 0; color: var(--text);
+  font: inherit; font-size: var(--fs-sm); font-weight: var(--fw-med); cursor: pointer; min-height: 36px;
+}
+.cpost-act svg { width: 24px; height: 24px; display: block; }
+.cpost-act:disabled { cursor: default; opacity: 0.8; }
+.cpost-act.community-count-static { color: var(--text-dim); cursor: default; padding: var(--sp-1) 0; }
+.cpost-act.community-like.on { color: var(--accent); }
+.cpost-act.community-like.on svg { fill: currentColor; }
+.cpost-act.community-share.on { color: var(--accent); }
+.cpost-caption { padding: var(--sp-2) var(--sp-3) 0; }
+.cpost-caption-name { font-weight: var(--fw-bold); }
+.cpost-comments-link {
+  align-self: flex-start; margin: var(--sp-1) var(--sp-3) 0; padding: 0; background: none; border: 0; color: var(--text-dim);
+  font: inherit; font-size: var(--fs-sm); cursor: pointer;
+}
+.cpost-comments-link:hover { color: var(--text); }
+.cpost > :last-child { margin-bottom: var(--sp-3); }
+.cpost-menu { padding: 0 var(--sp-3); }
+.cpost-menu[hidden] { display: none; }
+#community-body .cpost > .plan-actions.cpost-menu { margin-top: var(--sp-2); }
+.cfeed { display: flex; flex-direction: column; gap: var(--sp-3); }
+
+/* Komentáre */
+.ccomments { display: flex; flex-direction: column; gap: var(--sp-3); }
+.ccomment { display: flex; gap: var(--sp-2); align-items: flex-start; }
+.ccomment-body { min-width: 0; flex: 1 1 auto; }
+.ccomment-text { margin: 0; overflow-wrap: break-word; }
+.ccomment-meta { display: flex; gap: var(--sp-3); margin-top: 2px; font-size: var(--fs-xs); color: var(--text-faint); }
+.clink { padding: 0; background: none; border: 0; color: var(--text-dim); font: inherit; font-size: var(--fs-xs); font-weight: var(--fw-bold); cursor: pointer; }
+.clink:hover { color: var(--text); }
+
+/* Písacie pole (komentár / správa) – drží sa nad spodným panelom. */
+.ccomposer {
+  position: sticky; bottom: calc(var(--tabbar-h) + env(safe-area-inset-bottom, 0px)); z-index: 4;
+  display: flex; gap: var(--sp-2); align-items: flex-end; padding: var(--sp-2) 0;
+  background: linear-gradient(to top, var(--bg) 75%, rgba(12, 13, 16, 0));
+}
+.ccomposer-input { flex: 1 1 auto; min-height: 44px; max-height: 140px; resize: none; font: inherit; line-height: 1.35; margin: 0; }
+.ccomposer-send { flex: none; min-height: 44px; display: inline-flex; align-items: center; gap: 6px; }
+.ccomposer-send svg { width: 18px; height: 18px; }
+@media (max-width: 430px) { .ccomposer-send-label { display: none; } }
+
+/* Hľadanie a riadky ľudí */
+.csearch { position: relative; }
+.csearch-icon { position: absolute; top: 50%; inset-inline-start: var(--sp-3); transform: translateY(-50%); color: var(--text-faint); pointer-events: none; }
+.csearch-icon svg { width: 18px; height: 18px; display: block; }
+.csearch-input { padding-inline-start: 40px; margin: 0; }
+.cpeople { display: flex; flex-direction: column; }
+.cperson { display: flex; align-items: center; gap: var(--sp-2); padding: var(--sp-2) 0; border-bottom: 1px solid var(--border); }
+.cperson-main {
+  display: flex; align-items: center; gap: var(--sp-2); flex: 1 1 auto; min-width: 0; padding: 0; background: none; border: 0;
+  color: var(--text); font: inherit; text-align: start; cursor: pointer;
+}
+.cperson-name { font-weight: var(--fw-bold); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cperson-actions { display: flex; gap: var(--sp-1); flex: none; }
+
+/* Profil (ako Instagram) */
+.cprofile { display: flex; flex-direction: column; gap: var(--sp-2); }
+.cprofile-top { display: flex; align-items: center; gap: var(--sp-4); }
+.cprofile-stats { display: flex; flex: 1 1 auto; justify-content: space-around; gap: var(--sp-1); }
+.cstat { display: flex; flex-direction: column; align-items: center; gap: 1px; padding: var(--sp-1); background: none; border: 0; color: var(--text); font: inherit; border-radius: var(--r-sm); }
+button.cstat { cursor: pointer; }
+button.cstat:hover { background: var(--surface-2); }
+.cstat-n { font-size: var(--fs-lg); font-weight: var(--fw-black); }
+.cstat-l { font-size: var(--fs-xs); color: var(--text-dim); }
+.cprofile-name { font-weight: var(--fw-bold); font-size: var(--fs-md); }
+.cprofile-bio { margin: 0; color: var(--text); overflow-wrap: break-word; }
+.cprofile-actions { display: flex; gap: var(--sp-2); flex-wrap: wrap; align-items: center; }
+.cprofile-actions .btn { flex: 1 1 0; }
+.cprofile-actions .btn-icon { flex: none; }
+.cprofile-menu[hidden], .cchat-menu[hidden] { display: none; }
+
+/* Zoznam chatov a konverzácia */
+.cchat-list { display: flex; flex-direction: column; }
+.cchat-row {
+  display: flex; align-items: center; gap: var(--sp-3); padding: var(--sp-2) 0; background: none; border: 0; border-bottom: 1px solid var(--border);
+  color: var(--text); font: inherit; text-align: start; cursor: pointer; width: 100%;
+}
+.cchat-text { display: flex; flex-direction: column; min-width: 0; flex: 1 1 auto; }
+.cchat-name { font-weight: var(--fw-bold); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cchat-last { font-size: var(--fs-sm); color: var(--text-dim); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cchat-row.unread .cchat-last { color: var(--text); font-weight: var(--fw-med); }
+.cchat-side { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; flex: none; }
+.cchat-time, .cchat-closed { font-size: var(--fs-xs); color: var(--text-faint); white-space: nowrap; }
+.cchat-who { display: inline-flex; align-items: center; gap: var(--sp-2); padding: 0; background: none; border: 0; color: var(--text); font: inherit; font-weight: var(--fw-bold); cursor: pointer; max-width: 100%; }
+.cchat-who span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cchat-msgs { display: flex; flex-direction: column; gap: var(--sp-2); min-height: 40vh; }
+.cmsg { display: flex; flex-direction: column; align-items: flex-start; max-width: 82%; }
+.cmsg.mine { align-self: flex-end; align-items: flex-end; }
+.cmsg-bubble {
+  padding: var(--sp-2) var(--sp-3); border-radius: 18px; border-end-start-radius: 6px; background: var(--surface-3); color: var(--text);
+  border: 0; font: inherit; text-align: start; white-space: pre-wrap; overflow-wrap: anywhere; cursor: pointer;
+}
+.cmsg.mine .cmsg-bubble { background: var(--accent); color: #fff; border-end-start-radius: 18px; border-end-end-radius: 6px; }
+.cmsg-time { font-size: 10px; color: var(--text-faint); margin: 2px var(--sp-1) 0; }
+.cchat-closed-note { text-align: center; }
+
+/* Voľba "Kto to uvidí", citácia nahlásenej položky */
+.cvis { border: 0; padding: 0; margin: var(--sp-3) 0 0; display: flex; gap: var(--sp-2); flex-wrap: wrap; }
+.cvis legend { width: 100%; padding: 0; }
+.cvis-opt {
+  display: inline-flex; align-items: center; gap: var(--sp-2); padding: var(--sp-2) var(--sp-3); border: 1px solid var(--border);
+  border-radius: var(--r-full); cursor: pointer; background: var(--surface-2);
+}
+.cvis-opt:has(input:checked) { border-color: var(--accent-line); background: var(--accent-soft); }
+.cvis-opt input { accent-color: var(--accent); margin: 0; }
+.cquote {
+  margin: 0; padding: var(--sp-2) var(--sp-3); border-inline-start: 3px solid var(--accent-line); background: var(--surface-3);
+  border-radius: var(--r-sm); white-space: pre-wrap; overflow-wrap: anywhere;
+}
+.cpost-text { padding: 0 var(--sp-3); font-size: var(--fs-md); line-height: 1.45; white-space: pre-wrap; overflow-wrap: anywhere; }
+.cscope { gap: var(--sp-2); }
+.cscope .goal-chip { min-height: 32px; padding: var(--sp-1) var(--sp-3); font-size: var(--fs-sm); border-radius: var(--r-full); }
+/* Pokrok má 5 podkariet (aj Motivácia): celé slová v jednom riadku, pri úzkom displeji sa posúvajú. */
+#pokrok-subtabs { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; margin-inline: calc(-1 * var(--sp-5)); padding-inline: var(--sp-5); }
+#pokrok-subtabs::-webkit-scrollbar { display: none; }
+#pokrok-subtabs .subtab { flex: 1 0 auto; white-space: nowrap; overflow-wrap: normal; padding-inline: 14px; }
+.cprofile-actions .btn { flex: 1 1 auto; white-space: nowrap; }
+.community-actions-primary .btn { white-space: nowrap; }
