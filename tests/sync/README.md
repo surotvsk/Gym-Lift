@@ -28,6 +28,30 @@ $env:GQ_BASE = 'https://<deployed-site>/'              # optional: run against a
 With `GQ_BASE` set, the scenarios run against that site; migration and update-path scenarios
 (which swap builds on the local server) are skipped.
 
+On Linux / macOS (bash):
+
+```bash
+GQ_CREDS_DIR=/path/outside/the/repo/creds GQ_TEST_IDS=<uuid-a>,<uuid-b> GQ_WORK=/tmp/gqw node tests/sync/run.js "^smoke"
+```
+
+### UI-driven live verification (`live-verify.js`)
+
+`live-verify.js` checks automatic sync only through the normal app UI: the plan editor, workout set
+buttons and Finish, the measurement form, real file inputs for photos and media, and the Settings
+switches. It never starts a sync itself. It relies on the app's own triggers (change debounce,
+reconnect, returning to the app), and where headless Chrome does not fire the browser's `online` /
+`focus` event by itself, the test dispatches that same event. It checks the account's Supabase row
+and Storage objects with the account's own RLS-scoped session. It uses **one** account, the permanent `gqsync-c`
+(`cred-c.json`), on two separate Chrome profiles ("devices"). It wipes that account's backup data
+before the run and again after the browsers are closed. It never deletes the account. 9 scenarios,
+38 checks; results go to `$GQ_WORK/live-verify-results.json`.
+
+```bash
+GQ_CREDS_DIR=/path/outside/the/repo/creds GQ_TEST_IDS=<gqsync-c uuid> GQ_WORK=/tmp/gqw node tests/sync/live-verify.js
+```
+
+It uses the same port (8124) as `run.js`, so the two suites cannot run at the same time.
+
 Credentials are never stored in this folder, in git or in the output. The cloud observer signs in
 with the test accounts' own credentials (RLS-scoped) — no service key is used. The harness refuses any
 account id that is not one of the two disposable test accounts.

@@ -751,8 +751,8 @@ history only ever shows the recorded result.
 
 These four additions live inside the **Progress** screen as the **Body** and **Food** sub-views. They
 are strictly optional: nothing here is enabled, prefilled or guessed for you, and every one of them
-works fully offline with no backend, no account and no external service. All of it stays in your
-browser's own storage on your device.
+works fully offline with no account needed. All of it is saved in your browser's own storage on your
+device, and it is also synced to your account only if you sign in with account sync on.
 
 ### Body — weight and measurements
 
@@ -1130,9 +1130,15 @@ Application → Cache Storage, so what is deployed can be inspected directly.
 
 ## Technology
 
-Pure **HTML**, **CSS** and **vanilla JavaScript**. No frameworks, no database, no backend, no
-external services, no CDN and no third-party libraries. There is nothing to install and nothing to
-build.
+Pure **HTML**, **CSS** and **vanilla JavaScript**. No frameworks, no CDN and nothing to install or
+build. The app itself works fully offline and keeps your data on the device.
+
+The optional online features (Community and account sync) use a **Supabase** backend: authentication,
+a Postgres database with row-level security, Storage and Realtime. The Supabase JavaScript client is
+vendored as `vendor/supabase-js.js`, the one third-party library, served from this site and not a
+CDN. The backend is configured in `community-config.js` (public project URL and publishable key
+only), and its database migrations and Edge Function are in `supabase/` (see `supabase/README.md`).
+If you leave those values empty, the app makes no network requests at all.
 
 ---
 

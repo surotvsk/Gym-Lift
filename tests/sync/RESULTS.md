@@ -311,3 +311,64 @@ Startup-sensitive regression subset after the startup restructure — **47 passe
   PASS no page exceptions after update
 ==== checks: 47 passed, 0 failed; scenario errors: 0 ====
 ```
+
+## UI-driven live verification (`live-verify.js`)
+
+Build: `f213cd0` (v49), `CACHE_VERSION v49`, assets `?v=53`, served locally. `live-verify.js` includes the
+end-of-run reset of the test account.
+Environment: Fedora 44, Google Chrome 154.0.8037.92 (headless, disposable profiles), live Supabase project,
+permanent test account `gqsync-c` only.
+Run: 2026-10-11T23:24:21.692Z — **38 passed, 0 failed**. The final reset left no backup row, versions or
+Storage objects on the account (`Observer.reset()` verifies that nothing is left).
+
+```
+== 1. plan/exercise change: saved locally, synced automatically while online
+  PASS signed in: account workspace active, sync on by default (not "off")
+  PASS empty account + fresh device: nothing uploaded
+  PASS saved on this device immediately (localStorage has the edit and the new plan order)
+  PASS "Saved on this device" and the account line are separate
+  PASS synced to Supabase automatically (no Sync now): weight, sets and plan order
+    (cloud updated ~5 s after Save)
+  PASS UI then reports "synced"
+== 2. completed workout + measurement + photo + personal media: saved locally, synced automatically
+  PASS workout saved on the device (history entry, sets done, no running session)
+  PASS cloud has the completed workout automatically, identical to the device record (date/calendar, plan, sets done, sets, reps, weight)
+  PASS cloud has achievements/motivation, goal and the measurement
+  PASS photo and personal media objects exist in Storage for every manifest reference
+  PASS cloud payload never contains a running workout/activity
+== 3. offline edits survive a full browser restart
+  PASS offline: saved on device, account line says offline/pending (not synced)
+  PASS after full restart (offline): both edits still there and still pending
+  PASS cloud untouched while offline
+== 4. reconnect: pending offline changes sync automatically
+  PASS after reconnect the offline workout and plan edit reached the account (browser online event)
+  PASS no conflict, status synced
+== 5. fresh second device loads everything automatically after online sign-in
+  PASS device 2: plans (exercise settings + order) loaded
+  PASS device 2: workouts/calendar, measurement, achievements loaded
+  PASS device 2: progress photo and personal media byte-identical
+  PASS device 2: synced, no conflict, loading did not upload
+== 6. empty/default state never overwrites populated cloud data
+  PASS "Reset data" on device 2 did not upload an empty state (revision and history unchanged)
+  PASS device 2 re-loaded the account instead
+== 7. pending local changes are not silently overwritten by a cloud pull
+  PASS device 2 workout synced automatically (cloud newer)
+  PASS device 1 keeps its pending edit (weight 70) and gets an explicit choice, not a silent pull
+  PASS cloud not overwritten by device 1 either
+  PASS after choosing "Keep account": device 1 has the account data and a recovery copy of its own version
+== 8. a running workout is not interrupted by a cross-device pull; synced after completion
+  PASS workout running on device 1 (1 set ticked)
+  PASS device 2 edited the plan that is running on device 1
+  PASS device 2 change synced
+  PASS device 1 pulled device 2's change automatically (on returning to the app)
+  PASS running workout untouched: same session, start time, ticked set, still on screen, no reload/dialog
+  PASS the running workout was not uploaded to the account
+  PASS after Finish the workout synced automatically, identical to the device record (2 sets done, the plan now has 5 sets)
+  PASS device 2 received device 1's finished workout automatically
+== 9. sync switched off: shown clearly, local saving continues
+  PASS Settings shows sync off (switch, state text, account line) and the separate local line
+  PASS with sync off: change saved on the device, nothing uploaded
+  PASS switching sync back on uploads the pending change automatically
+  PASS no page exceptions on either device
+==== checks: 38 passed, 0 failed ====
+```
