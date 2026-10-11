@@ -2,8 +2,8 @@
 -- GymQuest — ROLLBACK of migration 0006 (delete-account privileges)
 -- ----------------------------------------------------------------------------
 -- NOT A SAFE ROLLBACK — NOT PART OF ANY RELEASE ROLLBACK. Do not run it to undo
--- Release 1: the Release-1 rollback is 0005_down + the previous delete-account
--- function, and it KEEPS 0006 (0005_down never touches these privileges).
+-- Release 1: the Release-1 rollback is 0005_down alone, and it KEEPS 0006 and the
+-- v47 delete-account function (0005_down never touches these privileges).
 --
 -- What revoking these privileges does (verified on a local stack with
 -- "Automatically expose new tables" OFF, like production):

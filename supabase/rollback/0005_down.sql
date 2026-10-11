@@ -23,8 +23,11 @@
 -- SCHEMA DIFFERENCE after rollback (only if text-only posts exist):
 --   posts.image_path / thumb_path stay nullable so those posts survive.
 --
--- Run in one transaction. Order in production: (frontend stays — it handles
--- both schemas), this file, then the previous delete-account Edge Function.
+-- Run in one transaction, then reload the API schema cache:
+--   NOTIFY pgrst, 'reload schema';
+-- Keep everything else: the frontend (v47+ handles both schemas), migration 0006
+-- and the v47 delete-account Edge Function (it works while 0005 is rolled back).
+-- Do NOT redeploy the pre-v47 function and do NOT run 0006_down.
 -- ============================================================================
 
 begin;

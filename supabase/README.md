@@ -52,8 +52,11 @@ select id from public.posts
                                    or split_part(thumb_path, '/', 1) <> user_id::text);
 ```
 
-Release order: the app (v47+) first — it sends the 16+ confirmation at signup and hides social
-features until 0005 exists — then `0006`, then 0005, then the `delete-account` function.
+Release order (as released on 2026-10-11): the app (v47+) first — it sends the 16+ confirmation at
+signup and hides social features until 0005 exists — then `0006`, then the v47 `delete-account`
+function, then 0005. The v47 function works with and without 0005 (it skips the social tables until
+they exist), so deploying it before 0005 leaves no window in which *Leave Community* misses the
+user's follows, likes and shares.
 
 **0006 — privileges for `delete-account`.** With “Automatically expose new tables” off, the 0001/0004
 tables have no privileges for `service_role`, the role the function uses, so its deletes fail with
@@ -64,7 +67,7 @@ on `posts`, `reports`, `blocks`, `backups`, `UPDATE (bio, avatar_path)` on `prof
 just the columns those statements filter on (PostgreSQL requires it) — no content reads, no inserts,
 nothing on `backup_versions` (removed by the cascade). Run it once (one transaction); it also fixes the
 pre-v47 function. It does not depend on 0005 and survives `0005_down`: a Release-1 rollback is
-`0005_down` + the previous function, **keeping 0006**. [`rollback/0006_down.sql`](./rollback/0006_down.sql)
+`0005_down` alone, **keeping 0006 and the v47 function** (see *Rollback* below). [`rollback/0006_down.sql`](./rollback/0006_down.sql)
 exists but is **not a safe rollback**: it brings the deletion bug back (pre-v47 function) or makes Leave
 Community *and* account deletion fail with `500 db_delete_failed` (v47 function) — use it only if one of
 the grants itself causes a problem, and re-apply 0006 right after.
@@ -76,6 +79,10 @@ moderation history, spam counters, rename dates and photos 2–4 move to the une
 `community_rollback` (deleting an account still removes them). Re-running 0005 moves them back and
 rebuilds the counters. While rolled back, photos 2–4 of a post are visible only to the author and
 moderators. Run the rollback file only from `supabase/rollback/` — never place it in `migrations/`.
+Afterwards reload the API schema cache (`NOTIFY pgrst, 'reload schema';`). **Keep `0006` and the v47
+`delete-account` function**: the function works while 0005 is rolled back (it skips the moved social
+tables) and `0005_down` never touches the 0006 privileges. Do not redeploy the pre-v47 function and do
+not run `0006_down`. The app (v47+) falls back to the pre-0005 Community by itself.
 
 ## 3. Authentication (email + password)
 1. **Authentication → Providers → Email**: enable **Email** and keep **Confirm email** ON.
