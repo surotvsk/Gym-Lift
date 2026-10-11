@@ -6690,7 +6690,6 @@ const SYNC_I18N = {
     'sync.tabBody': 'Aby sa dáta navzájom neprepísali, aplikácia beží naraz len v jednej karte. Tvoje dáta sú uložené.',
     'sync.tabUseHere': 'Použiť tu',
     'sync.tabWaiting': 'Čakám, kým druhá karta dokončí synchronizáciu…',
-    'photos.privacy': 'Fotky sa ukladajú na tomto zariadení. Ak si prihlásený a synchronizácia je zapnutá, súkromne sa uložia aj do tvojho účtu a načítajú sa na ďalších zariadeniach. Nie sú v JSON exporte a nikdy sa nezverejňujú.',
     'media.personalNote': 'Vlastné médiá sa ukladajú na tomto zariadení. Ak si prihlásený a synchronizácia je zapnutá, súkromne sa uložia aj do tvojho účtu (videá nad 50 MB zostanú len na zariadení). Nie sú v JSON exporte.',
   },
   en: {
@@ -6760,7 +6759,6 @@ const SYNC_I18N = {
     'sync.tabBody': 'To keep your data from being overwritten, the app runs in only one tab at a time. Your data is saved.',
     'sync.tabUseHere': 'Use here',
     'sync.tabWaiting': 'Waiting for the other tab to finish syncing…',
-    'photos.privacy': 'Your photos are stored on this device. When you are signed in with sync on, they are also saved privately to your account and loaded on your other devices. They are not in the JSON export and are never published.',
     'media.personalNote': 'Your own media is stored on this device. When you are signed in with sync on, it is also saved privately to your account (videos over 50 MB stay on this device only). It is not in the JSON export.',
   },
   es: {
@@ -6830,7 +6828,6 @@ const SYNC_I18N = {
     'sync.tabBody': 'Para que tus datos no se sobrescriban, la app funciona en una sola pestaña a la vez. Tus datos están guardados.',
     'sync.tabUseHere': 'Usar aquí',
     'sync.tabWaiting': 'Esperando a que la otra pestaña termine de sincronizar…',
-    'photos.privacy': 'Tus fotos se guardan en este dispositivo. Si has iniciado sesión con la sincronización activada, también se guardan de forma privada en tu cuenta y se cargan en tus otros dispositivos. No están en la exportación JSON y nunca se publican.',
     'media.personalNote': 'Tu propio material se guarda en este dispositivo. Si has iniciado sesión con la sincronización activada, también se guarda de forma privada en tu cuenta (los vídeos de más de 50 MB se quedan solo en el dispositivo). No está en la exportación JSON.',
   },
   'pt-BR': {
@@ -6900,7 +6897,6 @@ const SYNC_I18N = {
     'sync.tabBody': 'Para que seus dados não sejam sobrescritos, o app funciona em apenas uma aba por vez. Seus dados estão salvos.',
     'sync.tabUseHere': 'Usar aqui',
     'sync.tabWaiting': 'Aguardando a outra aba terminar a sincronização…',
-    'photos.privacy': 'Suas fotos são guardadas neste dispositivo. Se você estiver conectado com a sincronização ativada, elas também são salvas de forma privada na sua conta e carregadas nos seus outros dispositivos. Não entram no export JSON e nunca são publicadas.',
     'media.personalNote': 'Seu próprio material é guardado neste dispositivo. Se você estiver conectado com a sincronização ativada, ele também é salvo de forma privada na sua conta (vídeos acima de 50 MB ficam só no dispositivo). Não entra no export JSON.',
   },
   fr: {
@@ -6970,7 +6966,6 @@ const SYNC_I18N = {
     'sync.tabBody': 'Pour éviter que tes données soient écrasées, l’app ne fonctionne que dans un seul onglet à la fois. Tes données sont enregistrées.',
     'sync.tabUseHere': 'Utiliser ici',
     'sync.tabWaiting': 'En attente de la fin de la synchronisation dans l’autre onglet…',
-    'photos.privacy': 'Tes photos sont stockées sur cet appareil. Si tu es connecté avec la synchronisation activée, elles sont aussi enregistrées en privé dans ton compte et chargées sur tes autres appareils. Elles ne sont pas dans l’export JSON et ne sont jamais publiées.',
     'media.personalNote': 'Tes propres médias sont stockés sur cet appareil. Si tu es connecté avec la synchronisation activée, ils sont aussi enregistrés en privé dans ton compte (les vidéos de plus de 50 Mo restent uniquement sur l’appareil). Ils ne sont pas dans l’export JSON.',
   },
   ar: {
@@ -7040,7 +7035,6 @@ const SYNC_I18N = {
     'sync.tabBody': 'حتى لا تُستبدل بياناتك، يعمل التطبيق في علامة تبويب واحدة فقط في كل مرة. بياناتك محفوظة.',
     'sync.tabUseHere': 'استخدم هنا',
     'sync.tabWaiting': 'بانتظار انتهاء المزامنة في علامة التبويب الأخرى…',
-    'photos.privacy': 'تُحفظ صورك على هذا الجهاز. إذا كنت مسجّل الدخول والمزامنة مفعّلة، تُحفظ أيضًا بشكل خاص في حسابك وتُحمَّل على أجهزتك الأخرى. ليست ضمن تصدير JSON ولا تُنشر أبدًا.',
     'media.personalNote': 'تُحفظ وسائطك الخاصة على هذا الجهاز. إذا كنت مسجّل الدخول والمزامنة مفعّلة، تُحفظ أيضًا بشكل خاص في حسابك (تبقى مقاطع الفيديو الأكبر من 50 ميغابايت على الجهاز فقط). ليست ضمن تصدير JSON.',
   },
 };
