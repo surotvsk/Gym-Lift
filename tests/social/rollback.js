@@ -85,8 +85,12 @@ async function checkRolledBack(label, baseline, before, hashes) {
   const ins = await u.c.from('posts').insert({ user_id: u.id, image_path: img, thumb_path: th, caption: '' }).select('id').single();
   check('v46 photo post works', !ins.error, ins.error && ins.error.message);
   if (!ins.error) { await u.c.from('posts').delete().eq('id', ins.data.id); await u.c.storage.from('community').remove([img, th]); }
+  /* Pre-0005 anon access depends on the project: with "Automatically expose new tables" ON anon could
+     read profiles; with it OFF (production) anon had no privilege at all. Expect what the baseline had. */
+  const anonHad = /^profiles \| anon \| [A-Z,]*SELECT/m.test(baseline);
   const an = await L.anon().from('profiles').select('id').limit(1);
-  check('pre-0005 privileges restored exactly (anon read of profiles works again, as before 0005)', !an.error && rows(an).length === 1);
+  check('pre-0005 privileges restored exactly (anon read of profiles: ' + (anonHad ? 'works again' : 'still refused') + ', as in the baseline)',
+    anonHad ? !an.error && rows(an).length === 1 : !!an.error && /permission denied|42501/.test(L.errText(an)), L.errText(an));
   const extra = sqlVal('select m.image_path from community_rollback.post_media m join public.posts p on p.id = m.post_id where p.user_id = ' + lit(before.user.id) + ' and p.status = \'approved\' order by m.position limit 1');
   const other = await L.signIn(before.user2);
   const s1 = await other.c.storage.from('community').createSignedUrl(extra, 60);

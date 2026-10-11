@@ -53,7 +53,11 @@ const L = require('./lib');
   const hijack = await B.c.from('posts').insert({ user_id: B.id, image_path: a2.img, thumb_path: a2.th, caption: 'not mine' }).select('id').single();
   L.check('gap 2 open: a post can reference another user\'s photo path', !hijack.error, L.errText(hijack));
   const anonProfiles = await L.anon().from('profiles').select('id,username');
-  L.check('gap 3 open: signed-out (anon) can read profiles', !anonProfiles.error && (anonProfiles.data || []).length >= 4, L.errText(anonProfiles));
+  /* Open only where "Automatically expose new tables" is ON; with it OFF (production) anon has no
+     privilege on profiles at all, so 0005 has nothing to close there. */
+  const anonOpen = !anonProfiles.error && (anonProfiles.data || []).length >= 4;
+  const anonNoPriv = !!anonProfiles.error && /permission denied|42501/.test(L.errText(anonProfiles));
+  L.check('gap 3: signed-out (anon) read of profiles — ' + (anonOpen ? 'open' : 'already closed (no anon privilege: auto-expose OFF, as in production)'), anonOpen || anonNoPriv, L.errText(anonProfiles));
 
   fs.writeFileSync(STATE, JSON.stringify({
     users: Object.fromEntries([['M', M], ['A', A], ['B', B], ['C', C]].map(([k, u]) => [k, { email: u.email, password: u.password, id: u.id, tag: u.tag }])),

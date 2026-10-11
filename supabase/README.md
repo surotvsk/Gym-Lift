@@ -12,12 +12,14 @@ exactly as before: fully offline, no accounts, no network requests. Nothing belo
    (Project settings → API). These two are safe in frontend code.
 
 ## 2. Run the database migrations
-Run **all five** migrations, in order:
+Run **all six** migrations, in order:
 1. [`migrations/0001_community.sql`](./migrations/0001_community.sql) — tables, functions, triggers, RLS, buckets.
 2. [`migrations/0002_community_grants.sql`](./migrations/0002_community_grants.sql) — explicit `GRANT`s.
 3. [`migrations/0003_community_moderation_and_upload_caps.sql`](./migrations/0003_community_moderation_and_upload_caps.sql) — moderator suspension policy and a per-user Storage object cap.
 4. [`migrations/0004_private_backup.sql`](./migrations/0004_private_backup.sql) — private per-user cloud backup: `backups` + `backup_versions` tables, `save_backup()` (revision/conflict), and a private `backups` Storage bucket with **owner-only** policies (no moderator access).
 5. [`migrations/0005_social_feed.sql`](./migrations/0005_social_feed.sql) — social feed (Release 1): one-way follows, likes, internal shares, the *Following* feed, profile counts and lists, text-only posts and posts with 1–4 photos, a 16+ confirmation for every account (no birth date stored), spam limits, block clean-up, hidden suspended authors, moderation history and report review. It also closes four gaps in 0001–0004: post text is locked after review, photo paths must start with the author's id (and a referenced path can never be re-uploaded), signed-out (`anon`) access to Community tables is removed, and usernames get a reserved list plus a 30-day rename limit. Every new post still waits for a moderator.
+
+6. [`migrations/0006_delete_account_grants.sql`](./migrations/0006_delete_account_grants.sql) — the privileges the `delete-account` function needs on the 0001/0004 tables (see below). Independent of 0005.
 
 SQL editor → paste a file → Run, **or** with the CLI: `supabase db push`.
 
@@ -51,7 +53,21 @@ select id from public.posts
 ```
 
 Release order: the app (v47+) first — it sends the 16+ confirmation at signup and hides social
-features until 0005 exists — then 0005, then the `delete-account` function.
+features until 0005 exists — then `0006`, then 0005, then the `delete-account` function.
+
+**0006 — privileges for `delete-account`.** With “Automatically expose new tables” off, the 0001/0004
+tables have no privileges for `service_role`, the role the function uses, so its deletes fail with
+`permission denied`. The function deployed before v47 ignores those errors: *Leave Community* answers
+ok while the posts, reports and blocks stay (only the Storage files go; full deletion still works
+through the cascade from `auth.users`). 0006 grants only the statements the function runs — `DELETE`
+on `posts`, `reports`, `blocks`, `backups`, `UPDATE (bio, avatar_path)` on `profiles`, and `SELECT` on
+just the columns those statements filter on (PostgreSQL requires it) — no content reads, no inserts,
+nothing on `backup_versions` (removed by the cascade). Run it once (one transaction); it also fixes the
+pre-v47 function. It does not depend on 0005 and survives `0005_down`: a Release-1 rollback is
+`0005_down` + the previous function, **keeping 0006**. [`rollback/0006_down.sql`](./rollback/0006_down.sql)
+exists but is **not a safe rollback**: it brings the deletion bug back (pre-v47 function) or makes Leave
+Community *and* account deletion fail with `500 db_delete_failed` (v47 function) — use it only if one of
+the grants itself causes a problem, and re-apply 0006 right after.
 
 **Rollback:** [`rollback/0005_down.sql`](./rollback/0005_down.sql) (one transaction) restores the
 exact pre-0005 functions, policies and `anon` privileges. It **keeps all data**: posts stay (also
@@ -78,6 +94,8 @@ Do **not** set `SUPABASE_URL`, `SUPABASE_ANON_KEY` or `SUPABASE_SERVICE_ROLE_KEY
 **reserved secrets that Supabase provides to Edge Functions automatically**; attempting to set them
 manually is rejected. The function reads them from `Deno.env` at runtime, so the **service_role key is
 never** placed in `community-config.js`, the repository, or logs.
+The function needs migration `0006` (privileges); every failed database step returns HTTP 500 with
+the step (`db_delete_failed` + table, `db_update_failed`, `delete_failed`) — never a false success.
 
 ## 5. Point the app at your project
 Edit [`../community-config.js`](../community-config.js) and set ONLY:

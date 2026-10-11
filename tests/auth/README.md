@@ -14,6 +14,15 @@ Two parts:
   be in the Auth redirect allow list). Links, tokens and passwords are never printed; the new password
   for the reset step is written to a file in `GQ_CREDS_DIR` for the person to type.
 
+## Permanent production test accounts — NEVER DELETE
+
+`gqsync-c`, `gqsocial-a` and `gqsocial-b` are permanent production test accounts for ongoing GymQuest
+development. **Never delete them** and never use them for full account deletion ("Delete my account",
+`delete-account` mode `full`) or for injected-failure tests. Full deletion and failure-injection tests
+run only with disposable **local** accounts on the local Supabase stack (`tests/social/delete-account.js`).
+Do not create another production account without separate approval. Their credentials live outside
+the repository.
+
 ```powershell
 node tests/auth/run-auth.js                       # or a filter: node tests/auth/run-auth.js "H/I/J"
 node tests/auth/inbox-e2e.js serve                # keep running while links are clicked

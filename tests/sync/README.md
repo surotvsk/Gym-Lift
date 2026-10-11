@@ -4,6 +4,15 @@ Real Chrome processes with disposable profiles, driven over the DevTools protoco
 copy of the app and the live Supabase project. Uses **only** the two disposable test accounts; every
 scenario wipes their synthetic backup data first and the suite wipes it again at the end.
 
+## Permanent production test accounts — NEVER DELETE
+
+`gqsync-c`, `gqsocial-a` and `gqsocial-b` are permanent production test accounts for ongoing GymQuest
+development. **Never delete them** and never use them for full account deletion ("Delete my account",
+`delete-account` mode `full`) or for injected-failure tests. Full deletion and failure-injection tests
+run only with disposable **local** accounts on the local Supabase stack (`tests/social/delete-account.js`).
+Do not create another production account without separate approval. Their credentials live outside
+the repository.
+
 ## Run
 
 ```powershell
