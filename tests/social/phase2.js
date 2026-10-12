@@ -354,7 +354,7 @@ scenario('signed-out callers and privileges', async () => {
 
 (async () => {
   fx = L.fixtures();
-  if (sqlVal('select public.community_social_version()') !== '2') throw new Error('apply migration 0008 first');
+  if (Number(sqlVal('select public.community_social_version()')) < 2) throw new Error('apply migration 0008 first');   // 0009 (version 3) includes 0008
   M = await L.newUser('p2-mod'); L.makeModerator(M);
   for (const sc of scenarios) {
     if (FILTER && !FILTER.test(sc.name)) continue;
