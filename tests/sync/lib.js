@@ -35,6 +35,7 @@ const TYPES = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; ch
 function startServer(port, roots) {
   let current = 'new';
   const requests = [];   // every requested path, in order (tests check what an update downloads)
+  const sent = [];       // { path, bytes, range } for every file served
   const srv = http.createServer((req, res) => {
     const u = new URL(req.url, 'http://localhost');
     let p = decodeURIComponent(u.pathname);
@@ -45,12 +46,22 @@ function startServer(port, roots) {
     if (!fp.startsWith(base) && fp !== path.resolve(CONFIG_OVERRIDE || '\0')) { res.writeHead(403); res.end(); return; }
     fs.readFile(fp, (err, buf) => {
       if (err) { res.writeHead(404); res.end('not found'); return; }
-      res.writeHead(200, { 'Content-Type': TYPES[path.extname(fp)] || 'application/octet-stream', 'Cache-Control': 'no-store' });
+      const type = TYPES[path.extname(fp)] || 'application/octet-stream';
+      const m = /^bytes=(\d+)-(\d*)$/.exec(String(req.headers.range || ''));
+      if (m && Number(m[1]) < buf.length) {   // Range like GitHub Pages (tests measure how much is downloaded)
+        const start = Number(m[1]), end = m[2] === '' ? buf.length - 1 : Math.min(Number(m[2]), buf.length - 1);
+        sent.push({ path: p, bytes: end - start + 1, range: true });
+        res.writeHead(206, { 'Content-Type': type, 'Cache-Control': 'no-store', 'Accept-Ranges': 'bytes', 'Content-Range': 'bytes ' + start + '-' + end + '/' + buf.length });
+        res.end(buf.subarray(start, end + 1));
+        return;
+      }
+      sent.push({ path: p, bytes: buf.length, range: false });
+      res.writeHead(200, { 'Content-Type': type, 'Cache-Control': 'no-store' });
       res.end(buf);
     });
   });
   return new Promise((resolve) => srv.listen(port, '127.0.0.1', () => resolve({
-    requests,
+    requests, sent,
     setRoot(r) { current = r; }, root() { return current; }, close() { return new Promise((r) => srv.close(r)); },
   })));
 }
@@ -315,4 +326,4 @@ class Observer {
   }
 }
 
-module.exports = { startServer, Browser, Observer, loadCreds, readPublicConfig, waitFor, ALLOWED_TEST_IDS };
+module.exports = { startServer, Browser, Observer, loadCreds, readPublicConfig, waitFor, cdpConnect, ALLOWED_TEST_IDS };

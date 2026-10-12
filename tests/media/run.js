@@ -269,6 +269,34 @@ scenario('batch 2+3', async () => {
   } finally { await srv.close(); }
 });
 
+/* Review I1 (2026-10-12): when the media cache cannot store a file (full storage / eviction), ranged
+   requests must go to the network as ranges instead of downloading the whole file every time. */
+scenario('media cache full', async () => {
+  const a = makeBuild('build-full', '');
+  const srv = await startServer(PORT, { a });
+  srv.setRoot('a');
+  try {
+    const { b, p } = await freshPage('cachefull');
+    await openApp(p);
+    const list = await (await fetch('http://127.0.0.1:' + b.port + '/json/list')).json();
+    const sw = list.find((t) => t.type === 'service_worker');
+    const { cdpConnect } = require('../sync/lib');
+    const c = await cdpConnect(sw.webSocketDebuggerUrl);
+    await c.send('Runtime.evaluate', { expression: `Cache.prototype.put = function () { return Promise.reject(new DOMException('full', 'QuotaExceededError')); }; true` });
+    c.close();
+    const v = 'media/lunges.webm';
+    const size = fs.statSync(path.join(a, v)).size;
+    srv.sent.length = 0;
+    const r1 = await fetchInfo(p, v, 'bytes=0-1');
+    const r2 = await fetchInfo(p, v, 'bytes=1000-1999');
+    const r3 = await fetchInfo(p, v, 'bytes=5000-5999');
+    const got = srv.sent.filter((x) => x.path === '/' + v);
+    const total = got.reduce((n, x) => n + x.bytes, 0);
+    check('ranged requests still answered 206 with the right slices', r1.s === 206 && r1.n === 2 && r2.s === 206 && r2.n === 1000 && r3.s === 206 && r3.n === 1000, { r1, r2, r3 });
+    check('after a failed store, later ranges are not whole-file downloads (at most one full download)', got.filter((x) => !x.range).length <= 1 && total <= size + 4000, { got, size });
+  } finally { await srv.close(); }
+});
+
 /* ---------- runner ---------- */
 (async () => {
   fs.mkdirSync(PROFILES, { recursive: true });

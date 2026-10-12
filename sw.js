@@ -124,30 +124,41 @@ async function serveFromCacheThenNetwork(cacheKey, request) {
   }
 }
 
+/* Ukážky, ktoré sa nepodarilo uložiť (plné úložisko, Safari ich zmazal): ďalšie kúsky (Range)
+   idú priamo na sieť ako kúsky, nie znova celý súbor pri každej požiadavke. */
+const mediaNoStore = new Set();
+
 async function serveMedia(request, url) {
   const key = mediaKey(url);
+  const range = request.headers.get('range');
   let res = null;
   try {
     const cache = await caches.open(MEDIA_CACHE);
     res = await cache.match(key);
+    if (!res && range && mediaNoStore.has(key)) return fetch(request);
     if (!res) {
       // Vždy celý súbor (bez Range), aby sa do cache nikdy neuložil len kúsok.
       const net = await fetch(key, { cache: 'no-store' });
       if (net.status !== 200) return net;            // 404 a pod. sa neukladá
-      try { await cache.put(key, net.clone()); } catch (e) { /* plná kvóta: ukážka sa len neuloží */ }
+      try {
+        await cache.put(key, net.clone());
+        mediaNoStore.delete(key);
+      } catch (e) {
+        mediaNoStore.add(key);                       // plná kvóta: ukážka sa neuloží, ďalšie kúsky zo siete
+      }
       res = net;
     }
   } catch (e) {
     return Response.error();                         // offline a ešte nestiahnuté
   }
-  const range = request.headers.get('range');
   return range ? rangeResponse(res, range) : res;
 }
 
 /* Safari načítava video po kúskoch (Range) a celú odpoveď 200 neprehrá. */
 async function rangeResponse(res, header) {
-  const buf = await res.arrayBuffer();
-  const size = buf.byteLength;
+  // Blob.slice nekopíruje dáta – celé video sa pri každom kúsku nenačíta do pamäte (iPhone).
+  const blob = await res.blob();
+  const size = blob.size;
   const m = /^bytes=(\d*)-(\d*)$/.exec(String(header).trim());
   let start = -1, end = -1;
   if (m && m[1] !== '') {
@@ -160,7 +171,7 @@ async function rangeResponse(res, header) {
   if (start < 0 || start >= size || start > end) {
     return new Response(null, { status: 416, headers: { 'Content-Range': 'bytes */' + size } });
   }
-  return new Response(buf.slice(start, end + 1), {
+  return new Response(blob.slice(start, end + 1), {
     status: 206,
     headers: {
       'Content-Type': res.headers.get('Content-Type') || 'application/octet-stream',
