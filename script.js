@@ -20199,8 +20199,10 @@ let swUpdateReady = false;          // čaká nová verzia
 let reloadingForUpdate = false;     // ochrana proti slučke reloadov
 let pendingUpdateReload = false;    // nová verzia je aktívna, ale používateľ je zaneprázdnený
 /* Pri prvej inštalácii stránku neriadi žiadny service worker; clients.claim()
-   vtedy vyvolá controllerchange, ktorý nesmie spôsobiť reload. */
-const hadServiceWorkerController = !!(navigator.serviceWorker && navigator.serviceWorker.controller);
+   vtedy vyvolá controllerchange, ktorý nesmie spôsobiť reload. Ignoruje sa však
+   len tento prvý – každý ďalší controllerchange je skutočná aktualizácia
+   (napr. "Aktualizovať" v tej istej karte, ktorá appku práve nainštalovala). */
+let swHasController = !!(navigator.serviceWorker && navigator.serviceWorker.controller);
 
 /* Prebieha niečo, pri čom by reload mohol stratiť vstup používateľa? */
 function isBusy() {
@@ -20249,6 +20251,7 @@ function applyUpdate() {
   const waiting = swRegistration && swRegistration.waiting;
   if (!waiting) return;
   swUpdateReady = false;
+  swHasController = true;   // používateľ si aktualizáciu vyžiadal – nasledujúci controllerchange musí obnoviť stránku
   refreshUpdateBanner();
   waiting.postMessage({ type: 'SKIP_WAITING' });
 }
@@ -20282,9 +20285,18 @@ function registerServiceWorker() {
   });
 
   navigator.serviceWorker.addEventListener('controllerchange', () => {
-    if (!hadServiceWorkerController) return;   // prvá inštalácia – nič sa neobnovuje
+    if (!swHasController) { swHasController = true; return; }   // prvá inštalácia – nič sa neobnovuje
     swUpdateReady = false;
     reloadForUpdate();
+  });
+
+  /* Appka z plochy (iPhone/Android) sa po návrate z pozadia neobnovuje, takže prehliadač
+     sám novú verziu nehľadá – skontroluje sa pri každom návrate (najviac raz za minútu). */
+  let swLastCheck = Date.now();
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden || !swRegistration || Date.now() - swLastCheck < 60000) return;
+    swLastCheck = Date.now();
+    swRegistration.update().catch(() => {});   // offline: skúsi sa pri ďalšom návrate
   });
 }
 
