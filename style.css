@@ -1397,6 +1397,20 @@ body.has-update-banner .app-main {
 
 .modal-actions .btn { flex: 1; }
 
+/* Pozvánka do Community: zatváracie tlačidlo v rohu (v RTL na druhej strane). */
+.modal.modal-invite { position: relative; padding-top: var(--sp-8); }
+.modal-invite-close {
+  position: absolute;
+  top: var(--sp-2);
+  inset-inline-end: var(--sp-2);
+  min-width: 44px;
+  min-height: 44px;
+}
+.modal-invite-icon { font-size: 2.5rem; line-height: 1; margin-bottom: var(--sp-3); }
+@media (max-width: 430px) {
+  #modal-community-invite .modal-actions { flex-direction: column-reverse; }
+}
+
 /* Potvrdzovacie tlačidlá (generický modal) sa na úzkych displejoch zalomia pod seba.
    Dvojica "Cancel | Import data" resp. "Zrušiť | Importovať dáta" sa totiž pri 320–430 px
    nezmestí vedľa seba do jedného riadku a popis deštruktívnej akcie by sa lámal do dvoch riadkov. */

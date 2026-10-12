@@ -1858,6 +1858,8 @@ const I18N = {
     'community.rules': 'Zdieľaj iba vlastné fotky a správaj sa k ostatným s rešpektom. Žiadna nahota, obťažovanie, nenávisť ani znevažovanie vzhľadu. Moderátori môžu obsah odstrániť a účty pozastaviť.',
     'community.privacy': 'Nahrá sa iba zvolená fotka (bez metadát). Používateľské meno je verejné; e-mail sa nikdy nezobrazuje. Príspevky aj účet môžeš kedykoľvek vymazať.',
     'community.enable': 'Zapnúť Community', 'community.disable': 'Vypnúť Community',
+    'community.inviteTitle': 'Pridaj sa ku GymQuest Community', 'community.inviteText': 'Zdieľaj svoj pokrok, sleduj priateľov, píš si s nimi a zabojuj o miesto v Top 20. Tvoje tréningy ostávajú súkromné – zverejní sa iba to, čo sa rozhodneš zdieľať.',
+    'community.inviteJoin': 'Pridať sa', 'community.inviteLater': 'Teraz nie',
     'community.email': 'E-mail', 'community.password': 'Heslo', 'community.signIn': 'Prihlásiť sa', 'community.signUp': 'Registrovať sa',
     'community.signInTitle': 'Prihlás sa alebo si vytvor účet', 'community.signOut': 'Odhlásiť sa',
     'community.emailConfirmNote': 'Pošleme ti potvrdzujúci odkaz e-mailom — dokonči registráciu v schránke.',
@@ -2728,6 +2730,8 @@ const I18N = {
     'community.rules': 'Share only your own photos and treat others with respect. No nudity, harassment, hate or body-shaming. Moderators may remove content and suspend accounts.',
     'community.privacy': 'Only your chosen photo is uploaded (metadata removed). Your username is public; your email is never shown. You can delete posts and your account at any time.',
     'community.enable': 'Enable Community', 'community.disable': 'Turn off Community',
+    'community.inviteTitle': 'Join the GymQuest Community', 'community.inviteText': 'Share your progress, follow friends, chat with them and compete for a spot in the Top 20. Your workouts stay private – only what you choose to share is posted.',
+    'community.inviteJoin': 'Join', 'community.inviteLater': 'Not now',
     'community.email': 'Email', 'community.password': 'Password', 'community.signIn': 'Sign in', 'community.signUp': 'Sign up',
     'community.signInTitle': 'Sign in or create an account', 'community.signOut': 'Sign out',
     'community.emailConfirmNote': 'We email you a confirmation link — check your inbox to finish signing up.',
@@ -3604,6 +3608,8 @@ const I18N = {
     'community.rules': 'Comparte solo tus propias fotos y trata a los demás con respeto. Nada de desnudos, acoso, odio ni comentarios sobre el cuerpo. Los moderadores pueden retirar contenido y suspender cuentas.',
     'community.privacy': 'Solo se sube la foto elegida (sin metadatos). Tu nombre de usuario es público; tu correo nunca se muestra. Puedes borrar publicaciones y tu cuenta cuando quieras.',
     'community.enable': 'Activar Comunidad', 'community.disable': 'Desactivar Comunidad',
+    'community.inviteTitle': 'Únete a la Comunidad de GymQuest', 'community.inviteText': 'Comparte tu progreso, sigue a tus amigos, chatea con ellos y compite por un puesto en el Top 20. Tus entrenamientos siguen siendo privados: solo se publica lo que decidas compartir.',
+    'community.inviteJoin': 'Unirme', 'community.inviteLater': 'Ahora no',
     'community.email': 'Correo', 'community.password': 'Contraseña', 'community.signIn': 'Iniciar sesión', 'community.signUp': 'Registrarse',
     'community.signInTitle': 'Inicia sesión o crea una cuenta', 'community.signOut': 'Cerrar sesión',
     'community.emailConfirmNote': 'Te enviamos un enlace de confirmación por correo: revisa tu bandeja para terminar el registro.',
@@ -4472,6 +4478,8 @@ const I18N = {
     'community.rules': 'Compartilhe apenas suas próprias fotos e trate os outros com respeito. Sem nudez, assédio, ódio ou comentários sobre o corpo. Moderadores podem remover conteúdo e suspender contas.',
     'community.privacy': 'Só a foto escolhida é enviada (sem metadados). Seu nome de usuário é público; seu e-mail nunca é exibido. Você pode excluir posts e sua conta quando quiser.',
     'community.enable': 'Ativar Comunidade', 'community.disable': 'Desativar Comunidade',
+    'community.inviteTitle': 'Participe da Comunidade GymQuest', 'community.inviteText': 'Compartilhe seu progresso, siga amigos, converse com eles e dispute um lugar no Top 20. Seus treinos continuam privados: só é publicado o que você decidir compartilhar.',
+    'community.inviteJoin': 'Participar', 'community.inviteLater': 'Agora não',
     'community.email': 'E-mail', 'community.password': 'Senha', 'community.signIn': 'Entrar', 'community.signUp': 'Cadastrar',
     'community.signInTitle': 'Entre ou crie uma conta', 'community.signOut': 'Sair',
     'community.emailConfirmNote': 'Enviamos um link de confirmação por e-mail — confira sua caixa de entrada para concluir o cadastro.',
@@ -5340,6 +5348,8 @@ const I18N = {
     'community.rules': 'Ne partage que tes propres photos et respecte les autres. Pas de nudité, harcèlement, haine ni jugement sur le corps. Les modérateurs peuvent retirer du contenu et suspendre des comptes.',
     'community.privacy': 'Seule la photo choisie est envoyée (sans métadonnées). Ton nom d’utilisateur est public ; ton e-mail n’est jamais affiché. Tu peux supprimer tes publications et ton compte à tout moment.',
     'community.enable': 'Activer la Communauté', 'community.disable': 'Désactiver la Communauté',
+    'community.inviteTitle': 'Rejoins la Communauté GymQuest', 'community.inviteText': 'Partage tes progrès, suis tes amis, discute avec eux et vise une place dans le Top 20. Tes entraînements restent privés : seul ce que tu choisis de partager est publié.',
+    'community.inviteJoin': 'Rejoindre', 'community.inviteLater': 'Pas maintenant',
     'community.email': 'E-mail', 'community.password': 'Mot de passe', 'community.signIn': 'Se connecter', 'community.signUp': 'S’inscrire',
     'community.signInTitle': 'Connecte-toi ou crée un compte', 'community.signOut': 'Se déconnecter',
     'community.emailConfirmNote': 'Nous t’envoyons un lien de confirmation par e-mail — vérifie ta boîte pour terminer l’inscription.',
@@ -6227,6 +6237,8 @@ const I18N = {
     'community.rules': 'شارك صورك فقط وعامل الآخرين باحترام. لا عُري ولا تحرّش ولا كراهية ولا أحكام على الأجسام. يمكن للمشرفين حذف المحتوى وإيقاف الحسابات.',
     'community.privacy': 'تُرفع الصورة المختارة فقط (بدون بيانات وصفية). اسم المستخدم علني؛ ولا يظهر بريدك أبدًا. يمكنك حذف المنشورات وحسابك في أي وقت.',
     'community.enable': 'تفعيل المجتمع', 'community.disable': 'إيقاف المجتمع',
+    'community.inviteTitle': 'انضم إلى مجتمع GymQuest', 'community.inviteText': 'شارك تقدّمك، وتابع أصدقاءك، وتحدّث معهم، ونافس على مكان ضمن أفضل 20. تبقى تمارينك خاصة، ولا يُنشر إلا ما تختار مشاركته.',
+    'community.inviteJoin': 'انضمام', 'community.inviteLater': 'ليس الآن',
     'community.email': 'البريد الإلكتروني', 'community.password': 'كلمة المرور', 'community.signIn': 'تسجيل الدخول', 'community.signUp': 'إنشاء حساب',
     'community.signInTitle': 'سجّل الدخول أو أنشئ حسابًا', 'community.signOut': 'تسجيل الخروج',
     'community.emailConfirmNote': 'نرسل إليك رابط تأكيد بالبريد — تحقّق من صندوقك لإكمال التسجيل.',
@@ -10091,6 +10103,7 @@ function onVisibilityChange() {
        zvukovom kontexte, prehral by sa po návrate dodatočne – presne ten "oneskorený gong",
        ktorý sa už nesmie objaviť. */
     stopActiveChime();
+    clearTimeout(communityInviteTimer);
   } else {
     if (wasHidden) refreshRestTimerOnVisible();
     wasHidden = false;
@@ -10099,6 +10112,7 @@ function onVisibilityChange() {
     /* Návrat do appky je presne ten moment, kedy sa má vyhodnotiť, či záloha
        medzitým "dozrela" – aplikácia totiž na pozadí nič nerobí. */
     refreshBackupOffer();
+    scheduleCommunityInvite();
   }
 }
 
@@ -13177,6 +13191,72 @@ function communityDisable() {
   communityConsent = null;
   communityResetSocial2();
   communityClose();
+}
+
+/* ---------- Pozvánka do Community ----------
+   Kto Community nepoužíva, dostane občas okno s pozvánkou. Dá sa zavrieť a vráti sa
+   najskôr po COMMUNITY_INVITE_EVERY_MS. Čas posledného zobrazenia je iba na zariadení
+   (vlastný kľúč mimo stavu, nesynchronizuje sa). Nikdy nie počas tréningu, otvoreného
+   dialógu, lišty s aktualizáciou/zálohou, na karte Community ani bez pripojenia. */
+const COMMUNITY_INVITE_KEY = 'gymquest_community_invite';
+const COMMUNITY_INVITE_EVERY_MS = 3 * 24 * 60 * 60 * 1000;
+const COMMUNITY_INVITE_DELAY_MS = 4000;
+let communityInviteMemAt = 0;      // náhrada, keď localStorage nie je dostupné
+let communityInviteTimer = null;
+
+function communityInviteLast() {
+  let v = 0;
+  try { v = Number(localStorage.getItem(COMMUNITY_INVITE_KEY)) || 0; } catch (e) {}
+  return Math.max(v, communityInviteMemAt);
+}
+function communityInviteMark() {
+  communityInviteMemAt = Date.now();
+  try { localStorage.setItem(COMMUNITY_INVITE_KEY, String(communityInviteMemAt)); } catch (e) {}
+}
+function communityInviteDue() {
+  if (!state || !communityConfigured() || communityOptIn()) return false;
+  const last = communityInviteLast();
+  if (!last) {
+    /* Úplne nový používateľ (ešte bez tréningu): prvá pozvánka až po intervale,
+       nie hneď pri úvodnom nastavení. */
+    if (state.history.length === 0) { communityInviteMark(); return false; }
+    return true;
+  }
+  const age = Date.now() - last;
+  return age < 0 || age >= COMMUNITY_INVITE_EVERY_MS;   // age < 0: hodiny zariadenia sa posunuli späť
+}
+function communityInviteBlocked() {
+  /* Testy (window.__GQ_TEST__) pozvánku dostanú iba na výslovnú žiadosť. */
+  try { if (window.__GQ_TEST__ && sessionStorage.getItem('gq_test_invite') !== '1') return true; } catch (e) { return true; }
+  if (document.hidden) return true;
+  if (typeof navigator !== 'undefined' && navigator.onLine === false) return true;
+  if (activeTab === 'komunita') return true;
+  if (isBusy()) return true;
+  if (document.querySelector('.modal-backdrop:not([hidden])')) return true;
+  if (updateBannerVisible() || backupStripState) return true;
+  return false;
+}
+function refreshCommunityInvite() {
+  const modal = document.getElementById('modal-community-invite');
+  if (!modal || !modal.hidden) return;
+  if (communityInviteBlocked() || !communityInviteDue()) return;
+  communityInviteMark();
+  modal.hidden = false;
+}
+/* Po štarte a po návrate do appky – s oneskorením, aby okno nevyskočilo hneď. */
+function scheduleCommunityInvite() {
+  clearTimeout(communityInviteTimer);
+  communityInviteTimer = setTimeout(refreshCommunityInvite, COMMUNITY_INVITE_DELAY_MS);
+}
+function closeCommunityInvite() {
+  const modal = document.getElementById('modal-community-invite');
+  if (modal) modal.hidden = true;
+  refreshUpdateBanner();
+}
+function joinCommunityFromInvite() {
+  const modal = document.getElementById('modal-community-invite');
+  if (modal) modal.hidden = true;
+  communityEnable();
 }
 function communitySetView(view) { communityBack = []; communityView = view; renderCommunity(); }
 function communitySetMessage(key) { communityMessage = key ? t(key) : ''; }
@@ -20281,6 +20361,10 @@ function setupEvents() {
   });
 
   on('btn-generic-cancel', closeGeneric);
+  on('btn-community-invite-close', closeCommunityInvite);
+  on('btn-community-invite-later', closeCommunityInvite);
+  on('btn-community-invite-join', joinCommunityFromInvite);
+  on('modal-community-invite', (e) => { if (e.target === e.currentTarget) closeCommunityInvite(); });   // ťuknutie mimo okna
   on('btn-generic-ok', confirmGeneric);
 
   on('btn-he-cancel', () => { document.getElementById('modal-history-edit').hidden = true; refreshUpdateBanner(); });
@@ -20299,6 +20383,8 @@ function setupEvents() {
   // jeden dokumentový listener pre Esc (modal nie je fokusovateľný kontajner)
   document.addEventListener('keydown', (e) => {
     if (e.key !== 'Escape') return;
+    const inviteModal = document.getElementById('modal-community-invite');
+    if (inviteModal && !inviteModal.hidden) { closeCommunityInvite(); return; }
     const langModal = document.getElementById('modal-lang');
     if (langModal && !langModal.hidden) { hideLanguagePicker(); return; }
     const measureModal = document.getElementById('modal-measure');
@@ -20908,6 +20994,7 @@ function appStart() {
   if (restoredSession) setSessionNote('trening.sessionRestored', 10000);
   restoreRestTimer();          // obnoví bežiaci (alebo už dobehnutý) odpočet z absolútneho konca
   refreshBackupOffer();        // a vyhodnotí, či od minule "dozrela" záloha
+  scheduleCommunityInvite();   // kto Community nepoužíva, občas dostane pozvánku
   registerServiceWorker();
   if (state.history.length === 0 && !localStorage.getItem(STORAGE_KEY + '_seeded')) {
     openSetup();

@@ -651,6 +651,15 @@ rest of your gallery. Blocking someone hides your profiles and posts from each o
 follows between you. Setup, security (RLS/Storage policies, server-side quotas and spam limits), the
 rollback and the owner steps are in [`supabase/README.md`](supabase/README.md).
 
+**Community invitation.** If Community is set up but you have not turned it on, GymQuest
+occasionally shows a short **Join the GymQuest Community** window. **Join** takes you to the
+Community tab (sign in or create an account there); **Not now**, **✕**, Esc or tapping outside
+closes it. It comes back at most once every **3 days** until you join, and someone who has not
+finished a workout yet first sees it 3 days after starting to use the app. It never appears during a
+workout, while a form, dialog or the update/backup notice is open, on the Community tab or while
+offline. Showing it sends nothing. The time it was last shown is stored only on this device
+(`gymquest_community_invite`) and is never synced.
+
 **Leaderboard (Top 20).** With Community on, the **Top 20** button shows the 20 members with the
 most XP in two tabs: **All time** (total XP and level, the same numbers as in your app) and **This
 week** (XP from workouts and activities since Monday). Your own row is highlighted, and if you are

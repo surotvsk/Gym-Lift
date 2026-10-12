@@ -11,7 +11,7 @@
   <title>GymQuest</title>
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
-  <link rel="stylesheet" href="style.css?v=61">
+  <link rel="stylesheet" href="style.css?v=62">
 </head>
 <body>
 
@@ -909,6 +909,20 @@
     </div>
   </div>
 
+  <!-- ============ MODAL: pozvánka do Community (pre tých, čo ju nepoužívajú) ============ -->
+  <div class="modal-backdrop" id="modal-community-invite" hidden>
+    <div class="modal modal-invite" role="dialog" aria-modal="true" aria-labelledby="community-invite-title">
+      <button type="button" class="btn-icon modal-invite-close" id="btn-community-invite-close" data-i18n-title="common.close" data-i18n-aria="common.close" aria-label="Zavrieť">✕</button>
+      <div class="modal-invite-icon" aria-hidden="true">🏆</div>
+      <h3 id="community-invite-title" data-i18n="community.inviteTitle">Pridaj sa ku GymQuest Community</h3>
+      <p data-i18n="community.inviteText">Zdieľaj svoj pokrok, sleduj priateľov, píš si s nimi a zabojuj o miesto v Top 20.</p>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-secondary" id="btn-community-invite-later" data-i18n="community.inviteLater">Teraz nie</button>
+        <button type="button" class="btn btn-primary" id="btn-community-invite-join" data-i18n="community.inviteJoin">Pridať sa</button>
+      </div>
+    </div>
+  </div>
+
   <!-- ============ MODAL: e-mailové odkazy (potvrdenie / obnova hesla) ============ -->
   <div class="modal-backdrop" id="modal-auth" hidden>
     <div class="modal">
@@ -917,8 +931,8 @@
     </div>
   </div>
 
-  <script src="community-config.js?v=61"></script>
-  <script src="vendor/supabase-js.js?v=61"></script>
-  <script src="script.js?v=61"></script>
+  <script src="community-config.js?v=62"></script>
+  <script src="vendor/supabase-js.js?v=62"></script>
+  <script src="script.js?v=62"></script>
 </body>
 </html>
