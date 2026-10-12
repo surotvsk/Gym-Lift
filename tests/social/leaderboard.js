@@ -139,6 +139,15 @@ scenario('leave Community and account deletion remove the row', async () => {
   check('account deletion cascades', !d.error && row(b) === null, J(d.error));
 });
 
+scenario('rollback 0009_down and re-apply', async () => {
+  L.sqlFile(require('path').join(__dirname, '..', '..', 'supabase', 'rollback', '0009_down.sql'));
+  check('after rollback: version 2', sqlVal('select public.community_social_version()') === '2');
+  check('after rollback: table gone', sqlVal(`select to_regclass('public.leaderboard_entries') is null`) === 't');
+  check('after rollback: leave cleanup still works', !(await L.admin.rpc('community_leave_cleanup', { p_user: (await member('rb')).id })).error);
+  L.sqlFile(require('path').join(__dirname, '..', '..', 'supabase', 'migrations', '0009_leaderboard.sql'));
+  check('re-applied: version 3', sqlVal('select public.community_social_version()') === '3');
+});
+
 (async () => {
   for (const sc of scenarios) {
     if (FILTER && !FILTER.test(sc.name)) continue;
