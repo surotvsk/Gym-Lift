@@ -297,6 +297,25 @@ scenario('media cache full', async () => {
   } finally { await srv.close(); }
 });
 
+scenario('video only', async () => {
+  /* Owner (2026-10-12): when an exercise has a video, the video is its only demonstration (no photos). */
+  const a = makeBuild('build-videoonly', '');
+  const srv = await startServer(PORT, { a });
+  srv.setRoot('a');
+  try {
+    const { p } = await freshPage('videoonly');
+    await openApp(p);
+    const rows = await p.eval(`EXERCISE_LIBRARY.map((e) => ({ id: e.id, list: exerciseMediaList(e) }))
+      .filter((r) => r.list.some((f) => f.video)).map((r) => ({ id: r.id, n: r.list.length, credits: (MEDIA_CREDITS[r.id] || []).length }))`);
+    check('31 exercises have a video', rows.length === 31, rows.length);
+    const extra = rows.filter((r) => r.n !== 1 || r.credits !== 1);
+    check('every exercise with a video shows only the video, with exactly one credit', extra.length === 0, extra);
+    const missing = await p.eval(`Object.values(EXERCISE_PHOTO_MEDIA).flat().map((x) => x.src)`);
+    const gone = missing.filter((src) => !fs.existsSync(path.join(a, src)));
+    check('every photo still referenced exists in the build', gone.length === 0, gone);
+  } finally { await srv.close(); }
+});
+
 /* ---------- runner ---------- */
 (async () => {
   fs.mkdirSync(PROFILES, { recursive: true });

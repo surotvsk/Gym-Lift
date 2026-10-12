@@ -19,8 +19,8 @@ const PORT = 8124;
 const BASE = process.env.GQ_BASE || 'http://localhost:' + PORT + '/';
 const WORK = process.env.GQ_WORK || path.join(os.tmpdir(), 'gq-sync-work');
 const PROFILES = path.join(WORK, 'profiles');
-const PHOTO = path.join(REPO, 'media', 'push-up-1.jpg');
-const MEDIA = path.join(REPO, 'media', 'cable-curl-1.jpg');
+const PHOTO = path.join(REPO, 'media', 'burpee-1.jpg');
+const MEDIA = path.join(REPO, 'media', 'front-raise-1.jpg');
 let nextPort = 9760;
 const checks = [];
 function check(name, cond, detail) {

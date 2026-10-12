@@ -1267,34 +1267,8 @@ const EXERCISE_VIDEO_MEDIA = {
 };
 
 const EXERCISE_PHOTO_MEDIA = {
-  'lateral-raises': [
-    { src: 'media/lateral-raises-1.jpg', caption: 'media.start', arrow: { x: 7, y: 46, deg: 0 } },
-    { src: 'media/lateral-raises-2.jpg', caption: 'media.raise', arrow: { x: 7, y: 46, deg: 0 } },
-    { src: 'media/lateral-raises-3.jpg', caption: 'media.top', arrow: { x: 7, y: 46, deg: 0 } },
-  ],
-  'push-up': [{ src: 'media/push-up-1.jpg', caption: 'media.photo' }],
-  'dips': [{ src: 'media/dips-1.jpg', caption: 'media.photo' }],
-  'plank': [{ src: 'media/plank-1.jpg', caption: 'media.photo' }],
-  'cable-rows': [{ src: 'media/cable-rows-1.jpg', caption: 'media.photo' }],
-  'leg-press': [{ src: 'media/leg-press-1.jpg', caption: 'media.photo' }],
   'burpee': [{ src: 'media/burpee-1.jpg', caption: 'media.photo' }],
-  'cable-curl': [
-    { src: 'media/cable-curl-1.jpg', caption: 'media.photo' },
-    { src: 'media/cable-curl-2.jpg', caption: 'media.photo' },
-  ],
-  'pec-deck': [
-    { src: 'media/pec-deck-1.jpg', caption: 'media.photo' },
-    { src: 'media/pec-deck-2.jpg', caption: 'media.photo' },
-  ],
   'front-raise': [{ src: 'media/front-raise-1.jpg', caption: 'media.photo' }],
-  'lat-pulldown': [
-    { src: 'media/lat-pulldown-1.jpg', caption: 'media.photo' },
-    { src: 'media/lat-pulldown-2.jpg', caption: 'media.photo' },
-  ],
-  'hack-squat': [
-    { src: 'media/hack-squat-1.jpg', caption: 'media.photo' },
-    { src: 'media/hack-squat-2.jpg', caption: 'media.photo' },
-  ],
   'abductor-machine': [{ src: 'media/abductor-machine-1.jpg', caption: 'media.photo' }],
 };
 
@@ -1315,44 +1289,23 @@ const MEDIA_CREDITS = {
   'bent-over-rows': [{ creator: 'FitnessScape', license: 'CC BY 3.0', licenseUrl: 'https://creativecommons.org/licenses/by/3.0', source: 'https://commons.wikimedia.org/wiki/File:Bent-over_row_-_exercise_demonstration_video.webm' }],
   'pull-ups': [{ creator: 'FitnessScape', license: 'CC BY 3.0', licenseUrl: 'https://creativecommons.org/licenses/by/3.0', source: 'https://commons.wikimedia.org/wiki/File:Pull-ups_-_exercise_demonstration_video.webm' }],
   'bicep-curls': [{ creator: 'Centers for Disease Control and Prevention', license: 'Public domain', licenseUrl: '', source: 'https://commons.wikimedia.org/wiki/File:Muscle_Strengthening_at_Home_-_Bicep_Curls.webm' }],
-  'push-up': [{ creator: 'Pavel Danilyuk', license: 'Pexels License', licenseUrl: 'https://www.pexels.com/license/', source: 'https://www.pexels.com/video/a-man-doing-push-ups-4367576/' }, { creator: 'PTPioneer', license: 'CC BY 2.0', licenseUrl: 'https://creativecommons.org/licenses/by/2.0', source: 'https://commons.wikimedia.org/wiki/File:Girl_doing_push-ups_from_the_side.jpg' }],
+  'push-up': [{ creator: 'Pavel Danilyuk', license: 'Pexels License', licenseUrl: 'https://www.pexels.com/license/', source: 'https://www.pexels.com/video/a-man-doing-push-ups-4367576/' }],
   'lunges': [{ creator: 'Skhulile Mthiyane', license: 'CC BY-SA 4.0', licenseUrl: 'https://creativecommons.org/licenses/by-sa/4.0', source: 'https://commons.wikimedia.org/wiki/File:Forward_lunge_training.webm' }],
-  'lateral-raises': [
-    { creator: 'Tima Miroshnichenko', license: 'Pexels License', licenseUrl: 'https://www.pexels.com/license/', source: 'https://www.pexels.com/video/a-man-working-out-using-dumbbell-5319102/' },
-    { creator: 'ThoroughlyReviewed', license: 'CC BY 2.0', licenseUrl: 'https://creativecommons.org/licenses/by/2.0', source: 'https://commons.wikimedia.org/wiki/File:Fitness_model_shoulder_exercise_weight_training_(32004749033).jpg' },
-    { creator: 'ThoroughlyReviewed', license: 'CC BY 2.0', licenseUrl: 'https://creativecommons.org/licenses/by/2.0', source: 'https://commons.wikimedia.org/wiki/File:Fitness_model_shoulder_exercise_weight_training_(32004749823).jpg' },
-    { creator: 'ThoroughlyReviewed', license: 'CC BY 2.0', licenseUrl: 'https://creativecommons.org/licenses/by/2.0', source: 'https://commons.wikimedia.org/wiki/File:Fitness_model_shoulder_exercise_weight_training_(32004749753).jpg' },
-  ],
-  'dips': [{ creator: 'JULLIAN PRODUCTION', license: 'Pexels License', licenseUrl: 'https://www.pexels.com/license/', source: 'https://www.pexels.com/video/intense-workout-with-dip-bars-in-gym-34708298/' }, { creator: 'soh32’s', license: 'CC BY-SA 3.0', licenseUrl: 'https://creativecommons.org/licenses/by-sa/3.0', source: 'https://commons.wikimedia.org/wiki/File:Dips.jpg' }],
-  'plank': [{ creator: 'Kampus Production', license: 'Pexels License', licenseUrl: 'https://www.pexels.com/license/', source: 'https://www.pexels.com/video/a-woman-planking-6023273/' }, { creator: 'Shixart1985', license: 'CC BY 2.0', licenseUrl: 'https://creativecommons.org/licenses/by/2.0', source: 'https://commons.wikimedia.org/wiki/File:Woman_performing_plank_exercise_at_home_gym.jpg' }],
+  'lateral-raises': [{ creator: 'Tima Miroshnichenko', license: 'Pexels License', licenseUrl: 'https://www.pexels.com/license/', source: 'https://www.pexels.com/video/a-man-working-out-using-dumbbell-5319102/' }],
+  'dips': [{ creator: 'JULLIAN PRODUCTION', license: 'Pexels License', licenseUrl: 'https://www.pexels.com/license/', source: 'https://www.pexels.com/video/intense-workout-with-dip-bars-in-gym-34708298/' }],
+  'plank': [{ creator: 'Kampus Production', license: 'Pexels License', licenseUrl: 'https://www.pexels.com/license/', source: 'https://www.pexels.com/video/a-woman-planking-6023273/' }],
   'superman': [{ creator: 'Centers for Disease Control and Prevention', license: 'Public domain', licenseUrl: '', source: 'https://commons.wikimedia.org/wiki/File:Muscle_Strengthening_at_Home_-_Superman.webm' }],
-  'cable-rows': [{ creator: 'Tima Miroshnichenko', license: 'Pexels License', licenseUrl: 'https://www.pexels.com/license/', source: 'https://www.pexels.com/video/a-man-working-out-inside-the-gym-5319761/' }, { creator: 'Miguel Angel Omaña Rojas', license: 'CC0', licenseUrl: 'https://creativecommons.org/publicdomain/zero/1.0/', source: 'https://commons.wikimedia.org/wiki/File:Woman_using_a_seated_cable_row_machine_at_the_gym.jpg' }],
-  'leg-press': [{ creator: 'khezez', license: 'Pexels License', licenseUrl: 'https://www.pexels.com/license/', source: 'https://www.pexels.com/video/man-performing-leg-press-exercise-at-gym-35585542/' }, { creator: 'Nenad Stojkovic', license: 'CC BY 2.0', licenseUrl: 'https://creativecommons.org/licenses/by/2.0', source: 'https://commons.wikimedia.org/wiki/File:Young_man_using_a_leg_press_machine_at_the_gym.jpg' }],
+  'cable-rows': [{ creator: 'Tima Miroshnichenko', license: 'Pexels License', licenseUrl: 'https://www.pexels.com/license/', source: 'https://www.pexels.com/video/a-man-working-out-inside-the-gym-5319761/' }],
+  'leg-press': [{ creator: 'khezez', license: 'Pexels License', licenseUrl: 'https://www.pexels.com/license/', source: 'https://www.pexels.com/video/man-performing-leg-press-exercise-at-gym-35585542/' }],
   'burpee': [{ creator: 'U.S. Marine Corps (Sgt. Ryan Young)', license: 'Public domain', licenseUrl: '', source: 'https://commons.wikimedia.org/wiki/File:Airborne_Burpee.jpg' }],
   'machine-chest-press': [{ creator: 'Centers for Disease Control and Prevention', license: 'Public domain', licenseUrl: '', source: 'https://commons.wikimedia.org/wiki/File:Muscle_Strengthening_at_the_Gym_-_Chest_Press.webm' }],
   'incline-dumbbell-press': [{ creator: 'Gantner626', license: 'CC BY-SA 4.0', licenseUrl: 'https://creativecommons.org/licenses/by-sa/4.0', source: 'https://commons.wikimedia.org/wiki/File:Video_showing_how_to_perform_the_dumbbell_bench_press_and_the_dumbbell_incline_bench_press.webm' }],
   'leg-extension': [{ creator: 'Centers for Disease Control and Prevention', license: 'Public domain', licenseUrl: '', source: 'https://commons.wikimedia.org/wiki/File:Muscle_Strengthening_at_the_Gym_-_Leg_Extension.webm' }],
-  'cable-curl': [
-    { creator: 'Pavel Danilyuk', license: 'Pexels License', licenseUrl: 'https://www.pexels.com/license/', source: 'https://www.pexels.com/video/a-man-doing-cable-biceps-curls-4367641/' },
-    { creator: 'Tyler Read', license: 'CC BY 2.0', licenseUrl: 'https://creativecommons.org/licenses/by/2.0', source: 'https://commons.wikimedia.org/wiki/File:Girl_doing_cable_bicep_curl_exercise.jpg' },
-    { creator: 'Eric Astrauskas', license: 'CC BY 2.0', licenseUrl: 'https://creativecommons.org/licenses/by/2.0', source: 'https://www.flickr.com/photos/121183998@N08/44067037611' },
-  ],
-  'pec-deck': [
-    { creator: 'Antoni Shkraba', license: 'Pexels License', licenseUrl: 'https://www.pexels.com/license/', source: 'https://www.pexels.com/video/a-man-working-out-in-the-gym-4921620/' },
-    { creator: 'Aliva Sahoo', license: 'CC BY-SA 4.0', licenseUrl: 'https://creativecommons.org/licenses/by-sa/4.0', source: 'https://commons.wikimedia.org/wiki/File:Pec_deck_Fly.jpg' },
-    { creator: "Sam's Fitness - Gym Equipment", license: 'CC BY 3.0', licenseUrl: 'https://creativecommons.org/licenses/by/3.0', source: "https://commons.wikimedia.org/wiki/File:Lee_Priest_Sam's_Fitness_Pec_Fly.jpg" },
-  ],
+  'cable-curl': [{ creator: 'Pavel Danilyuk', license: 'Pexels License', licenseUrl: 'https://www.pexels.com/license/', source: 'https://www.pexels.com/video/a-man-doing-cable-biceps-curls-4367641/' }],
+  'pec-deck': [{ creator: 'Antoni Shkraba', license: 'Pexels License', licenseUrl: 'https://www.pexels.com/license/', source: 'https://www.pexels.com/video/a-man-working-out-in-the-gym-4921620/' }],
   'front-raise': [{ creator: 'PTPioneer', license: 'CC BY 2.0', licenseUrl: 'https://creativecommons.org/licenses/by/2.0', source: 'https://commons.wikimedia.org/wiki/File:Girl_exercising_with_front_dumbbell_raises.jpg' }],
-  'lat-pulldown': [
-    { creator: 'lucas STAF', license: 'Pexels License', licenseUrl: 'https://www.pexels.com/license/', source: 'https://www.pexels.com/video/fitness-enthusiast-working-out-on-gym-machine-39347711/' },
-    { creator: 'Tyler Read', license: 'CC BY 2.0', licenseUrl: 'https://creativecommons.org/licenses/by/2.0', source: 'https://commons.wikimedia.org/wiki/File:Girl_doing_lat_pulldown_exercise.jpg' },
-    { creator: 'Abooyeah', license: 'CC BY-SA 4.0', licenseUrl: 'https://creativecommons.org/licenses/by-sa/4.0', source: 'https://commons.wikimedia.org/wiki/File:Amer-Lat-Pulldown.jpg' },
-  ],
-  'hack-squat': [
-    { creator: 'Abhishek Shekhawat', license: 'Pexels License', licenseUrl: 'https://www.pexels.com/license/', source: 'https://www.pexels.com/video/man-performing-squats-in-gym-with-weight-machine-37997498/' },
-    { creator: 'brett jordan', license: 'CC BY 2.0', licenseUrl: 'https://creativecommons.org/licenses/by/2.0', source: 'https://commons.wikimedia.org/wiki/File:David_Jobson_&_Ziggy_Chima;_machine_hack_squat.jpg' },
-    { creator: 'GeorgeStepanek', license: 'CC BY-SA 3.0', licenseUrl: 'https://creativecommons.org/licenses/by-sa/3.0', source: 'https://commons.wikimedia.org/wiki/File:HackSquatMachineExercise.JPG' },
-  ],
+  'lat-pulldown': [{ creator: 'lucas STAF', license: 'Pexels License', licenseUrl: 'https://www.pexels.com/license/', source: 'https://www.pexels.com/video/fitness-enthusiast-working-out-on-gym-machine-39347711/' }],
+  'hack-squat': [{ creator: 'Abhishek Shekhawat', license: 'Pexels License', licenseUrl: 'https://www.pexels.com/license/', source: 'https://www.pexels.com/video/man-performing-squats-in-gym-with-weight-machine-37997498/' }],
   'abductor-machine': [{ creator: 'Teemeah', license: 'CC BY-SA 4.0', licenseUrl: 'https://creativecommons.org/licenses/by-sa/4.0', source: 'https://commons.wikimedia.org/wiki/File:Hip_abductor_machine.jpg' }],
 };
 

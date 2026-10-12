@@ -588,11 +588,8 @@ hot-linked or fetched from another site.
   Hammer curl, Bodyweight squat, Step-up, Glute bridge, Single-leg glute bridge, Lateral raise, Cable
   curl, Pec deck, Wide-grip lat pulldown, Hack squat, Dips, Cable rows, Leg press, Push-up** and
   **Plank**.
-- **The video always comes first.** Where an exercise also has licensed photographs (Lateral raise,
-  Cable curl, Pec deck, Wide-grip lat pulldown, Hack squat, Dips, Cable rows, Leg press, Push-up,
-  Plank), the photos follow the video in the same gallery. Lateral raise keeps its three-photograph
-  sequence of the same person (*Starting position → Raising the weight → Top position*) with a subtle
-  orange movement arrow and an **"Image 1 of 3"** indicator.
+- **A video is the only demonstration.** When an exercise has a video, the gallery shows just that
+  video; earlier photographs of those exercises were removed.
 - **Burpee, Front raise** and the **Hip abductor machine** use licensed photographs only. No correct,
   legally usable video was found for them yet.
 - The **creator and licence are printed under every video and image** and listed in
