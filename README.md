@@ -579,30 +579,33 @@ The demonstration gallery uses two kinds of media, and **both work offline once 
 is served from this repository and kept by the service worker after its first view; nothing is
 hot-linked or fetched from another site.
 
-- **Twelve exercises use a short local video** (`media/*.webm` and `media/*.mp4`) with play/pause
-  controls and a poster image, and **no autoplay**: **Bench press, Squat, Overhead press, Bent-over row,
-  Biceps curl, Pull-up, Lunges, Superman**, plus **Machine chest press**, **Incline dumbbell press**,
-  **Leg extension** and **Dumbbell triceps extension**. Eleven are originals from Wikimedia Commons
-  (the incline dumbbell press clip is the Commons 480p transcode). The dumbbell triceps extension is a
-  Pexels video (Pexels License), trimmed to one repetition.
-- **Lateral raise uses a three-photograph sequence of the same person** performing the same dumbbell
-  lateral raise — *Starting position → Raising the weight → Top position* — with a subtle orange
-  movement arrow on each frame and an **"Image 1 of 3"** indicator you can swipe through.
-- **Twelve exercises use licensed photographs**: Push-up, Plank, **Cable rows (CC0)**,
-  **Leg press (CC BY 2.0)**, **Dips (CC BY-SA 3.0, parallel bars)** and **Burpee (public domain)**,
-  plus the newer **Cable curl**, **Pec deck**, **Front raise**, **Wide-grip lat pulldown**,
-  **Hack squat** and **Hip abductor machine** — the **creator and licence are printed under each
-  image** and listed in [`media/CREDITS.md`](media/CREDITS.md).
-- **Exercises without a correctly-matched, legally usable demonstration yet** keep the original
-  illustrated gallery for now, or show the honest *Demonstration unavailable* state; they are tracked
-  as *unresolved* pending a decision.
+- **Thirty-one exercises use a short local video** (`media/*.webm` and `media/*.mp4`) with
+  play/pause controls and a poster image, and **no autoplay**. Eleven are originals from Wikimedia
+  Commons: **Bench press, Squat, Overhead press, Bent-over row, Biceps curl, Pull-up, Lunges,
+  Superman, Machine chest press, Incline dumbbell press** and **Leg extension** (the incline dumbbell
+  press clip is the Commons 480p transcode). Twenty are Pexels videos (Pexels License), each trimmed
+  to one clean repetition: **Dumbbell triceps extension, Leg curl, Calf raise, Band row, Dumbbell row,
+  Hammer curl, Bodyweight squat, Step-up, Glute bridge, Single-leg glute bridge, Lateral raise, Cable
+  curl, Pec deck, Wide-grip lat pulldown, Hack squat, Dips, Cable rows, Leg press, Push-up** and
+  **Plank**.
+- **The video always comes first.** Where an exercise also has licensed photographs (Lateral raise,
+  Cable curl, Pec deck, Wide-grip lat pulldown, Hack squat, Dips, Cable rows, Leg press, Push-up,
+  Plank), the photos follow the video in the same gallery. Lateral raise keeps its three-photograph
+  sequence of the same person (*Starting position → Raising the weight → Top position*) with a subtle
+  orange movement arrow and an **"Image 1 of 3"** indicator.
+- **Burpee, Front raise** and the **Hip abductor machine** use licensed photographs only. No correct,
+  legally usable video was found for them yet.
+- The **creator and licence are printed under every video and image** and listed in
+  [`media/CREDITS.md`](media/CREDITS.md).
 
-**Not every requested exercise has a demonstration yet, honestly:** *Dumbbell pullover*,
-*Cable/machine pullover*, the *single-arm cable triceps extension*, the *Romanian deadlift* and the
-*adductor (inner-thigh) machine* have **no correctly-matched, legally usable photo or video yet**
-(searched on Wikimedia Commons, Pexels and Pixabay on 2026-10-12; see
-`tools/media/batches/batch-1.json`), so they show the *Demonstration unavailable* state. No illustration was
-invented to fill the gap.
+**Not every exercise has a demonstration yet, honestly.** These have **no correctly-matched, legally
+usable photo or video yet**, so they show the *no photo or video* message with the written steps:
+*Dumbbell pullover*, *Cable/machine pullover*, the *single-arm cable triceps extension*, the *Romanian
+deadlift*, the *adductor (inner-thigh) machine*, *band chest press*, *band pulldown*, *pike push-up*,
+*band shoulder press*, *diamond push-up*, *band biceps curl*, *split squat*, *hip thrust* and *dead
+bug*. We searched Wikimedia Commons, Pexels, Pixabay and Mixkit on 2026-10-12; every rejected
+candidate and the reason are in `tools/media/batches/batch-1.json` and `batch-23.json`. No
+illustration was invented to fill a gap.
 
 **Your own demonstrations.** From any exercise's detail view — built-in **or** one you created — you
 can attach your own photo or video with **Add my photo or video**. These files are stored **only on

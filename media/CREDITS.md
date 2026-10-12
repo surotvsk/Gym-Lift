@@ -25,6 +25,25 @@ made with `tools/media/process.sh mp4`, and is covered by the same author and li
 | `incline-dumbbell-press.webm` | Incline dumbbell press | Gantner626 | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Video_showing_how_to_perform_the_dumbbell_bench_press_and_the_dumbbell_incline_bench_press.webm |
 | `leg-extension.webm` | Leg extension | Centers for Disease Control and Prevention | Public domain | https://commons.wikimedia.org/wiki/File:Muscle_Strengthening_at_the_Gym_-_Leg_Extension.webm |
 | `single-arm-dumbbell-triceps-extension.webm` / `.mp4` | Dumbbell triceps extension | Gustavo Fring (Pexels) | Pexels License (https://www.pexels.com/license/) | https://www.pexels.com/video/woman-doing-tricep-extensions-6286166/ (trimmed to 0.5–6.0 s with `tools/media/process.sh`) |
+| `leg-curls.webm` / `.mp4` | Leg curls | khezez (Pexels) | Pexels License (https://www.pexels.com/license/) | https://www.pexels.com/video/intense-leg-workout-on-gym-machine-35585537/ (trimmed to 0.0–4.5 s) |
+| `calf-raises.webm` / `.mp4` | Calf raises | Gaurav Kumar (Pexels) | Pexels License (https://www.pexels.com/license/) | https://www.pexels.com/video/intense-calf-workout-in-gym-setting-32115656/ (trimmed to 1.5–6.0 s) |
+| `band-row.webm` / `.mp4` | Band row | Kampus Production (Pexels) | Pexels License (https://www.pexels.com/license/) | https://www.pexels.com/video/man-doing-seated-row-exercise-6022753/ (trimmed to 0.0–2.8 s) |
+| `dumbbell-row.webm` / `.mp4` | Dumbbell row | Tima Miroshnichenko (Pexels) | Pexels License (https://www.pexels.com/license/) | https://www.pexels.com/video/man-exercising-in-a-gym-5319424/ (trimmed to 5.5–9.5 s) |
+| `hammer-curl.webm` / `.mp4` | Hammer curl | Instituto Alpha Fitness (Pexels) | Pexels License (https://www.pexels.com/license/) | https://www.pexels.com/video/man-performing-dumbbell-curls-in-gym-34957899/ (trimmed to 2.5–7.0 s) |
+| `bodyweight-squat.webm` / `.mp4` | Bodyweight squat | Polina Tankilevitch (Pexels) | Pexels License (https://www.pexels.com/license/) | https://www.pexels.com/video/young-woman-exercising-6525519/ (trimmed to 1.0–4.0 s) |
+| `step-up.webm` / `.mp4` | Step up | Mikhail Nilov (Pexels) | Pexels License (https://www.pexels.com/license/) | https://www.pexels.com/video/a-woman-step-up-and-down-over-a-wooden-box-6739974/ (trimmed to 0.0–4.0 s) |
+| `glute-bridge.webm` / `.mp4` | Glute bridge | olia danilevich (Pexels) | Pexels License (https://www.pexels.com/license/) | https://www.pexels.com/video/a-female-exercising-on-the-floor-6767732/ (trimmed to 1.5–5.0 s) |
+| `single-leg-glute-bridge.webm` / `.mp4` | Single leg glute bridge | Gustavo Fring (Pexels) | Pexels License (https://www.pexels.com/license/) | https://www.pexels.com/video/a-woman-exercising-over-a-mat-at-home-4267359/ (trimmed to 0.0–2.5 s) |
+| `lateral-raises.webm` / `.mp4` | Lateral raises | Tima Miroshnichenko (Pexels) | Pexels License (https://www.pexels.com/license/) | https://www.pexels.com/video/a-man-working-out-using-dumbbell-5319102/ (trimmed to 1.5–5.5 s) |
+| `cable-curl.webm` / `.mp4` | Cable curl | Pavel Danilyuk (Pexels) | Pexels License (https://www.pexels.com/license/) | https://www.pexels.com/video/a-man-doing-cable-biceps-curls-4367641/ (trimmed to 0.0–5.5 s) |
+| `pec-deck.webm` / `.mp4` | Pec deck | Antoni Shkraba (Pexels) | Pexels License (https://www.pexels.com/license/) | https://www.pexels.com/video/a-man-working-out-in-the-gym-4921620/ (trimmed to 2.5–5.8 s) |
+| `lat-pulldown.webm` / `.mp4` | Lat pulldown | lucas STAF (Pexels) | Pexels License (https://www.pexels.com/license/) | https://www.pexels.com/video/fitness-enthusiast-working-out-on-gym-machine-39347711/ (trimmed to 4.5–7.5 s) |
+| `hack-squat.webm` / `.mp4` | Hack squat | Abhishek Shekhawat (Pexels) | Pexels License (https://www.pexels.com/license/) | https://www.pexels.com/video/man-performing-squats-in-gym-with-weight-machine-37997498/ (trimmed to 2.0–6.0 s) |
+| `dips.webm` / `.mp4` | Dips | JULLIAN PRODUCTION (Pexels) | Pexels License (https://www.pexels.com/license/) | https://www.pexels.com/video/intense-workout-with-dip-bars-in-gym-34708298/ (trimmed to 2.0–6.0 s) |
+| `cable-rows.webm` / `.mp4` | Cable rows | Tima Miroshnichenko (Pexels) | Pexels License (https://www.pexels.com/license/) | https://www.pexels.com/video/a-man-working-out-inside-the-gym-5319761/ (trimmed to 2.0–6.0 s) |
+| `leg-press.webm` / `.mp4` | Leg press | khezez (Pexels) | Pexels License (https://www.pexels.com/license/) | https://www.pexels.com/video/man-performing-leg-press-exercise-at-gym-35585542/ (trimmed to 9.0–13.0 s) |
+| `push-up.webm` / `.mp4` | Push up | Pavel Danilyuk (Pexels) | Pexels License (https://www.pexels.com/license/) | https://www.pexels.com/video/a-man-doing-push-ups-4367576/ (trimmed to 0.5–7.5 s) |
+| `plank.webm` / `.mp4` | Plank | Kampus Production (Pexels) | Pexels License (https://www.pexels.com/license/) | https://www.pexels.com/video/a-woman-planking-6023273/ (trimmed to 2.0–8.0 s) |
 
 ## Photographs
 

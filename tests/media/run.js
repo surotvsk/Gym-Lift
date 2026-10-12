@@ -251,6 +251,24 @@ scenario('batch 1', async () => {
   } finally { await srv.close(); }
 });
 
+scenario('batch 2+3', async () => {
+  /* Owner approved all 19 videos on 2026-10-12: the video is the first (main) demonstration; existing photos stay after it. */
+  const approved = JSON.parse(fs.readFileSync(path.join(REPO, 'tools/media/batches/batch-23.json'), 'utf8'))
+    .exercises.filter((e) => e.decision && e.decision.use === 0).map((e) => e.id);
+  check('19 approved exercises in batch-23.json', approved.length === 19, approved);
+  const a = makeBuild('build-batch23', '');
+  const srv = await startServer(PORT, { a });
+  srv.setRoot('a');
+  try {
+    const { p } = await freshPage('batch23');
+    await openApp(p);
+    for (const id of approved) {
+      const g = await checkExerciseGallery(p, id);
+      check(id + ': video is the main demonstration, plays, every item credited', g.firstIsVideo === true && g.items.length === g.list && g.items.every((x) => x.ok) && g.credits === g.list, g);
+    }
+  } finally { await srv.close(); }
+});
+
 /* ---------- runner ---------- */
 (async () => {
   fs.mkdirSync(PROFILES, { recursive: true });

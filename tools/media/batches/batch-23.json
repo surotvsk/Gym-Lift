@@ -1,0 +1,601 @@
+{
+  "batch": "2+3",
+  "searched": "2026-10-12: Pexels search pages for each exercise (144 clips downloaded and checked frame by frame) plus CDC public-domain clips on Wikimedia Commons (Leg Curl, Toe Lift, Half squat, Row Machine, Seated Leg Press, Push-ups: rejected because each has presenter cut-aways).",
+  "exercises": [
+    {
+      "id": "leg-curls",
+      "batch": 2,
+      "candidates": [
+        {
+          "kind": "video",
+          "page": "https://www.pexels.com/video/intense-leg-workout-on-gym-machine-35585537/",
+          "file": "$GQ_MEDIA_SOURCING/originals/px-35585537.mp4",
+          "creator": "khezez",
+          "license": "Pexels License",
+          "licenseUrl": "https://www.pexels.com/license/",
+          "trim": {
+            "start": 0.0,
+            "end": 4.5,
+            "poster": 2.5
+          },
+          "framesDir": "$GQ_MEDIA_SOURCING/review/b23/cand-leg-curls",
+          "note": "seated leg curl machine, side view; short clip"
+        }
+      ],
+      "decision": {
+        "use": 0,
+        "approvedOn": "2026-10-12"
+      }
+    },
+    {
+      "id": "calf-raises",
+      "batch": 2,
+      "candidates": [
+        {
+          "kind": "video",
+          "page": "https://www.pexels.com/video/intense-calf-workout-in-gym-setting-32115656/",
+          "file": "$GQ_MEDIA_SOURCING/originals/px-32115656.mp4",
+          "creator": "Gaurav Kumar",
+          "license": "Pexels License",
+          "licenseUrl": "https://www.pexels.com/license/",
+          "trim": {
+            "start": 1.5,
+            "end": 6.0,
+            "poster": 3.5
+          },
+          "framesDir": "$GQ_MEDIA_SOURCING/review/b23/cand-calf-raises",
+          "note": "standing calf raise on a step, close-up of the calves"
+        }
+      ],
+      "decision": {
+        "use": 0,
+        "approvedOn": "2026-10-12"
+      }
+    },
+    {
+      "id": "band-chest-press",
+      "batch": 2,
+      "candidates": [],
+      "decision": {
+        "use": null,
+        "reason": "no correct, legally usable match found"
+      },
+      "rejected": "Pexels clips are cable or dumbbell presses; 6326763 two people with a band but no press."
+    },
+    {
+      "id": "band-pulldown",
+      "batch": 2,
+      "candidates": [],
+      "decision": {
+        "use": null,
+        "reason": "no correct, legally usable match found"
+      },
+      "rejected": "Only cable lat pulldowns or unclear dark clips; no band pulldown."
+    },
+    {
+      "id": "band-row",
+      "batch": 2,
+      "candidates": [
+        {
+          "kind": "video",
+          "page": "https://www.pexels.com/video/man-doing-seated-row-exercise-6022753/",
+          "file": "$GQ_MEDIA_SOURCING/originals/px-6022753.mp4",
+          "creator": "Kampus Production",
+          "license": "Pexels License",
+          "licenseUrl": "https://www.pexels.com/license/",
+          "trim": {
+            "start": 0.0,
+            "end": 2.8,
+            "poster": 1.5
+          },
+          "framesDir": "$GQ_MEDIA_SOURCING/review/b23/cand-band-row",
+          "note": "seated band row (band anchored low on a tree), side view"
+        }
+      ],
+      "decision": {
+        "use": 0,
+        "approvedOn": "2026-10-12"
+      }
+    },
+    {
+      "id": "dumbbell-row",
+      "batch": 2,
+      "candidates": [
+        {
+          "kind": "video",
+          "page": "https://www.pexels.com/video/man-exercising-in-a-gym-5319424/",
+          "file": "$GQ_MEDIA_SOURCING/originals/px-5319424.mp4",
+          "creator": "Tima Miroshnichenko",
+          "license": "Pexels License",
+          "licenseUrl": "https://www.pexels.com/license/",
+          "trim": {
+            "start": 5.5,
+            "end": 9.5,
+            "poster": 7.5
+          },
+          "framesDir": "$GQ_MEDIA_SOURCING/review/b23/cand-dumbbell-row",
+          "note": "one-arm dumbbell row, hand and knee on a bench; dark gym"
+        }
+      ],
+      "decision": {
+        "use": 0,
+        "approvedOn": "2026-10-12"
+      }
+    },
+    {
+      "id": "pike-push-up",
+      "batch": 2,
+      "candidates": [],
+      "decision": {
+        "use": null,
+        "reason": "no correct, legally usable match found"
+      },
+      "rejected": "Only regular push-ups and handstands."
+    },
+    {
+      "id": "band-shoulder-press",
+      "batch": 2,
+      "candidates": [],
+      "decision": {
+        "use": null,
+        "reason": "no correct, legally usable match found"
+      },
+      "rejected": "34131239 machine press; 6892545/6892959 band pull-aparts; 4384760 band stretches."
+    },
+    {
+      "id": "hammer-curl",
+      "batch": 2,
+      "candidates": [
+        {
+          "kind": "video",
+          "page": "https://www.pexels.com/video/man-performing-dumbbell-curls-in-gym-34957899/",
+          "file": "$GQ_MEDIA_SOURCING/originals/px-34957899.mp4",
+          "creator": "Instituto Alpha Fitness",
+          "license": "Pexels License",
+          "licenseUrl": "https://www.pexels.com/license/",
+          "trim": {
+            "start": 2.5,
+            "end": 7.0,
+            "poster": 6.0
+          },
+          "framesDir": "$GQ_MEDIA_SOURCING/review/b23/cand-hammer-curl",
+          "note": "alternating hammer curl (neutral grip), front view"
+        }
+      ],
+      "decision": {
+        "use": 0,
+        "approvedOn": "2026-10-12"
+      }
+    },
+    {
+      "id": "diamond-push-up",
+      "batch": 2,
+      "candidates": [],
+      "decision": {
+        "use": null,
+        "reason": "no correct, legally usable match found"
+      },
+      "rejected": "All regular-width or one-leg push-ups; hands never together."
+    },
+    {
+      "id": "band-bicep-curl",
+      "batch": 2,
+      "candidates": [],
+      "decision": {
+        "use": null,
+        "reason": "no correct, legally usable match found"
+      },
+      "rejected": "Clips are triceps band work, dumbbell curls or too dark."
+    },
+    {
+      "id": "bodyweight-squat",
+      "batch": 2,
+      "candidates": [
+        {
+          "kind": "video",
+          "page": "https://www.pexels.com/video/young-woman-exercising-6525519/",
+          "file": "$GQ_MEDIA_SOURCING/originals/px-6525519.mp4",
+          "creator": "Polina Tankilevitch",
+          "license": "Pexels License",
+          "licenseUrl": "https://www.pexels.com/license/",
+          "trim": {
+            "start": 1.0,
+            "end": 4.0,
+            "poster": 3.0
+          },
+          "framesDir": "$GQ_MEDIA_SOURCING/review/b23/cand-bodyweight-squat",
+          "note": "bodyweight squat, side view, plain background"
+        }
+      ],
+      "decision": {
+        "use": 0,
+        "approvedOn": "2026-10-12"
+      }
+    },
+    {
+      "id": "split-squat",
+      "batch": 2,
+      "candidates": [],
+      "decision": {
+        "use": null,
+        "reason": "no correct, legally usable match found"
+      },
+      "rejected": "All bilateral squats; no split stance."
+    },
+    {
+      "id": "step-up",
+      "batch": 2,
+      "candidates": [
+        {
+          "kind": "video",
+          "page": "https://www.pexels.com/video/a-woman-step-up-and-down-over-a-wooden-box-6739974/",
+          "file": "$GQ_MEDIA_SOURCING/originals/px-6739974.mp4",
+          "creator": "Mikhail Nilov",
+          "license": "Pexels License",
+          "licenseUrl": "https://www.pexels.com/license/",
+          "trim": {
+            "start": 0.0,
+            "end": 4.0,
+            "poster": 2.0
+          },
+          "framesDir": "$GQ_MEDIA_SOURCING/review/b23/cand-step-up",
+          "note": "step-up onto a box, side view"
+        }
+      ],
+      "decision": {
+        "use": 0,
+        "approvedOn": "2026-10-12"
+      }
+    },
+    {
+      "id": "glute-bridge",
+      "batch": 2,
+      "candidates": [
+        {
+          "kind": "video",
+          "page": "https://www.pexels.com/video/a-female-exercising-on-the-floor-6767732/",
+          "file": "$GQ_MEDIA_SOURCING/originals/px-6767732.mp4",
+          "creator": "olia danilevich",
+          "license": "Pexels License",
+          "licenseUrl": "https://www.pexels.com/license/",
+          "trim": {
+            "start": 1.5,
+            "end": 5.0,
+            "poster": 4.5
+          },
+          "framesDir": "$GQ_MEDIA_SOURCING/review/b23/cand-glute-bridge",
+          "note": "glute bridge, side view"
+        }
+      ],
+      "decision": {
+        "use": 0,
+        "approvedOn": "2026-10-12"
+      }
+    },
+    {
+      "id": "hip-thrust",
+      "batch": 2,
+      "candidates": [],
+      "decision": {
+        "use": null,
+        "reason": "no correct, legally usable match found"
+      },
+      "rejected": "No bench-supported hip thrust; only floor bridges."
+    },
+    {
+      "id": "single-leg-glute-bridge",
+      "batch": 2,
+      "candidates": [
+        {
+          "kind": "video",
+          "page": "https://www.pexels.com/video/a-woman-exercising-over-a-mat-at-home-4267359/",
+          "file": "$GQ_MEDIA_SOURCING/originals/px-4267359.mp4",
+          "creator": "Gustavo Fring",
+          "license": "Pexels License",
+          "licenseUrl": "https://www.pexels.com/license/",
+          "trim": {
+            "start": 0.0,
+            "end": 2.5,
+            "poster": 1.5
+          },
+          "framesDir": "$GQ_MEDIA_SOURCING/review/b23/cand-single-leg-glute-bridge",
+          "note": "single-leg glute bridge, side view (mini band on the thighs)"
+        }
+      ],
+      "decision": {
+        "use": 0,
+        "approvedOn": "2026-10-12"
+      }
+    },
+    {
+      "id": "dead-bug",
+      "batch": 2,
+      "candidates": [],
+      "decision": {
+        "use": null,
+        "reason": "no correct, legally usable match found"
+      },
+      "rejected": "Clips are V-ups, crunches and stretches."
+    },
+    {
+      "id": "lateral-raises",
+      "batch": 3,
+      "candidates": [
+        {
+          "kind": "video",
+          "page": "https://www.pexels.com/video/a-man-working-out-using-dumbbell-5319102/",
+          "file": "$GQ_MEDIA_SOURCING/originals/px-5319102.mp4",
+          "creator": "Tima Miroshnichenko",
+          "license": "Pexels License",
+          "licenseUrl": "https://www.pexels.com/license/",
+          "trim": {
+            "start": 1.5,
+            "end": 5.5,
+            "poster": 4.0
+          },
+          "framesDir": "$GQ_MEDIA_SOURCING/review/b23/cand-lateral-raises",
+          "note": "dumbbell lateral raise, front view; dark gym"
+        }
+      ],
+      "decision": {
+        "use": 0,
+        "approvedOn": "2026-10-12"
+      }
+    },
+    {
+      "id": "cable-curl",
+      "batch": 3,
+      "candidates": [
+        {
+          "kind": "video",
+          "page": "https://www.pexels.com/video/a-man-doing-cable-biceps-curls-4367641/",
+          "file": "$GQ_MEDIA_SOURCING/originals/px-4367641.mp4",
+          "creator": "Pavel Danilyuk",
+          "license": "Pexels License",
+          "licenseUrl": "https://www.pexels.com/license/",
+          "trim": {
+            "start": 0.0,
+            "end": 5.5,
+            "poster": 2.0
+          },
+          "framesDir": "$GQ_MEDIA_SOURCING/review/b23/cand-cable-curl",
+          "note": "standing cable curl, side view"
+        }
+      ],
+      "decision": {
+        "use": 0,
+        "approvedOn": "2026-10-12"
+      }
+    },
+    {
+      "id": "pec-deck",
+      "batch": 3,
+      "candidates": [
+        {
+          "kind": "video",
+          "page": "https://www.pexels.com/video/a-man-working-out-in-the-gym-4921620/",
+          "file": "$GQ_MEDIA_SOURCING/originals/px-4921620.mp4",
+          "creator": "Antoni Shkraba",
+          "license": "Pexels License",
+          "licenseUrl": "https://www.pexels.com/license/",
+          "trim": {
+            "start": 2.5,
+            "end": 5.8,
+            "poster": 4.0
+          },
+          "framesDir": "$GQ_MEDIA_SOURCING/review/b23/cand-pec-deck",
+          "note": "pec deck with handles, front view"
+        }
+      ],
+      "decision": {
+        "use": 0,
+        "approvedOn": "2026-10-12"
+      }
+    },
+    {
+      "id": "lat-pulldown",
+      "batch": 3,
+      "candidates": [
+        {
+          "kind": "video",
+          "page": "https://www.pexels.com/video/fitness-enthusiast-working-out-on-gym-machine-39347711/",
+          "file": "$GQ_MEDIA_SOURCING/originals/px-39347711.mp4",
+          "creator": "lucas STAF",
+          "license": "Pexels License",
+          "licenseUrl": "https://www.pexels.com/license/",
+          "trim": {
+            "start": 4.5,
+            "end": 7.5,
+            "poster": 6.5
+          },
+          "framesDir": "$GQ_MEDIA_SOURCING/review/b23/cand-lat-pulldown",
+          "note": "wide-grip lat pulldown, view from behind"
+        }
+      ],
+      "decision": {
+        "use": 0,
+        "approvedOn": "2026-10-12"
+      }
+    },
+    {
+      "id": "hack-squat",
+      "batch": 3,
+      "candidates": [
+        {
+          "kind": "video",
+          "page": "https://www.pexels.com/video/man-performing-squats-in-gym-with-weight-machine-37997498/",
+          "file": "$GQ_MEDIA_SOURCING/originals/px-37997498.mp4",
+          "creator": "Abhishek Shekhawat",
+          "license": "Pexels License",
+          "licenseUrl": "https://www.pexels.com/license/",
+          "trim": {
+            "start": 2.0,
+            "end": 6.0,
+            "poster": 4.0
+          },
+          "framesDir": "$GQ_MEDIA_SOURCING/review/b23/cand-hack-squat",
+          "note": "hack squat machine, side view (vertical clip)"
+        }
+      ],
+      "decision": {
+        "use": 0,
+        "approvedOn": "2026-10-12"
+      }
+    },
+    {
+      "id": "dips",
+      "batch": 3,
+      "candidates": [
+        {
+          "kind": "video",
+          "page": "https://www.pexels.com/video/intense-workout-with-dip-bars-in-gym-34708298/",
+          "file": "$GQ_MEDIA_SOURCING/originals/px-34708298.mp4",
+          "creator": "JULLIAN PRODUCTION",
+          "license": "Pexels License",
+          "licenseUrl": "https://www.pexels.com/license/",
+          "trim": {
+            "start": 2.0,
+            "end": 6.0,
+            "poster": 4.0
+          },
+          "framesDir": "$GQ_MEDIA_SOURCING/review/b23/cand-dips",
+          "note": "parallel-bar dips, low angle; strong blue colour grade"
+        }
+      ],
+      "decision": {
+        "use": 0,
+        "approvedOn": "2026-10-12"
+      }
+    },
+    {
+      "id": "cable-rows",
+      "batch": 3,
+      "candidates": [
+        {
+          "kind": "video",
+          "page": "https://www.pexels.com/video/a-man-working-out-inside-the-gym-5319761/",
+          "file": "$GQ_MEDIA_SOURCING/originals/px-5319761.mp4",
+          "creator": "Tima Miroshnichenko",
+          "license": "Pexels License",
+          "licenseUrl": "https://www.pexels.com/license/",
+          "trim": {
+            "start": 2.0,
+            "end": 6.0,
+            "poster": 4.0
+          },
+          "framesDir": "$GQ_MEDIA_SOURCING/review/b23/cand-cable-rows",
+          "note": "seated cable row, side view; dark gym"
+        }
+      ],
+      "decision": {
+        "use": 0,
+        "approvedOn": "2026-10-12"
+      }
+    },
+    {
+      "id": "leg-press",
+      "batch": 3,
+      "candidates": [
+        {
+          "kind": "video",
+          "page": "https://www.pexels.com/video/man-performing-leg-press-exercise-at-gym-35585542/",
+          "file": "$GQ_MEDIA_SOURCING/originals/px-35585542.mp4",
+          "creator": "khezez",
+          "license": "Pexels License",
+          "licenseUrl": "https://www.pexels.com/license/",
+          "trim": {
+            "start": 9.0,
+            "end": 13.0,
+            "poster": 11.0
+          },
+          "framesDir": "$GQ_MEDIA_SOURCING/review/b23/cand-leg-press",
+          "note": "45-degree leg press, side view"
+        }
+      ],
+      "decision": {
+        "use": 0,
+        "approvedOn": "2026-10-12"
+      }
+    },
+    {
+      "id": "push-up",
+      "batch": 3,
+      "candidates": [
+        {
+          "kind": "video",
+          "page": "https://www.pexels.com/video/a-man-doing-push-ups-4367576/",
+          "file": "$GQ_MEDIA_SOURCING/originals/px-4367576.mp4",
+          "creator": "Pavel Danilyuk",
+          "license": "Pexels License",
+          "licenseUrl": "https://www.pexels.com/license/",
+          "trim": {
+            "start": 0.5,
+            "end": 7.5,
+            "poster": 7.0
+          },
+          "framesDir": "$GQ_MEDIA_SOURCING/review/b23/cand-push-up",
+          "note": "standard push-up, flat palms, front-side view; one slow rep"
+        }
+      ],
+      "decision": {
+        "use": 0,
+        "approvedOn": "2026-10-12"
+      }
+    },
+    {
+      "id": "plank",
+      "batch": 3,
+      "candidates": [
+        {
+          "kind": "video",
+          "page": "https://www.pexels.com/video/a-woman-planking-6023273/",
+          "file": "$GQ_MEDIA_SOURCING/originals/px-6023273.mp4",
+          "creator": "Kampus Production",
+          "license": "Pexels License",
+          "licenseUrl": "https://www.pexels.com/license/",
+          "trim": {
+            "start": 2.0,
+            "end": 8.0,
+            "poster": 4.0
+          },
+          "framesDir": "$GQ_MEDIA_SOURCING/review/b23/cand-plank",
+          "note": "forearm plank, side view"
+        }
+      ],
+      "decision": {
+        "use": 0,
+        "approvedOn": "2026-10-12"
+      }
+    },
+    {
+      "id": "burpee",
+      "batch": 3,
+      "candidates": [],
+      "decision": {
+        "use": null,
+        "reason": "no correct, legally usable match found"
+      },
+      "rejected": "4671964 has a trainer stepping into the frame mid-rep; 6388429 too dark."
+    },
+    {
+      "id": "front-raise",
+      "batch": 3,
+      "candidates": [],
+      "decision": {
+        "use": null,
+        "reason": "no correct, legally usable match found"
+      },
+      "rejected": "31622701 fisheye front view with a hand covering the lens; 6892965 a lateral raise with blur."
+    },
+    {
+      "id": "abductor-machine",
+      "batch": 3,
+      "candidates": [],
+      "decision": {
+        "use": null,
+        "reason": "no correct, legally usable match found"
+      },
+      "rejected": "Pexels 6540456/6540187/6540199/32115658 are other machines (shoulder, leg extension, seated calf)."
+    }
+  ]
+}

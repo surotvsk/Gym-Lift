@@ -1,11 +1,11 @@
 {
   "batch": 1,
-  "searched": "2026-10-12: Wikimedia Commons (English, German, French, Spanish terms; CDC and FitnessScape series), Pexels (search pages for each exercise, about 36 clips downloaded and checked frame by frame), Pixabay (no labelled clips). Everkinetic drawings excluded (drawn, not real media).",
+  "searched": "2026-10-12: Wikimedia Commons (English, German, French, Spanish terms; CDC and FitnessScape series), Pexels (search pages for each exercise, about 36 clips downloaded and checked frame by frame), Pixabay (no labelled clips). Everkinetic drawings excluded (drawn, not real media). Round 2 (2026-10-12, owner request): new Pexels terms (stiff leg deadlift, rope pulldown, hip adduction, pullover bench, one arm overhead cable) and Mixkit gym videos, about 35 more clips checked. The owner pointed to TikTok examples (@hazzytrainer, @coreycoachmcb, @allan.coach, @malikjuro_, @matthewtamfit, @laurenjarviscoaching); they are the creators' copyright and are not used without written permission.",
   "exercises": [
     {
       "id": "dumbbell-pullover",
       "candidates": [],
-      "rejected": "Pexels 29569378 is an incline dumbbell press; 5319435/5319424 are rows; 5319098 lateral raise; 11023725 shoulder press; Commons only drawings and a pronunciation clip.",
+      "rejected": "Pexels 29569378 is an incline dumbbell press; 5319435/5319424 are rows; 5319098 lateral raise; 11023725 shoulder press; Commons only drawings and a pronunciation clip. Round 2: Pexels 33261227 is an EZ-bar lying triceps extension (EZ bar, elbows bend to 90°); 33261230 skull crusher; 33515057/38052274/30557636/33514738/29546694 presses or too dark.",
       "decision": {
         "use": null,
         "reason": "no correct, legally usable match found (see \"rejected\"); keeps the \"no photo or video\" message"
@@ -14,7 +14,7 @@
     {
       "id": "cable-pullover",
       "candidates": [],
-      "rejected": "Pexels 33515045 and 32239221 are bent-arm pushdowns (the library describes a straight-arm arc); 31105899 cable fly; 34324804/35585658 dark or cut edits.",
+      "rejected": "Pexels 33515045 and 32239221 are bent-arm pushdowns (the library describes a straight-arm arc); 31105899 cable fly; 34324804/35585658 dark or cut edits. Round 2: Pexels 13307261 standing bent-arm pulldown; 12188783/5983521/35585703 lat pulldowns; 34708299 dark silhouette; 6114581/35585640 cut edits.",
       "decision": {
         "use": null,
         "reason": "no correct, legally usable match found (see \"rejected\"); keeps the \"no photo or video\" message"
@@ -48,7 +48,7 @@
     {
       "id": "single-arm-cable-triceps-extension",
       "candidates": [],
-      "rejected": "Pexels 35585835/35585834 overhead cable extension with a rope in both hands; 5319432/5319433/5319423/39043777/37616467 pushdowns; CDC Arm Extension is a two-arm machine.",
+      "rejected": "Pexels 35585835/35585834 overhead cable extension with a rope in both hands; 5319432/5319433/5319423/39043777/37616467 pushdowns; CDC Arm Extension is a two-arm machine. Round 2: Pexels 30916502 overhead rope extension with both hands; 31617255 cable crossover; 12188780 cable lateral raise; 5319747/5319760/5319750 seated rows; 38331145/38331142/6740236 unclear or close-ups.",
       "decision": {
         "use": null,
         "reason": "no correct, legally usable match found (see \"rejected\"); keeps the \"no photo or video\" message"
@@ -57,7 +57,7 @@
     {
       "id": "romanian-deadlift",
       "candidates": [],
-      "rejected": "Pexels 7674502 bar lowered to the floor with clear knee bend (conventional deadlift); 11121740 dumbbells, not a barbell; 12890962/14180867/5837708/9778003 cut edits or close-ups; 4944666 clean and press; FitnessScape Deadlift is conventional with a burned-in caption.",
+      "rejected": "Pexels 7674502 bar lowered to the floor with clear knee bend (conventional deadlift); 11121740 dumbbells, not a barbell; 12890962/14180867/5837708/9778003 cut edits or close-ups; 4944666 clean and press; FitnessScape Deadlift is conventional with a burned-in caption. Round 2: Pexels 4746014 leg close-ups, conventional; 32115659 conventional pull from the floor; Mixkit 52091/52094/52089 overhead, clean and landmine work.",
       "decision": {
         "use": null,
         "reason": "no correct, legally usable match found (see \"rejected\"); keeps the \"no photo or video\" message"
@@ -66,7 +66,7 @@
     {
       "id": "adductor-machine",
       "candidates": [],
-      "rejected": "Pexels 6540202 hip machine with the legs hidden by the seat and a trainer talking (adduction vs abduction not visible); 6540194 leg curl/extension machine; 39347711/39347713/39347708 lat pulldown, row and chest machines.",
+      "rejected": "Pexels 6540202 hip machine with the legs hidden by the seat and a trainer talking (adduction vs abduction not visible); 6540194 leg curl/extension machine; 39347711/39347713/39347708 lat pulldown, row and chest machines. Round 2: Pexels 38132732 standing cable hip work (no machine); 32115657 leg close-ups; 6891855/8502832/5510143 floor stretches and bodyweight leg lifts.",
       "decision": {
         "use": null,
         "reason": "no correct, legally usable match found (see \"rejected\"); keeps the \"no photo or video\" message"
