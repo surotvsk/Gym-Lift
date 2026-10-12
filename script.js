@@ -8885,6 +8885,7 @@ function persistState() {
 function saveState() {
   const ok = persistState();
   syncNoteLocalChange();
+  leaderboardQueue();
   return ok;
 }
 
@@ -12987,7 +12988,7 @@ function communitySetMessage(key) { communityMessage = key ? t(key) : ''; }
    (rovnaké pravidlá ako dotazy: správy vidia iba dvaja účastníci chatu). */
 const COMMUNITY_COMMENT_MAX = 1000;
 const COMMUNITY_MESSAGE_MAX = 2000;
-let communityVersion = 0;               // 0 = nezistené, 1 = 0005, 2 = 0008
+let communityVersion = 0;               // 0 = nezistené, 1 = 0005, 2 = 0008, 3 = 0009 (rebríček)
 let communityScope = 'everyone';        // Domov: everyone | following | friends
 let communityBack = [];                 // predchádzajúce pohľady (tlačidlo Späť)
 let communityPostId = null;             // pohľad 'comments'
@@ -13004,6 +13005,51 @@ let communityVisibility = 'public';     // voľba v editore príspevku
 let communitySending = false;
 
 function communityV2() { return communitySocial === true && communityVersion >= 2; }
+
+/* ---------- Rebríček (migrácia 0009) ----------
+   Appka posiela svoje XP (tréningy + aktivity zvlášť, úspechy ako zoznam id); server
+   uplatní limity a XP za úspechy si spočíta sám. XP v appke sa nikdy nemení. */
+const LEADERBOARD_DEBOUNCE_MS = 4000;
+let leaderboardSentSig = '';           // posledný úspešne odoslaný stav (bez zmeny sa neposiela)
+let leaderboardTimer = null;
+let leaderboardPeriod = 'all';         // 'all' | 'week'
+
+function leaderboardEnabled() { return communitySocial === true && communityVersion >= 3 && !!communityProfile; }
+
+function leaderboardPayload() {
+  const wk = weekKey(new Date());
+  const inWeek = (d) => { try { return weekKey(parseDate(d)) === wk; } catch (e) { return false; } };
+  const week = state.history.filter((w) => inWeek(w.date)).reduce((s, w) => s + (Number(w.xp) || 0), 0)
+    + (state.activities || []).filter((a) => inWeek(a.date)).reduce((s, a) => s + (Number(a.xp) || 0), 0);
+  const earned = state.achievements || {};
+  return {
+    p_training: workoutXP() + activityXP(),
+    p_week_training: week,
+    p_week_key: wk,
+    p_workouts: state.history.length,
+    p_achievements: staticAchievementDefs().filter((d) => earned[d.id]).map((d) => d.id),
+  };
+}
+
+function leaderboardQueue() {
+  if (!leaderboardEnabled()) return;
+  clearTimeout(leaderboardTimer);
+  leaderboardTimer = setTimeout(() => { leaderboardSend(false); }, LEADERBOARD_DEBOUNCE_MS);
+}
+
+async function leaderboardSend(force) {
+  leaderboardTimer = null;
+  if (!leaderboardEnabled()) return null;
+  const sb = communityClient();
+  if (!sb) return null;
+  const payload = leaderboardPayload();
+  const sig = JSON.stringify(payload);
+  if (!force && sig === leaderboardSentSig) return null;
+  let r;
+  try { r = await sb.rpc('leaderboard_submit', payload); } catch (e) { r = { error: e }; }
+  if (r && !r.error) leaderboardSentSig = sig;   // offline/chyba: pri ďalšej zmene alebo otvorení Community znova
+  return r;
+}
 
 const COMMUNITY_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">';
 const COMMUNITY_ICONS = {
@@ -13547,6 +13593,7 @@ async function renderCommunity() {
     if (!communityV2() && ['search', 'friends', 'chats', 'chat', 'comments'].indexOf(communityView) >= 0) communityView = 'feed';
     if (communityV2() && communityView === 'following') { communityScope = 'following'; communityView = 'feed'; }
     if (communityV2() && communityConsent) await communityAfterSignIn(sb, session.user);
+    if (leaderboardEnabled() && communityConsent) leaderboardSend(false);
     if (seq !== communityRenderSeq) return;
     if (communityView === 'myposts') { put(await communityMyPostsHtml(sb, session.user)); return; }
     if (communityView === 'moderate') { put(await communityModerateHtml(sb, session.user)); return; }
