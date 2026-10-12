@@ -575,9 +575,9 @@ refuses the replacement and says why, rather than risk mixing the two up.
 
 ### Demonstrations: what is here, and what is not
 
-The demonstration gallery uses two kinds of media, and **both work fully offline** — every file is
-served from this repository and cached by the service worker; nothing is hot-linked or fetched at
-runtime.
+The demonstration gallery uses two kinds of media, and **both work offline once viewed**. Every file
+is served from this repository and kept by the service worker after its first view; nothing is
+hot-linked or fetched from another site.
 
 - **Eleven exercises use a short local video** (`media/*.webm`) with play/pause controls and a poster
   image, and **no autoplay** — **Bench press, Squat, Overhead press, Bent-over row, Biceps curl,
@@ -659,11 +659,14 @@ state with the written steps — never a broken-image icon.
 `original`), creator, licence, licence URL, source page and offline path. The full attribution list is
 also in [`media/CREDITS.md`](media/CREDITS.md).
 
-**Video format and offline.** Videos are **WebM (VP8/VP9)** — they play in Chrome, Firefox and Edge and
-in recent versions of Safari. All are precached by the service worker, so they play with no network.
-Most clips are modest (under ~0.6 MB); the public-domain CDC clips are larger (bicep curl ≈ 5.4 MB,
-machine chest press ≈ 3.6 MB, leg extension ≈ 5.9 MB) and the incline dumbbell press clip is the
-Commons 480p transcode (≈ 10.9 MB).
+**Video format and offline.** Every video comes as **WebM (VP8/VP9)** and **MP4 (H.264)**. The browser
+picks the one it can play, so older iPhones get the MP4. A demonstration is **downloaded the first time
+you open that exercise**, then kept on the device in its own cache, so it works offline from then on.
+App updates never download demonstrations again. If you open an exercise for the first time while
+offline, it shows *Connect to the internet once to load this demonstration.* Most clips are modest
+(under ~0.6 MB). The public-domain CDC clips are larger (bicep curl ≈ 5.4 MB, machine chest press ≈
+3.6 MB, leg extension ≈ 5.9 MB), and the incline dumbbell press clip is the Commons 480p transcode
+(≈ 10.9 MB). Each MP4 copy is at most 4 MB.
 
 ### Accuracy and safety
 

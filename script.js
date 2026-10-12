@@ -1233,17 +1233,17 @@ const EXERCISE_MEDIA = {
    service workerom, takže funguje offline. Autora a licenciu každého média nájdeš v
    MEDIA_CREDITS – je povinné ich zobraziť (CC BY / CC BY-SA). */
 const EXERCISE_VIDEO_MEDIA = {
-  'bench-press': { src: 'media/bench-press.webm', poster: 'media/bench-press-poster.jpg' },
-  'squats': { src: 'media/squats.webm', poster: 'media/squats-poster.jpg' },
-  'overhead-press': { src: 'media/overhead-press.webm', poster: 'media/overhead-press-poster.jpg' },
-  'bent-over-rows': { src: 'media/bent-over-rows.webm', poster: 'media/bent-over-rows-poster.jpg' },
-  'bicep-curls': { src: 'media/bicep-curls.webm', poster: 'media/bicep-curls-poster.jpg' },
-  'pull-ups': { src: 'media/pull-ups.webm', poster: 'media/pull-ups-poster.jpg' },
-  'lunges': { src: 'media/lunges.webm', poster: 'media/lunges-poster.jpg' },
-  'superman': { src: 'media/superman.webm', poster: 'media/superman-poster.jpg' },
-  'machine-chest-press': { src: 'media/machine-chest-press.webm', poster: 'media/machine-chest-press-poster.jpg' },
-  'incline-dumbbell-press': { src: 'media/incline-dumbbell-press.webm', poster: 'media/incline-dumbbell-press-poster.jpg' },
-  'leg-extension': { src: 'media/leg-extension.webm', poster: 'media/leg-extension-poster.jpg' },
+  'bench-press': { src: 'media/bench-press.webm', mp4: 'media/bench-press.mp4', poster: 'media/bench-press-poster.jpg' },
+  'squats': { src: 'media/squats.webm', mp4: 'media/squats.mp4', poster: 'media/squats-poster.jpg' },
+  'overhead-press': { src: 'media/overhead-press.webm', mp4: 'media/overhead-press.mp4', poster: 'media/overhead-press-poster.jpg' },
+  'bent-over-rows': { src: 'media/bent-over-rows.webm', mp4: 'media/bent-over-rows.mp4', poster: 'media/bent-over-rows-poster.jpg' },
+  'bicep-curls': { src: 'media/bicep-curls.webm', mp4: 'media/bicep-curls.mp4', poster: 'media/bicep-curls-poster.jpg' },
+  'pull-ups': { src: 'media/pull-ups.webm', mp4: 'media/pull-ups.mp4', poster: 'media/pull-ups-poster.jpg' },
+  'lunges': { src: 'media/lunges.webm', mp4: 'media/lunges.mp4', poster: 'media/lunges-poster.jpg' },
+  'superman': { src: 'media/superman.webm', mp4: 'media/superman.mp4', poster: 'media/superman-poster.jpg' },
+  'machine-chest-press': { src: 'media/machine-chest-press.webm', mp4: 'media/machine-chest-press.mp4', poster: 'media/machine-chest-press-poster.jpg' },
+  'incline-dumbbell-press': { src: 'media/incline-dumbbell-press.webm', mp4: 'media/incline-dumbbell-press.mp4', poster: 'media/incline-dumbbell-press-poster.jpg' },
+  'leg-extension': { src: 'media/leg-extension.webm', mp4: 'media/leg-extension.mp4', poster: 'media/leg-extension-poster.jpg' },
 };
 
 const EXERCISE_PHOTO_MEDIA = {

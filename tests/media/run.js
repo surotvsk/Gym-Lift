@@ -211,6 +211,31 @@ scenario('offline first view', async () => {
   } finally { await srv.close(); }
 });
 
+scenario('codecs', async () => {
+  const a = makeBuild('build-codecs', '');
+  const srv = await startServer(PORT, { a });
+  srv.setRoot('a');
+  try {
+    const { p } = await freshPage('codecs');
+    await openApp(p);
+    const videos = await p.eval('Object.entries(EXERCISE_VIDEO_MEDIA).map(([id, v]) => ({ id, webm: v.src, mp4: v.mp4 || "" }))');
+    const plays = (src, type) => p.eval(`(async () => {
+      const v = document.createElement('video'); v.muted = true; v.preload = 'auto';
+      const s = document.createElement('source'); s.src = ${JSON.stringify(src)}; s.type = ${JSON.stringify(type)}; v.appendChild(s);
+      document.body.appendChild(v);
+      const end = Date.now() + 30000;
+      while (v.readyState < 2 && !v.error && Date.now() < end) await new Promise((r) => setTimeout(r, 100));
+      const ok = v.readyState >= 2; v.remove(); return ok;
+    })()`, 60000);
+    for (const v of videos) {
+      check(v.id + ': WebM plays', await plays(v.webm, 'video/webm'));
+      check(v.id + ': has an MP4 copy', !!v.mp4, v);
+      if (v.mp4) check(v.id + ': MP4 plays', await plays(v.mp4, 'video/mp4'));
+      if (v.mp4) check(v.id + ': MP4 <= 4 MB', fs.statSync(path.join(a, v.mp4)).size <= 4194304);
+    }
+  } finally { await srv.close(); }
+});
+
 /* ---------- runner ---------- */
 (async () => {
   fs.mkdirSync(PROFILES, { recursive: true });

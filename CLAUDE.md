@@ -49,7 +49,10 @@ Every deploy needs **both** of these, or installed clients keep the old cached f
    `vendor/supabase-js.js`, `script.js`), and the matching entries in `sw.js` `PRECACHE`. The cache key
    is the full URL, including `?v=`.
 
-New files the app needs offline (e.g. `media/*`) must be added to `PRECACHE`. Updates are user-driven:
+New app-shell files the app needs offline must be added to `PRECACHE`. Demonstration media (`media/*`)
+is **not** precached: `sw.js` keeps it in the long-lived `gymquest-media` cache on first view
+(Range → 206 for Safari), so a changed media file needs a new filename (e.g. `-v2`). Media is
+produced with `tools/media/process.sh`, and its tests are in `tests/media/`. Updates are user-driven:
 the app shows an "update available" notice and never reloads during an active workout or open form.
 
 ## Architecture

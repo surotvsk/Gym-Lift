@@ -2,13 +2,14 @@
 
 Episode demonstrations in this folder come from **Wikimedia Commons** (and, for one
 cable-curl photograph, **Flickr**) and are used under the licences below. Every file is
-stored locally in this repository and precached by the app's own service worker — nothing is
-hot-linked and nothing is fetched at runtime, so the gallery works fully offline.
+stored locally in this repository and cached by the app's own service worker the first time it is
+shown. Nothing is hot-linked or fetched from another site, so a demonstration works offline once viewed.
 
 ## Videos
 
 Each `*-poster.jpg` is a single frame taken from the matching `*.webm` video and
-is covered by the same author and licence.
+is covered by the same author and licence. Each `*.mp4` is an H.264 copy of the matching `*.webm`,
+made with `tools/media/process.sh mp4`, and is covered by the same author and licence.
 
 | File | Exercise | Creator | Licence | Source page |
 |---|---|---|---|---|
