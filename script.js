@@ -7492,6 +7492,39 @@ for (const lang of Object.keys(SOCIAL_I18N)) Object.assign(I18N[lang] || (I18N[l
 const SOCIAL2_I18N = {
   sk: {
     'community2.navHome': 'Domov', 'community2.navSearch': 'Hľadať', 'community2.navChats': 'Správy', 'community2.navProfile': 'Profil',
+    'lb.nav': 'Top 20',
+    'lb.title': 'Rebríček',
+    'lb.tabAll': 'Celkovo',
+    'lb.tabWeek': 'Tento týždeň',
+    'lb.colRank': 'Poradie',
+    'lb.colMember': 'Člen',
+    'lb.colLevel': 'Úroveň',
+    'lb.colXp': 'XP',
+    'lb.colWeekXp': 'XP za týždeň',
+    'lb.levelShort': 'Úr. {n}',
+    'lb.you': '(ty)',
+    'lb.resets': 'Týždenné poradie sa vynuluje v pondelok.',
+    'lb.footAll': 'Celkové XP a úroveň, rovnaké ako v appke.',
+    'lb.captionAll': '20 najlepších členov podľa celkových XP',
+    'lb.captionWeek': '20 najlepších členov podľa XP za tento týždeň',
+    'lb.rowAria': 'Poradie {pos}, {name}, úroveň {level}, {xp} XP',
+    'lb.rowAriaWeek': 'Poradie {pos}, {name}, {xp} XP tento týždeň',
+    'lb.refresh': 'Obnoviť rebríček',
+    'lb.offline': 'Na zobrazenie rebríčka sa pripoj na internet.',
+    'lb.emptyWeek': 'Tento týždeň ešte nikto nemá XP. Buď prvý.',
+    'lb.emptyAll': 'Rebríček je zatiaľ prázdny.',
+    'lb.hiddenTitle': 'Nezobrazuješ sa v rebríčku.',
+    'lb.hiddenNote': 'Ostatní ťa v ňom nevidia. Tvoje XP v appke sa nemení.',
+    'lb.showMe': 'Zobraziť ma',
+    'lb.switch': 'Zobrazovať ma v rebríčku',
+    'lb.switchNote': 'V rebríčku je len tvoje meno, avatar, úroveň a XP. Nikdy tvoje tréningy.',
+    'lb.shownOn': 'Zobrazuješ sa v rebríčku.',
+    'lb.hiddenOn': 'Už sa nezobrazuješ v rebríčku.',
+    'lb.removedNote': 'Moderátor ťa odstránil z rebríčka.',
+    'lb.modRemove': 'Odstrániť z rebríčka',
+    'lb.modRestore': 'Vrátiť do rebríčka',
+    'lb.modRemoved': 'Člen bol odstránený z rebríčka.',
+    'lb.modRestored': 'Člen je späť v rebríčku.',
     'community2.back': 'Späť', 'community2.menuAria': 'Ďalšie možnosti', 'community2.timeNow': 'teraz', 'community2.delete': 'Vymazať',
     'community2.scopeFriends': 'Priatelia', 'community2.friendsOnly': 'Len priatelia',
     'community2.friendsFeedEmpty': 'Tu uvidíš príspevky svojich priateľov – aj tie len pre priateľov. Priateľov nájdeš cez Hľadať.',
@@ -7538,6 +7571,39 @@ const SOCIAL2_I18N = {
   },
   en: {
     'community2.navHome': 'Home', 'community2.navSearch': 'Search', 'community2.navChats': 'Messages', 'community2.navProfile': 'Profile',
+    'lb.nav': 'Top 20',
+    'lb.title': 'Leaderboard',
+    'lb.tabAll': 'All time',
+    'lb.tabWeek': 'This week',
+    'lb.colRank': 'Rank',
+    'lb.colMember': 'Member',
+    'lb.colLevel': 'Level',
+    'lb.colXp': 'XP',
+    'lb.colWeekXp': 'XP this week',
+    'lb.levelShort': 'Lv {n}',
+    'lb.you': '(you)',
+    'lb.resets': 'The weekly ranking resets on Monday.',
+    'lb.footAll': 'Total XP and level, the same as in your app.',
+    'lb.captionAll': 'Top 20 members by total XP',
+    'lb.captionWeek': 'Top 20 members by XP this week',
+    'lb.rowAria': 'Rank {pos}, {name}, level {level}, {xp} XP',
+    'lb.rowAriaWeek': 'Rank {pos}, {name}, {xp} XP this week',
+    'lb.refresh': 'Refresh leaderboard',
+    'lb.offline': 'Connect to the internet to see the leaderboard.',
+    'lb.emptyWeek': 'No XP yet this week. Be the first.',
+    'lb.emptyAll': 'The leaderboard is empty so far.',
+    'lb.hiddenTitle': 'You’re hidden from the leaderboard.',
+    'lb.hiddenNote': 'Others can’t see you there. Your XP in the app doesn’t change.',
+    'lb.showMe': 'Show me',
+    'lb.switch': 'Show me on the leaderboard',
+    'lb.switchNote': 'The leaderboard shows only your name, avatar, level and XP. Never your workouts.',
+    'lb.shownOn': 'You appear on the leaderboard.',
+    'lb.hiddenOn': 'You no longer appear on the leaderboard.',
+    'lb.removedNote': 'A moderator removed you from the leaderboard.',
+    'lb.modRemove': 'Remove from leaderboard',
+    'lb.modRestore': 'Restore to leaderboard',
+    'lb.modRemoved': 'Member removed from the leaderboard.',
+    'lb.modRestored': 'Member restored to the leaderboard.',
     'community2.back': 'Back', 'community2.menuAria': 'More options', 'community2.timeNow': 'now', 'community2.delete': 'Delete',
     'community2.scopeFriends': 'Friends', 'community2.friendsOnly': 'Friends only',
     'community2.friendsFeedEmpty': 'Here you’ll see your friends’ posts – including friends-only ones. Find friends with Search.',
@@ -7584,6 +7650,39 @@ const SOCIAL2_I18N = {
   },
   es: {
     'community2.navHome': 'Inicio', 'community2.navSearch': 'Buscar', 'community2.navChats': 'Mensajes', 'community2.navProfile': 'Perfil',
+    'lb.nav': 'Top 20',
+    'lb.title': 'Clasificación',
+    'lb.tabAll': 'Histórico',
+    'lb.tabWeek': 'Esta semana',
+    'lb.colRank': 'Puesto',
+    'lb.colMember': 'Miembro',
+    'lb.colLevel': 'Nivel',
+    'lb.colXp': 'XP',
+    'lb.colWeekXp': 'XP esta semana',
+    'lb.levelShort': 'Nv. {n}',
+    'lb.you': '(tú)',
+    'lb.resets': 'La clasificación semanal se reinicia el lunes.',
+    'lb.footAll': 'XP total y nivel, igual que en tu app.',
+    'lb.captionAll': 'Los 20 mejores miembros por XP total',
+    'lb.captionWeek': 'Los 20 mejores miembros por XP de esta semana',
+    'lb.rowAria': 'Puesto {pos}, {name}, nivel {level}, {xp} XP',
+    'lb.rowAriaWeek': 'Puesto {pos}, {name}, {xp} XP esta semana',
+    'lb.refresh': 'Actualizar clasificación',
+    'lb.offline': 'Conéctate a internet para ver la clasificación.',
+    'lb.emptyWeek': 'Nadie tiene XP esta semana. Sé el primero.',
+    'lb.emptyAll': 'La clasificación aún está vacía.',
+    'lb.hiddenTitle': 'Estás oculto en la clasificación.',
+    'lb.hiddenNote': 'Los demás no te ven ahí. Tu XP en la app no cambia.',
+    'lb.showMe': 'Mostrarme',
+    'lb.switch': 'Mostrarme en la clasificación',
+    'lb.switchNote': 'La clasificación solo muestra tu nombre, avatar, nivel y XP. Nunca tus entrenamientos.',
+    'lb.shownOn': 'Apareces en la clasificación.',
+    'lb.hiddenOn': 'Ya no apareces en la clasificación.',
+    'lb.removedNote': 'Un moderador te quitó de la clasificación.',
+    'lb.modRemove': 'Quitar de la clasificación',
+    'lb.modRestore': 'Devolver a la clasificación',
+    'lb.modRemoved': 'Miembro quitado de la clasificación.',
+    'lb.modRestored': 'Miembro devuelto a la clasificación.',
     'community2.back': 'Atrás', 'community2.menuAria': 'Más opciones', 'community2.timeNow': 'ahora', 'community2.delete': 'Eliminar',
     'community2.scopeFriends': 'Amigos', 'community2.friendsOnly': 'Solo amigos',
     'community2.friendsFeedEmpty': 'Aquí verás las publicaciones de tus amigos, también las de solo amigos. Encuentra amigos con Buscar.',
@@ -7630,6 +7729,39 @@ const SOCIAL2_I18N = {
   },
   'pt-BR': {
     'community2.navHome': 'Início', 'community2.navSearch': 'Buscar', 'community2.navChats': 'Mensagens', 'community2.navProfile': 'Perfil',
+    'lb.nav': 'Top 20',
+    'lb.title': 'Ranking',
+    'lb.tabAll': 'Geral',
+    'lb.tabWeek': 'Esta semana',
+    'lb.colRank': 'Posição',
+    'lb.colMember': 'Membro',
+    'lb.colLevel': 'Nível',
+    'lb.colXp': 'XP',
+    'lb.colWeekXp': 'XP na semana',
+    'lb.levelShort': 'Nv. {n}',
+    'lb.you': '(você)',
+    'lb.resets': 'O ranking semanal reinicia na segunda-feira.',
+    'lb.footAll': 'XP total e nível, iguais aos do seu app.',
+    'lb.captionAll': 'Os 20 melhores membros por XP total',
+    'lb.captionWeek': 'Os 20 melhores membros por XP desta semana',
+    'lb.rowAria': 'Posição {pos}, {name}, nível {level}, {xp} XP',
+    'lb.rowAriaWeek': 'Posição {pos}, {name}, {xp} XP nesta semana',
+    'lb.refresh': 'Atualizar ranking',
+    'lb.offline': 'Conecte-se à internet para ver o ranking.',
+    'lb.emptyWeek': 'Ninguém tem XP nesta semana. Seja o primeiro.',
+    'lb.emptyAll': 'O ranking ainda está vazio.',
+    'lb.hiddenTitle': 'Você está oculto no ranking.',
+    'lb.hiddenNote': 'Os outros não veem você lá. Seu XP no app não muda.',
+    'lb.showMe': 'Mostrar-me',
+    'lb.switch': 'Mostrar-me no ranking',
+    'lb.switchNote': 'O ranking mostra só seu nome, avatar, nível e XP. Nunca seus treinos.',
+    'lb.shownOn': 'Você aparece no ranking.',
+    'lb.hiddenOn': 'Você não aparece mais no ranking.',
+    'lb.removedNote': 'Um moderador removeu você do ranking.',
+    'lb.modRemove': 'Remover do ranking',
+    'lb.modRestore': 'Restaurar no ranking',
+    'lb.modRemoved': 'Membro removido do ranking.',
+    'lb.modRestored': 'Membro restaurado no ranking.',
     'community2.back': 'Voltar', 'community2.menuAria': 'Mais opções', 'community2.timeNow': 'agora', 'community2.delete': 'Excluir',
     'community2.scopeFriends': 'Amigos', 'community2.friendsOnly': 'Só amigos',
     'community2.friendsFeedEmpty': 'Aqui você vê os posts dos seus amigos, inclusive os só para amigos. Encontre amigos em Buscar.',
@@ -7676,6 +7808,39 @@ const SOCIAL2_I18N = {
   },
   fr: {
     'community2.navHome': 'Accueil', 'community2.navSearch': 'Rechercher', 'community2.navChats': 'Messages', 'community2.navProfile': 'Profil',
+    'lb.nav': 'Top 20',
+    'lb.title': 'Classement',
+    'lb.tabAll': 'Depuis toujours',
+    'lb.tabWeek': 'Cette semaine',
+    'lb.colRank': 'Rang',
+    'lb.colMember': 'Membre',
+    'lb.colLevel': 'Niveau',
+    'lb.colXp': 'XP',
+    'lb.colWeekXp': 'XP cette semaine',
+    'lb.levelShort': 'Niv. {n}',
+    'lb.you': '(vous)',
+    'lb.resets': 'Le classement hebdomadaire repart à zéro le lundi.',
+    'lb.footAll': 'XP total et niveau, comme dans votre application.',
+    'lb.captionAll': 'Les 20 meilleurs membres par XP total',
+    'lb.captionWeek': 'Les 20 meilleurs membres par XP cette semaine',
+    'lb.rowAria': 'Rang {pos}, {name}, niveau {level}, {xp} XP',
+    'lb.rowAriaWeek': 'Rang {pos}, {name}, {xp} XP cette semaine',
+    'lb.refresh': 'Actualiser le classement',
+    'lb.offline': 'Connectez-vous à Internet pour voir le classement.',
+    'lb.emptyWeek': 'Pas encore d’XP cette semaine. Soyez le premier.',
+    'lb.emptyAll': 'Le classement est encore vide.',
+    'lb.hiddenTitle': 'Vous êtes masqué du classement.',
+    'lb.hiddenNote': 'Les autres ne vous y voient pas. Votre XP dans l’application ne change pas.',
+    'lb.showMe': 'M’afficher',
+    'lb.switch': 'M’afficher dans le classement',
+    'lb.switchNote': 'Le classement n’affiche que votre nom, avatar, niveau et XP. Jamais vos séances.',
+    'lb.shownOn': 'Vous apparaissez dans le classement.',
+    'lb.hiddenOn': 'Vous n’apparaissez plus dans le classement.',
+    'lb.removedNote': 'Un modérateur vous a retiré du classement.',
+    'lb.modRemove': 'Retirer du classement',
+    'lb.modRestore': 'Remettre dans le classement',
+    'lb.modRemoved': 'Membre retiré du classement.',
+    'lb.modRestored': 'Membre remis dans le classement.',
     'community2.back': 'Retour', 'community2.menuAria': 'Plus d’options', 'community2.timeNow': 'maintenant', 'community2.delete': 'Supprimer',
     'community2.scopeFriends': 'Amis', 'community2.friendsOnly': 'Amis uniquement',
     'community2.friendsFeedEmpty': 'Ici, tu verras les publications de tes amis, y compris celles réservées aux amis. Trouve des amis avec Rechercher.',
@@ -7722,6 +7887,39 @@ const SOCIAL2_I18N = {
   },
   ar: {
     'community2.navHome': 'الرئيسية', 'community2.navSearch': 'بحث', 'community2.navChats': 'الرسائل', 'community2.navProfile': 'الملف الشخصي',
+    'lb.nav': 'أفضل 20',
+    'lb.title': 'لوحة الصدارة',
+    'lb.tabAll': 'كل الأوقات',
+    'lb.tabWeek': 'هذا الأسبوع',
+    'lb.colRank': 'الترتيب',
+    'lb.colMember': 'العضو',
+    'lb.colLevel': 'المستوى',
+    'lb.colXp': 'XP',
+    'lb.colWeekXp': 'XP هذا الأسبوع',
+    'lb.levelShort': 'م {n}',
+    'lb.you': '(أنت)',
+    'lb.resets': 'يُعاد ضبط ترتيب الأسبوع يوم الإثنين.',
+    'lb.footAll': 'إجمالي XP والمستوى كما في تطبيقك.',
+    'lb.captionAll': 'أفضل 20 عضوًا حسب إجمالي XP',
+    'lb.captionWeek': 'أفضل 20 عضوًا حسب XP هذا الأسبوع',
+    'lb.rowAria': 'الترتيب {pos}، {name}، المستوى {level}، {xp} XP',
+    'lb.rowAriaWeek': 'الترتيب {pos}، {name}، {xp} XP هذا الأسبوع',
+    'lb.refresh': 'تحديث لوحة الصدارة',
+    'lb.offline': 'اتصل بالإنترنت لعرض لوحة الصدارة.',
+    'lb.emptyWeek': 'لا توجد XP هذا الأسبوع بعد. كن الأول.',
+    'lb.emptyAll': 'لوحة الصدارة فارغة حتى الآن.',
+    'lb.hiddenTitle': 'أنت مخفي من لوحة الصدارة.',
+    'lb.hiddenNote': 'لا يراك الآخرون هناك. لا تتغير XP في تطبيقك.',
+    'lb.showMe': 'أظهرني',
+    'lb.switch': 'أظهرني في لوحة الصدارة',
+    'lb.switchNote': 'تعرض لوحة الصدارة اسمك وصورتك ومستواك وXP فقط، ولا تعرض تمارينك أبدًا.',
+    'lb.shownOn': 'أنت تظهر في لوحة الصدارة.',
+    'lb.hiddenOn': 'لم تعد تظهر في لوحة الصدارة.',
+    'lb.removedNote': 'أزالك أحد المشرفين من لوحة الصدارة.',
+    'lb.modRemove': 'إزالة من لوحة الصدارة',
+    'lb.modRestore': 'إعادة إلى لوحة الصدارة',
+    'lb.modRemoved': 'تمت إزالة العضو من لوحة الصدارة.',
+    'lb.modRestored': 'أُعيد العضو إلى لوحة الصدارة.',
     'community2.back': 'رجوع', 'community2.menuAria': 'خيارات أخرى', 'community2.timeNow': 'الآن', 'community2.delete': 'حذف',
     'community2.scopeFriends': 'الأصدقاء', 'community2.friendsOnly': 'للأصدقاء فقط',
     'community2.friendsFeedEmpty': 'هنا ترى منشورات أصدقائك، بما فيها المنشورات المخصّصة للأصدقاء. ابحث عن أصدقاء عبر «بحث».',
@@ -12934,7 +13132,9 @@ async function communityDetectSocial(sb) {
 async function communityLoadConsent(sb) {
   let r;
   try { r = await sb.rpc('has_age_consent'); } catch (e) { r = { error: e }; }
-  communityConsent = !!(r && !r.error && r.data === true);
+  if (r && !r.error) communityConsent = r.data === true;
+  else if (communityConsent === null || communityMissingFn(r && r.error)) communityConsent = false;
+  /* inak (sieť): ponechá sa posledná známa odpoveď – offline sa nezobrazí falošná výzva „Potvrď vek“ */
 }
 /* Chyba servera → kľúč správy (nikdy nepravdivé „uložené“). */
 function communityErrText(error, fallbackKey) {
@@ -13051,6 +13251,56 @@ async function leaderboardSend(force) {
   return r;
 }
 
+function leaderboardRowHtml(r, period) {
+  const medal = r.pos === 1 ? ' lb-gold' : r.pos === 2 ? ' lb-silver' : r.pos === 3 ? ' lb-bronze' : '';
+  const name = r.username || t('community.unknownUser');
+  const xp = Number(r.xp || 0).toLocaleString(((LANGUAGES.find((l) => l.code === activeLang()) || {}).locale) || 'en-US');
+  const aria = t(period === 'week' ? 'lb.rowAriaWeek' : 'lb.rowAria', { pos: r.pos, name, level: r.level, xp });
+  return '<tr class="lb-row' + (r.is_me ? ' lb-me' : '') + '" aria-label="' + escAttr(aria) + '">'
+    + '<td class="lb-pos' + medal + '">' + (r.is_me && r.pos > 20 ? '#' + r.pos : r.pos) + '</td>'
+    + '<td class="lb-member"><div class="lb-member-in">' + communityAvatarHtml(r.avatar_path, 32)
+    + '<button type="button" class="lb-name" data-community-action="open-user" data-user="' + escAttr(r.user_id) + '">'
+    + esc(name) + (r.is_me ? ' <span class="lb-you">' + esc(t('lb.you')) + '</span>' : '') + '</button></div></td>'
+    + (period === 'week' ? '' : '<td class="lb-level">' + esc(t('lb.levelShort', { n: r.level })) + '</td>')
+    + '<td class="lb-xp">' + esc(xp) + '</td></tr>';
+}
+
+async function communityLeaderboardHtml(sb) {
+  const period = leaderboardPeriod;
+  const tab = (p, key) => '<button type="button" class="goal-chip' + (period === p ? ' active' : '') + '" data-community-action="lb-period" data-period="' + p + '" aria-pressed="' + (period === p ? 'true' : 'false') + '">' + esc(t(key)) + '</button>';
+  const head = communityTabbar()
+    + communitySubHead(esc(t('lb.title')), '<button type="button" class="btn-icon" data-community-action="lb-refresh" aria-label="' + escAttr(t('lb.refresh')) + '">↻</button>', true)
+    + '<div class="goal-chips lb-tabs" role="group" aria-label="' + escAttr(t('lb.title')) + '">' + tab('all', 'lb.tabAll') + tab('week', 'lb.tabWeek') + '</div>';
+  await leaderboardSend(false);
+  let top, me;
+  try { [top, me] = await Promise.all([sb.rpc('leaderboard_top', { p_period: period }), sb.rpc('leaderboard_me')]); }
+  catch (e) { top = { error: e }; me = { error: e }; }
+  if (!top || top.error) {
+    return head + '<div class="card lb-state"><p>' + esc(t(navigator.onLine === false ? 'lb.offline' : 'community.errNetwork')) + '</p></div>';
+  }
+  const info = (me && !me.error && me.data) || {};
+  let state = '';
+  if (info.removed) state = '<div class="card lb-state"><p>' + esc(t('lb.removedNote')) + '</p></div>';
+  else if (info.hidden) state = '<div class="card lb-state"><p><strong>' + esc(t('lb.hiddenTitle')) + '</strong></p><p class="card-note">' + esc(t('lb.hiddenNote')) + '</p>'
+    + '<button type="button" class="btn btn-primary" data-community-action="lb-show-me">' + esc(t('lb.showMe')) + '</button></div>';
+  const rows = Array.isArray(top.data) ? top.data : [];
+  const list = rows.filter((r) => r.pos <= 20);
+  const mine = rows.find((r) => r.is_me && r.pos > 20);
+  if (!list.length) {
+    return head + state + '<div class="card lb-state"><p>' + esc(t(period === 'week' ? 'lb.emptyWeek' : 'lb.emptyAll')) + '</p></div>';
+  }
+  return head + state
+    + '<div class="card lb-card"><div class="lb-scroll"><table class="lb-table">'
+    + '<caption class="lb-sr">' + esc(t(period === 'week' ? 'lb.captionWeek' : 'lb.captionAll')) + '</caption>'
+    + '<thead><tr><th scope="col" class="lb-th-pos"><span aria-hidden="true">#</span><span class="lb-sr">' + esc(t('lb.colRank')) + '</span></th><th scope="col">' + esc(t('lb.colMember')) + '</th>'
+    + (period === 'week' ? '' : '<th scope="col" class="lb-th-level">' + esc(t('lb.colLevel')) + '</th>')
+    + '<th scope="col" class="lb-th-xp">' + esc(t(period === 'week' ? 'lb.colWeekXp' : 'lb.colXp')) + '</th></tr></thead><tbody>'
+    + list.map((r) => leaderboardRowHtml(r, period)).join('')
+    + (mine ? '<tr class="lb-gap" aria-hidden="true"><td colspan="' + (period === 'week' ? 3 : 4) + '">⋯</td></tr>' + leaderboardRowHtml(mine, period) : '')
+    + '</tbody></table></div>'
+    + '<p class="card-note">' + esc(t(period === 'week' ? 'lb.resets' : 'lb.footAll')) + '</p></div>';
+}
+
 const COMMUNITY_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">';
 const COMMUNITY_ICONS = {
   home: '<path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M9.5 21v-5.5h5V21"/>',
@@ -13064,6 +13314,7 @@ const COMMUNITY_ICONS = {
   friends: '<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.6-3.6 3.2-5.5 6.5-5.5s5.9 1.9 6.5 5.5"/><circle cx="17" cy="9" r="2.5"/><path d="M16 14.6c2.8.1 4.8 1.7 5.4 4.9"/>',
   stack: '<rect x="7" y="7" width="13" height="13" rx="2"/><path d="M4 16V6a2 2 0 0 1 2-2h10"/>',
   send: '<path d="M21 3 10.5 13.5"/><path d="M21 3l-6.5 18-4-7.5L3 9.5 21 3z"/>',
+  trophy: '<path d="M8 21h8"/><path d="M12 17v4"/><path d="M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M17 5h3v2a3 3 0 0 1-3 3"/><path d="M7 5H4v2a3 3 0 0 0 3 3"/>',
 };
 function communityIcon(name) { return COMMUNITY_SVG + (COMMUNITY_ICONS[name] || '') + '</svg>'; }
 
@@ -13078,6 +13329,7 @@ function communityNavHtml() {
   return '<nav class="cnav" id="community-tabs">'
     + item('feed', 'home', 'community2.navHome', ['feed', 'following', 'comments'].indexOf(v) >= 0 || (v === 'user' && !ownUser))
     + item('search', 'search', 'community2.navSearch', v === 'search')
+    + (communityVersion >= 3 ? item('leaderboard', 'trophy', 'lb.nav', v === 'leaderboard') : '')
     + item('compose', 'plus', 'community.newPost', v === 'compose')
     + item('chats', 'chat', 'community2.navChats', v === 'chats' || v === 'chat', communityBadges.chats)
     + item('profile', 'user', 'community2.navProfile', ['profile', 'myposts', 'friends', 'list', 'moderate'].indexOf(v) >= 0 || ownUser, communityBadges.requests)
@@ -13541,6 +13793,20 @@ async function communitySetSearchable(on) {
   communitySetMessageText(res.error ? communityErrText(res.error) : t(on ? 'community2.searchableOn' : 'community2.searchableOff'));
   communityShowStatus();
 }
+async function communitySetLeaderboard(show) {
+  const sb = communityClient(); if (!sb) return;
+  let res;
+  try { res = await sb.rpc('leaderboard_set_hidden', { p_hidden: !show }); } catch (e) { res = { error: e }; }
+  communitySetMessageText(res.error ? communityErrText(res.error) : t(show ? 'lb.shownOn' : 'lb.hiddenOn'));
+  if (communityView === 'leaderboard') renderCommunity(); else communityShowStatus();
+}
+async function communityLeaderboardModerate(uid, removed) {
+  const sb = communityClient(); if (!sb || !uid) return;
+  let res;
+  try { res = await sb.rpc('leaderboard_moderate', { p_user: uid, p_removed: !!removed }); } catch (e) { res = { error: e }; }
+  communitySetMessageText(res.error ? communityErrText(res.error) : t(removed ? 'lb.modRemoved' : 'lb.modRestored'));
+  communityShowStatus();
+}
 function communityTogglePostMenu(btn) {
   const card = btn.closest('.cpost');
   const menu = card ? card.querySelector('.cpost-menu') : null;
@@ -13590,7 +13856,8 @@ async function renderCommunity() {
     const social = await communityDetectSocial(sb);
     if (social) await communityLoadConsent(sb);
     else if (['following', 'user', 'list', 'compose'].indexOf(communityView) >= 0) communityView = 'feed';
-    if (!communityV2() && ['search', 'friends', 'chats', 'chat', 'comments'].indexOf(communityView) >= 0) communityView = 'feed';
+    if (!communityV2() && ['search', 'friends', 'chats', 'chat', 'comments', 'leaderboard'].indexOf(communityView) >= 0) communityView = 'feed';
+    if (communityView === 'leaderboard' && communityVersion < 3) communityView = 'feed';
     if (communityV2() && communityView === 'following') { communityScope = 'following'; communityView = 'feed'; }
     if (communityV2() && communityConsent) await communityAfterSignIn(sb, session.user);
     if (leaderboardEnabled() && communityConsent) leaderboardSend(false);
@@ -13603,6 +13870,7 @@ async function renderCommunity() {
     if (social && !communityConsent && !ownProfile) { put(communityTabbar() + communityAgeCardHtml()); return; }
     if (communityView === 'search') { if (put(communitySearchHtml())) communityRunSearch(true); return; }
     if (communityView === 'friends') { put(await communityFriendsHtml(sb)); return; }
+    if (communityView === 'leaderboard') { put(await communityLeaderboardHtml(sb)); return; }
     if (communityView === 'chats') { put(await communityChatsHtml(sb)); return; }
     if (communityView === 'chat') { if (put(await communityChatHtml(sb))) communityAfterChatRender(sb); return; }
     if (communityView === 'comments') { put(await communityCommentsHtml(sb)); return; }
@@ -13943,6 +14211,10 @@ async function communityUserHtml(sb, uid) {
         + '<div class="plan-actions cprofile-menu" id="community-profile-menu" hidden>'
         + '<button type="button" class="btn btn-secondary btn-sm" data-community-action="block" data-user="' + escAttr(card.id) + '" data-name="' + escAttr(card.username || '') + '">' + esc(t('community.block')) + '</button>'
         + '<button type="button" class="btn btn-secondary btn-sm" data-community-action="report-user" data-user="' + escAttr(card.id) + '">' + esc(t('community.reportUser')) + '</button>'
+        + (communityVersion >= 3 && communityProfile && communityProfile.role === 'moderator'
+          ? '<button type="button" class="btn btn-secondary btn-sm" data-community-action="lb-mod" data-user="' + escAttr(card.id) + '" data-on="1">' + esc(t('lb.modRemove')) + '</button>'
+            + '<button type="button" class="btn btn-secondary btn-sm" data-community-action="lb-mod" data-user="' + escAttr(card.id) + '" data-on="0">' + esc(t('lb.modRestore')) + '</button>'
+          : '')
         + '</div>');
   }
   return communityTabbar()
@@ -14007,6 +14279,8 @@ async function communityListHtml(sb, reset) {
 async function communityProfileHtml(sb, user) {
   const p = communityProfile || {};
   const card = communitySocial ? await communityProfileCard(sb, user.id) : null;
+  let lbMe = null;
+  if (communityVersion >= 3) { try { lbMe = await sb.rpc('leaderboard_me'); } catch (e) { lbMe = null; } }
   const masked = t('community.emailHidden');
   if (communityV2() && card) {
     return communityTabbar()
@@ -14033,6 +14307,9 @@ async function communityProfileHtml(sb, user) {
       + '<label class="community-check" for="community-searchable"><input type="checkbox" id="community-searchable"' + (card.searchable !== false ? ' checked' : '') + '>'
       + '<span>' + esc(t('community2.searchable')) + '</span></label>'
       + '<p class="card-note">' + esc(t('community2.searchableNote')) + '</p>'
+      + (communityVersion >= 3 ? '<label class="community-check" for="community-leaderboard"><input type="checkbox" id="community-leaderboard"'
+        + (!(lbMe && lbMe.data && lbMe.data.hidden) ? ' checked' : '') + '><span>' + esc(t('lb.switch')) + '</span></label>'
+        + '<p class="card-note">' + esc(t('lb.switchNote')) + '</p>' : '')
       + '<p class="card-note">' + esc(t('community2.friendsPrivate')) + '</p>'
       + '<p class="card-note">' + esc(masked) + '</p>'
       + (p.role === 'moderator' ? '<p class="card-note">' + esc(t('community.moderatorBadge')) + '</p>' : '')
@@ -20064,6 +20341,10 @@ function setupEvents() {
     else if (act === 'share') communityToggleShare(a.dataset.post);
     else if (act === 'view-photo') communityViewPhoto(a.dataset.path);
     else if (act === 'open-user') communityOpenUser(a.dataset.user);
+    else if (act === 'lb-period') { leaderboardPeriod = a.dataset.period === 'week' ? 'week' : 'all'; renderCommunity(); }
+    else if (act === 'lb-refresh') renderCommunity();
+    else if (act === 'lb-show-me') communitySetLeaderboard(true);
+    else if (act === 'lb-mod') communityLeaderboardModerate(a.dataset.user, a.dataset.on === '1');
     else if (act === 'open-list') communityOpenList(a.dataset.user, a.dataset.kind);
     else if (act === 'list-more') { const sb = communityClient(); if (sb) communityListHtml(sb, false).then((h) => { document.getElementById('community-body').innerHTML = h; }); }
     else if (act === 'follow') communityFollow(a.dataset.user, a.dataset.on === '1');
@@ -20107,6 +20388,7 @@ function setupEvents() {
     }
     if (e.target && e.target.id === 'community-age16') communityAge16 = !!e.target.checked;
     if (e.target && e.target.id === 'community-searchable') communitySetSearchable(!!e.target.checked);
+    if (e.target && e.target.id === 'community-leaderboard') communitySetLeaderboard(!!e.target.checked);
     if (e.target && e.target.name === 'community-visibility') communityVisibility = e.target.value === 'friends' ? 'friends' : 'public';
   }, 'change');
   on('community-body', (e) => {

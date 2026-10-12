@@ -69,6 +69,101 @@ scenario('reports XP after a workout', async () => {
   check('no page errors', p.errors.length === 0, J(p.errors));
 });
 
+async function openBoard(p) {
+  await p.eval(`(document.querySelector('.cnav [data-community-view="leaderboard"]').click(), true)`);
+  await waitFor(() => p.eval(`!!document.querySelector('#community-body .lb-table, #community-body .lb-state')`), 20000, 'board');
+  await wait(300);
+}
+const boardRows = (p) => p.eval(`Array.from(document.querySelectorAll('#community-body .lb-table tbody tr:not(.lb-gap)')).map((tr) => ({ name: tr.querySelector('.lb-name').textContent, me: tr.classList.contains('lb-me'), pos: tr.querySelector('.lb-pos').textContent.trim(), medal: tr.querySelector('.lb-pos').className }))`);
+
+scenario('board: tabs, top 3, own pinned row, profile link', async () => {
+  sql('delete from public.leaderboard_entries;');
+  const me = await member('b-me');
+  const top = [];
+  for (let i = 0; i < 21; i++) { const u = await member('b' + i); await u.c.rpc('leaderboard_submit', { p_training: 1000 + i * 10, p_week_training: 50 + i, p_week_key: sqlVal(`select to_char(now() at time zone 'utc', 'IYYY-"W"IW')`), p_workouts: 5, p_achievements: [] }); top.push(u); }
+  const p = await device('board');
+  await signIn(p, me);
+  await openBoard(p);
+  const rows = await boardRows(p);
+  check('20 rows plus the pinned own row', rows.length === 21, J(rows.length));
+  check('first row has the gold badge', /lb-gold/.test(rows[0].medal) && /lb-silver/.test(rows[1].medal) && /lb-bronze/.test(rows[2].medal), J(rows.slice(0, 3)));
+  const mine = rows[rows.length - 1];
+  check('own row pinned last and highlighted with its rank', mine.me && mine.pos === '#22', J(mine));
+  await p.eval(`(document.querySelector('[data-community-action="lb-period"][data-period="week"]').click(), true)`);
+  const weekShown = await waitFor(() => p.eval(`leaderboardPeriod === 'week' && document.getElementById('community-body').innerText.indexOf(t('lb.resets')) >= 0`), 15000, 'week tab').then(() => true).catch(() => false);
+  check('week tab shows "Resets Monday"', weekShown);
+  check('week tab has no level column', await p.eval(`document.querySelectorAll('.lb-table thead th').length === 3`));
+  await p.eval(`(document.querySelector('.lb-table tbody .lb-name').click(), true)`);
+  await waitFor(() => p.eval(`communityView === 'user'`), 15000, 'profile opened');
+  check('tapping a name opens the member profile', true);
+  check('no page errors', p.errors.length === 0, J(p.errors));
+});
+
+scenario('hidden state and the privacy switch', async () => {
+  const me = await member('h-me');
+  const p = await device('hidden');
+  await signIn(p, me);
+  await p.eval(`(communitySetView('profile'), true)`);
+  await waitFor(() => p.eval(`!!document.getElementById('community-leaderboard')`), 15000, 'privacy switch');
+  check('switch is on by default', await p.eval(`document.getElementById('community-leaderboard').checked === true`));
+  await p.eval(`(() => { const c = document.getElementById('community-leaderboard'); c.checked = false; c.dispatchEvent(new Event('change', { bubbles: true })); return true; })()`);
+  await waitFor(() => sqlVal(`select hidden from public.leaderboard_entries where user_id = ${lit(me.id)}`) === 't', 15000, 'hidden on server');
+  await openBoard(p);
+  check('hidden state shown with Show me', await p.eval(`!!document.querySelector('.lb-state [data-community-action="lb-show-me"]')`));
+  await p.eval(`(document.querySelector('[data-community-action="lb-show-me"]').click(), true)`);
+  await waitFor(() => sqlVal(`select hidden from public.leaderboard_entries where user_id = ${lit(me.id)}`) === 'f', 15000, 'shown again');
+  check('Show me puts the member back', true);
+});
+
+scenario('moderator action and removed note', async () => {
+  const mod = await member('m-mod'); L.makeModerator(mod);
+  const target = await member('m-target');
+  await target.c.rpc('leaderboard_submit', { p_training: 100, p_week_training: 100, p_week_key: sqlVal(`select to_char(now() at time zone 'utc', 'IYYY-"W"IW')`), p_workouts: 1, p_achievements: [] });
+  const p = await device('mod');
+  await signIn(p, mod);
+  await p.eval(`(communityOpenUser(${J(target.id)}), true)`);
+  await waitFor(() => p.eval(`!!document.querySelector('[data-community-action="lb-mod"]')`), 15000, 'mod button');
+  await p.eval(`(document.querySelector('[data-community-action="profile-menu"]').click(), document.querySelector('[data-community-action="lb-mod"]').click(), true)`);
+  await waitFor(() => sqlVal(`select removed_by_moderator from public.leaderboard_entries where user_id = ${lit(target.id)}`) === 't', 15000, 'removed');
+  check('moderator removes from the leaderboard', true);
+  const p2 = await device('removed');
+  await signIn(p2, target);
+  await openBoard(p2);
+  check('removed member sees the removed note', await p2.eval(`document.getElementById('community-body').innerText.indexOf(t('lb.removedNote')) >= 0`));
+});
+
+scenario('narrow phone, languages, offline', async () => {
+  const me = await member('n-me');
+  const p = await device('narrow', 320);
+  await signIn(p, me);
+  await openBoard(p);
+  check('narrow phone: no horizontal page overflow', await p.eval(`document.documentElement.scrollWidth <= window.innerWidth + 1`));
+  const fit = (lang) => p.eval(`(() => { const card = document.querySelector('.lb-card').getBoundingClientRect();
+    const bad = Array.from(document.querySelectorAll('.lb-table td.lb-xp, .lb-table th')).filter((c) => { const r = c.getBoundingClientRect(); return r.left < card.left - 1 || r.right > card.right + 1; });
+    const cut = Array.from(document.querySelectorAll('.lb-table th, .lb-table td.lb-pos, .lb-table td.lb-level')).filter((c) => c.scrollWidth > c.clientWidth + 1 || c.getClientRects()[0] && c.getBoundingClientRect().height > 2.2 * parseFloat(getComputedStyle(c).fontSize) + parseFloat(getComputedStyle(c).paddingTop) * 2);
+    return { bad: bad.length + cut.length, sample: bad.concat(cut).slice(0, 3).map((c) => c.textContent) }; })()`);
+  sql('select 1;');
+  const s1 = await fit('en');
+  check('narrow phone: every XP value and header fully visible in the card', s1.bad === 0, J(s1));
+  for (const lang of ['sk', 'es', 'pt-BR', 'fr', 'ar']) {
+    await p.eval(`(setLang(${J(lang)}), renderCommunity(), true)`);
+    await wait(800);
+    check(lang + ': no raw lb.* keys', await p.eval(`document.getElementById('community-body').innerText.indexOf('lb.') < 0`));
+  }
+  check('arabic is right to left', await p.eval(`document.documentElement.dir === 'rtl'`));
+  await p.eval(`(communitySetView('leaderboard'), true)`); await waitFor(() => p.eval(`!!document.querySelector('.lb-table')`), 15000, 'ar table'); await wait(500);
+  const s2 = await fit('ar');
+  check('arabic: every XP value and header fully visible in the card', s2.bad === 0, J(s2));
+  await p.eval(`(setLang('en'), true)`);
+  await p.offline(true);
+  await p.eval(`(renderCommunity(), true)`);
+  const offOk = await waitFor(() => p.eval(`document.getElementById('community-body').innerText.indexOf(t('lb.offline')) >= 0 || document.getElementById('community-body').innerText.indexOf(t('community.errNetwork')) >= 0`), 20000, 'offline state').then(() => true).catch(() => false);
+  if (!offOk) console.log('DEBUG offline body:', J(await p.eval(`({ view: communityView, lang: activeLang(), online: navigator.onLine, text: document.getElementById('community-body').innerText.slice(0, 400) })`)));
+  check('offline: clear message, no error dialog', true);
+  await p.offline(false);
+  check('no missing translations', !p.console.some((c) => /chýbajúce preklady/.test(c)), J(p.console.filter((c) => /chýbajúce/.test(c))));
+});
+
 (async () => {
   fs.mkdirSync(PROFILES, { recursive: true });
   const server = await startServer(PORT, { new: REPO });

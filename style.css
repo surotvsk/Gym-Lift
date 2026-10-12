@@ -3362,6 +3362,38 @@ button.community-count-btn:hover { border-color: var(--border-strong); }
 }
 .cnav-btn .cnav-badge { position: absolute; top: 0; inset-inline-start: calc(50% + 6px); }
 .cbadge-inline { vertical-align: middle; margin-inline-start: var(--sp-1); }
+
+/* Rebríček (Community → Top 20) */
+.lb-tabs { margin-block: var(--sp-2) var(--sp-3); }
+.lb-card { padding: 0; overflow: hidden; }
+.lb-scroll { overflow-x: auto; }
+.lb-table { width: 100%; table-layout: fixed; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+.lb-th-pos { width: 2.75rem; text-align: center; }
+.lb-th-level { width: 4.6rem; }
+.lb-th-xp { width: 5.2rem; }
+.lb-table th { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-align: start; font-size: var(--fs-xs); font-weight: var(--fw-bold); color: var(--text-dim);
+  padding: var(--sp-2) var(--sp-3); border-bottom: 1px solid var(--border); }
+.lb-table td { padding: var(--sp-2) var(--sp-3); border-bottom: 1px solid var(--border); vertical-align: middle; }
+.lb-table tr:last-child td { border-bottom: 0; }
+.lb-pos { font-weight: var(--fw-bold); color: var(--text-dim); text-align: center; white-space: nowrap; padding-inline: var(--sp-1); }
+.lb-gold, .lb-silver, .lb-bronze { color: #111; }
+.lb-pos.lb-gold::before, .lb-pos.lb-silver::before, .lb-pos.lb-bronze::before { content: none; }
+.lb-gold { background: linear-gradient(180deg, #f3d36b, #d9a933); }
+.lb-silver { background: linear-gradient(180deg, #e3e6ea, #b8bec6); }
+.lb-bronze { background: linear-gradient(180deg, #e5a978, #b9733f); }
+.lb-member { min-width: 0; }
+.lb-member-in { display: flex; align-items: center; gap: var(--sp-2); min-width: 0; }
+.lb-name { background: none; border: 0; padding: 0; font: inherit; color: var(--text); font-weight: var(--fw-bold);
+  cursor: pointer; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-align: start; }
+.lb-name:focus-visible { outline: 2px solid var(--accent-line); outline-offset: 2px; border-radius: var(--r-sm); }
+.lb-you { color: var(--accent); font-weight: var(--fw-med); }
+.lb-level { white-space: nowrap; color: var(--text-dim); overflow: hidden; text-overflow: ellipsis; }
+.lb-xp { text-align: end; font-weight: var(--fw-bold); white-space: nowrap; }
+.lb-th-xp { text-align: end; }
+.lb-me td { background: var(--accent-soft, rgba(255, 122, 26, 0.12)); }
+.lb-gap td { text-align: center; color: var(--text-dim); padding-block: var(--sp-1); }
+.lb-state { display: grid; gap: var(--sp-2); }
+.lb-sr { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 .cscope { margin: 0; }
 
 /* Hlavička podpohľadu (Späť + názov). */
