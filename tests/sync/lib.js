@@ -31,12 +31,14 @@ function loadCreds(name) {
 
 /* ---------- static server with switchable root (same origin for old/new builds) ---------- */
 const TYPES = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8',
-  '.json': 'application/json', '.png': 'image/png', '.jpg': 'image/jpeg', '.webm': 'video/webm', '.webp': 'image/webp', '.svg': 'image/svg+xml' };
+  '.json': 'application/json', '.png': 'image/png', '.jpg': 'image/jpeg', '.webm': 'video/webm', '.mp4': 'video/mp4', '.webp': 'image/webp', '.svg': 'image/svg+xml' };
 function startServer(port, roots) {
   let current = 'new';
+  const requests = [];   // every requested path, in order (tests check what an update downloads)
   const srv = http.createServer((req, res) => {
     const u = new URL(req.url, 'http://localhost');
     let p = decodeURIComponent(u.pathname);
+    requests.push(p);
     if (p.endsWith('/')) p += 'index.html';
     const base = path.resolve(roots[current]);
     const fp = CONFIG_OVERRIDE && p === '/community-config.js' ? path.resolve(CONFIG_OVERRIDE) : path.resolve(path.join(base, p));
@@ -48,6 +50,7 @@ function startServer(port, roots) {
     });
   });
   return new Promise((resolve) => srv.listen(port, '127.0.0.1', () => resolve({
+    requests,
     setRoot(r) { current = r; }, root() { return current; }, close() { return new Promise((r) => srv.close(r)); },
   })));
 }
