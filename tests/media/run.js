@@ -236,6 +236,21 @@ scenario('codecs', async () => {
   } finally { await srv.close(); }
 });
 
+scenario('batch 1', async () => {
+  const a = makeBuild('build-batch1', '');
+  const srv = await startServer(PORT, { a });
+  srv.setRoot('a');
+  try {
+    const { p } = await freshPage('batch1');
+    await openApp(p);
+    const names = await p.eval(`(() => { const out = {}; for (const l of ['en', 'sk', 'ar']) { setLang(l); out[l] = t('exercise.single-arm-dumbbell-triceps-extension'); } setLang('en'); return out; })()`);
+    check('renamed to "Dumbbell triceps extension" (owner, 2026-10-12)', names.en === 'Dumbbell triceps extension', names);
+    check('renamed in Slovak and Arabic too', names.sk === 'Tricepsová extenzia s jednoručkou' && names.ar === 'تمرين الترايسبس بالدمبل', names);
+    const g = await checkExerciseGallery(p, 'single-arm-dumbbell-triceps-extension');
+    check('dumbbell triceps extension: video loads and is credited', g.list === 1 && g.firstIsVideo && g.items.length === 1 && g.items[0].ok && g.credits === 1, g);
+  } finally { await srv.close(); }
+});
+
 /* ---------- runner ---------- */
 (async () => {
   fs.mkdirSync(PROFILES, { recursive: true });

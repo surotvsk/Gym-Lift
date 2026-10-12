@@ -1,0 +1,76 @@
+{
+  "batch": 1,
+  "searched": "2026-10-12: Wikimedia Commons (English, German, French, Spanish terms; CDC and FitnessScape series), Pexels (search pages for each exercise, about 36 clips downloaded and checked frame by frame), Pixabay (no labelled clips). Everkinetic drawings excluded (drawn, not real media).",
+  "exercises": [
+    {
+      "id": "dumbbell-pullover",
+      "candidates": [],
+      "rejected": "Pexels 29569378 is an incline dumbbell press; 5319435/5319424 are rows; 5319098 lateral raise; 11023725 shoulder press; Commons only drawings and a pronunciation clip.",
+      "decision": {
+        "use": null,
+        "reason": "no correct, legally usable match found (see \"rejected\"); keeps the \"no photo or video\" message"
+      }
+    },
+    {
+      "id": "cable-pullover",
+      "candidates": [],
+      "rejected": "Pexels 33515045 and 32239221 are bent-arm pushdowns (the library describes a straight-arm arc); 31105899 cable fly; 34324804/35585658 dark or cut edits.",
+      "decision": {
+        "use": null,
+        "reason": "no correct, legally usable match found (see \"rejected\"); keeps the \"no photo or video\" message"
+      }
+    },
+    {
+      "id": "single-arm-dumbbell-triceps-extension",
+      "candidates": [
+        {
+          "kind": "video",
+          "page": "https://www.pexels.com/video/woman-doing-tricep-extensions-6286166/",
+          "file": "$GQ_MEDIA_SOURCING/originals/px-6286166.mp4",
+          "creator": "Gustavo Fring",
+          "license": "Pexels License",
+          "licenseUrl": "https://www.pexels.com/license/",
+          "trim": {
+            "start": 0.5,
+            "end": 6.0,
+            "poster": 3.0
+          },
+          "framesDir": "$GQ_MEDIA_SOURCING/review/b1/cand-6286166",
+          "note": "one dumbbell, one arm overhead, lowered behind the head and straightened again; one continuous side-view shot; one clean repetition"
+        }
+      ],
+      "decision": {
+        "use": 0,
+        "approvedOn": "2026-10-12",
+        "note": "owner also renamed the exercise to \"Dumbbell triceps extension\""
+      }
+    },
+    {
+      "id": "single-arm-cable-triceps-extension",
+      "candidates": [],
+      "rejected": "Pexels 35585835/35585834 overhead cable extension with a rope in both hands; 5319432/5319433/5319423/39043777/37616467 pushdowns; CDC Arm Extension is a two-arm machine.",
+      "decision": {
+        "use": null,
+        "reason": "no correct, legally usable match found (see \"rejected\"); keeps the \"no photo or video\" message"
+      }
+    },
+    {
+      "id": "romanian-deadlift",
+      "candidates": [],
+      "rejected": "Pexels 7674502 bar lowered to the floor with clear knee bend (conventional deadlift); 11121740 dumbbells, not a barbell; 12890962/14180867/5837708/9778003 cut edits or close-ups; 4944666 clean and press; FitnessScape Deadlift is conventional with a burned-in caption.",
+      "decision": {
+        "use": null,
+        "reason": "no correct, legally usable match found (see \"rejected\"); keeps the \"no photo or video\" message"
+      }
+    },
+    {
+      "id": "adductor-machine",
+      "candidates": [],
+      "rejected": "Pexels 6540202 hip machine with the legs hidden by the seat and a trainer talking (adduction vs abduction not visible); 6540194 leg curl/extension machine; 39347711/39347713/39347708 lat pulldown, row and chest machines.",
+      "decision": {
+        "use": null,
+        "reason": "no correct, legally usable match found (see \"rejected\"); keeps the \"no photo or video\" message"
+      }
+    }
+  ]
+}

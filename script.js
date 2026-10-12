@@ -1244,6 +1244,7 @@ const EXERCISE_VIDEO_MEDIA = {
   'machine-chest-press': { src: 'media/machine-chest-press.webm', mp4: 'media/machine-chest-press.mp4', poster: 'media/machine-chest-press-poster.jpg' },
   'incline-dumbbell-press': { src: 'media/incline-dumbbell-press.webm', mp4: 'media/incline-dumbbell-press.mp4', poster: 'media/incline-dumbbell-press-poster.jpg' },
   'leg-extension': { src: 'media/leg-extension.webm', mp4: 'media/leg-extension.mp4', poster: 'media/leg-extension-poster.jpg' },
+  'single-arm-dumbbell-triceps-extension': { src: 'media/single-arm-dumbbell-triceps-extension.webm', mp4: 'media/single-arm-dumbbell-triceps-extension.mp4', poster: 'media/single-arm-dumbbell-triceps-extension-poster.jpg' },
 };
 
 const EXERCISE_PHOTO_MEDIA = {
@@ -1279,6 +1280,7 @@ const EXERCISE_PHOTO_MEDIA = {
 };
 
 const MEDIA_CREDITS = {
+  'single-arm-dumbbell-triceps-extension': [{ creator: 'Gustavo Fring', license: 'Pexels License', licenseUrl: 'https://www.pexels.com/license/', source: 'https://www.pexels.com/video/woman-doing-tricep-extensions-6286166/' }],
   'bench-press': [{ creator: 'FitnessScape', license: 'CC BY 3.0', licenseUrl: 'https://creativecommons.org/licenses/by/3.0', source: 'https://commons.wikimedia.org/wiki/File:Bench_press_-_exercise_demonstration_video.webm' }],
   'squats': [{ creator: 'FitnessScape', license: 'CC BY 3.0', licenseUrl: 'https://creativecommons.org/licenses/by/3.0', source: 'https://commons.wikimedia.org/wiki/File:Squat_-_exercise_demonstration_video.webm' }],
   'overhead-press': [{ creator: 'FitnessScape', license: 'CC BY 3.0', licenseUrl: 'https://creativecommons.org/licenses/by/3.0', source: 'https://commons.wikimedia.org/wiki/File:Shoulder_press_-_exercise_demonstration_video.webm' }],
@@ -2150,7 +2152,7 @@ const I18N = {
     'exercise.cable-pullover': 'Pullover na kladke / stroji',
     'exercise.cable-pullover.how': 'Postav sa čelom k vysokej kladke, chyť tyč s rovnými rukami a zapri nohy. Ťahaj tyč dole v oblúku k stehnám, potom ju pomaly pusti nahor.',
     'exercise.cable-pullover.mistakes': 'Pokrčenie rúk do stláčania a nakláňanie trupu, ktorým pohybuješ váhou.',
-    'exercise.single-arm-dumbbell-triceps-extension': 'Zapažovanie jednou rukou s jednoručkou nad hlavou',
+    'exercise.single-arm-dumbbell-triceps-extension': 'Tricepsová extenzia s jednoručkou',
     'exercise.single-arm-dumbbell-triceps-extension.how': 'Drž jednu jednoručku nad hlavou s rovnou rukou. Pokrčením lakťa ju spusť za hlavu, potom ruku opäť vystri.',
     'exercise.single-arm-dumbbell-triceps-extension.mistakes': 'Lakte ušlé do strany a prehýbanie v spodnom chrbte.',
     'exercise.single-arm-cable-triceps-extension': 'Zapažovanie jednou rukou na kladke',
@@ -3028,7 +3030,7 @@ const I18N = {
     'exercise.cable-pullover': 'Cable/machine pullover',
     'exercise.cable-pullover.how': 'Face a high cable, hold the bar with straight arms and set the feet. Pull the bar down in an arc to the thighs, then let it rise slowly.',
     'exercise.cable-pullover.mistakes': 'Bending the arms into a pushdown, and leaning the torso to move the weight.',
-    'exercise.single-arm-dumbbell-triceps-extension': 'Single-arm overhead dumbbell triceps extension',
+    'exercise.single-arm-dumbbell-triceps-extension': 'Dumbbell triceps extension',
     'exercise.single-arm-dumbbell-triceps-extension.how': 'Hold one dumbbell overhead with the arm straight. Lower it behind the head by bending the elbow, then straighten the arm again.',
     'exercise.single-arm-dumbbell-triceps-extension.mistakes': 'Letting the elbow flare out to the side, and arching the lower back.',
     'exercise.single-arm-cable-triceps-extension': 'Single-arm cable triceps extension',
@@ -3896,7 +3898,7 @@ const I18N = {
     'exercise.cable-pullover': 'Pullover en polea / máquina',
     'exercise.cable-pullover.how': 'De pie frente a una polea alta, sujeta la barra con los brazos rectos y afianza los pies. Tira de la barra en arco hacia los muslos y déjala subir despacio.',
     'exercise.cable-pullover.mistakes': 'Flexionar los codos hasta hacer un jalón y balancear el torso para mover el peso.',
-    'exercise.single-arm-dumbbell-triceps-extension': 'Extensión de tríceps a una mano con mancuerna',
+    'exercise.single-arm-dumbbell-triceps-extension': 'Extensión de tríceps con mancuerna',
     'exercise.single-arm-dumbbell-triceps-extension.how': 'Sujeta una mancuerna sobre la cabeza con el brazo estirado. Bájala por detrás de la cabeza flexionando el codo y vuelve a estirar el brazo.',
     'exercise.single-arm-dumbbell-triceps-extension.mistakes': 'Abrir el codo hacia el lado y arquear la zona lumbar.',
     'exercise.single-arm-cable-triceps-extension': 'Extensión de tríceps a una mano en polea',
@@ -4764,7 +4766,7 @@ const I18N = {
     'exercise.cable-pullover': 'Pullover na polia / máquina',
     'exercise.cable-pullover.how': 'De pé de frente para uma polia alta, segure a barra com os braços retos e firme os pés. Puxe a barra em arco até as coxas e deixe subir devagar.',
     'exercise.cable-pullover.mistakes': 'Dobrar os braços e virar um pushdown, e balançar o tronco para mover o peso.',
-    'exercise.single-arm-dumbbell-triceps-extension': 'Extensão de tríceps unilateral com halter',
+    'exercise.single-arm-dumbbell-triceps-extension': 'Extensão de tríceps com halter',
     'exercise.single-arm-dumbbell-triceps-extension.how': 'Segure um halter acima da cabeça com o braço esticado. Desça-o atrás da cabeça dobrando o cotovelo e estique o braço de novo.',
     'exercise.single-arm-dumbbell-triceps-extension.mistakes': 'Deixar o cotovelo abrir para o lado e arquear a lombar.',
     'exercise.single-arm-cable-triceps-extension': 'Extensão de tríceps unilateral na polia',
@@ -5632,7 +5634,7 @@ const I18N = {
     'exercise.cable-pullover': 'Pull-over à la poulie / machine',
     'exercise.cable-pullover.how': 'Debout face à une poulie haute, tiens la barre bras tendus et stabilise les pieds. Tire la barre en arc vers les cuisses, puis laisse-la remonter lentement.',
     'exercise.cable-pullover.mistakes': 'Fléchir les bras en poussée et balancer le tronc pour déplacer la charge.',
-    'exercise.single-arm-dumbbell-triceps-extension': 'Extension triceps unilatérale à l’haltère',
+    'exercise.single-arm-dumbbell-triceps-extension': 'Extension triceps à l’haltère',
     'exercise.single-arm-dumbbell-triceps-extension.how': 'Tiens un haltère au-dessus de la tête, bras tendu. Descends-le derrière la tête en fléchissant le coude, puis tends le bras à nouveau.',
     'exercise.single-arm-dumbbell-triceps-extension.mistakes': 'Laisser le coude s’ouvrir sur le côté et creuser le bas du dos.',
     'exercise.single-arm-cable-triceps-extension': 'Extension triceps unilatérale à la poulie',
@@ -6519,7 +6521,7 @@ const I18N = {
     'exercise.cable-pullover': 'السحب على الكيبل / الجهاز (بول أوفر)',
     'exercise.cable-pullover.how': 'قف مواجهًا لكيبل مرتفع وأمسك البار والذراعان مستقيمتان وثبّت القدمين. اسحب البار بقوس نحو الفخذين ثم دعه يصعد ببطء.',
     'exercise.cable-pullover.mistakes': 'ثني الذراعين حتى يصبح ضغطًا للأسفل وتحريك الجذع لتحريك الوزن.',
-    'exercise.single-arm-dumbbell-triceps-extension': 'تمرين الترايسبس بذراع واحدة بالدمبل',
+    'exercise.single-arm-dumbbell-triceps-extension': 'تمرين الترايسبس بالدمبل',
     'exercise.single-arm-dumbbell-triceps-extension.how': 'أمسك دمبلًا فوق الرأس والذراع مستقيمة. أنزله خلف الرأس بثني المرفق ثم استقم بالذراع مرة أخرى.',
     'exercise.single-arm-dumbbell-triceps-extension.mistakes': 'انفتاح المرفق إلى الجانب وتقويس أسفل الظهر.',
     'exercise.single-arm-cable-triceps-extension': 'تمرين الترايسبس بذراع واحدة على الكيبل',

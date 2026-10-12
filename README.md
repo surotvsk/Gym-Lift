@@ -475,7 +475,7 @@ names look the same.
 GymQuest ships with a built-in catalogue of **48 exercises** — the 13 that have always powered the
 built-in plans, plus 20 added so the app is genuinely useful away from a gym, and 15 further gym
 exercises (cable curl, machine chest press, pec deck, incline dumbbell press, front raise, wide-grip
-lat pulldown, dumbbell and cable pullover, single-arm dumbbell and cable triceps extension, hack
+lat pulldown, dumbbell and cable pullover, dumbbell triceps extension, single-arm cable triceps extension, hack
 squat, Romanian deadlift, leg extension, adductor machine and abductor machine). There is
 **no server, no download and no external service**: the catalogue lives in the app's own code, so it
 works offline from the first launch and adds nothing at all to your stored data.
@@ -579,11 +579,12 @@ The demonstration gallery uses two kinds of media, and **both work offline once 
 is served from this repository and kept by the service worker after its first view; nothing is
 hot-linked or fetched from another site.
 
-- **Eleven exercises use a short local video** (`media/*.webm`) with play/pause controls and a poster
-  image, and **no autoplay** — **Bench press, Squat, Overhead press, Bent-over row, Biceps curl,
-  Pull-up, Lunges, Superman**, plus **Machine chest press**, **Incline dumbbell press** and
-  **Leg extension**. The videos are originals from Wikimedia Commons (the incline dumbbell press clip
-  is the Commons 480p transcode).
+- **Twelve exercises use a short local video** (`media/*.webm` and `media/*.mp4`) with play/pause
+  controls and a poster image, and **no autoplay**: **Bench press, Squat, Overhead press, Bent-over row,
+  Biceps curl, Pull-up, Lunges, Superman**, plus **Machine chest press**, **Incline dumbbell press**,
+  **Leg extension** and **Dumbbell triceps extension**. Eleven are originals from Wikimedia Commons
+  (the incline dumbbell press clip is the Commons 480p transcode). The dumbbell triceps extension is a
+  Pexels video (Pexels License), trimmed to one repetition.
 - **Lateral raise uses a three-photograph sequence of the same person** performing the same dumbbell
   lateral raise — *Starting position → Raising the weight → Top position* — with a subtle orange
   movement arrow on each frame and an **"Image 1 of 3"** indicator you can swipe through.
@@ -597,9 +598,10 @@ hot-linked or fetched from another site.
   as *unresolved* pending a decision.
 
 **Not every requested exercise has a demonstration yet, honestly:** *Dumbbell pullover*,
-*Cable/machine pullover*, the *single-arm dumbbell* and *single-arm cable triceps extension*, the
-*Romanian deadlift* and the *adductor (inner-thigh) machine* have **no correctly-matched, legally
-usable photo or video yet**, so they show the *Demonstration unavailable* state. No illustration was
+*Cable/machine pullover*, the *single-arm cable triceps extension*, the *Romanian deadlift* and the
+*adductor (inner-thigh) machine* have **no correctly-matched, legally usable photo or video yet**
+(searched on Wikimedia Commons, Pexels and Pixabay on 2026-10-12; see
+`tools/media/batches/batch-1.json`), so they show the *Demonstration unavailable* state. No illustration was
 invented to fill the gap.
 
 **Your own demonstrations.** From any exercise's detail view — built-in **or** one you created — you

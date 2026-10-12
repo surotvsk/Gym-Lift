@@ -9,10 +9,12 @@ const [batchFile, outFile] = process.argv.slice(2);
 if (!batchFile || !outFile) { console.error('usage: review.js <batch.json> <out.html>'); process.exit(2); }
 const batch = JSON.parse(fs.readFileSync(batchFile, 'utf8'));
 const esc = (s) => String(s == null ? '' : s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+/* Cesty v dávke môžu začínať $GQ_MEDIA_SOURCING (priečinok mimo repozitára), aby sa do gitu nedostala domovská cesta. */
+const expand = (f) => String(f || '').replace(/^\$GQ_MEDIA_SOURCING/, process.env.GQ_MEDIA_SOURCING || '$GQ_MEDIA_SOURCING');
 const dataUri = (f) => 'data:image/jpeg;base64,' + fs.readFileSync(f).toString('base64');
 const imagesFor = (c) => c.kind === 'video'
-  ? [1, 2, 3, 4, 5, 6].map((i) => path.join(c.framesDir, 'frame-' + i + '.jpg')).filter((f) => fs.existsSync(f))
-  : (c.photos || []).filter((f) => fs.existsSync(f));
+  ? [1, 2, 3, 4, 5, 6].map((i) => path.join(expand(c.framesDir), 'frame-' + i + '.jpg')).filter((f) => fs.existsSync(f))
+  : (c.photos || []).map(expand).filter((f) => fs.existsSync(f));
 const sections = batch.exercises.map((ex) => {
   const cands = ex.candidates.length ? ex.candidates.map((c, n) => `
     <article class="cand">
@@ -25,11 +27,12 @@ const sections = batch.exercises.map((ex) => {
         ${c.trim ? `<dt>Clip</dt><dd>${esc(c.trim.start)} s – ${esc(c.trim.end)} s</dd>` : ''}
         ${c.note ? `<dt>Note</dt><dd>${esc(c.note)}</dd>` : ''}
       </dl>
-    </article>`).join('') : '<p class="none">No correct, legally usable match found. This exercise keeps its current state.</p>';
+    </article>`).join('') : '<p class="none">No correct, legally usable match found. This exercise keeps its current state.</p>'
+    + (ex.rejected ? '<p class="none">Checked and rejected: ' + esc(ex.rejected) + '</p>' : '');
   return `<section><h2>${esc(ex.id)}</h2>${cands}</section>`;
 }).join('');
 fs.mkdirSync(path.dirname(outFile), { recursive: true });
-fs.writeFileSync(outFile, `<title>GymQuest media review – batch ${esc(batch.batch)}</title>
+fs.writeFileSync(outFile, `<title>Batch ${esc(batch.batch)} demonstration review</title>
 <style>
 :root { --bg: #f6f7f9; --fg: #16181d; --dim: #5b6270; --line: #dde1e7; --card: #fff; --accent: #e8572e; color-scheme: light; }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg: #14161a; --fg: #eef0f3; --dim: #a3aab6; --line: #2a2e36; --card: #1c1f25; color-scheme: dark; } }
@@ -44,6 +47,7 @@ figcaption { color: var(--dim); font-size: 12px; }
 dl { display: grid; grid-template-columns: max-content 1fr; gap: 2px 12px; margin: 10px 0 0; }
 dt { color: var(--dim); } dd { margin: 0; overflow-wrap: anywhere; }
 a { color: var(--accent); } .none { color: var(--dim); }
+h1, h2 { text-wrap: balance; }
 </style>
 <main><h1>Batch ${esc(batch.batch)}: pick one option per exercise, or none</h1>
 <p>Reply in chat, e.g. “romanian-deadlift: option 1; adductor-machine: none”.</p>${sections}</main>

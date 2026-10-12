@@ -1,7 +1,7 @@
 # Media credits
 
 Episode demonstrations in this folder come from **Wikimedia Commons** (and, for one
-cable-curl photograph, **Flickr**) and are used under the licences below. Every file is
+cable-curl photograph, **Flickr**, and for one video, **Pexels**) and are used under the licences below. Every file is
 stored locally in this repository and cached by the app's own service worker the first time it is
 shown. Nothing is hot-linked or fetched from another site, so a demonstration works offline once viewed.
 
@@ -24,6 +24,7 @@ made with `tools/media/process.sh mp4`, and is covered by the same author and li
 | `machine-chest-press.webm` | Machine chest press | Centers for Disease Control and Prevention | Public domain | https://commons.wikimedia.org/wiki/File:Muscle_Strengthening_at_the_Gym_-_Chest_Press.webm |
 | `incline-dumbbell-press.webm` | Incline dumbbell press | Gantner626 | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Video_showing_how_to_perform_the_dumbbell_bench_press_and_the_dumbbell_incline_bench_press.webm |
 | `leg-extension.webm` | Leg extension | Centers for Disease Control and Prevention | Public domain | https://commons.wikimedia.org/wiki/File:Muscle_Strengthening_at_the_Gym_-_Leg_Extension.webm |
+| `single-arm-dumbbell-triceps-extension.webm` / `.mp4` | Dumbbell triceps extension | Gustavo Fring (Pexels) | Pexels License (https://www.pexels.com/license/) | https://www.pexels.com/video/woman-doing-tricep-extensions-6286166/ (trimmed to 0.5–6.0 s with `tools/media/process.sh`) |
 
 ## Photographs
 
