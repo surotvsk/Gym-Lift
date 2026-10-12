@@ -21,6 +21,7 @@ Run **all** migrations, in order (there is no 0007 — the number is reserved):
 
 6. [`migrations/0006_delete_account_grants.sql`](./migrations/0006_delete_account_grants.sql) — the privileges the `delete-account` function needs on the 0001/0004 tables (see below). Independent of 0005.
 7. [`migrations/0008_social_phase2.sql`](./migrations/0008_social_phase2.sql) — Community Phase 2: user search (Community members only, "Show me in search" on by default), friend requests and private friend lists, friends-only posts, comments, one-to-one live chat between friends (Supabase Realtime; moderators can never read chats), message/comment reports that store only a copy of the reported item, and a daily `pg_cron` purge. Needs 0005 and 0006 and the `pg_cron` extension (Database → Extensions).
+8. [`migrations/0009_leaderboard.sql`](./migrations/0009_leaderboard.sql) — Community leaderboard (top 20 by XP): one row per member, the app reports XP through `leaderboard_submit()` and the server applies the limits (300 training XP per UTC day, 1,000 per ISO week, achievement XP computed on the server from the earned ids, at most 5,150), members appear by default and can hide themselves, moderators can remove a member. `community_social_version()` becomes 3. Needs 0008.
 
 SQL editor → paste a file → Run, **or** with the CLI: `supabase db push`.
 
@@ -103,6 +104,8 @@ and comments move to `community_rollback` (deleting an account still removes the
 moves them back). Friends-only posts stay visible only to their author and moderators. The copies of
 reported messages/comments are dropped. Roll back **0008 before 0005** — never run `0005_down` while
 0008 is applied. Keep 0006 and the `delete-account` function; the v49 app falls back by itself.
+
+**0009 — leaderboard.** Release order: the app (v57+) first — it shows the leaderboard only when `community_social_version()` answers 3 — then run 0009 once, as one transaction, then `NOTIFY pgrst, 'reload schema';`. The `delete-account` function does not need redeploying (it calls `community_leave_cleanup`, which 0009 extends). **Rollback:** [`rollback/0009_down.sql`](./rollback/0009_down.sql) drops the leaderboard (there is no other data to keep: XP lives in the app) and sets the version back to 2; the app hides the leaderboard by itself.
 
 ## 3. Authentication (email + password)
 1. **Authentication → Providers → Email**: enable **Email** and keep **Confirm email** ON.

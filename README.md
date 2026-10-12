@@ -651,6 +651,16 @@ rest of your gallery. Blocking someone hides your profiles and posts from each o
 follows between you. Setup, security (RLS/Storage policies, server-side quotas and spam limits), the
 rollback and the owner steps are in [`supabase/README.md`](supabase/README.md).
 
+**Leaderboard (Top 20).** With Community on, the **Top 20** button shows the 20 members with the
+most XP in two tabs: **All time** (total XP and level, the same numbers as in your app) and **This
+week** (XP from workouts and activities since Monday). Your own row is highlighted, and if you are
+outside the top 20 your rank is shown underneath. To keep it fair, the leaderboard counts at most
+300 XP from workouts and activities per day and 1,000 per week, and achievements count with their
+real value. Every Community member appears by default. Turn off **Community → Profile → Show me on
+the leaderboard** to hide yourself. The leaderboard shows only your username, avatar, level and XP,
+never your workouts. Moderators can remove a member from it. It needs internet and a Community
+account; your XP in the app never changes because of it.
+
 **Swipe between media** with your finger, or use the **‹ ›** buttons, the dots, the counter or the arrow
 keys. Each item has a **caption** in every supported language, and the **creator and licence are printed
 under the media**. If a demonstration cannot be loaded, you get a clean **"Demonstration unavailable"**
