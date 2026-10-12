@@ -13194,12 +13194,11 @@ function communityDisable() {
 }
 
 /* ---------- Pozvánka do Community ----------
-   Kto Community nepoužíva, dostane občas okno s pozvánkou. Dá sa zavrieť a vráti sa
-   najskôr po COMMUNITY_INVITE_EVERY_MS. Čas posledného zobrazenia je iba na zariadení
+   Kto Community nepoužíva, dostane okno s pozvánkou najviac raz za kalendárny deň
+   (pri prvom otvorení appky v daný deň). Dá sa zavrieť a vráti sa až na ďalší deň. Čas posledného zobrazenia je iba na zariadení
    (vlastný kľúč mimo stavu, nesynchronizuje sa). Nikdy nie počas tréningu, otvoreného
    dialógu, lišty s aktualizáciou/zálohou, na karte Community ani bez pripojenia. */
 const COMMUNITY_INVITE_KEY = 'gymquest_community_invite';
-const COMMUNITY_INVITE_EVERY_MS = 3 * 24 * 60 * 60 * 1000;
 const COMMUNITY_INVITE_DELAY_MS = 4000;
 let communityInviteMemAt = 0;      // náhrada, keď localStorage nie je dostupné
 let communityInviteTimer = null;
@@ -13217,13 +13216,14 @@ function communityInviteDue() {
   if (!state || !communityConfigured() || communityOptIn()) return false;
   const last = communityInviteLast();
   if (!last) {
-    /* Úplne nový používateľ (ešte bez tréningu): prvá pozvánka až po intervale,
+    /* Úplne nový používateľ (ešte bez tréningu): prvá pozvánka až nasledujúci deň,
        nie hneď pri úvodnom nastavení. */
     if (state.history.length === 0) { communityInviteMark(); return false; }
     return true;
   }
-  const age = Date.now() - last;
-  return age < 0 || age >= COMMUNITY_INVITE_EVERY_MS;   // age < 0: hodiny zariadenia sa posunuli späť
+  const now = new Date();
+  if (now.getTime() < last) return true;   // hodiny zariadenia sa posunuli späť
+  return localDateKey(new Date(last)) !== localDateKey(now);   // nový kalendárny deň (miestny čas)
 }
 function communityInviteBlocked() {
   /* Testy (window.__GQ_TEST__) pozvánku dostanú iba na výslovnú žiadosť. */

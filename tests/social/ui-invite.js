@@ -1,11 +1,11 @@
 'use strict';
-/* GymQuest — Community invitation window (v58) in real headless Chrome. Needs only a configured
+/* GymQuest — Community invitation window (v58, once a day since v59) in real headless Chrome. Needs only a configured
    community-config.js (the LOCAL stack config); no database writes, no accounts.
 
      GQ_COMMUNITY_CONFIG=<local config js> node tests/social/ui-invite.js
 
-   Checks: a brand-new user is not invited right away, a due invite appears after start, every way
-   to close it works and postpones it, Join enables Community and opens its tab, nothing shows while
+   Checks: a brand-new user is not invited right away, a due invite appears after start (once per calendar
+   day), every way to close it works and postpones it to the next day, Join enables Community and opens its tab, nothing shows while
    a dialog is open, the test harness never sees it unless asked, all six languages, RTL. */
 
 const fs = require('fs');
@@ -80,11 +80,21 @@ const afterDelay = () => wait(5000);
     check('"Not now" closes it', !(await shown(p)));
     await load(p);
     await afterDelay();
-    check('not shown again within 3 days', !(await shown(p)));
-    await setLast(p, Date.now() - 2 * DAY);
+    check('not shown again the same day', !(await shown(p)));
+    await p.eval(`(localStorage.setItem('gymquest_community_invite', String(Math.max(new Date().setHours(0, 0, 1, 0), Date.now() - 3600000))), true)`);
     await load(p);
     await afterDelay();
-    check('not shown after 2 days', !(await shown(p)));
+    check('not shown when it was already shown earlier today', !(await shown(p)));
+    await p.eval(`(() => { const d = new Date(); d.setDate(d.getDate() - 1); d.setHours(23, 59, 0, 0); localStorage.setItem('gymquest_community_invite', String(d.getTime())); return true; })()`);
+    await load(p);
+    await afterDelay();
+    check('shown again on the next calendar day (even < 24 h later)', await shown(p));
+    await p.eval(`(closeCommunityInvite(), true)`);
+    await setLast(p, Date.now() + 2 * DAY);
+    await load(p);
+    await afterDelay();
+    check('device clock moved back: shown, not stuck for days', await shown(p));
+    await p.eval(`(closeCommunityInvite(), true)`);
 
     for (const [how, js] of [
       ['✕', `document.getElementById('btn-community-invite-close').click()`],
