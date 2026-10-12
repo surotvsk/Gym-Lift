@@ -3560,3 +3560,8 @@ button.cstat:hover { background: var(--surface-2); }
 #pokrok-subtabs .subtab { flex: 1 0 auto; white-space: nowrap; overflow-wrap: normal; padding-inline: 14px; }
 .cprofile-actions .btn { flex: 1 1 auto; white-space: nowrap; }
 .community-actions-primary .btn { white-space: nowrap; }
+
+/* Upozornenia na správy: krátka ponuka nad zoznamom chatov. */
+.cpush-hint.card { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-3); flex-wrap: wrap; padding: var(--sp-3) var(--sp-4); }
+.cpush-hint.card .card-note { margin: 0; flex: 1 1 12rem; }
+.cpush-hint.card .btn { flex: 0 0 auto; min-height: 40px; }

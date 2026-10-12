@@ -22,6 +22,7 @@ Run **all** migrations, in order (there is no 0007 — the number is reserved):
 6. [`migrations/0006_delete_account_grants.sql`](./migrations/0006_delete_account_grants.sql) — the privileges the `delete-account` function needs on the 0001/0004 tables (see below). Independent of 0005.
 7. [`migrations/0008_social_phase2.sql`](./migrations/0008_social_phase2.sql) — Community Phase 2: user search (Community members only, "Show me in search" on by default), friend requests and private friend lists, friends-only posts, comments, one-to-one live chat between friends (Supabase Realtime; moderators can never read chats), message/comment reports that store only a copy of the reported item, and a daily `pg_cron` purge. Needs 0005 and 0006 and the `pg_cron` extension (Database → Extensions).
 8. [`migrations/0009_leaderboard.sql`](./migrations/0009_leaderboard.sql) — Community leaderboard (top 20 by XP): one row per member, the app reports XP through `leaderboard_submit()` and the server applies the limits (300 training XP per UTC day, 1,000 per ISO week, achievement XP computed on the server from the earned ids, at most 5,150), members appear by default and can hide themselves, moderators can remove a member. `community_social_version()` becomes 3. Needs 0008.
+9. [`migrations/0010_push.sql`](./migrations/0010_push.sql) — push notifications for chat messages: members register a device (Web Push subscription) through `push_subscribe()`; after sending a message the app calls the `push` Edge Function, which asks `push_targets()` (service_role only) whether the message is the caller's own, recent, in an open chat without a block and not yet notified, and gets the friend's devices. At most one notification per chat every 20 seconds; the notification carries only the sender's username and the chat id. Nobody can read the device table directly. Leaving Community or deleting the account removes the devices. `community_social_version()` becomes 4. Needs 0009.
 
 SQL editor → paste a file → Run, **or** with the CLI: `supabase db push`.
 
@@ -107,6 +108,17 @@ reported messages/comments are dropped. Roll back **0008 before 0005** — never
 
 **0009 — leaderboard.** Release order: the app (v57+) first — it shows the leaderboard only when `community_social_version()` answers 3 — then run 0009 once, as one transaction, then `NOTIFY pgrst, 'reload schema';`. The `delete-account` function does not need redeploying (it calls `community_leave_cleanup`, which 0009 extends). **Rollback:** [`rollback/0009_down.sql`](./rollback/0009_down.sql) drops the leaderboard (there is no other data to keep: XP lives in the app) and sets the version back to 2; the app hides the leaderboard by itself.
 
+**0010 — push notifications.** Release order:
+1. The app (v60+) first. It shows the notification switch only when `community_social_version()` answers 4 and `community-config.js` has `vapidPublicKey`.
+2. Run 0010 once, as one transaction, then `NOTIFY pgrst, 'reload schema';`.
+3. Set the three function secrets (the key pair is generated once; only the **public** half is in `community-config.js`):
+   ```bash
+   supabase secrets set VAPID_PUBLIC_KEY=<base64url public key> VAPID_PRIVATE_KEY=<base64url private key> VAPID_SUBJECT=https://surotvsk.github.io/Gymquest/
+   ```
+4. Deploy the function: `supabase functions deploy push` (keep JWT verification on).
+
+Between steps 2 and 4 people can already turn notifications on; messages are simply not notified yet. The `delete-account` function does not need redeploying (0010 extends `community_leave_cleanup`; full deletion removes the devices by cascade). **Rollback:** [`rollback/0010_down.sql`](./rollback/0010_down.sql) removes the devices and the "already notified" log and sets the version back to 3; the app hides the switch and stops calling `push` by itself. The `push` function can stay deployed (without 0010 it sends nothing). Roll back **0010 before 0009**.
+
 ## 3. Authentication (email + password)
 1. **Authentication → Providers → Email**: enable **Email** and keep **Confirm email** ON.
    Do **not** disable email confirmation to work around mail limits.
@@ -127,11 +139,27 @@ never** placed in `community-config.js`, the repository, or logs.
 The function needs migration `0006` (privileges); every failed database step returns HTTP 500 with
 the step (`db_delete_failed` + table, `db_update_failed`, `delete_failed`) — never a false success.
 
+### Push notifications function (0010)
+```bash
+supabase functions deploy push
+```
+It needs the secrets `VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY` and `VAPID_SUBJECT` (see 0010 above) and
+answers `server_not_configured` without them. It only contacts the browsers' push services
+(Google FCM, Apple, Mozilla, Microsoft); payloads are encrypted for each device (RFC 8291) and signed
+with VAPID (RFC 8292). Generate a key pair once, e.g.:
+```bash
+node -e 'const c=require("crypto");const k=c.generateKeyPairSync("ec",{namedCurve:"prime256v1"}).privateKey.export({format:"jwk"});const b=(s)=>Buffer.from(s,"base64url");console.log("public:",Buffer.concat([Buffer.from([4]),b(k.x),b(k.y)]).toString("base64url"));console.log("private:",k.d)'
+```
+Put the public key into `community-config.js` (`vapidPublicKey`) and keep the private key only in the
+function secrets. Changing the key pair later makes every device register again: the app tries this
+by itself on its next start, and on iPhone the person may have to turn the switch on again.
+
 ## 5. Point the app at your project
 Edit [`../community-config.js`](../community-config.js) and set ONLY:
 ```js
 supabaseUrl: 'https://<project>.supabase.co',
 supabaseAnonKey: '<publishable/anon key>',
+vapidPublicKey: '<Web Push public key, only with 0010>',
 ```
 Then bump `CACHE_VERSION` in `sw.js` **and** the `?v=` strings in `index.html`, and redeploy. (The
 service worker precaches the config file, so a version bump is what makes it refresh.)

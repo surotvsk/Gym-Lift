@@ -1860,6 +1860,12 @@ const I18N = {
     'community.enable': 'Zapnúť Community', 'community.disable': 'Vypnúť Community',
     'community.inviteTitle': 'Pridaj sa ku GymQuest Community', 'community.inviteText': 'Zdieľaj svoj pokrok, sleduj priateľov, píš si s nimi a zabojuj o miesto v Top 20. Tvoje tréningy ostávajú súkromné – zverejní sa iba to, čo sa rozhodneš zdieľať.',
     'community.inviteJoin': 'Pridať sa', 'community.inviteLater': 'Teraz nie',
+    'push.title': 'Upozornenia', 'push.switch': 'Upozornenia na správy na tomto zariadení',
+    'push.note': 'Keď ti priateľ napíše, príde ti upozornenie. Ukáže iba jeho meno, nikdy text správy.', 'push.on': 'Upozornenia sú na tomto zariadení zapnuté.',
+    'push.off': 'Upozornenia sú na tomto zariadení vypnuté.', 'push.denied': 'Upozornenia sú zablokované. Povoľ ich pre GymQuest v nastaveniach telefónu alebo prehliadača.',
+    'push.notAllowed': 'Upozornenia neboli povolené.', 'push.errFailed': 'Upozornenia sa nepodarilo zapnúť. Skontroluj pripojenie a skús to znova.',
+    'push.homeScreen': 'Na iPhone a iPade fungujú upozornenia iba vtedy, keď je GymQuest pridaný na plochu (Zdieľať → Pridať na plochu) a otvorený odtiaľ. Potrebný je iOS 16.4 alebo novší.', 'push.unsupported': 'Tento prehliadač upozornenia nepodporuje.',
+    'push.hint': 'Nech ti príde upozornenie, keď ti priateľ napíše.', 'push.turnOn': 'Zapnúť',
     'community.email': 'E-mail', 'community.password': 'Heslo', 'community.signIn': 'Prihlásiť sa', 'community.signUp': 'Registrovať sa',
     'community.signInTitle': 'Prihlás sa alebo si vytvor účet', 'community.signOut': 'Odhlásiť sa',
     'community.emailConfirmNote': 'Pošleme ti potvrdzujúci odkaz e-mailom — dokonči registráciu v schránke.',
@@ -2732,6 +2738,12 @@ const I18N = {
     'community.enable': 'Enable Community', 'community.disable': 'Turn off Community',
     'community.inviteTitle': 'Join the GymQuest Community', 'community.inviteText': 'Share your progress, follow friends, chat with them and compete for a spot in the Top 20. Your workouts stay private – only what you choose to share is posted.',
     'community.inviteJoin': 'Join', 'community.inviteLater': 'Not now',
+    'push.title': 'Notifications', 'push.switch': 'Message notifications on this device',
+    'push.note': 'When a friend writes to you, you get a notification. It shows only their name, never the message text.', 'push.on': 'Notifications are on for this device.',
+    'push.off': 'Notifications are off for this device.', 'push.denied': 'Notifications are blocked. Allow them for GymQuest in your phone or browser settings.',
+    'push.notAllowed': 'Notifications were not allowed.', 'push.errFailed': 'Notifications could not be turned on. Check your connection and try again.',
+    'push.homeScreen': 'On iPhone and iPad, notifications work only when GymQuest is added to the Home Screen (Share → Add to Home Screen) and opened from there. iOS 16.4 or newer is required.', 'push.unsupported': 'This browser does not support notifications.',
+    'push.hint': 'Get a notification when a friend writes to you.', 'push.turnOn': 'Turn on',
     'community.email': 'Email', 'community.password': 'Password', 'community.signIn': 'Sign in', 'community.signUp': 'Sign up',
     'community.signInTitle': 'Sign in or create an account', 'community.signOut': 'Sign out',
     'community.emailConfirmNote': 'We email you a confirmation link — check your inbox to finish signing up.',
@@ -3610,6 +3622,12 @@ const I18N = {
     'community.enable': 'Activar Comunidad', 'community.disable': 'Desactivar Comunidad',
     'community.inviteTitle': 'Únete a la Comunidad de GymQuest', 'community.inviteText': 'Comparte tu progreso, sigue a tus amigos, chatea con ellos y compite por un puesto en el Top 20. Tus entrenamientos siguen siendo privados: solo se publica lo que decidas compartir.',
     'community.inviteJoin': 'Unirme', 'community.inviteLater': 'Ahora no',
+    'push.title': 'Notificaciones', 'push.switch': 'Notificaciones de mensajes en este dispositivo',
+    'push.note': 'Cuando un amigo te escriba, recibirás una notificación. Solo muestra su nombre, nunca el texto del mensaje.', 'push.on': 'Las notificaciones están activadas en este dispositivo.',
+    'push.off': 'Las notificaciones están desactivadas en este dispositivo.', 'push.denied': 'Las notificaciones están bloqueadas. Permítelas para GymQuest en los ajustes del teléfono o del navegador.',
+    'push.notAllowed': 'No se permitieron las notificaciones.', 'push.errFailed': 'No se pudieron activar las notificaciones. Comprueba tu conexión e inténtalo de nuevo.',
+    'push.homeScreen': 'En iPhone y iPad, las notificaciones solo funcionan si GymQuest está añadido a la pantalla de inicio (Compartir → Añadir a pantalla de inicio) y se abre desde allí. Se necesita iOS 16.4 o posterior.', 'push.unsupported': 'Este navegador no admite notificaciones.',
+    'push.hint': 'Recibe una notificación cuando un amigo te escriba.', 'push.turnOn': 'Activar',
     'community.email': 'Correo', 'community.password': 'Contraseña', 'community.signIn': 'Iniciar sesión', 'community.signUp': 'Registrarse',
     'community.signInTitle': 'Inicia sesión o crea una cuenta', 'community.signOut': 'Cerrar sesión',
     'community.emailConfirmNote': 'Te enviamos un enlace de confirmación por correo: revisa tu bandeja para terminar el registro.',
@@ -4480,6 +4498,12 @@ const I18N = {
     'community.enable': 'Ativar Comunidade', 'community.disable': 'Desativar Comunidade',
     'community.inviteTitle': 'Participe da Comunidade GymQuest', 'community.inviteText': 'Compartilhe seu progresso, siga amigos, converse com eles e dispute um lugar no Top 20. Seus treinos continuam privados: só é publicado o que você decidir compartilhar.',
     'community.inviteJoin': 'Participar', 'community.inviteLater': 'Agora não',
+    'push.title': 'Notificações', 'push.switch': 'Notificações de mensagens neste dispositivo',
+    'push.note': 'Quando um amigo escrever para você, você recebe uma notificação. Ela mostra só o nome dele, nunca o texto da mensagem.', 'push.on': 'As notificações estão ativadas neste dispositivo.',
+    'push.off': 'As notificações estão desativadas neste dispositivo.', 'push.denied': 'As notificações estão bloqueadas. Permita-as para o GymQuest nas configurações do celular ou do navegador.',
+    'push.notAllowed': 'As notificações não foram permitidas.', 'push.errFailed': 'Não foi possível ativar as notificações. Verifique sua conexão e tente de novo.',
+    'push.homeScreen': 'No iPhone e no iPad, as notificações só funcionam quando o GymQuest está na Tela de Início (Compartilhar → Adicionar à Tela de Início) e é aberto por lá. É preciso iOS 16.4 ou mais recente.', 'push.unsupported': 'Este navegador não é compatível com notificações.',
+    'push.hint': 'Receba uma notificação quando um amigo escrever para você.', 'push.turnOn': 'Ativar',
     'community.email': 'E-mail', 'community.password': 'Senha', 'community.signIn': 'Entrar', 'community.signUp': 'Cadastrar',
     'community.signInTitle': 'Entre ou crie uma conta', 'community.signOut': 'Sair',
     'community.emailConfirmNote': 'Enviamos um link de confirmação por e-mail — confira sua caixa de entrada para concluir o cadastro.',
@@ -5350,6 +5374,12 @@ const I18N = {
     'community.enable': 'Activer la Communauté', 'community.disable': 'Désactiver la Communauté',
     'community.inviteTitle': 'Rejoins la Communauté GymQuest', 'community.inviteText': 'Partage tes progrès, suis tes amis, discute avec eux et vise une place dans le Top 20. Tes entraînements restent privés : seul ce que tu choisis de partager est publié.',
     'community.inviteJoin': 'Rejoindre', 'community.inviteLater': 'Pas maintenant',
+    'push.title': 'Notifications', 'push.switch': 'Notifications de messages sur cet appareil',
+    'push.note': 'Quand un ami t’écrit, tu reçois une notification. Elle affiche seulement son nom, jamais le texte du message.', 'push.on': 'Les notifications sont activées sur cet appareil.',
+    'push.off': 'Les notifications sont désactivées sur cet appareil.', 'push.denied': 'Les notifications sont bloquées. Autorise-les pour GymQuest dans les réglages du téléphone ou du navigateur.',
+    'push.notAllowed': 'Les notifications n’ont pas été autorisées.', 'push.errFailed': 'Impossible d’activer les notifications. Vérifie ta connexion et réessaie.',
+    'push.homeScreen': 'Sur iPhone et iPad, les notifications ne fonctionnent que si GymQuest est ajouté à l’écran d’accueil (Partager → Sur l’écran d’accueil) et ouvert depuis celui-ci. iOS 16.4 ou plus récent est requis.', 'push.unsupported': 'Ce navigateur ne prend pas en charge les notifications.',
+    'push.hint': 'Reçois une notification quand un ami t’écrit.', 'push.turnOn': 'Activer',
     'community.email': 'E-mail', 'community.password': 'Mot de passe', 'community.signIn': 'Se connecter', 'community.signUp': 'S’inscrire',
     'community.signInTitle': 'Connecte-toi ou crée un compte', 'community.signOut': 'Se déconnecter',
     'community.emailConfirmNote': 'Nous t’envoyons un lien de confirmation par e-mail — vérifie ta boîte pour terminer l’inscription.',
@@ -6239,6 +6269,12 @@ const I18N = {
     'community.enable': 'تفعيل المجتمع', 'community.disable': 'إيقاف المجتمع',
     'community.inviteTitle': 'انضم إلى مجتمع GymQuest', 'community.inviteText': 'شارك تقدّمك، وتابع أصدقاءك، وتحدّث معهم، ونافس على مكان ضمن أفضل 20. تبقى تمارينك خاصة، ولا يُنشر إلا ما تختار مشاركته.',
     'community.inviteJoin': 'انضمام', 'community.inviteLater': 'ليس الآن',
+    'push.title': 'الإشعارات', 'push.switch': 'إشعارات الرسائل على هذا الجهاز',
+    'push.note': 'عندما يراسلك صديق، يصلك إشعار. يُظهر اسمه فقط، ولا يُظهر نص الرسالة أبدًا.', 'push.on': 'الإشعارات مُفعّلة على هذا الجهاز.',
+    'push.off': 'الإشعارات مُعطّلة على هذا الجهاز.', 'push.denied': 'الإشعارات محظورة. اسمح بها لـ GymQuest من إعدادات الهاتف أو المتصفح.',
+    'push.notAllowed': 'لم يتم السماح بالإشعارات.', 'push.errFailed': 'تعذّر تفعيل الإشعارات. تحقّق من الاتصال وحاول مرة أخرى.',
+    'push.homeScreen': 'على iPhone وiPad، تعمل الإشعارات فقط عند إضافة GymQuest إلى الشاشة الرئيسية (مشاركة ← إضافة إلى الشاشة الرئيسية) وفتحه من هناك. يلزم iOS 16.4 أو أحدث.', 'push.unsupported': 'هذا المتصفح لا يدعم الإشعارات.',
+    'push.hint': 'احصل على إشعار عندما يراسلك صديق.', 'push.turnOn': 'تفعيل',
     'community.email': 'البريد الإلكتروني', 'community.password': 'كلمة المرور', 'community.signIn': 'تسجيل الدخول', 'community.signUp': 'إنشاء حساب',
     'community.signInTitle': 'سجّل الدخول أو أنشئ حسابًا', 'community.signOut': 'تسجيل الخروج',
     'community.emailConfirmNote': 'نرسل إليك رابط تأكيد بالبريد — تحقّق من صندوقك لإكمال التسجيل.',
@@ -13180,6 +13216,7 @@ function communityEnable() {
   communityOpen();
 }
 function communityDisable() {
+  pushDisable(communityClient());
   state.settings.communityOptIn = false;
   saveState();
   communityClientRef = null;
@@ -13479,6 +13516,7 @@ async function communityAfterSignIn(sb, user) {
   }
   communityStartRealtime(sb, user.id);
   communityRefreshBadges(sb, user.id);
+  pushRefresh(sb, user.id);
 }
 function communityStartRealtime(sb, uid) {
   if (communityRealtime && communityRealtime.uid === uid) return;
@@ -13544,6 +13582,7 @@ async function communityBackgroundStart() {
     if (!communityConsent) return;
     communityStartRealtime(sb, s.user.id);
     communityRefreshBadges(sb, s.user.id);
+    pushRefresh(sb, s.user.id);   // obnovená adresa odberu (prehliadač ju môže zmeniť) sa dostane na server
   } catch (e) {}
 }
 
@@ -13754,6 +13793,7 @@ async function communityChatsHtml(sb) {
     + communitySubHead(esc(t('community2.chatsTitle')),
       '<button type="button" class="btn btn-secondary btn-sm" data-community-action="go-friends">' + esc(t('community2.newChat')) + '</button>', true)
     + communityStatusHtml()
+    + pushHintHtml()
     + (rows.length ? '<div class="cchat-list">' + rows.map(item).join('') + '</div>' : '<p class="empty-state">' + esc(t('community2.chatsEmpty')) + '</p>')
     + '<p class="card-note">' + esc(t('community2.chatPrivacy')) + '</p>';
 }
@@ -13795,6 +13835,7 @@ function communityAfterChatRender(sb) {
   const box = document.getElementById('community-chat-msgs');
   if (box) box.scrollTop = box.scrollHeight;
   communityMarkChatRead(sb);
+  pushClearChat(communityChatId);
 }
 async function communityMarkChatRead(sb) {
   sb = sb || communityClient();
@@ -13826,6 +13867,7 @@ async function communitySendMessage() {
   el.value = '';
   communitySetMessage(''); communityShowStatus();
   communityAddChatMsg(res.data);
+  pushNotifyMessage(sb, res.data && res.data.id);
 }
 /* Živá správa: v otvorenom chate sa hneď pridá (a označí ako prečítaná), inak len odznak. */
 function communityOnMessage(m) {
@@ -13838,6 +13880,189 @@ function communityOnMessage(m) {
   }
   communityRefreshBadges();
   if (activeTab === 'komunita' && communityView === 'chats') renderCommunity();
+}
+
+/* ---------- Upozornenia na správy (Web Push, migrácia 0010) ----------
+   Voliteľné, pre každé zariadenie zvlášť a len po výslovnom zapnutí (systém sa spýta na povolenie).
+   Po odoslaní správy appka požiada funkciu `push`, aby upozornila priateľa; server overí, že
+   správa je naša a ešte nebola oznámená. Upozornenie nesie len meno odosielateľa, nikdy text.
+   iPhone/iPad: Web Push funguje iba v appke pridanej na plochu (iOS 16.4+). Odhlásenie,
+   opustenie Community aj jej vypnutie toto zariadenie odregistruje. */
+const PUSH_DEVICE_KEY = 'gymquest_push';   // { uid } – účet, pre ktorý má toto zariadenie zapnuté upozornenia
+let pushBusy = false;
+
+function pushSupported() {
+  return typeof navigator !== 'undefined' && 'serviceWorker' in navigator && typeof window !== 'undefined'
+    && 'PushManager' in window && typeof Notification !== 'undefined' && window.isSecureContext !== false;
+}
+function pushKey() { return String(communityCfg().vapidPublicKey || ''); }
+/* Server (0010) aj konfigurácia (verejný kľúč) sú pripravené. */
+function pushAvailable() { return communityVersion >= 4 && !!pushKey(); }
+function pushDeviceRead() { try { return JSON.parse(localStorage.getItem(PUSH_DEVICE_KEY) || 'null'); } catch (e) { return null; } }
+function pushDeviceWrite(v) {
+  try { if (v) localStorage.setItem(PUSH_DEVICE_KEY, JSON.stringify(v)); else localStorage.removeItem(PUSH_DEVICE_KEY); } catch (e) {}
+}
+function pushKeyBytes(s) {
+  const b64 = String(s).replace(/-/g, '+').replace(/_/g, '/');
+  const bin = atob(b64 + '='.repeat((4 - (b64.length % 4)) % 4));
+  const out = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
+  return out;
+}
+/* 'on' | 'off' | 'denied' | 'homescreen' (iPhone mimo plochy) | 'unsupported' */
+function pushState() {
+  if (!pushSupported()) return isAppleMobile() && !isStandaloneApp() ? 'homescreen' : 'unsupported';
+  if (Notification.permission === 'denied') return 'denied';
+  const dev = pushDeviceRead();
+  const me = communityProfile && communityProfile.id;
+  return Notification.permission === 'granted' && dev && me && dev.uid === me ? 'on' : 'off';
+}
+async function pushRegistration() {
+  if (!pushSupported()) return null;
+  if (swRegistration) return swRegistration;
+  try { return (await navigator.serviceWorker.getRegistration()) || null; } catch (e) { return null; }
+}
+/* Odber vytvorený s iným verejným kľúčom (iný server) sa musí obnoviť. */
+function pushSameKey(sub) {
+  try {
+    const k = sub && sub.options && sub.options.applicationServerKey;
+    if (!k) return true;
+    const a = new Uint8Array(k), b = pushKeyBytes(pushKey());
+    return a.length === b.length && a.every((x, i) => x === b[i]);
+  } catch (e) { return true; }
+}
+function pushSave(sb, sub) {
+  const j = sub.toJSON ? sub.toJSON() : {};
+  const keys = j.keys || {};
+  return sb.rpc('push_subscribe', { p_endpoint: j.endpoint || sub.endpoint, p_p256dh: keys.p256dh || '', p_auth: keys.auth || '', p_lang: activeLang() });
+}
+/* Zapnutie – volá sa priamo z ťuknutia: o povolenie sa žiada ako prvé (iOS to vyžaduje). */
+async function pushEnable() {
+  const sb = communityClient();
+  const me = communityProfile && communityProfile.id;
+  if (pushBusy || !sb || !me || !pushSupported() || !pushAvailable()) return;
+  pushBusy = true;
+  let msg = 'push.on';
+  try {
+    const perm = Notification.permission === 'granted' ? 'granted' : await Notification.requestPermission();
+    if (perm !== 'granted') { msg = perm === 'denied' ? 'push.denied' : 'push.notAllowed'; return; }
+    const reg = await pushRegistration();
+    if (!reg || !reg.pushManager) { msg = 'push.errFailed'; return; }
+    let sub = await reg.pushManager.getSubscription();
+    if (sub && !pushSameKey(sub)) { try { await sub.unsubscribe(); } catch (e) {} sub = null; }
+    if (!sub) sub = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: pushKeyBytes(pushKey()) });
+    const r = await pushSave(sb, sub);
+    if (r.error) { msg = 'push.errFailed'; return; }
+    pushDeviceWrite({ uid: me });
+  } catch (e) {
+    msg = 'push.errFailed';
+  } finally {
+    pushBusy = false;
+    communitySetMessage(msg);
+    renderCommunity();
+  }
+}
+/* Vypnutie pre toto zariadenie (prepínač, odhlásenie, vypnutie Community). Server sa
+   odregistruje, ak sa dá; lokálne zrušený odber server aj tak zmaže pri ďalšej správe (410). */
+async function pushDisable(sb) {
+  const rpc = !!sb && communityVersion >= 4;   // zistí sa hneď – volajúci môže vzápätí vynulovať stav
+  pushDeviceWrite(null);
+  const reg = await pushRegistration();
+  let sub = null;
+  try { sub = reg && reg.pushManager ? await reg.pushManager.getSubscription() : null; } catch (e) { sub = null; }
+  if (!sub) return;
+  if (rpc) { try { await sb.rpc('push_unsubscribe', { p_endpoint: sub.endpoint }); } catch (e) {} }
+  try { await sub.unsubscribe(); } catch (e) {}
+}
+async function pushSwitchOff() {
+  if (pushBusy) return;
+  pushBusy = true;
+  try { await pushDisable(communityClient()); } finally { pushBusy = false; }
+  communitySetMessage('push.off');
+  renderCommunity();
+}
+/* Po prihlásení a pri zmene jazyka: zapnuté zariadenie sa obnoví na serveri (kľúče, jazyk). */
+async function pushRefresh(sb, uid) {
+  const dev = pushDeviceRead();
+  if (!dev || !uid || dev.uid !== uid || !pushSupported() || !pushAvailable() || !sb) return;
+  if (Notification.permission !== 'granted') { if (Notification.permission === 'denied') pushDeviceWrite(null); return; }
+  try {
+    const reg = await pushRegistration();
+    if (!reg || !reg.pushManager) return;
+    let sub = await reg.pushManager.getSubscription();
+    if (sub && !pushSameKey(sub)) { try { await sub.unsubscribe(); } catch (e) {} sub = null; }
+    if (!sub) sub = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: pushKeyBytes(pushKey()) });
+    await pushSave(sb, sub);
+  } catch (e) { /* bez siete alebo bez povolenia: skúsi sa pri ďalšom spustení */ }
+}
+/* Po odoslanej správe: priateľovi príde upozornenie (ak ho má zapnuté). Neblokuje odosielanie. */
+function pushNotifyMessage(sb, messageId) {
+  if (!sb || !messageId || communityVersion < 4) return;
+  try { sb.functions.invoke('push', { method: 'POST', body: { action: 'send', message: messageId } }).catch(() => {}); } catch (e) {}
+}
+/* Otvorený chat: jeho upozornenia v zozname systému sa zatvoria. */
+async function pushClearChat(cid) {
+  if (!cid || !pushSupported()) return;
+  try {
+    const reg = await pushRegistration();
+    if (!reg || !reg.getNotifications) return;
+    (await reg.getNotifications({ tag: 'gq-chat-' + cid })).forEach((n) => n.close());
+  } catch (e) {}
+}
+/* Ťuknutie na upozornenie: otvorí sa Community a ten chat. */
+function pushOpenChat(cid) {
+  if (!/^[0-9a-f-]{36}$/i.test(String(cid || '')) || !communityConfigured() || !communityOptIn()) return;
+  communityBack = [{ view: 'chats', user: null, post: null, chat: null }];
+  communityChatId = cid; communityChatMeta = null; communityChatMsgs = [];
+  communityView = 'chat';
+  communitySetMessage('');
+  if (activeTab === 'komunita') renderCommunity(); else switchTab('komunita');
+}
+function pushStartListening() {
+  if (!pushSupported()) return;
+  try {
+    navigator.serviceWorker.addEventListener('message', (e) => {
+      const d = e && e.data;
+      if (d && d.type === 'OPEN_CHAT') pushOpenChat(d.conv);
+    });
+  } catch (e) {}
+}
+/* Pri štarte z upozornenia: ./?chat=<id> (adresa sa hneď vyčistí). */
+function pushChatFromUrl() {
+  let cid = null;
+  try {
+    const q = new URLSearchParams(location.search);
+    cid = q.get('chat');
+    if (!cid) return null;
+    q.delete('chat');
+    const rest = q.toString();
+    history.replaceState(null, '', location.pathname + (rest ? '?' + rest : '') + location.hash);
+  } catch (e) { return null; }
+  return cid;
+}
+function pushCardHtml() {
+  if (!pushAvailable()) return '';
+  const st = pushState();
+  let body;
+  if (st === 'homescreen') body = '<p class="card-note">' + esc(t('push.homeScreen')) + '</p>';
+  else if (st === 'unsupported') body = '<p class="card-note">' + esc(t('push.unsupported')) + '</p>';
+  else if (st === 'denied') body = '<p class="card-note">' + esc(t('push.denied')) + '</p>';
+  else {
+    body = '<label class="community-check" for="community-push"><input type="checkbox" id="community-push"' + (st === 'on' ? ' checked' : '')
+      + (pushBusy ? ' disabled' : '') + '><span>' + esc(t('push.switch')) + '</span></label>'
+      + '<p class="card-note">' + esc(t('push.note')) + '</p>';
+  }
+  return '<div class="card" id="community-push-card"><h3 class="card-title">' + esc(t('push.title')) + '</h3>' + body + '</div>';
+}
+/* Krátka ponuka v zozname chatov, kým upozornenia nie sú zapnuté. */
+function pushHintHtml() {
+  if (!pushAvailable()) return '';
+  const st = pushState();
+  if (st === 'on' || st === 'denied' || st === 'unsupported') return '';
+  if (st === 'homescreen') return '<p class="card-note cpush-hint">' + esc(t('push.homeScreen')) + '</p>';
+  return '<div class="cpush-hint card"><p class="card-note">' + esc(t('push.hint')) + '</p>'
+    + '<button type="button" class="btn btn-primary btn-sm" data-community-action="push-on"' + (pushBusy ? ' disabled' : '') + '>'
+    + esc(t('push.turnOn')) + '</button></div>';
 }
 function communityMessageMenu(id, mine) {
   if (mine) {
@@ -14402,6 +14627,7 @@ async function communityProfileHtml(sb, user) {
       + (p.role === 'moderator' ? '<p class="card-note">' + esc(t('community.moderatorBadge')) + '</p>' : '')
       + (p.suspended ? '<p class="card-note">' + esc(t('community.suspendedBadge')) + '</p>' : '')
       + '</div>'
+      + pushCardHtml()
       + '<div class="card"><div class="plan-actions community-danger-row">'
       + '<button type="button" class="btn btn-danger" data-community-action="delete-account">' + esc(t('community.deleteAccount')) + '</button>'
       + '</div><div class="plan-actions">'
@@ -14883,6 +15109,7 @@ async function communitySignOut() {
   const sb = communitySb(); if (!sb) return;
   await syncQuiesce();
   persistState();
+  await pushDisable(sb);   // upozornenia tohto účtu na tomto zariadení končia (kým je ešte prihlásený)
   communityResetSocial2();
   try { await sb.auth.signOut({ scope: 'local' }); } catch (e) {}
   communityProfile = null;
@@ -15091,6 +15318,7 @@ function communityLeaveCommunity() {
     const sb = communityClient(); if (!sb) return;
     sb.functions.invoke('delete-account', { method: 'POST', body: { mode: 'community' } }).then((res) => {
       if (res && res.error) { communitySetMessage('community.errNetwork'); renderCommunity(); return null; }
+      pushDisable(null);   // server zariadenia už zmazal (community_leave_cleanup)
       communityResetSocial2();
       communityProfile = null;
       communityConsent = null;
@@ -15111,6 +15339,7 @@ function communityDeleteAccount() {
     try { res = await sb.functions.invoke('delete-account', { method: 'POST', body: { mode: 'full' } }); }
     catch (e) { res = { error: e }; }
     if (!res || res.error) { syncResume(); communitySetMessage('community.errNetwork'); renderCommunity(); return; }
+    await pushDisable(null);   // účet je zmazaný aj so zariadeniami; lokálny odber sa zruší
     try { await sb.auth.signOut({ scope: 'local' }); } catch (e) {}
     communityProfile = null;
     if (user) wsDetachAfterAccountDeletion(user.id);   // lokálne dáta zostávajú ako hosťovský priestor
@@ -18102,6 +18331,7 @@ function setLang(code) {
   saveState();
   applyStaticI18n();
   renderAll();
+  if (communityProfile) pushRefresh(communityClient(), communityProfile.id);   // upozornenia v novom jazyku
 }
 
 function applyStaticI18n() {
@@ -20418,6 +20648,7 @@ function setupEvents() {
     else if (act === 'signin') communitySignIn();
     else if (act === 'signup') communitySignUp();
     else if (act === 'signout') communitySignOut();
+    else if (act === 'push-on') pushEnable();
     else if (act === 'save-profile') communitySaveProfile();
     else if (act === 'more') { const sb = communityClient(); if (sb) communityLoadFeed(sb, false); }
     else if (act === 'edit-caption') communityEditCaption(a.dataset.post);
@@ -20482,6 +20713,7 @@ function setupEvents() {
     if (e.target && e.target.id === 'community-age16') communityAge16 = !!e.target.checked;
     if (e.target && e.target.id === 'community-searchable') communitySetSearchable(!!e.target.checked);
     if (e.target && e.target.id === 'community-leaderboard') communitySetLeaderboard(!!e.target.checked);
+    if (e.target && e.target.id === 'community-push') { if (e.target.checked) pushEnable(); else pushSwitchOff(); }
     if (e.target && e.target.name === 'community-visibility') communityVisibility = e.target.value === 'friends' ? 'friends' : 'public';
   }, 'change');
   on('community-body', (e) => {
@@ -20977,6 +21209,10 @@ function appStart() {
   renderAll();
   /* Community (ak je zapnutá a účet prihlásený): odznaky a živé správy – neblokujúco. */
   communityBackgroundStart();
+  /* Upozornenia na správy: ťuknutie na upozornenie otvorí chat (správa od service workera alebo ?chat=). */
+  pushStartListening();
+  const chatFromNotification = pushChatFromUrl();
+  if (chatFromNotification) pushOpenChat(chatFromNotification);
   /* Vlastné médiá cvikov (IndexedDB) sa načítajú neblokujúco po prvom vykreslení. */
   initPersonalMedia();
   /* Fotky progresu (IndexedDB) – tiež neblokujúco. */

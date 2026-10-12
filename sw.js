@@ -6,7 +6,7 @@
    so no update would ever be offered.
    Bump it and the new worker installs, re-fetches everything and deletes the old cache. */
 
-const CACHE_VERSION = 'v59';
+const CACHE_VERSION = 'v60';
 const CACHE_PREFIX = 'gymquest-';
 const CACHE_NAME = CACHE_PREFIX + CACHE_VERSION;
 
@@ -23,10 +23,10 @@ const mediaKey = (url) => url.origin + url.pathname;
    Cache kľúč je celá URL, takže "style.css" a "style.css?v=27" sú dve rôzne položky. */
 const PRECACHE = [
   'index.html',
-  'style.css?v=63',
-  'script.js?v=63',
-  'community-config.js?v=63',
-  'vendor/supabase-js.js?v=63',
+  'style.css?v=64',
+  'script.js?v=64',
+  'community-config.js?v=64',
+  'vendor/supabase-js.js?v=64',
   'manifest.json',
   'apple-touch-icon.png',
   'icon-192.png',
@@ -86,6 +86,40 @@ self.addEventListener('message', (event) => {
   if (data.type === 'SKIP_WAITING') self.skipWaiting();
   // Verzia pre Nastavenia → Aktualizácie aplikácie
   if (data.type === 'GET_VERSION' && event.ports && event.ports[0]) event.ports[0].postMessage({ version: CACHE_VERSION });
+});
+
+/* Upozornenie na novú správu (Web Push, migrácia 0010). Obsah je šifrovaný pre toto zariadenie
+   a nesie len meno odosielateľa a id chatu. Upozornenie sa zobrazí vždy (iOS to vyžaduje);
+   ďalšie správy z toho istého chatu nahradia predchádzajúce (rovnaký tag). */
+self.addEventListener('push', (event) => {
+  let d = {};
+  try { d = event.data ? event.data.json() : {}; } catch (e) { d = {}; }
+  const icon = new URL('icon-192.png', self.registration.scope).href;
+  event.waitUntil(self.registration.showNotification(String(d.title || 'GymQuest'), {
+    body: String(d.body || ''),
+    tag: d.tag ? String(d.tag) : 'gq',
+    renotify: !!d.tag,
+    icon,
+    badge: icon,
+    data: { conv: d.conv ? String(d.conv) : null },
+  }));
+});
+
+/* Ťuknutie na upozornenie: otvorená appka sa vytiahne dopredu a otvorí chat, inak sa spustí s ?chat=. */
+self.addEventListener('notificationclick', (event) => {
+  event.notification.close();
+  const conv = event.notification.data && event.notification.data.conv;
+  const url = new URL(conv ? './?chat=' + encodeURIComponent(conv) : './', self.registration.scope).href;
+  event.waitUntil((async () => {
+    const wins = await self.clients.matchAll({ type: 'window', includeUncontrolled: true });
+    for (const c of wins) {
+      if (new URL(c.url).origin !== self.location.origin) continue;
+      try { await c.focus(); } catch (e) { /* niektoré prehliadače focus odmietnu – správa aj tak príde */ }
+      c.postMessage({ type: 'OPEN_CHAT', conv });
+      return;
+    }
+    await self.clients.openWindow(url);
+  })());
 });
 
 self.addEventListener('fetch', (event) => {

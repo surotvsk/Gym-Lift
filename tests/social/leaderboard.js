@@ -34,7 +34,7 @@ const scenarios = [];
 const scenario = (name, fn) => scenarios.push({ name, fn });
 
 scenario('version and access', async () => {
-  check('community_social_version() is 3', sqlVal('select public.community_social_version()') === '3');
+  check('community_social_version() is 3 or later (4 = 0010)', Number(sqlVal('select public.community_social_version()')) >= 3);
   const a = await member('acc');
   const anon = await L.anon().rpc('leaderboard_top', { p_period: 'all' });
   check('anon cannot read the leaderboard', !!anon.error, J(anon));
@@ -168,12 +168,20 @@ scenario('review fixes: stale device, early row, rejoin, RLS', async () => {
 });
 
 scenario('rollback 0009_down and re-apply', async () => {
+  /* 0010 (push) builds on 0009: roll it back first and re-apply it afterwards. */
+  const with0010 = sqlVal(`select to_regclass('public.push_subscriptions') is not null`) === 't';
+  if (with0010) L.sqlFile(require('path').join(__dirname, '..', '..', 'supabase', 'rollback', '0010_down.sql'));
   L.sqlFile(require('path').join(__dirname, '..', '..', 'supabase', 'rollback', '0009_down.sql'));
   check('after rollback: version 2', sqlVal('select public.community_social_version()') === '2');
   check('after rollback: table gone', sqlVal(`select to_regclass('public.leaderboard_entries') is null`) === 't');
   check('after rollback: leave cleanup still works', !(await L.admin.rpc('community_leave_cleanup', { p_user: (await member('rb')).id })).error);
   L.sqlFile(require('path').join(__dirname, '..', '..', 'supabase', 'migrations', '0009_leaderboard.sql'));
   check('re-applied: version 3', sqlVal('select public.community_social_version()') === '3');
+  if (with0010) {
+    L.sqlFile(require('path').join(__dirname, '..', '..', 'supabase', 'migrations', '0010_push.sql'));
+    check('0010 re-applied: version 4', sqlVal('select public.community_social_version()') === '4');
+  }
+  sql(`notify pgrst, 'reload schema';`);
 });
 
 (async () => {

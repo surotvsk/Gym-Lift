@@ -83,15 +83,18 @@ the app shows an "update available" notice and never reloads during an active wo
   production. The test harness installs `window.__GQ_TEST__` to turn the hooks into deterministic
   barriers and failure injections.
 - **Single tab:** Web Locks allow only one active tab per device. Other tabs show "Use here".
-- **Supabase backend** (`supabase/`): migrations `0001`–`0009` (there is no `0007`) and rollbacks in
+- **Supabase backend** (`supabase/`): migrations `0001`–`0010` (there is no `0007`) and rollbacks in
   `supabase/rollback/`; never put rollbacks in `migrations/`. Production has no CLI migration history
   and "auto-expose new tables" is off. Apply each new migration once, as one transaction, never with
   `supabase db push`. Grants are explicit (see `0002` and `0006`). The app detects which schema
-  release is live (e.g. `community_social_version()`: 2 = 0008, 3 = 0009 leaderboard) and falls back, so the release order is app
+  release is live (e.g. `community_social_version()`: 2 = 0008, 3 = 0009 leaderboard, 4 = 0010 push) and falls back, so the release order is app
   first, then migration, then the `delete-account` Edge Function. `supabase/README.md` holds the
   authoritative release and rollback steps.
-- **`community-config.js`** holds only the public project URL and the publishable (anon) key. Never put
-  service-role keys, secrets or passwords in the repo or in test output.
+- **`community-config.js`** holds only the public project URL, the publishable (anon) key and the
+  public Web Push key (`vapidPublicKey`). Never put service-role keys, the VAPID private key, secrets
+  or passwords in the repo or in test output.
+- **Edge Functions** (`supabase/functions/`): `delete-account` and `push` (chat notifications, Web Push
+  with VAPID; `webpush.ts` is dependency-free WebCrypto and is imported directly by Node tests).
 
 ## Working conventions in this repo
 

@@ -41,7 +41,7 @@ async function signIn(p, u) {
   await p.eval(HELPERS);
   await p.eval(`(state.settings.communityOptIn = true, persistState(), setLang('en'), true)`);
   await p.eval(`(document.querySelector('.tab-bar [data-tab="komunita"]').click(), true)`);
-  await waitFor(() => p.eval(`!!communityProfile && communityVersion === 3`), 30000, 'profile v3');
+  await waitFor(() => p.eval(`!!communityProfile && communityVersion >= 3`), 30000, 'profile v3');
 }
 async function finishWorkout(p) {
   await p.eval(`(async () => { const w = (ms) => new Promise((r) => setTimeout(r, ms)); const $ = (s) => document.querySelector(s);

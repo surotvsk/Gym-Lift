@@ -670,6 +670,19 @@ the leaderboard** to hide yourself. The leaderboard shows only your username, av
 never your workouts. Moderators can remove a member from it. It needs internet and a Community
 account; your XP in the app never changes because of it.
 
+**Message notifications (optional).** Turn on **Community → Profile → Notifications** (or **Turn on**
+above the chat list) to get a notification on this device when a friend sends you a chat message,
+even when GymQuest is closed. Tapping it opens that chat. The notification shows only the friend's
+username (*New message from anna*), never the message text, in your app language. Several quick
+messages from the same chat give one notification (at most one every 20 seconds per chat). It is
+off by default, works per device, and asks for the system permission first. Signing out, leaving
+Community or turning Community off stops notifications on this device. **iPhone and iPad:** web
+notifications work only when GymQuest is added to the Home Screen (Share → Add to Home Screen) and
+opened from there, on iOS 16.4 or newer; in Safari the app explains this instead of the switch. If
+notifications are blocked in the phone or browser settings, the app says so and how to allow them.
+The notification goes through your browser's push service (Apple, Google, Mozilla or Microsoft),
+encrypted so that only your device can read it.
+
 **Swipe between media** with your finger, or use the **‹ ›** buttons, the dots, the counter or the arrow
 keys. Each item has a **caption** in every supported language, and the **creator and licence are printed
 under the media**. If a demonstration cannot be loaded, you get a clean **"Demonstration unavailable"**
@@ -1013,6 +1026,9 @@ no tracking**.
 - **Without an account** nothing leaves your device.
 - **With an account** (signed in via Community), your data is also synchronized privately to your own
   account — see *Account sync* below. Nobody else can read it; Community moderators cannot either.
+- **Message notifications** (only if you turn them on) store this device's push address on the
+  server so a friend's message can be announced; it is deleted when you turn them off, sign out,
+  leave Community or delete your account.
 - When several people use the same link, **each person's data is private to their own browser.**
 
 ### Account sync (offline-first)

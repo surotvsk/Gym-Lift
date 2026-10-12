@@ -35,6 +35,11 @@ GQ_COMMUNITY_CONFIG=<local community-config.js> node tests/social/ui-phase2.js  
 node tests/social/leaderboard.js       # leaderboard limits, server-side achievement XP, privacy, ranking, rollback
 GQ_COMMUNITY_CONFIG=<local community-config.js> node tests/social/ui-leaderboard.js   # real Chrome, port 8124
 GQ_COMMUNITY_CONFIG=<local community-config.js> node tests/social/ui-invite.js       # real Chrome, port 8124; no DB writes
+# 0010 push: serve the functions with test VAPID keys and PUSH_TEST_ENDPOINT_PREFIX=http://host.docker.internal:9871/push/
+# (supabase functions serve --env-file <file>), export GQ_VAPID_PUBLIC=<that public key>; the local
+# community-config.js needs vapidPublicKey. A mock push service listens on port 9871 (push-mock.js).
+node tests/social/push.js             # push: RFC 8291 vector, access, register/unregister, send, grouping, refusals, gone devices, cleanup, rollback
+GQ_COMMUNITY_CONFIG=<local community-config.js> node tests/social/ui-push.js         # real Chrome, port 8124
 ```
 
 **Match production:** set `auto_expose_new_tables = false` under `[api]` in the local stack's
@@ -60,6 +65,8 @@ The existing suites (`tests/auth`, `tests/sync`) run against the same local stac
 | `leaderboard.js` | needs 0009. Version 3; no `anon` or direct table access; non-members cannot submit; the first submission is the baseline; 300 training XP per UTC day and 1,000 per ISO week; decreases accepted at once; a different device week keeps the stored week XP; achievement XP computed on the server (unknown ids ignored, impossible ones dropped, all 25 = 5,150); hidden, suspended, non-member, blocked and moderator-removed members left out; moderation history; ties by time reached; last week's rows left out of the week tab; own rank outside the top 20; Leave Community and account deletion remove the row; `0009_down` and re-apply |
 | `ui-leaderboard.js` | the app in Chrome: XP reported after a workout equals what the app shows; Top 20 with gold/silver/bronze badges, own pinned row with its real rank, week tab, profile link; privacy switch on by default, hidden state with Show me; moderator remove and the removed note; 320 px phone (no overflow, every value and header visible, also in Arabic); 6 languages with no raw keys; offline message |
 | `ui-invite.js` | the Community invitation window (v58, daily since v59): not shown to a brand-new user on day one, shown after start when due (once per calendar day), closes with Not now / ✕ / Esc / tap outside and is postponed, never over an open dialog or on the Community tab, Join turns Community on and opens the sign-in form, members never see it, hidden from the other suites unless `gq_test_invite` is set; 6 languages, Arabic RTL, 320 px fit, screenshots |
+| `push.js` | 0010 + `push` function: encryption equals the RFC 8291 example; no direct table access, only members register, ownership moves with the device, at most 10 devices; a sent message reaches only the friend's devices, decrypted with an independent implementation (name only, in their language, chat id, never the text), valid VAPID; no double notification; quick follow-ups grouped (20 s per chat); refusals (stranger, recipient, old message, no sign-in, bad request, block); gone devices deleted; unknown push servers never contacted; leave/delete remove devices; rollback and re-apply |
+| `ui-push.js` | the app in Chrome (stand-in PushManager pointing at the mock): turn on from Chats and Profile, language follows the app, a UI-sent message reaches the friend, the service worker shows the notification, tapping opens the chat (message and `?chat=` start, address cleaned, Back), off/on/sign-out unregister, blocked / not supported / iPhone-without-Home-Screen notes, 6 languages, fallback when 0010 is rolled back, no errors |
 
 ## Results — v47 release candidate (2026-10-10, local stack, Fedora 44, Docker 29.7)
 
