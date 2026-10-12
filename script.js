@@ -1344,21 +1344,17 @@ function gearFor(entry, media, frame) {
   return gear;
 }
 
-/* Rámy cviku: ak vizuál nemá overený rám, vráti null a rozhranie ukáže čestný
-   stav "Ukážka nie je k dispozícii" spolu s písaným návodom. */
+/* Rámy cviku: najprv video (ak je), potom fotografie (ak sú). Bez skutočnej fotky či videa
+   vráti null a rozhranie ukáže krátku správu – NIKDY sa nekreslí náhradná schéma.
+   Poradie MEDIA_CREDITS[id] musí zodpovedať poradiu týchto rámov. */
 function framesForExercise(entry) {
   if (!entry) return null;
+  const frames = [];
   const video = EXERCISE_VIDEO_MEDIA[entry.id];
-  if (video) {
-    return { frames: [{ video: true, src: video.src, poster: video.poster, caption: 'media.video' }] };
-  }
+  if (video) frames.push({ video: true, src: video.src, mp4: video.mp4 || '', poster: video.poster, caption: 'media.video' });
   const photos = EXERCISE_PHOTO_MEDIA[entry.id];
-  if (photos && photos.length) {
-    return { frames: photos.map((p) => Object.assign({}, p)) };
-  }
-  /* Žiadna skutočná fotka ani video: NIKDY sa nekreslí náhradná schéma.
-     Rozhranie ukáže krátku správu a písaný návod. */
-  return null;
+  if (photos && photos.length) photos.forEach((p) => frames.push(Object.assign({}, p)));
+  return frames.length ? { frames } : null;
 }
 
 /* Jeden rám pripravený na vykreslenie (náčinie už je odvodené z metaúdajov). */
@@ -1771,6 +1767,7 @@ const I18N = {
     'media.videoCredit': 'Video: {credit}',
     'media.unavailableTitle': 'Ukážka nie je k dispozícii',
     'media.unavailable': 'GymQuest zatiaľ nemá overenú ukážku tohto cviku. Hlavným návodom sú písané kroky nižšie.',
+    'media.offlineFirst': 'Na načítanie tejto ukážky sa raz pripoj na internet.',
     'media.none': 'GymQuest nemá fotku ani video tohto cviku.',
     'media.addPersonal': 'Pridať vlastnú fotku alebo video',
     'media.myDemo': 'Moja ukážka',
@@ -2640,6 +2637,7 @@ const I18N = {
     'media.videoCredit': 'Video: {credit}',
     'media.unavailableTitle': 'Demonstration unavailable',
     'media.unavailable': 'GymQuest has no verified demonstration for this exercise yet. The written steps below are the guidance.',
+    'media.offlineFirst': 'Connect to the internet once to load this demonstration.',
     'media.none': 'GymQuest has no photo or video for this exercise.',
     'media.addPersonal': 'Add my photo or video',
     'media.myDemo': 'My demonstration',
@@ -3515,6 +3513,7 @@ const I18N = {
     'media.videoCredit': 'Vídeo: {credit}',
     'media.unavailableTitle': 'Demostración no disponible',
     'media.unavailable': 'GymQuest todavía no tiene una demostración verificada de este ejercicio. La guía son los pasos escritos de abajo.',
+    'media.offlineFirst': 'Conéctate a internet una vez para cargar esta demostración.',
     'media.none': 'GymQuest no tiene foto ni vídeo de este ejercicio.',
     'media.addPersonal': 'Añadir mi foto o vídeo',
     'media.myDemo': 'Mi demostración',
@@ -4382,6 +4381,7 @@ const I18N = {
     'media.videoCredit': 'Vídeo: {credit}',
     'media.unavailableTitle': 'Demonstração indisponível',
     'media.unavailable': 'O GymQuest ainda não tem uma demonstração verificada deste exercício. O guia são os passos escritos abaixo.',
+    'media.offlineFirst': 'Conecte-se à internet uma vez para carregar esta demonstração.',
     'media.none': 'O GymQuest não tem foto nem vídeo deste exercício.',
     'media.addPersonal': 'Adicionar minha foto ou vídeo',
     'media.myDemo': 'Minha demonstração',
@@ -5249,6 +5249,7 @@ const I18N = {
     'media.videoCredit': 'Vidéo : {credit}',
     'media.unavailableTitle': 'Démonstration indisponible',
     'media.unavailable': 'GymQuest n’a pas encore de démonstration vérifiée pour cet exercice. Les étapes écrites ci-dessous font référence.',
+    'media.offlineFirst': 'Connectez-vous une fois à Internet pour charger cette démonstration.',
     'media.none': 'GymQuest n’a pas de photo ni de vidéo de cet exercice.',
     'media.addPersonal': 'Ajouter ma photo ou ma vidéo',
     'media.myDemo': 'Ma démonstration',
@@ -6135,6 +6136,7 @@ const I18N = {
     'media.videoCredit': 'فيديو: {credit}',
     'media.unavailableTitle': 'العرض غير متوفّر',
     'media.unavailable': 'لا يملك GymQuest بعد عرضًا موثّقًا لهذا التمرين. الدليل هو الخطوات المكتوبة أدناه.',
+    'media.offlineFirst': 'اتصل بالإنترنت مرة واحدة لتحميل هذا العرض.',
     'media.none': 'لا يملك GymQuest صورة أو فيديو لهذا التمرين.',
     'media.addPersonal': 'إضافة صورتي أو فيديوي',
     'media.myDemo': 'عرضي الخاص',
@@ -11565,6 +11567,20 @@ function mediaMissingNode() {
   return box;
 }
 
+/* Ukážka sa ešte nikdy nestiahla a zariadenie je offline: čestná správa, čo urobiť. */
+function mediaOfflineNode() {
+  const box = document.createElement('div');
+  box.className = 'media-missing media-offline';
+  box.innerHTML = '<span class="media-missing-icon" aria-hidden="true">📶</span>'
+    + '<strong>' + esc(t('media.offlineFirst')) + '</strong>';
+  return box;
+}
+
+/* Zlyhanie ukážky: offline → "pripoj sa raz", inak "ukážka nie je k dispozícii". */
+function mediaFailNode() {
+  return navigator.onLine === false ? mediaOfflineNode() : mediaMissingNode();
+}
+
 /* Malá oranžová šípka (smer pohybu) – voliteľná, kreslí sa cez fotografiu.
    Poloha je v percentách obrázka, takže ostáva na svojom mieste pri každej šírke
    a je umiestnená mimo postavy. Otočenie: 0° = nahor. */
@@ -11715,11 +11731,18 @@ function mountMediaGallery() {
       video.setAttribute('playsinline', '');
       video.setAttribute('aria-label', mediaAlt(it));
       if (it.poster) video.poster = it.poster;
-      video.addEventListener('error', () => {
-        slide.innerHTML = '';
-        slide.appendChild(mediaMissingNode());
+      const fail = () => { slide.innerHTML = ''; slide.appendChild(mediaFailNode()); };
+      video.addEventListener('error', fail);
+      /* WebM pre väčšinu prehliadačov, MP4 pre staršie iPhony. Chyba <source> nespustí
+         'error' na <video>, preto sa sleduje posledný zdroj. */
+      const sources = [[it.src, 'video/webm'], [it.mp4, 'video/mp4']].filter((src) => src[0]);
+      sources.forEach((src, i) => {
+        const el = document.createElement('source');
+        el.src = src[0];
+        el.type = src[1];
+        if (i === sources.length - 1) el.addEventListener('error', fail);
+        video.appendChild(el);
       });
-      video.src = it.src;
       frame.appendChild(video);
       slide.appendChild(frame);
     } else if (it.src) {
@@ -11732,7 +11755,7 @@ function mountMediaGallery() {
       img.alt = mediaAlt(it);
       img.addEventListener('error', () => {
         slide.innerHTML = '';
-        slide.appendChild(mediaMissingNode());
+        slide.appendChild(mediaFailNode());
       });
       img.src = it.src;
       frame.appendChild(img);

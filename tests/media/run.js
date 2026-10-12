@@ -136,6 +136,81 @@ scenario('migration from v52', async () => {
   } finally { await srv.close(); }
 });
 
+/* Opens every library exercise and checks each gallery item really loads, with one credit per item. */
+async function checkExerciseGallery(p, id) {
+  return p.eval(`(async () => {
+    const id = ${JSON.stringify(id)};
+    const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+    const list = exerciseMediaList(libraryEntry(id));
+    openExerciseSheet(id);
+    await wait(250);
+    const slides = Array.from(document.querySelectorAll('#media-track .media-slide'));
+    const items = [];
+    for (let i = 0; i < slides.length; i++) {
+      goToMedia(i, false);
+      const s = slides[i];
+      const end = Date.now() + 20000;
+      const img = s.querySelector('img'), vid = s.querySelector('video');
+      if (vid) { vid.muted = true; vid.play().catch(() => {}); }
+      while (Date.now() < end && !s.querySelector('.media-missing')
+        && !(img && img.complete && img.naturalWidth > 0) && !(vid && vid.readyState >= 2)) await wait(100);
+      if (vid) vid.pause();
+      items.push({ kind: vid ? 'video' : (img ? 'img' : 'other'), ok: !s.querySelector('.media-missing') && ((img && img.naturalWidth > 0) || (vid && vid.readyState >= 2)) });
+    }
+    const none = !!document.querySelector('#modal-exercise .media-none');
+    closeExerciseSheet();
+    return { list: list.length, credits: list.filter((f) => f.credit && f.credit.creator && f.credit.license).length,
+      firstIsVideo: list.length ? !!list[0].video : null, hasVideo: list.some((f) => f.video), slides: slides.length, items, none };
+  })()`, 120000);
+}
+
+scenario('gallery', async () => {
+  const a = makeBuild('build-gallery', '');
+  const srv = await startServer(PORT, { a });
+  srv.setRoot('a');
+  try {
+    const { p } = await freshPage('gallery');
+    await openApp(p);
+    const ids = await p.eval('EXERCISE_LIBRARY.map((e) => e.id)');
+    for (const id of ids) {
+      const g = await checkExerciseGallery(p, id);
+      if (g.list === 0) { check(id + ': no media → only the media.none line', g.none && g.slides === 0, g); continue; }
+      check(id + ': one slide per item, every item loads', g.slides === g.list && g.items.every((x) => x.ok), g);
+      check(id + ': one credit (creator + licence) per item', g.credits === g.list, g);
+      if (g.hasVideo) check(id + ': the video comes first', g.firstIsVideo === true, g);
+    }
+    check('no page exceptions', p.errors.length === 0, p.errors);
+    check('no missing-translation warnings', !p.console.some((c) => /chýbajúce preklady/.test(c)), p.console.filter((c) => /chýbajúce/.test(c)));
+  } finally { await srv.close(); }
+});
+
+scenario('offline first view', async () => {
+  const a = makeBuild('build-offline', '');
+  const srv = await startServer(PORT, { a, gone: GONE });
+  srv.setRoot('a');
+  try {
+    const { p } = await freshPage('offline');
+    await openApp(p);
+    const seen = await checkExerciseGallery(p, 'bench-press');   // viewed once while online → stored
+    check('bench-press video loads online', seen.items.length > 0 && seen.items[0].ok, seen);
+    srv.setRoot('gone');
+    await p.offline(true);
+    const again = await checkExerciseGallery(p, 'bench-press');
+    check('a demonstration viewed once plays offline', again.items[0] && again.items[0].ok, again);
+    const fresh = await p.eval(`(async () => {
+      openExerciseSheet('squats');
+      const end = Date.now() + 20000;
+      while (Date.now() < end && !document.querySelector('#media-track .media-offline')) await new Promise((r) => setTimeout(r, 100));
+      const el = document.querySelector('#media-track .media-offline');
+      const out = { shown: !!el, text: el ? el.textContent : null, expected: t('media.offlineFirst') };
+      closeExerciseSheet();
+      return out;
+    })()`, 60000);
+    check('never-viewed demonstration offline shows media.offlineFirst', fresh.shown && fresh.text.indexOf(fresh.expected) >= 0, fresh);
+    await p.offline(false);
+  } finally { await srv.close(); }
+});
+
 /* ---------- runner ---------- */
 (async () => {
   fs.mkdirSync(PROFILES, { recursive: true });
