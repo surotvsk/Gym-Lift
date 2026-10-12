@@ -139,6 +139,34 @@ scenario('leave Community and account deletion remove the row', async () => {
   check('account deletion cascades', !d.error && row(b) === null, J(d.error));
 });
 
+scenario('review fixes: stale device, early row, rejoin, RLS', async () => {
+  check('leaderboard_entries has RLS enabled', sqlVal(`select relrowsecurity from pg_class where oid = 'public.leaderboard_entries'::regclass`) === 't');
+  const a = await member('fx-stale');
+  await submit(a, 9000, 100, 200);
+  resetDay(a);
+  await submit(a, 0, 0, 0);
+  check('stale device: an empty phone lowers the board to 0', row(a).training === 0, J(row(a)));
+  await submit(a, 9000, 100, 200);
+  check('stale device: back up to the earlier peak at once (not +300)', row(a).training === 9000, J(row(a)));
+  await submit(a, 10000, 100, 200);
+  check('above the peak the daily limit still applies (+300)', row(a).training === 9300, J(row(a)));
+  const b = await member('fx-early');
+  await b.c.rpc('leaderboard_set_hidden', { p_hidden: true });
+  await b.c.rpc('leaderboard_set_hidden', { p_hidden: false });
+  await submit(b, 9000, 100, 200);
+  check('a row created by Show me / hide keeps the full baseline', row(b).training === 9000, J(row(b)));
+  const c = await member('fx-rejoin');
+  const mod = await member('fx-mod'); L.makeModerator(mod);
+  await submit(c, 500, 100, 5);
+  await mod.c.rpc('leaderboard_moderate', { p_user: c.id, p_removed: true });
+  await L.admin.rpc('community_leave_cleanup', { p_user: c.id });
+  await c.c.rpc('community_join');
+  await submit(c, 2000000000, 100, 5);
+  const me = await c.c.rpc('leaderboard_me');
+  check('leave and rejoin does not undo a moderator removal', !me.error && me.data.removed === true, J(me));
+  check('first submission is bounded (at most 1,000,000 training XP)', row(c).training <= 1000000, J(row(c)));
+});
+
 scenario('rollback 0009_down and re-apply', async () => {
   L.sqlFile(require('path').join(__dirname, '..', '..', 'supabase', 'rollback', '0009_down.sql'));
   check('after rollback: version 2', sqlVal('select public.community_social_version()') === '2');

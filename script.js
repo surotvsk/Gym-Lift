@@ -13226,7 +13226,7 @@ function leaderboardPayload() {
     p_training: workoutXP() + activityXP(),
     p_week_training: week,
     p_week_key: wk,
-    p_workouts: state.history.length,
+    p_workouts: state.history.length + (state.activities || []).length,   // séria týždňov počíta aj aktivity
     p_achievements: staticAchievementDefs().filter((d) => earned[d.id]).map((d) => d.id),
   };
 }
@@ -13240,6 +13240,11 @@ function leaderboardQueue() {
 async function leaderboardSend(force) {
   leaderboardTimer = null;
   if (!leaderboardEnabled()) return null;
+  /* Počas prvého načítania účtu alebo otvoreného konfliktu synchronizácie nie sú lokálne dáta
+     konečné – rebríček by dostal nesprávne (napr. nulové) XP. Pošle sa pri ďalšej zmene. */
+  if (syncLoading) return null;
+  const meta = syncMetaRead();
+  if (meta && meta.conflict) return null;
   const sb = communityClient();
   if (!sb) return null;
   const payload = leaderboardPayload();
@@ -13252,12 +13257,12 @@ async function leaderboardSend(force) {
 }
 
 function leaderboardRowHtml(r, period) {
-  const medal = r.pos === 1 ? ' lb-gold' : r.pos === 2 ? ' lb-silver' : r.pos === 3 ? ' lb-bronze' : '';
+  const medal = !(Number(r.xp) > 0) ? '' : r.pos === 1 ? ' lb-gold' : r.pos === 2 ? ' lb-silver' : r.pos === 3 ? ' lb-bronze' : '';
   const name = r.username || t('community.unknownUser');
   const xp = Number(r.xp || 0).toLocaleString(((LANGUAGES.find((l) => l.code === activeLang()) || {}).locale) || 'en-US');
   const aria = t(period === 'week' ? 'lb.rowAriaWeek' : 'lb.rowAria', { pos: r.pos, name, level: r.level, xp });
   return '<tr class="lb-row' + (r.is_me ? ' lb-me' : '') + '" aria-label="' + escAttr(aria) + '">'
-    + '<td class="lb-pos' + medal + '">' + (r.is_me && r.pos > 20 ? '#' + r.pos : r.pos) + '</td>'
+    + '<td class="lb-pos' + medal + '">' + (period === 'week' && !(Number(r.xp) > 0) ? '–' : (r.is_me && r.pos > 20 ? '#' + r.pos : r.pos)) + '</td>'
     + '<td class="lb-member"><div class="lb-member-in">' + communityAvatarHtml(r.avatar_path, 32)
     + '<button type="button" class="lb-name" data-community-action="open-user" data-user="' + escAttr(r.user_id) + '">'
     + esc(name) + (r.is_me ? ' <span class="lb-you">' + esc(t('lb.you')) + '</span>' : '') + '</button></div></td>'
@@ -13284,8 +13289,10 @@ async function communityLeaderboardHtml(sb) {
   else if (info.hidden) state = '<div class="card lb-state"><p><strong>' + esc(t('lb.hiddenTitle')) + '</strong></p><p class="card-note">' + esc(t('lb.hiddenNote')) + '</p>'
     + '<button type="button" class="btn btn-primary" data-community-action="lb-show-me">' + esc(t('lb.showMe')) + '</button></div>';
   const rows = Array.isArray(top.data) ? top.data : [];
-  const list = rows.filter((r) => r.pos <= 20);
-  const mine = rows.find((r) => r.is_me && r.pos > 20);
+  /* Týždeň: vlastný riadok s 0 XP sa nikdy neukáže ako zlaté 1. miesto – len pod tabuľkou bez poradia. */
+  const zeroWeek = (r) => period === 'week' && !(Number(r.xp) > 0);
+  const list = rows.filter((r) => r.pos <= 20 && !zeroWeek(r));
+  const mine = rows.find((r) => r.is_me && (r.pos > 20 || zeroWeek(r)));
   if (!list.length) {
     return head + state + '<div class="card lb-state"><p>' + esc(t(period === 'week' ? 'lb.emptyWeek' : 'lb.emptyAll')) + '</p></div>';
   }

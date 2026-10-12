@@ -164,6 +164,24 @@ scenario('narrow phone, languages, offline', async () => {
   check('no missing translations', !p.console.some((c) => /chýbajúce preklady/.test(c)), J(p.console.filter((c) => /chýbajúce/.test(c))));
 });
 
+scenario('review fixes: activities count, conflict pauses reports, empty week', async () => {
+  sql('delete from public.leaderboard_entries;');
+  const u = await member('fx-app');
+  const p = await device('fxapp');
+  await signIn(p, u);
+  const counts = await p.eval(`(() => { state.activities = (state.activities || []).concat([{ id: 'a1', kind: 'run', date: todayISO ? todayISO() : new Date().toISOString().slice(0, 10), xp: 20 }]); const out = { sent: leaderboardPayload().p_workouts, want: state.history.length + state.activities.length }; state.activities = state.activities.filter((x) => x.id !== 'a1'); return out; })()`);
+  check('workout count sent to the server includes activities (streak achievements)', counts.sent === counts.want, J(counts));
+  const paused = await p.eval(`(async () => { const m = syncMetaRead(); const before = m.conflict; m.conflict = { rev: 999 }; syncMetaWrite(m);
+    const r = await leaderboardSend(true); const m2 = syncMetaRead(); m2.conflict = before || null; syncMetaWrite(m2); return r === null; })()`);
+  check('no XP report while a sync conflict is open', paused);
+  sql(`delete from public.leaderboard_entries where user_id = ${lit(u.id)};`);
+  await p.eval(`(leaderboardSentSig = '', leaderboardPeriod = 'week', communitySetView('leaderboard'), true)`);
+  await waitFor(() => p.eval(`!!document.querySelector('#community-body .lb-state, #community-body .lb-table')`), 20000, 'week board');
+  await wait(500);
+  const st = await p.eval(`({ gold: !!document.querySelector('.lb-table td.lb-gold'), empty: document.getElementById('community-body').innerText.indexOf(t('lb.emptyWeek')) >= 0 })`);
+  check('empty week: no gold #1 for a viewer with 0 XP, the empty message instead', !st.gold && st.empty, J(st));
+});
+
 (async () => {
   fs.mkdirSync(PROFILES, { recursive: true });
   const server = await startServer(PORT, { new: REPO });
