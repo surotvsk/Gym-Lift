@@ -2373,6 +2373,7 @@ textarea.modal-input { resize: vertical; }
 .setting-block .card-title { font-size: var(--fs-sm); overflow-wrap: anywhere; }
 .setting-block .card-sub { font-size: var(--fs-sm); overflow-wrap: anywhere; }
 .setting-block .btn { margin-top: var(--sp-2); }
+.setting-block[hidden] { display: none; }
 
 /* "O aplikácii" / credits block at the bottom of Settings: readable wrapped line. */
 .about-app .card-sub { line-height: 1.5; }

@@ -11,7 +11,7 @@
   <title>GymQuest</title>
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
-  <link rel="stylesheet" href="style.css?v=55">
+  <link rel="stylesheet" href="style.css?v=56">
 </head>
 <body>
 
@@ -607,6 +607,15 @@
         <button class="btn btn-primary" id="btn-settings-save" data-i18n="settings.save">Uložiť</button>
       </div>
 
+      <!-- Aktualizácie aplikácie: ručná kontrola a inštalácia (ten istý postup ako lišta "Aktualizovať") -->
+      <div class="setting-block" id="app-update-block" hidden>
+        <span class="card-title" data-i18n="update.settingsTitle">Aktualizácie aplikácie</span>
+        <span class="card-sub" id="app-version-line" hidden></span>
+        <p class="card-note" id="app-update-status" role="status" hidden></p>
+        <button type="button" class="btn btn-secondary btn-block" id="btn-check-update" data-i18n="update.check">Skontrolovať aktualizácie</button>
+        <button type="button" class="btn btn-primary btn-block" id="btn-settings-update" data-i18n="update.now" hidden>Aktualizovať</button>
+      </div>
+
       <div class="setting-block about-app">
         <span class="card-title" data-i18n="about.title">O aplikácii</span>
         <span class="card-sub" data-i18n="about.credits">Aplikáciu vytvorili Martin Šuriak a Vera Magdy Fakhry.</span>
@@ -908,8 +917,8 @@
     </div>
   </div>
 
-  <script src="community-config.js?v=55"></script>
-  <script src="vendor/supabase-js.js?v=55"></script>
-  <script src="script.js?v=55"></script>
+  <script src="community-config.js?v=56"></script>
+  <script src="vendor/supabase-js.js?v=56"></script>
+  <script src="script.js?v=56"></script>
 </body>
 </html>

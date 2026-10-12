@@ -1115,6 +1115,14 @@ When a new version is deployed, the app notices the waiting update and offers a 
 you are in the middle of something that would lose input: an active workout, an open plan editor, a
 note, or a settings form.
 
+The app looks for a new version every time it opens, and again whenever it comes back to the screen
+(at most once a minute). An app installed on a phone's Home Screen usually just resumes instead of
+reloading, so it needs this check.
+
+You can also check by hand: **⚙️ Settings → App updates** shows the installed version and has a
+**Check for updates** button. If a new version is ready, **Update now** installs it right there. During a
+workout it waits until you finish. If you're offline or the check fails, the message says so.
+
 ### Deploying an update
 
 1. Change the app files.

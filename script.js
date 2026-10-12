@@ -1706,6 +1706,16 @@ const I18N = {
     'common.cancel': 'Zrušiť', 'common.close': 'Zavrieť', 'common.save': 'Uložiť', 'common.ok': 'OK', 'common.delete': 'Vymazať',
     'update.available': 'Je dostupná nová verzia GymQuestu.',
     'update.now': 'Aktualizovať',
+    'update.settingsTitle': 'Aktualizácie aplikácie',
+    'update.version': 'Verzia {v}',
+    'update.check': 'Skontrolovať aktualizácie',
+    'update.checking': 'Kontrolujem aktualizácie…',
+    'update.downloading': 'Sťahujem novú verziu…',
+    'update.latest': 'Máš najnovšiu verziu.',
+    'update.ready': 'Nová verzia je pripravená na inštaláciu.',
+    'update.offline': 'Si offline. Pripoj sa na internet a skontroluj to znova.',
+    'update.failed': 'Aktualizácie sa nepodarilo skontrolovať. Skús to neskôr.',
+    'update.finishWorkout': 'Najprv dokonči tréning, potom aktualizuj.',
     'app.storageError': 'Tento prehliadač odmietol uložiť dáta – zmeny sa po obnovení stránky stratia. Povol v prehliadači ukladanie dát (localStorage) a skús to znova. Ak sa uloženie stále nedarí, vyexportuj si zálohu, kým sú dáta ešte v pamäti.',
     'common.confirm': 'Potvrdenie',
     'common.confirmTitle': 'Potvrdenie',
@@ -2565,6 +2575,16 @@ const I18N = {
     'common.cancel': 'Cancel', 'common.close': 'Close', 'common.save': 'Save', 'common.ok': 'OK', 'common.delete': 'Delete',
     'update.available': 'A new version of GymQuest is available.',
     'update.now': 'Update now',
+    'update.settingsTitle': 'App updates',
+    'update.version': 'Version {v}',
+    'update.check': 'Check for updates',
+    'update.checking': 'Checking for updates…',
+    'update.downloading': 'Downloading the new version…',
+    'update.latest': 'You have the latest version.',
+    'update.ready': 'A new version is ready to install.',
+    'update.offline': 'You’re offline. Connect to the internet and check again.',
+    'update.failed': 'Couldn’t check for updates. Try again later.',
+    'update.finishWorkout': 'Finish your workout first, then update.',
     'app.storageError': 'This browser refused to save your data — changes will be lost after a refresh. Allow site data (localStorage) in your browser and try again. If saving still fails, export a backup while the data is still in memory.',
     'common.confirm': 'Confirmation',
     'common.confirmTitle': 'Confirmation',
@@ -3430,6 +3450,16 @@ const I18N = {
     'common.cancel': 'Cancelar', 'common.close': 'Cerrar', 'common.save': 'Guardar', 'common.ok': 'OK', 'common.delete': 'Eliminar',
     'update.available': 'Hay una nueva versión de GymQuest disponible.',
     'update.now': 'Actualizar ahora',
+    'update.settingsTitle': 'Actualizaciones de la app',
+    'update.version': 'Versión {v}',
+    'update.check': 'Buscar actualizaciones',
+    'update.checking': 'Buscando actualizaciones…',
+    'update.downloading': 'Descargando la nueva versión…',
+    'update.latest': 'Tienes la versión más reciente.',
+    'update.ready': 'Hay una nueva versión lista para instalar.',
+    'update.offline': 'Estás sin conexión. Conéctate a internet y vuelve a comprobarlo.',
+    'update.failed': 'No se pudieron buscar actualizaciones. Inténtalo más tarde.',
+    'update.finishWorkout': 'Termina primero el entrenamiento y luego actualiza.',
     'app.storageError': 'Este navegador rechazó guardar tus datos — los cambios se perderán al recargar. Permite el almacenamiento del sitio (localStorage) e inténtalo de nuevo. Si sigue fallando, exporta una copia mientras los datos aún están en memoria.',
     'common.confirm': 'Confirmación',
     'common.confirmTitle': 'Confirmación',
@@ -4287,6 +4317,16 @@ const I18N = {
     'common.cancel': 'Cancelar', 'common.close': 'Fechar', 'common.save': 'Salvar', 'common.ok': 'OK', 'common.delete': 'Excluir',
     'update.available': 'Uma nova versão do GymQuest está disponível.',
     'update.now': 'Atualizar agora',
+    'update.settingsTitle': 'Atualizações do app',
+    'update.version': 'Versão {v}',
+    'update.check': 'Verificar atualizações',
+    'update.checking': 'Verificando atualizações…',
+    'update.downloading': 'Baixando a nova versão…',
+    'update.latest': 'Você está com a versão mais recente.',
+    'update.ready': 'Uma nova versão está pronta para instalar.',
+    'update.offline': 'Você está offline. Conecte-se à internet e verifique de novo.',
+    'update.failed': 'Não foi possível verificar atualizações. Tente mais tarde.',
+    'update.finishWorkout': 'Termine o treino primeiro e depois atualize.',
     'app.storageError': 'Este navegador recusou salvar seus dados — as mudanças serão perdidas ao recarregar. Permita o armazenamento do site (localStorage) e tente de novo. Se continuar falhando, exporte um backup enquanto os dados ainda estão na memória.',
     'common.confirm': 'Confirmação',
     'common.confirmTitle': 'Confirmação',
@@ -5144,6 +5184,16 @@ const I18N = {
     'common.cancel': 'Annuler', 'common.close': 'Fermer', 'common.save': 'Enregistrer', 'common.ok': 'OK', 'common.delete': 'Supprimer',
     'update.available': 'Une nouvelle version de GymQuest est disponible.',
     'update.now': 'Mettre à jour',
+    'update.settingsTitle': 'Mises à jour de l’application',
+    'update.version': 'Version {v}',
+    'update.check': 'Rechercher des mises à jour',
+    'update.checking': 'Recherche de mises à jour…',
+    'update.downloading': 'Téléchargement de la nouvelle version…',
+    'update.latest': 'Vous avez la dernière version.',
+    'update.ready': 'Une nouvelle version est prête à être installée.',
+    'update.offline': 'Vous êtes hors ligne. Connectez-vous à Internet et réessayez.',
+    'update.failed': 'Impossible de rechercher des mises à jour. Réessayez plus tard.',
+    'update.finishWorkout': 'Terminez d’abord votre séance, puis mettez à jour.',
     'app.storageError': 'Ce navigateur a refusé d’enregistrer tes données — les changements seront perdus après un rechargement. Autorise le stockage du site (localStorage) et réessaie. Si l’enregistrement échoue encore, exporte une sauvegarde pendant que les données sont encore en mémoire.',
     'common.confirm': 'Confirmation',
     'common.confirmTitle': 'Confirmation',
@@ -6020,6 +6070,16 @@ const I18N = {
     'common.cancel': 'إلغاء', 'common.close': 'إغلاق', 'common.save': 'حفظ', 'common.ok': 'حسنًا', 'common.delete': 'حذف',
     'update.available': 'يتوفّر إصدار جديد من GymQuest.',
     'update.now': 'التحديث الآن',
+    'update.settingsTitle': 'تحديثات التطبيق',
+    'update.version': 'الإصدار \u2066{v}\u2069',
+    'update.check': 'التحقق من التحديثات',
+    'update.checking': 'جارٍ التحقق من التحديثات…',
+    'update.downloading': 'جارٍ تنزيل الإصدار الجديد…',
+    'update.latest': 'لديك أحدث إصدار.',
+    'update.ready': 'إصدار جديد جاهز للتثبيت.',
+    'update.offline': 'أنت غير متصل. اتصل بالإنترنت وتحقّق مرة أخرى.',
+    'update.failed': 'تعذّر التحقق من التحديثات. حاول لاحقًا.',
+    'update.finishWorkout': 'أنهِ التمرين أولًا، ثم حدّث التطبيق.',
     'app.storageError': 'رفض هذا المتصفح حفظ بياناتك — ستُفقد التغييرات بعد إعادة التحميل. اسمح بتخزين بيانات الموقع (localStorage) وحاول مرة أخرى. إذا استمر الفشل، صدّر نسخة احتياطية الآن قبل فقدان البيانات.',
     'common.confirm': 'تأكيد',
     'common.confirmTitle': 'تأكيد',
@@ -16484,11 +16544,14 @@ function openSettings() {
   renderAutoBackupSetting();
   renderCloudBackupSetting();
   renderRestSoundSetting();
+  if (appUpdateCheck !== 'checking' && appUpdateCheck !== 'downloading') appUpdateCheck = '';
+  renderAppUpdateSetting();
   const removeBtn = document.getElementById('btn-remove-demo');
   if (removeBtn) {
     removeBtn.hidden = !state.demo;
   }
   document.getElementById('modal-settings').hidden = false;
+  refreshUpdateBanner();   // otvorené Nastavenia skryjú lištu – aktualizácia je v nich
 }
 
 /* Vráti true, ak bol cieľ uložený; false, ak bol vstup neplatný. */
@@ -17640,6 +17703,7 @@ function applyStaticI18n() {
   renderLangList();
   renderAutoBackupSetting();
   renderCloudBackupSetting();
+  renderAppUpdateSetting();
   renderBackupStrip();   // jazyková zmena musí prekresliť aj lištu zálohy
   updatePlanManageButton();   // prepínač plánov má v každom jazyku správny text
   renderTimerPresets();       // názvy predvolieb časovača sú v každom jazyku iné
@@ -19785,10 +19849,12 @@ function setupEvents() {
   // viditeľné Uložiť aj pôvodné Zavrieť – obe uložia, aby sa zmena nikdy nestratila
   on('btn-settings-save', () => {
     if (saveSettingsGoal()) document.getElementById('modal-settings').hidden = true;
+    refreshUpdateBanner();
   });
   on('btn-settings-close', () => {
     saveSettingsGoal();
     document.getElementById('modal-settings').hidden = true;
+    refreshUpdateBanner();   // čakajúca aktualizácia sa po zatvorení znova ponúkne
   });
   on('btn-rest-sound', () => {
     state.settings.restSound = !restSoundOn();
@@ -20160,6 +20226,8 @@ function setupEvents() {
   on('file-media', onMediaFilesSelected, 'change');
 
   on('btn-update', applyUpdate);
+  on('btn-check-update', checkForAppUpdate);
+  on('btn-settings-update', applyUpdateFromSettings);
 
   /* Prvý dotyk/klik pri zapnutom zvuku vytvorí a aktivuje zvukový kontext v rámci
      skutočného pokynu používateľa – iOS ho inak po pozastavení sám neobnoví a gong
@@ -20256,6 +20324,90 @@ function applyUpdate() {
   waiting.postMessage({ type: 'SKIP_WAITING' });
 }
 
+/* ---------- Nastavenia: aktualizácie aplikácie ----------
+   Ručná kontrola tým istým mechanizmom ako lišta "Aktualizovať": nová verzia sa
+   stiahne cez service worker a nainštaluje sa až po kliknutí. Počas tréningu sa
+   neinštaluje (rovnaké pravidlo ako isBusy). */
+let appUpdateCheck = '';   // '' | 'checking' | 'downloading' | 'latest' | 'offline' | 'failed'
+
+function swSupported() {
+  return typeof navigator !== 'undefined' && 'serviceWorker' in navigator
+    && (location.protocol === 'http:' || location.protocol === 'https:');
+}
+
+/* Verzia, ktorú hlási service worker (CACHE_VERSION); '' ak neodpovie. */
+function askSwVersion(worker) {
+  return new Promise((resolve) => {
+    if (!worker || typeof MessageChannel === 'undefined') { resolve(''); return; }
+    const ch = new MessageChannel();
+    const timer = setTimeout(() => resolve(''), 1500);
+    ch.port1.onmessage = (e) => { clearTimeout(timer); resolve((e.data && e.data.version) || ''); };
+    try { worker.postMessage({ type: 'GET_VERSION' }, [ch.port2]); } catch (e) { clearTimeout(timer); resolve(''); }
+  });
+}
+
+function updateBlockedByWorkout() {
+  return !!getSession() || totalSetsDone() > 0;
+}
+
+function renderAppUpdateSetting() {
+  const block = document.getElementById('app-update-block');
+  if (!block) return;
+  block.hidden = !swSupported();
+  if (block.hidden) return;
+  const status = document.getElementById('app-update-status');
+  const checkBtn = document.getElementById('btn-check-update');
+  const updBtn = document.getElementById('btn-settings-update');
+  const blocked = swUpdateReady && updateBlockedByWorkout();
+  let msg = '';
+  if (swUpdateReady) msg = blocked ? t('update.ready') + ' ' + t('update.finishWorkout') : t('update.ready');
+  else if (appUpdateCheck) msg = t('update.' + appUpdateCheck);
+  status.textContent = msg;
+  status.hidden = !msg;
+  updBtn.hidden = !swUpdateReady;
+  updBtn.disabled = blocked;
+  checkBtn.hidden = swUpdateReady;
+  checkBtn.disabled = appUpdateCheck === 'checking' || appUpdateCheck === 'downloading';
+  const line = document.getElementById('app-version-line');
+  askSwVersion(navigator.serviceWorker.controller).then((v) => {
+    line.textContent = v ? t('update.version', { v }) : '';
+    line.hidden = !v;
+  });
+}
+
+async function checkForAppUpdate() {
+  if (appUpdateCheck === 'checking' || appUpdateCheck === 'downloading') return;
+  if (!swRegistration) {
+    appUpdateCheck = navigator.onLine === false ? 'offline' : 'failed';
+    renderAppUpdateSetting();
+    return;
+  }
+  appUpdateCheck = 'checking';
+  renderAppUpdateSetting();
+  try {
+    await swRegistration.update();
+    if (swUpdateReady) appUpdateCheck = '';
+    else if (swRegistration.installing) appUpdateCheck = 'downloading';   // dokončenie hlási statechange
+    else if (swRegistration.waiting && navigator.serviceWorker.controller) {
+      swUpdateReady = true;
+      appUpdateCheck = '';
+      refreshUpdateBanner();
+    } else appUpdateCheck = 'latest';
+  } catch (e) {
+    appUpdateCheck = navigator.onLine === false ? 'offline' : 'failed';
+  }
+  renderAppUpdateSetting();
+}
+
+/* "Aktualizovať" v Nastaveniach: Nastavenia sa zatvoria ako cez "Zavrieť" (cieľ sa uloží),
+   inak by otvorený dialóg (isBusy) obnovenie stránky odložil. */
+function applyUpdateFromSettings() {
+  if (!swUpdateReady || updateBlockedByWorkout()) { renderAppUpdateSetting(); return; }
+  saveSettingsGoal();
+  document.getElementById('modal-settings').hidden = true;
+  applyUpdate();
+}
+
 function registerServiceWorker() {
   if (!('serviceWorker' in navigator)) return;
   // file:// nemá service workery – lokálne otvorenie súboru funguje ďalej bez zmeny
@@ -20275,7 +20427,13 @@ function registerServiceWorker() {
         // 'installed' + existujúci kontrolór = čaká novšia verzia
         if (incoming.state === 'installed' && navigator.serviceWorker.controller) {
           swUpdateReady = true;
+          if (appUpdateCheck === 'downloading') appUpdateCheck = '';
           refreshUpdateBanner();
+          renderAppUpdateSetting();
+        }
+        if (incoming.state === 'redundant' && appUpdateCheck === 'downloading') {
+          appUpdateCheck = 'failed';   // inštalácia novej verzie zlyhala (napr. výpadok siete)
+          renderAppUpdateSetting();
         }
       });
     });

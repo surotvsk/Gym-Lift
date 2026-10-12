@@ -6,7 +6,7 @@
    so no update would ever be offered.
    Bump it and the new worker installs, re-fetches everything and deletes the old cache. */
 
-const CACHE_VERSION = 'v51';
+const CACHE_VERSION = 'v52';
 const CACHE_PREFIX = 'gymquest-';
 const CACHE_NAME = CACHE_PREFIX + CACHE_VERSION;
 
@@ -14,10 +14,10 @@ const CACHE_NAME = CACHE_PREFIX + CACHE_VERSION;
    Cache kľúč je celá URL, takže "style.css" a "style.css?v=27" sú dve rôzne položky. */
 const PRECACHE = [
   'index.html',
-  'style.css?v=55',
-  'script.js?v=55',
-  'community-config.js?v=55',
-  'vendor/supabase-js.js?v=55',
+  'style.css?v=56',
+  'script.js?v=56',
+  'community-config.js?v=56',
+  'vendor/supabase-js.js?v=56',
   'manifest.json',
   'apple-touch-icon.png',
   'icon-192.png',
@@ -106,6 +106,8 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('message', (event) => {
   const data = event.data || {};
   if (data.type === 'SKIP_WAITING') self.skipWaiting();
+  // Verzia pre Nastavenia → Aktualizácie aplikácie
+  if (data.type === 'GET_VERSION' && event.ports && event.ports[0]) event.ports[0].postMessage({ version: CACHE_VERSION });
 });
 
 self.addEventListener('fetch', (event) => {
