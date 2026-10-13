@@ -70,7 +70,7 @@ scenario('reports XP after a workout', async () => {
 });
 
 async function openBoard(p) {
-  await p.eval(`(document.querySelector('.cnav [data-community-view="leaderboard"]').click(), true)`);
+  await waitFor(() => p.eval(`(() => { const b = document.querySelector('.cnav [data-community-view="leaderboard"]'); if (!b) return false; b.click(); return true; })()`), 20000, 'Top 20 tab');
   await waitFor(() => p.eval(`!!document.querySelector('#community-body .lb-table, #community-body .lb-state')`), 20000, 'board');
   await wait(300);
 }

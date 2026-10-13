@@ -1498,7 +1498,7 @@ const I18N = {
     'langPicker.select': '{name} — vybrať jazyk',
     'langPicker.selected': '{name} — aktuálne vybraný',
     'settings.autoBackup': 'Automatické zálohovanie',
-    'settings.autoBackupHint': 'Ak to zariadenie podporuje, GymQuest sa pokúsi vytvoriť JSON zálohu počas používania aplikácie. iPhone môže vyžadovať potvrdenie alebo uloženie súboru.',
+    'settings.autoBackupHint': 'Je vždy zapnuté, keď toto zariadenie nesynchronizuje údaje s účtom: po 5 nových tréningoch (najviac raz za týždeň) GymQuest uloží JSON zálohu. Na iPhone ju potvrdíš jedným ťuknutím. So synchronizáciou účtu sú tvoje údaje v bezpečí na účte, preto sa súbory nevytvárajú.', 'backup.coveredBySync': 'Netreba – údaje sa synchronizujú s účtom',
     'settings.autoBackupLast': 'Naposledy ponúknutá externá záloha: {when}',
     'settings.importOlder': 'Táto záloha má menej tréningov než tvoje aktuálne dáta ({old} → {new}).',
     'backup.never': 'nikdy',
@@ -2407,7 +2407,7 @@ const I18N = {
     'langPicker.select': '{name} — choose this language',
     'langPicker.selected': '{name} — currently selected',
     'settings.autoBackup': 'Automatic backup',
-    'settings.autoBackupHint': 'When supported, GymQuest attempts to create a JSON backup while the app is open. iPhone may require you to confirm or save the file.',
+    'settings.autoBackupHint': 'Always on while this device is not syncing to an account: after 5 new workouts (at most once a week) GymQuest saves a JSON backup file. On iPhone you confirm it with one tap. With account sync your data is already safe in your account, so no files are created.', 'backup.coveredBySync': 'Not needed – your data syncs to your account',
     'settings.autoBackupLast': 'Last external backup offered: {when}',
     'settings.importOlder': 'This backup has fewer workouts than your current data ({old} → {new}).',
     'backup.never': 'never',
@@ -3322,7 +3322,7 @@ const I18N = {
     'langPicker.select': '{name} — elegir este idioma',
     'langPicker.selected': '{name} — seleccionado actualmente',
     'settings.autoBackup': 'Copia de seguridad automática',
-    'settings.autoBackupHint': 'Cuando sea compatible, GymQuest intenta crear una copia JSON mientras la aplicación está abierta. El iPhone puede pedirte que confirmes o guardes el archivo.',
+    'settings.autoBackupHint': 'Siempre activada mientras este dispositivo no se sincroniza con una cuenta: tras 5 entrenamientos nuevos (como máximo una vez por semana) GymQuest guarda una copia JSON. En iPhone la confirmas con un toque. Con la sincronización de cuenta tus datos ya están seguros en tu cuenta, así que no se crean archivos.', 'backup.coveredBySync': 'No hace falta: tus datos se sincronizan con tu cuenta',
     'settings.autoBackupLast': 'Última copia externa ofrecida: {when}',
     'settings.importOlder': 'Esta copia tiene menos entrenamientos que tus datos actuales ({old} → {new}).',
     'backup.never': 'nunca',
@@ -4229,7 +4229,7 @@ const I18N = {
     'langPicker.select': '{name} — escolher este idioma',
     'langPicker.selected': '{name} — selecionado no momento',
     'settings.autoBackup': 'Backup automático',
-    'settings.autoBackupHint': 'Quando houver suporte, o GymQuest tenta criar um backup JSON enquanto o aplicativo está aberto. O iPhone pode pedir que você confirme ou salve o arquivo.',
+    'settings.autoBackupHint': 'Sempre ativado enquanto este dispositivo não sincroniza com uma conta: após 5 treinos novos (no máximo uma vez por semana) o GymQuest salva um backup JSON. No iPhone você confirma com um toque. Com a sincronização da conta seus dados já estão seguros na conta, então nenhum arquivo é criado.', 'backup.coveredBySync': 'Não é necessário – seus dados sincronizam com a conta',
     'settings.autoBackupLast': 'Último backup externo oferecido: {when}',
     'settings.importOlder': 'Este backup tem menos treinos do que os seus dados atuais ({old} → {new}).',
     'backup.never': 'nunca',
@@ -5136,7 +5136,7 @@ const I18N = {
     'langPicker.select': '{name} — choisir cette langue',
     'langPicker.selected': '{name} — actuellement sélectionnée',
     'settings.autoBackup': 'Sauvegarde automatique',
-    'settings.autoBackupHint': 'Lorsque c’est pris en charge, GymQuest tente de créer une sauvegarde JSON pendant que l’application est ouverte. L’iPhone peut te demander de confirmer ou d’enregistrer le fichier.',
+    'settings.autoBackupHint': 'Toujours active tant que cet appareil ne se synchronise pas avec un compte : après 5 nouvelles séances (au plus une fois par semaine), GymQuest enregistre une sauvegarde JSON. Sur iPhone, tu la confirmes d’un toucher. Avec la synchronisation du compte, tes données sont déjà en sécurité sur ton compte, donc aucun fichier n’est créé.', 'backup.coveredBySync': 'Inutile – tes données se synchronisent avec ton compte',
     'settings.autoBackupLast': 'Dernière sauvegarde externe proposée : {when}',
     'settings.importOlder': 'Cette sauvegarde contient moins d’entraînements que tes données actuelles ({old} → {new}).',
     'backup.never': 'jamais',
@@ -6052,7 +6052,7 @@ const I18N = {
     'langPicker.select': '{name} — اختيار هذه اللغة',
     'langPicker.selected': '{name} — محدَّدة حاليًا',
     'settings.autoBackup': 'النسخ الاحتياطي التلقائي',
-    'settings.autoBackupHint': 'عند توفر الدعم، يحاول GymQuest إنشاء نسخة JSON احتياطية أثناء فتح التطبيق. قد يطلب منك iPhone تأكيد الملف أو حفظه.',
+    'settings.autoBackupHint': 'مُفعّل دائمًا ما دام هذا الجهاز لا يُزامن مع حساب: بعد 5 تمارين جديدة (مرة واحدة في الأسبوع كحد أقصى) يحفظ GymQuest نسخة احتياطية بصيغة JSON. على iPhone تؤكّدها بنقرة واحدة. مع مزامنة الحساب تكون بياناتك آمنة في حسابك، لذلك لا تُنشأ ملفات.', 'backup.coveredBySync': 'غير مطلوب – بياناتك تُزامَن مع حسابك',
     'settings.autoBackupLast': 'آخر نسخة احتياطية خارجية معروضة: {when}',
     'settings.importOlder': 'تحتوي هذه النسخة على تمارين أقل من بياناتك الحالية ({old} → {new}).',
     'backup.never': 'أبدًا',
@@ -18147,8 +18147,17 @@ function markBackupOffered() {
 
 /* Záloha je potrebná, keď od poslednej ponuky pribudlo aspoň päť dokončených
    tréningov A zároveň ubehlo aspoň sedem dní. */
+/* Automatická záloha nemá vypínač: je zapnutá vždy, keď toto zariadenie NEsynchronizuje
+   údaje s účtom (odhlásený hosť alebo vypnutá synchronizácia). Pri zapnutej synchronizácii
+   sú údaje v bezpečí na účte, takže sa ďalšie súbory nevytvárajú. (Staré nastavenie
+   settings.autoBackup sa už nepoužíva; zostáva len kvôli kompatibilite záloh.) */
+function syncProtectsData() {
+  try { return !!(wsSlot && wsSlot.owner && communityConfigured() && !syncMetaRead().disabled); } catch (e) { return false; }
+}
+function autoBackupActive() { return !syncProtectsData(); }
+
 function backupDue() {
-  if (!state || !state.settings || state.settings.autoBackup !== true) return false;
+  if (!state || !state.settings || !autoBackupActive()) return false;
   if (state.history.length === 0) return false;
   if (backupNewWorkouts() < BACKUP_EVERY_WORKOUTS) return false;
   const last = Number(state.settings.autoBackupOfferedAt) || 0;
@@ -18241,14 +18250,12 @@ function formatBackupTimestamp(ms) {
 }
 
 function renderAutoBackupSetting() {
-  const on = !!(state && state.settings && state.settings.autoBackup === true);
-  const btn = document.getElementById('btn-auto-backup');
-  if (btn) {
-    btn.setAttribute('aria-checked', on ? 'true' : 'false');
-    btn.classList.toggle('on', on);
-  }
+  const on = autoBackupActive();
   const stateEl = document.getElementById('auto-backup-state');
-  if (stateEl) stateEl.textContent = on ? t('settings.on') : t('settings.off');
+  if (stateEl) {
+    stateEl.textContent = on ? t('settings.on') : t('backup.coveredBySync');
+    stateEl.classList.toggle('setting-state-ok', !on);
+  }
   const lastEl = document.getElementById('auto-backup-last');
   if (lastEl) {
     lastEl.textContent = t('settings.autoBackupLast', {
@@ -21323,14 +21330,6 @@ function setupEvents() {
     unlockAudio();               // používateľský pokyn = povolenie prehrávať zvuk
     renderRestSoundSetting();
     saveState();
-  });
-  on('btn-auto-backup', () => {
-    state.settings.autoBackup = state.settings.autoBackup !== true;
-    backupDismissed = false;
-    saveState();
-    renderAutoBackupSetting();
-    /* Zapnutie hneď vyhodnotí, či už záloha nie je potrebná. */
-    refreshBackupOffer();
   });
   on('btn-backup-save', saveBackupNow);
   on('btn-backup-now', saveBackupNow);

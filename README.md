@@ -982,12 +982,15 @@ another device.
 
 ## Automatic backups — what is automatic and what is not
 
-⚙️ Settings has an **Automatic backup** switch. It is **off by default**, and it only ever acts
-**while the app is open** — a static web app cannot run while it is closed or suspended, so GymQuest
-never claims otherwise.
+Automatic backup has **no switch**: it is **always on while this device does not sync to an account**
+(you are not signed in, or account sync is turned off) — then a backup file is your only safety copy.
+While account sync is on, your data is already safe in your account, so no backup files are created
+and ⚙️ Settings shows *Not needed – your data syncs to your account*. It only ever acts **while the app
+is open** — a static web app cannot run while it is closed or suspended, so GymQuest never claims
+otherwise.
 
-When you switch it on, a JSON backup becomes due after **five newly completed workouts** and **at most
-once every seven days**. If a backup is already due the next time you open the app, you are offered it
+A JSON backup becomes due after **five newly completed workouts** and **at most once every seven
+days**. If a backup is already due the next time you open the app, you are offered it
 then. Nothing is offered during an active workout, while you are entering exercise data, or while a
 dialog is open — the app waits until you are done.
 
@@ -1007,8 +1010,9 @@ was created and where to look, and nothing more.
 
 ### Using it
 
-- **⚙️ Settings → Automatic backup** — the switch, the honest explanation, the date of the last
-  backup offered, and **Save backup now** (always available, whether or not a backup is due).
+- **⚙️ Settings → Automatic backup** — its state (*On*, or *Not needed* while account sync is on), the
+  honest explanation, the date of the last backup offered, and **Save backup now** (always available,
+  with or without an account).
 - When a backup is due you also get a small strip above the tab bar with **Save backup now** (or
   **Save again**), the filename, and the plain truth about confirmation. Dismissing it hides it for
   that session only; export/import and the manual button are always there.

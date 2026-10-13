@@ -3690,3 +3690,7 @@ button.cstat:hover { background: var(--surface-2); }
 .crem-days .goal-chip { min-width: 44px; min-height: 40px; padding: 0 10px; }
 /* skrytý panel (odpoveď, výber zdieľania) musí byť naozaj skrytý – display:flex vyššie prekoná [hidden] */
 .creply-bar[hidden], .cshare-picker[hidden], .cmsg-actions[hidden] { display: none; }
+
+/* Automatická záloha bez vypínača: stav "Zapnuté" alebo dlhší text "Netreba – synchronizácia". */
+#auto-backup-state { color: var(--accent); }
+#auto-backup-state.setting-state-ok { color: var(--ok); white-space: normal; text-align: end; max-width: 12em; text-transform: none; letter-spacing: 0; }

@@ -11,7 +11,7 @@
   <title>GymQuest</title>
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
-  <link rel="stylesheet" href="style.css?v=67">
+  <link rel="stylesheet" href="style.css?v=68">
 </head>
 <body>
 
@@ -548,14 +548,10 @@
       <div class="setting-row">
         <div class="setting-main">
           <span class="card-title" data-i18n="settings.autoBackup">Automatické zálohovanie</span>
-          <span class="card-sub" data-i18n="settings.autoBackupHint">Ak to zariadenie podporuje, GymQuest sa pokúsi vytvoriť JSON zálohu počas používania aplikácie. iPhone môže vyžadovať potvrdenie alebo uloženie súboru.</span>
+          <span class="card-sub" data-i18n="settings.autoBackupHint">Je vždy zapnuté, keď toto zariadenie nesynchronizuje údaje s účtom.</span>
         </div>
         <div class="setting-control">
-          <span class="setting-state" id="auto-backup-state">Vypnuté</span>
-          <button type="button" class="switch" id="btn-auto-backup" role="switch" aria-checked="false"
-                  data-i18n-title="settings.autoBackup" data-i18n-aria="settings.autoBackup">
-            <span class="switch-knob" aria-hidden="true"></span>
-          </button>
+          <span class="setting-state" id="auto-backup-state" role="status">Zapnuté</span>
         </div>
       </div>
       <p class="card-note" id="auto-backup-last"></p>
@@ -932,8 +928,8 @@
     </div>
   </div>
 
-  <script src="community-config.js?v=67"></script>
-  <script src="vendor/supabase-js.js?v=67"></script>
-  <script src="script.js?v=67"></script>
+  <script src="community-config.js?v=68"></script>
+  <script src="vendor/supabase-js.js?v=68"></script>
+  <script src="script.js?v=68"></script>
 </body>
 </html>
