@@ -23,6 +23,8 @@ Run **all** migrations, in order (there is no 0007 — the number is reserved):
 7. [`migrations/0008_social_phase2.sql`](./migrations/0008_social_phase2.sql) — Community Phase 2: user search (Community members only, "Show me in search" on by default), friend requests and private friend lists, friends-only posts, comments, one-to-one live chat between friends (Supabase Realtime; moderators can never read chats), message/comment reports that store only a copy of the reported item, and a daily `pg_cron` purge. Needs 0005 and 0006 and the `pg_cron` extension (Database → Extensions).
 8. [`migrations/0009_leaderboard.sql`](./migrations/0009_leaderboard.sql) — Community leaderboard (top 20 by XP): one row per member, the app reports XP through `leaderboard_submit()` and the server applies the limits (300 training XP per UTC day, 1,000 per ISO week, achievement XP computed on the server from the earned ids, at most 5,150), members appear by default and can hide themselves, moderators can remove a member. `community_social_version()` becomes 3. Needs 0008.
 9. [`migrations/0010_push.sql`](./migrations/0010_push.sql) — push notifications for chat messages: members register a device (Web Push subscription) through `push_subscribe()`; after sending a message the app calls the `push` Edge Function, which asks `push_targets()` (service_role only) whether the message is the caller's own, recent, in an open chat without a block and not yet notified, and gets the friend's devices. At most one notification per chat every 20 seconds; the notification carries only the sender's username and the chat id. Nobody can read the device table directly. Leaving Community or deleting the account removes the devices. `community_social_version()` becomes 4. Needs 0009.
+10. [`migrations/0011_social_extras.sql`](./migrations/0011_social_extras.sql) — chat replies (`messages.reply_to`, same chat only) and reactions (`message_reactions`: ❤️ 😂 👍 😮 💪 🔥, one per person per message, participants only, not in Realtime), shared workout plans / finished workouts on messages (`messages.attachment`) and under posts (`post_attachments`, visible exactly like the post, added only while it waits for review via `create_post_shared()`), all validated by `share_attachment_valid()`; and the top 3 achievements on profiles (`profile_achievements`, real ids only, can be hidden). `community_social_version()` becomes 5. Needs 0010.
+11. [`migrations/0012_reminders.sql`](./migrations/0012_reminders.sql) — water / meal / workout reminders: `push_reminders` (settings per member, in the phone's time zone), `reminders_due()` (service_role only, marks what it returns as sent), and a `pg_cron` job (`gymquest-reminders`, every 5 minutes) that calls the `reminders` Edge Function through `pg_net` with a shared secret read from Vault. Installs `pg_net`. `community_social_version()` becomes 6. Needs 0011.
 
 SQL editor → paste a file → Run, **or** with the CLI: `supabase db push`.
 
@@ -118,6 +120,20 @@ reported messages/comments are dropped. Roll back **0008 before 0005** — never
 4. Deploy the function: `supabase functions deploy push` (keep JWT verification on).
 
 Between steps 2 and 4 people can already turn notifications on; messages are simply not notified yet. The `delete-account` function does not need redeploying (0010 extends `community_leave_cleanup`; full deletion removes the devices by cascade). **Rollback:** [`rollback/0010_down.sql`](./rollback/0010_down.sql) removes the devices and the "already notified" log and sets the version back to 3; the app hides the switch and stops calling `push` by itself. The `push` function can stay deployed (without 0010 it sends nothing). Roll back **0010 before 0009**.
+
+**0011 — replies, reactions, shared plans/workouts, profile achievements.** Release order: the app (v63+) first — it shows these features only when `community_social_version()` answers 5 or more — then run 0011 once, as one transaction, then `NOTIFY pgrst, 'reload schema';`. No function needs redeploying. Messages that carry a plan or workout keep a normal text line, so older app versions still read them. **Rollback:** [`rollback/0011_down.sql`](./rollback/0011_down.sql) (roll back 0012 first if it is applied) removes reactions, the shared items under posts, the achievement showcase and the reply links / shared items on messages (message texts stay); version back to 4.
+
+**0012 — reminders.** Release order:
+1. The app (v63+) (shows the Reminders card only at version 6).
+2. Run 0012 once, as one transaction, then `NOTIFY pgrst, 'reload schema';` (installs `pg_net`, creates the cron job).
+3. Generate one random secret (at least 32 characters) and set it as a function secret: `supabase secrets set REMINDER_SECRET=<secret>`.
+4. Deploy the function **without JWT verification** (the database calls it, protected by the secret): `supabase functions deploy reminders --no-verify-jwt`.
+5. Store the function URL and the same secret in Vault (SQL editor):
+   ```sql
+   select vault.create_secret('https://<project>.supabase.co/functions/v1/reminders', 'gq_reminders_url');
+   select vault.create_secret('<the same secret>', 'gq_reminders_secret');
+   ```
+Until step 5 the job runs but sends nothing. **Rollback:** [`rollback/0012_down.sql`](./rollback/0012_down.sql) removes the job, settings and functions (version back to 5); delete the two Vault secrets and the `reminders` function if they are no longer wanted.
 
 ## 3. Authentication (email + password)
 1. **Authentication → Providers → Email**: enable **Email** and keep **Confirm email** ON.

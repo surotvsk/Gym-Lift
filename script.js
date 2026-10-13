@@ -1866,6 +1866,37 @@ const I18N = {
     'push.notAllowed': 'Upozornenia neboli povolené.', 'push.errFailed': 'Upozornenia sa nepodarilo zapnúť. Skontroluj pripojenie a skús to znova.',
     'push.homeScreen': 'Na iPhone a iPade fungujú upozornenia iba vtedy, keď je GymQuest pridaný na plochu (Zdieľať → Pridať na plochu) a otvorený odtiaľ. Potrebný je iOS 16.4 alebo novší.', 'push.unsupported': 'Tento prehliadač upozornenia nepodporuje.',
     'push.hint': 'Nech ti príde upozornenie, keď ti priateľ napíše.', 'push.turnOn': 'Zapnúť',
+    'rem.title': 'Pripomienky', 'rem.needPush': 'Zapni vyššie upozornenia na tomto zariadení a môžeš si nastaviť pripomienky na vodu, jedlo a tréning.',
+    'rem.water': 'Piť vodu', 'rem.every': 'každých',
+    'rem.everyMin': '{n} min', 'rem.everyHours': '{n} h',
+    'rem.from': 'od', 'rem.to': 'do',
+    'rem.meals': 'Jedlo', 'rem.mealN': 'Jedlo {n}',
+    'rem.workout': 'Tréning', 'rem.days': 'Dni tréningu',
+    'rem.time': 'Čas tréningu', 'rem.note': 'Pripomienky prídu ako upozornenia na zariadenia so zapnutými upozorneniami, podľa času v tvojom telefóne.',
+    'rem.save': 'Uložiť pripomienky', 'rem.saved': 'Pripomienky sú uložené.',
+    'rem.errInvalid': 'Skontroluj časy: „od“ musí byť skôr ako „do“ a jedlo či tréning najneskôr o 23:30.',
+    'share.textPlan': 'Tréningový plán: {name}', 'share.textWorkout': 'Tréning: {name}',
+    'share.exercisesOne': '{n} cvik', 'share.exercisesFew': '{n} cviky',
+    'share.exercisesOther': '{n} cvikov', 'share.setsDone': '{d}/{s} sérií',
+    'share.kindPlan': 'Tréningový plán', 'share.kindWorkout': 'Dokončený tréning',
+    'share.saveAsPlan': 'Uložiť do mojich plánov', 'share.saved': 'Uložené medzi tvoje plány ako „{name}“.',
+    'share.pickPlan': 'Tvoje tréningové plány', 'share.pickWorkout': 'Posledné tréningy',
+    'share.noPlans': 'Zatiaľ nemáš plán s cvikmi.', 'share.noWorkouts': 'Zatiaľ nemáš dokončený tréning.',
+    'share.openChat': 'Zdieľať plán alebo tréning', 'share.remove': 'Odstrániť',
+    'share.attachCurrentPlan': 'Priložiť môj aktuálny plán', 'share.attachLastWorkout': 'Priložiť posledný tréning',
+    'share.attachOther': 'Vybrať plán alebo tréning', 'share.current': 'aktuálny',
+    'share.postAfterWorkout': 'Tréning {name} je hotový 💪', 'share.resultButton': 'Zdieľať v Community',
+    'chat.earlierMessage': 'Staršia správa', 'chat.reactionAria': '{emoji}: {n}',
+    'chat.actionsAria': 'Akcie správy', 'chat.reactWith': 'Reagovať {emoji}',
+    'chat.reply': 'Odpovedať', 'chat.replyingTo': 'Odpoveď na',
+    'chat.replyCancel': 'Zrušiť odpoveď', 'profileAch.title': 'Najlepšie úspechy',
+    'profileAch.none': 'Na profile zatiaľ nemáš úspechy – objavia sa po prvých tréningoch.', 'profileAch.hiddenNote': 'Vidíš ich len ty – pred ostatnými sú skryté.',
+    'profileAch.switch': 'Zobrazovať moje najlepšie úspechy na profile', 'profileAch.switchNote': 'Ostatní uvidia tvoje 3 najlepšie úspechy. Nikdy nie tvoje tréningy.',
+    'profileAch.hiddenOn': 'Tvoje úspechy sú teraz pred ostatnými skryté.', 'profileAch.shownOn': 'Tvoje najlepšie úspechy sa zobrazujú na profile.',
+    'setWeight.title': 'Zmeniť váhu tejto série', 'setWeight.aria': 'Séria {n}: {kg} kg. Ťuknutím zmeníš váhu.',
+    'setWeight.editorAria': 'Váha série {n}', 'setWeight.inputAria': 'Váha série {n} v kg',
+    'setWeight.less': 'O 2,5 kg menej', 'setWeight.more': 'O 2,5 kg viac',
+    'setWeight.note': 'Platí pre túto aj ďalšie série, kým niektorú nezmeníš. Plán sa nemení.',
     'community.email': 'E-mail', 'community.password': 'Heslo', 'community.signIn': 'Prihlásiť sa', 'community.signUp': 'Registrovať sa',
     'community.signInTitle': 'Prihlás sa alebo si vytvor účet', 'community.signOut': 'Odhlásiť sa',
     'community.emailConfirmNote': 'Pošleme ti potvrdzujúci odkaz e-mailom — dokonči registráciu v schránke.',
@@ -2744,6 +2775,37 @@ const I18N = {
     'push.notAllowed': 'Notifications were not allowed.', 'push.errFailed': 'Notifications could not be turned on. Check your connection and try again.',
     'push.homeScreen': 'On iPhone and iPad, notifications work only when GymQuest is added to the Home Screen (Share → Add to Home Screen) and opened from there. iOS 16.4 or newer is required.', 'push.unsupported': 'This browser does not support notifications.',
     'push.hint': 'Get a notification when a friend writes to you.', 'push.turnOn': 'Turn on',
+    'rem.title': 'Reminders', 'rem.needPush': 'Turn on notifications on this device above to set reminders for water, meals and workouts.',
+    'rem.water': 'Drink water', 'rem.every': 'every',
+    'rem.everyMin': '{n} min', 'rem.everyHours': '{n} h',
+    'rem.from': 'from', 'rem.to': 'to',
+    'rem.meals': 'Meals', 'rem.mealN': 'Meal {n}',
+    'rem.workout': 'Workout', 'rem.days': 'Workout days',
+    'rem.time': 'Workout time', 'rem.note': 'Reminders arrive as notifications on your devices that have notifications on, at your phone’s local time.',
+    'rem.save': 'Save reminders', 'rem.saved': 'Reminders saved.',
+    'rem.errInvalid': 'Check the times: “from” must be before “to”, and meals or workouts at 23:30 at the latest.',
+    'share.textPlan': 'Workout plan: {name}', 'share.textWorkout': 'Workout: {name}',
+    'share.exercisesOne': '{n} exercise', 'share.exercisesFew': '{n} exercises',
+    'share.exercisesOther': '{n} exercises', 'share.setsDone': '{d}/{s} sets',
+    'share.kindPlan': 'Workout plan', 'share.kindWorkout': 'Finished workout',
+    'share.saveAsPlan': 'Save to my plans', 'share.saved': 'Saved to your plans as “{name}”.',
+    'share.pickPlan': 'Your workout plans', 'share.pickWorkout': 'Recent workouts',
+    'share.noPlans': 'You have no plan with exercises yet.', 'share.noWorkouts': 'You have no finished workout yet.',
+    'share.openChat': 'Share a plan or workout', 'share.remove': 'Remove',
+    'share.attachCurrentPlan': 'Attach my current plan', 'share.attachLastWorkout': 'Attach my last workout',
+    'share.attachOther': 'Choose a plan or workout', 'share.current': 'current',
+    'share.postAfterWorkout': 'Just finished {name} 💪', 'share.resultButton': 'Share to Community',
+    'chat.earlierMessage': 'Earlier message', 'chat.reactionAria': '{emoji}: {n}',
+    'chat.actionsAria': 'Message actions', 'chat.reactWith': 'React with {emoji}',
+    'chat.reply': 'Reply', 'chat.replyingTo': 'Replying to',
+    'chat.replyCancel': 'Cancel reply', 'profileAch.title': 'Top achievements',
+    'profileAch.none': 'No achievements on your profile yet — they appear after your first workouts.', 'profileAch.hiddenNote': 'Only you can see these — they are hidden from others.',
+    'profileAch.switch': 'Show my top achievements on my profile', 'profileAch.switchNote': 'Others see your 3 best achievements. Never your workouts.',
+    'profileAch.hiddenOn': 'Your achievements are now hidden from others.', 'profileAch.shownOn': 'Your top achievements are shown on your profile.',
+    'setWeight.title': 'Change the weight of this set', 'setWeight.aria': 'Set {n}: {kg} kg. Tap to change the weight.',
+    'setWeight.editorAria': 'Weight of set {n}', 'setWeight.inputAria': 'Weight of set {n} in kg',
+    'setWeight.less': '2.5 kg less', 'setWeight.more': '2.5 kg more',
+    'setWeight.note': 'Applies to this set and the next ones until you change one. Your plan stays the same.',
     'community.email': 'Email', 'community.password': 'Password', 'community.signIn': 'Sign in', 'community.signUp': 'Sign up',
     'community.signInTitle': 'Sign in or create an account', 'community.signOut': 'Sign out',
     'community.emailConfirmNote': 'We email you a confirmation link — check your inbox to finish signing up.',
@@ -3628,6 +3690,37 @@ const I18N = {
     'push.notAllowed': 'No se permitieron las notificaciones.', 'push.errFailed': 'No se pudieron activar las notificaciones. Comprueba tu conexión e inténtalo de nuevo.',
     'push.homeScreen': 'En iPhone y iPad, las notificaciones solo funcionan si GymQuest está añadido a la pantalla de inicio (Compartir → Añadir a pantalla de inicio) y se abre desde allí. Se necesita iOS 16.4 o posterior.', 'push.unsupported': 'Este navegador no admite notificaciones.',
     'push.hint': 'Recibe una notificación cuando un amigo te escriba.', 'push.turnOn': 'Activar',
+    'rem.title': 'Recordatorios', 'rem.needPush': 'Activa arriba las notificaciones en este dispositivo para crear recordatorios de agua, comidas y entrenamientos.',
+    'rem.water': 'Beber agua', 'rem.every': 'cada',
+    'rem.everyMin': '{n} min', 'rem.everyHours': '{n} h',
+    'rem.from': 'de', 'rem.to': 'a',
+    'rem.meals': 'Comidas', 'rem.mealN': 'Comida {n}',
+    'rem.workout': 'Entrenamiento', 'rem.days': 'Días de entrenamiento',
+    'rem.time': 'Hora del entrenamiento', 'rem.note': 'Los recordatorios llegan como notificaciones a tus dispositivos con notificaciones activadas, según la hora de tu teléfono.',
+    'rem.save': 'Guardar recordatorios', 'rem.saved': 'Recordatorios guardados.',
+    'rem.errInvalid': 'Revisa las horas: «de» debe ser antes que «a», y las comidas o entrenamientos como muy tarde a las 23:30.',
+    'share.textPlan': 'Plan de entrenamiento: {name}', 'share.textWorkout': 'Entrenamiento: {name}',
+    'share.exercisesOne': '{n} ejercicio', 'share.exercisesFew': '{n} ejercicios',
+    'share.exercisesOther': '{n} ejercicios', 'share.setsDone': '{d}/{s} series',
+    'share.kindPlan': 'Plan de entrenamiento', 'share.kindWorkout': 'Entrenamiento terminado',
+    'share.saveAsPlan': 'Guardar en mis planes', 'share.saved': 'Guardado en tus planes como «{name}».',
+    'share.pickPlan': 'Tus planes de entrenamiento', 'share.pickWorkout': 'Entrenamientos recientes',
+    'share.noPlans': 'Aún no tienes un plan con ejercicios.', 'share.noWorkouts': 'Aún no has terminado ningún entrenamiento.',
+    'share.openChat': 'Compartir un plan o entrenamiento', 'share.remove': 'Quitar',
+    'share.attachCurrentPlan': 'Adjuntar mi plan actual', 'share.attachLastWorkout': 'Adjuntar mi último entrenamiento',
+    'share.attachOther': 'Elegir un plan o entrenamiento', 'share.current': 'actual',
+    'share.postAfterWorkout': 'Acabo de terminar {name} 💪', 'share.resultButton': 'Compartir en la Comunidad',
+    'chat.earlierMessage': 'Mensaje anterior', 'chat.reactionAria': '{emoji}: {n}',
+    'chat.actionsAria': 'Acciones del mensaje', 'chat.reactWith': 'Reaccionar con {emoji}',
+    'chat.reply': 'Responder', 'chat.replyingTo': 'Respondiendo a',
+    'chat.replyCancel': 'Cancelar respuesta', 'profileAch.title': 'Mejores logros',
+    'profileAch.none': 'Aún no hay logros en tu perfil: aparecen tras tus primeros entrenamientos.', 'profileAch.hiddenNote': 'Solo tú los ves: están ocultos para los demás.',
+    'profileAch.switch': 'Mostrar mis mejores logros en mi perfil', 'profileAch.switchNote': 'Los demás ven tus 3 mejores logros. Nunca tus entrenamientos.',
+    'profileAch.hiddenOn': 'Tus logros ahora están ocultos para los demás.', 'profileAch.shownOn': 'Tus mejores logros se muestran en tu perfil.',
+    'setWeight.title': 'Cambiar el peso de esta serie', 'setWeight.aria': 'Serie {n}: {kg} kg. Toca para cambiar el peso.',
+    'setWeight.editorAria': 'Peso de la serie {n}', 'setWeight.inputAria': 'Peso de la serie {n} en kg',
+    'setWeight.less': '2,5 kg menos', 'setWeight.more': '2,5 kg más',
+    'setWeight.note': 'Se aplica a esta serie y a las siguientes hasta que cambies alguna. Tu plan no cambia.',
     'community.email': 'Correo', 'community.password': 'Contraseña', 'community.signIn': 'Iniciar sesión', 'community.signUp': 'Registrarse',
     'community.signInTitle': 'Inicia sesión o crea una cuenta', 'community.signOut': 'Cerrar sesión',
     'community.emailConfirmNote': 'Te enviamos un enlace de confirmación por correo: revisa tu bandeja para terminar el registro.',
@@ -4504,6 +4597,37 @@ const I18N = {
     'push.notAllowed': 'As notificações não foram permitidas.', 'push.errFailed': 'Não foi possível ativar as notificações. Verifique sua conexão e tente de novo.',
     'push.homeScreen': 'No iPhone e no iPad, as notificações só funcionam quando o GymQuest está na Tela de Início (Compartilhar → Adicionar à Tela de Início) e é aberto por lá. É preciso iOS 16.4 ou mais recente.', 'push.unsupported': 'Este navegador não é compatível com notificações.',
     'push.hint': 'Receba uma notificação quando um amigo escrever para você.', 'push.turnOn': 'Ativar',
+    'rem.title': 'Lembretes', 'rem.needPush': 'Ative acima as notificações neste dispositivo para criar lembretes de água, refeições e treinos.',
+    'rem.water': 'Beber água', 'rem.every': 'a cada',
+    'rem.everyMin': '{n} min', 'rem.everyHours': '{n} h',
+    'rem.from': 'das', 'rem.to': 'às',
+    'rem.meals': 'Refeições', 'rem.mealN': 'Refeição {n}',
+    'rem.workout': 'Treino', 'rem.days': 'Dias de treino',
+    'rem.time': 'Horário do treino', 'rem.note': 'Os lembretes chegam como notificações nos seus dispositivos com notificações ativadas, no horário do seu celular.',
+    'rem.save': 'Salvar lembretes', 'rem.saved': 'Lembretes salvos.',
+    'rem.errInvalid': 'Confira os horários: “das” deve ser antes de “às”, e refeições ou treinos no máximo às 23:30.',
+    'share.textPlan': 'Plano de treino: {name}', 'share.textWorkout': 'Treino: {name}',
+    'share.exercisesOne': '{n} exercício', 'share.exercisesFew': '{n} exercícios',
+    'share.exercisesOther': '{n} exercícios', 'share.setsDone': '{d}/{s} séries',
+    'share.kindPlan': 'Plano de treino', 'share.kindWorkout': 'Treino concluído',
+    'share.saveAsPlan': 'Salvar nos meus planos', 'share.saved': 'Salvo nos seus planos como “{name}”.',
+    'share.pickPlan': 'Seus planos de treino', 'share.pickWorkout': 'Treinos recentes',
+    'share.noPlans': 'Você ainda não tem um plano com exercícios.', 'share.noWorkouts': 'Você ainda não concluiu nenhum treino.',
+    'share.openChat': 'Compartilhar um plano ou treino', 'share.remove': 'Remover',
+    'share.attachCurrentPlan': 'Anexar meu plano atual', 'share.attachLastWorkout': 'Anexar meu último treino',
+    'share.attachOther': 'Escolher um plano ou treino', 'share.current': 'atual',
+    'share.postAfterWorkout': 'Acabei de concluir {name} 💪', 'share.resultButton': 'Compartilhar na Comunidade',
+    'chat.earlierMessage': 'Mensagem anterior', 'chat.reactionAria': '{emoji}: {n}',
+    'chat.actionsAria': 'Ações da mensagem', 'chat.reactWith': 'Reagir com {emoji}',
+    'chat.reply': 'Responder', 'chat.replyingTo': 'Respondendo a',
+    'chat.replyCancel': 'Cancelar resposta', 'profileAch.title': 'Melhores conquistas',
+    'profileAch.none': 'Ainda não há conquistas no seu perfil — elas aparecem após os primeiros treinos.', 'profileAch.hiddenNote': 'Só você as vê — estão ocultas para os outros.',
+    'profileAch.switch': 'Mostrar minhas melhores conquistas no perfil', 'profileAch.switchNote': 'Os outros veem suas 3 melhores conquistas. Nunca seus treinos.',
+    'profileAch.hiddenOn': 'Suas conquistas agora estão ocultas para os outros.', 'profileAch.shownOn': 'Suas melhores conquistas aparecem no seu perfil.',
+    'setWeight.title': 'Alterar o peso desta série', 'setWeight.aria': 'Série {n}: {kg} kg. Toque para alterar o peso.',
+    'setWeight.editorAria': 'Peso da série {n}', 'setWeight.inputAria': 'Peso da série {n} em kg',
+    'setWeight.less': '2,5 kg a menos', 'setWeight.more': '2,5 kg a mais',
+    'setWeight.note': 'Vale para esta série e as seguintes até você alterar alguma. Seu plano não muda.',
     'community.email': 'E-mail', 'community.password': 'Senha', 'community.signIn': 'Entrar', 'community.signUp': 'Cadastrar',
     'community.signInTitle': 'Entre ou crie uma conta', 'community.signOut': 'Sair',
     'community.emailConfirmNote': 'Enviamos um link de confirmação por e-mail — confira sua caixa de entrada para concluir o cadastro.',
@@ -5380,6 +5504,37 @@ const I18N = {
     'push.notAllowed': 'Les notifications n’ont pas été autorisées.', 'push.errFailed': 'Impossible d’activer les notifications. Vérifie ta connexion et réessaie.',
     'push.homeScreen': 'Sur iPhone et iPad, les notifications ne fonctionnent que si GymQuest est ajouté à l’écran d’accueil (Partager → Sur l’écran d’accueil) et ouvert depuis celui-ci. iOS 16.4 ou plus récent est requis.', 'push.unsupported': 'Ce navigateur ne prend pas en charge les notifications.',
     'push.hint': 'Reçois une notification quand un ami t’écrit.', 'push.turnOn': 'Activer',
+    'rem.title': 'Rappels', 'rem.needPush': 'Active ci-dessus les notifications sur cet appareil pour créer des rappels d’eau, de repas et d’entraînement.',
+    'rem.water': 'Boire de l’eau', 'rem.every': 'toutes les',
+    'rem.everyMin': '{n} min', 'rem.everyHours': '{n} h',
+    'rem.from': 'de', 'rem.to': 'à',
+    'rem.meals': 'Repas', 'rem.mealN': 'Repas {n}',
+    'rem.workout': 'Entraînement', 'rem.days': 'Jours d’entraînement',
+    'rem.time': 'Heure de l’entraînement', 'rem.note': 'Les rappels arrivent comme notifications sur tes appareils où les notifications sont activées, à l’heure de ton téléphone.',
+    'rem.save': 'Enregistrer les rappels', 'rem.saved': 'Rappels enregistrés.',
+    'rem.errInvalid': 'Vérifie les heures : « de » doit être avant « à », et repas ou entraînement au plus tard à 23 h 30.',
+    'share.textPlan': 'Programme : {name}', 'share.textWorkout': 'Séance : {name}',
+    'share.exercisesOne': '{n} exercice', 'share.exercisesFew': '{n} exercices',
+    'share.exercisesOther': '{n} exercices', 'share.setsDone': '{d}/{s} séries',
+    'share.kindPlan': 'Programme d’entraînement', 'share.kindWorkout': 'Séance terminée',
+    'share.saveAsPlan': 'Enregistrer dans mes programmes', 'share.saved': 'Enregistré dans tes programmes sous « {name} ».',
+    'share.pickPlan': 'Tes programmes', 'share.pickWorkout': 'Séances récentes',
+    'share.noPlans': 'Tu n’as pas encore de programme avec des exercices.', 'share.noWorkouts': 'Tu n’as pas encore terminé de séance.',
+    'share.openChat': 'Partager un programme ou une séance', 'share.remove': 'Retirer',
+    'share.attachCurrentPlan': 'Joindre mon programme actuel', 'share.attachLastWorkout': 'Joindre ma dernière séance',
+    'share.attachOther': 'Choisir un programme ou une séance', 'share.current': 'actuel',
+    'share.postAfterWorkout': 'Je viens de terminer {name} 💪', 'share.resultButton': 'Partager dans la Communauté',
+    'chat.earlierMessage': 'Message précédent', 'chat.reactionAria': '{emoji} : {n}',
+    'chat.actionsAria': 'Actions du message', 'chat.reactWith': 'Réagir avec {emoji}',
+    'chat.reply': 'Répondre', 'chat.replyingTo': 'Réponse à',
+    'chat.replyCancel': 'Annuler la réponse', 'profileAch.title': 'Meilleurs succès',
+    'profileAch.none': 'Pas encore de succès sur ton profil — ils apparaissent après tes premières séances.', 'profileAch.hiddenNote': 'Toi seul les vois — ils sont masqués pour les autres.',
+    'profileAch.switch': 'Afficher mes meilleurs succès sur mon profil', 'profileAch.switchNote': 'Les autres voient tes 3 meilleurs succès. Jamais tes séances.',
+    'profileAch.hiddenOn': 'Tes succès sont maintenant masqués pour les autres.', 'profileAch.shownOn': 'Tes meilleurs succès sont affichés sur ton profil.',
+    'setWeight.title': 'Modifier la charge de cette série', 'setWeight.aria': 'Série {n} : {kg} kg. Touche pour modifier la charge.',
+    'setWeight.editorAria': 'Charge de la série {n}', 'setWeight.inputAria': 'Charge de la série {n} en kg',
+    'setWeight.less': '2,5 kg de moins', 'setWeight.more': '2,5 kg de plus',
+    'setWeight.note': 'S’applique à cette série et aux suivantes jusqu’à ce que tu en modifies une. Ton plan ne change pas.',
     'community.email': 'E-mail', 'community.password': 'Mot de passe', 'community.signIn': 'Se connecter', 'community.signUp': 'S’inscrire',
     'community.signInTitle': 'Connecte-toi ou crée un compte', 'community.signOut': 'Se déconnecter',
     'community.emailConfirmNote': 'Nous t’envoyons un lien de confirmation par e-mail — vérifie ta boîte pour terminer l’inscription.',
@@ -6275,6 +6430,39 @@ const I18N = {
     'push.notAllowed': 'لم يتم السماح بالإشعارات.', 'push.errFailed': 'تعذّر تفعيل الإشعارات. تحقّق من الاتصال وحاول مرة أخرى.',
     'push.homeScreen': 'على iPhone وiPad، تعمل الإشعارات فقط عند إضافة GymQuest إلى الشاشة الرئيسية (مشاركة ← إضافة إلى الشاشة الرئيسية) وفتحه من هناك. يلزم iOS 16.4 أو أحدث.', 'push.unsupported': 'هذا المتصفح لا يدعم الإشعارات.',
     'push.hint': 'احصل على إشعار عندما يراسلك صديق.', 'push.turnOn': 'تفعيل',
+    'rem.title': 'التذكيرات', 'rem.needPush': 'فعّل الإشعارات على هذا الجهاز في الأعلى لضبط تذكيرات شرب الماء والوجبات والتمرين.',
+    'rem.water': 'شرب الماء', 'rem.every': 'كل',
+    'rem.everyMin': '{n} دقيقة', 'rem.everyHours': '{n} ساعة',
+    'rem.from': 'من', 'rem.to': 'إلى',
+    'rem.meals': 'الوجبات', 'rem.mealN': 'الوجبة {n}',
+    'rem.workout': 'التمرين', 'rem.days': 'أيام التمرين',
+    'rem.time': 'وقت التمرين', 'rem.note': 'تصل التذكيرات كإشعارات على أجهزتك التي فعّلت عليها الإشعارات، حسب توقيت هاتفك.',
+    'rem.save': 'حفظ التذكيرات', 'rem.saved': 'تم حفظ التذكيرات.',
+    'rem.errInvalid': 'تحقّق من الأوقات: يجب أن يكون «من» قبل «إلى»، والوجبات أو التمرين في 23:30 كحد أقصى.',
+    'share.textPlan': 'خطة تمرين: {name}', 'share.textWorkout': 'تمرين: {name}',
+    'share.exercisesZero': '{n} تمرين', 'share.exercisesOne': 'تمرين واحد',
+    'share.exercisesTwo': 'تمرينان', 'share.exercisesFew': '{n} تمارين',
+    'share.exercisesMany': '{n} تمرينًا', 'share.exercisesOther': '{n} تمرين',
+    'share.setsDone': '{d}/{s} مجموعات', 'share.kindPlan': 'خطة تمرين',
+    'share.kindWorkout': 'تمرين مكتمل', 'share.saveAsPlan': 'حفظ في خططي',
+    'share.saved': 'تم الحفظ في خططك باسم «{name}».', 'share.pickPlan': 'خطط تمرينك',
+    'share.pickWorkout': 'التمارين الأخيرة', 'share.noPlans': 'ليست لديك بعد خطة تحتوي على تمارين.',
+    'share.noWorkouts': 'لم تُكمل أي تمرين بعد.', 'share.openChat': 'مشاركة خطة أو تمرين',
+    'share.remove': 'إزالة', 'share.attachCurrentPlan': 'إرفاق خطتي الحالية',
+    'share.attachLastWorkout': 'إرفاق آخر تمرين', 'share.attachOther': 'اختيار خطة أو تمرين',
+    'share.current': 'الحالية', 'share.postAfterWorkout': 'أنهيت للتو {name} 💪',
+    'share.resultButton': 'المشاركة في المجتمع', 'chat.earlierMessage': 'رسالة سابقة',
+    'chat.reactionAria': '{emoji}: {n}', 'chat.actionsAria': 'إجراءات الرسالة',
+    'chat.reactWith': 'التفاعل بـ {emoji}', 'chat.reply': 'رد',
+    'chat.replyingTo': 'رد على', 'chat.replyCancel': 'إلغاء الرد',
+    'profileAch.title': 'أفضل الإنجازات', 'profileAch.none': 'لا توجد إنجازات في ملفك بعد — تظهر بعد تمارينك الأولى.',
+    'profileAch.hiddenNote': 'أنت فقط تراها — هي مخفية عن الآخرين.', 'profileAch.switch': 'عرض أفضل إنجازاتي في ملفي',
+    'profileAch.switchNote': 'يرى الآخرون أفضل 3 إنجازات لك. وليس تمارينك أبدًا.', 'profileAch.hiddenOn': 'إنجازاتك مخفية الآن عن الآخرين.',
+    'profileAch.shownOn': 'أفضل إنجازاتك معروضة في ملفك.',
+    'setWeight.title': 'تغيير وزن هذه المجموعة', 'setWeight.aria': 'المجموعة {n}: {kg} كغ. اضغط لتغيير الوزن.',
+    'setWeight.editorAria': 'وزن المجموعة {n}', 'setWeight.inputAria': 'وزن المجموعة {n} بالكيلوغرام',
+    'setWeight.less': 'أقل بـ 2.5 كغ', 'setWeight.more': 'أكثر بـ 2.5 كغ',
+    'setWeight.note': 'يُطبَّق على هذه المجموعة والمجموعات التالية حتى تغيّر إحداها. خطتك لا تتغيّر.',
     'community.email': 'البريد الإلكتروني', 'community.password': 'كلمة المرور', 'community.signIn': 'تسجيل الدخول', 'community.signUp': 'إنشاء حساب',
     'community.signInTitle': 'سجّل الدخول أو أنشئ حسابًا', 'community.signOut': 'تسجيل الخروج',
     'community.emailConfirmNote': 'نرسل إليك رابط تأكيد بالبريد — تحقّق من صندوقك لإكمال التسجيل.',
@@ -8805,6 +8993,15 @@ function normalizeActiveSession(raw) {
     }
   }
   if (Object.keys(substituted).length) out.substituted = substituted;
+  /* Váhy jednotlivých sérií (zmena váhy počas tréningu): len platné čísla 0–999. */
+  const setWeights = {};
+  if (raw.setWeights && typeof raw.setWeights === 'object' && !Array.isArray(raw.setWeights)) {
+    for (const [key, val] of Object.entries(raw.setWeights)) {
+      const n = Number(val);
+      if (/:\d+$/.test(key) && typeof val === 'number' && Number.isFinite(n) && n >= 0 && n <= 999) setWeights[key] = n;
+    }
+  }
+  if (Object.keys(setWeights).length) out.setWeights = setWeights;
   return out;
 }
 
@@ -10053,6 +10250,67 @@ function setMark(kind, ex, index, side) {
   return !!map[setSessionKey(ex, index, side)];
 }
 
+/* ---------- Váha jednotlivých sérií (napr. zvýšenie váhy počas tréningu) ----------
+   Plánovaná váha cviku sa nemení. Zmenená váha série sa uloží do session ako výnimka
+   a nasledujúce série ju zdedia, kým sa niektorá z nich nezmení znova. Jednostranný cvik
+   má pre obe strany série rovnakú váhu. */
+function setWeightKey(ex, index) { return exerciseSessionKey(ex) + ':' + index; }
+function setWeightOverride(ex, index) {
+  const sess = getSession();
+  const v = sess && sess.setWeights ? sess.setWeights[setWeightKey(ex, index)] : undefined;
+  return typeof v === 'number' && Number.isFinite(v) ? v : undefined;
+}
+function effectiveSetWeight(ex, index) {
+  for (let k = index; k >= 0; k--) {
+    const v = setWeightOverride(ex, k);
+    if (v !== undefined) return v;
+  }
+  return Number(ex.weight) || 0;
+}
+function cleanSetWeightValue(kg) {
+  const raw = String(kg == null ? '' : kg).trim().replace(',', '.');
+  if (!raw || !/^\d+(\.\d+)?$/.test(raw)) return null;   // prázdne alebo nečíselné sa nikdy neuloží ako 0
+  const n = Number(raw);
+  if (!Number.isFinite(n)) return null;
+  return Math.max(0, Math.min(999, Math.round(n * 2) / 2));
+}
+function setSetWeight(ex, index, kg) {
+  const v = cleanSetWeightValue(kg);
+  if (v === null) return false;
+  const sess = ensureSession();
+  if (!sess) return false;
+  if (!sess.setWeights) sess.setWeights = {};
+  sess.setWeights[setWeightKey(ex, index)] = v;
+  saveState();
+  return true;
+}
+/* Váhy sérií pre históriu: pole efektívnych váh (séria 1..N), len ak sa niektorá
+   odlišuje od plánovanej váhy; inak null (záznam vyzerá presne ako doteraz). */
+function sessionSetWeights(ex) {
+  const sets = Math.max(0, Math.round(Number(ex.sets)) || 0);
+  const out = [];
+  let differs = false;
+  for (let i = 0; i < sets; i++) {
+    const w = effectiveSetWeight(ex, i);
+    out.push(w);
+    if (w !== (Number(ex.weight) || 0)) differs = true;
+  }
+  return differs ? out : null;
+}
+/* Platné váhy sérií zo záznamu histórie (alebo null). */
+function cleanHistorySetWeights(ex) {
+  const sets = Math.max(0, Math.round(Number(ex && ex.sets)) || 0);
+  if (!ex || !Array.isArray(ex.setWeights) || ex.setWeights.length !== sets || !sets) return null;
+  const out = ex.setWeights.map((v) => Number(v));
+  return out.every((v) => Number.isFinite(v) && v >= 0 && v <= 999) ? out : null;
+}
+/* Text váhy do histórie: "60 kg", pri zmene počas tréningu "60 · 60 · 65 · 65 kg". */
+function historyWeightText(ex) {
+  const list = cleanHistorySetWeights(ex);
+  if (!list) return `${ex.weight} ${t('units.kg')}`;
+  return `${list.join(' · ')} ${t('units.kg')}`;
+}
+
 function planExerciseCount(plan) {
   let n = 0;
   for (const info of exerciseSlots(plan)) {
@@ -10439,8 +10697,74 @@ function buildSetItem(ex, index, plannedFailure, side, readOnly) {
     });
   }
 
-  item.append(setBtn, failBtn);
+  /* Váha tejto série: ťuknutím sa dá zmeniť (napr. zvýšenie váhy počas tréningu). */
+  const weight = effectiveSetWeight(ex, index);
+  const weightBtn = document.createElement('button');
+  weightBtn.type = 'button';
+  weightBtn.className = 'set-weight' + (weight !== (Number(ex.weight) || 0) ? ' changed' : '');
+  weightBtn.textContent = String(weight);
+  weightBtn.title = t('setWeight.title');
+  weightBtn.setAttribute('aria-label', (side ? sideLabel + ' — ' : '') + t('setWeight.aria', { n: index + 1, kg: weight }));
+  if (readOnly) weightBtn.disabled = true;
+  else weightBtn.addEventListener('click', () => openSetWeightEditor(ex, index, item));
+
+  item.append(setBtn, weightBtn, failBtn);
   return item;
+}
+
+/* Malý editor váhy jednej série priamo pod sériou: −2,5 / hodnota / +2,5 / OK.
+   Nová váha platí pre túto sériu a nasledujúce série, kým sa niektorá nezmení znova. */
+let setWeightEditorEl = null;
+function closeSetWeightEditor() {
+  if (setWeightEditorEl && setWeightEditorEl.parentNode) setWeightEditorEl.parentNode.removeChild(setWeightEditorEl);
+  setWeightEditorEl = null;
+}
+function openSetWeightEditor(ex, index, item) {
+  closeSetWeightEditor();
+  const box = document.createElement('div');
+  box.className = 'set-weight-editor';
+  box.setAttribute('role', 'group');
+  box.setAttribute('aria-label', t('setWeight.editorAria', { n: index + 1 }));
+  const step = (d) => {
+    const v = cleanSetWeightValue(input.value);
+    input.value = String(cleanSetWeightValue((v === null ? effectiveSetWeight(ex, index) : v) + d));
+  };
+  const minus = document.createElement('button');
+  minus.type = 'button'; minus.className = 'btn btn-secondary btn-sm'; minus.textContent = '−2.5';
+  minus.setAttribute('aria-label', t('setWeight.less'));
+  minus.addEventListener('click', () => step(-2.5));
+  const input = document.createElement('input');
+  /* Text s desatinnou klávesnicou: čiarka (sk, fr, …) aj bodka fungujú rovnako. */
+  input.type = 'text'; input.className = 'modal-input set-weight-input'; input.inputMode = 'decimal'; input.autocomplete = 'off';
+  input.value = String(effectiveSetWeight(ex, index));
+  input.setAttribute('aria-label', t('setWeight.inputAria', { n: index + 1 }));
+  const unit = document.createElement('span');
+  unit.className = 'set-weight-unit'; unit.textContent = t('units.kg');
+  const plus = document.createElement('button');
+  plus.type = 'button'; plus.className = 'btn btn-secondary btn-sm'; plus.textContent = '+2.5';
+  plus.setAttribute('aria-label', t('setWeight.more'));
+  plus.addEventListener('click', () => step(2.5));
+  const ok = document.createElement('button');
+  ok.type = 'button'; ok.className = 'btn btn-primary btn-sm set-weight-ok'; ok.textContent = t('common.ok');
+  const apply = () => {
+    if (!setSetWeight(ex, index, input.value)) { input.focus(); return; }
+    closeSetWeightEditor();
+    setSessionNote(null, 0);
+    renderTrening();
+  };
+  ok.addEventListener('click', apply);
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') { e.preventDefault(); apply(); }
+    if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); closeSetWeightEditor(); }
+  });
+  const note = document.createElement('p');
+  note.className = 'set-weight-note';
+  note.textContent = t('setWeight.note');
+  box.append(minus, input, unit, plus, ok, note);
+  item.insertAdjacentElement('afterend', box);
+  setWeightEditorEl = box;
+  input.focus();
+  input.select();
 }
 
 function updateSummary() {
@@ -12527,6 +12851,10 @@ function requestUndoSubstitution(slot) {
     const prefix = String(last.key) + ':';
     for (const k of Object.keys(sess.completedSets)) if (k.indexOf(prefix) === 0) delete sess.completedSets[k];
     for (const k of Object.keys(sess.actualFailureSets)) if (k.indexOf(prefix) === 0) delete sess.actualFailureSets[k];
+    if (sess.setWeights) {
+      for (const k of Object.keys(sess.setWeights)) if (k.indexOf(prefix) === 0) delete sess.setWeights[k];
+      if (!Object.keys(sess.setWeights).length) delete sess.setWeights;
+    }
     saveState();
     renderTrening();
   };
@@ -13547,6 +13875,9 @@ function communityResetSocial2() {
   communityBack = [];
   communityChatId = null; communityChatMeta = null; communityChatMsgs = [];
   communityPostId = null;
+  communityReplyTo = null; communityMsgActions = null; communityReactions = {}; communitySharePickerOpen = false;
+  profileAchSentSig = null;
+  clearInterval(communityReactTimer); communityReactTimer = null;
 }
 async function communityRefreshBadges(sb, uid) {
   sb = sb || communityClient();
@@ -13775,6 +14106,7 @@ async function communityMessageUser(uid) {
 }
 function communityOpenChat(cid) {
   if (!cid) return;
+  communityReplyTo = null; communityMsgActions = null; communityReactions = {}; communitySharePickerOpen = false;
   communityGo('chat', () => { communityChatId = cid; communityChatMeta = null; communityChatMsgs = []; });
 }
 async function communityChatsHtml(sb) {
@@ -13800,10 +14132,22 @@ async function communityChatsHtml(sb) {
 function communityChatMsgsHtml() {
   if (!communityChatMsgs.length) return '<p class="empty-state">' + esc(t('community2.chatEmpty')) + '</p>';
   const me = communityProfile && communityProfile.id;
+  const v5 = communityV5();
   return communityChatMsgs.map((m) => {
     const mine = m.sender_id === me;
-    return '<div class="cmsg' + (mine ? ' mine' : '') + '"><button type="button" class="cmsg-bubble" data-community-action="msg-menu" data-msg="' + escAttr(m.id) + '" data-mine="' + (mine ? '1' : '0') + '">'
-      + esc(m.body) + '</button><span class="cmsg-time">' + esc(communityTimeAgo(m.created_at)) + '</span></div>';
+    let quote = '';
+    if (v5 && m.reply_to) {
+      const orig = communityChatMsgs.find((x) => String(x.id) === String(m.reply_to));
+      quote = '<span class="cmsg-quote">' + esc(communityMsgSnippet(orig)) + '</span>';
+    }
+    return '<div class="cmsg' + (mine ? ' mine' : '') + '" data-msg-id="' + escAttr(m.id) + '"><button type="button" class="cmsg-bubble" data-community-action="msg-menu" data-msg="' + escAttr(m.id) + '" data-mine="' + (mine ? '1' : '0') + '"'
+      + (v5 ? ' aria-expanded="' + (String(communityMsgActions) === String(m.id) ? 'true' : 'false') + '"' : '') + '>'
+      + quote + '<span class="cmsg-body">' + esc(m.body) + '</span></button>'
+      + (v5 && m.attachment ? shareCardHtml(m.attachment, 'msg', m.id) : '')
+      + (v5 ? communityReactionsHtml(m) : '')
+      + '<span class="cmsg-time">' + esc(communityTimeAgo(m.created_at)) + '</span>'
+      + (v5 && String(communityMsgActions) === String(m.id) ? communityMsgActionsHtml(m, mine) : '')
+      + '</div>';
   }).join('');
 }
 async function communityChatHtml(sb) {
@@ -13811,7 +14155,8 @@ async function communityChatHtml(sb) {
   let list, msgs;
   try {
     [list, msgs] = await Promise.all([sb.rpc('chat_list'),
-      sb.from('messages').select('id,conversation_id,sender_id,body,created_at').eq('conversation_id', cid).order('id', { ascending: false }).limit(100)]);
+      sb.from('messages').select(communityV5() ? 'id,conversation_id,sender_id,body,created_at,reply_to,attachment' : 'id,conversation_id,sender_id,body,created_at')
+        .eq('conversation_id', cid).order('id', { ascending: false }).limit(100)]);
   } catch (e) { list = { error: e }; msgs = { error: e }; }
   const meta = ((list && list.data) || []).find((c) => c.conversation_id === cid);
   if (!meta) return communityTabbar() + communitySubHead('') + communityNote('community2.chatGone');
@@ -13827,6 +14172,9 @@ async function communityChatHtml(sb) {
     + '</div>'
     + '<div class="cchat-msgs" id="community-chat-msgs" aria-live="polite">' + communityChatMsgsHtml() + '</div>'
     + communityStatusHtml()
+    + (meta.can_send && communityV5() ? communityReplyBarHtml() + communitySharePickerHtml()
+      + '<div class="cshare-open-row"><button type="button" class="btn btn-secondary btn-sm" data-community-action="chat-share-open" aria-controls="community-share-picker">'
+      + esc(t('share.openChat')) + '</button></div>' : '')
     + (meta.can_send ? communityComposerHtml('community-chat-text', 'community2.chatPlaceholder', COMMUNITY_MESSAGE_MAX, 'chat-send', 'community2.send')
       : '<p class="card-note cchat-closed-note">' + esc(t(meta.closed ? 'community2.chatClosed' : 'community2.chatCannotSend')) + '</p>')
     + '<p class="card-note">' + esc(t('community2.chatPrivacy')) + '</p>';
@@ -13836,6 +14184,7 @@ function communityAfterChatRender(sb) {
   if (box) box.scrollTop = box.scrollHeight;
   communityMarkChatRead(sb);
   pushClearChat(communityChatId);
+  if (communityV5()) { communityLoadReactions(sb); communityStartReactionPoll(); }
 }
 async function communityMarkChatRead(sb) {
   sb = sb || communityClient();
@@ -13859,14 +14208,19 @@ async function communitySendMessage() {
   communitySending = true;
   let res;
   try {
-    res = await sb.from('messages').insert({ conversation_id: communityChatId, sender_id: communityProfile.id, body: body.slice(0, COMMUNITY_MESSAGE_MAX) })
-      .select('id,conversation_id,sender_id,body,created_at').single();
+    const row = { conversation_id: communityChatId, sender_id: communityProfile.id, body: body.slice(0, COMMUNITY_MESSAGE_MAX) };
+    if (communityV5() && communityReplyTo) row.reply_to = communityReplyTo.id;
+    res = await sb.from('messages').insert(row)
+      .select(communityV5() ? 'id,conversation_id,sender_id,body,created_at,reply_to,attachment' : 'id,conversation_id,sender_id,body,created_at').single();
   } catch (e) { res = { error: e }; }
   communitySending = false;
   if (res.error) { communitySetMessageText(communityErrText(res.error)); communityShowStatus(); return; }
   el.value = '';
+  communityReplyTo = null;
   communitySetMessage(''); communityShowStatus();
   communityAddChatMsg(res.data);
+  const bar = document.getElementById('community-reply-bar');
+  if (bar) bar.outerHTML = communityReplyBarHtml();
   pushNotifyMessage(sb, res.data && res.data.id);
 }
 /* Živá správa: v otvorenom chate sa hneď pridá (a označí ako prečítaná), inak len odznak. */
@@ -14054,6 +14408,66 @@ function pushCardHtml() {
   }
   return '<div class="card" id="community-push-card"><h3 class="card-title">' + esc(t('push.title')) + '</h3>' + body + '</div>';
 }
+/* ---------- Pripomienky: voda, jedlo, tréning (migrácia 0012) ----------
+   Posiela ich server (pg_cron každých 5 minút → funkcia `reminders`) na zariadenia so zapnutými
+   upozorneniami, v časovom pásme telefónu. Nastavenia patria účtu (na serveri), nie zariadeniu. */
+const REMINDER_WATER_STEPS = [30, 45, 60, 90, 120, 180];
+let remindersData = null;
+let remindersBusy = false;
+function remindersAvailable() { return communityVersion >= 6; }
+async function remindersLoad(sb) {
+  remindersData = null;
+  if (!sb || !remindersAvailable()) return;
+  try { const r = await sb.rpc('reminders_get'); if (r && !r.error) remindersData = r.data; } catch (e) {}
+}
+function remindersEveryLabel(min) {
+  return min < 60 ? t('rem.everyMin', { n: min }) : t('rem.everyHours', { n: String(min / 60).replace('.', activeLang() === 'en' ? '.' : ',') });
+}
+function remindersCardHtml() {
+  if (!remindersAvailable() || !pushAvailable()) return '';
+  if (pushState() !== 'on') return '<div class="card crem" id="community-reminders"><h3 class="card-title">' + esc(t('rem.title')) + '</h3><p class="card-note">' + esc(t('rem.needPush')) + '</p></div>';
+  const d = remindersData || {};
+  const meals = Array.isArray(d.meal_times) ? d.meal_times : ['08:00', '12:30', '18:30'];
+  const days = Array.isArray(d.workout_days) ? d.workout_days.map(Number) : [1, 3, 5];
+  const time = (id, v, label) => '<input type="time" class="modal-input crem-time" id="' + id + '" value="' + escAttr(v || '') + '" aria-label="' + escAttr(label) + '">';
+  const dayNames = localeData().weekdaysShort;
+  return '<div class="card crem" id="community-reminders"><h3 class="card-title">' + esc(t('rem.title')) + '</h3>'
+    + '<label class="community-check" for="rem-water-on"><input type="checkbox" id="rem-water-on"' + (d.water_on ? ' checked' : '') + '><span>💧 ' + esc(t('rem.water')) + '</span></label>'
+    + '<div class="crem-row"><label class="crem-lbl" for="rem-water-every">' + esc(t('rem.every')) + '</label><select class="modal-input crem-select" id="rem-water-every">'
+    + REMINDER_WATER_STEPS.map((m) => '<option value="' + m + '"' + (Number(d.water_every || 120) === m ? ' selected' : '') + '>' + esc(remindersEveryLabel(m)) + '</option>').join('') + '</select>'
+    + '<span class="crem-lbl">' + esc(t('rem.from')) + '</span>' + time('rem-water-from', d.water_from || '08:00', t('rem.from'))
+    + '<span class="crem-lbl">' + esc(t('rem.to')) + '</span>' + time('rem-water-to', d.water_to || '21:00', t('rem.to')) + '</div>'
+    + '<label class="community-check" for="rem-meals-on"><input type="checkbox" id="rem-meals-on"' + (d.meals_on ? ' checked' : '') + '><span>🍽️ ' + esc(t('rem.meals')) + '</span></label>'
+    + '<div class="crem-row">' + [0, 1, 2].map((i) => time('rem-meal-' + i, meals[i] || '', t('rem.mealN', { n: i + 1 }))).join('') + '</div>'
+    + '<label class="community-check" for="rem-workout-on"><input type="checkbox" id="rem-workout-on"' + (d.workout_on ? ' checked' : '') + '><span>🏋️ ' + esc(t('rem.workout')) + '</span></label>'
+    + '<div class="crem-row crem-days" role="group" aria-label="' + escAttr(t('rem.days')) + '">'
+    + [1, 2, 3, 4, 5, 6, 7].map((n) => '<button type="button" class="goal-chip crem-day' + (days.includes(n) ? ' active' : '') + '" data-community-action="rem-day" data-day="' + n + '" aria-pressed="' + (days.includes(n) ? 'true' : 'false') + '">' + esc(dayNames[n - 1]) + '</button>').join('')
+    + time('rem-workout-time', d.workout_time || '17:00', t('rem.time')) + '</div>'
+    + '<p class="card-note">' + esc(t('rem.note')) + '</p>'
+    + '<div class="plan-actions"><button type="button" class="btn btn-primary" data-community-action="rem-save"' + (remindersBusy ? ' disabled' : '') + '>' + esc(t('rem.save')) + '</button></div></div>';
+}
+async function remindersSave() {
+  const sb = communityClient();
+  if (!sb || remindersBusy) return;
+  const val = (id) => { const el = document.getElementById(id); return el ? el.value : ''; };
+  const on = (id) => { const el = document.getElementById(id); return !!(el && el.checked); };
+  let tz = 'UTC';
+  try { tz = Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC'; } catch (e) {}
+  const p = {
+    tz, water_on: on('rem-water-on'), water_every: Number(val('rem-water-every')) || 120, water_from: val('rem-water-from'), water_to: val('rem-water-to'),
+    meals_on: on('rem-meals-on'), meal_times: [0, 1, 2].map((i) => val('rem-meal-' + i)).filter((v) => /^\d{2}:\d{2}$/.test(v)),
+    workout_on: on('rem-workout-on'), workout_time: val('rem-workout-time'),
+    workout_days: Array.from(document.querySelectorAll('#community-reminders .crem-day.active')).map((b) => Number(b.dataset.day)),
+  };
+  remindersBusy = true;
+  let res;
+  try { res = await sb.rpc('reminders_set', { p }); } catch (e) { res = { error: e }; }
+  remindersBusy = false;
+  if (res.error) { communitySetMessageText(/invalid_(reminders|timezone)/.test(String((res.error && res.error.message) || '')) ? t('rem.errInvalid') : communityErrText(res.error)); }
+  else { remindersData = res.data; communitySetMessage('rem.saved'); }
+  renderCommunity();
+}
+
 /* Krátka ponuka v zozname chatov, kým upozornenia nie sú zapnuté. */
 function pushHintHtml() {
   if (!pushAvailable()) return '';
@@ -14085,6 +14499,271 @@ function communityMessageMenu(id, mine) {
     communityShowStatus();
   }, esc(t('community2.reportMessageNote')) + communityReasonSelectHtml());
 }
+/* ---------- Zdieľaný plán / tréning, odpovede a reakcie (migrácia 0011) ----------
+   Zapnú sa iba pri community_social_version() >= 5. Zdieľaná položka je malý JSON
+   (server ho overí: share_attachment_valid). Správa so zdieľaním má vždy aj krátky text,
+   takže staršia verzia appky ukáže aspoň ten. Reakcie nie sú v Realtime (Realtime posiela
+   mazania bez RLS) – otvorený chat ich obnovuje každých 15 s. */
+const SHARE_MAX_EXERCISES = 40;
+const CHAT_REACTIONS = ['❤️', '😂', '👍', '😮', '💪', '🔥'];
+const CHAT_REACTIONS_POLL_MS = 15000;
+let communityReplyTo = null;          // { id, text } – správa, na ktorú sa práve odpovedá
+let communityMsgActions = null;       // id správy s otvoreným panelom akcií
+let communityReactions = {};          // id správy -> [{ user_id, emoji }]
+let communityReactTimer = null;
+let communitySharePickerOpen = false;
+let communityShareBusy = false;
+
+function communityV5() { return communityVersion >= 5; }
+const shareClampInt = (v, lo, hi) => Math.max(lo, Math.min(hi, Math.round(Number(v)) || 0));
+const shareClampKg = (v) => Math.max(0, Math.min(999, Math.round((Number(v) || 0) * 2) / 2));
+
+/* Plán -> zdieľaná položka. Zabudovaný cvik nesie id, aby ho príjemca videl vo svojom jazyku. */
+function shareFromPlan(plan) {
+  if (!plan || !Array.isArray(plan.exercises) || !plan.exercises.length) return null;
+  return {
+    kind: 'plan',
+    name: String(planDisplayName(plan)).slice(0, 80) || 'Plan',
+    exercises: plan.exercises.slice(0, SHARE_MAX_EXERCISES).map((ex) => {
+      const id = builtinExerciseId(ex);
+      const out = { n: String(recordedExerciseName(ex) || exerciseDisplayName(ex) || '?').slice(0, 80),
+        s: shareClampInt(ex.sets, 1, 99), r: shareClampInt(ex.reps, 0, 999), w: shareClampKg(ex.weight) };
+      if (id) out.id = id;
+      if (ex.unilateral === true) out.u = true;
+      return out;
+    }),
+  };
+}
+/* Dokončený tréning z histórie -> zdieľaná položka (aj váhy jednotlivých sérií). */
+function shareFromWorkout(w) {
+  if (!w || !Array.isArray(w.exercises) || !w.exercises.length) return null;
+  const out = {
+    kind: 'workout',
+    name: String(historyPlanName(w)).slice(0, 80) || 'Workout',
+    date: String(w.date || '').slice(0, 10),
+    xp: shareClampInt(w.xp, 0, 100000),
+    exercises: w.exercises.slice(0, SHARE_MAX_EXERCISES).map((e) => {
+      const x = { n: String(e.name || '?').slice(0, 80), s: shareClampInt(e.sets, 1, 99), r: shareClampInt(e.reps, 0, 999),
+        w: shareClampKg(e.weight), d: shareClampInt(e.setsDone, 0, 198) };
+      if (e.exId && BUILTIN_EXERCISE_IDS.has(e.exId)) x.id = e.exId;
+      if (e.unilateral === true) x.u = true;
+      const sw = cleanHistorySetWeights(e);
+      if (sw) x.sw = sw.map(shareClampKg);
+      return x;
+    }),
+  };
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(out.date)) delete out.date;
+  const dur = cleanDurationSeconds(w.durationSeconds);
+  if (dur !== null) out.duration = Math.min(dur, 86400);
+  return out;
+}
+/* Krátky text, ktorý ide spolu so zdieľaním (vidí ho aj staršia verzia appky). */
+function shareSummaryText(a) {
+  const n = (a.exercises || []).length;
+  return (a.kind === 'workout' ? '🏋️ ' : '📋 ') + t(a.kind === 'workout' ? 'share.textWorkout' : 'share.textPlan', { name: a.name, n });
+}
+function shareExerciseName(e) {
+  return (e && e.id && BUILTIN_EXERCISE_IDS.has(e.id)) ? t('exercise.' + e.id) : recordedNameToDisplay(String((e && e.n) || ''));
+}
+/* Karta zdieľaného plánu / tréningu (v chate aj v príspevku). `src` = 'msg' | 'post', `ref` = id. */
+function shareCardHtml(a, src, ref, noSave) {
+  if (!a || typeof a !== 'object' || !Array.isArray(a.exercises)) return '';
+  const workout = a.kind === 'workout';
+  const meta = [];
+  if (workout && a.date) meta.push(formatDate(String(a.date)));
+  if (workout && Number(a.duration) > 0) meta.push(formatDurationNatural(Number(a.duration)));
+  if (workout && Number(a.xp) > 0) meta.push('+' + Number(a.xp) + ' ' + t('units.xp'));
+  meta.push(tPlural('share.exercises', a.exercises.length));
+  const rows = a.exercises.slice(0, SHARE_MAX_EXERCISES).map((e) => {
+    const sw = Array.isArray(e.sw) && e.sw.length ? e.sw.map((v) => Number(v)).join(' · ') : String(Number(e.w) || 0);
+    const sets = workout && e.d !== undefined ? t('share.setsDone', { d: Number(e.d) || 0, s: Number(e.s) || 0 }) : (Number(e.s) || 0) + ' × ' + (Number(e.r) || 0);
+    return '<li><span class="cshare-ex">' + esc(shareExerciseName(e)) + '</span><span class="cshare-ex-meta">'
+      + esc(workout ? sets + ' · ' + (Number(e.r) || 0) + ' ' + t('units.reps') : sets) + ' · ' + esc(sw + ' ' + t('units.kg')) + '</span></li>';
+  }).join('');
+  return '<div class="cshare-card" data-kind="' + (workout ? 'workout' : 'plan') + '">'
+    + '<p class="cshare-kind">' + esc(t(workout ? 'share.kindWorkout' : 'share.kindPlan')) + '</p>'
+    + '<p class="cshare-name">' + esc(a.name || '') + '</p>'
+    + '<p class="cshare-meta">' + esc(meta.join(' · ')) + '</p>'
+    + '<ul class="cshare-list">' + rows + '</ul>'
+    + (noSave ? '' : '<button type="button" class="btn btn-secondary btn-sm cshare-save" data-community-action="save-shared" data-src="' + src + '" data-ref="' + escAttr(String(ref)) + '">'
+      + esc(t('share.saveAsPlan')) + '</button>') + '</div>';
+}
+/* Uloženie zdieľaného plánu / tréningu ako nového vlastného plánu (pôvodný sa nikdy nemení). */
+function shareSaveAsPlan(a) {
+  if (!a || !Array.isArray(a.exercises) || !a.exercises.length) return false;
+  const exercises = a.exercises.slice(0, SHARE_MAX_EXERCISES).map((e) => {
+    const id = e.id && BUILTIN_EXERCISE_IDS.has(e.id) ? e.id : null;
+    const ex = { name: id ? recordedExerciseName({ id }) : String(e.n || '?').slice(0, 80), sets: shareClampInt(e.s, 1, 99),
+      reps: Math.max(1, shareClampInt(e.r, 1, 999)), weight: shareClampKg(Array.isArray(e.sw) && e.sw.length ? Math.max.apply(null, e.sw.map(Number)) : e.w) };
+    if (id) { ex.id = id; ex.builtin = true; }
+    if (e.u === true) { ex.unilateral = true; ex.startSide = 'left'; }
+    return ex;
+  });
+  const names = new Set(Object.values(state.plans).map((p) => planDisplayName(p)));
+  let name = String(a.name || t('plan.newName')).slice(0, 60);
+  for (let i = 2; names.has(name) && i < 100; i++) name = String(a.name || t('plan.newName')).slice(0, 55) + ' (' + i + ')';
+  const id = 'p-' + uid();
+  state.plans[id] = { id, builtin: false, customName: name, exercises };
+  if (!Array.isArray(state.planOrder)) state.planOrder = [];
+  state.planOrder.push(id);
+  saveState();
+  renderTrening();
+  return name;
+}
+/* Zdieľané plány / tréningy pod príspevkami (post_attachments, viditeľné presne ako príspevok). */
+let communityPostShares = {};
+async function communityLoadPostShares(sb, ids) {
+  const list = Array.from(new Set((ids || []).filter(Boolean)));
+  if (!sb || !communityV5() || !list.length) return;
+  let res;
+  try { res = await sb.from('post_attachments').select('post_id,data').in('post_id', list); } catch (e) { return; }
+  if (res && !res.error) (res.data || []).forEach((r) => { communityPostShares[r.post_id] = r.data; });
+}
+function communitySaveShared(src, ref) {
+  let a = null;
+  if (src === 'msg') { const m = communityChatMsgs.find((x) => String(x.id) === String(ref)); a = m && m.attachment; }
+  else if (src === 'post') a = (communityFeedItem(ref) || {}).share || communityPostShares[ref] || null;
+  const name = shareSaveAsPlan(a);
+  communitySetMessageText(name ? t('share.saved', { name }) : t('community.errNetwork'));
+  communityShowStatus();
+}
+
+/* ---------- Odpovede a reakcie v chate ---------- */
+function communityMsgSnippet(m) {
+  if (!m) return t('chat.earlierMessage');
+  const text = m.attachment ? shareSummaryText(m.attachment) : String(m.body || '');
+  return text.length > 80 ? text.slice(0, 80) + '…' : text;
+}
+function communityReactionsHtml(m) {
+  const list = communityReactions[String(m.id)] || [];
+  if (!list.length) return '';
+  const me = communityProfile && communityProfile.id;
+  const counts = {};
+  list.forEach((r) => { counts[r.emoji] = (counts[r.emoji] || 0) + 1; });
+  return '<div class="cmsg-reacts">' + CHAT_REACTIONS.filter((e) => counts[e]).map((e) => {
+    const mine = list.some((r) => r.emoji === e && r.user_id === me);
+    return '<button type="button" class="cmsg-react' + (mine ? ' mine' : '') + '" data-community-action="react" data-msg="' + escAttr(m.id) + '" data-emoji="' + escAttr(e) + '"'
+      + ' aria-pressed="' + (mine ? 'true' : 'false') + '" aria-label="' + escAttr(t('chat.reactionAria', { emoji: e, n: counts[e] })) + '">' + e + (counts[e] > 1 ? '<span>' + counts[e] + '</span>' : '') + '</button>';
+  }).join('') + '</div>';
+}
+function communityMsgActionsHtml(m, mine) {
+  const canReact = !!(communityChatMeta && communityChatMeta.can_send);
+  return '<div class="cmsg-actions" role="group" aria-label="' + escAttr(t('chat.actionsAria')) + '">'
+    + (canReact ? '<div class="cmsg-react-pick">' + CHAT_REACTIONS.map((e) => '<button type="button" class="cmsg-react-opt" data-community-action="react" data-msg="' + escAttr(m.id) + '" data-emoji="' + escAttr(e) + '"'
+      + ' aria-label="' + escAttr(t('chat.reactWith', { emoji: e })) + '">' + e + '</button>').join('') + '</div>' : '')
+    + '<div class="cmsg-action-row">'
+    + (canReact ? '<button type="button" class="btn btn-secondary btn-sm" data-community-action="msg-reply" data-msg="' + escAttr(m.id) + '">' + esc(t('chat.reply')) + '</button>' : '')
+    + (mine ? '<button type="button" class="btn btn-secondary btn-sm" data-community-action="msg-delete" data-msg="' + escAttr(m.id) + '">' + esc(t('community2.delete')) + '</button>'
+      : '<button type="button" class="btn btn-secondary btn-sm" data-community-action="msg-report" data-msg="' + escAttr(m.id) + '">' + esc(t('community.report')) + '</button>')
+    + '</div></div>';
+}
+function communityReplyBarHtml() {
+  if (!communityReplyTo) return '<div class="creply-bar" id="community-reply-bar" hidden></div>';
+  return '<div class="creply-bar" id="community-reply-bar"><span class="creply-label">' + esc(t('chat.replyingTo')) + '</span>'
+    + '<span class="creply-text">' + esc(communityReplyTo.text) + '</span>'
+    + '<button type="button" class="btn-icon-sm" data-community-action="reply-cancel" aria-label="' + escAttr(t('chat.replyCancel')) + '">✕</button></div>';
+}
+function communityRedrawChatMsgs() {
+  const box = document.getElementById('community-chat-msgs');
+  if (box) box.innerHTML = communityChatMsgsHtml();
+  const bar = document.getElementById('community-reply-bar');
+  if (bar) bar.outerHTML = communityReplyBarHtml();
+}
+function communityToggleMsgActions(id) {
+  communityMsgActions = String(communityMsgActions) === String(id) ? null : String(id);
+  communityRedrawChatMsgs();
+}
+function communitySetReply(id) {
+  const m = communityChatMsgs.find((x) => String(x.id) === String(id));
+  if (!m) return;
+  communityReplyTo = { id: m.id, text: communityMsgSnippet(m) };
+  communityMsgActions = null;
+  communityRedrawChatMsgs();
+  const el = document.getElementById('community-chat-text');
+  if (el) el.focus();
+}
+async function communityLoadReactions(sb) {
+  sb = sb || communityClient();
+  if (!sb || !communityV5() || !communityChatMsgs.length) return;
+  const ids = communityChatMsgs.map((m) => m.id);
+  let res;
+  try { res = await sb.from('message_reactions').select('message_id,user_id,emoji').in('message_id', ids); } catch (e) { return; }
+  if (!res || res.error) return;
+  const next = {};
+  (res.data || []).forEach((r) => { (next[String(r.message_id)] = next[String(r.message_id)] || []).push({ user_id: r.user_id, emoji: r.emoji }); });
+  if (JSON.stringify(next) === JSON.stringify(communityReactions)) return;
+  communityReactions = next;
+  if (activeTab === 'komunita' && communityView === 'chat') communityRedrawChatMsgs();
+}
+function communityStartReactionPoll() {
+  clearInterval(communityReactTimer);
+  if (!communityV5()) return;
+  communityReactTimer = setInterval(() => {
+    if (activeTab !== 'komunita' || communityView !== 'chat') { clearInterval(communityReactTimer); communityReactTimer = null; return; }
+    if (!document.hidden) communityLoadReactions();
+  }, CHAT_REACTIONS_POLL_MS);
+}
+async function communityToggleReaction(id, emoji) {
+  const sb = communityClient();
+  const me = communityProfile && communityProfile.id;
+  if (!sb || !me || CHAT_REACTIONS.indexOf(emoji) < 0) return;
+  const key = String(id);
+  const list = communityReactions[key] || [];
+  const current = list.find((r) => r.user_id === me);
+  let res;
+  try {
+    res = current && current.emoji === emoji
+      ? await sb.from('message_reactions').delete().eq('message_id', Number(id)).eq('user_id', me)
+      : await sb.from('message_reactions').upsert({ message_id: Number(id), user_id: me, emoji }, { onConflict: 'message_id,user_id' });
+  } catch (e) { res = { error: e }; }
+  if (res.error) { communitySetMessageText(communityErrText(res.error)); communityShowStatus(); return; }
+  const others = list.filter((r) => r.user_id !== me);
+  communityReactions[key] = current && current.emoji === emoji ? others : others.concat([{ user_id: me, emoji }]);
+  communityMsgActions = null;
+  communityRedrawChatMsgs();
+}
+
+/* ---------- Zdieľanie plánu / tréningu do chatu ---------- */
+function communityRecentWorkouts() {
+  return state.history.slice().sort((a, b) => String(b.date).localeCompare(String(a.date))).slice(0, 5);
+}
+function communitySharePickerHtml() {
+  if (!communitySharePickerOpen) return '<div class="cshare-picker" id="community-share-picker" hidden></div>';
+  const plans = activePlanIds().map((id) => getPlan(id)).filter((p) => p && p.exercises && p.exercises.length);
+  const recent = communityRecentWorkouts();
+  return '<div class="cshare-picker" id="community-share-picker">'
+    + '<p class="modal-label">' + esc(t('share.pickPlan')) + '</p>'
+    + (plans.length ? '<div class="cshare-options">' + plans.map((p) => '<button type="button" class="btn btn-secondary btn-sm" data-community-action="chat-share-plan" data-plan="' + escAttr(p.id) + '"' + (communityShareBusy ? ' disabled' : '') + '>📋 ' + esc(planDisplayName(p)) + '</button>').join('') + '</div>'
+      : '<p class="card-note">' + esc(t('share.noPlans')) + '</p>')
+    + '<p class="modal-label">' + esc(t('share.pickWorkout')) + '</p>'
+    + (recent.length ? '<div class="cshare-options">' + recent.map((w) => '<button type="button" class="btn btn-secondary btn-sm" data-community-action="chat-share-workout" data-workout="' + escAttr(w.id) + '"' + (communityShareBusy ? ' disabled' : '') + '>🏋️ ' + esc(historyPlanName(w)) + ' · ' + esc(formatDate(w.date)) + '</button>').join('') + '</div>'
+      : '<p class="card-note">' + esc(t('share.noWorkouts')) + '</p>')
+    + '</div>';
+}
+function communityToggleSharePicker() {
+  communitySharePickerOpen = !communitySharePickerOpen;
+  const el = document.getElementById('community-share-picker');
+  if (el) el.outerHTML = communitySharePickerHtml();
+}
+async function communityShareToChat(attachment) {
+  const sb = communityClient();
+  if (!sb || !communityProfile || !communityChatId || !attachment || communityShareBusy) return;
+  communityShareBusy = true;
+  let res;
+  try {
+    res = await sb.from('messages').insert({ conversation_id: communityChatId, sender_id: communityProfile.id, body: shareSummaryText(attachment).slice(0, COMMUNITY_MESSAGE_MAX), attachment })
+      .select('id,conversation_id,sender_id,body,created_at,reply_to,attachment').single();
+  } catch (e) { res = { error: e }; }
+  communityShareBusy = false;
+  communitySharePickerOpen = false;
+  const el = document.getElementById('community-share-picker');
+  if (el) el.outerHTML = communitySharePickerHtml();
+  if (res.error) { communitySetMessageText(communityErrText(res.error)); communityShowStatus(); return; }
+  communitySetMessage(''); communityShowStatus();
+  communityAddChatMsg(res.data);
+  pushNotifyMessage(sb, res.data && res.data.id);
+}
+
 function communityDeleteChat() {
   showGeneric(t('community2.deleteChatTitle'), t('community2.delete'), async () => {
     const sb = communityClient(); if (!sb || !communityChatId) return;
@@ -14127,6 +14806,43 @@ function communityTogglePostMenu(btn) {
   btn.setAttribute('aria-expanded', menu.hidden ? 'false' : 'true');
 }
 /* Hlavička profilu (ako Instagram): avatar, počty, meno a bio. */
+/* ---------- Najlepšie úspechy na profile (migrácia 0011) ----------
+   Appka pošle získané úspechy (rovnako ako rebríček); server ponechá len skutočné, ktorých
+   minimálny počet tréningov sedí, a profil ukáže 3 s najvyšším XP. Dajú sa skryť. */
+let profileAchSentSig = null;
+async function profileAchievementsSend(force) {
+  if (!communityV5() || !communityConsent || syncLoading) return;
+  const meta = syncMetaRead();
+  if (meta && meta.conflict) return;
+  const sb = communityClient();
+  if (!sb) return;
+  const earned = state.achievements || {};
+  const payload = { p_ids: staticAchievementDefs().filter((d) => earned[d.id]).map((d) => d.id),
+    p_workouts: state.history.length + (state.activities || []).length };
+  const sig = JSON.stringify(payload) + ':' + (communityProfile && communityProfile.id);
+  if (!force && sig === profileAchSentSig) return;
+  try { const r = await sb.rpc('profile_achievements_set', payload); if (r && !r.error) profileAchSentSig = sig; } catch (e) {}
+}
+async function profileAchievementsGet(sb, uid) {
+  if (!sb || !uid || !communityV5()) return null;
+  try { const r = await sb.rpc('profile_achievements_get', { p_user: uid }); return r && !r.error ? r.data : null; } catch (e) { return null; }
+}
+function profileAchievementsHtml(info, mine) {
+  if (!info) return '';
+  const defs = staticAchievementDefs();
+  const top = (Array.isArray(info.top) ? info.top : []).map((id) => defs.find((d) => d.id === id)).filter(Boolean);
+  if (!top.length) return mine ? '<p class="card-note cprofile-ach-empty">' + esc(t('profileAch.none')) + '</p>' : '';
+  return '<div class="cprofile-ach"><p class="cprofile-ach-title">' + esc(t('profileAch.title')) + '</p><ul class="cprofile-ach-list">'
+    + top.map((d) => '<li class="cprofile-ach-item"><span class="cprofile-ach-icon" aria-hidden="true">' + esc(d.icon) + '</span><span class="cprofile-ach-name">' + esc(t(d.nameKey)) + '</span></li>').join('')
+    + '</ul>' + (mine && info.hidden ? '<p class="card-note">' + esc(t('profileAch.hiddenNote')) + '</p>' : '') + '</div>';
+}
+async function communitySetProfileAchHidden(hidden) {
+  const sb = communityClient(); if (!sb) return;
+  let res;
+  try { res = await sb.rpc('profile_achievements_hide', { p_hidden: !!hidden }); } catch (e) { res = { error: e }; }
+  communitySetMessageText(res.error ? communityErrText(res.error) : t(hidden ? 'profileAch.hiddenOn' : 'profileAch.shownOn'));
+  renderCommunity();
+}
 function communityProfileHeadHtml(card, mine) {
   const stat = (n, key, act, kind) => {
     const inner = '<span class="cstat-n">' + (Number(n) || 0) + '</span><span class="cstat-l">' + esc(t(key)) + '</span>';
@@ -14173,6 +14889,7 @@ async function renderCommunity() {
     if (communityV2() && communityView === 'following') { communityScope = 'following'; communityView = 'feed'; }
     if (communityV2() && communityConsent) await communityAfterSignIn(sb, session.user);
     if (leaderboardEnabled() && communityConsent) leaderboardSend(false);
+    if (communityV5() && communityConsent) profileAchievementsSend(false);
     if (seq !== communityRenderSeq) return;
     if (communityView === 'myposts') { put(await communityMyPostsHtml(sb, session.user)); return; }
     if (communityView === 'moderate') { put(await communityModerateHtml(sb, session.user)); return; }
@@ -14348,6 +15065,7 @@ function communitySocialCardHtml(p, inComments) {
     + '</header>'
     + communityPhotosHtml(p.photos, p.urls || {})
     + (!p.photos.length && p.caption ? '<p class="community-caption cpost-text">' + esc(p.caption) + '</p>' : '')
+    + (p.share ? shareCardHtml(p.share, 'post', p.id) : '')
     + '<div class="community-social-row cpost-actions">'
     + '<button type="button" class="cpost-act community-like' + (p.liked ? ' on' : '') + '" data-community-action="like" data-post="' + escAttr(p.id) + '" aria-pressed="' + (p.liked ? 'true' : 'false') + '"'
     + ' aria-label="' + escAttr(t(p.liked ? 'community.unlikeAria' : 'community.likeAria', { n: p.likes })) + '">' + communityIcon('heart') + '<span>' + p.likes + '</span></button>'
@@ -14426,7 +15144,8 @@ async function communityLoadSocialFeed(sb, reset) {
     comments: Number(r.comments) || 0, visibility: r.visibility || 'public',
   }));
   const urls = await communitySignedUrls(sb, [].concat(...items.map((p) => p.photos.map((ph) => ph.thumb))));
-  items.forEach((p) => { p.urls = urls; });
+  await communityLoadPostShares(sb, items.map((p) => p.id));
+  items.forEach((p) => { p.urls = urls; if (communityPostShares[p.id]) p.share = communityPostShares[p.id]; });
   communityFeed.items = reset ? items : communityFeed.items.concat(items);
   communityFeed.done = items.length < COMMUNITY_PAGE;
   communityRefreshFeed();
@@ -14512,6 +15231,7 @@ async function communityUserHtml(sb, uid) {
     return communityTabbar()
       + communitySubHead(esc(card.username || t('community.unknownUser')))
       + communityProfileHeadHtml(card, mine)
+      + (communityV5() ? profileAchievementsHtml(await profileAchievementsGet(sb, card.id), mine) : '')
       + communityStatusHtml()
       + (mine ? '' : '<div class="cprofile-actions">'
         + '<button type="button" class="btn ' + (card.i_follow ? 'btn-secondary' : 'btn-primary') + ' btn-sm" data-community-action="follow" data-user="' + escAttr(card.id) + '" data-on="' + (card.i_follow ? '0' : '1') + '" aria-pressed="' + (card.i_follow ? 'true' : 'false') + '">'
@@ -14593,10 +15313,14 @@ async function communityProfileHtml(sb, user) {
   const card = communitySocial ? await communityProfileCard(sb, user.id) : null;
   let lbMe = null;
   if (communityVersion >= 3) { try { lbMe = await sb.rpc('leaderboard_me'); } catch (e) { lbMe = null; } }
+  let achMe = null;
+  if (communityV5()) { await profileAchievementsSend(false); achMe = await profileAchievementsGet(sb, user.id); }
+  if (remindersAvailable() && pushState() === 'on') await remindersLoad(sb);
   const masked = t('community.emailHidden');
   if (communityV2() && card) {
     return communityTabbar()
       + communityProfileHeadHtml(card, true)
+      + profileAchievementsHtml(achMe, true)
       + '<div class="cprofile-actions">'
       + '<button type="button" class="btn btn-secondary btn-sm" data-community-action="go-friends">' + esc(t('community2.friendsTitle'))
       + (communityBadges.requests ? ' <span class="cnav-badge cbadge-inline">' + communityBadges.requests + '</span>' : '') + '</button>'
@@ -14622,12 +15346,16 @@ async function communityProfileHtml(sb, user) {
       + (communityVersion >= 3 ? '<label class="community-check" for="community-leaderboard"><input type="checkbox" id="community-leaderboard"'
         + (!(lbMe && lbMe.data && lbMe.data.hidden) ? ' checked' : '') + '><span>' + esc(t('lb.switch')) + '</span></label>'
         + '<p class="card-note">' + esc(t('lb.switchNote')) + '</p>' : '')
+      + (communityV5() ? '<label class="community-check" for="community-profile-ach"><input type="checkbox" id="community-profile-ach"'
+        + (!(achMe && achMe.hidden) ? ' checked' : '') + '><span>' + esc(t('profileAch.switch')) + '</span></label>'
+        + '<p class="card-note">' + esc(t('profileAch.switchNote')) + '</p>' : '')
       + '<p class="card-note">' + esc(t('community2.friendsPrivate')) + '</p>'
       + '<p class="card-note">' + esc(masked) + '</p>'
       + (p.role === 'moderator' ? '<p class="card-note">' + esc(t('community.moderatorBadge')) + '</p>' : '')
       + (p.suspended ? '<p class="card-note">' + esc(t('community.suspendedBadge')) + '</p>' : '')
       + '</div>'
       + pushCardHtml()
+      + remindersCardHtml()
       + '<div class="card"><div class="plan-actions community-danger-row">'
       + '<button type="button" class="btn btn-danger" data-community-action="delete-account">' + esc(t('community.deleteAccount')) + '</button>'
       + '</div><div class="plan-actions">'
@@ -14696,12 +15424,14 @@ async function communityMyPostsHtml(sb, user) {
 async function communityMyPostsSocialHtml(sb, user) {
   const { data } = await sb.from('posts').select('id,status,caption,image_path,thumb_path,created_at').eq('user_id', user.id).order('created_at', { ascending: false });
   const rows = data || [];
+  await communityLoadPostShares(sb, rows.map((p) => p.id));
   const photos = await communityPostPhotos(sb, rows);
   const urls = await communitySignedUrls(sb, [].concat(...Object.values(photos).map((l) => l.map((ph) => ph.thumb))));
   const card = (p) => '<div class="community-card" data-post="' + escAttr(p.id) + '">'
     + communityPhotosHtml(photos[p.id], urls)
     + '<p class="community-status-badge">' + esc(t('community.status' + p.status.charAt(0).toUpperCase() + p.status.slice(1))) + '</p>'
     + (p.caption ? '<p class="community-caption">' + esc(p.caption) + '</p>' : '')
+    + (communityPostShares[p.id] ? shareCardHtml(communityPostShares[p.id], 'post', p.id, true) : '')
     + (p.status !== 'pending' ? '<p class="card-note">' + esc(t('community.lockedNote')) + '</p>' : '')
     + '<div class="plan-actions">'
     + (p.status === 'pending' ? '<button type="button" class="btn btn-secondary" data-community-action="edit-caption" data-post="' + escAttr(p.id) + '">' + esc(t('community.editText')) + '</button>' : '')
@@ -14720,6 +15450,51 @@ async function communityMyPostsSocialHtml(sb, user) {
 function communityDraftReleaseUrls() {
   communityDraftUrls.forEach((u) => { try { URL.revokeObjectURL(u); } catch (e) {} });
   communityDraftUrls = [];
+}
+/* Príspevok so zdieľaným plánom / tréningom (ako tweet s prílohou): náhľad + výber. */
+let communityComposePickOpen = false;
+function communityComposeShareHtml() {
+  const a = communityDraft.share;
+  if (a) {
+    return '<div class="cshare-draft">' + shareCardHtml(a, 'draft', 0, true)
+      + '<button type="button" class="btn btn-secondary btn-sm" data-community-action="compose-share-remove">' + esc(t('share.remove')) + '</button></div>';
+  }
+  const current = getPlan(selectedPlan);
+  const last = communityRecentWorkouts()[0];
+  let html = '<div class="plan-actions cshare-compose-row">'
+    + (current && current.exercises && current.exercises.length ? '<button type="button" class="btn btn-secondary" data-community-action="compose-share-plan" data-plan="' + escAttr(current.id) + '">' + esc(t('share.attachCurrentPlan')) + '</button>' : '')
+    + (last ? '<button type="button" class="btn btn-secondary" data-community-action="compose-share-workout" data-workout="' + escAttr(last.id) + '">' + esc(t('share.attachLastWorkout')) + '</button>' : '')
+    + '<button type="button" class="btn btn-secondary" data-community-action="compose-share-pick" aria-expanded="' + (communityComposePickOpen ? 'true' : 'false') + '">' + esc(t('share.attachOther')) + '</button></div>';
+  if (communityComposePickOpen) {
+    const plans = activePlanIds().map((id) => getPlan(id)).filter((p) => p && p.exercises && p.exercises.length);
+    html += '<div class="cshare-picker"><p class="modal-label">' + esc(t('share.pickPlan')) + '</p><div class="cshare-options">'
+      + plans.map((p) => '<button type="button" class="btn btn-secondary btn-sm" data-community-action="compose-share-plan" data-plan="' + escAttr(p.id) + '">📋 ' + esc(planDisplayName(p)) + (p.id === selectedPlan ? ' · ' + esc(t('share.current')) : '') + '</button>').join('')
+      + '</div><p class="modal-label">' + esc(t('share.pickWorkout')) + '</p><div class="cshare-options">'
+      + communityRecentWorkouts().map((w) => '<button type="button" class="btn btn-secondary btn-sm" data-community-action="compose-share-workout" data-workout="' + escAttr(w.id) + '">🏋️ ' + esc(historyPlanName(w)) + ' · ' + esc(formatDate(w.date)) + '</button>').join('')
+      + '</div></div>';
+  }
+  return html;
+}
+function communityComposeSetShare(a) {
+  const el = document.getElementById('community-compose-text');
+  if (el) communityDraft.text = el.value;
+  communityDraft.share = a || null;
+  communityComposePickOpen = false;
+  if (a && !String(communityDraft.text || '').trim()) communityDraft.text = shareSummaryText(a);
+  renderCommunity();
+}
+/* Po dokončení tréningu: rozpísaný príspevok s týmto tréningom (text sa dá upraviť, ide na schválenie). */
+function shareWorkoutToCommunity(workoutId) {
+  const w = state.history.find((x) => x.id === workoutId);
+  const a = shareFromWorkout(w);
+  if (!a) return;
+  communityDraftReleaseUrls();
+  communityDraft = { text: t('share.postAfterWorkout', { name: a.name }), photos: [], share: a };
+  communityPickerOpen = false; communityComposePickOpen = false;
+  communityBack = [];
+  communityView = 'compose';
+  communitySetMessage('');
+  switchTab('komunita');
 }
 function communityComposeHtml() {
   const d = communityDraft;
@@ -14740,6 +15515,7 @@ function communityComposeHtml() {
     + '<button type="button" class="btn btn-secondary" data-community-action="compose-progress"' + (full ? ' disabled' : '') + '>' + esc(t('community.composeAddProgress')) + '</button>'
     + '</div>'
     + '<div class="community-picker-grid" id="community-progress-picker" hidden></div>'
+    + (communityV5() ? communityComposeShareHtml() : '')
     + (communityV2() ? '<fieldset class="cvis"><legend class="modal-label">' + esc(t('community2.visibilityLabel')) + '</legend>'
       + ['public', 'friends'].map((v) => '<label class="cvis-opt"><input type="radio" name="community-visibility" value="' + v + '"' + (communityVisibility === v ? ' checked' : '') + '>'
         + '<span>' + esc(t(v === 'public' ? 'community2.visibilityPublic' : 'community2.visibilityFriends')) + '</span></label>').join('')
@@ -14817,7 +15593,8 @@ function communitySubmitPost() {
 }
 async function communitySubmitPostNow() {
   const sb = communityClient(); if (!sb || !communityProfile) return;
-  const text = String(communityDraft.text || '').trim();
+  /* Príspevok len so zdieľaným plánom / tréningom dostane krátky text automaticky. */
+  const text = String(communityDraft.text || '').trim() || (communityV5() && communityDraft.share ? shareSummaryText(communityDraft.share) : '');
   if (!text && !communityDraft.photos.length) { communitySetMessage('community.errEmptyPost'); return; }
   if (text.length > COMMUNITY_TEXT_MAX) { communitySetMessageText(t('community.errTextTooLong', { n: COMMUNITY_TEXT_MAX })); return; }
   const folder = communityProfile.id + '/' + uid();
@@ -14848,10 +15625,12 @@ async function communitySubmitPostNow() {
   }
   const args = { p_text: text, p_photos: photos };
   if (communityV2()) args.p_visibility = communityVisibility === 'friends' ? 'friends' : 'public';
-  const res = await sb.rpc('create_post', args);
+  const shared = communityV5() && communityDraft.share ? communityDraft.share : null;
+  if (shared) { args.p_visibility = args.p_visibility || 'public'; args.p_attachment = shared; }
+  const res = await sb.rpc(shared ? 'create_post_shared' : 'create_post', args);
   if (res.error) { await fail(communityErrText(res.error, 'community.errUpload')); return; }
   communityDraftReleaseUrls();
-  communityDraft = { text: '', photos: [] }; communityPickerOpen = false;
+  communityDraft = { text: '', photos: [] }; communityPickerOpen = false; communityComposePickOpen = false;
   communityVisibility = 'public';
   communityView = 'myposts';
   communitySetMessage('community.submitted');
@@ -14907,6 +15686,7 @@ async function communityModerateSocialHtml(sb) {
   const repUsers = userIds.length ? ((await sb.from('profiles').select('id,username').in('id', userIds)).data || []) : [];
   const photos = await communityPostPhotos(sb, pendingRows.concat(repPosts));
   const urls = await communitySignedUrls(sb, [].concat(...Object.values(photos).map((l) => l.map((ph) => ph.thumb))));
+  await communityLoadPostShares(sb, pendingRows.concat(repPosts).map((p) => p.id));
   communityModCaptions = {};
   pendingRows.forEach((p) => { communityModCaptions[p.id] = p.caption || ''; });
   const name = (p) => (p && p.profiles && p.profiles.username) || t('community.unknownUser');
@@ -14914,6 +15694,7 @@ async function communityModerateSocialHtml(sb) {
     + '<div class="community-head"><span class="community-name">' + esc(name(p)) + '</span><span class="community-date">' + esc(formatDate(String(p.created_at).slice(0, 10))) + '</span></div>'
     + communityPhotosHtml(photos[p.id], urls)
     + (p.caption ? '<p class="community-caption">' + esc(p.caption) + '</p>' : '')
+    + (communityPostShares[p.id] ? shareCardHtml(communityPostShares[p.id], 'post', p.id, true) : '')
     + '<div class="plan-actions">'
     + '<button type="button" class="btn btn-primary" data-community-action="approve" data-post="' + escAttr(p.id) + '">' + esc(t('community.approve')) + '</button>'
     + '<button type="button" class="btn btn-secondary" data-community-action="reject" data-post="' + escAttr(p.id) + '">' + esc(t('community.reject')) + '</button>'
@@ -16599,13 +17380,13 @@ function historyExerciseDetail(ex, displayName) {
     const done = cleanSideSets(ex.sidesDone, sets);
     const fails = cleanSideSets(ex.sidesFailure, sets);
     const head = `${esc(displayName !== undefined ? displayName : ex.name)} `
-      + `${esc(tPlural('unilateral.setsPerSide', sets))} · ${ex.reps} ${t('units.reps')} · ${ex.weight} ${t('units.kg')}`;
+      + `${esc(tPlural('unilateral.setsPerSide', sets))} · ${ex.reps} ${t('units.reps')} · ${historyWeightText(ex)}`;
     let out = head + `<div class="history-side-note">${esc(t('unilateral.completed', { sides: completedSidesLabel(done) }))}</div>`;
     const list = sideFailureList(fails);
     if (list) out += `<div class="failure-note">🔥 ${esc(t('unilateral.failureList', { list }))}</div>`;
     return out;
   }
-  const line = `${esc(displayName !== undefined ? displayName : ex.name)} ${ex.sets}×${ex.reps} · ${ex.weight} ${t('units.kg')}`;
+  const line = `${esc(displayName !== undefined ? displayName : ex.name)} ${ex.sets}×${ex.reps} · ${historyWeightText(ex)}`;
   const fSets = cleanFailureSets(ex.actualFailureSets, ex.sets);
   /* Zlyhanie sa zobrazuje len vtedy, keď bolo naozaj zaznamenané – nikdy z plánu. */
   return fSets.length
@@ -16737,7 +17518,7 @@ function workoutBlock(w) {
       return `
     <div class="day-ex">
       <span class="day-ex-name">${esc(historyExerciseName(ex))}</span>
-      <span class="day-ex-meta">${esc(tPlural('unilateral.setsPerSide', sets))} · ${ex.reps} ${t('units.reps')} · ${ex.weight} ${t('units.kg')} · ${ex.setsDone} ${t('history.setsDoneLabel')}</span>
+      <span class="day-ex-meta">${esc(tPlural('unilateral.setsPerSide', sets))} · ${ex.reps} ${t('units.reps')} · ${historyWeightText(ex)} · ${ex.setsDone} ${t('history.setsDoneLabel')}</span>
       <span class="day-ex-completed">${esc(t('unilateral.completed', { sides: completedSidesLabel(done) }))}</span>
       ${list ? `<span class="day-ex-failure">🔥 ${esc(t('unilateral.failureList', { list }))}</span>` : ''}
     </div>`;
@@ -16746,7 +17527,7 @@ function workoutBlock(w) {
     return `
     <div class="day-ex">
       <span class="day-ex-name">${esc(historyExerciseName(ex))}</span>
-      <span class="day-ex-meta">${ex.sets} × ${ex.reps} · ${ex.weight} ${t('units.kg')} · ${ex.setsDone} ${t('history.setsDoneLabel')}</span>
+      <span class="day-ex-meta">${ex.sets} × ${ex.reps} · ${historyWeightText(ex)} · ${ex.setsDone} ${t('history.setsDoneLabel')}</span>
       ${fSets.length ? `<span class="day-ex-failure">🔥 ${esc(t('failure.sets', { sets: fSets.join(', ') }))}</span>` : ''}
     </div>`;
   }).join('');
@@ -16904,6 +17685,7 @@ function historyExerciseEntry(ex, sess) {
     entry.startSide = ex.startSide === 'right' ? 'right' : 'left';
     entry.setsDone = cleanDone.left.length + cleanDone.right.length;
     entry.sidesDone = cleanDone;
+    historyApplySetWeights(entry, ex, Array.from(new Set(cleanDone.left.concat(cleanDone.right))));
     entry.sidesFailure = cleanFails;
     /* actualFailureSets zostáva zjednotením čísel sérií – pre staršie zobrazenia aj kompatibilitu. */
     entry.actualFailureSets = Array.from(new Set(cleanFails.left.concat(cleanFails.right)))
@@ -16917,8 +17699,21 @@ function historyExerciseEntry(ex, sess) {
     }
     entry.setsDone = done.length;
     entry.actualFailureSets = cleanFailureSets(fails, ex.sets);
+    historyApplySetWeights(entry, ex, done);
   }
   return entry;
+}
+
+/* Zmena váhy počas tréningu: záznam dostane váhy všetkých sérií (setWeights), pôvodnú
+   plánovanú váhu (plannedWeight) a ako `weight` najťažšiu ODCVIČENÚ sériu – rekordy,
+   úspechy aj porovnanie s minulým tréningom tak počítajú so skutočne zdvihnutou váhou. */
+function historyApplySetWeights(entry, ex, doneSetNumbers) {
+  const list = sessionSetWeights(ex);
+  if (!list) return;
+  entry.setWeights = list;
+  entry.plannedWeight = Number(ex.weight) || 0;
+  const doneWeights = (doneSetNumbers || []).map((n) => list[n - 1]).filter((v) => typeof v === 'number');
+  if (doneWeights.length) entry.weight = Math.max.apply(null, doneWeights);
 }
 
 function confirmFinish() {
@@ -17029,6 +17824,10 @@ function showResultModal() {
     note.hidden = true;
   }
 
+  /* Zdieľanie do Community hneď po tréningu (len keď je Community zapnutá a server má 0011). */
+  const shareBtn = document.getElementById('btn-result-share');
+  if (shareBtn) shareBtn.hidden = !(communityConfigured() && communityOptIn() && communityV5() && entry);
+
   /* Trvanie sa zobrazí len ak bolo naozaj zmerané. */
   const durEl = document.getElementById('result-duration');
   const savedSeconds = cleanDurationSeconds(entry && entry.durationSeconds);
@@ -17076,11 +17875,13 @@ function requestDeleteWorkout(id) {
 /* ---------- Úprava tréningu z histórie ---------- */
 
 let heWorkoutId = null;
+let heOriginal = [];   // váha a počet sérií pri otvorení úpravy (pre váhy jednotlivých sérií)
 
 function openHistoryEdit(id) {
   const w = state.history.find(x => x.id === id);
   if (!w) return;
   heWorkoutId = id;
+  heOriginal = w.exercises.map((e) => ({ weight: e.weight, sets: e.sets }));
   document.getElementById('he-date').value = w.date;
   document.getElementById('he-note').value = w.note || '';
   const box = document.getElementById('he-exercises');
@@ -17110,11 +17911,17 @@ function saveHistoryEdit() {
   if (!w) return;
   w.date = document.getElementById('he-date').value || w.date;
   w.note = document.getElementById('he-note').value.trim();
-  w.exercises.forEach(e => {
+  w.exercises.forEach((e, idx) => {
     e.sets = Math.max(1, Math.min(99, Math.round(e.sets)));
     e.reps = Math.max(1, Math.min(99, Math.round(e.reps)));
     e.weight = Math.max(0, Math.min(999, Math.round(e.weight * 2) / 2));
     e.setsDone = Math.max(0, Math.min(e.sets, Math.round(e.setsDone)));
+    /* Váhy jednotlivých sérií platia len pre pôvodný záznam: ručne zmenená váha alebo počet
+       sérií ich nahradí jednou váhou (inak by zobrazenie odporovalo upravenej hodnote). */
+    const orig = heOriginal[idx];
+    if (Array.isArray(e.setWeights) && (!orig || e.weight !== orig.weight || e.sets !== orig.sets || !cleanHistorySetWeights(e))) {
+      delete e.setWeights; delete e.plannedWeight;
+    }
     /* Existujúce polia do zlyhania sa orežú na nový počet sérií; starým záznamom sa nepridávajú. */
     if (Array.isArray(e.actualFailureSets)) e.actualFailureSets = cleanFailureSets(e.actualFailureSets, e.sets);
     if (Array.isArray(e.plannedFailureSets)) e.plannedFailureSets = cleanFailureSets(e.plannedFailureSets, e.sets);
@@ -20594,6 +21401,10 @@ function setupEvents() {
   });
 
   on('btn-generic-cancel', closeGeneric);
+  on('btn-result-share', () => {
+    document.getElementById('modal-result').hidden = true;
+    shareWorkoutToCommunity(lastWorkoutId);
+  });
   on('btn-community-invite-close', closeCommunityInvite);
   on('btn-community-invite-later', closeCommunityInvite);
   on('btn-community-invite-join', joinCommunityFromInvite);
@@ -20652,6 +21463,8 @@ function setupEvents() {
     else if (act === 'signup') communitySignUp();
     else if (act === 'signout') communitySignOut();
     else if (act === 'push-on') pushEnable();
+    else if (act === 'rem-save') remindersSave();
+    else if (act === 'rem-day') { const on = !a.classList.contains('active'); a.classList.toggle('active', on); a.setAttribute('aria-pressed', on ? 'true' : 'false'); }
     else if (act === 'save-profile') communitySaveProfile();
     else if (act === 'more') { const sb = communityClient(); if (sb) communityLoadFeed(sb, false); }
     else if (act === 'edit-caption') communityEditCaption(a.dataset.post);
@@ -20700,7 +21513,20 @@ function setupEvents() {
     else if (act === 'chat-send') communitySendMessage();
     else if (act === 'chat-menu') { const m = document.getElementById('community-chat-menu'); if (m) m.hidden = !m.hidden; }
     else if (act === 'chat-delete') communityDeleteChat();
-    else if (act === 'msg-menu') communityMessageMenu(a.dataset.msg, a.dataset.mine === '1');
+    else if (act === 'msg-menu') { if (communityV5()) communityToggleMsgActions(a.dataset.msg); else communityMessageMenu(a.dataset.msg, a.dataset.mine === '1'); }
+    else if (act === 'msg-delete') communityMessageMenu(a.dataset.msg, true);
+    else if (act === 'msg-report') communityMessageMenu(a.dataset.msg, false);
+    else if (act === 'msg-reply') communitySetReply(a.dataset.msg);
+    else if (act === 'reply-cancel') { communityReplyTo = null; communityRedrawChatMsgs(); }
+    else if (act === 'react') communityToggleReaction(a.dataset.msg, a.dataset.emoji);
+    else if (act === 'chat-share-open') communityToggleSharePicker();
+    else if (act === 'chat-share-plan') communityShareToChat(shareFromPlan(getPlan(a.dataset.plan)));
+    else if (act === 'chat-share-workout') communityShareToChat(shareFromWorkout(state.history.find((w) => w.id === a.dataset.workout)));
+    else if (act === 'save-shared') communitySaveShared(a.dataset.src, a.dataset.ref);
+    else if (act === 'compose-share-plan') communityComposeSetShare(shareFromPlan(getPlan(a.dataset.plan)));
+    else if (act === 'compose-share-workout') communityComposeSetShare(shareFromWorkout(state.history.find((w) => w.id === a.dataset.workout)));
+    else if (act === 'compose-share-pick') { const el = document.getElementById('community-compose-text'); if (el) communityDraft.text = el.value; communityComposePickOpen = !communityComposePickOpen; renderCommunity(); }
+    else if (act === 'compose-share-remove') communityComposeSetShare(null);
   });
   on('community-body', (e) => {
     if (e.target && e.target.id === 'community-avatar' && e.target.files && e.target.files[0]) {
@@ -20717,6 +21543,7 @@ function setupEvents() {
     if (e.target && e.target.id === 'community-searchable') communitySetSearchable(!!e.target.checked);
     if (e.target && e.target.id === 'community-leaderboard') communitySetLeaderboard(!!e.target.checked);
     if (e.target && e.target.id === 'community-push') { if (e.target.checked) pushEnable(); else pushSwitchOff(); }
+    if (e.target && e.target.id === 'community-profile-ach') communitySetProfileAchHidden(!e.target.checked);
     if (e.target && e.target.name === 'community-visibility') communityVisibility = e.target.value === 'friends' ? 'friends' : 'public';
   }, 'change');
   on('community-body', (e) => {

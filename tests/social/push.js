@@ -70,7 +70,7 @@ scenario('encryption matches the RFC 8291 example', async () => {
 });
 
 scenario('version and access', async () => {
-  check('community_social_version() is 4', sqlVal('select public.community_social_version()') === '4');
+  check('community_social_version() is 4 or later', Number(sqlVal('select public.community_social_version()')) >= 4);
   const a = await member('acc');
   const d = device('acc-' + L.runTag);
   check('anon cannot register a device', !!(await L.anon().rpc('push_subscribe', { p_endpoint: d.endpoint, p_p256dh: d.p256dh, p_auth: d.auth })).error);
@@ -216,13 +216,12 @@ scenario('leaving Community and deleting the account remove the devices', async 
 });
 
 scenario('rollback 0010_down and re-apply', async () => {
-  L.sqlFile(path.join(REPO, 'supabase', 'rollback', '0010_down.sql'));
+  const undone = L.rollbackFrom(10);   // 0011/0012 build on 0010: rolled back first, re-applied after
   check('after rollback: version 3', sqlVal('select public.community_social_version()') === '3');
   check('after rollback: tables gone', sqlVal(`select to_regclass('public.push_subscriptions') is null and to_regclass('public.push_sent') is null`) === 't');
   check('after rollback: leave cleanup still works', !(await L.admin.rpc('community_leave_cleanup', { p_user: (await member('rb')).id })).error);
-  L.sqlFile(path.join(REPO, 'supabase', 'migrations', '0010_push.sql'));
-  sql(`notify pgrst, 'reload schema';`);
-  check('re-applied: version 4', sqlVal('select public.community_social_version()') === '4');
+  L.reapply(undone);
+  check('re-applied: version back to ' + (3 + undone.length), Number(sqlVal('select public.community_social_version()')) === 3 + undone.length);
   await wait(1500);
 });
 

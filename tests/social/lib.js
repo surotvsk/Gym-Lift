@@ -131,5 +131,28 @@ function denied(r) {
   return !!(r && (r.error || (Array.isArray(r.data) && r.data.length === 0) || r.data === null));
 }
 
+/* Later migrations build on earlier ones. rollbackFrom(n) rolls back every applied migration >= n,
+   newest first, and returns them; reapply(list) applies them again in order (+ schema reload). */
+const MIG = path.resolve(__dirname, '..', '..', 'supabase');
+const STACK = [
+  { n: 9, up: '0009_leaderboard.sql', down: '0009_down.sql', present: "to_regclass('public.leaderboard_entries') is not null" },
+  { n: 10, up: '0010_push.sql', down: '0010_down.sql', present: "to_regclass('public.push_subscriptions') is not null" },
+  { n: 11, up: '0011_social_extras.sql', down: '0011_down.sql', present: "to_regclass('public.message_reactions') is not null" },
+  { n: 12, up: '0012_reminders.sql', down: '0012_down.sql', present: "to_regclass('public.push_reminders') is not null" },
+];
+function rollbackFrom(n) {
+  const done = [];
+  for (const m of STACK.slice().reverse()) {
+    if (m.n < n) continue;
+    if (sqlVal('select ' + m.present) === 't') { sqlFile(path.join(MIG, 'rollback', m.down)); done.unshift(m); }
+  }
+  sql(`notify pgrst, 'reload schema';`);
+  return done;
+}
+function reapply(list) {
+  for (const m of list) sqlFile(path.join(MIG, 'migrations', m.up));
+  sql(`notify pgrst, 'reload schema';`);
+}
+
 module.exports = { URL_, anon, admin, sql, sqlFile, sqlVal, lit, newUser, signIn, makeModerator, fixtures,
-  hasMetadata, section, check, errText, denied, results, runTag };
+  hasMetadata, section, check, errText, denied, results, runTag, rollbackFrom, reapply };

@@ -114,7 +114,7 @@ async function member(tag, name) {
 }
 
 (async () => {
-  if (sqlVal('select public.community_social_version()') !== '4') throw new Error('0010 must be applied');
+  if (Number(sqlVal('select public.community_social_version()')) < 4) throw new Error('0010 must be applied');
   if (!process.env.GQ_COMMUNITY_CONFIG) throw new Error('GQ_COMMUNITY_CONFIG required');
   if (!/vapidPublicKey/.test(fs.readFileSync(process.env.GQ_COMMUNITY_CONFIG, 'utf8'))) throw new Error('local config needs vapidPublicKey');
   fs.mkdirSync(PROFILES, { recursive: true });
@@ -131,7 +131,7 @@ async function member(tag, name) {
     section('turn on from the Chats list');
     const pB = await browser('B', { dev: devB, permission: 'granted' });
     await signIn(pB, B);
-    check('server supports notifications (version 4)', (await pB.eval('communityVersion')) === 4);
+    check('server supports notifications (version 4+)', (await pB.eval('communityVersion')) >= 4);
     await view(pB, 'chats');
     check('Chats shows the "turn on" offer', await pB.eval(`!!document.querySelector('[data-community-action="push-on"]')`));
     await shot(pB, 'chats-offer-en', '.cpush-hint');
@@ -145,6 +145,45 @@ async function member(tag, name) {
     await view(pB, 'profile');
     check('Profile: switch is on', await pB.eval(`!!document.getElementById('community-push') && document.getElementById('community-push').checked`));
     await shot(pB, 'profile-on-en', '#community-push-card');
+
+    if ((await pB.eval('communityVersion')) >= 6) {
+      section('reminders (0012): water, meals, workout');
+      check('the reminders card is shown once notifications are on', await pB.eval(`!!document.getElementById('rem-water-on') && !!document.getElementById('rem-workout-time')`));
+      await pB.eval(`(() => {
+        document.getElementById('rem-water-on').checked = true;
+        document.getElementById('rem-water-every').value = '60';
+        document.getElementById('rem-water-from').value = '07:30';
+        document.getElementById('rem-water-to').value = '20:00';
+        document.getElementById('rem-meals-on').checked = true;
+        document.getElementById('rem-meal-0').value = '08:15'; document.getElementById('rem-meal-1').value = '13:00'; document.getElementById('rem-meal-2').value = '';
+        document.getElementById('rem-workout-on').checked = true;
+        document.getElementById('rem-workout-time').value = '18:30';
+        return true; })()`);
+      await click(pB, '#community-reminders .crem-day[data-day="1"]');   // Po (bolo zapnuté) → vypnúť
+      await click(pB, '#community-reminders .crem-day[data-day="2"]');   // Ut → zapnúť
+      await click(pB, '[data-community-action="rem-save"]');
+      await waitFor(() => sqlVal(`select water_on from public.push_reminders where user_id = ${lit(B.id)}`) === 't', 15000, 'reminders saved');
+      const row = sqlVal(`select tz || '|' || water_every || '|' || to_char(water_from, 'HH24:MI') || '|' || to_char(water_to, 'HH24:MI') || '|' || meals_on || '|' || array_to_string(meal_times, ',') || '|' || workout_on || '|' || array_to_string(array(select x from unnest(workout_days) x order by x), ',') || '|' || to_char(workout_time, 'HH24:MI') from public.push_reminders where user_id = ${lit(B.id)}`);
+      check('saved on the server with the phone time zone', row === (await pB.eval('Intl.DateTimeFormat().resolvedOptions().timeZone')) + '|60|07:30|20:00|true|08:15:00,13:00:00|true|2,3,5|18:30', row);
+      check('confirmation shown', (await bodyText(pB)).includes(await pB.eval(`t('rem.saved')`)));
+      await view(pB, 'feed'); await view(pB, 'profile');
+      check('saved values come back after reopening', await pB.eval(`document.getElementById('rem-water-every').value === '60' && document.getElementById('rem-meal-0').value === '08:15'
+        && document.getElementById('rem-workout-time').value === '18:30' && document.querySelector('.crem-day[data-day="2"]').classList.contains('active') && !document.querySelector('.crem-day[data-day="1"]').classList.contains('active')`));
+      await pB.eval(`(document.getElementById('rem-water-from').value = '22:00', document.getElementById('rem-water-to').value = '06:00', true)`);
+      await click(pB, '[data-community-action="rem-save"]');
+      check('"from" after "to" is refused with a clear message', (await bodyText(pB)).includes(await pB.eval(`t('rem.errInvalid')`))
+        && sqlVal(`select to_char(water_from, 'HH24:MI') from public.push_reminders where user_id = ${lit(B.id)}`) === '07:30');
+      await view(pB, 'profile');
+      await shot(pB, 'reminders-en', '#community-reminders');
+      for (const lang of ['sk', 'es', 'pt-BR', 'fr', 'ar']) {
+        await pB.eval(`(setLang(${J(lang)}), renderCommunity(), true)`);
+        await rendered(pB);
+        const txt = await pB.eval(`document.getElementById('community-reminders').innerText`);
+        check(lang + ': reminders card translated', !/rem\./.test(txt) && txt.includes(await pB.eval(`t('rem.save')`)), txt.slice(0, 80));
+      }
+      await pB.eval(`(setLang('sk'), renderCommunity(), true)`);
+      await rendered(pB);
+    }
     await pB.eval(`(setLang('sk'), true)`);
     await waitFor(() => sqlVal(`select lang from public.push_subscriptions where endpoint = ${lit(devB.endpoint)}`) === 'sk', 15000, 'lang sk');
     check('changing the app language updates the notification language', true);
@@ -235,7 +274,7 @@ async function member(tag, name) {
     check('desktop browser without Push: "not supported" note', await pE.eval(`document.getElementById('community-push-card').innerText.includes(t('push.unsupported'))`));
 
     section('fallback when 0010 is rolled back');
-    L.sqlFile(path.join(REPO, 'supabase', 'rollback', '0010_down.sql'));
+    const undone = L.rollbackFrom(10);
     sql(`notify pgrst, 'reload schema';`);
     await wait(1500);
     await pA.reload();
@@ -253,14 +292,14 @@ async function member(tag, name) {
     await click(pA, '[data-community-action="chat-send"]');
     await wait(1500);
     check('messages still send, no push attempted', (await bodyText(pA)).includes('after rollback') && received.length === before);
-    L.sqlFile(path.join(REPO, 'supabase', 'migrations', '0010_push.sql'));
-    sql(`notify pgrst, 'reload schema';`);
-    check('0010 re-applied', sqlVal('select public.community_social_version()') === '4');
+    L.reapply(undone);
+    check('0010 (and later) re-applied', Number(sqlVal('select public.community_social_version()')) === 3 + undone.length);
 
     section('no errors');
     for (const [name, p] of pages) {
       check(name + ': no exceptions', p.errors.length === 0, J(p.errors));
-      const errs = p.logs.filter((l) => !/favicon|127\.0\.0\.1:54321\/(auth|rest)\/v1\/.*(400|401|404)/.test(l));
+      /* 400 z reminders_set je zámerne neplatné uloženie („od“ po „do“) v teste pripomienok. */
+      const errs = p.logs.filter((l) => !/favicon|127\.0\.0\.1:54321\/(auth|rest)\/v1\/.*(400|401|404)/.test(l) && !/status of 400 .*rpc\/reminders_set/.test(l));
       check(name + ': no console errors', errs.length === 0, J(errs));
     }
   } catch (e) {

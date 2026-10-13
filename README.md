@@ -151,6 +151,13 @@ at a time.
 Mark each set as done while you train, then press **Finish workout**. You can also run a rest timer
 or reset the current workout without touching your history.
 
+**Different weights per set.** Every set shows its weight next to the ✓ button. Tap it to change the
+weight of that set (−2.5 / +2.5 kg buttons or type it; a comma works too). The new weight also applies
+to the following sets until you change one of them, so "set 1 at 60 kg, then 65 kg" is two taps. Your
+plan is never changed. The history keeps every set's weight (shown as *60 · 65 · 65 · 65 kg*), and
+records, achievements and the "last time" comparison use the heaviest set you actually completed.
+Editing that weight later in the history replaces the per-set weights with the single new weight.
+
 ### Progress
 Totals for this week, this month and all time, your personal records, and the full history of
 completed workouts. Every workout in the history can be edited ✏️ or deleted 🗑️.
@@ -685,6 +692,31 @@ opened from there, on iOS 16.4 or newer; in Safari the app explains this instead
 notifications are blocked in the phone or browser settings, the app says so and how to allow them.
 The notification goes through your browser's push service (Apple, Google, Mozilla or Microsoft),
 encrypted so that only your device can read it.
+
+**Reminders (optional).** With notifications on, **Community → Profile → Reminders** can remind you to
+**drink water** (every 30 minutes to 3 hours between two times), to **eat** (up to three meal times) and
+to **work out** (chosen weekdays at a time). They use your phone's time zone, arrive even when the app
+is closed, and are sent by the server at most once per reminder (checked every 5 minutes, so a
+reminder may come up to 5 minutes after its time). Turning notifications off, signing out or leaving
+Community stops them.
+
+**Replies and reactions in chat.** Tap a message to react with ❤️ 😂 👍 😮 💪 🔥 (one reaction per person
+per message; tap your reaction again to remove it) or to **Reply** — the answer shows the quoted
+message. Only the two people in the chat see reactions; reactions in an open chat refresh every few
+seconds.
+
+**Sharing workout plans and workouts.** In a chat, **Share a plan or workout** sends one of your plans
+or one of your last five workouts as a card (exercises, sets × reps, weights; a workout also shows the
+date, duration, XP and each set's weight). In a new post you can **attach your current plan**, your
+**last workout** or any plan or recent workout — like a tweet with an attachment; the post is
+reviewed by a moderator as usual and the card follows the post's visibility (everyone / friends).
+After finishing a workout, **Share to Community** opens a new post with that workout already
+attached. Anyone who sees a card can tap **Save to my plans** to get their own copy as a new plan
+(the original is never changed).
+
+**Top achievements on your profile.** Your profile shows your three best achievements (by XP). The app
+reports which achievements you earned; the server keeps only real ones that match your number of
+workouts. Turn off **Profile → Show my top achievements on my profile** to hide them from others.
 
 **Swipe between media** with your finger, or use the **‹ ›** buttons, the dots, the counter or the arrow
 keys. Each item has a **caption** in every supported language, and the **creator and licence are printed
