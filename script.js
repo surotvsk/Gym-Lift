@@ -16689,7 +16689,11 @@ function renderKalendar() {
     let aria = t('kalendar.ariaDay', { date: formatFullDate(date), status });
     if (count > 1) aria += ' · ' + tPlural('kalendar.ariaWorkoutCount', count);
     btn.setAttribute('aria-label', aria);
-    btn.innerHTML = `<span class="cal-num">${date.getDate()}</span>`
+    /* Deň z vedľajšieho mesiaca: prvý takýto deň v rade (začiatok mriežky alebo 1. deň
+       ďalšieho mesiaca) dostane krátky názov mesiaca, aby bolo jasné, kam tréning patrí. */
+    const monthLabel = outside && (dayNum < 1 ? i === 0 : date.getDate() === 1)
+      ? `<span class="cal-mon" aria-hidden="true">${esc(String(localeData().monthsShort[date.getMonth()]).replace(/\.$/, ''))}</span>` : '';
+    btn.innerHTML = `<span class="cal-num">${date.getDate()}</span>` + monthLabel
       + (count > 1 ? `<span class="cal-badge">${count}</span>` : '');
     grid.appendChild(btn);
   }

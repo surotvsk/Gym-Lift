@@ -1055,10 +1055,25 @@ button.cal-cell:hover { border-color: var(--border-strong); }
 
 .cal-cell.cal-selected { outline: 2px solid var(--border-strong); outline-offset: 1px; }
 
-/* Deň z vedľajšieho mesiaca: číslo dňa je stlmené, ale stavové indikátory
-   (zelená/červená, oranžový dnešok) sa zobrazujú rovnako ako v aktuálnom mesiaci. */
-.cal-cell.cal-outside { cursor: pointer; }
+/* Deň z vedľajšieho mesiaca: celé políčko je výrazne stlmené (stav zelená/červená ostáva
+   rozpoznateľný, ale nesplýva s aktuálnym mesiacom) a prvý taký deň má pod číslom krátky názov
+   mesiaca (pod číslom, aby ho neprekryl odznak počtu tréningov v rohu). */
+.cal-cell { flex-direction: column; }
+.cal-cell.cal-outside { cursor: pointer; opacity: 0.45; }
+button.cal-cell.cal-outside:hover { opacity: 0.7; }
 .cal-cell.cal-outside .cal-num { color: var(--text-faint); }
+.cal-mon {
+  display: block;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: clip;
+  white-space: nowrap;
+  font-size: 9px;
+  font-weight: var(--fw-bold);
+  line-height: 1.2;
+  margin-top: 0;
+  color: var(--text-dim);
+}
 
 .cal-badge {
   position: absolute;
