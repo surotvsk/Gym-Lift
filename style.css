@@ -1056,7 +1056,7 @@ button.cal-cell:hover { border-color: var(--border-strong); }
 .cal-cell.cal-selected { outline: 2px solid var(--border-strong); outline-offset: 1px; }
 
 /* Deň z vedľajšieho mesiaca: celé políčko je výrazne stlmené (stav zelená/červená ostáva
-   rozpoznateľný, ale nesplýva s aktuálnym mesiacom) a prvý taký deň má pod číslom krátky názov
+   rozpoznateľný, ale nesplýva s aktuálnym mesiacom) a každý taký deň má pod číslom krátky názov
    mesiaca (pod číslom, aby ho neprekryl odznak počtu tréningov v rohu). */
 .cal-cell { flex-direction: column; }
 .cal-cell.cal-outside { cursor: pointer; opacity: 0.45; }

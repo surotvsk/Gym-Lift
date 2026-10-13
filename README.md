@@ -125,7 +125,7 @@ that day (with a small badge when you trained more than once), a **muted red** d
 with no workout recorded, a **neutral** day is in the future, and **today** always carries an
 orange outline. The legend repeats the same meaning in words. The first and last rows also show a
 few days of the previous and next month so every week is complete; those days are **faded** (their
-green/red still shows, but pale) and the first of them carries a small month name such as *Nov*,
+green/red still shows, but pale) and each of them carries a small month name such as *Nov*,
 so a workout from another month never looks like it belongs to the one you are viewing.
 
 Tap any day in the month to see its full date and status, plus the plan name, exercises, sets,
