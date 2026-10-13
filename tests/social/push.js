@@ -221,7 +221,7 @@ scenario('rollback 0010_down and re-apply', async () => {
   check('after rollback: tables gone', sqlVal(`select to_regclass('public.push_subscriptions') is null and to_regclass('public.push_sent') is null`) === 't');
   check('after rollback: leave cleanup still works', !(await L.admin.rpc('community_leave_cleanup', { p_user: (await member('rb')).id })).error);
   L.reapply(undone);
-  check('re-applied: version back to ' + (3 + undone.length), Number(sqlVal('select public.community_social_version()')) === 3 + undone.length);
+  check('re-applied: version back to ' + undone.versionBefore, sqlVal('select public.community_social_version()') === undone.versionBefore);
   await wait(1500);
 });
 

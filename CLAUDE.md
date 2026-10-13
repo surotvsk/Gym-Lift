@@ -83,7 +83,7 @@ the app shows an "update available" notice and never reloads during an active wo
   production. The test harness installs `window.__GQ_TEST__` to turn the hooks into deterministic
   barriers and failure injections.
 - **Single tab:** Web Locks allow only one active tab per device. Other tabs show "Use here".
-- **Supabase backend** (`supabase/`): migrations `0001`–`0012` (there is no `0007`) and rollbacks in
+- **Supabase backend** (`supabase/`): migrations `0001`–`0013` (there is no `0007`) and rollbacks in
   `supabase/rollback/`; never put rollbacks in `migrations/`. Production has no CLI migration history
   and "auto-expose new tables" is off. Apply each new migration once, as one transaction, never with
   `supabase db push`. Grants are explicit (see `0002` and `0006`). The app detects which schema

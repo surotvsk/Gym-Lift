@@ -11989,7 +11989,16 @@ function openLibrary(mode, target) {
   refreshUpdateBanner();
 }
 
+/* Zatvorené okno sa len skryje – video v ňom by hralo ďalej (aj so zvukom). Preto sa zastaví. */
+function pauseMediaIn(root) {
+  const el = typeof root === 'string' ? document.getElementById(root) : root;
+  if (!el) return;
+  el.querySelectorAll('video, audio').forEach((m) => { try { if (!m.paused) m.pause(); } catch (e) {} });
+}
+
 function closeLibrary() {
+  pauseMediaIn('modal-exercise');
+  pauseMediaIn('modal-library');
   document.getElementById('modal-library').hidden = true;
   libraryMode = 'browse';
   libraryTarget = null;
@@ -12021,6 +12030,7 @@ function openExerciseSheet(id, ctx) {
 }
 
 function closeExerciseSheet() {
+  pauseMediaIn('modal-exercise');
   document.getElementById('modal-exercise').hidden = true;
   refreshUpdateBanner();
 }
@@ -12354,6 +12364,8 @@ function mountMediaGallery() {
       if (i !== mediaCurrent) {
         mediaCurrent = i;
         updateMediaChrome();
+        /* Video na slajde, z ktorého sa odišlo, sa zastaví. */
+        Array.from(track.children).forEach((slide, k) => { if (k !== i) pauseMediaIn(slide); });
       }
     }, 60);
   }, { passive: true });
@@ -13273,6 +13285,7 @@ function closePhotoViewer() {
   const img = document.getElementById('photo-viewer-img');
   if (img && img.dataset.url) { try { URL.revokeObjectURL(img.dataset.url); } catch (e) {} delete img.dataset.url; }
   if (img) img.removeAttribute('src');
+  pauseMediaIn('modal-photo');
   document.getElementById('modal-photo').hidden = true;
   refreshUpdateBanner();
 }
@@ -13877,6 +13890,7 @@ function communityResetSocial2() {
   communityPostId = null;
   communityReplyTo = null; communityMsgActions = null; communityReactions = {}; communitySharePickerOpen = false;
   profileAchSentSig = null;
+  remindersDefaultsTried = false; remindersData = null;
   clearInterval(communityReactTimer); communityReactTimer = null;
 }
 async function communityRefreshBadges(sb, uid) {
@@ -14308,6 +14322,7 @@ async function pushEnable() {
     const r = await pushSave(sb, sub);
     if (r.error) { msg = 'push.errFailed'; return; }
     pushDeviceWrite({ uid: me });
+    await remindersEnsureDefaults(sb);   // pripomienky sú predvolene zapnuté
   } catch (e) {
     msg = 'push.errFailed';
   } finally {
@@ -14347,6 +14362,7 @@ async function pushRefresh(sb, uid) {
     if (sub && !pushSameKey(sub)) { try { await sub.unsubscribe(); } catch (e) {} sub = null; }
     if (!sub) sub = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: pushKeyBytes(pushKey()) });
     await pushSave(sb, sub);
+    await remindersEnsureDefaults(sb);
   } catch (e) { /* bez siete alebo bez povolenia: skúsi sa pri ďalšom spustení */ }
 }
 /* Po odoslanej správe: priateľovi príde upozornenie (ak ho má zapnuté). Neblokuje odosielanie. */
@@ -14419,6 +14435,23 @@ async function remindersLoad(sb) {
   remindersData = null;
   if (!sb || !remindersAvailable()) return;
   try { const r = await sb.rpc('reminders_get'); if (r && !r.error) remindersData = r.data; } catch (e) {}
+  await remindersEnsureDefaults(sb);
+}
+/* Pripomienky sú predvolene zapnuté (migrácia 0013): kto ich nikdy neuložil a má zapnuté upozornenia,
+   tomu sa predvolené nastavenie uloží raz – v časovom pásme telefónu –, aby ich server naozaj posielal.
+   Čo si používateľ vypne, zostane vypnuté (vtedy už sú uložené a 'saved' je true). */
+let remindersDefaultsTried = false;
+async function remindersEnsureDefaults(sb) {
+  if (remindersDefaultsTried || !sb || !remindersAvailable() || pushState() !== 'on') return;
+  if (!remindersData) { try { const r = await sb.rpc('reminders_get'); if (r && !r.error) remindersData = r.data; } catch (e) { return; } }
+  if (!remindersData || remindersData.saved !== false) return;   // starší server bez 'saved' alebo už uložené
+  remindersDefaultsTried = true;
+  let tz = 'UTC';
+  try { tz = Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC'; } catch (e) {}
+  const d = remindersData;
+  const p = { tz, water_on: !!d.water_on, water_every: d.water_every, water_from: d.water_from, water_to: d.water_to,
+    meals_on: !!d.meals_on, meal_times: d.meal_times, workout_on: !!d.workout_on, workout_days: d.workout_days, workout_time: d.workout_time };
+  try { const r = await sb.rpc('reminders_set', { p }); if (r && !r.error) remindersData = r.data; } catch (e) {}
 }
 function remindersEveryLabel(min) {
   return min < 60 ? t('rem.everyMin', { n: min }) : t('rem.everyHours', { n: String(min / 60).replace('.', activeLang() === 'en' ? '.' : ',') });

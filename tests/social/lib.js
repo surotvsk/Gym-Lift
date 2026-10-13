@@ -139,9 +139,12 @@ const STACK = [
   { n: 10, up: '0010_push.sql', down: '0010_down.sql', present: "to_regclass('public.push_subscriptions') is not null" },
   { n: 11, up: '0011_social_extras.sql', down: '0011_down.sql', present: "to_regclass('public.message_reactions') is not null" },
   { n: 12, up: '0012_reminders.sql', down: '0012_down.sql', present: "to_regclass('public.push_reminders') is not null" },
+  { n: 13, up: '0013_reminders_default_on.sql', down: '0013_down.sql',
+    present: "coalesce((select column_default from information_schema.columns where table_schema = 'public' and table_name = 'push_reminders' and column_name = 'water_on'), '') = 'true'" },
 ];
 function rollbackFrom(n) {
   const done = [];
+  done.versionBefore = sqlVal('select public.community_social_version()');   // reapply() must restore exactly this
   for (const m of STACK.slice().reverse()) {
     if (m.n < n) continue;
     if (sqlVal('select ' + m.present) === 't') { sqlFile(path.join(MIG, 'rollback', m.down)); done.unshift(m); }

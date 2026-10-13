@@ -135,6 +135,8 @@ Between steps 2 and 4 people can already turn notifications on; messages are sim
    ```
 Until step 5 the job runs but sends nothing. **Rollback:** [`rollback/0012_down.sql`](./rollback/0012_down.sql) removes the job, settings and functions (version back to 5); delete the two Vault secrets and the `reminders` function if they are no longer wanted.
 
+**0013 — reminders on by default.** App (v65+) first, then run 0013 once + `NOTIFY pgrst, 'reload schema';`. `reminders_get()` returns the defaults switched on and `saved: false` for members who never saved settings; the app then saves them once in the phone's time zone. Version stays 6. **Rollback:** [`rollback/0013_down.sql`](./rollback/0013_down.sql) (defaults off again; saved rows keep their values). Roll back 0013 before 0012.
+
 ## 3. Authentication (email + password)
 1. **Authentication → Providers → Email**: enable **Email** and keep **Confirm email** ON.
    Do **not** disable email confirmation to work around mail limits.

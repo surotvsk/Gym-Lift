@@ -30,6 +30,7 @@ const WORK = process.env.GQ_WORK || path.join(os.tmpdir(), 'gq-social-push');
 const PROFILES = path.join(WORK, 'profiles');
 const IPHONE_UA = 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Mobile/15E148 Safari/604.1';
 let nextPort = 9940;
+let reapplyLater = null;   // migrácie vrátené rollbackom – obnovia sa vždy, aj po chybe
 const browsers = [];
 const pages = [];
 const wait = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -133,7 +134,8 @@ async function member(tag, name) {
     await signIn(pB, B);
     check('server supports notifications (version 4+)', (await pB.eval('communityVersion')) >= 4);
     await view(pB, 'chats');
-    check('Chats shows the "turn on" offer', await pB.eval(`!!document.querySelector('[data-community-action="push-on"]')`));
+    const offer = await waitFor(() => pB.eval(`!!document.querySelector('[data-community-action="push-on"]')`), 15000, 'turn-on offer').catch(() => false);
+    check('Chats shows the "turn on" offer', offer === true);
     await shot(pB, 'chats-offer-en', '.cpush-hint');
     await click(pB, '[data-community-action="push-on"]');
     await waitFor(() => subsFor(B, devB) === 1, 15000, 'subscription row');
@@ -148,7 +150,21 @@ async function member(tag, name) {
 
     if ((await pB.eval('communityVersion')) >= 6) {
       section('reminders (0012): water, meals, workout');
+      await waitFor(() => pB.eval(`!!document.getElementById('rem-water-on')`), 20000, 'reminders card').catch(() => {});
       check('the reminders card is shown once notifications are on', await pB.eval(`!!document.getElementById('rem-water-on') && !!document.getElementById('rem-workout-time')`));
+      check('reminders are ON by default and were saved automatically (phone time zone)',
+        sqlVal(`select water_on and meals_on and workout_on and tz = ${lit(await pB.eval('Intl.DateTimeFormat().resolvedOptions().timeZone'))} from public.push_reminders where user_id = ${lit(B.id)}`) === 't'
+        && await pB.eval(`document.getElementById('rem-water-on').checked && document.getElementById('rem-meals-on').checked && document.getElementById('rem-workout-on').checked`));
+      await pB.eval(`(document.getElementById('rem-meals-on').checked = false, true)`);
+      await click(pB, '[data-community-action="rem-save"]');
+      await waitFor(() => sqlVal(`select meals_on from public.push_reminders where user_id = ${lit(B.id)}`) === 'f', 10000, 'meals off');
+      await pB.reload(); await pB.eval(HELPERS);
+      await pB.eval(`(switchTab('komunita'), true)`);
+      await waitFor(() => pB.eval(`!!communityProfile`), 30000, 'profile after reload');
+      await view(pB, 'profile');
+      await waitFor(() => pB.eval(`!!document.getElementById('rem-meals-on')`), 20000, 'reminders after restart');
+      check('switching meals off stays off after a restart (defaults never re-applied)', sqlVal(`select meals_on from public.push_reminders where user_id = ${lit(B.id)}`) === 'f'
+        && await pB.eval(`!document.getElementById('rem-meals-on').checked`));
       await pB.eval(`(() => {
         document.getElementById('rem-water-on').checked = true;
         document.getElementById('rem-water-every').value = '60';
@@ -167,6 +183,7 @@ async function member(tag, name) {
       check('saved on the server with the phone time zone', row === (await pB.eval('Intl.DateTimeFormat().resolvedOptions().timeZone')) + '|60|07:30|20:00|true|08:15:00,13:00:00|true|2,3,5|18:30', row);
       check('confirmation shown', (await bodyText(pB)).includes(await pB.eval(`t('rem.saved')`)));
       await view(pB, 'feed'); await view(pB, 'profile');
+      await waitFor(() => pB.eval(`!!document.getElementById('rem-water-every')`), 20000, 'reminders reopened');
       check('saved values come back after reopening', await pB.eval(`document.getElementById('rem-water-every').value === '60' && document.getElementById('rem-meal-0').value === '08:15'
         && document.getElementById('rem-workout-time').value === '18:30' && document.querySelector('.crem-day[data-day="2"]').classList.contains('active') && !document.querySelector('.crem-day[data-day="1"]').classList.contains('active')`));
       await pB.eval(`(document.getElementById('rem-water-from').value = '22:00', document.getElementById('rem-water-to').value = '06:00', true)`);
@@ -195,6 +212,7 @@ async function member(tag, name) {
     await pA.eval(`(communityOpenChat(${J(conv)}), true)`);
     await rendered(pA);
     const msg = 'see you at the gym ' + L.runTag;
+    await waitFor(() => pA.eval(`!!document.getElementById('community-chat-text')`), 30000, 'chat box');
     await pA.eval(`(() => { const el = document.getElementById('community-chat-text'); el.value = ${J(msg)}; el.dispatchEvent(new Event('input', { bubbles: true })); return true; })()`);
     await click(pA, '[data-community-action="chat-send"]');
     await waitFor(() => forDevice(devB).length >= 1, 20000, 'push to B');
@@ -215,7 +233,8 @@ async function member(tag, name) {
     check('notification shown: GymQuest, name, one per chat (tag)', shown.length === 1 && shown[0].title === 'GymQuest' && shown[0].body === payload.body
       && shown[0].tag === 'gq-chat-' + conv && shown[0].conv === conv, J(shown));
     await pB.eval(`(navigator.serviceWorker.dispatchEvent(new MessageEvent('message', { data: { type: 'OPEN_CHAT', conv: ${J(conv)} } })), true)`);
-    await rendered(pB);
+    await waitFor(() => pB.eval(`communityView === 'chat' && !!document.getElementById('community-chat-msgs')`), 30000, 'chat opened');
+    await wait(500);
     check('tap: Community opens on that chat', await pB.eval(`activeTab === 'komunita' && communityView === 'chat' && communityChatId === ${J(conv)}`));
     check('the chat shows the message', (await bodyText(pB)).includes(msg));
     await wait(500);
@@ -275,6 +294,7 @@ async function member(tag, name) {
 
     section('fallback when 0010 is rolled back');
     const undone = L.rollbackFrom(10);
+    reapplyLater = undone;
     sql(`notify pgrst, 'reload schema';`);
     await wait(1500);
     await pA.reload();
@@ -288,12 +308,13 @@ async function member(tag, name) {
     const before = received.length;
     await pA.eval(`(communityOpenChat(${J(conv)}), true)`);
     await rendered(pA);
+    await waitFor(() => pA.eval(`!!document.getElementById('community-chat-text')`), 30000, 'chat box after rollback');
     await pA.eval(`(() => { const el = document.getElementById('community-chat-text'); el.value = 'after rollback'; return true; })()`);
     await click(pA, '[data-community-action="chat-send"]');
     await wait(1500);
     check('messages still send, no push attempted', (await bodyText(pA)).includes('after rollback') && received.length === before);
-    L.reapply(undone);
-    check('0010 (and later) re-applied', Number(sqlVal('select public.community_social_version()')) === 3 + undone.length);
+    L.reapply(undone); reapplyLater = null;
+    check('0010 (and later) re-applied', sqlVal('select public.community_social_version()') === undone.versionBefore);
 
     section('no errors');
     for (const [name, p] of pages) {
@@ -305,6 +326,7 @@ async function member(tag, name) {
   } catch (e) {
     check('test error', false, String(e && e.stack || e).split('\n').slice(0, 4).join(' | '));
   } finally {
+    if (reapplyLater) { L.reapply(reapplyLater); console.log('  (migrations re-applied after an error)'); }
     for (const b of browsers) b.killHard(true);
     mock.close();
     await server.close();

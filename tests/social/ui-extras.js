@@ -22,6 +22,7 @@ const WORK = process.env.GQ_WORK || path.join(os.tmpdir(), 'gq-social-extras');
 const PROFILES = path.join(WORK, 'profiles');
 const SHOTS = path.join(WORK, 'shots');
 let nextPort = 9960;
+let reapplyLater = null;   // migrácie vrátené rollbackom – obnovia sa vždy, aj po chybe
 const browsers = [];
 const pages = [];
 const wait = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -232,27 +233,31 @@ async function typeMsg(p, text) {
       await pB.eval(`(setLang(${J(lang)}), renderCommunity(), true)`);
       await rendered(pB);
       const txt = await bodyText(pB);
-      check(lang + ': chat with shared items translated (no raw keys)', !/share\.|chat\.|profileAch\./.test(txt) && txt.includes(await pB.eval(`t('share.saveAsPlan')`)), txt.slice(0, 120));
+      check(lang + ': chat with shared items translated (no raw keys)', !/share\.|chat\.|profileAch\./.test(txt) && txt.includes(await pB.eval(`t('share.saveAsPlan')`)),
+        J({ txt: txt.slice(0, 200), view: await pB.eval('communityView'), tab: await pB.eval('activeTab'), chat: await pB.eval('communityChatId') }));
       if (lang === 'ar') await shot(pB, 'chat-ar', '.cshare-card');
     }
     await pB.eval(`(setLang('en'), true)`);
 
     section('fallback when 0011 is rolled back');
     const undone = L.rollbackFrom(11);
+    reapplyLater = undone;
     await wait(1500);
     await pB.reload(); await pB.eval(HELPERS);
     await pB.eval(`(switchTab('komunita'), true)`);
     await waitFor(() => pB.eval(`!!communityProfile && communityVersion === 4`), 30000, 'version 4');
     await pB.eval(`(communityOpenChat(${J(conv)}), true)`);
-    await rendered(pB);
-    check('chat still works without 0011 (text lines visible, no share/react UI)', (await bodyText(pB)).includes('Push day')
-      && await pB.eval(`!document.querySelector('[data-community-action="chat-share-open"]') && !document.querySelector('.cshare-card')`));
+    /* nový schema cache po rollbacku chvíľu trvá – čaká sa na skutočne vykreslený chat, nie na starý obsah */
+    await waitFor(() => pB.eval(`communityView === 'chat' && !!document.getElementById('community-chat-msgs')`), 30000, 'chat after rollback');
+    await wait(500);
+    const fb = await pB.eval(`({ text: document.getElementById('community-body').innerText.slice(0, 300), view: communityView, tab: activeTab, v: communityVersion, share: !!document.querySelector('[data-community-action="chat-share-open"]'), card: !!document.querySelector('.cshare-card') })`);
+    check('chat still works without 0011 (text lines visible, no share/react UI)', fb.text.includes('Push day') && !fb.share && !fb.card, J(fb));
     await typeMsg(pB, 'plain after rollback');
     check('sending a plain message still works', (await bodyText(pB)).includes('plain after rollback'));
     await view(pB, 'compose');
     check('composer has no attach buttons without 0011', await pB.eval(`!document.querySelector('[data-community-action="compose-share-plan"]')`));
-    L.reapply(undone);
-    check('0011 (and later) re-applied', Number(sqlVal('select public.community_social_version()')) === 4 + undone.length);
+    L.reapply(undone); reapplyLater = null;
+    check('0011 (and later) re-applied', sqlVal('select public.community_social_version()') === undone.versionBefore);
 
     section('no errors');
     for (const [name, p] of pages) {
@@ -263,6 +268,7 @@ async function typeMsg(p, text) {
   } catch (e) {
     check('test error', false, String(e && e.stack || e).split('\n').slice(0, 4).join(' | '));
   } finally {
+    if (reapplyLater) { L.reapply(reapplyLater); console.log('  (migrations re-applied after an error)'); }
     for (const b of browsers) b.killHard(true);
     await server.close();
   }

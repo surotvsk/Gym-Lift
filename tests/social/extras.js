@@ -173,7 +173,7 @@ scenario('rollback 0011_down and re-apply', async () => {
     and to_regclass('public.profile_achievements') is null and not exists (select 1 from information_schema.columns where table_name = 'messages' and column_name in ('reply_to', 'attachment'))`) === 't');
   check('after rollback: leave cleanup still works', !(await L.admin.rpc('community_leave_cleanup', { p_user: (await member('rbk')).id })).error);
   L.reapply(undone);
-  check('re-applied: version back to ' + (4 + undone.length), Number(sqlVal('select public.community_social_version()')) === 4 + undone.length);
+  check('re-applied: version back to ' + undone.versionBefore, sqlVal('select public.community_social_version()') === undone.versionBefore);
   await new Promise((r) => setTimeout(r, 1500));
 });
 

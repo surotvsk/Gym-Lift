@@ -45,9 +45,14 @@ scenario('version, access and validation', async () => {
   check('cron job gymquest-reminders every 5 minutes', sqlVal(`select schedule from cron.job where jobname = 'gymquest-reminders'`) === '*/5 * * * *');
   const a = await member('val');
   let r = await a.c.rpc('reminders_get');
-  check('defaults before saving', !r.error && r.data.water_on === false && r.data.water_every === 120 && J(r.data.meal_times) === J(['08:00', '12:30', '18:30']), J(r.data));
+  check('defaults before saving: ON (0013) and marked as never saved', !r.error && r.data.water_on === true && r.data.meals_on === true && r.data.workout_on === true
+    && r.data.saved === false && r.data.water_every === 120 && J(r.data.meal_times) === J(['08:00', '12:30', '18:30']), J(r.data));
   r = await set(a, { tz: 'Europe/Bratislava', water_on: true, water_every: 90, meals_on: true, meal_times: ['07:30', '13:00'], workout_on: true, workout_days: [2, 4], workout_time: '18:15' });
   check('saving valid settings', !r.error && r.data.tz === 'Europe/Bratislava' && r.data.water_every === 90 && J(r.data.meal_times) === J(['07:30', '13:00']) && J(r.data.workout_days.sort()) === J([2, 4]), errText(r) + J(r.data));
+  check('after saving: saved = true', (await a.c.rpc('reminders_get')).data.saved === true);
+  await set(a, { water_on: false, meals_on: false, workout_on: false });
+  check('switching everything off is kept (not turned back on)', (await a.c.rpc('reminders_get')).data.water_on === false);
+  await set(a, { tz: 'Europe/Bratislava', water_on: true, water_every: 90, meals_on: true, meal_times: ['07:30', '13:00'], workout_on: true, workout_days: [2, 4], workout_time: '18:15' });
   check('turning water on starts counting from now (no immediate reminder)', sqlVal(`select (now() - last_water) < interval '1 minute' from public.push_reminders where user_id = ${lit(a.id)}`) === 't');
   for (const [what, p] of [['unknown time zone', { tz: 'Mars/Olympus' }], ['bad time', { water_from: '25:00' }], ['water from after to', { water_from: '22:00', water_to: '08:00' }],
     ['interval below 30 min', { water_every: 5 }], ['7 meal times', { meal_times: ['01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00'] }],
@@ -125,11 +130,11 @@ scenario('cleanup and rollback', async () => {
   await set(a, { water_on: true });
   const r = await L.admin.rpc('community_leave_cleanup', { p_user: a.id });
   check('leaving Community removes the reminders', !r.error && sqlVal(`select count(*) from public.push_reminders where user_id = ${lit(a.id)}`) === '0', errText(r));
-  L.sqlFile(path.join(REPO, 'supabase', 'rollback', '0012_down.sql'));
+  const undone = L.rollbackFrom(12);
   check('after rollback: version 5, table and cron job gone', sqlVal('select public.community_social_version()') === '5'
     && sqlVal(`select to_regclass('public.push_reminders') is null and not exists (select 1 from cron.job where jobname = 'gymquest-reminders')`) === 't');
-  L.sqlFile(path.join(REPO, 'supabase', 'migrations', '0012_reminders.sql'));
-  sql(`notify pgrst, 'reload schema';`);
+  L.reapply(undone);
+  check('0013 re-applied too (defaults on)', undone.length === 2 && sqlVal(`select column_default from information_schema.columns where table_name = 'push_reminders' and column_name = 'water_on'`) === 'true');
   check('re-applied: version 6 and the job is back', sqlVal('select public.community_social_version()') === '6'
     && sqlVal(`select count(*) from cron.job where jobname = 'gymquest-reminders'`) === '1');
   await wait(1500);

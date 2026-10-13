@@ -176,7 +176,7 @@ scenario('rollback 0009_down and re-apply', async () => {
   L.reapply(undone.slice(0, 1));
   check('re-applied: version 3', sqlVal('select public.community_social_version()') === '3');
   L.reapply(undone.slice(1));
-  check('later migrations re-applied', Number(sqlVal('select public.community_social_version()')) === 2 + undone.length);
+  check('later migrations re-applied', sqlVal('select public.community_social_version()') === undone.versionBefore);
 });
 
 (async () => {

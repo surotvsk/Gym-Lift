@@ -693,12 +693,14 @@ notifications are blocked in the phone or browser settings, the app says so and 
 The notification goes through your browser's push service (Apple, Google, Mozilla or Microsoft),
 encrypted so that only your device can read it.
 
-**Reminders (optional).** With notifications on, **Community → Profile → Reminders** can remind you to
+**Reminders (on by default).** With notifications on, **Community → Profile → Reminders** reminds you to
 **drink water** (every 30 minutes to 3 hours between two times), to **eat** (up to three meal times) and
 to **work out** (chosen weekdays at a time). They use your phone's time zone, arrive even when the app
 is closed, and are sent by the server at most once per reminder (checked every 5 minutes, so a
 reminder may come up to 5 minutes after its time). Turning notifications off, signing out or leaving
-Community stops them.
+Community stops them. They start **switched on** (water every 2 hours 08:00–21:00, meals at 08:00 · 12:30 · 18:30, workout
+Mon/Wed/Fri at 17:00, in your phone's time zone) as soon as notifications are on; every switch can be
+turned off and stays off.
 
 **Replies and reactions in chat.** Tap a message to react with ❤️ 😂 👍 😮 💪 🔥 (one reaction per person
 per message; tap your reaction again to remove it) or to **Reply** — the answer shows the quoted
