@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>37 · Memphis — GymQuest concept</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik+Mono+One&family=DM+Sans:opsz,wght@9..40,400;9..40,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../frame.css">
+<link rel="stylesheet" href="kit.css">
+<style>
+  .app { position: absolute; inset: 0; display: flex; flex-direction: column; background: #fff; color: #111; font: 15px/1.4 'DM Sans', system-ui, sans-serif;
+    --pink: #FF5E8A; --teal: #00C2A8; --yel: #FFD23F; --blue: #5B5BFF;
+    --squig: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='20'%3E%3Cpath d='M0 10 q10 -10 20 0 t20 0' fill='none' stroke='%23111' stroke-width='2.5'/%3E%3C/svg%3E");
+    --dots: radial-gradient(#111 2px, transparent 2.5px) 0 0 / 12px 12px;
+    --terrazzo: radial-gradient(circle at 20% 30%, #FF5E8A 3px, transparent 4px), radial-gradient(circle at 70% 60%, #5B5BFF 3px, transparent 4px), radial-gradient(circle at 40% 80%, #00C2A8 2px, transparent 3px), radial-gradient(circle at 85% 20%, #111 2px, transparent 3px);
+    --k-acc: #5B5BFF; --k-font: 'DM Sans', sans-serif; --k-head: 'Rubik Mono One', sans-serif; --k-radius: 0px; --k-card: #F4F4F4; --k-line: #111; --k-good: #00C2A8; --k-bad: #FFD5E0; }
+  main { flex: 1; overflow-y: auto; padding: 46px 14px 18px; }
+  .blk { position: relative; border: 3px solid #111; padding: 14px; margin-bottom: 16px; background: #fff; }
+  .blk.p { background: var(--pink); } .blk.t { background: var(--teal); } .blk.y { background: var(--yel); } .blk.b { background: var(--blue); color: #fff; }
+  .blk.tilt { transform: rotate(-1.5deg); } .blk.tilt2 { transform: rotate(1.2deg); }
+  .blk::after { content: ''; position: absolute; inset: auto -10px -10px auto; width: 60%; height: 60%; z-index: -1; }
+  .pat-dots { background: var(--dots), #fff; } .pat-terr { background: var(--terrazzo); background-size: 50px 50px; background-color: #FFF4E0; }
+  .squig { height: 20px; background: var(--squig) repeat-x; margin: 8px 0; }
+  .n { font: 400 54px/1 'Rubik Mono One', sans-serif; }
+  h1 { font: 400 26px/1.05 'Rubik Mono One', sans-serif; margin: 0 0 6px; }
+  h2 { font: 400 18px/1.1 'Rubik Mono One', sans-serif; margin: 0 0 6px; }
+  .tri { position: absolute; top: -18px; right: 18px; width: 0; height: 0; border-left: 18px solid transparent; border-right: 18px solid transparent; border-bottom: 30px solid var(--yel); filter: drop-shadow(3px 3px 0 #111); }
+  .circ { position: absolute; top: -14px; left: -12px; width: 34px; height: 34px; border-radius: 50%; background: var(--teal); border: 3px solid #111; }
+  .go { display: inline-block; border: 3px solid #111; background: #111; color: var(--yel); font: 400 15px 'Rubik Mono One'; padding: 12px 18px; cursor: pointer; box-shadow: 5px 5px 0 var(--pink); }
+  .go.w { background: #fff; color: #111; box-shadow: 5px 5px 0 var(--teal); }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px; }
+  .two .blk { margin: 0; text-align: left; font: inherit; cursor: pointer; color: inherit; }
+  .sets { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+  .s { width: 54px; height: 54px; border: 3px solid #111; background: #fff; font: 400 14px 'Rubik Mono One'; cursor: pointer; color: #111; padding: 0; }
+  .s:nth-child(3n+1) { border-radius: 50%; } .s:nth-child(3n+2) { clip-path: polygon(50% 0, 100% 100%, 0 100%); border: 0; background: #111; color: #fff; padding-top: 16px; }
+  .s.on { background: var(--yel); color: #111; } .s:nth-child(3n+2).on { background: var(--pink); }
+  .s small { display: block; font: 700 9px 'DM Sans'; }
+  .tools { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 8px; } .tools button { border: 0; background: none; font: 700 13px 'DM Sans'; text-decoration: underline wavy var(--pink); cursor: pointer; padding: 2px 0; color: #111; }
+  .lst button { display: flex; justify-content: space-between; width: 100%; border: 0; border-bottom: 3px solid #111; background: none; padding: 11px 0; font: 700 15px 'DM Sans'; cursor: pointer; color: #111; text-align: left; }
+  .lst button:last-child { border: 0; }
+  nav { display: flex; border-top: 3px solid #111; background: var(--yel); padding: 6px 4px 24px; }
+  nav button { flex: 1; border: 0; background: none; font: 400 10px 'Rubik Mono One'; cursor: pointer; padding: 9px 0; color: #111; }
+  nav button.is-active { background: #111; color: var(--yel); }
+  .post { cursor: pointer; } .post .k-post { border: 0; padding: 0; }
+</style>
+</head>
+<body class="concept">
+<aside class="concept-info" id="info"></aside>
+<div class="device"><div class="app" id="app">
+  <main data-scroll>
+    <section data-screen="hi"></section><section data-screen="move" hidden></section><section data-screen="wow" hidden></section><section data-screen="pals" hidden></section><section data-screen="knobs" hidden></section>
+  </main>
+  <nav><button data-tab="hi">Hi</button><button data-tab="move">Move</button><button data-tab="wow">Wow</button><button data-tab="pals">Pals</button><button data-tab="knobs">Knobs</button></nav>
+</div></div>
+<script src="designs.js"></script>
+<script src="lib.js"></script><script src="core.js"></script><script src="kit.js"></script>
+<script>
+(function () {
+  const G = GQ2, K = Kit, e = G.esc;
+  const li = (t, s, attrs) => '<button ' + attrs + '><span>' + t + '</span><span>' + (s || '') + '</span></button>';
+  function hi() {
+    const w = G.weekInfo(), rec = G.recommended(), s = G.sess(), X = G.xp();
+    return '<div class="blk p tilt"><span class="circ"></span><h1>Week ' + w.num + '</h1><div class="n">' + w.done + '/' + w.goal + '</div><div class="squig"></div><b>' + G.motivation() + '</b></div>'
+      + (s ? '<div class="blk pat-dots"><span class="tri"></span><div style="background:#fff;padding:10px;border:3px solid #111"><h2>' + e(s.planName) + '</h2><p style="margin:0 0 10px"><span data-live="elapsed"></span> in</p><button class="go" data-tab="move">Keep moving</button></div></div>'
+        : rec ? '<div class="blk pat-dots"><span class="tri"></span><div style="background:#fff;padding:12px;border:3px solid #111"><h2>' + e(rec.name) + ' is next</h2><p style="margin:0 0 12px">' + rec.exercises.map((x) => e(x.name)).join(', ') + '</p><button class="go" data-do="start" data-arg="' + rec.id + '">Start ' + e(rec.name) + '</button></div></div>' : '')
+      + '<div class="two"><button class="blk t tilt2" data-open="calendar"><h2>Streak</h2><div class="n" style="font-size:40px">' + G.streak() + '</div>weeks</button><button class="blk b" data-open="achievements"><h2>Level</h2><div class="n" style="font-size:40px">' + X.level + '</div>' + X.total + ' XP</button>'
+      + '<button class="blk y" data-do="excuse"><h2>' + (w.excused ? 'Excused' : 'Excuse') + '</h2>' + (w.excused ? 'tap to undo' : 'this week, keep the streak') + '</button><button class="blk pat-terr" data-open="rest"><h2>Rest</h2>timer</button></div>'
+      + '<div class="blk lst">' + li('Run, walk or ride', '', 'data-open="activity"') + '</div>';
+  }
+  function move() {
+    const s = G.sess();
+    if (!s) {
+      const sel = G.selected(), cols = ['p', 't', 'y', 'b', ''];
+      return '<h1>Pick one!</h1><div class="two">' + G.plans().map((p, k) => '<button class="blk ' + (p === sel ? 'pat-dots' : cols[k % 5]) + (k % 2 ? ' tilt2' : ' tilt') + '" data-do="select" data-arg="' + p.id + '"><h2' + (p === sel ? ' style="background:#fff;display:inline"' : '') + '>' + e(p.name) + (p === G.recommended() ? ' ✦' : '') + '</h2><br>' + p.exercises.length + ' moves</button>').join('') + '</div>'
+        + (sel ? '<div class="blk"><h2>' + e(sel.name) + '</h2>' + sel.exercises.map((x) => '<div>' + e(x.name) + ': ' + x.sets + '×' + x.reps + ' ' + G.fmtW(x.weight) + '</div>').join('') + '<div class="squig"></div><button class="go" data-do="start" data-arg="' + sel.id + '">Start</button> <button class="go w" data-open="editplan" data-arg="' + sel.id + '">Edit</button></div>' : '')
+        + '<div class="blk lst">' + li('Reorder plans', '', 'data-open="plans"') + li('New plan', '', 'data-open="newplan"') + li('Full Body builder', '', 'data-open="fullbody"') + li('Exercise library', '48', 'data-open="library"') + '</div>';
+    }
+    const p = G.progress(), cols = ['p', 't', 'y', 'b'];
+    return '<div class="blk y tilt"><h1 data-live="elapsed"></h1><b>' + e(s.planName) + ', ' + p.done + ' of ' + p.total + ' sets. Rest: <span data-live="rest" data-idle="off" data-done="over"></span></b><div class="squig"></div><button class="go" data-do="finish">Finish, +' + p.xp + ' XP</button></div>'
+      + s.exercises.map((x, i) => { const c = G.compare(s.planId, x.id, Math.max(...x.sets.map((y) => y.w)), x.reps);
+        return '<div class="blk' + (i === s.cur ? ' ' + cols[i % 4] : '') + '"' + (i === s.cur ? '' : '') + '><h2>' + e(x.name) + '</h2><div>' + (x.replaces ? 'instead of ' + e(x.replaces) : c.text) + '</div><div class="sets">'
+          + x.sets.map((st, j) => x.unilateral ? '<button class="s' + (st.L ? ' on' : '') + '" data-do="set" data-arg="' + i + ':' + j + ':L">L<small>' + G.fmtW(st.w) + '</small></button><button class="s' + (st.R ? ' on' : '') + '" data-do="set" data-arg="' + i + ':' + j + ':R">R<small>×' + st.r + '</small></button>' : '<button class="s' + (st.done ? ' on' : '') + '" data-do="set" data-arg="' + i + ':' + j + '">' + st.r + '<small>' + G.fmtW(st.w) + '</small></button>').join('') + '</div>'
+          + '<div class="tools"><button data-open="set" data-arg="' + i + ':0">Weight</button><button data-do="addset" data-arg="' + i + '">+ set</button><button data-open="replace" data-arg="' + i + '">Swap</button><button data-open="exercise" data-arg="' + x.id + '">How?</button><button data-do="rest" data-arg="90">Rest 90</button></div></div>'; }).join('')
+      + '<button class="go w" data-open="rest">Rest timer</button> <button class="go w" data-do="discard">Discard</button>';
+  }
+  function wow() {
+    const t = G.totals();
+    return '<h1>Wow, look</h1><div class="two"><button class="blk p" data-open="history"><div class="n" style="font-size:36px">' + t.month.workouts + '</div>this month</button><button class="blk t tilt2" data-open="history"><div class="n" style="font-size:36px">' + t.all.workouts + '</div>all time</button></div>'
+      + '<div class="blk pat-terr"><div style="background:#fff;border:3px solid #111;padding:8px;color:#5B5BFF"><h2 style="color:#111">Sets a week</h2>' + K.bars(G.weeklySeries(8).map((x) => x.sets), { h: 90, labels: G.weeklySeries(8).map((x) => x.label) }) + '</div></div>'
+      + '<div class="blk y"><h2>Big lifts</h2>' + G.records().list.slice(0, 4).map((r) => '<div style="display:flex;justify-content:space-between"><span>' + e(r.name) + '</span><b>' + G.fmtW(r.kg) + '</b></div>').join('') + '</div>'
+      + '<div class="blk lst">' + li('Records', '', 'data-open="records"') + li('History', '', 'data-open="history"') + li('Calendar', '', 'data-open="calendar"') + li('Achievements', '', 'data-open="achievements"') + li('Body', '', 'data-open="body"') + li('Food', '', 'data-open="food"') + li('Photos', '', 'data-open="photos"') + '</div>';
+  }
+  function pals() {
+    const L = G.leaderboard();
+    return '<h1>Pals</h1><div class="blk b tilt"><h2>Top 20: #' + (L.me ? L.me.rank : '–') + '</h2><button class="go w" data-open="leaderboard">See the board</button></div><div class="blk lst">' + li('Messages', '', 'data-open="chats"') + li('Friends', '', 'data-open="friends"') + li('New post', '', 'data-open="post"') + '</div>'
+      + G.feed().map((p, k) => '<div class="blk post' + (k % 2 ? ' tilt2' : '') + '" data-open="postview" data-arg="' + p.id + '">' + K.postCard(p) + '</div>').join('');
+  }
+  function knobs() { return '<h1>Knobs</h1><div class="blk lst">' + li('Weekly goal', G.goal(), 'data-open="settings"') + li('Profile and reminders', '', 'data-open="profile"') + li('All settings', '', 'data-open="settings"') + '</div>'; }
+  K.app({ root: document.getElementById('app'), screens: { hi, move, wow, pals, knobs }, actions: { start: (a) => { G.start(a); document.querySelector('[data-tab=move]').click(); } } });
+})();
+</script>
+</body>
+</html>

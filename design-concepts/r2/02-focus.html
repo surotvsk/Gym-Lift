@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>02 · Focus — GymQuest concept</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../frame.css">
+<link rel="stylesheet" href="kit.css">
+<style>
+  .app { position: absolute; inset: 0; display: flex; flex-direction: column; background: #FAFAF7; color: #111; font: 16px/1.45 'Inter Tight', system-ui, sans-serif;
+    --k-acc: #0B7A53; --k-font: 'Inter Tight', system-ui, sans-serif; --k-bg: #FAFAF7; --k-card: #F0F0EB; --k-line: #E2E2DB; --k-radius: 20px; }
+  .top { display: flex; gap: 18px; padding: 52px 24px 0; }
+  .top button { background: none; border: 0; padding: 0; font: 500 15px 'Inter Tight', sans-serif; color: #9A9A92; cursor: pointer; }
+  .top button.is-active { color: #111; text-decoration: underline; text-underline-offset: 6px; text-decoration-thickness: 2px; }
+  main { flex: 1; overflow-y: auto; padding: 0 24px 28px; }
+  .hero { min-height: 520px; display: flex; flex-direction: column; justify-content: center; }
+  .hero h1 { font: 800 52px/1.02 'Inter Tight', sans-serif; letter-spacing: -2px; margin: 0 0 12px; }
+  .hero h1 em { font-style: normal; color: #0B7A53; }
+  .hero p { color: #6B6B63; margin: 0 0 30px; font-size: 17px; }
+  .go { width: 132px; height: 132px; border-radius: 50%; border: 0; background: #111; color: #fff; font: 700 20px 'Inter Tight', sans-serif; cursor: pointer; display: grid; place-items: center; box-shadow: 0 20px 40px rgba(0,0,0,.18); }
+  .go .kico { width: 34px; height: 34px; }
+  .quiet { display: flex; flex-direction: column; gap: 0; border-top: 1px solid #E2E2DB; }
+  .quiet button, .quiet a { display: flex; justify-content: space-between; align-items: baseline; background: none; border: 0; border-bottom: 1px solid #E2E2DB; padding: 16px 0; font: 500 17px 'Inter Tight', sans-serif; color: #111; cursor: pointer; text-align: start; }
+  .quiet small { color: #9A9A92; font-size: 14px; }
+  h2 { font: 800 30px/1.1 'Inter Tight', sans-serif; letter-spacing: -1px; margin: 28px 0 14px; }
+  .lead { color: #6B6B63; margin: -6px 0 18px; }
+  /* session */
+  .sess { position: absolute; inset: 0; background: #111; color: #FAFAF7; display: flex; flex-direction: column; padding: 50px 24px 30px; z-index: 6; }
+  .sess .meta { display: flex; justify-content: space-between; color: #8D8D86; font-size: 14px; }
+  .sess .meta b { color: #FAFAF7; font-variant-numeric: tabular-nums; }
+  .sess .name { font: 700 26px/1.15 'Inter Tight', sans-serif; margin: 26px 0 4px; }
+  .sess .of { color: #8D8D86; }
+  .dots { display: flex; gap: 6px; margin-top: 14px; flex-wrap: wrap; }
+  .dots i { width: 10px; height: 10px; border-radius: 50%; background: #3A3A36; }
+  .dots i.d { background: #3DDC97; } .dots i.c { box-shadow: 0 0 0 2px #FAFAF7; }
+  .weight { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .weight .w { font: 800 120px/0.9 'Inter Tight', sans-serif; letter-spacing: -6px; font-variant-numeric: tabular-nums; background: none; border: 0; color: inherit; cursor: pointer; }
+  .weight .u { color: #8D8D86; font-size: 18px; margin-top: 6px; }
+  .weight .adj { display: flex; gap: 18px; margin-top: 22px; }
+  .weight .adj button { width: 60px; height: 60px; border-radius: 50%; border: 1px solid #3A3A36; background: none; color: #FAFAF7; font-size: 28px; cursor: pointer; }
+  .cmp { margin-top: 14px; color: #8D8D86; font-size: 14px; } .cmp.up { color: #3DDC97; } .cmp.down { color: #F2A65A; }
+  .done { width: 100%; border: 0; border-radius: 20px; background: #3DDC97; color: #0C2A1D; font: 800 22px 'Inter Tight', sans-serif; padding: 22px; cursor: pointer; }
+  .sides { display: flex; gap: 10px; } .sides .done { flex: 1; }
+  .sides .done.on { background: #2B2B28; color: #8D8D86; }
+  .row3 { display: flex; justify-content: space-between; margin-top: 16px; }
+  .row3 button { background: none; border: 0; color: #8D8D86; font: 500 15px 'Inter Tight', sans-serif; cursor: pointer; display: flex; align-items: center; gap: 4px; padding: 6px 0; }
+  .rest { position: absolute; inset: 0; background: #0B7A53; color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 7; text-align: center; }
+  .rest b { font: 800 110px/1 'Inter Tight', sans-serif; letter-spacing: -5px; font-variant-numeric: tabular-nums; }
+  .rest p { opacity: .8; margin: 6px 0 30px; }
+  .rest .rb { display: flex; gap: 10px; }
+  .rest button { border: 1px solid rgba(255,255,255,.5); background: none; color: #fff; border-radius: 999px; padding: 12px 20px; font: 600 15px 'Inter Tight', sans-serif; cursor: pointer; }
+  .plan { display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 18px 0; border: 0; border-bottom: 1px solid #E2E2DB; background: none; cursor: pointer; text-align: start; color: inherit; font: inherit; }
+  .plan b { font-size: 22px; letter-spacing: -.5px; } .plan.sel b { color: #0B7A53; }
+  .plan small { display: block; color: #9A9A92; font-size: 14px; }
+  .pill { border: 1px solid #111; background: none; border-radius: 999px; padding: 10px 16px; font: 600 14px 'Inter Tight', sans-serif; cursor: pointer; color: #111; }
+  .pill.dark { background: #111; color: #FAFAF7; }
+  .pills { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0; }
+  .num { font: 800 64px/1 'Inter Tight', sans-serif; letter-spacing: -3px; }
+  .post { padding: 16px 0; border-bottom: 1px solid #E2E2DB; cursor: pointer; }
+  .post b { font-weight: 700; } .post p { margin: 4px 0; } .post small { color: #9A9A92; }
+</style>
+</head>
+<body class="concept">
+<aside class="concept-info" id="info"></aside>
+<div class="device"><div class="app" id="app">
+  <div class="top"><button data-tab="now">Now</button><button data-tab="plans">Plans</button><button data-tab="log">Log</button><button data-tab="people">People</button><button data-tab="me">Me</button></div>
+  <main data-scroll>
+    <section data-screen="now"></section><section data-screen="plans" hidden></section><section data-screen="log" hidden></section><section data-screen="people" hidden></section><section data-screen="me" hidden></section>
+  </main>
+  <div id="overlay"></div>
+</div></div>
+<script src="designs.js"></script>
+<script src="lib.js"></script><script src="core.js"></script><script src="kit.js"></script>
+<script>
+(function () {
+  const G = GQ2, K = Kit, I = K.icon, e = G.esc;
+  const q = (t, s, attrs) => '<button ' + attrs + '><span>' + t + '</span><small>' + (s || '') + '</small></button>';
+
+  function now() {
+    const w = G.weekInfo(), rec = G.recommended(), s = G.sess();
+    if (s) return '<div class="hero"><h1>' + e(s.planName) + '<br><em>in progress.</em></h1><p>' + G.progress().done + ' of ' + G.progress().total + ' sets · <span data-live="elapsed"></span></p><button class="go" data-do="resume">' + I('play') + '</button></div>';
+    return '<div class="hero"><h1>' + (rec ? e(rec.name) + ' is<br><em>next.</em>' : 'Make a plan.') + '</h1><p>' + G.motivation() + '</p>' + (rec ? '<button class="go" data-do="start" data-arg="' + rec.id + '" aria-label="Start ' + e(rec.name) + '">Start</button>' : '') + '</div>'
+      + '<div class="quiet">' + q('This week', w.done + ' of ' + w.goal, 'data-open="calendar"') + q('Streak', G.streak() + ' weeks', 'data-do="excuse"') + q(w.excused ? 'Week excused' : 'Excuse this week', w.excused ? 'tap to undo' : 'keeps the streak', 'data-do="excuse"') + q('Rest timer', '', 'data-open="rest"') + q('Activity', 'run · walk · ride', 'data-open="activity"') + '</div>';
+  }
+  function plans() {
+    const sel = G.selected(), rec = G.recommended();
+    return '<h2>Plans</h2><p class="lead">Tap to choose. The order is your rotation.</p>' + G.plans().map((p) => '<button class="plan' + (p === sel ? ' sel' : '') + '" data-do="select" data-arg="' + p.id + '"><span><b>' + e(p.name) + (p === rec ? ' ✦' : '') + '</b><small>' + p.exercises.map((x) => e(x.name)).slice(0, 3).join(', ') + (p.exercises.length > 3 ? '…' : '') + '</small></span><small>' + G.planMinutes(p) + ' min</small></button>').join('')
+      + '<div class="pills"><button class="pill dark" data-do="start" data-arg="' + (sel ? sel.id : '') + '">Start ' + e(sel ? sel.name : '') + '</button><button class="pill" data-open="editplan" data-arg="' + (sel ? sel.id : '') + '">Edit</button><button class="pill" data-open="plans">Reorder</button><button class="pill" data-open="newplan">New</button><button class="pill" data-open="fullbody">Full body</button><button class="pill" data-open="library">Library</button></div>';
+  }
+  function log() {
+    const t = G.totals(), X = G.xp();
+    return '<h2>Log</h2><div class="num">' + t.all.workouts + '</div><p class="lead">workouts · level ' + X.level + ' · ' + X.total + ' XP</p>'
+      + '<div class="quiet">' + G.history().slice(0, 5).map((w) => q(e(w.planName), G.fmtDate(w.date), 'data-open="workout" data-arg="' + w.id + '"')).join('') + q('Full history', t.month.workouts + ' this month', 'data-open="history"') + q('Calendar', '', 'data-open="calendar"') + q('Records', G.records().list.length + ' lifts', 'data-open="records"') + q('Achievements', G.achievements().filter((a) => a.got).length + ' unlocked', 'data-open="achievements"') + q('Body', (G.bodyLatest('weight') || {}).value + ' kg', 'data-open="body"') + q('Food', G.foodDay().kcal + ' kcal today', 'data-open="food"') + q('Photos', G.state.photos.length + '', 'data-open="photos"') + '</div>';
+  }
+  function people() {
+    return '<h2>People</h2><div class="pills"><button class="pill dark" data-open="post">Post</button><button class="pill" data-open="chats">Messages</button><button class="pill" data-open="friends">Friends</button><button class="pill" data-open="leaderboard">Top 20</button></div>'
+      + G.feed().map((p) => '<div class="post" data-open="postview" data-arg="' + p.id + '"><b>' + e(G.person(p.who).name) + '</b> <small>' + G.timeAgo(p.ts) + '</small><p>' + e(p.text) + '</p><small>' + (p.workout ? e(p.workout.plan) + ' · ' + p.workout.sets + ' sets · ' : '') + '<span data-do="like" data-arg="' + p.id + '" style="cursor:pointer">' + (p.liked ? '♥' : '♡') + ' ' + p.likes + '</span> · ' + p.comments.length + ' comments</small></div>').join('');
+  }
+  function me() {
+    return '<h2>' + e(G.state.profile.name) + '</h2><p class="lead">@' + e(G.state.profile.handle) + '</p><div class="quiet">' + q('Weekly goal', G.goal() + ' workouts', 'data-open="settings"') + q('Profile and reminders', '', 'data-open="profile"') + q('Units', G.unit(), 'data-do="unit" data-arg="' + (G.unit() === 'kg' ? 'lb' : 'kg') + '"') + q('Settings', 'sound, backup, reset', 'data-open="settings"') + '</div>';
+  }
+
+  let hidden = false;
+  function overlay() {
+    const s = G.sess(), box = document.getElementById('overlay'), r = G.rest();
+    if (!s || hidden) { box.innerHTML = ''; return; }
+    const i = s.cur, x = s.exercises[i]; const j = Math.max(0, x.sets.findIndex((y) => !y.done)); const st = x.sets[j] || x.sets[x.sets.length - 1];
+    const allDone = x.sets.every((y) => y.done);
+    const c = G.compare(s.planId, x.id, st.w, st.r);
+    box.innerHTML = '<div class="sess"><div class="meta"><button data-do="hide" style="background:none;border:0;color:#8D8D86;cursor:pointer;padding:0">' + I('down') + '</button><span>' + e(s.planName) + '</span><b data-live="elapsed"></b></div>'
+      + '<div class="name">' + e(x.name) + '</div><div class="of">' + (allDone ? 'All sets done' : 'Set ' + (j + 1) + ' of ' + x.sets.length) + (x.unilateral ? ' · each side' : '') + (st.planFail ? ' · to failure' : '') + '</div>'
+      + '<div class="dots">' + s.exercises.map((y, k) => y.sets.map((z, m) => '<i class="' + (z.done ? 'd' : '') + (k === i && m === j && !allDone ? ' c' : '') + '"></i>').join('')).join('<span style="width:6px"></span>') + '</div>'
+      + '<div class="weight"><button class="w" data-open="set" data-arg="' + i + ':' + j + '">' + (st.w ? G.fmtW(st.w, true) : 'BW') + '</button><div class="u">' + (st.w ? G.unit() + ' × ' : 'bodyweight × ') + st.r + ' reps</div><div class="adj"><button data-do="wminus" data-arg="' + i + ':' + j + '" aria-label="Lighter">−</button><button data-do="wplus" data-arg="' + i + ':' + j + '" aria-label="Heavier">+</button></div><div class="cmp ' + c.kind + '">' + c.text + '</div></div>'
+      + (allDone ? '<button class="done" data-do="next">' + (i < s.exercises.length - 1 ? 'Next exercise' : 'Finish workout') + '</button>'
+        : x.unilateral ? '<div class="sides"><button class="done' + (st.L ? ' on' : '') + '" data-do="set" data-arg="' + i + ':' + j + ':L">Left</button><button class="done' + (st.R ? ' on' : '') + '" data-do="set" data-arg="' + i + ':' + j + ':R">Right</button></div>'
+        : '<button class="done" data-do="set" data-arg="' + i + ':' + j + '">Done</button>')
+      + '<div class="row3"><button data-do="prev">' + I('back') + ' Prev</button><button data-open="replace" data-arg="' + i + '">' + I('swap') + ' Replace</button><button data-open="exercise" data-arg="' + x.id + '">' + I('info') + ' How</button><button data-do="finish">Finish</button><button data-do="next">Next ' + I('chevron') + '</button></div></div>'
+      + (r ? '<div class="rest"><b data-live="rest" data-done="Go"></b><p>' + (r.done ? 'Rest time is over.' : 'Rest. Breathe.') + '</p><div class="rb"><button data-do="restadd" data-arg="30">+30 s</button><button data-do="reststop">' + (r.done ? 'Next set' : 'Skip') + '</button><button data-open="rest">Presets</button></div></div>' : '');
+  }
+
+  const app = K.app({ root: document.getElementById('app'), screens: { now, plans, log, people, me }, chrome: overlay,
+    actions: {
+      start: (a) => { hidden = false; G.start(a); },
+      resume: () => { hidden = false; overlay(); },
+      hide: () => { hidden = true; overlay(); app.render(true); },
+      set: (a) => { const [i, j, side] = a.split(':'); const was = G.sess().exercises[+i].sets[+j].done; G.toggleSet(+i, +j, side); const now = G.sess().exercises[+i].sets[+j].done; if (!was && now) G.startRest((G.state.restPresets[1] || G.state.restPresets[0] || { sec: 90 }).sec); },
+      next: () => { const s = G.sess(); if (s.cur >= s.exercises.length - 1 && s.exercises[s.cur].sets.every((y) => y.done)) K.finish(); else G.setCurrent(s.cur + 1); },
+    } });
+})();
+</script>
+</body>
+</html>

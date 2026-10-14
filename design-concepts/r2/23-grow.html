@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>23 · Grow — GymQuest concept</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Karla:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../frame.css">
+<link rel="stylesheet" href="kit.css">
+<style>
+  .app { position: absolute; inset: 0; display: flex; flex-direction: column; background: #EEF1E6; color: #2E3B2C; font: 15px/1.45 Karla, system-ui, sans-serif;
+    --k-acc: #4E7D45; --k-font: Karla, sans-serif; --k-head: Fraunces, serif; --k-radius: 18px; --k-bg: #F6F7F0; --k-card: #E6EBDB; --k-line: #D5DCC6; --k-good: #6A9E5E; --k-bad: #E7D3C1; }
+  main { flex: 1; overflow-y: auto; padding: 46px 18px 18px; }
+  h1 { font: 600 30px/1.1 Fraunces, serif; margin: 0 0 4px; } .sub { color: #6E7B66; margin: 0 0 8px; }
+  .pot { position: relative; height: 300px; margin: 0 -18px; }
+  .pot svg { width: 100%; height: 100%; }
+  .leaf { transform-origin: center; animation: sway 5s ease-in-out infinite alternate; }
+  @keyframes sway { to { transform: rotate(3deg); } }
+  @media (prefers-reduced-motion: reduce) { .leaf { animation: none; } }
+  .facts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 6px 0 14px; }
+  .facts button { border: 0; background: #F6F7F0; border-radius: 16px; padding: 10px; text-align: left; font: inherit; color: inherit; cursor: pointer; }
+  .facts b { display: block; font: 600 24px Fraunces; } .facts small { color: #6E7B66; }
+  .btn { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; border: 0; border-radius: 999px; background: #4E7D45; color: #F6F7F0; font: 700 16px Karla; padding: 14px; cursor: pointer; margin: 8px 0; }
+  .btn.soil { background: #8B6B4A; } .btn.lt { background: #DCE4CF; color: #2E3B2C; }
+  .card { background: #F6F7F0; border-radius: 20px; padding: 14px; margin-bottom: 12px; }
+  .lst button { display: flex; align-items: center; gap: 10px; width: 100%; border: 0; border-bottom: 1px solid #E1E6D6; background: none; padding: 12px 0; font: 600 15px Karla; cursor: pointer; color: #2E3B2C; text-align: left; }
+  .lst button:last-child { border: 0; } .lst .grow { flex: 1; } .lst small { color: #6E7B66; font-weight: 400; } .lst .kico { color: #4E7D45; }
+  .ex h3 { margin: 0; font: 600 19px Fraunces; } .ex .m { color: #6E7B66; font-size: 13px; }
+  .drops { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+  .dr { width: 54px; height: 62px; border: 0; background: none; cursor: pointer; position: relative; padding: 0; color: #2E3B2C; font: 700 13px Karla; }
+  .dr svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .dr span { position: relative; display: block; padding-top: 24px; } .dr small { display: block; font-size: 9px; font-weight: 400; }
+  .dr path { fill: #fff; stroke: #8FB3C9; stroke-width: 2; } .dr.on path { fill: #6FA8C9; stroke: #6FA8C9; } .dr.on span { color: #fff; }
+  .tools { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 6px; } .tools button { border: 0; background: none; color: #4E7D45; font: 700 13px Karla; cursor: pointer; padding: 2px 0; }
+  nav { display: flex; background: #F6F7F0; border-top: 1px solid #DCE4CF; padding: 6px 4px 24px; }
+  nav button { flex: 1; border: 0; background: none; color: #9AA691; font: 700 11px Karla; padding: 6px 0; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 2px; }
+  nav button.is-active { color: #4E7D45; }
+  .post { cursor: pointer; } .post .k-post { border: 0; padding: 0; }
+</style>
+</head>
+<body class="concept">
+<aside class="concept-info" id="info"></aside>
+<div class="device"><div class="app" id="app">
+  <main data-scroll>
+    <section data-screen="garden"></section><section data-screen="water" hidden></section><section data-screen="season" hidden></section><section data-screen="neighbours" hidden></section><section data-screen="shed" hidden></section>
+  </main>
+  <nav><button data-tab="garden"></button><button data-tab="water"></button><button data-tab="season"></button><button data-tab="neighbours"></button><button data-tab="shed"></button></nav>
+</div></div>
+<script src="designs.js"></script>
+<script src="lib.js"></script><script src="core.js"></script><script src="kit.js"></script>
+<script>
+(function () {
+  const G = GQ2, K = Kit, I = K.icon, e = G.esc;
+  const N = { garden: ['sun', 'Garden'], water: ['droplet', 'Water'], season: ['calendar', 'Seasons'], neighbours: ['users', 'Neighbours'], shed: ['settings', 'Shed'] };
+  document.querySelectorAll('nav [data-tab]').forEach((b) => { b.innerHTML = I(N[b.dataset.tab][0]) + N[b.dataset.tab][1]; });
+  const li = (ic, a, b, attrs) => '<button ' + attrs + '>' + I(ic) + '<span class="grow">' + a + '</span><small>' + (b == null ? '' : b) + '</small></button>';
+  function plant() {
+    const leaves = Math.min(16, G.streak() * 2 + G.weekInfo().done), h = 60 + Math.min(170, G.state.history.length * 6), flowers = G.achievements().filter((a) => a.got && a.category !== 'milestone').length;
+    let s = '<svg viewBox="0 0 390 300"><ellipse cx="195" cy="292" rx="150" ry="10" fill="#DCE4CF"/><path d="M140 230 h110 l-14 62 h-82z" fill="#B5764E"/><rect x="132" y="222" width="126" height="16" rx="4" fill="#9C6240"/>';
+    s += '<path d="M195 224 C 190 ' + (224 - h / 2) + ', 202 ' + (224 - h * 0.7) + ', 195 ' + (224 - h) + '" stroke="#4E7D45" stroke-width="5" fill="none" stroke-linecap="round"/>';
+    for (let k = 0; k < leaves; k++) { const y = 214 - (k + 1) * (h / (leaves + 1)), side = k % 2 ? 1 : -1, sz = 16 + (k % 3) * 4;
+      s += '<g class="leaf" style="animation-delay:' + (k * .3) + 's"><path d="M195 ' + y + ' q ' + side * sz + ' ' + (-sz) + ' ' + side * sz * 2.2 + ' ' + (-4) + ' q ' + (-side * sz) + ' ' + sz * .9 + ' ' + (-side * sz * 2.2) + ' 4z" fill="' + (k % 2 ? '#6A9E5E' : '#8DBF6F') + '"/></g>'; }
+    for (let k = 0; k < Math.min(6, Math.floor(flowers / 3)); k++) { const y = 224 - h + 10 + k * 18, x = 195 + (k % 2 ? 22 : -22); s += '<circle cx="' + x + '" cy="' + y + '" r="6" fill="#F2B6C6"/><circle cx="' + x + '" cy="' + y + '" r="2.5" fill="#F7D774"/>'; }
+    return s + '</svg>';
+  }
+  function garden() {
+    const w = G.weekInfo(), rec = G.recommended(), s = G.sess();
+    return '<h1>Your plant</h1><p class="sub">' + G.streak() + ' weeks of steady watering. ' + G.motivation() + '</p><div class="pot">' + plant() + '</div>'
+      + '<div class="facts"><button data-open="calendar"><b>' + w.done + '/' + w.goal + '</b><small>waterings this week</small></button><button data-open="achievements"><b>' + G.streak() + '</b><small>weeks in a row</small></button><button data-open="achievements"><b>' + G.xp().level + '</b><small>level</small></button></div>'
+      + (s ? '<button class="btn" data-tab="water">' + I('droplet') + ' Watering now · <span data-live="elapsed"></span></button>' : rec ? '<button class="btn" data-do="start" data-arg="' + rec.id + '">' + I('droplet') + ' Water it: ' + e(rec.name) + ' ✦</button>' : '')
+      + '<div class="card lst">' + li('flag', w.excused ? 'This week is excused' : 'Excuse this week', w.excused ? 'undo' : 'the plant won’t wilt', 'data-do="excuse"') + li('timer', 'Rest timer', '', 'data-open="rest"') + li('run', 'A walk outside', 'run · walk · ride', 'data-open="activity"') + '</div>';
+  }
+  const drop = '<svg viewBox="0 0 54 62"><path d="M27 3 C 27 3 6 26 6 40 a21 21 0 0 0 42 0 C48 26 27 3 27 3z"/></svg>';
+  function water() {
+    const s = G.sess();
+    if (!s) {
+      const sel = G.selected();
+      return '<h1>Seed packets</h1><p class="sub">Your plans, in rotation order.</p><div class="card lst">' + G.plans().map((p) => li(p === sel ? 'check' : 'droplet', e(p.name) + (p === G.recommended() ? ' ✦' : ''), G.planMinutes(p) + ' min', 'data-do="select" data-arg="' + p.id + '"')).join('') + '</div>'
+        + (sel ? '<div class="card"><h3 style="margin:0;font:600 20px Fraunces">' + e(sel.name) + '</h3>' + sel.exercises.map((x) => '<div style="display:flex;justify-content:space-between;padding:4px 0"><span>' + e(x.name) + '</span><small>' + x.sets + '×' + x.reps + ' ' + G.fmtW(x.weight) + '</small></div>').join('') + '<button class="btn" data-do="start" data-arg="' + sel.id + '">Start watering</button><button class="btn lt" data-open="editplan" data-arg="' + sel.id + '">Edit packet</button></div>' : '')
+        + '<div class="card lst">' + li('list', 'Arrange packets', '', 'data-open="plans"') + li('plus', 'New plan', '', 'data-open="newplan"') + li('grid', 'Full Body builder', '', 'data-open="fullbody"') + li('book', 'Exercise library', '', 'data-open="library"') + '</div>';
+    }
+    const p = G.progress();
+    return '<h1 data-live="elapsed"></h1><p class="sub">' + e(s.planName) + ' · ' + p.done + ' of ' + p.total + ' drops · rest <span data-live="rest" data-idle="—" data-done="done"></span></p>'
+      + s.exercises.map((x, i) => { const c = G.compare(s.planId, x.id, Math.max(...x.sets.map((y) => y.w)), x.reps);
+        return '<div class="card ex"' + (i === s.cur ? ' style="box-shadow:inset 0 0 0 2px #4E7D45"' : '') + '><h3>' + e(x.name) + '</h3><div class="m">' + (x.replaces ? 'instead of ' + e(x.replaces) : c.text) + '</div><div class="drops">'
+          + x.sets.map((st, j) => x.unilateral ? '<button class="dr' + (st.L ? ' on' : '') + '" data-do="set" data-arg="' + i + ':' + j + ':L">' + drop + '<span>L<small>' + G.fmtW(st.w) + '</small></span></button><button class="dr' + (st.R ? ' on' : '') + '" data-do="set" data-arg="' + i + ':' + j + ':R">' + drop + '<span>R<small>×' + st.r + '</small></span></button>' : '<button class="dr' + (st.done ? ' on' : '') + '" data-do="set" data-arg="' + i + ':' + j + '">' + drop + '<span>' + st.r + '<small>' + G.fmtW(st.w) + '</small></span></button>').join('') + '</div>'
+          + '<div class="tools"><button data-open="set" data-arg="' + i + ':0">Weight</button><button data-do="addset" data-arg="' + i + '">+ set</button><button data-open="replace" data-arg="' + i + '">Replace</button><button data-open="exercise" data-arg="' + x.id + '">How to</button><button data-do="rest" data-arg="90">Rest 90</button></div></div>'; }).join('')
+      + '<button class="btn" data-do="finish">Done watering · +' + p.xp + ' XP</button><button class="btn lt" data-open="rest">Rest timer</button><button class="btn soil" data-do="discard">Pour it out (discard)</button>';
+  }
+  function season() {
+    const t = G.totals();
+    return '<h1>Seasons</h1><p class="sub">' + t.all.workouts + ' waterings since you planted it.</p><div class="card"><b>Growth per week</b><div style="color:#6A9E5E">' + K.line(G.weeklySeries(10).map((x) => x.sets), { h: 100 }) + '</div></div>'
+      + '<div class="card"><b>Strongest branches</b>' + G.records().list.slice(0, 4).map((r) => '<div style="display:flex;justify-content:space-between;padding:4px 0"><span>' + e(r.name) + '</span><b>' + G.fmtW(r.kg) + '</b></div>').join('') + '</div>'
+      + '<div class="card lst">' + li('clock', 'Garden diary', t.month.workouts + ' this month', 'data-open="history"') + li('calendar', 'Calendar', '', 'data-open="calendar"') + li('trophy', 'Records', '', 'data-open="records"') + li('star', 'Blossoms (achievements)', '', 'data-open="achievements"') + li('scale', 'Body', '', 'data-open="body"') + li('utensils', 'Food', '', 'data-open="food"') + li('camera', 'Photos', '', 'data-open="photos"') + '</div>';
+  }
+  function neighbours() {
+    const L = G.leaderboard();
+    return '<h1>Neighbours</h1><div class="card lst">' + li('star', 'Top 20 gardens this week', '#' + (L.me ? L.me.rank : '–'), 'data-open="leaderboard"') + li('chat', 'Messages', '', 'data-open="chats"') + li('users', 'Friends', '', 'data-open="friends"') + li('edit', 'Share something', '', 'data-open="post"') + '</div>'
+      + G.feed().map((p) => '<div class="card post" data-open="postview" data-arg="' + p.id + '">' + K.postCard(p) + '</div>').join('');
+  }
+  function shed() { return '<h1>The shed</h1><div class="card lst">' + li('target', 'Weekly goal', G.goal(), 'data-open="settings"') + li('bell', 'Profile & reminders', '', 'data-open="profile"') + li('settings', 'Settings', '', 'data-open="settings"') + '</div>'; }
+  K.app({ root: document.getElementById('app'), screens: { garden, water, season, neighbours, shed }, actions: { start: (a) => { G.start(a); document.querySelector('[data-tab=water]').click(); } } });
+})();
+</script>
+</body>
+</html>

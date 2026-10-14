@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>26 · Preflight — GymQuest concept</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=B612:wght@400;700&family=B612+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../frame.css">
+<link rel="stylesheet" href="kit.css">
+<style>
+  .app { position: absolute; inset: 0; display: flex; flex-direction: column; background: #2B2F33; color: #E8E8E2; font: 14px/1.4 B612, system-ui, sans-serif;
+    --k-bg: #33383D; --k-fg: #EDEDE6; --k-mute: #A5ABA9; --k-card: #3D4349; --k-line: #4A5157; --k-acc: #F2C14E; --k-acc-fg: #1D1F22; --k-font: B612, sans-serif; --k-radius: 6px; --k-good: #4C8C5A; --k-bad: #5A3A3A; }
+  .panel { background: linear-gradient(#3A3F45, #33383D); border: 2px solid #1D1F22; border-radius: 8px; padding: 10px 12px; margin-bottom: 10px; position: relative; box-shadow: inset 0 1px 0 rgba(255,255,255,.08); }
+  .panel::before, .panel::after { content: ''; position: absolute; top: 6px; width: 6px; height: 6px; border-radius: 50%; background: #1D1F22; box-shadow: inset 0 1px 1px rgba(255,255,255,.2); }
+  .panel::before { left: 6px; } .panel::after { right: 6px; }
+  .pt { font: 700 11px B612; letter-spacing: .14em; text-transform: uppercase; color: #F2C14E; text-align: center; margin-bottom: 6px; }
+  main { flex: 1; overflow-y: auto; padding: 44px 10px 14px; }
+  .annun { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; }
+  .annun button { border: 1px solid #1D1F22; background: #23272B; color: #6F7672; font: 700 11px 'B612 Mono'; padding: 8px 2px; border-radius: 3px; cursor: pointer; text-transform: uppercase; }
+  .annun button.g { color: #7CFC8A; text-shadow: 0 0 6px rgba(124,252,138,.6); } .annun button.a { color: #FFB43A; text-shadow: 0 0 6px rgba(255,180,58,.6); }
+  .lcd { background: #0F1A12; color: #7CFC8A; font: 400 30px 'B612 Mono'; border-radius: 4px; padding: 6px 10px; text-align: right; box-shadow: inset 0 2px 6px rgba(0,0,0,.6); text-shadow: 0 0 8px rgba(124,252,138,.5); }
+  .lcd small { font-size: 11px; color: #4FA85C; float: left; margin-top: 10px; }
+  .ck { display: flex; align-items: center; gap: 8px; padding: 7px 0; border-bottom: 1px dotted #555C61; font: 400 13px 'B612 Mono'; }
+  .ck .item { flex: 1; text-transform: uppercase; } .ck .dots { flex: 1; overflow: hidden; color: #6F7672; white-space: nowrap; }
+  .tg { border: 0; border-radius: 4px; min-width: 70px; padding: 7px 6px; font: 700 12px 'B612 Mono'; cursor: pointer; background: #1D1F22; color: #F2C14E; text-transform: uppercase; box-shadow: inset 0 -2px 0 rgba(0,0,0,.5); }
+  .tg.on { background: #4C8C5A; color: #fff; }
+  .tg.w { background: none; color: #A5ABA9; min-width: 0; text-decoration: underline; box-shadow: none; padding: 4px; }
+  .knob { display: flex; align-items: center; justify-content: center; gap: 14px; }
+  .knob .k { width: 74px; height: 74px; border-radius: 50%; background: conic-gradient(from 200deg, #555, #222, #666, #222, #555); box-shadow: 0 4px 0 #111, inset 0 0 0 6px #2B2F33; position: relative; border: 0; cursor: pointer; }
+  .knob .k::after { content: ''; position: absolute; left: 50%; top: 10px; width: 3px; height: 18px; margin-left: -1.5px; background: #F2C14E; border-radius: 2px; transform-origin: 50% 27px; transform: rotate(var(--r)); }
+  .knob button.s { width: 44px; height: 44px; border-radius: 50%; border: 2px solid #1D1F22; background: #3D4349; color: #E8E8E2; font: 700 20px B612; cursor: pointer; }
+  .big { display: block; width: 100%; border: 2px solid #1D1F22; border-radius: 6px; background: #F2C14E; color: #1D1F22; padding: 13px; font: 700 15px B612; letter-spacing: .12em; text-transform: uppercase; cursor: pointer; margin-top: 8px; box-shadow: inset 0 -3px 0 rgba(0,0,0,.25); }
+  .big.red { background: repeating-linear-gradient(45deg, #C8372D 0 12px, #1D1F22 12px 24px); color: #fff; text-shadow: 0 1px 2px #000; }
+  .big.gr { background: #4C8C5A; color: #fff; }
+  .lst button { display: flex; justify-content: space-between; width: 100%; border: 0; border-bottom: 1px dotted #555C61; background: none; color: #E8E8E2; padding: 9px 0; font: 400 13px 'B612 Mono'; cursor: pointer; text-transform: uppercase; text-align: left; }
+  .lst button span:last-child { color: #F2C14E; }
+  nav { display: flex; gap: 4px; padding: 6px 6px 24px; background: #1D1F22; }
+  nav button { flex: 1; border: 1px solid #3A3F45; background: #2B2F33; color: #A5ABA9; font: 700 10px 'B612 Mono'; padding: 9px 0; border-radius: 4px; cursor: pointer; text-transform: uppercase; }
+  nav button.is-active { color: #1D1F22; background: #F2C14E; }
+  .post { cursor: pointer; border-bottom: 1px dotted #555C61; padding: 6px 0; } .post .k-post { border: 0; padding: 0; } .post .k-share { background: #23272B; color: #E8E8E2; border-color: #4A5157; }
+</style>
+</head>
+<body class="concept">
+<aside class="concept-info" id="info"></aside>
+<div class="device"><div class="app" id="app">
+  <main data-scroll>
+    <section data-screen="pfd"></section><section data-screen="check" hidden></section><section data-screen="log" hidden></section><section data-screen="atc" hidden></section><section data-screen="sys" hidden></section>
+  </main>
+  <nav><button data-tab="pfd">Status</button><button data-tab="check">Checklist</button><button data-tab="log">Logbook</button><button data-tab="atc">Radio</button><button data-tab="sys">Systems</button></nav>
+</div></div>
+<script src="designs.js"></script>
+<script src="lib.js"></script><script src="core.js"></script><script src="kit.js"></script>
+<script>
+(function () {
+  const G = GQ2, K = Kit, e = G.esc;
+  const li = (a, b, attrs) => '<button ' + attrs + '><span>' + a + '</span><span>' + (b == null ? '▸' : b) + '</span></button>';
+  function pfd() {
+    const w = G.weekInfo(), rec = G.recommended(), s = G.sess(), X = G.xp();
+    return '<div class="panel"><div class="pt">Annunciator</div><div class="annun">' + w.days.map((d) => '<button class="' + (d.done ? 'g' : d.today ? 'a' : '') + '" data-open="day" data-arg="' + d.date + '">' + d.d + (d.done ? ' ✓' : '') + '</button>').join('') + '<button class="' + (w.excused ? 'a' : '') + '" data-do="excuse">' + (w.excused ? 'Excused' : 'Excuse') + '</button></div></div>'
+      + '<div class="panel"><div class="pt">Weekly · Streak · Level</div><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px"><div class="lcd" style="font-size:22px">' + w.done + '/' + w.goal + '</div><div class="lcd" style="font-size:22px">' + G.streak() + 'W</div><div class="lcd" style="font-size:22px">L' + X.level + '</div></div><div style="margin-top:8px;font:12px \'B612 Mono\';color:#A5ABA9">' + G.motivation().toUpperCase() + '</div></div>'
+      + '<div class="panel"><div class="pt">' + (s ? 'In flight' : 'Next departure ✦') + '</div><div class="lcd"><small>' + (s ? 'ELAPSED' : 'EST MIN') + '</small>' + (s ? '<span data-live="elapsed"></span>' : rec ? G.planMinutes(rec) : '--') + '</div><div style="text-align:center;font:700 20px B612;margin:8px 0 0">' + e(s ? s.planName : rec ? rec.name : '').toUpperCase() + '</div>'
+      + (s ? '<button class="big" data-tab="check">Resume checklist</button>' : rec ? '<button class="big" data-do="start" data-arg="' + rec.id + '">Before start: run checklist</button>' : '') + '</div>'
+      + '<div class="panel lst">' + li('Rest timer', null, 'data-open="rest"') + li('Ground ops: run · walk · ride', null, 'data-open="activity"') + li('Flight calendar', null, 'data-open="calendar"') + li('Level ' + X.level, X.total + ' XP', 'data-open="achievements"') + '</div>';
+  }
+  function check() {
+    const s = G.sess();
+    if (!s) {
+      const sel = G.selected();
+      return '<div class="panel"><div class="pt">Select flight plan</div><div class="lst">' + G.plans().map((p) => li((p === sel ? '► ' : '') + e(p.name) + (p === G.recommended() ? ' ✦' : ''), p.exercises.length + ' ITEMS', 'data-do="select" data-arg="' + p.id + '"')).join('') + '</div></div>'
+        + (sel ? '<div class="panel"><div class="pt">' + e(sel.name) + ' checklist</div>' + sel.exercises.map((x) => '<div class="ck"><span class="item">' + e(x.name) + '</span><span>' + x.sets + 'X' + x.reps + ' ' + G.fmtW(x.weight) + '</span></div>').join('') + '<button class="big gr" data-do="start" data-arg="' + sel.id + '">Engines start</button><button class="big" data-open="editplan" data-arg="' + sel.id + '">Amend checklist</button></div>' : '')
+        + '<div class="panel lst">' + li('Reorder plans', null, 'data-open="plans"') + li('New plan', null, 'data-open="newplan"') + li('Full Body builder', null, 'data-open="fullbody"') + li('Operations manual (library)', null, 'data-open="library"') + '</div>';
+    }
+    const p = G.progress(), i = s.cur, x = s.exercises[i], j = Math.max(0, x.sets.findIndex((y) => !y.done)), st = x.sets[j];
+    return '<div class="panel"><div class="pt">' + e(s.planName) + ' · ' + p.done + '/' + p.total + '</div><div style="display:grid;grid-template-columns:1.4fr 1fr;gap:6px"><div class="lcd"><small>ELAPSED</small><span data-live="elapsed"></span></div><div class="lcd" style="color:#FFB43A"><small>REST</small><span data-live="rest" data-idle="--" data-done="0:00"></span></div></div></div>'
+      + '<div class="panel"><div class="pt">Load selector · ' + e(x.name) + ' set ' + (j + 1) + '</div><div class="knob"><button class="s" data-do="wminus" data-arg="' + i + ':' + j + '">−</button><button class="k" style="--r:' + ((st.w % 50) * 6 - 140) + 'deg" data-open="set" data-arg="' + i + ':' + j + '" aria-label="Set weight"></button><button class="s" data-do="wplus" data-arg="' + i + ':' + j + '">+</button></div><div class="lcd" style="margin-top:8px;text-align:center"><small>LOAD</small>' + G.fmtW(st.w) + ' × ' + st.r + '</div></div>'
+      + s.exercises.map((y, k) => { const c = G.compare(s.planId, y.id, Math.max(...y.sets.map((z) => z.w)), y.reps);
+        return '<div class="panel"' + (k === i ? ' style="border-color:#F2C14E"' : '') + '><div class="pt" style="text-align:left">' + (k + 1) + '. ' + e(y.name) + ' <span style="color:#A5ABA9;font-weight:400;letter-spacing:0">' + (y.replaces ? 'ALT FOR ' + e(y.replaces).toUpperCase() : c.text.toUpperCase()) + '</span></div>'
+          + y.sets.map((z, m) => '<div class="ck"><span class="item">Set ' + (m + 1) + ' · ' + G.fmtW(z.w) + ' × ' + z.r + (z.planFail ? ' · FAIL' : '') + '</span>' + (y.unilateral ? '<button class="tg' + (z.L ? ' on' : '') + '" data-do="set" data-arg="' + k + ':' + m + ':L">' + (z.L ? 'L ✓' : 'L') + '</button><button class="tg' + (z.R ? ' on' : '') + '" data-do="set" data-arg="' + k + ':' + m + ':R">' + (z.R ? 'R ✓' : 'R') + '</button>' : '<button class="tg' + (z.done ? ' on' : '') + '" data-do="set" data-arg="' + k + ':' + m + '">' + (z.done ? 'Checked' : 'Check') + '</button>') + '</div>').join('')
+          + '<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:4px"><button class="tg w" data-do="cur" data-arg="' + k + '">Select</button><button class="tg w" data-do="addset" data-arg="' + k + '">+Set</button><button class="tg w" data-open="replace" data-arg="' + k + '">Alternate</button><button class="tg w" data-open="exercise" data-arg="' + y.id + '">Manual</button><button class="tg w" data-do="rest" data-arg="90">Rest 90</button></div></div>'; }).join('')
+      + '<button class="big gr" data-do="finish">Cleared to land · +' + p.xp + ' XP</button><button class="big" data-open="rest">Rest timer</button><button class="big red" data-do="discard">Abort</button>';
+  }
+  function log() {
+    const t = G.totals();
+    return '<div class="panel"><div class="pt">Pilot logbook</div><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px"><div class="lcd" style="font-size:20px"><small>WK</small>' + t.week.workouts + '</div><div class="lcd" style="font-size:20px"><small>MO</small>' + t.month.workouts + '</div><div class="lcd" style="font-size:20px"><small>ALL</small>' + t.all.workouts + '</div></div><div style="color:#7CFC8A">' + K.line(G.weeklySeries(10).map((x) => x.sets), { h: 80, fill: false }) + '</div></div>'
+      + '<div class="panel lst">' + G.history().slice(0, 4).map((w) => li(G.fmtShort(w.date) + ' ' + e(w.planName), w.minutes + ' MIN', 'data-open="workout" data-arg="' + w.id + '"')).join('') + '</div>'
+      + '<div class="panel lst">' + li('All entries', null, 'data-open="history"') + li('Calendar', null, 'data-open="calendar"') + li('Records', null, 'data-open="records"') + li('Ratings (achievements)', null, 'data-open="achievements"') + li('Medical (body)', null, 'data-open="body"') + li('Catering (food)', null, 'data-open="food"') + li('Photos', null, 'data-open="photos"') + '</div>';
+  }
+  function atc() {
+    const L = G.leaderboard();
+    return '<div class="panel lst">' + li('Top 20 this week', '#' + (L.me ? L.me.rank : '–'), 'data-open="leaderboard"') + li('Radio (messages)', null, 'data-open="chats"') + li('Wingmen (friends)', null, 'data-open="friends"') + li('Broadcast a post', null, 'data-open="post"') + '</div>'
+      + '<div class="panel">' + G.feed().map((p) => '<div class="post" data-open="postview" data-arg="' + p.id + '">' + K.postCard(p) + '</div>').join('') + '</div>';
+  }
+  function sys() { return '<div class="panel"><div class="pt">Systems</div><div class="lst">' + li('Weekly goal', G.goal(), 'data-open="settings"') + li('Units', G.unit(), 'data-do="unit" data-arg="' + (G.unit() === 'kg' ? 'lb' : 'kg') + '"') + li('Profile & reminders', null, 'data-open="profile"') + li('All systems', null, 'data-open="settings"') + '</div></div>'; }
+  K.app({ root: document.getElementById('app'), screens: { pfd, check, log, atc, sys }, actions: { start: (a) => { G.start(a); document.querySelector('[data-tab=check]').click(); } } });
+})();
+</script>
+</body>
+</html>

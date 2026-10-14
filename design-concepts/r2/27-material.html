@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>27 · Material — GymQuest concept</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,400;8..144,500;8..144,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../frame.css">
+<link rel="stylesheet" href="kit.css">
+<style>
+  .app { --p: #3F6837; --on-p: #fff; --pc: #C0EFB1; --on-pc: #002201; --s: #54634D; --sc: #D7E8CD; --t: #386568; --tc: #BBEBEE; --sf: #F8FBF1; --sfc: #ECEFE5; --sfh: #E6E9E0; --on: #191D17; --ov: #43483F; --ol: #C3C8BB;
+    position: absolute; inset: 0; display: flex; flex-direction: column; background: var(--sf); color: var(--on); font: 15px/1.45 'Roboto Flex', Roboto, system-ui, sans-serif;
+    --k-acc: #3F6837; --k-font: 'Roboto Flex', Roboto, sans-serif; --k-radius: 28px; --k-bg: #F1F5EB; --k-card: #E6E9E0; --k-line: #C3C8BB; --k-good: #3F6837; --k-bad: #FFDAD6; }
+  .bar { padding: 46px 16px 8px; display: flex; align-items: center; gap: 10px; }
+  .bar h1 { flex: 1; margin: 0; font: 400 28px 'Roboto Flex'; }
+  .ib { width: 40px; height: 40px; border-radius: 50%; border: 0; background: none; color: var(--ov); cursor: pointer; display: grid; place-items: center; }
+  main { flex: 1; overflow-y: auto; padding: 4px 16px 90px; }
+  .card { border-radius: 24px; padding: 16px; margin-bottom: 12px; background: var(--sfc); }
+  .card.f { background: var(--pc); color: var(--on-pc); } .card.t { background: var(--tc); } .card.o { background: none; border: 1px solid var(--ol); }
+  .lbl { font: 500 12px 'Roboto Flex'; letter-spacing: .5px; color: var(--ov); }
+  .hl { font: 400 36px/1.1 'Roboto Flex'; margin: 4px 0; }
+  .fb { display: inline-flex; align-items: center; gap: 8px; border: 0; border-radius: 20px; padding: 10px 24px; font: 500 14px 'Roboto Flex'; letter-spacing: .1px; cursor: pointer; background: var(--p); color: var(--on-p); }
+  .fb.tonal { background: var(--sc); color: var(--on); } .fb.out { background: none; border: 1px solid var(--ol); color: var(--p); } .fb.txt { background: none; color: var(--p); padding: 10px 12px; }
+  .fb .kico { width: 18px; height: 18px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
+  .chip { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--ol); background: none; border-radius: 8px; padding: 6px 12px; font: 500 14px 'Roboto Flex'; cursor: pointer; color: var(--ov); }
+  .chip.on { background: var(--sc); border-color: var(--sc); color: var(--on); }
+  .chip .kico { width: 16px; height: 16px; }
+  .li { display: flex; align-items: center; gap: 16px; width: 100%; border: 0; background: none; padding: 12px 4px; font: 400 16px 'Roboto Flex'; cursor: pointer; color: var(--on); text-align: left; border-radius: 16px; }
+  .li .lead { width: 40px; height: 40px; border-radius: 50%; background: var(--pc); color: var(--on-pc); display: grid; place-items: center; flex: 0 0 auto; }
+  .li .lead .kico { width: 20px; height: 20px; }
+  .li .g { flex: 1; min-width: 0; } .li small { display: block; color: var(--ov); font-size: 14px; }
+  .wk { display: flex; gap: 6px; margin-top: 10px; } .wk span { flex: 1; text-align: center; padding: 6px 0; border-radius: 12px; font: 500 12px 'Roboto Flex'; background: rgba(255,255,255,.5); } .wk span.d { background: var(--p); color: #fff; } .wk span.n { outline: 2px solid var(--p); }
+  .sets { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+  .st { border: 1px solid var(--ol); background: var(--sf); border-radius: 12px; padding: 8px 12px; font: 500 14px 'Roboto Flex'; cursor: pointer; color: var(--on); display: inline-flex; align-items: center; gap: 6px; }
+  .st.on { background: var(--p); color: #fff; border-color: var(--p); }
+  .st .kico { width: 16px; height: 16px; }
+  .fab { position: absolute; right: 16px; bottom: 100px; z-index: 4; display: inline-flex; align-items: center; gap: 10px; height: 56px; padding: 0 20px; border-radius: 16px; border: 0; background: var(--pc); color: var(--on-pc); font: 500 15px 'Roboto Flex'; cursor: pointer; box-shadow: 0 3px 8px rgba(0,0,0,.18); }
+  nav { display: flex; background: var(--sfh); padding: 12px 0 26px; }
+  nav button { flex: 1; border: 0; background: none; color: var(--ov); font: 500 12px 'Roboto Flex'; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  nav button i { width: 56px; height: 32px; border-radius: 16px; display: grid; place-items: center; }
+  nav button.is-active { color: var(--on); } nav button.is-active i { background: var(--sc); }
+  .post { cursor: pointer; } .post .k-post { border: 0; padding: 0; }
+</style>
+</head>
+<body class="concept">
+<aside class="concept-info" id="info"></aside>
+<div class="device"><div class="app" id="app">
+  <div class="bar"><h1 id="title"></h1><button class="ib" data-open="calendar" aria-label="Calendar"></button><button class="ib" data-open="settings" aria-label="Settings"></button></div>
+  <main data-scroll>
+    <section data-screen="home"></section><section data-screen="train" hidden></section><section data-screen="stats" hidden></section><section data-screen="social" hidden></section><section data-screen="you" hidden></section>
+  </main>
+  <div id="fab"></div>
+  <nav><button data-tab="home"></button><button data-tab="train"></button><button data-tab="stats"></button><button data-tab="social"></button><button data-tab="you"></button></nav>
+</div></div>
+<script src="designs.js"></script>
+<script src="lib.js"></script><script src="core.js"></script><script src="kit.js"></script>
+<script>
+(function () {
+  const G = GQ2, K = Kit, I = K.icon, e = G.esc;
+  const N = { home: ['home', 'Home'], train: ['dumbbell', 'Train'], stats: ['chart', 'Stats'], social: ['users', 'Social'], you: ['user', 'You'] };
+  document.querySelectorAll('nav [data-tab]').forEach((b) => { b.innerHTML = '<i>' + I(N[b.dataset.tab][0]) + '</i>' + N[b.dataset.tab][1]; });
+  const ibs = document.querySelectorAll('.bar .ib'); ibs[0].innerHTML = I('calendar'); ibs[1].innerHTML = I('settings');
+  const L = (ic, t, s, attrs) => '<button class="li" ' + attrs + '><span class="lead">' + I(ic) + '</span><span class="g">' + t + (s ? '<small>' + s + '</small>' : '') + '</span>' + I('chevron') + '</button>';
+  function home() {
+    const w = G.weekInfo(), rec = G.recommended(), s = G.sess(), X = G.xp();
+    return '<div class="card f"><div class="lbl">Week ' + w.num + ' · ' + G.streak() + '-week streak</div><div class="hl">' + w.done + ' of ' + w.goal + ' workouts</div><div>' + G.motivation() + '</div><div class="wk">' + w.days.map((d) => '<span class="' + (d.done ? 'd' : '') + (d.today ? ' n' : '') + '">' + d.d.slice(0, 1) + '</span>').join('') + '</div></div>'
+      + (s ? '<div class="card"><div class="lbl">In progress · <span data-live="elapsed"></span></div><div class="hl" style="font-size:26px">' + e(s.planName) + '</div><button class="fb" data-tab="train">' + I('play') + 'Continue</button></div>'
+        : rec ? '<div class="card"><div class="lbl">Suggested next ✦</div><div class="hl" style="font-size:28px">' + e(rec.name) + '</div><div style="color:var(--ov)">' + rec.exercises.length + ' exercises · about ' + G.planMinutes(rec) + ' min</div><div style="display:flex;gap:8px;margin-top:12px"><button class="fb" data-do="start" data-arg="' + rec.id + '">' + I('play') + 'Start</button><button class="fb out" data-open="editplan" data-arg="' + rec.id + '">Edit</button></div></div>' : '')
+      + '<div class="card t"><div class="lbl">Level ' + X.level + ' · ' + G.levelTitle(X.level) + '</div><div class="k-bar" style="background:rgba(0,0,0,.08)"><i style="width:' + X.pct + '%;background:var(--t)"></i></div><div style="display:flex;justify-content:space-between;margin-top:6px"><span>' + X.total + ' XP</span><button class="fb txt" data-open="achievements">Achievements</button></div></div>'
+      + '<div class="chips"><button class="chip' + (w.excused ? ' on' : '') + '" data-do="excuse">' + I(w.excused ? 'check' : 'flag') + (w.excused ? 'Week excused' : 'Excuse week') + '</button><button class="chip" data-open="rest">' + I('timer') + 'Rest timer</button><button class="chip" data-open="activity">' + I('run') + 'Activity</button><button class="chip" data-open="calendar">' + I('calendar') + 'Calendar</button></div>';
+  }
+  function train() {
+    const s = G.sess();
+    if (!s) {
+      const sel = G.selected();
+      return '<div class="chips">' + G.plans().map((p) => '<button class="chip' + (p === sel ? ' on' : '') + '" data-do="select" data-arg="' + p.id + '">' + (p === sel ? I('check') : '') + e(p.name) + (p === G.recommended() ? ' ✦' : '') + '</button>').join('') + '</div>'
+        + (sel ? '<div class="card">' + sel.exercises.map((x) => '<div class="li" style="cursor:default">' + (G.img(x.id) ? '<img src="' + G.img(x.id) + '" alt="" style="width:40px;height:40px;border-radius:12px;object-fit:cover">' : '<span class="lead">' + I('dumbbell') + '</span>') + '<span class="g">' + e(x.name) + '<small>' + x.sets + ' × ' + x.reps + ' · ' + G.fmtW(x.weight) + '</small></span></div>').join('') + '<div style="display:flex;gap:8px;flex-wrap:wrap"><button class="fb" data-do="start" data-arg="' + sel.id + '">' + I('play') + 'Start</button><button class="fb tonal" data-open="editplan" data-arg="' + sel.id + '">' + I('edit') + 'Edit</button></div></div>' : '')
+        + L('list', 'Manage plans', 'Reorder the rotation', 'data-open="plans"') + L('plus', 'New plan', '', 'data-open="newplan"') + L('grid', 'Full Body builder', '', 'data-open="fullbody"') + L('book', 'Exercise library', '48 exercises', 'data-open="library"');
+    }
+    const p = G.progress();
+    return '<div class="card f"><div class="lbl">' + e(s.planName) + ' · ' + p.done + '/' + p.total + ' sets</div><div class="hl" data-live="elapsed"></div><div class="k-bar" style="background:rgba(0,0,0,.08)"><i style="width:' + p.pct + '%;background:var(--p)"></i></div><div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap"><button class="fb" data-do="finish">Finish · +' + p.xp + ' XP</button><button class="fb tonal" data-open="rest">' + I('timer') + '<span data-live="rest" data-idle="Rest" data-done="Rest over"></span></button><button class="fb txt" data-do="discard">Discard</button></div></div>'
+      + s.exercises.map((x, i) => { const c = G.compare(s.planId, x.id, Math.max(...x.sets.map((y) => y.w)), x.reps);
+        return '<div class="card' + (i === s.cur ? ' o' : '') + '"><div class="lbl">' + (x.replaces ? 'Replaces ' + e(x.replaces) : c.text) + '</div><div style="font:500 18px Roboto Flex">' + e(x.name) + '</div><div class="sets">'
+          + x.sets.map((st, j) => x.unilateral ? '<button class="st' + (st.L ? ' on' : '') + '" data-do="set" data-arg="' + i + ':' + j + ':L">' + (st.L ? I('check') : '') + 'L' + (j + 1) + ' ' + G.fmtW(st.w) + '</button><button class="st' + (st.R ? ' on' : '') + '" data-do="set" data-arg="' + i + ':' + j + ':R">' + (st.R ? I('check') : '') + 'R' + (j + 1) + '</button>' : '<button class="st' + (st.done ? ' on' : '') + '" data-do="set" data-arg="' + i + ':' + j + '">' + (st.done ? I('check') : '') + G.fmtW(st.w) + ' × ' + st.r + (st.planFail ? ' F' : '') + '</button>').join('') + '</div>'
+          + '<div style="display:flex;flex-wrap:wrap"><button class="fb txt" data-open="set" data-arg="' + i + ':0">Weights</button><button class="fb txt" data-do="addset" data-arg="' + i + '">Add set</button><button class="fb txt" data-open="replace" data-arg="' + i + '">Replace</button><button class="fb txt" data-open="exercise" data-arg="' + x.id + '">How to</button></div></div>'; }).join('');
+  }
+  function stats() {
+    const t = G.totals();
+    return '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px">' + [['Week', t.week], ['Month', t.month], ['All', t.all]].map(([l, x]) => '<div class="card" style="margin:0"><div class="lbl">' + l + '</div><div class="hl" style="font-size:28px">' + x.workouts + '</div></div>').join('') + '</div>'
+      + '<div class="card"><div class="lbl">Sets per week</div><div style="color:var(--p)">' + K.bars(G.weeklySeries(8).map((x) => x.sets), { h: 100, labels: G.weeklySeries(8).map((x) => x.label) }) + '</div></div>'
+      + L('trophy', 'Personal records', G.records().list.length + ' lifts', 'data-open="records"') + L('clock', 'History', t.all.workouts + ' workouts', 'data-open="history"') + L('calendar', 'Calendar', '', 'data-open="calendar"') + L('medal', 'Achievements', '', 'data-open="achievements"') + L('scale', 'Body', ((G.bodyLatest('weight') || {}).value || '') + ' kg', 'data-open="body"') + L('utensils', 'Food', G.foodDay().kcal + ' kcal today', 'data-open="food"') + L('camera', 'Progress photos', '', 'data-open="photos"');
+  }
+  function social() {
+    const Lb = G.leaderboard();
+    return '<div class="chips"><button class="chip on" data-open="leaderboard">' + I('star') + 'Top 20 · #' + (Lb.me ? Lb.me.rank : '–') + '</button><button class="chip" data-open="chats">' + I('chat') + 'Messages</button><button class="chip" data-open="friends">' + I('users') + 'Friends</button></div>'
+      + G.feed().map((p) => '<div class="card post" data-open="postview" data-arg="' + p.id + '">' + K.postCard(p) + '</div>').join('');
+  }
+  function you() { return '<div class="card t" style="display:flex;gap:14px;align-items:center">' + K.avatar('me', 56) + '<div><div class="hl" style="font-size:24px">' + e(G.state.profile.name) + '</div><div class="lbl">Level ' + G.xp().level + '</div></div></div>' + L('target', 'Weekly goal', G.goal() + ' workouts', 'data-open="settings"') + L('bell', 'Profile, notifications, reminders', '', 'data-open="profile"') + L('settings', 'Settings', '', 'data-open="settings"'); }
+  K.app({ root: document.getElementById('app'), screens: { home, train, stats, social, you },
+    chrome: (cur) => { document.getElementById('title').textContent = N[cur][1]; const f = document.getElementById('fab'); const s = G.sess();
+      f.innerHTML = cur === 'social' ? '<button class="fab" data-open="post">' + I('edit') + 'Post</button>' : s && cur === 'train' && G.nextOpen() ? '<button class="fab" data-do="log">' + I('check') + 'Log next set</button>' : ''; },
+    actions: { start: (a) => { G.start(a); document.querySelector('[data-tab=train]').click(); } } });
+})();
+</script>
+</body>
+</html>

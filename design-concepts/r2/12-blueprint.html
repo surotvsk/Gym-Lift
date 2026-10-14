@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>12 · Blueprint — GymQuest concept</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Architects+Daughter&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../frame.css">
+<link rel="stylesheet" href="kit.css">
+<style>
+  .app { position: absolute; inset: 0; display: flex; flex-direction: column; color: #EAF3FF; font: 13px/1.45 'IBM Plex Mono', monospace;
+    background-color: #1C4E8F; background-image: linear-gradient(rgba(255,255,255,.08) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.08) 1px, transparent 1px), linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);
+    background-size: 60px 60px, 60px 60px, 12px 12px, 12px 12px;
+    --k-bg: #1A4682; --k-fg: #EAF3FF; --k-mute: #A9C4EA; --k-card: #22569A; --k-line: rgba(234,243,255,.3); --k-acc: #FFFFFF; --k-acc-fg: #1C4E8F; --k-radius: 0px; --k-font: 'IBM Plex Mono', monospace; --k-good: #5FA8FF; --k-bad: #12355F; }
+  main { flex: 1; overflow-y: auto; padding: 46px 14px 20px; }
+  .frame { border: 1.5px solid #EAF3FF; padding: 12px; margin-bottom: 14px; position: relative; }
+  .frame::before { content: attr(data-t); position: absolute; top: -9px; left: 10px; background: #1C4E8F; padding: 0 6px; font-size: 11px; letter-spacing: .12em; }
+  .hand { font: 400 28px/1.1 'Architects Daughter', cursive; }
+  .dim { display: flex; align-items: center; gap: 6px; font-size: 11px; color: #A9C4EA; margin: 6px 0; }
+  .dim::before, .dim::after { content: ''; flex: 1; border-top: 1px solid #A9C4EA; }
+  .dim span { white-space: nowrap; }
+  .big { font: 600 54px/1 'IBM Plex Mono'; }
+  .row { display: flex; gap: 10px; align-items: center; } .grow { flex: 1; min-width: 0; }
+  .btn { display: block; width: 100%; border: 1.5px solid #EAF3FF; background: transparent; color: #EAF3FF; padding: 12px; font: 600 14px 'IBM Plex Mono'; letter-spacing: .1em; text-transform: uppercase; cursor: pointer; margin-top: 8px; }
+  .btn.fill { background: #EAF3FF; color: #1C4E8F; }
+  .parts { width: 100%; border-collapse: collapse; }
+  .parts td, .parts th { border: 1px solid rgba(234,243,255,.45); padding: 5px 6px; text-align: left; }
+  .parts th { font-weight: 400; color: #A9C4EA; font-size: 11px; }
+  .parts button { border: 0; background: none; color: inherit; font: inherit; padding: 0; cursor: pointer; text-decoration: underline dotted; }
+  .wk { display: grid; grid-template-columns: repeat(7, 1fr); border: 1px solid #EAF3FF; }
+  .wk div { border-right: 1px solid rgba(234,243,255,.4); text-align: center; padding: 4px 0; font-size: 11px; }
+  .wk div:last-child { border: 0; } .wk div.d { background: repeating-linear-gradient(45deg, rgba(234,243,255,.55) 0 2px, transparent 2px 6px); } .wk div.t { outline: 2px solid #FFD66B; outline-offset: -2px; }
+  .ex { border: 1.5px solid rgba(234,243,255,.6); padding: 10px; margin-bottom: 10px; position: relative; }
+  .ex.cur { border-color: #FFD66B; }
+  .ex .pn { position: absolute; top: -1px; right: -1px; border: 1.5px solid inherit; background: #EAF3FF; color: #1C4E8F; font-size: 10px; padding: 1px 5px; }
+  .ex h3 { margin: 0; font: 400 22px/1.1 'Architects Daughter', cursive; }
+  .sets { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .s { width: 58px; height: 58px; border: 1.5px dashed #EAF3FF; background: none; color: #EAF3FF; font: 600 15px 'IBM Plex Mono'; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .s small { font-size: 9px; color: #A9C4EA; } .s.on { border-style: solid; background: rgba(234,243,255,.9); color: #1C4E8F; } .s.on small { color: #1C4E8F; }
+  .tools { display: flex; flex-wrap: wrap; gap: 4px 12px; margin-top: 6px; } .tools button { border: 0; background: none; color: #FFD66B; font: 12px 'IBM Plex Mono'; cursor: pointer; padding: 2px 0; }
+  .lst button { display: flex; justify-content: space-between; width: 100%; border: 0; border-bottom: 1px dashed rgba(234,243,255,.4); background: none; color: #EAF3FF; padding: 10px 0; font: 13px 'IBM Plex Mono'; cursor: pointer; text-align: left; }
+  .tb { display: grid; grid-template-columns: 1fr 1fr 1fr; border: 1.5px solid #EAF3FF; margin-top: 4px; font-size: 10px; }
+  .tb div { border-right: 1px solid #EAF3FF; padding: 3px 5px; } .tb div:last-child { border: 0; } .tb b { display: block; font-size: 12px; }
+  nav { display: grid; grid-template-columns: repeat(5, 1fr); border-top: 1.5px solid #EAF3FF; padding-bottom: 22px; background: #173F74; }
+  nav button { border: 0; border-right: 1px solid rgba(234,243,255,.3); background: none; color: #A9C4EA; font: 600 11px 'IBM Plex Mono'; padding: 12px 0; cursor: pointer; letter-spacing: .06em; }
+  nav button.is-active { color: #1C4E8F; background: #EAF3FF; }
+  .post { border-bottom: 1px dashed rgba(234,243,255,.4); padding: 8px 0; cursor: pointer; } .post .k-post { border: 0; } .post .k-share { background: transparent; color: #EAF3FF; }
+  svg.figure { width: 100%; height: 120px; }
+</style>
+</head>
+<body class="concept">
+<aside class="concept-info" id="info"></aside>
+<div class="device"><div class="app" id="app">
+  <main data-scroll>
+    <section data-screen="sheet"></section><section data-screen="build" hidden></section><section data-screen="spec" hidden></section><section data-screen="team" hidden></section><section data-screen="cfg" hidden></section>
+  </main>
+  <nav><button data-tab="sheet">SHEET</button><button data-tab="build">BUILD</button><button data-tab="spec">SPEC</button><button data-tab="team">TEAM</button><button data-tab="cfg">CFG</button></nav>
+</div></div>
+<script src="designs.js"></script>
+<script src="lib.js"></script><script src="core.js"></script><script src="kit.js"></script>
+<script>
+(function () {
+  const G = GQ2, K = Kit, e = G.esc;
+  const L = (a, b, attrs) => '<button ' + attrs + '><span>' + a + '</span><span>' + (b == null ? '→' : b) + '</span></button>';
+  const tb = (t) => { const w = G.weekInfo(); return '<div class="tb"><div>DRAWN BY<b>' + e(G.state.profile.name).toUpperCase() + '</b></div><div>SHEET<b>' + t + '</b></div><div>REV<b>W' + w.num + '</b></div></div>'; };
+  function sheet() {
+    const w = G.weekInfo(), rec = G.recommended(), s = G.sess(), X = G.xp();
+    const pct = Math.min(1, w.done / w.goal);
+    return '<div class="frame" data-t="FIG. 1 — WEEKLY LOAD"><div class="row"><div class="grow"><div class="big">' + w.done + '/' + w.goal + '</div><div class="hand" style="font-size:18px">workouts this week</div></div><svg width="110" height="110" viewBox="0 0 110 110"><circle cx="55" cy="55" r="44" fill="none" stroke="#EAF3FF" stroke-dasharray="3 4"/><path d="M55 11 A44 44 0 ' + (pct > .5 ? 1 : 0) + ' 1 ' + (55 + 44 * Math.sin(pct * 6.283)).toFixed(1) + ' ' + (55 - 44 * Math.cos(pct * 6.283)).toFixed(1) + '" fill="none" stroke="#FFD66B" stroke-width="3"/><line x1="55" y1="55" x2="55" y2="11" stroke="#EAF3FF"/><text x="55" y="60" fill="#EAF3FF" font-size="12" text-anchor="middle" font-family="IBM Plex Mono">' + Math.round(pct * 100) + '%</text></svg></div>'
+      + '<div class="dim"><span>streak = ' + G.streak() + ' wk</span></div><div class="wk">' + w.days.map((d) => '<div class="' + (d.done ? 'd' : '') + (d.today ? ' t' : '') + '">' + d.d.slice(0, 2).toUpperCase() + '<br>' + d.n + '</div>').join('') + '</div></div>'
+      + '<div class="frame" data-t="' + (s ? 'ASSEMBLY IN PROGRESS' : 'NEXT ASSEMBLY ✦') + '"><div class="hand">' + e(s ? s.planName : rec ? rec.name : '—') + '</div><div class="dim"><span>' + (s ? G.progress().done + '/' + G.progress().total + ' sets · ' : '') + (s ? '' : rec ? rec.exercises.length + ' parts · ~' + G.planMinutes(rec) + ' min' : '') + '</span></div>'
+      + (s ? '<button class="btn fill" data-tab="build">Resume build</button>' : rec ? '<button class="btn fill" data-do="start" data-arg="' + rec.id + '">Begin assembly</button>' : '') + '</div>'
+      + '<div class="frame" data-t="NOTES"><p style="margin:0 0 6px" class="hand" style="font-size:18px">' + G.motivation() + '</p><div class="lst">' + L(w.excused ? 'Week excused (undo)' : 'Excuse this week', '', 'data-do="excuse"') + L('Rest timer', null, 'data-open="rest"') + L('Activity log', null, 'data-open="activity"') + L('Calendar', null, 'data-open="calendar"') + L('Level ' + X.level, X.total + ' XP', 'data-open="achievements"') + '</div></div>' + tb('1/5');
+  }
+  function build() {
+    const s = G.sess();
+    if (!s) {
+      const sel = G.selected();
+      return '<div class="frame" data-t="DRAWING INDEX"><table class="parts"><tr><th>NO.</th><th>PLAN</th><th>PARTS</th></tr>' + G.plans().map((p, i) => '<tr><td>' + String(i + 1).padStart(2, '0') + '</td><td><button data-do="select" data-arg="' + p.id + '" style="' + (p === sel ? 'color:#FFD66B' : '') + '">' + e(p.name) + (p === G.recommended() ? ' ✦' : '') + '</button></td><td>' + p.exercises.length + '</td></tr>').join('') + '</table></div>'
+        + (sel ? '<div class="frame" data-t="BILL OF MATERIALS — ' + e(sel.name).toUpperCase() + '"><table class="parts"><tr><th>PART</th><th>QTY</th><th>LOAD</th></tr>' + sel.exercises.map((x) => '<tr><td>' + e(x.name) + '</td><td>' + x.sets + '×' + x.reps + '</td><td>' + G.fmtW(x.weight) + '</td></tr>').join('') + '</table><button class="btn fill" data-do="start" data-arg="' + sel.id + '">Begin assembly</button><button class="btn" data-open="editplan" data-arg="' + sel.id + '">Revise drawing</button></div>' : '')
+        + '<div class="lst">' + L('Reorder drawings', null, 'data-open="plans"') + L('New drawing', null, 'data-open="newplan"') + L('Full Body builder', null, 'data-open="fullbody"') + L('Parts catalogue (library)', '48', 'data-open="library"') + '</div>';
+    }
+    const p = G.progress();
+    return '<div class="frame" data-t="ASSEMBLY — ' + e(s.planName).toUpperCase() + '"><div class="row"><div class="big grow" style="font-size:40px" data-live="elapsed"></div><button class="btn fill" style="width:auto;margin:0" data-do="finish">Sign off</button></div><div class="dim"><span>' + p.done + ' / ' + p.total + ' sets · rest <span data-live="rest" data-idle="—" data-done="0:00"></span></span></div></div>'
+      + s.exercises.map((x, i) => { const c = G.compare(s.planId, x.id, Math.max(...x.sets.map((y) => y.w)), x.reps);
+        return '<div class="ex' + (i === s.cur ? ' cur' : '') + '"><span class="pn">P-' + String(i + 1).padStart(2, '0') + '</span><h3>' + e(x.name) + '</h3><div class="dim"><span>' + (x.replaces ? 'substitutes ' + e(x.replaces) : c.text) + '</span></div><div class="sets">'
+          + x.sets.map((st, j) => x.unilateral ? '<button class="s' + (st.L ? ' on' : '') + '" data-do="set" data-arg="' + i + ':' + j + ':L">L' + (j + 1) + '<small>' + G.fmtW(st.w) + '</small></button><button class="s' + (st.R ? ' on' : '') + '" data-do="set" data-arg="' + i + ':' + j + ':R">R' + (j + 1) + '<small>×' + st.r + '</small></button>' : '<button class="s' + (st.done ? ' on' : '') + '" data-do="set" data-arg="' + i + ':' + j + '">' + st.r + '<small>' + G.fmtW(st.w) + (st.planFail ? '·F' : '') + '</small></button>').join('') + '</div>'
+          + '<div class="tools"><button data-open="set" data-arg="' + i + ':0">[load]</button><button data-do="addset" data-arg="' + i + '">[+set]</button><button data-open="replace" data-arg="' + i + '">[substitute]</button><button data-open="exercise" data-arg="' + x.id + '">[detail]</button><button data-do="rest" data-arg="90">[rest 90]</button></div></div>'; }).join('')
+      + '<button class="btn fill" data-do="finish">Sign off · +' + p.xp + ' XP</button><button class="btn" data-open="rest">Rest timer</button><button class="btn" data-do="discard">Scrap</button>';
+  }
+  function spec() {
+    const t = G.totals(), ser = G.weeklySeries(8);
+    return '<div class="frame" data-t="SPECIFICATIONS"><table class="parts"><tr><th></th><th>WEEK</th><th>MONTH</th><th>ALL</th></tr>' + ['workouts', 'sets', 'minutes'].map((k) => '<tr><td>' + k + '</td><td>' + t.week[k] + '</td><td>' + t.month[k] + '</td><td>' + t.all[k] + '</td></tr>').join('') + '</table></div>'
+      + '<div class="frame" data-t="FIG. 2 — SETS PER WEEK"><div style="color:#EAF3FF">' + K.line(ser.map((x) => x.sets), { h: 110, fill: false }) + '</div></div>'
+      + '<div class="frame" data-t="TOLERANCES (RECORDS)"><table class="parts">' + G.records().list.slice(0, 5).map((r) => '<tr><td>' + e(r.name) + '</td><td>' + G.fmtW(r.kg) + '</td></tr>').join('') + '</table></div>'
+      + '<div class="lst">' + L('Records', null, 'data-open="records"') + L('Revision history', null, 'data-open="history"') + L('Calendar', null, 'data-open="calendar"') + L('Certificates', null, 'data-open="achievements"') + L('Body dimensions', null, 'data-open="body"') + L('Fuel log', null, 'data-open="food"') + L('Photographs', null, 'data-open="photos"') + '</div>' + tb('3/5');
+  }
+  function team() {
+    const Lb = G.leaderboard();
+    return '<div class="frame" data-t="TOP 20"><table class="parts">' + Lb.top.slice(0, 6).map((r) => '<tr style="' + (r.me ? 'color:#FFD66B' : '') + '"><td>' + r.rank + '</td><td>' + e(r.person.name) + '</td><td>' + r.xp + '</td></tr>').join('') + '</table><button class="btn" data-open="leaderboard">Full table</button></div>'
+      + '<div class="lst">' + L('New post', null, 'data-open="post"') + L('Messages', null, 'data-open="chats"') + L('Friends', null, 'data-open="friends"') + '</div>'
+      + G.feed().map((p) => '<div class="post" data-open="postview" data-arg="' + p.id + '">' + K.postCard(p) + '</div>').join('');
+  }
+  function cfg() { return '<div class="frame" data-t="CONFIGURATION"><div class="lst">' + L('Weekly goal', G.goal(), 'data-open="settings"') + L('Units', G.unit(), 'data-do="unit" data-arg="' + (G.unit() === 'kg' ? 'lb' : 'kg') + '"') + L('Profile & reminders', null, 'data-open="profile"') + L('Settings', null, 'data-open="settings"') + '</div></div>' + tb('5/5'); }
+  K.app({ root: document.getElementById('app'), screens: { sheet, build, spec, team, cfg }, actions: { start: (a) => { G.start(a); document.querySelector('[data-tab=build]').click(); } } });
+})();
+</script>
+</body>
+</html>

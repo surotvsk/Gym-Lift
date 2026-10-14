@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>24 · Orbit — GymQuest concept</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;500;700;800&family=Space+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../frame.css">
+<link rel="stylesheet" href="kit.css">
+<style>
+  .app { position: absolute; inset: 0; display: flex; flex-direction: column; color: #E6ECFF; font: 15px/1.4 'Exo 2', system-ui, sans-serif;
+    background: radial-gradient(1px 1px at 20% 30%, #fff, transparent), radial-gradient(1px 1px at 70% 10%, #fff, transparent), radial-gradient(1.5px 1.5px at 40% 80%, #cfe, transparent), radial-gradient(1px 1px at 85% 60%, #fff, transparent), radial-gradient(1px 1px at 10% 70%, #fff, transparent), radial-gradient(120% 80% at 50% 0%, #1B1F4B, #05060F 70%);
+    --k-bg: #0C0F26; --k-fg: #E6ECFF; --k-mute: #8C93C0; --k-card: #161A3A; --k-line: #262B57; --k-acc: #FF6B3D; --k-acc-fg: #fff; --k-font: 'Exo 2', sans-serif; --k-radius: 16px; --k-good: #2D6CDF; --k-bad: #2A1B33; }
+  main { flex: 1; overflow-y: auto; padding: 44px 14px 18px; }
+  .mono { font-family: 'Space Mono', monospace; font-size: 12px; color: #8C93C0; letter-spacing: .04em; }
+  h1 { font: 800 26px 'Exo 2'; margin: 2px 0 8px; letter-spacing: .02em; }
+  .sys { position: relative; height: 330px; margin: 0 -14px; }
+  .sys svg { width: 100%; height: 100%; }
+  .pl { cursor: pointer; } .pl text { fill: #C9D0FF; font: 500 11px 'Exo 2'; }
+  .spin { animation: sp 60s linear infinite; transform-origin: 195px 165px; } @keyframes sp { to { transform: rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce) { .spin { animation: none; } }
+  .panel { background: rgba(22,26,58,.8); border: 1px solid #262B57; border-radius: 18px; padding: 14px; margin-bottom: 12px; backdrop-filter: blur(6px); }
+  .launch { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; border: 0; border-radius: 14px; background: linear-gradient(90deg, #FF6B3D, #FF3D81); color: #fff; font: 800 17px 'Exo 2'; letter-spacing: .06em; text-transform: uppercase; padding: 14px; cursor: pointer; margin: 8px 0; box-shadow: 0 0 24px rgba(255,107,61,.4); }
+  .launch.cool { background: #262B57; box-shadow: none; }
+  .tele { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 12px; }
+  .tele button { border: 1px solid #262B57; background: rgba(22,26,58,.7); border-radius: 14px; padding: 10px; text-align: left; color: inherit; font: inherit; cursor: pointer; }
+  .tele b { display: block; font: 800 24px 'Exo 2'; }
+  .stage { display: grid; grid-template-columns: 34px 1fr; gap: 10px; margin-bottom: 12px; }
+  .stage .num { width: 34px; height: 34px; border-radius: 50%; border: 2px solid #3A4180; display: grid; place-items: center; font: 700 13px 'Space Mono'; }
+  .stage.done .num { background: #2D6CDF; border-color: #2D6CDF; } .stage.cur .num { border-color: #FF6B3D; box-shadow: 0 0 12px #FF6B3D; }
+  .burns { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .burn { border: 1px solid #3A4180; background: #0C0F26; border-radius: 10px; padding: 6px 9px; font: 700 14px 'Exo 2'; cursor: pointer; color: #E6ECFF; min-width: 56px; }
+  .burn small { display: block; font: 400 10px 'Space Mono'; color: #8C93C0; }
+  .burn.on { background: linear-gradient(180deg, #FF6B3D, #FF3D81); border-color: transparent; } .burn.on small { color: #FFE0D6; }
+  .tools { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 6px; } .tools button { border: 0; background: none; color: #7FA7FF; font: 500 12px 'Space Mono'; cursor: pointer; padding: 2px 0; }
+  .lst button { display: flex; justify-content: space-between; width: 100%; border: 0; border-bottom: 1px solid #262B57; background: none; padding: 11px 0; font: 500 15px 'Exo 2'; cursor: pointer; color: #E6ECFF; text-align: left; }
+  .lst button:last-child { border: 0; } .lst small { color: #8C93C0; font-family: 'Space Mono'; font-size: 11px; }
+  nav { display: flex; background: rgba(5,6,15,.9); border-top: 1px solid #262B57; padding: 6px 4px 24px; }
+  nav button { flex: 1; border: 0; background: none; color: #6C73A6; font: 500 10px 'Space Mono'; padding: 6px 0; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 2px; text-transform: uppercase; }
+  nav button.is-active { color: #FF6B3D; }
+  .post { cursor: pointer; } .post .k-post { border: 0; padding: 0; } .post .k-share { background: #0C0F26; color: #E6ECFF; border-color: #262B57; }
+</style>
+</head>
+<body class="concept">
+<aside class="concept-info" id="info"></aside>
+<div class="device"><div class="app" id="app">
+  <main data-scroll>
+    <section data-screen="system"></section><section data-screen="mission" hidden></section><section data-screen="log" hidden></section><section data-screen="crew" hidden></section><section data-screen="base" hidden></section>
+  </main>
+  <nav><button data-tab="system"></button><button data-tab="mission"></button><button data-tab="log"></button><button data-tab="crew"></button><button data-tab="base"></button></nav>
+</div></div>
+<script src="designs.js"></script>
+<script src="lib.js"></script><script src="core.js"></script><script src="kit.js"></script>
+<script>
+(function () {
+  const G = GQ2, K = Kit, I = K.icon, e = G.esc;
+  const N = { system: ['sun', 'System'], mission: ['send', 'Mission'], log: ['chart', 'Log'], crew: ['users', 'Crew'], base: ['settings', 'Base'] };
+  document.querySelectorAll('nav [data-tab]').forEach((b) => { b.innerHTML = I(N[b.dataset.tab][0]) + N[b.dataset.tab][1]; });
+  const li = (a, b, attrs) => '<button ' + attrs + '><span>' + a + '</span><small>' + (b == null ? '›' : b) + '</small></button>';
+  const COLS = ['#FF6B3D', '#7FA7FF', '#5EE2B0', '#F7C548', '#C77DFF', '#FF3D81'];
+  function system() {
+    const w = G.weekInfo(), rec = G.recommended(), s = G.sess(), X = G.xp(), plans = G.plans();
+    const svg = '<svg viewBox="0 0 390 330"><g class="spin">' + plans.map((p, k) => { const r = 58 + k * 22, a = k * 1.3 + 0.4, x = 195 + r * Math.cos(a), y = 165 + r * Math.sin(a) * 0.62;
+        return '<ellipse cx="195" cy="165" rx="' + r + '" ry="' + r * 0.62 + '" fill="none" stroke="#2A3070" stroke-dasharray="2 4"/>'; }).join('') + '</g>'
+      + plans.map((p, k) => { const r = 58 + k * 22, a = k * 1.3 + 0.4, x = 195 + r * Math.cos(a), y = 165 + r * Math.sin(a) * 0.62, rad = 7 + Math.min(6, p.exercises.length);
+        return '<g class="pl" data-do="select" data-arg="' + p.id + '"><circle cx="' + x + '" cy="' + y + '" r="' + rad + '" fill="' + COLS[k % 6] + '"' + (p === rec ? ' stroke="#fff" stroke-width="2"' : '') + '/><text x="' + x + '" y="' + (y + rad + 12) + '" text-anchor="middle">' + e(p.name) + (p === rec ? ' ✦' : '') + '</text></g>'; }).join('')
+      + '<circle cx="195" cy="165" r="26" fill="#FFD27A"/><circle cx="195" cy="165" r="38" fill="#FFD27A" opacity=".18"/><text x="195" y="170" text-anchor="middle" fill="#3A2A00" font-family="Exo 2" font-weight="800" font-size="14">L' + X.level + '</text></svg>';
+    return '<div class="mono">MISSION DAY ' + G.fmtShort(G.today()).toUpperCase() + ' · CYCLE W' + w.num + '</div><h1>Training system</h1><div class="sys">' + svg + '</div>'
+      + '<div class="tele"><button data-open="calendar"><span class="mono">ORBITS</span><b>' + w.done + '/' + w.goal + '</b></button><button data-open="achievements"><span class="mono">STREAK</span><b>' + G.streak() + 'w</b></button><button data-open="achievements"><span class="mono">XP</span><b>' + X.total + '</b></button></div>'
+      + (s ? '<button class="launch" data-tab="mission">In flight · <span data-live="elapsed"></span></button>' : rec ? '<div class="panel"><span class="mono">NEXT LAUNCH WINDOW</span><h1 style="margin:2px 0">' + e(rec.name) + '</h1><span class="mono">' + rec.exercises.length + ' STAGES · T-' + G.planMinutes(rec) + ' MIN</span><button class="launch" data-do="start" data-arg="' + rec.id + '">' + I('send') + ' Launch</button></div>' : '')
+      + '<div class="panel lst">' + li(w.excused ? 'Week excused (abort scrubbed)' : 'Scrub this week (excuse)', w.excused ? 'UNDO' : 'STREAK SAFE', 'data-do="excuse"') + li('Rest timer', null, 'data-open="rest"') + li('EVA: run, walk, ride', null, 'data-open="activity"') + '</div>';
+  }
+  function mission() {
+    const s = G.sess();
+    if (!s) {
+      const sel = G.selected();
+      return '<h1>Mission control</h1><div class="panel lst">' + G.plans().map((p, k) => li('<span style="color:' + COLS[k % 6] + '">●</span> ' + e(p.name) + (p === G.recommended() ? ' ✦' : '') + (p === sel ? ' ◂' : ''), p.exercises.length + ' STAGES', 'data-do="select" data-arg="' + p.id + '"')).join('') + '</div>'
+        + (sel ? '<div class="panel"><span class="mono">FLIGHT PLAN</span><h1 style="margin:2px 0 6px">' + e(sel.name) + '</h1>' + sel.exercises.map((x, i) => '<div class="mono" style="color:#C9D0FF;padding:2px 0">S' + (i + 1) + ' ' + e(x.name).toUpperCase() + ' — ' + x.sets + '×' + x.reps + ' ' + G.fmtW(x.weight) + '</div>').join('') + '<button class="launch" data-do="start" data-arg="' + sel.id + '">Launch</button><button class="launch cool" data-open="editplan" data-arg="' + sel.id + '">Edit flight plan</button></div>' : '')
+        + '<div class="panel lst">' + li('Reorder orbits', null, 'data-open="plans"') + li('New mission', null, 'data-open="newplan"') + li('Full Body builder', null, 'data-open="fullbody"') + li('Star catalogue (library)', '48', 'data-open="library"') + '</div>';
+    }
+    const p = G.progress();
+    return '<div class="mono">' + e(s.planName).toUpperCase() + ' · MET</div><div style="display:flex;align-items:center;gap:10px"><h1 style="font-size:44px;flex:1;font-variant-numeric:tabular-nums" data-live="elapsed"></h1><button class="launch" style="width:auto;margin:0;padding:10px 14px" data-do="finish">Land</button></div>'
+      + '<div class="mono" style="margin-bottom:12px">' + p.done + '/' + p.total + ' BURNS · COAST <span data-live="rest" data-idle="--:--" data-done="0:00"></span></div>'
+      + s.exercises.map((x, i) => { const c = G.compare(s.planId, x.id, Math.max(...x.sets.map((y) => y.w)), x.reps), done = x.sets.every((y) => y.done);
+        return '<div class="stage' + (done ? ' done' : i === s.cur ? ' cur' : '') + '"><span class="num">S' + (i + 1) + '</span><div class="panel" style="margin:0"><b style="font-size:17px">' + e(x.name) + '</b><div class="mono">' + (x.replaces ? 'BACKUP FOR ' + e(x.replaces).toUpperCase() : c.text.toUpperCase()) + '</div><div class="burns">'
+          + x.sets.map((st, j) => x.unilateral ? '<button class="burn' + (st.L ? ' on' : '') + '" data-do="set" data-arg="' + i + ':' + j + ':L">L' + (j + 1) + '<small>' + G.fmtW(st.w) + '</small></button><button class="burn' + (st.R ? ' on' : '') + '" data-do="set" data-arg="' + i + ':' + j + ':R">R' + (j + 1) + '<small>×' + st.r + '</small></button>' : '<button class="burn' + (st.done ? ' on' : '') + '" data-do="set" data-arg="' + i + ':' + j + '">' + st.r + '<small>' + G.fmtW(st.w) + '</small></button>').join('') + '</div>'
+          + '<div class="tools"><button data-open="set" data-arg="' + i + ':0">THRUST</button><button data-do="addset" data-arg="' + i + '">+BURN</button><button data-open="replace" data-arg="' + i + '">BACKUP</button><button data-open="exercise" data-arg="' + x.id + '">MANUAL</button><button data-do="rest" data-arg="90">COAST 90</button></div></div></div>'; }).join('')
+      + '<button class="launch" data-do="finish">Splashdown · +' + p.xp + ' XP</button><div class="panel lst">' + li('Coast timer', null, 'data-open="rest"') + li('Abort mission', 'DISCARD', 'data-do="discard"') + '</div>';
+  }
+  function log() {
+    const t = G.totals();
+    return '<h1>Flight log</h1><div class="tele"><button data-open="history"><span class="mono">WEEK</span><b>' + t.week.workouts + '</b></button><button data-open="history"><span class="mono">MONTH</span><b>' + t.month.workouts + '</b></button><button data-open="history"><span class="mono">TOTAL</span><b>' + t.all.workouts + '</b></button></div>'
+      + '<div class="panel"><span class="mono">TRAJECTORY · SETS/WEEK</span><div style="color:#FF6B3D">' + K.line(G.weeklySeries(10).map((x) => x.sets), { h: 100 }) + '</div></div>'
+      + '<div class="panel lst">' + G.records().list.slice(0, 4).map((r) => li(e(r.name), G.fmtW(r.kg), 'data-open="exercise" data-arg="' + r.id + '"')).join('') + '</div>'
+      + '<div class="panel lst">' + li('Records', null, 'data-open="records"') + li('All flights', null, 'data-open="history"') + li('Calendar', null, 'data-open="calendar"') + li('Mission patches', null, 'data-open="achievements"') + li('Biometrics', null, 'data-open="body"') + li('Rations', null, 'data-open="food"') + li('Photos', null, 'data-open="photos"') + '</div>';
+  }
+  function crew() {
+    const L = G.leaderboard();
+    return '<h1>Crew</h1><div class="panel lst">' + li('Top 20 this week', '#' + (L.me ? L.me.rank : '–'), 'data-open="leaderboard"') + li('Comms', null, 'data-open="chats"') + li('Crew roster', null, 'data-open="friends"') + li('Transmit a post', null, 'data-open="post"') + '</div>'
+      + G.feed().map((p) => '<div class="panel post" data-open="postview" data-arg="' + p.id + '">' + K.postCard(p) + '</div>').join('');
+  }
+  function base() { return '<h1>Home base</h1><div class="panel lst">' + li('Weekly goal', G.goal(), 'data-open="settings"') + li('Profile & reminders', null, 'data-open="profile"') + li('Settings', null, 'data-open="settings"') + '</div>'; }
+  K.app({ root: document.getElementById('app'), screens: { system, mission, log, crew, base }, actions: { start: (a) => { G.start(a); document.querySelector('[data-tab=mission]').click(); } } });
+})();
+</script>
+</body>
+</html>

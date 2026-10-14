@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>09 · Magazine — GymQuest concept</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=Inter:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../frame.css">
+<link rel="stylesheet" href="kit.css">
+<style>
+  .app { position: absolute; inset: 0; display: flex; flex-direction: column; background: #FBF8F2; color: #1A1714; font: 16px/1.5 'Source Serif 4', Georgia, serif;
+    --k-acc: #A3262A; --k-font: 'Source Serif 4', Georgia, serif; --k-head: 'Playfair Display', Georgia, serif; --k-bg: #FBF8F2; --k-card: #F1ECE2; --k-line: #E0D8C8; --k-radius: 4px; }
+  .mast { padding: 44px 18px 6px; text-align: center; border-bottom: 3px double #1A1714; }
+  .mast b { font: 900 30px/1 'Playfair Display', serif; letter-spacing: -0.5px; }
+  .mast small { display: flex; justify-content: space-between; font: 500 10px Inter, sans-serif; letter-spacing: .14em; text-transform: uppercase; margin-top: 4px; color: #6D655A; }
+  main { flex: 1; overflow-y: auto; padding: 0 18px 24px; }
+  .kick { font: 700 11px Inter, sans-serif; letter-spacing: .16em; text-transform: uppercase; color: #A3262A; margin: 18px 0 6px; }
+  .head { font: 900 46px/0.98 'Playfair Display', serif; letter-spacing: -1px; margin: 0 0 10px; }
+  .head i { font-style: italic; font-weight: 700; color: #A3262A; }
+  .dek { font-size: 18px; line-height: 1.4; color: #4B4339; margin: 0 0 14px; font-style: italic; }
+  .by { font: 500 11px Inter, sans-serif; letter-spacing: .1em; text-transform: uppercase; color: #6D655A; border-top: 1px solid #1A1714; padding-top: 6px; display: flex; justify-content: space-between; }
+  .cover { position: relative; margin: 14px -18px; height: 220px; overflow: hidden; }
+  .cover img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(.3) contrast(1.05); }
+  .cover span { position: absolute; left: 18px; bottom: 12px; color: #fff; font: 700 italic 26px 'Playfair Display', serif; text-shadow: 0 2px 10px rgba(0,0,0,.5); }
+  .read { display: block; width: 100%; border: 0; background: #1A1714; color: #FBF8F2; padding: 15px; font: 700 13px Inter, sans-serif; letter-spacing: .14em; text-transform: uppercase; cursor: pointer; margin: 8px 0; }
+  .read.red { background: #A3262A; }
+  .cols { columns: 2; column-gap: 18px; column-rule: 1px solid #E0D8C8; font-size: 15px; }
+  .cols p { margin: 0 0 10px; break-inside: avoid; }
+  .dropcap::first-letter { float: left; font: 900 58px/0.8 'Playfair Display', serif; padding: 4px 6px 0 0; color: #A3262A; }
+  .pull { font: 700 italic 24px/1.2 'Playfair Display', serif; border-top: 2px solid #A3262A; border-bottom: 2px solid #A3262A; padding: 10px 0; margin: 16px 0; text-align: center; }
+  .toc button { display: grid; grid-template-columns: 34px 1fr auto; align-items: baseline; width: 100%; border: 0; border-bottom: 1px solid #E0D8C8; background: none; padding: 11px 0; font: inherit; color: inherit; cursor: pointer; text-align: left; }
+  .toc .pg { font: 900 20px 'Playfair Display', serif; color: #A3262A; }
+  .toc small { font: 500 11px Inter; letter-spacing: .08em; text-transform: uppercase; color: #6D655A; }
+  .ex { border-top: 1px solid #1A1714; padding: 12px 0; }
+  .ex h3 { font: 900 24px/1.05 'Playfair Display', serif; margin: 0 0 2px; }
+  .ex .q { font-style: italic; color: #6D655A; font-size: 14px; }
+  .sets { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .s { border: 1px solid #1A1714; background: none; padding: 7px 10px; font: 600 14px 'Source Serif 4', serif; cursor: pointer; color: #1A1714; }
+  .s.on { background: #1A1714; color: #FBF8F2; }
+  .tools { display: flex; gap: 14px; margin-top: 8px; font: 500 11px Inter; letter-spacing: .08em; text-transform: uppercase; }
+  .tools button { border: 0; background: none; padding: 2px 0; font: inherit; letter-spacing: inherit; color: #A3262A; cursor: pointer; }
+  .letter { border-top: 1px solid #E0D8C8; padding: 12px 0; cursor: pointer; }
+  .letter b { font-family: 'Playfair Display', serif; }
+  .letter .k-post { border: 0; padding: 0; }
+  nav { display: flex; border-top: 3px double #1A1714; padding: 8px 4px 24px; background: #FBF8F2; }
+  nav button { flex: 1; border: 0; background: none; font: 700 10px Inter, sans-serif; letter-spacing: .12em; text-transform: uppercase; color: #8D8478; padding: 6px 0; cursor: pointer; }
+  nav button.is-active { color: #A3262A; }
+</style>
+</head>
+<body class="concept">
+<aside class="concept-info" id="info"></aside>
+<div class="device"><div class="app" id="app">
+  <div class="mast"><b>GymQuest</b><small><span id="iss"></span><span>The training quarterly</span></small></div>
+  <main data-scroll>
+    <section data-screen="cover"></section><section data-screen="feature" hidden></section><section data-screen="archive" hidden></section><section data-screen="letters" hidden></section><section data-screen="masthead" hidden></section>
+  </main>
+  <nav><button data-tab="cover">Cover</button><button data-tab="feature">Feature</button><button data-tab="archive">Archive</button><button data-tab="letters">Letters</button><button data-tab="masthead">Masthead</button></nav>
+</div></div>
+<script src="designs.js"></script>
+<script src="lib.js"></script><script src="core.js"></script><script src="kit.js"></script>
+<script>
+(function () {
+  const G = GQ2, K = Kit, e = G.esc;
+  const toc = (pg, t, s, attrs) => '<button ' + attrs + '><span class="pg">' + pg + '</span><span>' + t + '<br><small>' + s + '</small></span><span>→</span></button>';
+  function cover() {
+    const w = G.weekInfo(), rec = G.recommended(), s = G.sess(), last = G.history()[0], x0 = rec && rec.exercises[0];
+    document.getElementById('iss').textContent = 'Issue ' + w.num + ' · ' + G.fmtShort(G.today());
+    return '<div class="kick">Cover story</div><h1 class="head">' + (s ? 'The ' + e(s.planName) + ' session, <i>live</i>' : rec ? 'This week: <i>' + e(rec.name) + '</i> comes next' : 'A new season') + '</h1>'
+      + '<p class="dek">' + w.done + ' of ' + w.goal + ' workouts done, a ' + G.streak() + '-week streak, and ' + G.motivation().toLowerCase() + '</p>'
+      + '<div class="by"><span>By ' + e(G.state.profile.name) + '</span><span>' + G.fmtDate(G.today()) + '</span></div>'
+      + (x0 && G.img(x0.id) ? '<div class="cover"><img src="' + G.img(x0.id) + '" alt=""><span>“' + e(x0.name) + ' opens the issue.”</span></div>' : '')
+      + (s ? '<button class="read red" data-tab="feature">Continue reading · <span data-live="elapsed"></span></button>' : rec ? '<button class="read red" data-do="start" data-arg="' + rec.id + '">Begin the feature</button>' : '')
+      + (last ? '<div class="pull">“' + e(last.note || ('Last time: ' + last.planName + ', ' + last.minutes + ' minutes.')) + '”</div>' : '')
+      + '<div class="kick">In this issue</div><div class="toc">' + toc(4, 'The week in review', 'Calendar', 'data-open="calendar"') + toc(12, 'Records that fell', G.records().events.length + ' personal bests', 'data-open="records"') + toc(18, w.excused ? 'An excused week' : 'Excuse this week', 'The streak survives', 'data-do="excuse"') + toc(22, 'Out on the road', 'Activities', 'data-open="activity"') + toc(26, 'Between sets', 'Rest timer', 'data-open="rest"') + '</div>';
+  }
+  function feature() {
+    const s = G.sess();
+    if (!s) {
+      const sel = G.selected();
+      return '<div class="kick">Choose the feature</div><div class="toc">' + G.plans().map((p, i) => toc(i + 1, (p === sel ? '<b>' + e(p.name) + '</b>' : e(p.name)) + (p === G.recommended() ? ' ✦' : ''), p.exercises.length + ' exercises · ' + G.planMinutes(p) + ' min', 'data-do="select" data-arg="' + p.id + '"')).join('') + '</div>'
+        + (sel ? '<h2 class="head" style="font-size:34px;margin-top:16px">' + e(sel.name) + '</h2><div class="cols"><p class="dropcap">' + sel.exercises.map((x) => e(x.name) + ', ' + x.sets + ' × ' + x.reps + (x.weight ? ' at ' + G.fmtW(x.weight) : '')).join('; ') + '.</p></div><button class="read red" data-do="start" data-arg="' + sel.id + '">Start reading</button><button class="read" data-open="editplan" data-arg="' + sel.id + '">Edit this plan</button>' : '')
+        + '<div class="toc">' + toc('§', 'Manage plans', 'Reorder the rotation', 'data-open="plans"') + toc('§', 'Commission a new plan', '', 'data-open="newplan"') + toc('§', 'Full Body builder', '', 'data-open="fullbody"') + toc('§', 'The exercise library', '48 entries', 'data-open="library"') + '</div>';
+    }
+    const p = G.progress();
+    return '<div class="kick">Feature · <span data-live="elapsed"></span> · ' + p.done + '/' + p.total + '</div><h1 class="head" style="font-size:36px">' + e(s.planName) + '</h1><div class="by"><span>Rest: <span data-live="rest" data-idle="none" data-done="over"></span></span><span><button class="s" data-open="rest" style="padding:3px 8px">Rest timer</button></span></div>'
+      + s.exercises.map((x, i) => { const c = G.compare(s.planId, x.id, Math.max(...x.sets.map((y) => y.w)), x.reps);
+        return '<div class="ex"><div class="kick" style="margin:0 0 2px">Chapter ' + (i + 1) + (i === s.cur ? ' · now' : '') + '</div><h3>' + e(x.name) + '</h3><div class="q">' + (x.replaces ? 'In place of ' + e(x.replaces) : c.text) + '</div><div class="sets">'
+          + x.sets.map((st, j) => x.unilateral ? '<button class="s' + (st.L ? ' on' : '') + '" data-do="set" data-arg="' + i + ':' + j + ':L">Left ' + G.fmtW(st.w) + '</button><button class="s' + (st.R ? ' on' : '') + '" data-do="set" data-arg="' + i + ':' + j + ':R">Right × ' + st.r + '</button>' : '<button class="s' + (st.done ? ' on' : '') + '" data-do="set" data-arg="' + i + ':' + j + '">' + G.fmtW(st.w) + ' × ' + st.r + (st.planFail ? ' †' : '') + '</button>').join('') + '</div>'
+          + '<div class="tools"><button data-open="set" data-arg="' + i + ':0">Weights</button><button data-do="addset" data-arg="' + i + '">Add set</button><button data-open="replace" data-arg="' + i + '">Replace</button><button data-open="exercise" data-arg="' + x.id + '">Notes</button></div></div>'; }).join('')
+      + '<button class="read red" data-do="finish">Go to press · +' + p.xp + ' XP</button><button class="read" data-do="discard">Spike the story</button>';
+  }
+  function archive() {
+    const t = G.totals();
+    return '<div class="kick">The archive</div><h1 class="head" style="font-size:38px">' + t.all.workouts + ' issues, ' + t.all.sets + ' sets</h1><p class="dek">' + t.month.workouts + ' this month · level ' + G.xp().level + ' · ' + G.xp().total + ' XP</p>'
+      + '<div class="toc">' + G.history().slice(0, 6).map((w) => toc(G.parse(w.date).getDate(), e(w.planName), G.fmtDate(w.date) + ' · ' + w.minutes + ' min', 'data-open="workout" data-arg="' + w.id + '"')).join('') + '</div>'
+      + '<div class="kick">Departments</div><div class="toc">' + toc('I', 'Back issues', 'History', 'data-open="history"') + toc('II', 'Records', '', 'data-open="records"') + toc('III', 'Honours', 'Achievements', 'data-open="achievements"') + toc('IV', 'Body', 'Measurements', 'data-open="body"') + toc('V', 'Kitchen', 'Food log', 'data-open="food"') + toc('VI', 'Portraits', 'Progress photos', 'data-open="photos"') + toc('VII', 'Calendar', '', 'data-open="calendar"') + '</div>';
+  }
+  function letters() {
+    return '<div class="kick">Letters to the editor</div><div class="toc">' + toc('✉', 'Write a letter', 'New post', 'data-open="post"') + toc('✉', 'Correspondence', 'Messages', 'data-open="chats"') + toc('✉', 'Contributors', 'Friends', 'data-open="friends"') + toc('#', 'The league table', 'Top 20 this week', 'data-open="leaderboard"') + '</div>'
+      + G.feed().map((p) => '<div class="letter" data-open="postview" data-arg="' + p.id + '">' + K.postCard(p) + '</div>').join('');
+  }
+  function masthead() {
+    return '<div class="kick">Masthead</div><h1 class="head" style="font-size:34px">Editor: ' + e(G.state.profile.name) + '</h1><p class="dek">' + e(G.state.profile.bio) + '</p><div class="toc">' + toc('·', 'Publishing schedule', G.goal() + ' issues a week', 'data-open="settings"') + toc('·', 'Profile, notices and reminders', '', 'data-open="profile"') + toc('·', 'Production settings', 'Language, units, sound, backup', 'data-open="settings"') + '</div>';
+  }
+  K.app({ root: document.getElementById('app'), screens: { cover, feature, archive, letters, masthead }, actions: { start: (a) => { G.start(a); document.querySelector('[data-tab=feature]').click(); } } });
+})();
+</script>
+</body>
+</html>

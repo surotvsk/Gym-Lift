@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>53 · Bloom — GymQuest concept</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../frame.css">
+<link rel="stylesheet" href="kit.css">
+<style>
+  .app { position: absolute; inset: 0; display: flex; flex-direction: column; color: #2B2836; font: 15px/1.55 Sora, system-ui, sans-serif; background: #FDFCFF; overflow: hidden;
+    --k-acc: #6F5BD6; --k-font: Sora, sans-serif; --k-radius: 24px; --k-bg: #FDFCFF; --k-card: #F3F0FB; --k-line: #E6E1F3; --k-good: #7FB07A; --k-bad: #F3DCE2; }
+  .bloom { position: absolute; inset: -20%; filter: blur(50px); opacity: .85; transition: background 1.2s; pointer-events: none; }
+  main { position: relative; flex: 1; overflow-y: auto; padding: 60px 26px 24px; }
+  h1 { font: 300 36px/1.15 Sora; margin: 0 0 14px; letter-spacing: -1px; }
+  p { margin: 0 0 14px; }
+  .soft { color: #6C6880; }
+  .num { font: 300 84px/1 Sora; letter-spacing: -4px; }
+  .go { display: inline-flex; align-items: center; gap: 10px; border: 0; border-radius: 999px; background: #2B2836; color: #fff; font: 600 15px Sora; padding: 15px 26px; cursor: pointer; margin: 6px 0 22px; }
+  .go.lt { background: rgba(255,255,255,.7); color: #2B2836; }
+  .lst button { display: flex; justify-content: space-between; width: 100%; border: 0; border-bottom: 1px solid rgba(43,40,54,.12); background: none; padding: 14px 0; font: 400 16px Sora; cursor: pointer; color: #2B2836; text-align: left; }
+  .lst small { color: #6C6880; }
+  .ex { padding: 16px 0; border-bottom: 1px solid rgba(43,40,54,.12); }
+  .ex b { font: 600 18px Sora; } .ex.cur b { color: #6F5BD6; }
+  .petals { display: flex; flex-wrap: wrap; gap: 10px; margin: 10px 0 8px; }
+  .pt { width: 52px; height: 52px; border-radius: 50% 50% 50% 8px; border: 1.5px solid rgba(43,40,54,.25); background: rgba(255,255,255,.6); font: 600 14px Sora; cursor: pointer; color: #2B2836; line-height: 1; }
+  .pt small { display: block; font-size: 9px; font-weight: 400; }
+  .pt.on { background: linear-gradient(135deg, #FFB1C8, #B8A6FF); border-color: transparent; color: #fff; }
+  .tools { display: flex; flex-wrap: wrap; gap: 14px; } .tools button { border: 0; background: none; color: #6F5BD6; font: 400 13px Sora; cursor: pointer; padding: 2px 0; }
+  nav { position: relative; display: flex; padding: 10px 10px 26px; }
+  nav button { flex: 1; border: 0; background: none; color: #8E89A3; font: 400 13px Sora; cursor: pointer; padding: 8px 0; }
+  nav button.is-active { color: #2B2836; font-weight: 600; }
+  .post { cursor: pointer; border-bottom: 1px solid rgba(43,40,54,.12); padding: 10px 0; } .post .k-post { border: 0; padding: 0; } .post .k-share { background: rgba(255,255,255,.6); }
+</style>
+</head>
+<body class="concept">
+<aside class="concept-info" id="info"></aside>
+<div class="device"><div class="app" id="app">
+  <div class="bloom" id="bloom"></div>
+  <main data-scroll>
+    <section data-screen="now"></section><section data-screen="move" hidden></section><section data-screen="past" hidden></section><section data-screen="people" hidden></section><section data-screen="you" hidden></section>
+  </main>
+  <nav><button data-tab="now">Now</button><button data-tab="move">Move</button><button data-tab="past">Past</button><button data-tab="people">People</button><button data-tab="you">You</button></nav>
+</div></div>
+<script src="designs.js"></script>
+<script src="lib.js"></script><script src="core.js"></script><script src="kit.js"></script>
+<script>
+(function () {
+  const G = GQ2, K = Kit, e = G.esc;
+  const li = (t, s, attrs) => '<button ' + attrs + '><span>' + t + '</span><small>' + (s || '') + '</small></button>';
+  function chrome() {
+    const w = G.weekInfo(), s = G.sess(), t = Math.min(1, (w.done + (s ? .6 : 0)) / w.goal);
+    const cool = ['#C1E1FF', '#D4F5C9', '#E8E3FF'], warm = ['#FFD6E0', '#FFF1B8', '#FFC9A6'];
+    const mix = (a, b) => { const p = (h) => [1, 3, 5].map((k) => parseInt(h.slice(k, k + 2), 16)); const A = p(a), B = p(b); return 'rgb(' + A.map((v, k) => Math.round(v + (B[k] - v) * t)).join(',') + ')'; };
+    document.getElementById('bloom').style.background = 'radial-gradient(40% 35% at 20% 20%, ' + mix(cool[0], warm[0]) + ', transparent), radial-gradient(45% 40% at 85% 35%, ' + mix(cool[1], warm[1]) + ', transparent), radial-gradient(50% 45% at 40% 85%, ' + mix(cool[2], warm[2]) + ', transparent)';
+  }
+  function now() {
+    const w = G.weekInfo(), rec = G.recommended(), s = G.sess(), X = G.xp();
+    return '<p class="soft">' + G.fmtDate(G.today(), true) + '</p><div class="num">' + w.done + '<span style="font-size:36px;letter-spacing:0"> of ' + w.goal + '</span></div><h1>' + G.motivation() + '</h1>'
+      + (s ? '<button class="go" data-tab="move">Continue ' + e(s.planName) + ', <span data-live="elapsed"></span></button>' : rec ? '<p class="soft">' + e(rec.name) + ' is next. ' + rec.exercises.length + ' exercises, about ' + G.planMinutes(rec) + ' minutes.</p><button class="go" data-do="start" data-arg="' + rec.id + '">Begin ' + e(rec.name) + '</button>' : '')
+      + '<div class="lst">' + li('Streak', G.streak() + ' weeks', 'data-open="calendar"') + li('Level ' + X.level, X.total + ' XP', 'data-open="achievements"') + li(w.excused ? 'This week is excused' : 'Excuse this week', w.excused ? 'undo' : 'streak kept', 'data-do="excuse"') + li('Rest timer', '', 'data-open="rest"') + li('A walk or a run', '', 'data-open="activity"') + '</div>';
+  }
+  function move() {
+    const s = G.sess();
+    if (!s) {
+      const sel = G.selected();
+      return '<h1>What would you like to do today?</h1><div class="lst">' + G.plans().map((p) => li((p === sel ? '<b>' + e(p.name) + '</b>' : e(p.name)) + (p === G.recommended() ? ' ✦' : ''), G.planMinutes(p) + ' min', 'data-do="select" data-arg="' + p.id + '"')).join('') + '</div>'
+        + (sel ? '<p class="soft" style="margin-top:14px">' + sel.exercises.map((x) => e(x.name)).join(', ') + '.</p><button class="go" data-do="start" data-arg="' + sel.id + '">Begin ' + e(sel.name) + '</button> <button class="go lt" data-open="editplan" data-arg="' + sel.id + '">Edit</button>' : '')
+        + '<div class="lst">' + li('Change the order', '', 'data-open="plans"') + li('New plan', '', 'data-open="newplan"') + li('Full Body builder', '', 'data-open="fullbody"') + li('Exercise library', '48', 'data-open="library"') + '</div>';
+    }
+    const p = G.progress();
+    return '<p class="soft">' + e(s.planName) + '</p><div class="num" data-live="elapsed"></div><p class="soft">' + p.done + ' of ' + p.total + ' sets. Rest <span data-live="rest" data-idle="not running" data-done="is over"></span>.</p>'
+      + s.exercises.map((x, i) => { const c = G.compare(s.planId, x.id, Math.max(...x.sets.map((y) => y.w)), x.reps);
+        return '<div class="ex' + (i === s.cur ? ' cur' : '') + '"><b>' + e(x.name) + '</b><div class="soft" style="font-size:13px">' + (x.replaces ? 'instead of ' + e(x.replaces) : c.text) + '</div><div class="petals">'
+          + x.sets.map((st, j) => x.unilateral ? '<button class="pt' + (st.L ? ' on' : '') + '" data-do="set" data-arg="' + i + ':' + j + ':L">L<small>' + G.fmtW(st.w) + '</small></button><button class="pt' + (st.R ? ' on' : '') + '" data-do="set" data-arg="' + i + ':' + j + ':R">R<small>×' + st.r + '</small></button>' : '<button class="pt' + (st.done ? ' on' : '') + '" data-do="set" data-arg="' + i + ':' + j + '">' + st.r + '<small>' + G.fmtW(st.w) + '</small></button>').join('') + '</div>'
+          + '<div class="tools"><button data-open="set" data-arg="' + i + ':0">Weight</button><button data-do="addset" data-arg="' + i + '">Add a set</button><button data-open="replace" data-arg="' + i + '">Replace</button><button data-open="exercise" data-arg="' + x.id + '">How to</button><button data-do="rest" data-arg="90">Rest</button></div></div>'; }).join('')
+      + '<div style="height:16px"></div><button class="go" data-do="finish">Finish, +' + p.xp + ' XP</button> <button class="go lt" data-open="rest">Rest timer</button> <button class="go lt" data-do="discard">Discard</button>';
+  }
+  function past() {
+    const t = G.totals();
+    return '<div class="num">' + t.all.workouts + '</div><h1>workouts so far.</h1><p class="soft">' + t.month.workouts + ' this month and ' + t.all.sets + ' sets in total.</p><div style="color:#6F5BD6">' + K.line(G.weeklySeries(10).map((x) => x.sets), { h: 90, dots: false }) + '</div>'
+      + '<div class="lst">' + G.records().list.slice(0, 3).map((r) => li(e(r.name), G.fmtW(r.kg), 'data-open="exercise" data-arg="' + r.id + '"')).join('') + li('All records', '', 'data-open="records"') + li('History', '', 'data-open="history"') + li('Calendar', '', 'data-open="calendar"') + li('Achievements', '', 'data-open="achievements"') + li('Body', '', 'data-open="body"') + li('Food', '', 'data-open="food"') + li('Photos', '', 'data-open="photos"') + '</div>';
+  }
+  function people() {
+    const L = G.leaderboard();
+    return '<h1>People</h1><div class="lst">' + li('Top 20 this week', 'you are #' + (L.me ? L.me.rank : '–'), 'data-open="leaderboard"') + li('Messages', '', 'data-open="chats"') + li('Friends', '', 'data-open="friends"') + li('Write a post', '', 'data-open="post"') + '</div>'
+      + G.feed().map((p) => '<div class="post" data-open="postview" data-arg="' + p.id + '">' + K.postCard(p) + '</div>').join('');
+  }
+  function you() { return '<h1>You</h1><div class="lst">' + li('Weekly goal', G.goal() + ' a week', 'data-open="settings"') + li('Profile and reminders', '', 'data-open="profile"') + li('All settings', '', 'data-open="settings"') + '</div><p class="soft" style="margin-top:16px">The background warms up as your week fills, and cools again on Monday.</p>'; }
+  K.app({ root: document.getElementById('app'), screens: { now, move, past, people, you }, chrome, actions: { start: (a) => { G.start(a); document.querySelector('[data-tab=move]').click(); } } });
+})();
+</script>
+</body>
+</html>

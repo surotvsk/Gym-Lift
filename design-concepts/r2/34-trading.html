@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>34 · Trading — GymQuest concept</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bungee&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../frame.css">
+<link rel="stylesheet" href="kit.css">
+<style>
+  .app { position: absolute; inset: 0; display: flex; flex-direction: column; background: #0F1B3D; color: #EEF2FF; font: 14px/1.4 Inter, system-ui, sans-serif;
+    background-image: radial-gradient(circle at 50% -10%, #23367A, transparent 60%);
+    --common: #9AA6B2; --rare: #3A8DFF; --epic: #A855F7; --legend: #F5B700;
+    --k-bg: #13214A; --k-fg: #EEF2FF; --k-mute: #A3AEDB; --k-card: #1B2B5E; --k-line: #2A3C78; --k-acc: #F5B700; --k-acc-fg: #0F1B3D; --k-font: Inter, sans-serif; --k-head: Bungee, sans-serif; --k-radius: 14px; --k-good: #2D9C6B; --k-bad: #3A2448; }
+  main { flex: 1; overflow-y: auto; padding: 44px 14px 16px; }
+  h1 { font: 400 24px/1.05 Bungee, sans-serif; margin: 0 0 8px; }
+  .muted { color: #A3AEDB; }
+  .tc { position: relative; border-radius: 16px; padding: 8px; background: var(--rc, var(--common)); color: #10183A; box-shadow: 0 10px 24px rgba(0,0,0,.4); }
+  .tc .in { background: #F4F1E8; border-radius: 10px; padding: 8px; }
+  .tc .nm { display: flex; justify-content: space-between; align-items: baseline; font: 400 15px Bungee; }
+  .tc .nm span { font: 800 13px Inter; color: #B4231F; }
+  .tc .art { height: 150px; border-radius: 6px; background: #ccd center/cover; margin: 6px 0; border: 2px solid rgba(0,0,0,.25); }
+  .tc .ty { font: 600 11px Inter; background: rgba(0,0,0,.08); border-radius: 4px; padding: 2px 6px; display: inline-block; }
+  .tc .stat { display: flex; justify-content: space-between; border-top: 1px solid rgba(0,0,0,.12); padding: 5px 0; font-size: 13px; }
+  .tc .stat b { font-weight: 800; }
+  .tc .flav { font: italic 12px Inter; color: #55607F; margin-top: 4px; }
+  .tc.holo::after { content: ''; position: absolute; inset: 0; border-radius: 16px; background: linear-gradient(115deg, transparent 20%, rgba(255,255,255,.55) 35%, rgba(130,255,240,.35) 45%, rgba(255,140,240,.35) 55%, transparent 70%); background-size: 250% 100%; mix-blend-mode: soft-light; animation: holo 5s linear infinite; pointer-events: none; }
+  @keyframes holo { from { background-position: 100% 0; } to { background-position: -150% 0; } }
+  @media (prefers-reduced-motion: reduce) { .tc.holo::after { animation: none; } }
+  .fan { position: relative; height: 210px; margin: 6px 0 4px; }
+  .fan button { position: absolute; top: 10px; left: 50%; width: 120px; height: 170px; margin-left: -60px; border: 0; border-radius: 12px; padding: 6px; cursor: pointer; background: var(--rc); transform-origin: 50% 140%; color: #10183A; box-shadow: 0 6px 14px rgba(0,0,0,.45); }
+  .fan button .in { height: 100%; border-radius: 8px; background: #F4F1E8; display: flex; flex-direction: column; justify-content: space-between; padding: 6px; text-align: left; font: 400 12px Bungee; }
+  .fan button small { font: 600 10px Inter; color: #55607F; }
+  .fan button.sel { outline: 3px solid #fff; }
+  .go { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; border: 0; border-radius: 12px; background: #F5B700; color: #0F1B3D; font: 400 17px Bungee; padding: 13px; cursor: pointer; margin: 8px 0; }
+  .go.alt { background: #1B2B5E; color: #EEF2FF; }
+  .pips { display: flex; flex-wrap: wrap; gap: 6px; margin: 6px 0; }
+  .pip { min-width: 46px; height: 46px; border-radius: 50%; border: 3px solid #10183A; background: #fff; font: 800 13px Inter; cursor: pointer; color: #10183A; line-height: 1; padding: 0 4px; }
+  .pip small { display: block; font-size: 9px; font-weight: 600; }
+  .pip.on { background: #F5B700; }
+  .tools { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 4px; } .tools button { border: 0; background: none; color: #1F4FC9; font: 700 12px Inter; cursor: pointer; padding: 2px 0; }
+  .row { display: flex; gap: 8px; align-items: center; }
+  .binder { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .mini { border: 0; border-radius: 10px; padding: 4px; background: var(--rc); cursor: pointer; text-align: left; color: #10183A; }
+  .mini .in { background: #F4F1E8; border-radius: 7px; padding: 5px; height: 100%; }
+  .mini b { display: block; font: 400 11px/1.1 Bungee; } .mini small { font: 800 15px Inter; }
+  .mini.empty { background: #1B2B5E; color: #A3AEDB; } .mini.empty .in { background: none; border: 2px dashed #2A3C78; }
+  .lst button { display: flex; justify-content: space-between; width: 100%; border: 0; border-bottom: 1px solid #2A3C78; background: none; color: #EEF2FF; padding: 11px 0; font: 600 15px Inter; cursor: pointer; text-align: left; }
+  .lst small { color: #A3AEDB; font-weight: 400; }
+  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 8px 0 12px; }
+  .stats button { border: 1px solid #2A3C78; background: #13214A; border-radius: 12px; padding: 8px; color: #EEF2FF; text-align: left; font: inherit; cursor: pointer; }
+  .stats b { display: block; font: 400 22px Bungee; color: #F5B700; }
+  nav { display: flex; background: #0A1330; padding: 6px 4px 24px; border-top: 1px solid #2A3C78; }
+  nav button { flex: 1; border: 0; background: none; color: #7C88B8; font: 400 11px Bungee; cursor: pointer; padding: 8px 0; }
+  nav button.is-active { color: #F5B700; }
+  .post { cursor: pointer; border-bottom: 1px solid #2A3C78; padding: 8px 0; } .post .k-post { border: 0; padding: 0; } .post .k-share { background: #13214A; color: #EEF2FF; border-color: #2A3C78; }
+</style>
+</head>
+<body class="concept">
+<aside class="concept-info" id="info"></aside>
+<div class="device"><div class="app" id="app">
+  <main data-scroll>
+    <section data-screen="decks"></section><section data-screen="duel" hidden></section><section data-screen="binder" hidden></section><section data-screen="trade" hidden></section><section data-screen="rules" hidden></section>
+  </main>
+  <nav><button data-tab="decks">Decks</button><button data-tab="duel">Play</button><button data-tab="binder">Binder</button><button data-tab="trade">Trade</button><button data-tab="rules">Rules</button></nav>
+</div></div>
+<script src="designs.js"></script>
+<script src="lib.js"></script><script src="core.js"></script><script src="kit.js"></script>
+<script>
+(function () {
+  const G = GQ2, K = Kit, e = G.esc;
+  const timesDone = (id) => G.state.history.reduce((n, w) => n + (w.exercises.some((x) => x.id === id && x.setsDone) ? 1 : 0), 0);
+  const rarity = (id) => { const n = G.records().events.filter((x) => x.id === id).length; return n >= 5 ? ['Legendary', 'var(--legend)'] : n >= 3 ? ['Epic', 'var(--epic)'] : n >= 1 ? ['Rare', 'var(--rare)'] : ['Common', 'var(--common)']; };
+  const recBy = () => Object.fromEntries(G.records().list.map((r) => [r.id, r]));
+  const lastPR = () => { const ev = G.records().events; return ev.length ? ev[ev.length - 1].id : null; };
+  const li = (t, s, attrs) => '<button ' + attrs + '><span>' + t + '</span><small>' + (s || '') + '</small></button>';
+  function card(x, extra, holo) {
+    const r = rarity(x.id), rb = recBy()[x.id], lib = G.LIBMAP[x.id] || {};
+    return '<div class="tc' + (holo ? ' holo' : '') + '" style="--rc:' + r[1] + '"><div class="in"><div class="nm">' + e(x.name) + '<span>' + (rb ? G.fmtW(rb.kg) : 'BW') + '</span></div>'
+      + '<div class="art" style="background-image:url(' + (G.img(x.id) || G.anyImg(x.id)) + ')"></div><span class="ty">' + r[0] + ', ' + (G.MUSCLE_LABEL[lib.primary] || 'Custom') + '</span>' + (extra || '') + '</div></div>';
+  }
+  function decks() {
+    const w = G.weekInfo(), rec = G.recommended(), s = G.sess(), plans = G.plans(), sel = G.selected(), n = plans.length;
+    return '<h1>Your decks</h1><p class="muted" style="margin:0">Week ' + w.num + ': ' + w.done + ' of ' + w.goal + ' played. ' + G.streak() + '-week streak. Level ' + G.xp().level + '.</p>'
+      + '<div class="fan">' + plans.map((p, k) => { const a = (k - (n - 1) / 2) * 13; const r = rarity((p.exercises[0] || {}).id || ''); return '<button class="' + (p === sel ? 'sel' : '') + '" style="--rc:' + r[1] + ';transform:rotate(' + a + 'deg) translateY(' + Math.abs(a) * .6 + 'px);z-index:' + (p === sel ? 9 : k) + '" data-do="select" data-arg="' + p.id + '"><span class="in"><span>' + e(p.name) + (p === rec ? ' ✦' : '') + '</span><small>' + p.exercises.length + ' cards, ' + G.planMinutes(p) + ' min</small></span></button>'; }).join('') + '</div>'
+      + (s ? '<button class="go" data-tab="duel">Back to the match, <span data-live="elapsed"></span></button>' : sel ? '<button class="go" data-do="start" data-arg="' + sel.id + '">Play ' + e(sel.name) + '</button><button class="go alt" data-open="editplan" data-arg="' + sel.id + '">Edit this deck</button>' : '')
+      + '<p class="muted">' + G.motivation() + '</p>'
+      + '<div class="lst">' + li(w.excused ? 'This week is a bye (excused)' : 'Take a bye this week', w.excused ? 'undo' : 'streak kept', 'data-do="excuse"') + li('Rest timer', '', 'data-open="rest"') + li('Side quest: run, walk, ride', '', 'data-open="activity"') + li('Calendar', '', 'data-open="calendar"') + li('Reorder decks', '', 'data-open="plans"') + li('Build a new deck', '', 'data-open="newplan"') + li('Full Body builder', '', 'data-open="fullbody"') + li('Browse all 48 cards', '', 'data-open="library"') + '</div>';
+  }
+  function duel() {
+    const s = G.sess();
+    if (!s) { const sel = G.selected(); return '<h1>Pick a deck</h1><div class="lst">' + G.plans().map((p) => li(e(p.name) + (p === G.recommended() ? ' ✦' : '') + (p === sel ? ' (selected)' : ''), p.exercises.length + ' cards', 'data-do="select" data-arg="' + p.id + '"')).join('') + '</div>' + (sel ? '<button class="go" data-do="start" data-arg="' + sel.id + '">Play ' + e(sel.name) + '</button>' : ''); }
+    const p = G.progress(), i = s.cur, x = s.exercises[i], c = G.compare(s.planId, x.id, Math.max(...x.sets.map((y) => y.w)), x.reps), j = Math.max(0, x.sets.findIndex((y) => !y.done));
+    const pips = '<div class="pips">' + x.sets.map((st, k) => x.unilateral ? '<button class="pip' + (st.L ? ' on' : '') + '" data-do="set" data-arg="' + i + ':' + k + ':L">L' + (k + 1) + '</button><button class="pip' + (st.R ? ' on' : '') + '" data-do="set" data-arg="' + i + ':' + k + ':R">R' + (k + 1) + '</button>' : '<button class="pip' + (st.done ? ' on' : '') + '" data-do="set" data-arg="' + i + ':' + k + '">' + st.r + '<small>' + G.fmtW(st.w, true) + '</small></button>').join('') + '</div>';
+    return '<div class="row"><h1 style="flex:1;margin:0" data-live="elapsed"></h1><button class="go" style="width:auto;margin:0;padding:10px 14px;font-size:14px" data-do="finish">End turn</button></div><p class="muted">' + e(s.planName) + ': card ' + (i + 1) + ' of ' + s.exercises.length + ', ' + p.done + ' of ' + p.total + ' sets. Rest <span data-live="rest" data-idle="off" data-done="over"></span>.</p>'
+      + card(x, '<div class="stat"><span>Set ' + (j + 1) + ' power</span><b>' + G.fmtW(x.sets[j].w) + ' × ' + x.sets[j].r + '</b></div>' + pips + '<div class="flav">' + (x.replaces ? 'Swapped in for ' + e(x.replaces) + '.' : c.text + '.') + '</div><div class="tools"><button data-open="set" data-arg="' + i + ':' + j + '">Change weight</button><button data-do="addset" data-arg="' + i + '">Add a set</button><button data-open="replace" data-arg="' + i + '">Swap card</button><button data-open="exercise" data-arg="' + x.id + '">Read card</button><button data-do="rest" data-arg="90">Rest 90</button></div>', x.id === lastPR())
+      + '<div class="row" style="margin-top:10px"><button class="go alt" data-do="prev">Previous card</button><button class="go alt" data-do="next">Next card</button></div>'
+      + '<div class="binder">' + s.exercises.map((y, k) => '<button class="mini" style="--rc:' + (y.sets.every((z) => z.done) ? '#2D9C6B' : rarity(y.id)[1]) + (k === i ? ';outline:3px solid #fff' : '') + '" data-do="cur" data-arg="' + k + '"><span class="in"><b>' + e(y.name) + '</b><small>' + y.sets.filter((z) => z.done).length + '/' + y.sets.length + '</small></span></button>').join('') + '</div>'
+      + '<button class="go" data-do="finish">End turn, +' + p.xp + ' XP</button><button class="go alt" data-open="rest">Rest timer</button><button class="go alt" data-do="discard">Forfeit (discard)</button>';
+  }
+  function binder() {
+    const t = G.totals(), rb = recBy(), pr = lastPR();
+    const ids = [...new Set(G.state.history.flatMap((w) => w.exercises.map((x) => x.id)))];
+    return '<h1>Binder</h1><div class="stats"><button data-open="history"><b>' + t.all.workouts + '</b>matches</button><button data-open="records"><b>' + G.records().list.length + '</b>records</button><button data-open="achievements"><b>' + G.achievements().filter((a) => a.got && a.category !== 'milestone').length + '</b>badges</button></div>'
+      + (pr ? card(G.LIBMAP[pr] || { id: pr, name: pr }, '<div class="stat"><span>Newest record</span><b>' + G.fmtW((rb[pr] || {}).kg) + '</b></div>', true) : '')
+      + '<div style="height:12px"></div><div class="binder">' + ids.map((id) => { const r = rarity(id); return '<button class="mini" style="--rc:' + r[1] + '" data-open="exercise" data-arg="' + id + '"><span class="in"><b>' + e((G.LIBMAP[id] || { name: id }).name) + '</b><small>' + (rb[id] ? G.fmtW(rb[id].kg, true) : 'BW') + '</small></span></button>'; }).join('') + G.LIB.filter((x) => !ids.includes(x.id)).slice(0, 3).map(() => '<span class="mini empty"><span class="in"><b>?</b><small>not yet</small></span></span>').join('') + '</div>'
+      + '<div class="lst" style="margin-top:12px">' + li('Match history', '', 'data-open="history"') + li('Calendar', '', 'data-open="calendar"') + li('Records', '', 'data-open="records"') + li('Badges', '', 'data-open="achievements"') + li('Body', '', 'data-open="body"') + li('Food', '', 'data-open="food"') + li('Photos', '', 'data-open="photos"') + '</div>';
+  }
+  function trade() {
+    const L = G.leaderboard();
+    return '<h1>Trade post</h1><div class="lst">' + li('Top 20 this week', 'you are #' + (L.me ? L.me.rank : '–'), 'data-open="leaderboard"') + li('Messages', 'share a deck', 'data-open="chats"') + li('Friends', '', 'data-open="friends"') + li('Post to the board', '', 'data-open="post"') + '</div>'
+      + G.feed().map((p) => '<div class="post" data-open="postview" data-arg="' + p.id + '">' + K.postCard(p) + '</div>').join('');
+  }
+  function rules() { return '<h1>House rules</h1><div class="lst">' + li('Weekly goal', G.goal() + ' matches', 'data-open="settings"') + li('Profile and reminders', '', 'data-open="profile"') + li('All settings', '', 'data-open="settings"') + '</div><p class="muted">Rarity comes from the records you set on an exercise: 1 makes it rare, 3 epic, 5 legendary.</p>'; }
+  K.app({ root: document.getElementById('app'), screens: { decks, duel, binder, trade, rules }, actions: { start: (a) => { G.start(a); document.querySelector('[data-tab=duel]').click(); } } });
+})();
+</script>
+</body>
+</html>

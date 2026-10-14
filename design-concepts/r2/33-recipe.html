@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>33 · Recipe — GymQuest concept</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,800&family=Nunito+Sans:opsz,wght@6..12,400;6..12,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../frame.css">
+<link rel="stylesheet" href="kit.css">
+<style>
+  .app { position: absolute; inset: 0; display: flex; flex-direction: column; background: #FFF6D8; color: #2B2622; font: 15px/1.5 'Nunito Sans', system-ui, sans-serif;
+    --tom: #D8432F; --bas: #3E7D4A; --k-acc: #3E7D4A; --k-font: 'Nunito Sans', sans-serif; --k-head: Fraunces, serif; --k-radius: 14px; --k-bg: #FFFBEC; --k-card: #F7EDCB; --k-line: #E9DDB4; --k-good: #3E7D4A; --k-bad: #F3CFC7; }
+  main { flex: 1; overflow-y: auto; padding: 44px 16px 16px; }
+  .gingham { height: 16px; margin: 0 -16px 14px; background: repeating-linear-gradient(90deg, rgba(216,67,47,.55) 0 8px, transparent 8px 16px), repeating-linear-gradient(0deg, rgba(216,67,47,.55) 0 8px, rgba(255,246,216,1) 8px 16px); }
+  h1 { font: 800 34px/1.02 Fraunces, serif; margin: 0 0 6px; letter-spacing: -.5px; }
+  h2 { font: 800 22px/1.1 Fraunces, serif; margin: 18px 0 8px; }
+  .meta { display: flex; gap: 16px; margin: 8px 0 12px; }
+  .meta div { font-size: 13px; color: #6E655B; } .meta b { display: block; font: 800 20px Fraunces; color: #2B2622; }
+  .card { background: #FFFBEC; border-radius: 4px; padding: 16px; margin-bottom: 14px; box-shadow: 0 1px 0 #E9DDB4, 0 10px 20px -12px rgba(80,60,20,.35); position: relative; }
+  .card.tilt { transform: rotate(-.6deg); }
+  .photo { width: calc(100% + 32px); margin: -16px -16px 12px; height: 170px; object-fit: cover; border-radius: 4px 4px 0 0; display: block; }
+  .ing { list-style: none; padding: 0; margin: 0; }
+  .ing li { display: flex; align-items: center; gap: 10px; padding: 7px 0; border-bottom: 1px dotted #D9CBA0; }
+  .ing li:last-child { border: 0; }
+  .ing .q { margin-left: auto; font-weight: 700; color: var(--tom); white-space: nowrap; }
+  .box { width: 26px; height: 26px; border-radius: 6px; border: 2px solid #2B2622; background: #fff; cursor: pointer; flex: 0 0 auto; padding: 0; color: #fff; display: grid; place-items: center; font: 800 14px 'Nunito Sans'; }
+  .box.on { background: var(--bas); border-color: var(--bas); }
+  .box.side { width: auto; padding: 0 6px; color: #2B2622; font-size: 12px; } .box.side.on { color: #fff; }
+  .method { counter-reset: step; list-style: none; padding: 0; margin: 0; }
+  .method > li { position: relative; padding: 4px 0 14px 46px; }
+  .method > li::before { counter-increment: step; content: counter(step); position: absolute; left: 0; top: 0; width: 34px; height: 34px; border-radius: 50%; background: var(--tom); color: #fff; font: 800 17px Fraunces; display: grid; place-items: center; }
+  .method > li.done::before { background: var(--bas); content: '✓'; }
+  .method > li.cur::before { box-shadow: 0 0 0 4px rgba(216,67,47,.25); }
+  .method b { font: 800 18px Fraunces; }
+  .note { font-size: 13px; color: #6E655B; }
+  .sets { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+  .tools { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 4px; } .tools button { border: 0; background: none; color: var(--bas); font: 700 13px 'Nunito Sans'; cursor: pointer; padding: 2px 0; }
+  .cook { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; border: 0; border-radius: 999px; background: var(--tom); color: #fff; font: 800 18px Fraunces; padding: 14px; cursor: pointer; margin: 6px 0; }
+  .cook.basil { background: var(--bas); } .cook.plain { background: #F1E5BE; color: #2B2622; }
+  .shelf { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 6px; margin: 0 -16px; padding-left: 16px; padding-right: 16px; }
+  .rc { flex: 0 0 150px; border: 0; background: #FFFBEC; border-radius: 4px; padding: 0 0 10px; text-align: left; cursor: pointer; font: inherit; color: inherit; box-shadow: 0 8px 16px -10px rgba(80,60,20,.4); }
+  .rc img { width: 100%; height: 90px; object-fit: cover; border-radius: 4px 4px 0 0; display: block; }
+  .rc b { display: block; font: 800 16px Fraunces; padding: 6px 10px 0; } .rc small { padding: 0 10px; color: #6E655B; }
+  .rc.sel { outline: 3px solid var(--tom); }
+  .lst button { display: flex; justify-content: space-between; width: 100%; border: 0; border-bottom: 1px dotted #D9CBA0; background: none; padding: 10px 0; font: 700 15px 'Nunito Sans'; cursor: pointer; color: #2B2622; text-align: left; }
+  .lst button:last-child { border: 0; } .lst small { color: #6E655B; font-weight: 400; }
+  nav { display: flex; background: #2B2622; padding: 6px 4px 24px; }
+  nav button { flex: 1; border: 0; background: none; color: #BDB2A2; font: 700 12px 'Nunito Sans'; padding: 8px 0; cursor: pointer; }
+  nav button.is-active { color: #FFF6D8; box-shadow: inset 0 -3px 0 var(--tom); }
+  .post { cursor: pointer; } .post .k-post { border: 0; padding: 0; }
+</style>
+</head>
+<body class="concept">
+<aside class="concept-info" id="info"></aside>
+<div class="device"><div class="app" id="app">
+  <main data-scroll>
+    <section data-screen="today"></section><section data-screen="cook" hidden></section><section data-screen="book" hidden></section><section data-screen="table" hidden></section><section data-screen="pantry" hidden></section>
+  </main>
+  <nav><button data-tab="today">Today’s menu</button><button data-tab="cook">Cook</button><button data-tab="book">Cookbook</button><button data-tab="table">Table</button><button data-tab="pantry">Pantry</button></nav>
+</div></div>
+<script src="designs.js"></script>
+<script src="lib.js"></script><script src="core.js"></script><script src="kit.js"></script>
+<script>
+(function () {
+  const G = GQ2, K = Kit, e = G.esc;
+  const li = (t, s, attrs) => '<button ' + attrs + '><span>' + t + '</span><small>' + (s || '') + '</small></button>';
+  const qty = (x) => x.sets + ' × ' + x.reps + (x.weight ? ' at ' + G.fmtW(x.weight) : ', bodyweight');
+  function today() {
+    const w = G.weekInfo(), rec = G.recommended(), s = G.sess(), X = G.xp();
+    const img = rec && rec.exercises[0] && G.img(rec.exercises[0].id);
+    return '<div class="gingham"></div><h1>' + (s ? e(s.planName) + ' is on the stove' : rec ? e(rec.name) + ', served today' : 'Plan a menu') + '</h1>'
+      + '<div class="meta"><div><b>' + w.done + ' of ' + w.goal + '</b>meals this week</div><div><b>' + G.streak() + ' weeks</b>on schedule</div><div><b>Level ' + X.level + '</b>' + X.total + ' XP</div></div>'
+      + (s ? '<div class="card"><p style="margin:0 0 8px">Cooking for <span data-live="elapsed"></span>, ' + G.progress().done + ' of ' + G.progress().total + ' steps done.</p><button class="cook" data-tab="cook">Back to the kitchen</button></div>'
+        : rec ? '<div class="card tilt">' + (img ? '<img class="photo" src="' + img + '" alt="">' : '') + '<h2 style="margin-top:0">Ingredients</h2><ul class="ing">' + rec.exercises.map((x) => '<li>' + e(x.name) + '<span class="q">' + qty(x) + '</span></li>').join('') + '</ul><p class="note">Prep time about ' + G.planMinutes(rec) + ' minutes. Next in your rotation ✦</p><button class="cook" data-do="start" data-arg="' + rec.id + '">Start cooking</button></div>' : '')
+      + '<p class="note">' + G.motivation() + '</p>'
+      + '<div class="card lst">' + li(w.excused ? 'Kitchen closed this week (excused)' : 'Close the kitchen this week', w.excused ? 'undo' : 'streak kept', 'data-do="excuse"') + li('Rest timer', 'like an egg timer', 'data-open="rest"') + li('A walk to the market', 'run, walk or ride', 'data-open="activity"') + li('Meal calendar', '', 'data-open="calendar"') + '</div>';
+  }
+  function cook() {
+    const s = G.sess();
+    if (!s) {
+      const sel = G.selected();
+      return '<h1>Choose a recipe</h1><div class="shelf">' + G.plans().map((p) => '<button class="rc' + (p === sel ? ' sel' : '') + '" data-do="select" data-arg="' + p.id + '">' + (G.img(p.exercises[0] && p.exercises[0].id) ? '<img src="' + G.img(p.exercises[0].id) + '" alt="">' : '<img alt="" src="' + G.anyImg('') + '">') + '<b>' + e(p.name) + (p === G.recommended() ? ' ✦' : '') + '</b><small>' + G.planMinutes(p) + ' min</small></button>').join('') + '</div>'
+        + (sel ? '<div class="card"><h2 style="margin-top:0">' + e(sel.name) + '</h2><ul class="ing">' + sel.exercises.map((x) => '<li>' + e(x.name) + '<span class="q">' + qty(x) + '</span></li>').join('') + '</ul><button class="cook" data-do="start" data-arg="' + sel.id + '">Start cooking</button><button class="cook plain" data-open="editplan" data-arg="' + sel.id + '">Edit the recipe</button></div>' : '')
+        + '<div class="card lst">' + li('Order the recipes', 'your rotation', 'data-open="plans"') + li('Write a new recipe', '', 'data-open="newplan"') + li('Full Body builder', 'mix from your recipes', 'data-open="fullbody"') + li('Ingredient guide', '48 exercises', 'data-open="library"') + '</div>';
+    }
+    const p = G.progress();
+    return '<h1>' + e(s.planName) + '</h1><div class="meta"><div><b data-live="elapsed"></b>cooking</div><div><b>' + p.done + '/' + p.total + '</b>sets</div><div><b data-live="rest" data-idle="off" data-done="ding"></b>rest timer</div></div>'
+      + '<h2>Method</h2><ol class="method">' + s.exercises.map((x, i) => { const c = G.compare(s.planId, x.id, Math.max(...x.sets.map((y) => y.w)), x.reps), done = x.sets.every((y) => y.done);
+        return '<li class="' + (done ? 'done' : i === s.cur ? 'cur' : '') + '"><b>' + e(x.name) + '</b><div class="note">' + (x.replaces ? 'Swapped in for ' + e(x.replaces) + '.' : c.text + '.') + ' ' + x.sets.length + ' sets of ' + x.reps + (x.unilateral ? ', each side' : '') + '.</div><div class="sets">'
+          + x.sets.map((st, j) => x.unilateral ? '<button class="box side' + (st.L ? ' on' : '') + '" data-do="set" data-arg="' + i + ':' + j + ':L">L' + (j + 1) + '</button><button class="box side' + (st.R ? ' on' : '') + '" data-do="set" data-arg="' + i + ':' + j + ':R">R' + (j + 1) + '</button>' : '<button class="box' + (st.done ? ' on' : '') + '" data-do="set" data-arg="' + i + ':' + j + '" aria-label="Set ' + (j + 1) + ', ' + G.fmtW(st.w) + ' times ' + st.r + '">' + (st.done ? '✓' : '') + '</button>').join('') + '<span class="note" style="align-self:center">' + G.fmtW(x.sets[0].w) + (new Set(x.sets.map((y) => y.w)).size > 1 ? ' to ' + G.fmtW(Math.max(...x.sets.map((y) => y.w))) : '') + '</span></div>'
+          + '<div class="tools"><button data-open="set" data-arg="' + i + ':' + Math.max(0, x.sets.findIndex((y) => !y.done)) + '">Adjust the weight</button><button data-do="addset" data-arg="' + i + '">Another set</button><button data-open="replace" data-arg="' + i + '">Substitute</button><button data-open="exercise" data-arg="' + x.id + '">Technique</button><button data-do="rest" data-arg="90">Rest 90 s</button></div></li>'; }).join('') + '</ol>'
+      + '<button class="cook basil" data-do="finish">Serve it, +' + p.xp + ' XP</button><button class="cook plain" data-open="rest">Rest timer</button><button class="cook plain" data-do="discard">Throw it out</button>';
+  }
+  function book() {
+    const t = G.totals();
+    return '<h1>The cookbook</h1><p class="note">' + t.all.workouts + ' meals cooked, ' + t.month.workouts + ' this month.</p>'
+      + '<div class="card"><h2 style="margin-top:0">Sets per week</h2><div style="color:var(--tom)">' + K.bars(G.weeklySeries(8).map((x) => x.sets), { h: 100, labels: G.weeklySeries(8).map((x) => x.label) }) + '</div></div>'
+      + '<div class="card tilt"><h2 style="margin-top:0">Family favourites</h2><ul class="ing">' + G.records().list.slice(0, 5).map((r) => '<li>' + e(r.name) + '<span class="q">' + G.fmtW(r.kg) + '</span></li>').join('') + '</ul></div>'
+      + '<div class="card lst">' + G.history().slice(0, 4).map((w) => li(e(w.planName), G.fmtShort(w.date) + ', ' + w.minutes + ' min', 'data-open="workout" data-arg="' + w.id + '"')).join('') + li('All past meals', '', 'data-open="history"') + li('Records', '', 'data-open="records"') + li('Calendar', '', 'data-open="calendar"') + li('Achievements', '', 'data-open="achievements"') + li('Body', '', 'data-open="body"') + li('Food log', 'your own numbers', 'data-open="food"') + li('Progress photos', '', 'data-open="photos"') + '</div>';
+  }
+  function table() {
+    const L = G.leaderboard();
+    return '<h1>At the table</h1><div class="card lst">' + li('Top 20 cooks this week', 'you are #' + (L.me ? L.me.rank : '–'), 'data-open="leaderboard"') + li('Messages', '', 'data-open="chats"') + li('Friends', '', 'data-open="friends"') + li('Share something', '', 'data-open="post"') + '</div>'
+      + G.feed().map((p) => '<div class="card post" data-open="postview" data-arg="' + p.id + '">' + K.postCard(p) + '</div>').join('');
+  }
+  function pantry() { return '<h1>Pantry</h1><div class="card lst">' + li('Weekly goal', G.goal() + ' meals', 'data-open="settings"') + li('Profile and reminders', '', 'data-open="profile"') + li('All settings', '', 'data-open="settings"') + '</div>'; }
+  K.app({ root: document.getElementById('app'), screens: { today, cook, book, table, pantry }, actions: { start: (a) => { G.start(a); document.querySelector('[data-tab=cook]').click(); } } });
+})();
+</script>
+</body>
+</html>

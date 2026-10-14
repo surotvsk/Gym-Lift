@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>31 · Periodic — GymQuest concept</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../frame.css">
+<link rel="stylesheet" href="kit.css">
+<style>
+  .app { position: absolute; inset: 0; display: flex; flex-direction: column; background: #F2F4F3; color: #1E2A2F; font: 14px/1.35 'IBM Plex Sans Condensed', 'Arial Narrow', sans-serif;
+    --chest: #F28F6B; --back: #6BB0F2; --legs: #8FD18A; --shoulders: #F2D06B; --arms: #C59BF2; --core: #6BE0D1; --glutes: #F2A6C8;
+    --k-acc: #1E2A2F; --k-font: 'IBM Plex Sans Condensed', sans-serif; --k-radius: 4px; --k-bg: #F7F8F7; --k-card: #E7EBEA; --k-line: #D3D9D8; --k-good: #4F9A63; --k-bad: #F3D0C4; }
+  main { flex: 1; overflow-y: auto; padding: 44px 10px 16px; }
+  h1 { font: 700 26px/1 'IBM Plex Sans Condensed'; margin: 0 0 2px; letter-spacing: -.3px; }
+  .lead { color: #57656B; margin: 0 0 10px; }
+  .table { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 3px; }
+  .gh { font: 600 10px 'IBM Plex Sans Condensed'; text-align: center; color: #57656B; padding-bottom: 2px; }
+  .el { position: relative; min-width: 0; overflow: hidden; aspect-ratio: .86; border: 0; border-radius: 3px; padding: 2px 3px; text-align: left; cursor: pointer; color: #1E2A2F; font: inherit; background: var(--c); display: flex; flex-direction: column; }
+  .el .z { font: 400 8px 'IBM Plex Sans Condensed'; }
+  .el .sym { font: 700 18px/1 'IBM Plex Sans Condensed'; margin: auto 0 0; }
+  .el .m { font: 300 8px 'IBM Plex Sans Condensed'; white-space: nowrap; overflow: hidden; }
+  .el.dim { opacity: .35; } .el.inplan { box-shadow: inset 0 0 0 2px #1E2A2F; }
+  .formula { display: flex; align-items: baseline; flex-wrap: wrap; gap: 2px; font: 700 34px/1.1 'IBM Plex Sans Condensed'; margin: 6px 0; }
+  .formula sub { font-size: 16px; font-weight: 400; }
+  .box { background: #fff; border: 1px solid #D3D9D8; border-radius: 4px; padding: 12px; margin-bottom: 10px; }
+  .go { border: 0; background: #1E2A2F; color: #F2F4F3; border-radius: 3px; padding: 12px 18px; font: 600 16px 'IBM Plex Sans Condensed'; cursor: pointer; }
+  .go.ghost { background: none; color: #1E2A2F; box-shadow: inset 0 0 0 1px #1E2A2F; }
+  .row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .facts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 10px; }
+  .facts button { border: 1px solid #D3D9D8; background: #fff; border-radius: 4px; padding: 8px; text-align: left; font: inherit; color: inherit; cursor: pointer; }
+  .facts b { display: block; font: 700 24px 'IBM Plex Sans Condensed'; }
+  .atom { position: relative; width: 300px; height: 300px; margin: 6px auto 0; }
+  .atom .nuc { position: absolute; left: 50%; top: 50%; width: 110px; height: 128px; margin: -64px 0 0 -55px; border-radius: 4px; background: var(--c); display: flex; flex-direction: column; padding: 6px 8px; border: 0; cursor: pointer; color: #1E2A2F; text-align: left; font: inherit; }
+  .atom .nuc .sym { font: 700 46px/1 'IBM Plex Sans Condensed'; margin-top: auto; }
+  .atom .nuc small { font-size: 11px; }
+  .shell { position: absolute; left: 50%; top: 50%; border: 1px solid #A9B5B8; border-radius: 50%; }
+  .e { position: absolute; width: 34px; height: 34px; margin: -17px; border-radius: 50%; border: 2px solid #1E2A2F; background: #F2F4F3; font: 700 12px 'IBM Plex Sans Condensed'; cursor: pointer; color: #1E2A2F; padding: 0; }
+  .e.on { background: #1E2A2F; color: #F2F4F3; }
+  .lines .ln { display: flex; align-items: center; gap: 8px; padding: 8px 0; border-bottom: 1px solid #E0E5E4; }
+  .lines .tag { width: 30px; height: 34px; border-radius: 3px; display: grid; place-items: center; font: 700 14px 'IBM Plex Sans Condensed'; background: var(--c); border: 0; cursor: pointer; color: #1E2A2F; flex: 0 0 auto; }
+  .lines .g { flex: 1; min-width: 0; } .lines small { color: #57656B; }
+  .lines .ln.cur { background: #fff; box-shadow: inset 3px 0 0 #1E2A2F; padding-left: 6px; }
+  .tools { display: flex; flex-wrap: wrap; gap: 12px; } .tools button { border: 0; background: none; color: #1E2A2F; text-decoration: underline; font: 600 13px 'IBM Plex Sans Condensed'; cursor: pointer; padding: 4px 0; }
+  .lst button { display: flex; justify-content: space-between; width: 100%; border: 0; border-bottom: 1px solid #E0E5E4; background: none; padding: 11px 2px; font: 400 15px 'IBM Plex Sans Condensed'; cursor: pointer; color: #1E2A2F; text-align: left; }
+  .lst small { color: #57656B; }
+  nav { display: flex; border-top: 1px solid #D3D9D8; background: #fff; padding: 4px 4px 24px; }
+  nav button { flex: 1; border: 0; background: none; font: 600 12px 'IBM Plex Sans Condensed'; color: #8A979B; cursor: pointer; padding: 6px 0; display: flex; flex-direction: column; align-items: center; gap: 1px; }
+  nav button b { font: 700 17px 'IBM Plex Sans Condensed'; }
+  nav button.is-active { color: #1E2A2F; }
+  .post { cursor: pointer; } .post .k-post { border: 0; padding: 0; }
+</style>
+</head>
+<body class="concept">
+<aside class="concept-info" id="info"></aside>
+<div class="device"><div class="app" id="app">
+  <main data-scroll>
+    <section data-screen="table"></section><section data-screen="react" hidden></section><section data-screen="data" hidden></section><section data-screen="lab" hidden></section><section data-screen="set" hidden></section>
+  </main>
+  <nav><button data-tab="table"><b>Tb</b>Table</button><button data-tab="react"><b>Rx</b>Reaction</button><button data-tab="data"><b>Da</b>Data</button><button data-tab="lab"><b>Lb</b>Lab mates</button><button data-tab="set"><b>St</b>Settings</button></nav>
+</div></div>
+<script src="designs.js"></script>
+<script src="lib.js"></script><script src="core.js"></script><script src="kit.js"></script>
+<script>
+(function () {
+  const G = GQ2, K = Kit, e = G.esc;
+  const GROUPS = ['chest', 'back', 'shoulders', 'arms', 'legs', 'glutes', 'core'];
+  const SYM = {}; const used = new Set();
+  G.LIB.forEach((x) => { const w = x.name.replace(/[^A-Za-z ]/g, '').split(' '); let s = w[0][0].toUpperCase() + (w[1] ? w[1][0] : w[0][1]).toLowerCase(); let k = 2; while (used.has(s) && k < w[0].length) s = w[0][0].toUpperCase() + w[0][k++].toLowerCase(); used.add(s); SYM[x.id] = s; });
+  const sym = (id, name) => SYM[id] || (name || '?').slice(0, 2);
+  const grp = (id) => (G.LIBMAP[id] || {}).primary || 'core';
+  const z = (id) => G.LIB.findIndex((x) => x.id === id) + 1;
+  const best = () => { const m = {}; G.state.history.forEach((w) => w.exercises.forEach((x) => { if (x.setsDone) m[x.id] = Math.max(m[x.id] || 0, G.maxW(x)) || 'BW'; })); return m; };
+  function formula(p) { return '<div class="formula">' + p.exercises.map((x) => '<span>' + e(sym(x.id, x.name)) + '<sub>' + x.sets + '</sub></span>').join('') + '</div>'; }
+  function table() {
+    const w = G.weekInfo(), rec = G.recommended(), s = G.sess(), b = best(), inplan = new Set((rec ? rec.exercises : []).map((x) => x.id));
+    const cols = GROUPS.map((g) => G.LIB.filter((x) => x.primary === g));
+    const rows = Math.max(...cols.map((c) => c.length));
+    let grid = GROUPS.map((g) => '<div class="gh">' + G.MUSCLE_LABEL[g] + '</div>').join('');
+    for (let r = 0; r < rows; r++) cols.forEach((c, k) => { const x = c[r]; grid += x ? '<button class="el' + (b[x.id] ? '' : ' dim') + (inplan.has(x.id) ? ' inplan' : '') + '" style="--c:var(--' + GROUPS[k] + ')" data-open="exercise" data-arg="' + x.id + '" title="' + e(x.name) + '"><span class="z">' + z(x.id) + '</span><span class="sym">' + SYM[x.id] + '</span><span class="m">' + (b[x.id] ? (b[x.id] === 'BW' ? 'BW' : G.fmtW(b[x.id])) : e(x.name)) + '</span></button>' : '<span></span>'; });
+    return '<h1>Your periodic table</h1><p class="lead">48 exercises by muscle group. Bright elements are ones you have lifted, with your best as their mass.</p>'
+      + '<div class="facts"><button data-open="calendar"><b>' + w.done + '/' + w.goal + '</b>this week</button><button data-open="achievements"><b>' + G.streak() + '</b>week streak</button><button data-open="achievements"><b>' + G.xp().level + '</b>level, ' + G.xp().total + ' XP</button></div>'
+      + (s ? '<div class="box"><b>' + e(s.planName) + '</b> is reacting, <span data-live="elapsed"></span>' + formula(G.plan(s.planId) || { exercises: s.exercises.map((x) => ({ id: x.id, name: x.name, sets: x.sets.length })) }) + '<button class="go" data-tab="react">Back to the reaction</button></div>'
+        : rec ? '<div class="box"><span>Next compound in your rotation ✦</span>' + formula(rec) + '<div class="row"><b style="font-size:18px;flex:1">' + e(rec.name) + '</b><button class="go" data-do="start" data-arg="' + rec.id + '">Start ' + e(rec.name) + '</button></div></div>' : '')
+      + '<div class="table">' + grid + '</div>'
+      + '<div class="lst" style="margin-top:10px"><button data-do="excuse"><span>' + (w.excused ? 'This week is excused' : 'Excuse this week') + '</span><small>' + (w.excused ? 'undo' : 'keeps the streak') + '</small></button><button data-open="rest"><span>Rest timer</span><small></small></button><button data-open="activity"><span>Run, walk or ride</span><small></small></button><button data-open="library"><span>Open the full library with filters</span><small></small></button></div>';
+  }
+  function react() {
+    const s = G.sess();
+    if (!s) {
+      const sel = G.selected();
+      return '<h1>Compounds</h1><p class="lead">Your plans, in rotation order. Tap one to select it.</p>' + G.plans().map((p) => '<div class="box" style="' + (p === sel ? 'border-color:#1E2A2F' : '') + '"><div class="row"><b style="flex:1;font-size:17px">' + e(p.name) + (p === G.recommended() ? ' ✦' : '') + '</b><button class="go ghost" data-do="select" data-arg="' + p.id + '">' + (p === sel ? 'Selected' : 'Select') + '</button></div>' + formula(p) + '</div>').join('')
+        + (sel ? '<div class="row"><button class="go" data-do="start" data-arg="' + sel.id + '">Start ' + e(sel.name) + '</button><button class="go ghost" data-open="editplan" data-arg="' + sel.id + '">Edit</button></div>' : '')
+        + '<div class="lst" style="margin-top:10px"><button data-open="plans"><span>Reorder plans</span><small></small></button><button data-open="newplan"><span>New plan</span><small></small></button><button data-open="fullbody"><span>Full Body builder</span><small></small></button></div>';
+    }
+    const p = G.progress(), i = s.cur, x = s.exercises[i], n = x.sets.length, c = G.compare(s.planId, x.id, Math.max(...x.sets.map((y) => y.w)), x.reps);
+    const electrons = x.sets.map((st, j) => { const a = -Math.PI / 2 + j * 2 * Math.PI / n, r = 128; const px = 150 + r * Math.cos(a), py = 150 + r * Math.sin(a);
+      return x.unilateral ? '<button class="e' + (st.done ? ' on' : '') + '" style="left:' + px + 'px;top:' + py + 'px" data-do="set" data-arg="' + i + ':' + j + ':' + (st.L ? 'R' : 'L') + '">' + (st.done ? '✓' : st.L ? 'R' : 'L') + '</button>' : '<button class="e' + (st.done ? ' on' : '') + '" style="left:' + px + 'px;top:' + py + 'px" data-do="set" data-arg="' + i + ':' + j + '">' + (st.done ? '✓' : st.r) + '</button>'; }).join('');
+    return '<div class="row"><h1 style="flex:1" data-live="elapsed"></h1><button class="go" data-do="finish">Finish, +' + p.xp + ' XP</button></div><p class="lead">' + e(s.planName) + ', ' + p.done + ' of ' + p.total + ' sets. Rest <span data-live="rest" data-idle="not running" data-done="is over"></span>.</p>'
+      + '<div class="atom" style="--c:var(--' + grp(x.id) + ')"><span class="shell" style="width:256px;height:256px;margin:-128px"></span><span class="shell" style="width:190px;height:190px;margin:-95px;border-style:dashed"></span>' + electrons
+      + '<button class="nuc" data-open="set" data-arg="' + i + ':' + Math.max(0, x.sets.findIndex((y) => !y.done)) + '"><small>' + z(x.id) + '</small><span class="sym">' + e(sym(x.id, x.name)) + '</span><b>' + e(x.name) + '</b><small>' + G.fmtW(x.sets[Math.max(0, x.sets.findIndex((y) => !y.done))].w) + '</small></button></div>'
+      + '<p class="lead" style="text-align:center">' + (x.replaces ? 'Replaces ' + e(x.replaces) + ' today.' : c.text + '.') + ' Tap an electron to log a set, the element to change weight.</p>'
+      + '<div class="tools" style="justify-content:center"><button data-do="addset" data-arg="' + i + '">Add a set</button><button data-open="replace" data-arg="' + i + '">Replace</button><button data-open="exercise" data-arg="' + x.id + '">How to</button><button data-open="rest">Rest timer</button><button data-do="discard">Discard</button></div>'
+      + '<div class="lines">' + s.exercises.map((y, k) => '<div class="ln' + (k === i ? ' cur' : '') + '" style="--c:var(--' + grp(y.id) + ')"><button class="tag" data-do="cur" data-arg="' + k + '">' + e(sym(y.id, y.name)) + '</button><span class="g">' + e(y.name) + '<br><small>' + y.sets.filter((q) => q.done).length + ' of ' + y.sets.length + ' sets</small></span></div>').join('') + '</div>';
+  }
+  function data() {
+    const t = G.totals();
+    return '<h1>Measurements</h1><div class="facts"><button data-open="history"><b>' + t.week.workouts + '</b>this week</button><button data-open="history"><b>' + t.month.workouts + '</b>this month</button><button data-open="history"><b>' + t.all.workouts + '</b>all time</button></div>'
+      + '<div class="box"><b>Sets per week</b>' + K.bars(G.weeklySeries(8).map((x) => x.sets), { h: 100, labels: G.weeklySeries(8).map((x) => x.label) }) + '</div>'
+      + '<div class="box lines">' + G.records().list.slice(0, 5).map((r) => '<div class="ln" style="--c:var(--' + grp(r.id) + ')"><button class="tag" data-open="exercise" data-arg="' + r.id + '">' + e(sym(r.id, r.name)) + '</button><span class="g">' + e(r.name) + '<br><small>set ' + G.fmtShort(r.date) + '</small></span><b>' + G.fmtW(r.kg) + '</b></div>').join('') + '</div>'
+      + '<div class="lst"><button data-open="records"><span>All records</span><small></small></button><button data-open="history"><span>History</span><small></small></button><button data-open="calendar"><span>Calendar</span><small></small></button><button data-open="achievements"><span>Achievements</span><small></small></button><button data-open="body"><span>Body</span><small></small></button><button data-open="food"><span>Food</span><small></small></button><button data-open="photos"><span>Progress photos</span><small></small></button></div>';
+  }
+  function lab() {
+    const L = G.leaderboard();
+    return '<h1>Lab mates</h1><div class="lst"><button data-open="leaderboard"><span>Top 20 this week</span><small>you are #' + (L.me ? L.me.rank : '–') + '</small></button><button data-open="chats"><span>Messages</span><small></small></button><button data-open="friends"><span>Friends</span><small></small></button><button data-open="post"><span>Write a post</span><small></small></button></div>'
+      + G.feed().map((p) => '<div class="box post" data-open="postview" data-arg="' + p.id + '">' + K.postCard(p) + '</div>').join('');
+  }
+  function set() { return '<h1>Settings</h1><div class="lst"><button data-open="settings"><span>Weekly goal</span><small>' + G.goal() + ' a week</small></button><button data-do="unit" data-arg="' + (G.unit() === 'kg' ? 'lb' : 'kg') + '"><span>Units</span><small>' + G.unit() + '</small></button><button data-open="profile"><span>Profile and reminders</span><small></small></button><button data-open="settings"><span>All settings</span><small></small></button></div>'; }
+  K.app({ root: document.getElementById('app'), screens: { table, react, data, lab, set }, actions: { start: (a) => { G.start(a); document.querySelector('[data-tab=react]').click(); } } });
+})();
+</script>
+</body>
+</html>

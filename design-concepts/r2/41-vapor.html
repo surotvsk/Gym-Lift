@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>41 · Vapor — GymQuest concept</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Monoton&family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../frame.css">
+<link rel="stylesheet" href="kit.css">
+<style>
+  .app { position: absolute; inset: 0; display: flex; flex-direction: column; color: #FFE8F6; font: 15px/1.4 Montserrat, system-ui, sans-serif; background: linear-gradient(180deg, #2B1055 0%, #7A2A8C 55%, #FF6EC7 100%); overflow: hidden;
+    --k-bg: #2A1250; --k-fg: #FFE8F6; --k-mute: #D6A9E8; --k-card: #3B1A69; --k-line: #5B2F8A; --k-acc: #00F0FF; --k-acc-fg: #2B1055; --k-font: Montserrat, sans-serif; --k-head: Monoton, cursive; --k-radius: 4px; --k-good: #7A2A8C; --k-bad: #3B1A49; }
+  .sky { position: absolute; left: 0; right: 0; height: 52%; pointer-events: none; }
+  .sun { position: absolute; left: 50%; width: 220px; height: 220px; margin-left: -110px; border-radius: 50%; background: linear-gradient(180deg, #FFE36E 0%, #FF9E7A 45%, #FF4FA3 100%); -webkit-mask: repeating-linear-gradient(180deg, #000 0 14px, transparent 14px 18px, #000 18px 22px); mask: repeating-linear-gradient(180deg, #000 0 16px, transparent 16px 20px); filter: drop-shadow(0 0 30px rgba(255,110,199,.6)); transition: top .8s; }
+  .grid { position: absolute; left: -50%; right: -50%; bottom: 0; height: 46%; background: linear-gradient(transparent 0, rgba(43,16,85,.6) 100%), repeating-linear-gradient(90deg, rgba(0,240,255,.7) 0 2px, transparent 2px 46px), repeating-linear-gradient(0deg, rgba(0,240,255,.7) 0 2px, transparent 2px 34px); transform: perspective(260px) rotateX(62deg); transform-origin: 50% 100%; pointer-events: none; opacity: .55; }
+  main { position: relative; z-index: 2; flex: 1; overflow-y: auto; padding: 44px 16px 18px; }
+  h1 { font: 400 34px/1.05 Monoton, cursive; margin: 0; color: #FFE8F6; text-shadow: 3px 3px 0 #00F0FF, -2px -2px 0 #FF4FA3; letter-spacing: 2px; }
+  .jp { font: 600 13px Montserrat; letter-spacing: .4em; color: #00F0FF; }
+  .hero { height: 230px; display: flex; flex-direction: column; justify-content: flex-end; text-align: center; }
+  .n { font: 800 64px/1 Montserrat; color: #fff; text-shadow: 0 0 18px rgba(255,79,163,.8); }
+  .win { background: rgba(43,16,85,.72); border: 2px solid #00F0FF; box-shadow: 6px 6px 0 #FF4FA3; margin-bottom: 16px; backdrop-filter: blur(4px); }
+  .win .tb { display: flex; justify-content: space-between; background: linear-gradient(90deg, #FF4FA3, #7A2A8C); padding: 3px 8px; font: 600 12px Montserrat; }
+  .win .bd { padding: 12px; }
+  .btn { display: block; width: 100%; border: 2px solid #00F0FF; background: #00F0FF; color: #2B1055; font: 800 16px Montserrat; letter-spacing: .2em; padding: 12px; cursor: pointer; margin-top: 10px; }
+  .btn.o { background: none; color: #00F0FF; }
+  .lst button { display: flex; justify-content: space-between; width: 100%; border: 0; border-bottom: 1px solid rgba(0,240,255,.35); background: none; padding: 10px 0; font: 600 15px Montserrat; cursor: pointer; color: #FFE8F6; text-align: left; }
+  .lst button:last-child { border: 0; } .lst small { color: #00F0FF; }
+  .sets { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0; }
+  .s { width: 56px; height: 56px; border: 2px solid #FFE8F6; background: none; color: #FFE8F6; font: 800 15px Montserrat; cursor: pointer; line-height: 1; }
+  .s small { display: block; font-size: 9px; font-weight: 600; }
+  .s.on { background: linear-gradient(180deg, #FFE36E, #FF4FA3); color: #2B1055; border-color: #FFE36E; }
+  .tools { display: flex; flex-wrap: wrap; gap: 12px; } .tools button { border: 0; background: none; color: #00F0FF; font: 600 12px Montserrat; cursor: pointer; padding: 2px 0; letter-spacing: .05em; }
+  nav { position: relative; z-index: 3; display: flex; background: rgba(43,16,85,.85); border-top: 2px solid #00F0FF; padding: 6px 4px 24px; }
+  nav button { flex: 1; border: 0; background: none; color: #D6A9E8; font: 600 11px Montserrat; letter-spacing: .12em; cursor: pointer; padding: 9px 0; }
+  nav button.is-active { color: #2B1055; background: #00F0FF; }
+  .post { cursor: pointer; border-bottom: 1px solid rgba(0,240,255,.35); padding: 8px 0; } .post .k-post { border: 0; padding: 0; } .post .k-share { background: #2B1055; color: #FFE8F6; border-color: #5B2F8A; } .post .k-post-img { filter: hue-rotate(280deg) saturate(1.4); }
+</style>
+</head>
+<body class="concept">
+<aside class="concept-info" id="info"></aside>
+<div class="device"><div class="app" id="app">
+  <div class="sky"><div class="sun" id="sun"></div></div><div class="grid"></div>
+  <main data-scroll>
+    <section data-screen="sun"></section><section data-screen="move" hidden></section><section data-screen="mall" hidden></section><section data-screen="chat" hidden></section><section data-screen="sys" hidden></section>
+  </main>
+  <nav><button data-tab="sun">ＳＵＮ</button><button data-tab="move">ＭＯＶＥ</button><button data-tab="mall">ＭＡＬＬ</button><button data-tab="chat">ＣＲＥＷ</button><button data-tab="sys">ＳＹＳ</button></nav>
+</div></div>
+<script src="designs.js"></script>
+<script src="lib.js"></script><script src="core.js"></script><script src="kit.js"></script>
+<script>
+(function () {
+  const G = GQ2, K = Kit, e = G.esc;
+  const W = (t, body) => '<div class="win"><div class="tb"><span>' + t + '</span><span>— □ ×</span></div><div class="bd">' + body + '</div></div>';
+  const li = (t, s, attrs) => '<button ' + attrs + '><span>' + t + '</span><small>' + (s || '') + '</small></button>';
+  function chrome(cur) { const w = G.weekInfo(); const pct = Math.min(1, w.done / w.goal); document.getElementById('sun').style.top = (cur === 'sun' ? 220 - pct * 150 : 140 - pct * 60) + 'px'; }
+  function sun() {
+    const w = G.weekInfo(), rec = G.recommended(), s = G.sess(), X = G.xp();
+    return '<div class="hero"><div class="jp">ＷＯＲＫＯＵＴＳ ＴＨＩＳ ＷＥＥＫ</div><div class="n">' + w.done + '/' + w.goal + '</div><h1>week ' + w.num + '</h1></div>'
+      + W(s ? 'now_playing.exe' : 'next.exe', s ? '<b>' + e(s.planName) + '</b><br><span data-live="elapsed"></span> elapsed<button class="btn" data-tab="move">Resume</button>' : rec ? '<b style="font-size:20px">' + e(rec.name) + ' ✦</b><br>' + rec.exercises.length + ' exercises, about ' + G.planMinutes(rec) + ' min<button class="btn" data-do="start" data-arg="' + rec.id + '">Start ' + e(rec.name) + '</button>' : '')
+      + W('status.txt', '<div class="lst">' + li('Streak', G.streak() + ' weeks', 'data-open="calendar"') + li('Level ' + X.level, X.total + ' XP', 'data-open="achievements"') + li(w.excused ? 'Week excused' : 'Excuse this week', w.excused ? 'undo' : 'keeps the streak', 'data-do="excuse"') + li('Rest timer', '', 'data-open="rest"') + li('Run, walk, ride', '', 'data-open="activity"') + '</div><p style="margin:8px 0 0;color:#D6A9E8">' + G.motivation() + '</p>');
+  }
+  function move() {
+    const s = G.sess();
+    if (!s) {
+      const sel = G.selected();
+      return '<h1>plans</h1><div style="height:12px"></div>' + W('rotation.lst', '<div class="lst">' + G.plans().map((p) => li((p === sel ? '▶ ' : '') + e(p.name) + (p === G.recommended() ? ' ✦' : ''), G.planMinutes(p) + ' min', 'data-do="select" data-arg="' + p.id + '"')).join('') + '</div>')
+        + (sel ? W(e(sel.name).toLowerCase() + '.plan', sel.exercises.map((x) => e(x.name) + ' ' + x.sets + '×' + x.reps + ' ' + G.fmtW(x.weight)).join('<br>') + '<button class="btn" data-do="start" data-arg="' + sel.id + '">Start</button><button class="btn o" data-open="editplan" data-arg="' + sel.id + '">Edit</button>') : '')
+        + W('more', '<div class="lst">' + li('Reorder plans', '', 'data-open="plans"') + li('New plan', '', 'data-open="newplan"') + li('Full Body builder', '', 'data-open="fullbody"') + li('Exercise library', '48', 'data-open="library"') + '</div>');
+    }
+    const p = G.progress();
+    return '<div class="hero" style="height:160px"><div class="n" data-live="elapsed"></div><div class="jp">' + e(s.planName).toUpperCase() + ' · ' + p.done + '/' + p.total + '</div><div class="jp">REST <span data-live="rest" data-idle="OFF" data-done="OVER"></span></div></div>'
+      + s.exercises.map((x, i) => { const c = G.compare(s.planId, x.id, Math.max(...x.sets.map((y) => y.w)), x.reps);
+        return W((i === s.cur ? '▶ ' : '') + e(x.name), '<div style="color:#D6A9E8;font-size:13px">' + (x.replaces ? 'replaces ' + e(x.replaces) : c.text) + '</div><div class="sets">'
+          + x.sets.map((st, j) => x.unilateral ? '<button class="s' + (st.L ? ' on' : '') + '" data-do="set" data-arg="' + i + ':' + j + ':L">L<small>' + G.fmtW(st.w) + '</small></button><button class="s' + (st.R ? ' on' : '') + '" data-do="set" data-arg="' + i + ':' + j + ':R">R<small>×' + st.r + '</small></button>' : '<button class="s' + (st.done ? ' on' : '') + '" data-do="set" data-arg="' + i + ':' + j + '">' + st.r + '<small>' + G.fmtW(st.w) + '</small></button>').join('') + '</div>'
+          + '<div class="tools"><button data-open="set" data-arg="' + i + ':0">weight</button><button data-do="addset" data-arg="' + i + '">+ set</button><button data-open="replace" data-arg="' + i + '">replace</button><button data-open="exercise" data-arg="' + x.id + '">how to</button><button data-do="rest" data-arg="90">rest 90</button></div>'); }).join('')
+      + '<button class="btn" data-do="finish">Finish, +' + p.xp + ' XP</button><button class="btn o" data-open="rest">Rest timer</button><button class="btn o" data-do="discard">Discard</button>';
+  }
+  function mall() {
+    const t = G.totals();
+    return '<h1>archive</h1><div style="height:12px"></div>' + W('stats.dat', '<div class="lst">' + li('This week', t.week.workouts, 'data-open="history"') + li('This month', t.month.workouts, 'data-open="history"') + li('All time', t.all.workouts + ' workouts, ' + t.all.sets + ' sets', 'data-open="history"') + '</div><div style="color:#00F0FF">' + K.bars(G.weeklySeries(8).map((x) => x.sets), { h: 80 }) + '</div>')
+      + W('records.txt', '<div class="lst">' + G.records().list.slice(0, 4).map((r) => li(e(r.name), G.fmtW(r.kg), 'data-open="exercise" data-arg="' + r.id + '"')).join('') + '</div>')
+      + W('more', '<div class="lst">' + li('Records', '', 'data-open="records"') + li('Calendar', '', 'data-open="calendar"') + li('Achievements', '', 'data-open="achievements"') + li('Body', '', 'data-open="body"') + li('Food', '', 'data-open="food"') + li('Photos', '', 'data-open="photos"') + '</div>');
+  }
+  function chat() {
+    const L = G.leaderboard();
+    return '<h1>friends</h1><div style="height:12px"></div>' + W('online', '<div class="lst">' + li('Top 20 this week', '#' + (L.me ? L.me.rank : '–'), 'data-open="leaderboard"') + li('Messages', '', 'data-open="chats"') + li('Friends', '', 'data-open="friends"') + li('New post', '', 'data-open="post"') + '</div>')
+      + W('feed', G.feed().map((p) => '<div class="post" data-open="postview" data-arg="' + p.id + '">' + K.postCard(p) + '</div>').join(''));
+  }
+  function sys() { return '<h1>system</h1><div style="height:12px"></div>' + W('control_panel', '<div class="lst">' + li('Weekly goal', G.goal(), 'data-open="settings"') + li('Profile and reminders', '', 'data-open="profile"') + li('All settings', '', 'data-open="settings"') + '</div>'); }
+  K.app({ root: document.getElementById('app'), screens: { sun, move, mall, chat, sys }, chrome, actions: { start: (a) => { G.start(a); document.querySelector('[data-tab=move]').click(); } } });
+})();
+</script>
+</body>
+</html>

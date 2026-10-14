@@ -100,6 +100,10 @@ the app shows an "update available" notice and never reloads during an active wo
 - **`design-concepts/`** holds standalone redesign prototypes (shared `data.js`, `frame.css`, `icons.js`,
   and an `index.html` gallery). It is not part of the app, is not precached, and `sw.js` skips every request
   under `/design-concepts/`.
+  `design-concepts/r2/` is round 2: 60 *working* prototypes on one shared engine (`core.js` = state and logic,
+  `kit.js`/`kit.css` = themed sheets for every flow, `lib.js` = the exercise library generated from `script.js`,
+  `designs.js` = the list). Its state uses its own localStorage key `gymquest-concepts-r2`, never the app's.
+  `node tests/concepts/run.js [regex]` checks every design in headless Chrome and writes `r2/thumbs/`.
 
 ## Working conventions in this repo
 

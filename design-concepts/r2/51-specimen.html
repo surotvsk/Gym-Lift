@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>51 · Specimen — GymQuest concept</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,100;9..144,400;9..144,900&family=Inter+Tight:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../frame.css">
+<link rel="stylesheet" href="kit.css">
+<style>
+  .app { position: absolute; inset: 0; display: flex; flex-direction: column; background: #fff; color: #000; font: 14px/1.4 'Inter Tight', system-ui, sans-serif;
+    --hot: #FF3B00;
+    --k-acc: #000; --k-font: 'Inter Tight', sans-serif; --k-head: Fraunces, serif; --k-radius: 0px; --k-card: #F3F3F3; --k-line: #DDD; --k-good: #000; --k-bad: #F3F3F3; }
+  main { flex: 1; overflow-y: auto; padding: 44px 16px 18px; }
+  .meta { display: flex; justify-content: space-between; font-size: 11px; color: #777; border-bottom: 1px solid #000; padding-bottom: 4px; margin-bottom: 8px; }
+  .glyph { font: 900 180px/0.8 Fraunces, serif; letter-spacing: -8px; margin: 6px 0 2px; font-variation-settings: 'opsz' 144; }
+  .glyph.thin { font-weight: 100; }
+  .ladder > div { display: flex; align-items: baseline; gap: 10px; border-bottom: 1px solid #EEE; padding: 4px 0; overflow: hidden; white-space: nowrap; }
+  .ladder small { width: 26px; flex: 0 0 auto; font-size: 10px; color: #777; }
+  .ladder span { font-family: Fraunces, serif; }
+  .ladder .now span { color: var(--hot); }
+  .waterfall { margin: 8px 0 14px; }
+  .go { display: block; width: 100%; border: 0; background: #000; color: #fff; text-align: left; padding: 14px; font: 400 24px Fraunces, serif; cursor: pointer; margin: 6px 0; }
+  .go.hot { background: var(--hot); } .go.out { background: #fff; color: #000; box-shadow: inset 0 0 0 1px #000; font-size: 18px; }
+  .gl { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid #000; border-left: 1px solid #000; }
+  .gl button { aspect-ratio: 1; border: 0; border-right: 1px solid #000; border-bottom: 1px solid #000; background: #fff; cursor: pointer; display: flex; flex-direction: column; justify-content: space-between; padding: 4px; text-align: left; color: #000; }
+  .gl button b { font: 400 30px/1 Fraunces; align-self: center; } .gl button small { font-size: 9px; color: #777; }
+  .gl button.on { background: #000; color: #fff; } .gl button.on small { color: #aaa; }
+  .gl button.cur { box-shadow: inset 0 0 0 3px var(--hot); }
+  .lst button { display: flex; justify-content: space-between; align-items: baseline; width: 100%; border: 0; border-bottom: 1px solid #000; background: none; padding: 10px 0; font: 400 20px Fraunces, serif; cursor: pointer; color: #000; text-align: left; }
+  .lst small { font: 400 12px 'Inter Tight'; color: #777; }
+  .tools { display: flex; flex-wrap: wrap; gap: 14px; margin: 6px 0 12px; } .tools button { border: 0; background: none; font: 600 12px 'Inter Tight'; text-decoration: underline; cursor: pointer; padding: 2px 0; color: #000; }
+  h2 { font: 400 34px/1 Fraunces; margin: 16px 0 4px; }
+  nav { display: flex; border-top: 1px solid #000; padding: 6px 4px 24px; background: #fff; }
+  nav button { flex: 1; border: 0; background: none; font: 400 17px Fraunces; color: #999; cursor: pointer; padding: 6px 0; }
+  nav button.is-active { color: #000; font-weight: 900; }
+  .post { cursor: pointer; border-bottom: 1px solid #000; padding: 8px 0; } .post .k-post { border: 0; padding: 0; }
+</style>
+</head>
+<body class="concept">
+<aside class="concept-info" id="info"></aside>
+<div class="device"><div class="app" id="app">
+  <main data-scroll>
+    <section data-screen="a"></section><section data-screen="b" hidden></section><section data-screen="c" hidden></section><section data-screen="d" hidden></section><section data-screen="e" hidden></section>
+  </main>
+  <nav><button data-tab="a">Week</button><button data-tab="b">Train</button><button data-tab="c">Index</button><button data-tab="d">Readers</button><button data-tab="e">Settings</button></nav>
+</div></div>
+<script src="designs.js"></script>
+<script src="lib.js"></script><script src="core.js"></script><script src="kit.js"></script>
+<script>
+(function () {
+  const G = GQ2, K = Kit, e = G.esc;
+  const li = (t, s, attrs) => '<button ' + attrs + '><span>' + t + '</span><small>' + (s || '') + '</small></button>';
+  const ladder = (text, cur) => '<div class="ladder waterfall">' + [12, 18, 24, 36, 48, 72].map((sz) => '<div class="' + (sz === cur ? 'now' : '') + '"><small>' + sz + '</small><span style="font-size:' + sz + 'px;font-weight:' + (sz >= 48 ? 900 : 400) + '">' + e(text) + '</span></div>').join('') + '</div>';
+  function a() {
+    const w = G.weekInfo(), rec = G.recommended(), s = G.sess(), X = G.xp();
+    return '<div class="meta"><span>Specimen ' + w.num + '</span><span>' + G.fmtDate(G.today()) + '</span></div><div class="glyph">' + w.done + '<span class="thin" style="font-weight:100">/' + w.goal + '</span></div><div>Workouts this week. ' + G.motivation() + '</div>'
+      + ladder(s ? s.planName : rec ? rec.name + ' next' : 'GymQuest', 48)
+      + (s ? '<button class="go hot" data-tab="b">Continue ' + e(s.planName) + ', <span data-live="elapsed"></span></button>' : rec ? '<button class="go hot" data-do="start" data-arg="' + rec.id + '">Start ' + e(rec.name) + '</button>' : '')
+      + '<div class="lst">' + li('Streak, ' + G.streak() + ' weeks', '', 'data-open="calendar"') + li('Level ' + X.level, X.total + ' XP', 'data-open="achievements"') + li(w.excused ? 'Week excused' : 'Excuse this week', w.excused ? 'undo' : 'keeps the streak', 'data-do="excuse"') + li('Rest timer', '', 'data-open="rest"') + li('Run, walk, ride', '', 'data-open="activity"') + '</div>';
+  }
+  function b() {
+    const s = G.sess();
+    if (!s) {
+      const sel = G.selected();
+      return '<div class="meta"><span>Families (plans)</span><span>rotation order</span></div><div class="lst">' + G.plans().map((p) => li((p === sel ? '<b style="font-weight:900">' + e(p.name) + '</b>' : e(p.name)) + (p === G.recommended() ? ' ✦' : ''), p.exercises.length + ' styles', 'data-do="select" data-arg="' + p.id + '"')).join('') + '</div>'
+        + (sel ? ladder(sel.name, 36) + sel.exercises.map((x) => '<div style="display:flex;justify-content:space-between;border-bottom:1px solid #EEE;padding:4px 0"><span>' + e(x.name) + '</span><span>' + x.sets + '×' + x.reps + ' ' + G.fmtW(x.weight) + '</span></div>').join('') + '<button class="go" data-do="start" data-arg="' + sel.id + '">Start</button><button class="go out" data-open="editplan" data-arg="' + sel.id + '">Edit this plan</button>' : '')
+        + '<div class="lst">' + li('Reorder', '', 'data-open="plans"') + li('New plan', '', 'data-open="newplan"') + li('Full Body builder', '', 'data-open="fullbody"') + li('Exercise library', '48', 'data-open="library"') + '</div>';
+    }
+    const p = G.progress();
+    return '<div class="meta"><span>' + e(s.planName) + '</span><span>' + p.done + '/' + p.total + ' sets, rest <span data-live="rest" data-idle="off" data-done="over"></span></span></div><div class="glyph" style="font-size:110px;letter-spacing:-5px" data-live="elapsed"></div>'
+      + s.exercises.map((x, i) => { const c = G.compare(s.planId, x.id, Math.max(...x.sets.map((y) => y.w)), x.reps);
+        return '<h2 style="' + (i === s.cur ? 'color:#FF3B00' : '') + '">' + e(x.name) + '</h2><div style="font-size:12px;color:#777;margin-bottom:6px">' + (x.replaces ? 'Replaces ' + e(x.replaces) : c.text) + '</div><div class="gl">'
+          + x.sets.map((st, j) => x.unilateral ? '<button class="' + (st.L ? 'on' : '') + '" data-do="set" data-arg="' + i + ':' + j + ':L"><small>L' + (j + 1) + '</small><b>' + st.r + '</b><small>' + G.fmtW(st.w) + '</small></button><button class="' + (st.R ? 'on' : '') + '" data-do="set" data-arg="' + i + ':' + j + ':R"><small>R' + (j + 1) + '</small><b>' + st.r + '</b><small>' + G.fmtW(st.w) + '</small></button>' : '<button class="' + (st.done ? 'on' : '') + (i === s.cur && j === x.sets.findIndex((y) => !y.done) ? ' cur' : '') + '" data-do="set" data-arg="' + i + ':' + j + '"><small>Set ' + (j + 1) + '</small><b>' + st.r + '</b><small>' + G.fmtW(st.w) + '</small></button>').join('') + '</div>'
+          + '<div class="tools"><button data-open="set" data-arg="' + i + ':0">Weight</button><button data-do="addset" data-arg="' + i + '">Add a set</button><button data-open="replace" data-arg="' + i + '">Replace</button><button data-open="exercise" data-arg="' + x.id + '">How to</button><button data-do="rest" data-arg="90">Rest 90 s</button></div>'; }).join('')
+      + '<button class="go hot" data-do="finish">Finish, +' + p.xp + ' XP</button><button class="go out" data-open="rest">Rest timer</button><button class="go out" data-do="discard">Discard</button>';
+  }
+  function c() {
+    const t = G.totals();
+    return '<div class="meta"><span>Index</span><span>all time</span></div><div class="glyph" style="font-size:140px">' + t.all.workouts + '</div><div>workouts, ' + t.all.sets + ' sets.</div>' + K.bars(G.weeklySeries(8).map((x) => x.sets), { h: 90, labels: G.weeklySeries(8).map((x) => x.label) })
+      + '<div class="lst">' + G.records().list.slice(0, 4).map((r) => li(e(r.name), G.fmtW(r.kg), 'data-open="exercise" data-arg="' + r.id + '"')).join('') + li('Records', '', 'data-open="records"') + li('History', '', 'data-open="history"') + li('Calendar', '', 'data-open="calendar"') + li('Achievements', '', 'data-open="achievements"') + li('Body', '', 'data-open="body"') + li('Food', '', 'data-open="food"') + li('Photos', '', 'data-open="photos"') + '</div>';
+  }
+  function d() {
+    const L = G.leaderboard();
+    return '<div class="meta"><span>Readers</span><span></span></div><div class="lst">' + li('Top 20 this week', '#' + (L.me ? L.me.rank : '–'), 'data-open="leaderboard"') + li('Messages', '', 'data-open="chats"') + li('Friends', '', 'data-open="friends"') + li('Write a post', '', 'data-open="post"') + '</div>'
+      + G.feed().map((p) => '<div class="post" data-open="postview" data-arg="' + p.id + '">' + K.postCard(p) + '</div>').join('');
+  }
+  function e5() { return '<div class="meta"><span>Settings</span><span></span></div><div class="lst">' + li('Weekly goal', G.goal(), 'data-open="settings"') + li('Profile and reminders', '', 'data-open="profile"') + li('All settings', '', 'data-open="settings"') + '</div>'; }
+  K.app({ root: document.getElementById('app'), screens: { a, b, c, d, e: e5 }, actions: { start: (x) => { G.start(x); document.querySelector('[data-tab=b]').click(); } } });
+})();
+</script>
+</body>
+</html>

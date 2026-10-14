@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>29 · Subway — GymQuest concept</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../frame.css">
+<link rel="stylesheet" href="kit.css">
+<style>
+  .app { position: absolute; inset: 0; display: flex; flex-direction: column; background: #FAFAF7; color: #1B1B1B; font: 14px/1.4 'Hanken Grotesk', Helvetica, sans-serif;
+    --k-acc: #0039A6; --k-font: 'Hanken Grotesk', sans-serif; --k-radius: 10px; --k-card: #F0F0EC; --k-line: #E0E0DA; --k-good: #00933C; --k-bad: #F3C9C2; }
+  .hd { padding: 46px 14px 10px; background: #1B1B1B; color: #fff; display: flex; align-items: center; gap: 10px; }
+  .hd h1 { margin: 0; font: 800 22px 'Hanken Grotesk'; flex: 1; }
+  .bul { display: inline-grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; color: #fff; font: 800 15px 'Hanken Grotesk'; flex: 0 0 auto; }
+  main { flex: 1; overflow-y: auto; padding: 12px 14px 18px; }
+  .map { background: #fff; border: 1px solid #E0E0DA; border-radius: 12px; margin-bottom: 12px; }
+  .map svg { width: 100%; display: block; }
+  .stn { cursor: pointer; } .stn text { font: 600 11px 'Hanken Grotesk'; fill: #1B1B1B; }
+  .next { background: #1B1B1B; color: #fff; border-radius: 12px; padding: 12px; margin-bottom: 12px; display: flex; align-items: center; gap: 12px; }
+  .next .g { flex: 1; } .next small { color: #B5B5B5; display: block; } .next b { font-size: 20px; }
+  .btn { border: 0; border-radius: 999px; background: #FCCC0A; color: #1B1B1B; font: 800 14px 'Hanken Grotesk'; padding: 10px 16px; cursor: pointer; }
+  .btn.bl { background: #0039A6; color: #fff; } .btn.gh { background: #F0F0EC; }
+  .sec { font: 800 12px 'Hanken Grotesk'; letter-spacing: .08em; text-transform: uppercase; color: #6B6B6B; margin: 14px 0 6px; }
+  .line { position: relative; padding-left: 34px; }
+  .line::before { content: ''; position: absolute; left: 12px; top: 8px; bottom: 8px; width: 8px; border-radius: 4px; background: var(--lc, #0039A6); }
+  .st { position: relative; padding: 4px 0 14px; }
+  .st::before { content: ''; position: absolute; left: -29px; top: 6px; width: 14px; height: 14px; border-radius: 50%; background: #fff; border: 3px solid #1B1B1B; }
+  .st.d::before { background: #1B1B1B; } .st.c::before { background: #FCCC0A; width: 18px; height: 18px; left: -31px; top: 4px; }
+  .st h3 { margin: 0; font: 800 17px 'Hanken Grotesk'; } .st .m { color: #6B6B6B; font-size: 13px; }
+  .cars { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
+  .car { border: 2px solid #1B1B1B; background: #fff; border-radius: 6px; padding: 5px 8px; font: 800 13px 'Hanken Grotesk'; cursor: pointer; color: #1B1B1B; }
+  .car small { font-weight: 400; } .car.on { background: var(--lc, #0039A6); border-color: var(--lc, #0039A6); color: #fff; }
+  .tools { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 4px; } .tools button { border: 0; background: none; color: #0039A6; font: 600 12px 'Hanken Grotesk'; cursor: pointer; padding: 2px 0; }
+  .lst button { display: flex; align-items: center; gap: 10px; width: 100%; border: 0; border-bottom: 1px solid #E0E0DA; background: none; padding: 10px 0; font: 600 15px 'Hanken Grotesk'; cursor: pointer; color: #1B1B1B; text-align: left; }
+  .lst .g { flex: 1; } .lst small { color: #6B6B6B; font-weight: 400; }
+  nav { display: flex; background: #1B1B1B; padding: 6px 4px 24px; }
+  nav button { flex: 1; border: 0; background: none; color: #9A9A9A; font: 600 11px 'Hanken Grotesk'; padding: 6px 0; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  nav button i { width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; font: 800 11px 'Hanken Grotesk'; font-style: normal; color: #fff; opacity: .5; }
+  nav button.is-active { color: #fff; } nav button.is-active i { opacity: 1; }
+  .post { cursor: pointer; border-bottom: 1px solid #E0E0DA; padding: 8px 0; } .post .k-post { border: 0; padding: 0; }
+</style>
+</head>
+<body class="concept">
+<aside class="concept-info" id="info"></aside>
+<div class="device"><div class="app" id="app">
+  <div class="hd" id="hd"></div>
+  <main data-scroll>
+    <section data-screen="map"></section><section data-screen="ride" hidden></section><section data-screen="trips" hidden></section><section data-screen="riders" hidden></section><section data-screen="info" hidden></section>
+  </main>
+  <nav><button data-tab="map"><i style="background:#EE352E">M</i>Map</button><button data-tab="ride"><i style="background:#00933C">R</i>Ride</button><button data-tab="trips"><i style="background:#0039A6">T</i>Trips</button><button data-tab="riders"><i style="background:#B933AD">C</i>Riders</button><button data-tab="info"><i style="background:#808183">i</i>Info</button></nav>
+</div></div>
+<script src="designs.js"></script>
+<script src="lib.js"></script><script src="core.js"></script><script src="kit.js"></script>
+<script>
+(function () {
+  const G = GQ2, K = Kit, I = K.icon, e = G.esc;
+  const COL = ['#EE352E', '#00933C', '#0039A6', '#FF6319', '#B933AD', '#FCCC0A', '#6CBE45', '#A7A9AC'];
+  const pc = (p) => COL[Math.max(0, G.plans().indexOf(p)) % COL.length];
+  const bul = (p) => '<span class="bul" style="background:' + pc(p) + (pc(p) === '#FCCC0A' ? ';color:#1B1B1B' : '') + '">' + e(p.name.slice(0, 1)) + '</span>';
+  const li = (lead, t, s, attrs) => '<button ' + attrs + '>' + lead + '<span class="g">' + t + (s ? '<br><small>' + s + '</small>' : '') + '</span>' + I('chevron') + '</button>';
+  function hd(cur) { const s = G.sess(); document.getElementById('hd').innerHTML = (s ? bul(G.plan(s.planId) || G.plans()[0]) : '<span class="bul" style="background:#FCCC0A;color:#1B1B1B">GQ</span>') + '<h1>' + { map: 'Rotation map', ride: s ? 'Now riding: ' + e(s.planName) : 'Lines', trips: 'Trip history', riders: 'Riders', info: 'Information' }[cur] + '</h1>' + (s ? '<span data-live="elapsed" style="font:800 18px Hanken Grotesk"></span>' : ''); }
+  function map() {
+    const plans = G.plans(), rec = G.recommended(), last = G.history()[0], s = G.sess(), w = G.weekInfo();
+    const n = plans.length, cx = 195, cy = 130, rx = 150, ry = 95;
+    const pts = plans.map((p, k) => { const a = -Math.PI / 2 + k * 2 * Math.PI / n; return [cx + rx * Math.cos(a), cy + ry * Math.sin(a)]; });
+    let svg = '<svg viewBox="0 0 390 270">';
+    plans.forEach((p, k) => { const [x1, y1] = pts[k], [x2, y2] = pts[(k + 1) % n]; svg += '<path d="M' + x1 + ' ' + y1 + ' L' + x2 + ' ' + y2 + '" stroke="' + pc(p) + '" stroke-width="9" stroke-linecap="round"/>'; });
+    plans.forEach((p, k) => { const [x, y] = pts[k], isN = p === rec, isL = last && last.planId === p.id;
+      svg += '<g class="stn" data-do="select" data-arg="' + p.id + '"><circle cx="' + x + '" cy="' + y + '" r="' + (isN ? 13 : 9) + '" fill="#fff" stroke="#1B1B1B" stroke-width="' + (isN ? 4 : 3) + '"/>' + (isL ? '<text x="' + x + '" y="' + (y + 4) + '" text-anchor="middle" font-size="12">🚇</text>' : '') + '<text x="' + x + '" y="' + (y + (y < cy ? -18 : 26)) + '" text-anchor="middle">' + e(p.name) + (isN ? ' ✦' : '') + '</text></g>'; });
+    svg += '<text x="195" y="135" text-anchor="middle" style="font:800 26px Hanken Grotesk">' + w.done + '/' + w.goal + '</text><text x="195" y="152" text-anchor="middle" style="font:600 11px Hanken Grotesk;fill:#6B6B6B">stops this week</text></svg>';
+    return '<div class="map">' + svg + '</div>'
+      + (s ? '<div class="next">' + bul(G.plan(s.planId) || plans[0]) + '<span class="g"><small>Now riding</small><b>' + e(s.planName) + '</b></span><button class="btn" data-tab="ride">Ride on</button></div>'
+        : rec ? '<div class="next">' + bul(rec) + '<span class="g"><small>Next stop ✦ · ' + G.planMinutes(rec) + ' min</small><b>' + e(rec.name) + '</b></span><button class="btn" data-do="start" data-arg="' + rec.id + '">Board</button></div>' : '')
+      + '<div class="lst">' + li('<span class="bul" style="background:#808183">' + G.streak() + '</span>', 'Week streak', w.excused ? 'This week is excused' : 'Service changes: excuse a week', 'data-do="excuse"') + li('<span class="bul" style="background:#FF6319">⏱</span>', 'Rest timer', '', 'data-open="rest"') + li('<span class="bul" style="background:#6CBE45">🚶</span>', 'Walk, run or ride', '', 'data-open="activity"') + li('<span class="bul" style="background:#0039A6">📅</span>', 'Timetable', 'Calendar', 'data-open="calendar"') + li('<span class="bul" style="background:#B933AD">' + G.xp().level + '</span>', 'Level ' + G.xp().level, G.xp().total + ' XP', 'data-open="achievements"') + '</div>';
+  }
+  function ride() {
+    const s = G.sess();
+    if (!s) {
+      const sel = G.selected();
+      return '<div class="lst">' + G.plans().map((p) => li(bul(p), e(p.name) + (p === G.recommended() ? ' ✦' : '') + (p === sel ? ' · selected' : ''), p.exercises.length + ' stations · ' + G.planMinutes(p) + ' min', 'data-do="select" data-arg="' + p.id + '"')).join('') + '</div>'
+        + (sel ? '<div class="sec">' + e(sel.name) + ' line</div><div class="line" style="--lc:' + pc(sel) + '">' + sel.exercises.map((x) => '<div class="st"><h3>' + e(x.name) + '</h3><div class="m">' + x.sets + ' × ' + x.reps + ' · ' + G.fmtW(x.weight) + '</div></div>').join('') + '</div><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" data-do="start" data-arg="' + sel.id + '">Board this line</button><button class="btn gh" data-open="editplan" data-arg="' + sel.id + '">Edit line</button></div>' : '')
+        + '<div class="lst" style="margin-top:10px">' + li('', 'Reorder lines', '', 'data-open="plans"') + li('', 'New line', '', 'data-open="newplan"') + li('', 'Full Body builder', '', 'data-open="fullbody"') + li('', 'Station guide (exercise library)', '', 'data-open="library"') + '</div>';
+    }
+    const p = G.progress(), lc = pc(G.plan(s.planId) || G.plans()[0]);
+    return '<div class="next"><span class="g"><small>' + p.done + ' of ' + p.total + ' sets · rest <span data-live="rest" data-idle="—" data-done="over"></span></small><b>Next: ' + e((s.exercises[s.cur] || {}).name || '') + '</b></span><button class="btn" data-do="finish">Last stop</button></div>'
+      + '<div class="line" style="--lc:' + lc + '">' + s.exercises.map((x, i) => { const c = G.compare(s.planId, x.id, Math.max(...x.sets.map((y) => y.w)), x.reps), dn = x.sets.every((y) => y.done);
+        return '<div class="st' + (dn ? ' d' : i === s.cur ? ' c' : '') + '"><h3>' + e(x.name) + '</h3><div class="m">' + (x.replaces ? 'replaces ' + e(x.replaces) : c.text) + '</div><div class="cars">'
+          + x.sets.map((st, j) => x.unilateral ? '<button class="car' + (st.L ? ' on' : '') + '" data-do="set" data-arg="' + i + ':' + j + ':L">L' + (j + 1) + ' <small>' + G.fmtW(st.w) + '</small></button><button class="car' + (st.R ? ' on' : '') + '" data-do="set" data-arg="' + i + ':' + j + ':R">R' + (j + 1) + '</button>' : '<button class="car' + (st.done ? ' on' : '') + '" data-do="set" data-arg="' + i + ':' + j + '">' + st.r + ' <small>' + G.fmtW(st.w) + '</small></button>').join('') + '</div>'
+          + '<div class="tools"><button data-open="set" data-arg="' + i + ':0">Weight</button><button data-do="addset" data-arg="' + i + '">+ car</button><button data-open="replace" data-arg="' + i + '">Transfer</button><button data-open="exercise" data-arg="' + x.id + '">Station info</button><button data-do="rest" data-arg="90">Rest 90</button></div></div>'; }).join('') + '</div>'
+      + '<div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn bl" data-do="finish">Arrive · +' + p.xp + ' XP</button><button class="btn gh" data-open="rest">Rest timer</button><button class="btn gh" data-do="discard">Leave the train</button></div>';
+  }
+  function trips() {
+    const t = G.totals();
+    return '<div class="sec">Ridership</div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;text-align:center">' + [['Week', t.week], ['Month', t.month], ['All', t.all]].map(([l, x]) => '<div class="map" style="padding:8px;margin:0"><b style="font-size:24px">' + x.workouts + '</b><br><small>' + l + '</small></div>').join('') + '</div>'
+      + '<div class="map" style="padding:8px;margin-top:10px;color:#0039A6">' + K.bars(G.weeklySeries(8).map((x) => x.sets), { h: 90, labels: G.weeklySeries(8).map((x) => x.label) }) + '</div>'
+      + '<div class="lst">' + G.history().slice(0, 5).map((w) => { const p = G.plan(w.planId); return li(p ? bul(p) : '', e(w.planName), G.fmtDate(w.date) + ' · ' + w.minutes + ' min', 'data-open="workout" data-arg="' + w.id + '"'); }).join('') + li('', 'All trips', '', 'data-open="history"') + li('', 'Records', '', 'data-open="records"') + li('', 'Calendar', '', 'data-open="calendar"') + li('', 'Achievements', '', 'data-open="achievements"') + li('', 'Body', '', 'data-open="body"') + li('', 'Food', '', 'data-open="food"') + li('', 'Photos', '', 'data-open="photos"') + '</div>';
+  }
+  function riders() {
+    const L = G.leaderboard();
+    return '<div class="lst">' + li('', 'Top 20 riders this week', '#' + (L.me ? L.me.rank : '–'), 'data-open="leaderboard"') + li('', 'Messages', '', 'data-open="chats"') + li('', 'Friends', '', 'data-open="friends"') + li('', 'New post', '', 'data-open="post"') + '</div>'
+      + G.feed().map((p) => '<div class="post" data-open="postview" data-arg="' + p.id + '">' + K.postCard(p) + '</div>').join('');
+  }
+  function info() { return '<div class="lst">' + li('', 'Weekly goal', G.goal() + ' stops a week', 'data-open="settings"') + li('', 'Profile & reminders', '', 'data-open="profile"') + li('', 'Settings', '', 'data-open="settings"') + '</div>'; }
+  K.app({ root: document.getElementById('app'), screens: { map, ride, trips, riders, info }, chrome: hd, actions: { start: (a) => { G.start(a); document.querySelector('[data-tab=ride]').click(); } } });
+})();
+</script>
+</body>
+</html>

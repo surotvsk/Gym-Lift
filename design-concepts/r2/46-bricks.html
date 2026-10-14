@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>46 · Bricks — GymQuest concept</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../frame.css">
+<link rel="stylesheet" href="kit.css">
+<style>
+  .app { position: absolute; inset: 0; display: flex; flex-direction: column; color: #1B1B1B; font: 15px/1.35 'Baloo 2', system-ui, sans-serif;
+    background: #4B9F4A radial-gradient(circle at 50% 50%, rgba(255,255,255,.18) 0 6px, rgba(0,0,0,.12) 6.5px 7.5px, transparent 8px) 0 0 / 22px 22px;
+    --r: #D01012; --b: #006CB7; --y: #FFCD03; --g: #00852B; --w: #F4F4F4;
+    --k-acc: #006CB7; --k-font: 'Baloo 2', sans-serif; --k-radius: 6px; --k-card: #EEF2EA; --k-line: #D4DCCF; --k-good: #00852B; --k-bad: #F5C9C9; }
+  main { flex: 1; overflow-y: auto; padding: 46px 12px 18px; }
+  .brick { position: relative; background: var(--c, #F4F4F4); color: var(--fc, #1B1B1B); border-radius: 4px; padding: 20px 12px 12px; margin-bottom: 14px; box-shadow: inset 0 -5px 0 rgba(0,0,0,.18), inset 0 2px 0 rgba(255,255,255,.35), 0 3px 0 rgba(0,0,0,.25); }
+  .brick::before { content: ''; position: absolute; top: -8px; left: 10px; right: 10px; height: 10px; background: radial-gradient(circle at 50% 60%, var(--c, #F4F4F4) 0 7px, transparent 7.5px) 0 0 / 22px 10px repeat-x; filter: drop-shadow(0 -1px 0 rgba(0,0,0,.18)); }
+  h1 { font: 800 30px/1 'Baloo 2'; margin: 0 0 6px; color: #fff; text-shadow: 0 3px 0 rgba(0,0,0,.25); }
+  h2 { font: 800 21px/1.1 'Baloo 2'; margin: 0 0 4px; }
+  .big { font: 800 50px/1 'Baloo 2'; }
+  .stud { position: relative; width: 52px; height: 52px; border-radius: 50%; border: 0; background: radial-gradient(circle at 38% 32%, rgba(255,255,255,.6), transparent 40%), var(--sc, #CFCFCF); box-shadow: inset 0 -4px 0 rgba(0,0,0,.22), 0 3px 0 rgba(0,0,0,.25); font: 800 14px 'Baloo 2'; color: #1B1B1B; cursor: pointer; line-height: 1; }
+  .stud small { display: block; font-size: 10px; font-weight: 500; }
+  .stud.on { --sc: var(--y); transform: translateY(2px); box-shadow: inset 0 -2px 0 rgba(0,0,0,.22), 0 1px 0 rgba(0,0,0,.25); }
+  .studs { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 8px; }
+  .tower { display: flex; flex-direction: column-reverse; align-items: center; gap: 2px; min-height: 120px; justify-content: flex-start; }
+  .tower i { width: 60px; height: 20px; border-radius: 3px; background: var(--c); box-shadow: inset 0 -3px 0 rgba(0,0,0,.2); }
+  .towers { display: flex; justify-content: space-around; align-items: flex-end; }
+  .towers div { text-align: center; font: 700 12px 'Baloo 2'; }
+  .btn { display: block; width: 100%; border: 0; border-radius: 6px; background: var(--r); color: #fff; font: 800 18px 'Baloo 2'; padding: 12px; cursor: pointer; margin-top: 10px; box-shadow: inset 0 -5px 0 rgba(0,0,0,.25); }
+  .btn.y { background: var(--y); color: #1B1B1B; } .btn.b { background: var(--b); } .btn.w { background: #F4F4F4; color: #1B1B1B; }
+  .tools { display: flex; flex-wrap: wrap; gap: 8px; }
+  .tools button { border: 0; border-radius: 4px; background: rgba(0,0,0,.08); padding: 5px 10px; font: 700 13px 'Baloo 2'; cursor: pointer; color: inherit; }
+  .lst button { display: flex; justify-content: space-between; width: 100%; border: 0; border-bottom: 2px solid rgba(0,0,0,.08); background: none; padding: 9px 0; font: 700 16px 'Baloo 2'; cursor: pointer; color: inherit; text-align: left; }
+  .lst button:last-child { border: 0; }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .two .brick { border: 0; text-align: left; font: inherit; cursor: pointer; }
+  nav { display: flex; gap: 4px; background: #2E2E2E; padding: 8px 6px 24px; }
+  nav button { flex: 1; border: 0; border-radius: 4px; background: #555; color: #fff; font: 800 13px 'Baloo 2'; cursor: pointer; padding: 8px 0; box-shadow: inset 0 -4px 0 rgba(0,0,0,.3); }
+  nav button.is-active { background: var(--y); color: #1B1B1B; }
+  .post { cursor: pointer; } .post .k-post { border: 0; padding: 0; }
+</style>
+</head>
+<body class="concept">
+<aside class="concept-info" id="info"></aside>
+<div class="device"><div class="app" id="app">
+  <main data-scroll>
+    <section data-screen="base"></section><section data-screen="build" hidden></section><section data-screen="towers" hidden></section><section data-screen="crew" hidden></section><section data-screen="box" hidden></section>
+  </main>
+  <nav><button data-tab="base">Base</button><button data-tab="build">Build</button><button data-tab="towers">Towers</button><button data-tab="crew">Crew</button><button data-tab="box">Box</button></nav>
+</div></div>
+<script src="designs.js"></script>
+<script src="lib.js"></script><script src="core.js"></script><script src="kit.js"></script>
+<script>
+(function () {
+  const G = GQ2, K = Kit, e = G.esc;
+  const COLS = ['var(--r)', 'var(--b)', 'var(--y)', 'var(--g)'];
+  const li = (t, s, attrs) => '<button ' + attrs + '><span>' + t + '</span><span>' + (s || '') + '</span></button>';
+  function tower(n, max, col) { let s = ''; for (let k = 0; k < Math.min(n, 9); k++) s += '<i style="--c:' + col + '"></i>'; return '<div class="tower">' + s + '</div>'; }
+  function base() {
+    const w = G.weekInfo(), rec = G.recommended(), s = G.sess(), X = G.xp(), ser = G.weeklySeries(5);
+    return '<h1>Build week ' + w.num + '</h1><div class="brick" style="--c:#F4F4F4"><div class="towers">' + ser.map((x, k) => '<div>' + tower(x.workouts, 7, COLS[k % 4]) + x.label + '</div>').join('') + '</div><p style="margin:8px 0 0;text-align:center">One brick per workout. This week: <b>' + w.done + ' of ' + w.goal + '</b>. ' + G.streak() + ' weeks stacked in a row.</p></div>'
+      + (s ? '<div class="brick" style="--c:var(--b);--fc:#fff"><h2>' + e(s.planName) + ' is building</h2><span data-live="elapsed"></span><button class="btn y" data-tab="build">Keep building</button></div>'
+        : rec ? '<div class="brick" style="--c:var(--r);--fc:#fff"><h2>Next brick: ' + e(rec.name) + ' ✦</h2>' + rec.exercises.length + ' exercises, about ' + G.planMinutes(rec) + ' min<button class="btn y" data-do="start" data-arg="' + rec.id + '">Start ' + e(rec.name) + '</button></div>' : '')
+      + '<div class="two"><button class="brick" style="--c:var(--y)" data-open="achievements"><h2>Level ' + X.level + '</h2>' + X.total + ' XP</button><button class="brick" style="--c:var(--g);--fc:#fff" data-do="excuse"><h2>' + (w.excused ? 'Excused' : 'Excuse') + '</h2>' + (w.excused ? 'undo' : 'this week') + '</button></div>'
+      + '<div class="brick"><div class="lst">' + li('Rest timer', '', 'data-open="rest"') + li('Run, walk, ride', '', 'data-open="activity"') + li('Calendar', '', 'data-open="calendar"') + '</div><p style="margin:6px 0 0">' + G.motivation() + '</p></div>';
+  }
+  function build() {
+    const s = G.sess();
+    if (!s) {
+      const sel = G.selected();
+      return '<h1>Instructions</h1><div class="two">' + G.plans().map((p, k) => '<button class="brick" style="--c:' + (p === sel ? 'var(--y)' : '#F4F4F4') + '" data-do="select" data-arg="' + p.id + '"><h2>' + e(p.name) + (p === G.recommended() ? ' ✦' : '') + '</h2>' + p.exercises.length + ' steps</button>').join('') + '</div><div style="height:14px"></div>'
+        + (sel ? '<div class="brick"><h2>' + e(sel.name) + '</h2>' + sel.exercises.map((x, k) => '<div>Step ' + (k + 1) + ': ' + e(x.name) + ', ' + x.sets + '×' + x.reps + ' ' + G.fmtW(x.weight) + '</div>').join('') + '<button class="btn" data-do="start" data-arg="' + sel.id + '">Start building</button><button class="btn w" data-open="editplan" data-arg="' + sel.id + '">Edit</button></div>' : '')
+        + '<div class="brick"><div class="lst">' + li('Reorder plans', '', 'data-open="plans"') + li('New plan', '', 'data-open="newplan"') + li('Full Body builder', '', 'data-open="fullbody"') + li('Parts catalogue', '48', 'data-open="library"') + '</div></div>';
+    }
+    const p = G.progress();
+    return '<h1 data-live="elapsed"></h1><div class="brick" style="--c:var(--y)"><b>' + e(s.planName) + ': ' + p.done + ' of ' + p.total + ' studs.</b> Rest <span data-live="rest" data-idle="off" data-done="over"></span><div class="tools" style="margin-top:6px"><button data-open="rest">Rest timer</button><button data-do="rest" data-arg="90">90 s</button><button data-do="discard">Discard</button></div></div>'
+      + s.exercises.map((x, i) => { const c = G.compare(s.planId, x.id, Math.max(...x.sets.map((y) => y.w)), x.reps), col = COLS[i % 4], light = i % 4 === 2;
+        return '<div class="brick" style="--c:' + col + ';--fc:' + (light ? '#1B1B1B' : '#fff') + (i === s.cur ? ';outline:4px solid #fff' : '') + '"><h2>Step ' + (i + 1) + ': ' + e(x.name) + '</h2><div>' + (x.replaces ? 'instead of ' + e(x.replaces) : c.text) + '</div><div class="studs">'
+          + x.sets.map((st, j) => x.unilateral ? '<button class="stud' + (st.L ? ' on' : '') + '" data-do="set" data-arg="' + i + ':' + j + ':L">L<small>' + G.fmtW(st.w) + '</small></button><button class="stud' + (st.R ? ' on' : '') + '" data-do="set" data-arg="' + i + ':' + j + ':R">R<small>×' + st.r + '</small></button>' : '<button class="stud' + (st.done ? ' on' : '') + '" data-do="set" data-arg="' + i + ':' + j + '">' + st.r + '<small>' + G.fmtW(st.w) + '</small></button>').join('') + '</div>'
+          + '<div class="tools"><button data-open="set" data-arg="' + i + ':0">Weight</button><button data-do="addset" data-arg="' + i + '">+ stud</button><button data-open="replace" data-arg="' + i + '">Swap part</button><button data-open="exercise" data-arg="' + x.id + '">How to</button></div></div>'; }).join('')
+      + '<button class="btn" data-do="finish">Finish, +' + p.xp + ' XP</button>';
+  }
+  function towers() {
+    const t = G.totals();
+    return '<h1>Towers</h1><div class="two"><button class="brick" style="--c:var(--r);--fc:#fff" data-open="history"><div class="big">' + t.month.workouts + '</div>this month</button><button class="brick" style="--c:var(--b);--fc:#fff" data-open="history"><div class="big">' + t.all.workouts + '</div>all time</button></div><div style="height:14px"></div>'
+      + '<div class="brick"><h2>Sets per week</h2><div style="color:#006CB7">' + K.bars(G.weeklySeries(8).map((x) => x.sets), { h: 90, labels: G.weeklySeries(8).map((x) => x.label) }) + '</div></div>'
+      + '<div class="brick" style="--c:var(--y)"><h2>Tallest builds</h2>' + G.records().list.slice(0, 4).map((r) => '<div style="display:flex;justify-content:space-between"><span>' + e(r.name) + '</span><b>' + G.fmtW(r.kg) + '</b></div>').join('') + '</div>'
+      + '<div class="brick"><div class="lst">' + li('Records', '', 'data-open="records"') + li('History', '', 'data-open="history"') + li('Calendar', '', 'data-open="calendar"') + li('Achievements', '', 'data-open="achievements"') + li('Body', '', 'data-open="body"') + li('Food', '', 'data-open="food"') + li('Photos', '', 'data-open="photos"') + '</div></div>';
+  }
+  function crew() {
+    const L = G.leaderboard();
+    return '<h1>Crew</h1><div class="brick" style="--c:var(--b);--fc:#fff"><div class="lst">' + li('Top 20 this week', '#' + (L.me ? L.me.rank : '–'), 'data-open="leaderboard"') + li('Messages', '', 'data-open="chats"') + li('Friends', '', 'data-open="friends"') + li('New post', '', 'data-open="post"') + '</div></div>'
+      + G.feed().map((p) => '<div class="brick post" data-open="postview" data-arg="' + p.id + '">' + K.postCard(p) + '</div>').join('');
+  }
+  function box() { return '<h1>The box</h1><div class="brick"><div class="lst">' + li('Weekly goal', G.goal(), 'data-open="settings"') + li('Profile and reminders', '', 'data-open="profile"') + li('All settings', '', 'data-open="settings"') + '</div></div>'; }
+  K.app({ root: document.getElementById('app'), screens: { base, build, towers, crew, box }, actions: { start: (a) => { G.start(a); document.querySelector('[data-tab=build]').click(); } } });
+})();
+</script>
+</body>
+</html>
