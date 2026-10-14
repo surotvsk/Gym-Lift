@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>04 · Channel — GymQuest concept</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="frame.css">
+<style>
+  .app { position: absolute; inset: 0; background: #fff; color: #0f0f0f; font: 14px/1.35 Roboto, Arial, sans-serif; display: flex; flex-direction: column; }
+  header { display: flex; align-items: center; gap: 18px; padding: 50px 14px 8px; }
+  .yt { display: flex; align-items: center; gap: 4px; font: 700 19px/1 Roboto, sans-serif; letter-spacing: -0.6px; flex: 1; }
+  .yt i { width: 28px; height: 20px; border-radius: 6px; background: #FF0000; display: grid; place-items: center; }
+  .yt i::after { content: ''; border-left: 8px solid #fff; border-top: 5px solid transparent; border-bottom: 5px solid transparent; margin-left: 2px; }
+  header .ico { width: 24px; height: 24px; }
+  .chips { display: flex; gap: 8px; overflow-x: auto; padding: 4px 14px 10px; scrollbar-width: none; }
+  .chips span { flex: 0 0 auto; background: #f2f2f2; border-radius: 8px; padding: 6px 12px; font-weight: 500; font-size: 14px; }
+  .chips span.on { background: #0f0f0f; color: #fff; }
+  main { flex: 1; overflow-y: auto; }
+  .vid { margin-bottom: 18px; }
+  .th { position: relative; aspect-ratio: 16/9; background: #ddd center/cover; }
+  .dur { position: absolute; right: 8px; bottom: 8px; background: rgba(0,0,0,0.8); color: #fff; font-size: 12px; font-weight: 500; padding: 2px 4px; border-radius: 4px; }
+  .bar { position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: rgba(255,255,255,0.4); }
+  .bar span { display: block; height: 100%; background: #FF0000; }
+  .vmeta { display: flex; gap: 12px; padding: 12px 14px 0; }
+  .ch { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; color: #fff; font: 500 15px/1 Georgia, serif; flex: 0 0 auto; }
+  .vmeta h3 { margin: 0; font-size: 15px; font-weight: 500; line-height: 1.3; }
+  .vmeta p { margin: 3px 0 0; color: #606060; font-size: 12px; }
+  .vmeta .ico { width: 18px; height: 18px; margin-left: auto; color: #0f0f0f; flex: 0 0 auto; }
+  .shelf { padding: 6px 14px 4px; display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 17px; }
+  .shelf .ico { color: #FF0000; }
+  .shorts { display: flex; gap: 8px; overflow-x: auto; padding: 6px 14px 18px; scrollbar-width: none; }
+  .short { flex: 0 0 auto; width: 150px; aspect-ratio: 9/16; border-radius: 10px; background: #333 center/cover; position: relative; overflow: hidden; color: #fff; }
+  .short::after { content: ''; position: absolute; inset: 0; background: linear-gradient(transparent 50%, rgba(0,0,0,0.75)); }
+  .short b { position: absolute; left: 8px; right: 8px; bottom: 26px; z-index: 1; font-size: 14px; line-height: 1.2; }
+  .short small { position: absolute; left: 8px; bottom: 8px; z-index: 1; font-size: 12px; opacity: 0.9; }
+  /* watch page = workout */
+  .player { position: relative; aspect-ratio: 16/9; background: #000 center/cover; }
+  .player .pp { position: absolute; inset: 0; display: grid; place-items: center; }
+  .player .pp span { width: 56px; height: 56px; border-radius: 50%; background: rgba(0,0,0,0.55); display: grid; place-items: center; color: #fff; }
+  .player .pp .ico { fill: #fff; }
+  .chapters { position: absolute; left: 0; right: 0; bottom: 0; display: flex; gap: 2px; height: 4px; }
+  .chapters i { flex: 1; background: rgba(255,255,255,0.35); }
+  .chapters i.d { background: #FF0000; }
+  .wp { padding: 12px 14px; }
+  .wp h2 { margin: 0; font-size: 18px; font-weight: 700; line-height: 1.25; }
+  .wp .sub { color: #606060; font-size: 12px; margin-top: 4px; }
+  .sets { display: flex; gap: 8px; margin: 14px 0 6px; overflow-x: auto; }
+  .set { flex: 0 0 auto; border-radius: 18px; padding: 8px 14px; background: #f2f2f2; font-weight: 500; }
+  .set.d { background: #0f0f0f; color: #fff; }
+  .chanrow { display: flex; align-items: center; gap: 10px; padding: 10px 0; }
+  .sub-btn { margin-left: auto; background: #0f0f0f; color: #fff; border-radius: 18px; padding: 8px 14px; font-weight: 500; }
+  .actionsrow { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 6px; scrollbar-width: none; }
+  .actionsrow span { flex: 0 0 auto; background: #f2f2f2; border-radius: 18px; padding: 7px 12px; display: flex; gap: 6px; align-items: center; font-weight: 500; }
+  .actionsrow .ico { width: 18px; height: 18px; }
+  .desc { background: #f2f2f2; border-radius: 12px; padding: 10px 12px; margin: 10px 0; font-size: 13px; }
+  .desc b { display: block; margin-bottom: 2px; }
+  .upnext { display: flex; gap: 10px; padding: 8px 14px; }
+  .upnext .t { width: 160px; aspect-ratio: 16/9; border-radius: 8px; background: #ddd center/cover; position: relative; flex: 0 0 auto; }
+  .upnext h4 { margin: 0; font-size: 14px; font-weight: 500; }
+  .upnext p { margin: 4px 0 0; color: #606060; font-size: 12px; }
+  /* library */
+  .lib { padding: 4px 14px 12px; }
+  .lib h3 { font-size: 18px; margin: 10px 0; display: flex; justify-content: space-between; align-items: center; }
+  .lib h3 small { font-size: 13px; color: #065fd4; font-weight: 500; border: 1px solid #ddd; border-radius: 16px; padding: 4px 10px; }
+  .hscroll { display: flex; gap: 10px; overflow-x: auto; scrollbar-width: none; }
+  .hcard { flex: 0 0 auto; width: 150px; }
+  .hcard .t { aspect-ratio: 16/9; border-radius: 8px; background: #ddd center/cover; position: relative; }
+  .hcard b { display: block; font-size: 13px; font-weight: 500; margin-top: 6px; }
+  .hcard small { color: #606060; font-size: 12px; }
+  .stat { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f2f2f2; }
+  .stat b { font-variant-numeric: tabular-nums; }
+  .studio { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .st { border: 1px solid #e5e5e5; border-radius: 12px; padding: 12px; }
+  .st span { color: #606060; font-size: 12px; }
+  .st b { display: block; font-size: 22px; margin-top: 4px; }
+  .st em { font-style: normal; color: #2ba640; font-size: 12px; }
+  .chart { display: flex; align-items: flex-end; gap: 5px; height: 100px; margin-top: 10px; border-bottom: 1px solid #e5e5e5; }
+  .chart i { flex: 1; background: #065fd4; opacity: 0.35; border-radius: 2px 2px 0 0; }
+  .chart i:last-child { opacity: 1; }
+  /* you */
+  .youhead { display: flex; align-items: center; gap: 14px; padding: 6px 14px 14px; }
+  .youhead .big { width: 72px; height: 72px; border-radius: 50%; background: #2F3B33; color: #fff; display: grid; place-items: center; font: 400 30px/1 Georgia, serif; }
+  .youhead h2 { margin: 0; font-size: 22px; }
+  .youhead p { margin: 2px 0 0; color: #606060; font-size: 12px; }
+  .menu { padding: 4px 0; border-top: 1px solid #f2f2f2; }
+  .mi { display: flex; align-items: center; gap: 22px; padding: 12px 18px; font-size: 15px; }
+  .mi small { display: block; color: #606060; font-size: 12px; }
+  .mi .tg { margin-left: auto; width: 36px; height: 20px; border-radius: 10px; background: #065fd4; position: relative; }
+  .mi .tg::after { content: ''; position: absolute; right: 2px; top: 2px; width: 16px; height: 16px; border-radius: 50%; background: #fff; }
+  nav { display: flex; justify-content: space-around; border-top: 1px solid #e5e5e5; padding: 6px 0 28px; background: #fff; }
+  nav button { background: none; border: 0; display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 10px; color: #0f0f0f; }
+  nav button .ico { width: 24px; height: 24px; stroke-width: 1.6; }
+  nav button.is-active .ico { stroke-width: 2.5; }
+  nav .add .ico { width: 36px; height: 36px; stroke-width: 1.2; }
+</style>
+</head>
+<body class="concept">
+<aside class="concept-info">
+  <div class="num">04 / 32 · BUILT WITHOUT A PLUGIN</div>
+  <h1>Channel</h1>
+  <p>YouTube: plans are videos with thumbnails and durations, a half-finished workout is “continue watching” with the red progress bar, and the workout screen is a watch page — exercise video on top, sets as chapters, the rest of the plan as “Up next”.</p>
+  <span class="tag">video-first</span><span class="tag">thumbnails</span><span class="tag">familiar</span>
+  <div class="concept-nav"><a href="03-timeline.html">← Prev</a><a href="index.html">All designs</a><a href="05-groups.html">Next →</a></div>
+</aside>
+<div class="device"><div class="app" id="app">
+  <header id="hdr"></header>
+  <main data-scroll>
+    <section data-screen="home" id="s-home"></section>
+    <section data-screen="watch" id="s-watch" hidden></section>
+    <section data-screen="add" id="s-add" hidden></section>
+    <section data-screen="library" id="s-library" hidden></section>
+    <section data-screen="you" id="s-you" hidden></section>
+  </main>
+  <nav>
+    <button data-tab="home" class="is-active">ICON:home<span>Home</span></button>
+    <button data-tab="watch">ICON:play<span>Workout</span></button>
+    <button data-tab="add" class="add" aria-label="Create">ICON:plusbox</button>
+    <button data-tab="library">ICON:chart<span>Progress</span></button>
+    <button data-tab="you">ICON:user<span>You</span></button>
+  </nav>
+</div></div>
+<script src="data.js"></script>
+<script src="icons.js"></script>
+<script>
+(function () {
+  const G = GQ, I = ICON, $ = (id) => document.getElementById(id);
+  document.querySelectorAll('nav button').forEach((b) => { b.innerHTML = b.innerHTML.replace(/ICON:(\w+)/, (_, n) => I(n)); });
+  const ch = (k) => { const p = G.person(k); return '<span class="ch" style="background:' + p.color + '">' + p.name[0] + '</span>'; };
+  const ex = G.today.exercises;
+  /* HOME */
+  $('s-home').innerHTML = '<div class="chips">' + ['All', 'Push', 'Pull', 'Legs', 'Home', 'Outdoor', 'Saved'].map((c, i) => '<span class="' + (i === 0 ? 'on' : '') + '">' + c + '</span>').join('') + '</div>'
+    + '<div class="vid" data-tab="watch"><div class="th" style="background-image:url(' + ex[0].img + ')"><span class="dur">' + G.today.estMinutes + ':00</span><div class="bar"><span style="width:12%"></span></div></div>'
+    + '<div class="vmeta">' + ch('me') + '<div><h3>Continue: ' + G.today.plan + ' — ' + ex.length + ' exercises</h3><p>Your plan · ' + G.user.weekDone + ' of ' + G.user.weekGoal + ' this week · next: ' + ex[0].name + '</p></div>' + I('more') + '</div></div>'
+    + '<div class="shelf">' + I('flame') + 'Friends’ lifts</div><div class="shorts">'
+    + G.feed.filter((f) => f.img).map((f) => '<div class="short" style="background-image:url(' + G.img(f.img) + ')"><b>' + f.text.split('.')[0] + '</b><small>' + f.likes * 7 + ' views</small></div>').join('') + '</div>'
+    + G.plans.slice(1).concat(G.plans.slice(0, 1)).map((p) => '<div class="vid"><div class="th" style="background-image:url(' + p.img + ')"><span class="dur">' + p.minutes + ':00</span></div>'
+      + '<div class="vmeta">' + ch('me') + '<div><h3>' + p.name + ' · ' + p.count + ' exercises</h3><p>Your plans · last done ' + ['Mon', 'Wed', '2 weeks ago', 'never', 'Fri'][G.plans.indexOf(p) % 5] + '</p></div>' + I('more') + '</div></div>').join('')
+    + G.feed.filter((f) => f.kind === 'plan').map((f) => '<div class="vid"><div class="th" style="background-image:url(' + G.img(f.img) + ')"><span class="dur">25:00</span></div><div class="vmeta">' + ch(f.who) + '<div><h3>' + f.plan.name + ' — no equipment</h3><p>' + G.person(f.who).name + ' · saved by ' + f.likes + ' · ' + f.ago + ' ago</p></div>' + I('more') + '</div></div>').join('');
+  /* WATCH */
+  const cur = ex[0];
+  $('s-watch').innerHTML = '<div class="player" style="background-image:url(' + cur.img + ')"><div class="pp"><span>' + I('play') + '</span></div><div class="chapters">' + Array.from({ length: cur.sets }, (_, i) => '<i class="' + (i < cur.done ? 'd' : '') + '"></i>').join('') + '</div></div>'
+    + '<div class="wp"><h2>' + cur.name + ' — ' + cur.sets + ' × ' + cur.reps + ' at ' + cur.weight + ' kg</h2><div class="sub">Set ' + (cur.done + 1) + ' of ' + cur.sets + ' · last time ' + cur.last + ' kg · rest 2:00</div>'
+    + '<div class="sets">' + Array.from({ length: cur.sets }, (_, i) => '<span class="set' + (i < cur.done ? ' d' : '') + '">' + (i < cur.done ? '✓ ' : '') + 'Set ' + (i + 1) + ' · ' + cur.weight + ' kg</span>').join('') + '</div>'
+    + '<div class="chanrow">' + ch('me') + '<div><b>' + G.today.plan + '</b><div class="sub" style="margin:0">' + (ex.length - 1) + ' exercises left · about 40 min</div></div><span class="sub-btn">Finish</span></div>'
+    + '<div class="actionsrow"><span>' + I('timer') + 'Rest timer</span><span>' + I('repeat') + 'Swap exercise</span><span>' + I('share') + 'Share</span><span>' + I('bookmark') + 'Save</span></div>'
+    + '<div class="desc"><b>How to</b>Shoulder blades back and down, feet flat, bar to the lower chest. Press up and slightly back.</div></div>'
+    + '<div class="shelf" style="font-size:15px">Up next</div>'
+    + ex.slice(1).map((e) => '<div class="upnext"><div class="t" style="background-image:url(' + e.img + ')"><span class="dur">' + e.sets + ' sets</span></div><div><h4>' + e.name + '</h4><p>' + e.sets + ' × ' + e.reps + ' · ' + (e.weight ? e.weight + ' kg' : 'bodyweight') + '<br>' + e.muscle + '</p></div></div>').join('');
+  /* ADD */
+  $('s-add').innerHTML = '<div class="lib"><h3>Create</h3>' + [['dumbbell', 'Start an empty workout', 'Log as you go'], ['list', 'New plan', 'Pick exercises from the library'], ['camera', 'Progress photo', 'Stays private on this phone'], ['chat', 'Post to friends', 'Text, photos or a plan']]
+    .map((m) => '<div class="mi" style="padding-left:0">' + I(m[0]) + '<div>' + m[1] + '<small>' + m[2] + '</small></div></div>').join('') + '</div>';
+  /* LIBRARY = progress */
+  $('s-library').innerHTML = '<div class="lib"><h3>History <small>View all</small></h3><div class="hscroll">'
+    + G.history.map((w, i) => '<div class="hcard"><div class="t" style="background-image:url(' + G.img(['squats', 'cable-rows', 'bench-press', 'leg-press', 'pull-ups'][i]) + ')"><span class="dur">' + w.minutes + ':00</span><div class="bar"><span style="width:100%"></span></div></div><b>' + w.plan + '</b><small>' + w.date + '</small></div>').join('') + '</div>'
+    + '<h3>Analytics <small>28 days</small></h3><div class="studio"><div class="st"><span>Workouts</span><b>11</b><em>+2</em></div><div class="st"><span>Training time</span><b>9.4 h</b><em>+12%</em></div><div class="st"><span>XP</span><b>' + G.user.xp + '</b><em>Lv ' + G.user.level + '</em></div><div class="st"><span>Streak</span><b>' + G.user.streakWeeks + ' wk</b><em>goal met</em></div></div>'
+    + '<div class="chart">' + G.volume.map((v) => '<i style="height:' + Math.round(v / 50 * 100) + '%"></i>').join('') + '</div><div class="sub" style="margin-top:6px;color:#606060;font-size:12px">Sets per week</div>'
+    + '<h3>Records</h3>' + G.records.map((r) => '<div class="stat"><span>' + r.name + '</span><b>' + r.kg + ' kg</b></div>').join('') + '</div>';
+  /* YOU */
+  $('s-you').innerHTML = '<div class="youhead"><div class="big">M</div><div><h2>' + G.user.name + '</h2><p>@' + G.user.handle + ' · Level ' + G.user.level + ' · ' + G.user.workouts + ' workouts</p></div></div>'
+    + '<div class="lib" style="padding-top:0"><h3>Achievements <small>All</small></h3><div class="hscroll">' + G.achievements.map((a) => '<div class="hcard" style="width:120px"><div class="t" style="aspect-ratio:1;display:grid;place-items:center;background:' + (a.got ? '#fff3e0' : '#f2f2f2') + ';color:' + (a.got ? '#c25e00' : '#9a9a9a') + '">' + I('trophy') + '</div><b>' + a.name + '</b><small>' + (a.got ? '+' + a.xp + ' XP' : a.progress + '%') + '</small></div>').join('') + '</div></div>'
+    + '<div class="menu">' + G.reminders.map((r) => '<div class="mi">' + I(r.kind === 'water' ? 'droplet' : r.kind === 'meal' ? 'utensils' : 'bell') + '<div>' + r.label + ' reminders<small>' + r.detail + '</small></div><span class="tg"></span></div>').join('')
+    + '<div class="mi">' + I('users') + '<div>Friends<small>12 friends · 3 requests</small></div></div><div class="mi">' + I('settings') + '<div>Settings</div></div></div>';
+  const hdr = '<span class="yt"><i></i>GymQuest</span>' + I('bell') + I('search');
+  gqTabs(document.getElementById('app'), (n) => { $('hdr').innerHTML = n === 'watch' ? '<span>' + I('back') + '</span><b style="flex:1">' + G.today.plan + '</b>' + I('timer') : hdr; $('hdr').style.background = n === 'watch' ? '#fff' : ''; });
+})();
+</script>
+</body>
+</html>

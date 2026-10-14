@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>18 · Iron — GymQuest concept</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="frame.css">
+<style>
+  :root { --concrete: #C9C6BF; --ink: #000; --red: #C8102E; --steel: #6E6E6E; }
+  .app { position: absolute; inset: 0; background: var(--concrete); color: var(--ink); font: 500 15px/1.35 Archivo, system-ui, sans-serif; display: flex; flex-direction: column; }
+  .app::before { content: ''; position: absolute; inset: 0; pointer-events: none; opacity: 0.35; background-image: radial-gradient(rgba(0,0,0,0.25) 1px, transparent 1.2px), radial-gradient(rgba(255,255,255,0.4) 1px, transparent 1.2px); background-size: 7px 7px, 11px 11px; background-position: 0 0, 3px 5px; }
+  main { flex: 1; overflow-y: auto; position: relative; }
+  .mast { padding: 50px 14px 10px; border-bottom: 6px solid var(--ink); }
+  .mast h1 { margin: 0; font: 400 74px/0.86 Anton, Impact, sans-serif; text-transform: uppercase; letter-spacing: -1px; }
+  .mast p { margin: 8px 0 0; font-weight: 700; }
+  .blk { border-bottom: 6px solid var(--ink); padding: 12px 14px; display: flex; align-items: center; gap: 12px; }
+  .blk .no { font: 400 48px/1 Anton, Impact, sans-serif; width: 44px; }
+  .blk div { flex: 1; }
+  .blk b { font: 400 26px/1 Anton, Impact, sans-serif; text-transform: uppercase; display: block; }
+  .blk small { font-weight: 700; }
+  .blk .kg { font: 400 34px/1 Anton, Impact, sans-serif; }
+  .blk.cur { background: var(--ink); color: var(--concrete); }
+  .blk.cur .kg { color: var(--red); }
+  .blk.done { color: var(--steel); text-decoration: line-through 4px; }
+  .slab { margin: 14px; background: var(--red); color: #fff; border: 6px solid var(--ink); box-shadow: 8px 8px 0 var(--ink); padding: 16px; font: 400 32px/1 Anton, Impact, sans-serif; text-transform: uppercase; text-align: center; }
+  /* lift */
+  .huge { padding: 50px 14px 0; font: 400 200px/0.8 Anton, Impact, sans-serif; letter-spacing: -6px; }
+  .huge span { font-size: 60px; letter-spacing: 0; }
+  .lift-name { padding: 6px 14px 14px; border-bottom: 6px solid var(--ink); font: 400 40px/1 Anton, Impact, sans-serif; text-transform: uppercase; }
+  .sets { display: grid; grid-template-columns: repeat(4, 1fr); border-bottom: 6px solid var(--ink); }
+  .sets span { border-right: 6px solid var(--ink); padding: 14px 0; text-align: center; font: 400 30px/1 Anton, Impact, sans-serif; }
+  .sets span:last-child { border-right: 0; }
+  .sets span.d { background: var(--ink); color: var(--concrete); }
+  .sets span.n { background: var(--red); color: #fff; }
+  .fact { padding: 12px 14px; border-bottom: 6px solid var(--ink); font-weight: 900; font-size: 18px; display: flex; justify-content: space-between; }
+  /* records */
+  .rec { border-bottom: 6px solid var(--ink); padding: 10px 14px; }
+  .rec b { display: block; font: 400 88px/0.9 Anton, Impact, sans-serif; letter-spacing: -2px; }
+  .rec span { font-weight: 900; font-size: 18px; text-transform: uppercase; }
+  .rec small { float: right; font-weight: 700; padding-top: 4px; }
+  .rec.top { background: var(--ink); color: var(--concrete); }
+  .rec.top b { color: var(--red); }
+  /* crew */
+  .crew { padding: 12px 14px; border-bottom: 6px solid var(--ink); display: flex; align-items: center; gap: 12px; }
+  .crew .r { font: 400 40px/1 Anton, Impact, sans-serif; width: 34px; }
+  .crew .av { width: 50px; height: 50px; border: 4px solid var(--ink); display: grid; place-items: center; font: 400 26px/1 Anton, Impact, sans-serif; color: #fff; }
+  .crew div { flex: 1; } .crew b { display: block; font-size: 19px; font-weight: 900; text-transform: uppercase; }
+  .crew .xp { font: 400 26px/1 Anton, Impact, sans-serif; }
+  .crew.me { background: var(--red); color: #fff; }
+  .post { padding: 14px; border-bottom: 6px solid var(--ink); }
+  .post .who { font-weight: 900; text-transform: uppercase; }
+  .post q { display: block; margin: 6px 0 0; font: 400 28px/1.05 Anton, Impact, sans-serif; text-transform: uppercase; quotes: none; }
+  nav { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 6px solid var(--ink); background: var(--concrete); position: relative; padding-bottom: 22px; }
+  nav button { background: none; border: 0; border-right: 6px solid var(--ink); padding: 14px 0; font: 400 20px/1 Anton, Impact, sans-serif; text-transform: uppercase; color: var(--ink); }
+  nav button:last-child { border-right: 0; }
+  nav button.is-active { background: var(--ink); color: var(--concrete); }
+</style>
+</head>
+<body class="concept">
+<aside class="concept-info">
+  <div class="num">18 / 32 · BUILT WITHOUT A PLUGIN</div>
+  <h1>Iron</h1>
+  <p>The heaviest version. Thick black rules, condensed type that fills the screen, concrete grey with a single blood red. It looks like a poster bolted to a gym wall. The current weight is 200 pixels tall so you can read it from the bench.</p>
+  <span class="tag">heavy</span><span class="tag">poster type</span><span class="tag">concrete and red</span>
+  <div class="concept-nav"><a href="17-quiet.html">← Prev</a><a href="index.html">All designs</a><a href="19-plates.html">Next →</a></div>
+</aside>
+<div class="device"><div class="app" id="app">
+  <main data-scroll>
+    <section data-screen="today" id="s-today"></section>
+    <section data-screen="lift" id="s-lift" hidden></section>
+    <section data-screen="records" id="s-records" hidden></section>
+    <section data-screen="crew" id="s-crew" hidden></section>
+  </main>
+  <nav>
+    <button data-tab="today" class="is-active">Today</button>
+    <button data-tab="lift">Lift</button>
+    <button data-tab="records">Records</button>
+    <button data-tab="crew">Crew</button>
+  </nav>
+</div></div>
+<script src="data.js"></script>
+<script>
+(function () {
+  const G = GQ, $ = (id) => document.getElementById(id), ex = G.today.exercises;
+  $('s-today').innerHTML = '<div class="mast"><h1>Push<br>day</h1><p>Thursday. 5 lifts. 55 minutes. Week ' + G.user.streakWeeks + ' of the streak.</p></div>'
+    + ex.map((e, i) => '<div class="blk' + (i === 0 ? ' cur' : '') + '"><span class="no">' + (i + 1) + '</span><div><b>' + e.name + '</b><small>' + e.sets + ' sets of ' + e.reps + (i === 0 ? ', 2 done' : '') + '</small></div><span class="kg">' + (e.weight ? e.weight : 'BW') + '</span></div>').join('')
+    + '<div class="slab">Get under the bar</div>';
+  const e = ex[0];
+  $('s-lift').innerHTML = '<div class="huge">60<span>KG</span></div><div class="lift-name">Bench press, set 3</div>'
+    + '<div class="sets">' + Array.from({ length: e.sets }, (_, k) => '<span class="' + (k < e.done ? 'd' : k === e.done ? 'n' : '') + '">' + (k < e.done ? '8' : k === e.done ? 'GO' : '—') + '</span>').join('') + '</div>'
+    + '<div class="fact"><span>Target</span><span>8 reps</span></div><div class="fact"><span>Last week</span><span>57.5 kg × 8</span></div><div class="fact"><span>Rest</span><span>1:30</span></div>'
+    + '<div class="slab">Log the set</div>';
+  $('s-records').innerHTML = G.records.map((r, i) => '<div class="rec' + (i === 0 ? ' top' : '') + '"' + (i === 0 ? ' style="padding-top:50px"' : '') + '><small>' + r.date + (r.delta ? ', ' + r.delta + ' kg' : '') + '</small><span>' + r.name + '</span><b>' + r.kg + '</b></div>').join('')
+    + '<div class="fact"><span>Workouts</span><span>' + G.user.workouts + '</span></div><div class="fact"><span>Level</span><span>' + G.user.level + '</span></div>';
+  $('s-crew').innerHTML = '<div class="mast"><h1>Crew</h1><p>Weekly XP. Resets Monday.</p></div>'
+    + G.leaderboard.slice(0, 4).map((r, i) => { const p = G.person(r.who); return '<div class="crew' + (r.who === 'me' ? ' me' : '') + '"><span class="r">' + (i + 1) + '</span><span class="av" style="background:' + p.color + '">' + p.name[0] + '</span><div><b>' + p.name + '</b>Level ' + r.level + '</div><span class="xp">' + r.xp + '</span></div>'; }).join('')
+    + '<div class="post"><span class="who">Tomáš, 18 min ago</span><q>Deadlift 140. Took a year.</q></div>'
+    + '<div class="post"><span class="who">Peter, 5 h ago</span><q>Bench 4 × 8 at 80 before work.</q></div>';
+  gqTabs(document.getElementById('app'));
+})();
+</script>
+</body>
+</html>

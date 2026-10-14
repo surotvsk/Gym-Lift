@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>10 · Snap — GymQuest concept</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:opsz,wght@6..12,500;6..12,700;6..12,800;6..12,900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="frame.css">
+<style>
+  :root { --snap: #FFFC00; --blue: #0EADFF; --red: #F23C57; --purple: #A05DCD; }
+  .app { position: absolute; inset: 0; background: #000; color: #fff; font: 15px/1.3 'Nunito Sans', 'Avenir Next', system-ui, sans-serif; display: flex; flex-direction: column; }
+  main { flex: 1; position: relative; overflow: hidden; }
+  section { position: absolute; inset: 0; overflow-y: auto; }
+  /* camera */
+  .cam { background: #222 center/cover; }
+  .cam::after { content: ''; position: absolute; inset: 0; background: linear-gradient(rgba(0,0,0,0.25), transparent 20%, transparent 70%, rgba(0,0,0,0.4)); pointer-events: none; }
+  .ctop { position: absolute; top: 50px; left: 12px; right: 12px; z-index: 2; display: flex; gap: 10px; align-items: center; }
+  .bub { width: 40px; height: 40px; border-radius: 50%; background: rgba(0,0,0,0.3); backdrop-filter: blur(8px); display: grid; place-items: center; }
+  .bub.me { background: var(--snap); color: #000; font: 800 16px/1 'Nunito Sans', sans-serif; }
+  .ctop .sp { flex: 1; }
+  .side { position: absolute; top: 104px; right: 12px; z-index: 2; display: flex; flex-direction: column; gap: 12px; background: rgba(0,0,0,0.25); border-radius: 24px; padding: 8px 6px; }
+  .side .ico { width: 26px; height: 26px; }
+  .sticker { position: absolute; z-index: 2; left: 50%; top: 42%; transform: translate(-50%, -50%) rotate(-4deg); background: #fff; color: #000; border-radius: 16px; padding: 10px 16px 12px; text-align: center; box-shadow: 0 6px 20px rgba(0,0,0,0.3); }
+  .sticker small { display: block; font-weight: 800; font-size: 12px; color: var(--purple); }
+  .sticker b { font-size: 34px; font-weight: 900; letter-spacing: -1px; line-height: 1; }
+  .sticker span { display: block; font-weight: 700; font-size: 14px; }
+  .caption { position: absolute; left: 0; right: 0; top: 64%; z-index: 2; background: rgba(0,0,0,0.55); text-align: center; padding: 8px; font-weight: 700; }
+  .shutter { position: absolute; left: 50%; bottom: 32px; transform: translateX(-50%); z-index: 2; width: 82px; height: 82px; border-radius: 50%; border: 6px solid #fff; }
+  .lenses { position: absolute; bottom: 44px; left: 0; right: 0; z-index: 2; display: flex; justify-content: center; gap: 120px; pointer-events: none; }
+  .lenses i { width: 46px; height: 46px; border-radius: 50%; background: rgba(255,255,255,0.25); display: grid; place-items: center; font-style: normal; font-size: 13px; font-weight: 800; }
+  /* light screens */
+  .light { background: #fff; color: #16191C; }
+  .lhead { position: sticky; top: 0; background: #fff; padding: 50px 14px 10px; display: flex; align-items: center; gap: 10px; z-index: 1; }
+  .lhead h1 { flex: 1; margin: 0; text-align: center; font-size: 20px; font-weight: 900; }
+  .lhead .bub { background: #F0F1F2; color: #16191C; }
+  .lhead .bub.me { background: var(--snap); }
+  .row { display: flex; align-items: center; gap: 12px; padding: 10px 14px; border-bottom: 1px solid #F0F1F2; }
+  .ava { width: 52px; height: 52px; border-radius: 50%; display: grid; place-items: center; color: #fff; font: 800 20px/1 'Nunito Sans', sans-serif; flex: 0 0 auto; position: relative; }
+  .row b { font-weight: 800; font-size: 16px; }
+  .row .st { display: flex; align-items: center; gap: 6px; font-size: 13px; color: #656D78; margin-top: 2px; font-weight: 700; }
+  .sq { width: 13px; height: 13px; border-radius: 3px; display: inline-block; }
+  .sq.red { background: var(--red); } .sq.blue { border: 2px solid var(--blue); } .sq.purple { background: var(--purple); }
+  .flame { margin-left: auto; font-weight: 800; font-size: 15px; color: #16191C; text-align: right; }
+  .flame small { display: block; font-size: 11px; color: #656D78; font-weight: 700; }
+  .sh { padding: 14px 14px 6px; font-weight: 900; font-size: 17px; color: #16191C; }
+  .chipbar { display: flex; gap: 8px; padding: 0 14px 10px; }
+  .chipbar span { background: #F0F1F2; border-radius: 16px; padding: 6px 12px; font-weight: 800; font-size: 13px; }
+  .chipbar span.on { background: #16191C; color: #fff; }
+  /* map */
+  .map { background: #DCEFE3; }
+  .map svg.streets { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .pin { position: absolute; transform: translate(-50%, -100%); text-align: center; }
+  .pin .ava { width: 54px; height: 54px; border-radius: 50%; display: grid; place-items: center; margin: 0 auto; border: 3px solid #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.25); }
+  .pin span { display: inline-block; margin-top: 4px; background: #fff; color: #16191C; border-radius: 10px; padding: 3px 8px; font-weight: 800; font-size: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.15); white-space: nowrap; }
+  .gym { position: absolute; transform: translate(-50%, -50%); background: #16191C; color: #fff; border-radius: 12px; padding: 6px 10px; font-weight: 800; font-size: 12px; display: flex; gap: 6px; align-items: center; }
+  .gym .ico { width: 16px; height: 16px; }
+  .maptop { position: absolute; top: 50px; left: 12px; right: 12px; display: flex; gap: 10px; align-items: center; z-index: 2; }
+  .maptop .search { flex: 1; background: #fff; color: #656D78; border-radius: 20px; padding: 10px 14px; font-weight: 700; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
+  .sheet { position: absolute; left: 0; right: 0; bottom: 0; background: #fff; color: #16191C; border-radius: 22px 22px 0 0; padding: 10px 14px 16px; z-index: 2; box-shadow: 0 -6px 20px rgba(0,0,0,0.12); }
+  .sheet .grab { width: 40px; height: 5px; border-radius: 3px; background: #D5D8DC; margin: 0 auto 10px; }
+  .sheet b { font-size: 17px; font-weight: 900; }
+  .sheet p { margin: 4px 0 0; color: #656D78; font-weight: 700; font-size: 14px; }
+  /* stories */
+  .tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 0 14px 14px; }
+  .tile { aspect-ratio: 9/14; border-radius: 14px; background: #ccc center/cover; position: relative; overflow: hidden; }
+  .tile::after { content: ''; position: absolute; inset: 0; background: linear-gradient(transparent 50%, rgba(0,0,0,0.75)); }
+  .tile b { position: absolute; left: 10px; right: 10px; bottom: 10px; z-index: 1; color: #fff; font-weight: 900; font-size: 15px; line-height: 1.15; }
+  .tile .ava { position: absolute; top: 10px; left: 10px; width: 36px; height: 36px; z-index: 1; font-size: 14px; border: 2px solid var(--snap); }
+  .circles { display: flex; gap: 12px; overflow-x: auto; padding: 0 14px 12px; scrollbar-width: none; }
+  .circles div { text-align: center; font-size: 12px; font-weight: 800; width: 64px; flex: 0 0 auto; }
+  .circles .ava { width: 62px; height: 62px; border: 3px solid var(--purple); outline: 2px solid #fff; outline-offset: -5px; margin: 0 auto 4px; }
+  /* profile */
+  .snapcode { width: 120px; height: 120px; margin: 4px auto 10px; background: var(--snap); border-radius: 26px; display: grid; place-items: center; }
+  .snapcode .ava { width: 84px; height: 84px; font-size: 34px; background: #2F3B33; }
+  .pname { text-align: center; }
+  .pname h2 { margin: 0; font-size: 24px; font-weight: 900; }
+  .pname p { margin: 2px 0 10px; color: #656D78; font-weight: 700; }
+  .scorebar { display: flex; justify-content: center; gap: 8px; margin-bottom: 8px; }
+  .scorebar span { background: #F0F1F2; border-radius: 14px; padding: 6px 12px; font-weight: 800; font-size: 13px; }
+  .card2 { margin: 6px 14px 12px; background: #F7F8F8; border-radius: 16px; overflow: hidden; }
+  .card2 .row { border-bottom: 1px solid #ECEEF0; }
+  .card2 .row:last-child { border: 0; }
+  .ri { width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center; flex: 0 0 auto; }
+  .tg { margin-left: auto; width: 46px; height: 28px; border-radius: 14px; background: var(--blue); position: relative; }
+  .tg::after { content: ''; position: absolute; right: 3px; top: 3px; width: 22px; height: 22px; border-radius: 50%; background: #fff; }
+  .medal { display: inline-flex; flex-direction: column; align-items: center; width: 76px; font-size: 11px; font-weight: 800; text-align: center; color: #16191C; }
+  .medal i { width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; font-style: normal; font-size: 22px; background: var(--snap); margin-bottom: 4px; }
+  .medal.off i { background: #ECEEF0; filter: grayscale(1); opacity: 0.6; }
+  nav { display: flex; justify-content: space-around; align-items: center; padding: 10px 0 30px; background: #000; }
+  nav button { background: none; border: 0; color: #fff; opacity: 0.55; display: flex; flex-direction: column; align-items: center; gap: 2px; font: 800 10px/1 'Nunito Sans', sans-serif; }
+  nav button.is-active { opacity: 1; }
+  nav button[data-tab="chat"].is-active { color: var(--blue); }
+  nav button[data-tab="stories"].is-active { color: var(--purple); }
+  nav button[data-tab="map"].is-active { color: #3CB371; }
+  nav button[data-tab="me"].is-active { color: var(--snap); }
+</style>
+</head>
+<body class="concept">
+<aside class="concept-info">
+  <div class="num">10 / 32 · BUILT WITH FRONTEND DESIGN</div>
+  <h1>Snap</h1>
+  <p>Snapchat logic for the gym. The app opens on the camera: snap a set and it gets a sticker with the weight. The map shows which friends are training and where. Every friend has a gym streak — days you both trained — so you push each other.</p>
+  <span class="tag">camera-first</span><span class="tag">streaks with friends</span><span class="tag">snap yellow</span>
+  <div class="concept-nav"><a href="09-board.html">← Prev</a><a href="index.html">All designs</a><a href="11-daily.html">Next →</a></div>
+</aside>
+<div class="device"><div class="app" id="app">
+  <main>
+    <section data-screen="map" class="map" id="s-map" hidden></section>
+    <section data-screen="chat" class="light" id="s-chat" hidden></section>
+    <section data-screen="camera" class="cam" id="s-camera"></section>
+    <section data-screen="stories" class="light" id="s-stories" hidden></section>
+    <section data-screen="me" class="light" id="s-me" hidden></section>
+  </main>
+  <nav>
+    <button data-tab="map">ICON:home<span>Gyms</span></button>
+    <button data-tab="chat">ICON:chat<span>Chat</span></button>
+    <button data-tab="camera" class="is-active">ICON:camera<span>Snap a set</span></button>
+    <button data-tab="stories">ICON:users<span>Stories</span></button>
+    <button data-tab="me">ICON:chart<span>Me</span></button>
+  </nav>
+</div></div>
+<script src="data.js"></script>
+<script src="icons.js"></script>
+<script>
+(function () {
+  const G = GQ, I = ICON, $ = (id) => document.getElementById(id), ex = G.today.exercises;
+  document.querySelectorAll('nav button').forEach((b) => { b.innerHTML = b.innerHTML.replace(/ICON:(\w+)/, (_, n) => I(n)); });
+  const ava = (k, extra) => { const p = G.person(k); return '<span class="ava" style="background:' + p.color + (extra || '') + '">' + p.name[0] + '</span>'; };
+  const e = ex[0];
+  $('s-camera').style.backgroundImage = 'url(' + e.img + ')';
+  $('s-camera').innerHTML = '<div class="ctop"><span class="bub me">M</span><span class="bub">' + I('search') + '</span><span class="sp"></span><span class="bub">' + I('users') + '</span><span class="bub">' + I('repeat') + '</span></div>'
+    + '<div class="side">' + I('timer') + I('flame') + I('dumbbell') + I('more') + '</div>'
+    + '<div class="sticker"><small>Push day, set 3 of 4</small><b>60 kg × 8</b><span>Bench press</span></div>'
+    + '<div class="caption">felt light today 💪</div>'
+    + '<div class="lenses"><i>PR</i><i>XP</i></div><div class="shutter"></div>';
+  /* chat with streaks */
+  const streaks = { anna: 12, tomas: 31, peter: 5, eva: 3, lucia: 0 };
+  $('s-chat').innerHTML = '<div class="lhead"><span class="bub me">M</span><span class="bub">' + I('search') + '</span><h1>Chat</h1><span class="bub">' + I('users') + '</span><span class="bub">' + I('plus') + '</span></div>'
+    + '<div class="chipbar"><span class="on">All</span><span>Unread</span><span>Training now</span><span>Groups</span></div>'
+    + ['tomas', 'anna', 'peter', 'eva', 'lucia'].map((k, i) => { const p = G.person(k);
+      const st = [['sq red', 'New snap', '18m'], ['sq purple', 'Sent you a plan', '1h'], ['sq blue', 'Opened', '5h'], ['sq red', 'New snap', '1d'], ['sq blue', 'Received', '2d']][i];
+      return '<div class="row">' + ava(k) + '<div><b>' + p.name + '</b><div class="st"><i class="' + st[0] + '"></i>' + st[1] + ' &nbsp;' + st[2] + '</div></div>'
+        + (streaks[k] ? '<div class="flame">' + streaks[k] + ' 🔥<small>gym streak</small></div>' : '<div class="flame" style="color:#656D78"><small>start a streak</small></div>') + '</div>'; }).join('')
+    + '<div class="sh">Reminders</div>' + G.reminders.map((r) => '<div class="row"><span class="ri" style="background:' + (r.kind === 'water' ? '#E4F6FF' : r.kind === 'meal' ? '#FFF6D6' : '#F1E6FA') + '">' + I(r.kind === 'water' ? 'droplet' : r.kind === 'meal' ? 'utensils' : 'dumbbell') + '</span><div><b style="font-size:15px">' + r.label + '</b><div class="st">' + r.detail.replace(/ · /g, ', ') + '</div></div><span class="tg"></span></div>').join('');
+  /* map */
+  $('s-map').innerHTML = '<svg class="streets" viewBox="0 0 390 760" preserveAspectRatio="xMidYMid slice"><rect width="390" height="760" fill="#E3F1E7"/>'
+    + '<path d="M-20 250 C 100 230, 200 300, 420 260" stroke="#fff" stroke-width="22" fill="none"/><path d="M120 -20 C 140 200, 90 420, 160 800" stroke="#fff" stroke-width="18" fill="none"/>'
+    + '<path d="M-20 560 C 120 520, 260 600, 420 540" stroke="#fff" stroke-width="16" fill="none"/><path d="M290 -20 C 270 300, 330 500, 300 800" stroke="#fff" stroke-width="14" fill="none"/>'
+    + '<path d="M0 640 C 90 610, 190 700, 390 660 L390 760 L0 760Z" fill="#B9DDF0"/><rect x="190" y="320" width="80" height="60" rx="10" fill="#CFE8D4"/><rect x="30" y="380" width="70" height="90" rx="10" fill="#CFE8D4"/></svg>'
+    + '<div class="maptop"><span class="bub me" style="width:44px;height:44px">M</span><span class="search">Search gyms and friends</span></div>'
+    + '<div class="gym" style="left:230px;top:345px">' + I('dumbbell') + 'Fitinn Ružinov</div><div class="gym" style="left:150px;top:540px">' + I('dumbbell') + 'GymBeam Gym</div>'
+    + '<div class="pin" style="left:215px;top:315px">' + ava('anna') + '<span>Anna, leg day</span></div>'
+    + '<div class="pin" style="left:300px;top:250px">' + ava('peter') + '<span>Peter, 41 min</span></div>'
+    + '<div class="pin" style="left:80px;top:470px">' + ava('tomas') + '<span>Tomáš, deadlifts</span></div>'
+    + '<div class="pin" style="left:110px;top:200px">' + ava('me', ';background:#2F3B33') + '<span>You</span></div>'
+    + '<div class="sheet"><div class="grab"></div><b>3 friends are training now</b><p>Anna and Peter are at Fitinn Ružinov, 1.2 km away. Tap a friend to send a snap.</p></div>';
+  /* stories */
+  $('s-stories').innerHTML = '<div class="lhead"><span class="bub me">M</span><span class="bub">' + I('search') + '</span><h1>Stories</h1><span class="bub">' + I('users') + '</span><span class="bub">' + I('more') + '</span></div>'
+    + '<div class="sh">Friends</div><div class="circles">' + G.stories.map((k) => '<div>' + ava(k) + G.person(k).name + '</div>').join('') + '</div>'
+    + '<div class="sh">Workouts today</div><div class="tiles">' + G.feed.map((f) => '<div class="tile" style="background-image:url(' + (f.img ? G.img(f.img) : G.img('hack-squat')) + ')">' + ava(f.who) + '<b>' + (f.kind === 'pr' ? 'New record: deadlift 140 kg' : f.kind === 'plan' ? 'Lucia’s home 25, save it' : f.text) + '</b></div>').join('') + '</div>';
+  /* me */
+  $('s-me').innerHTML = '<div class="lhead"><span class="bub">' + I('back') + '</span><h1></h1><span class="bub">' + I('share') + '</span><span class="bub">' + I('settings') + '</span></div>'
+    + '<div class="snapcode">' + ava('me', ';background:#2F3B33') + '</div><div class="pname"><h2>' + G.user.name + '</h2><p>' + G.user.handle + '</p><div class="scorebar"><span>Level ' + G.user.level + '</span><span>' + G.user.xp + ' XP</span><span>' + G.user.streakWeeks + ' week streak 🔥</span></div></div>'
+    + '<div class="sh">This week</div><div class="card2">' + G.week.map((d) => d.done || d.today ? '<div class="row"><span class="ri" style="background:' + (d.done ? 'var(--snap)' : '#F0F1F2') + '">' + (d.done ? I('check') : I('clock')) + '</span><div><b style="font-size:15px">' + d.d + ', ' + (d.plan || 'Push day') + '</b><div class="st">' + (d.done ? 'done' : 'today, in progress') + '</div></div></div>' : '').join('') + '</div>'
+    + '<div class="sh">Trophies</div><div style="padding:0 10px 10px">' + G.achievements.map((a, i) => '<span class="medal' + (a.got ? '' : ' off') + '"><i>' + ['🗓️', '5️⃣', '📈', '💯', '🔥'][i] + '</i>' + a.name + '</span>').join('') + '</div>'
+    + '<div class="sh">Records</div><div class="card2">' + G.records.map((r) => '<div class="row"><b style="flex:1;font-size:15px">' + r.name + '</b><b style="font-size:16px">' + r.kg + ' kg</b></div>').join('') + '</div>';
+  gqTabs(document.getElementById('app'));
+})();
+</script>
+</body>
+</html>

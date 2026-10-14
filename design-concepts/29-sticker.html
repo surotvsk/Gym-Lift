@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>29 · Sticker — GymQuest concept</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="frame.css">
+<style>
+  :root { --kraft: #C9A57B; --kraft-d: #B48D62; --ink: #2C2118; --white: #fff; --cherry: #E8414F; --cobalt: #2D5BD7; --grass: #34A853; --sun: #FFC22E; --grape: #8E4FD8; }
+  .app { position: absolute; inset: 0; background: var(--kraft); color: var(--ink); font: 600 15px/1.3 'Baloo 2', system-ui, sans-serif; display: flex; flex-direction: column; }
+  .app::before { content: ''; position: absolute; inset: 0; pointer-events: none; opacity: 0.5; background-image: radial-gradient(rgba(90,60,30,0.25) 1px, transparent 1.4px), radial-gradient(rgba(255,255,255,0.25) 1px, transparent 1.4px); background-size: 9px 9px, 13px 13px; background-position: 0 0, 4px 6px; }
+  main { flex: 1; overflow-y: auto; padding: 48px 16px 16px; position: relative; }
+  h1 { margin: 0; font-size: 32px; font-weight: 800; line-height: 1; }
+  .sub { margin: 2px 0 14px; color: #5A4632; font-weight: 500; }
+  .st { display: inline-grid; place-items: center; text-align: center; color: #fff; border: 5px solid #fff; box-shadow: 0 3px 0 rgba(0,0,0,0.18), 0 6px 10px rgba(0,0,0,0.15); transform: rotate(var(--r, 0deg)); font-weight: 800; line-height: 1; }
+  .st.c { border-radius: 50%; }
+  .st.s { border-radius: 18px; }
+  .st.b { border-radius: 30px; padding: 8px 16px; }
+  .st small { display: block; font-size: 12px; font-weight: 600; }
+  .slot { display: inline-grid; place-items: center; border: 3px dashed var(--kraft-d); color: #7A5E40; text-align: center; font-size: 12px; font-weight: 600; }
+  .slot.c { border-radius: 50%; } .slot.s { border-radius: 18px; }
+  .page { background: rgba(255,255,255,0.18); border-radius: 18px; padding: 14px; margin-bottom: 14px; }
+  .page h2 { margin: 0 0 10px; font-size: 20px; font-weight: 800; }
+  .wall { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px 10px; justify-items: center; align-items: center; }
+  .wall .st, .wall .slot { width: 96px; height: 96px; font-size: 15px; }
+  .exl { display: flex; align-items: center; gap: 12px; background: #fff; border-radius: 16px; padding: 10px 12px; margin-bottom: 8px; box-shadow: 0 3px 0 rgba(0,0,0,0.12); }
+  .exl .dot { width: 34px; height: 34px; border-radius: 50%; border: 3px dashed #D9C3A6; flex: 0 0 auto; display: grid; place-items: center; }
+  .exl .dot.d { border: 3px solid #fff; background: var(--grass); color: #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.2); transform: rotate(-8deg); }
+  .exl div { flex: 1; } .exl small { display: block; color: #7A6650; font-weight: 500; }
+  .exl b { font-size: 18px; }
+  .peel { display: block; text-align: center; background: var(--ink); color: #fff; border-radius: 16px; padding: 13px; font-size: 18px; font-weight: 700; margin-top: 12px; }
+  .reward { display: flex; gap: 14px; align-items: center; margin-top: 14px; background: #fff; border-radius: 18px; padding: 12px; }
+  .reward .st { width: 74px; height: 74px; font-size: 13px; flex: 0 0 auto; }
+  .reward small { display: block; color: #7A6650; font-weight: 500; }
+  .reward .st small { color: #fff; }
+  .tradeg { display: flex; gap: 10px; align-items: center; padding: 10px 0; border-bottom: 2px dashed rgba(44,33,24,0.15); }
+  .tradeg .av { width: 46px; height: 46px; border-radius: 50%; border: 4px solid #fff; color: #fff; display: grid; place-items: center; font-weight: 800; font-size: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+  .tradeg div { flex: 1; } .tradeg small { display: block; color: #5A4632; font-weight: 500; }
+  .tradeg .st { width: 50px; height: 50px; font-size: 11px; border-width: 3px; }
+  .rem { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; }
+  .rem small { display: block; color: #5A4632; font-weight: 500; }
+  .tg { width: 46px; height: 28px; border-radius: 14px; background: var(--grass); border: 3px solid #fff; position: relative; }
+  .tg::after { content: ''; position: absolute; right: 2px; top: 2px; width: 18px; height: 18px; border-radius: 50%; background: #fff; }
+  nav { display: flex; justify-content: space-around; padding: 10px 0 26px; background: #EADBC6; border-top: 3px solid #fff; position: relative; }
+  nav button { background: none; border: 0; font: 700 15px 'Baloo 2', sans-serif; color: #7A5E40; padding: 6px 14px; border-radius: 20px; }
+  nav button.is-active { background: var(--cherry); color: #fff; box-shadow: 0 0 0 3px #fff, 0 3px 6px rgba(0,0,0,0.2); transform: rotate(-2deg); }
+</style>
+</head>
+<body class="concept">
+<aside class="concept-info">
+  <div class="num">29 / 32 · BUILT WITH FRONTEND DESIGN</div>
+  <h1>Sticker</h1>
+  <p>A sticker book on kraft card. Every finished set peels off a little green dot, every workout earns a sticker, and achievements are the big shiny ones with empty dashed outlines waiting for them. Friends can trade stickers to say well done.</p>
+  <span class="tag">sticker book</span><span class="tag">kraft card</span><span class="tag">collect them all</span>
+  <div class="concept-nav"><a href="28-gauge.html">← Prev</a><a href="index.html">All designs</a><a href="30-dojo.html">Next →</a></div>
+</aside>
+<div class="device"><div class="app" id="app">
+  <main data-scroll>
+    <section data-screen="today" id="s-today"></section>
+    <section data-screen="book" id="s-book" hidden></section>
+    <section data-screen="trade" id="s-trade" hidden></section>
+  </main>
+  <nav>
+    <button data-tab="today" class="is-active">Today</button>
+    <button data-tab="book">My book</button>
+    <button data-tab="trade">Friends</button>
+  </nav>
+</div></div>
+<script src="data.js"></script>
+<script>
+(function () {
+  const G = GQ, $ = (id) => document.getElementById(id), ex = G.today.exercises;
+  const st = (shape, bg, text, r, extra) => '<span class="st ' + shape + '" style="background:' + bg + ';--r:' + (r || 0) + 'deg;' + (extra || '') + '">' + text + '</span>';
+  $('s-today').innerHTML = '<h1>Push day</h1><div class="sub">Peel a dot for every set</div>'
+    + ex.map((e) => '<div class="exl"><div><b>' + e.name + '</b><small>' + e.sets + ' × ' + e.reps + (e.weight ? ' at ' + e.weight + ' kg' : '') + '</small></div>' + Array.from({ length: e.sets }, (_, k) => '<span class="dot' + (k < e.done ? ' d' : '') + '">' + (k < e.done ? '✓' : '') + '</span>').join('') + '</div>').join('')
+    + '<span class="peel">Peel dot for set 3</span>'
+    + '<div class="reward">' + st('c', 'var(--cobalt)', 'Push<small>day</small>', -8) + '<div>Finish today to earn the Push day sticker<small>And it fills week ' + (G.user.streakWeeks + 1) + ' of your streak page.</small></div></div>';
+  const wall = [
+    st('c', 'var(--cherry)', '100<small>kg squat</small>', -6), st('s', 'var(--sun)', '4<small>weeks</small>', 5, 'color:var(--ink)'), st('c', 'var(--grass)', '50<small>workouts</small>', 3),
+    st('s', 'var(--grape)', 'New<small>record</small>', -4), st('c', 'var(--cobalt)', '120<small>deadlift</small>', 7),
+    '<span class="slot c">100 workouts<br>63%</span>', '<span class="slot s">8 weeks<br>50%</span>', '<span class="slot c">80 kg<br>bench</span>', '<span class="slot s">?</span>'];
+  $('s-book').innerHTML = '<h1>My book</h1><div class="sub">' + G.user.name + ', level ' + G.user.level + ', 5 of 9 on this page</div>'
+    + '<div class="page"><h2>Big ones</h2><div class="wall">' + wall.join('') + '</div></div>'
+    + '<div class="page"><h2>This week</h2><div style="display:flex;gap:10px;flex-wrap:wrap">' + G.week.map((d, i) => d.done ? st('b', d.plan === 'Leg day' ? 'var(--cherry)' : 'var(--grass)', d.plan, i % 2 ? 4 : -4) : '').join('') + '<span class="slot s" style="width:92px;height:42px;border-radius:30px">Push day</span></div></div>';
+  $('s-trade').innerHTML = '<h1>Friends</h1><div class="sub">Send a sticker to say well done</div>'
+    + G.feed.slice(0, 4).map((f, i) => { const p = G.person(f.who); return '<div class="tradeg"><span class="av" style="background:' + p.color + '">' + p.name[0] + '</span><div>' + p.name + '<small>' + f.text.slice(0, 48) + (f.text.length > 48 ? '…' : '') + '</small></div>' + st(['c', 's', 'c', 's'][i], ['var(--sun)', 'var(--cherry)', 'var(--grass)', 'var(--grape)'][i], ['Wow', 'Strong', 'Saved', 'Nice'][i], i % 2 ? 6 : -6, i === 0 ? 'color:var(--ink)' : '') + '</div>'; }).join('')
+    + '<div class="page" style="margin-top:16px"><h2>Reminders</h2>' + G.reminders.map((r) => '<div class="rem"><span>' + r.label + '<small>' + r.detail.replace(/ · /g, ', ') + '</small></span><span class="tg"></span></div>').join('') + '</div>';
+  gqTabs(document.getElementById('app'));
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>31 · Neon — GymQuest concept</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tilt+Neon&family=Sora:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="frame.css">
+<style>
+  :root { --wall: #1A0B2E; --brick: #24123D; --pink: #FF3EA5; --cyan: #3EF3FF; --amber: #FFB23E; --text: #EDE3FF; --dim: #9A88BE; }
+  .app { position: absolute; inset: 0; background: var(--wall); color: var(--text); font: 15px/1.45 Sora, system-ui, sans-serif; display: flex; flex-direction: column; }
+  .app::before { content: ''; position: absolute; inset: 0; pointer-events: none; opacity: 0.55; background-image: linear-gradient(var(--brick) 2px, transparent 2px), linear-gradient(90deg, var(--brick) 2px, transparent 2px); background-size: 52px 26px, 52px 52px; background-position: 0 0, 26px 26px; }
+  main { flex: 1; overflow-y: auto; padding: 54px 18px 18px; position: relative; }
+  .neon { font-family: 'Tilt Neon', sans-serif; }
+  .tube-p { color: #FFE0F1; text-shadow: 0 0 4px #fff, 0 0 10px var(--pink), 0 0 22px var(--pink), 0 0 40px var(--pink); }
+  .tube-c { color: #E0FDFF; text-shadow: 0 0 4px #fff, 0 0 10px var(--cyan), 0 0 22px var(--cyan), 0 0 40px var(--cyan); }
+  .tube-a { color: #FFF0D6; text-shadow: 0 0 4px #fff, 0 0 10px var(--amber), 0 0 22px var(--amber); }
+  .sign { text-align: center; margin: 8px 0 22px; }
+  .sign .l1 { font-size: 22px; }
+  .sign .l2 { font-size: 64px; line-height: 1; transform: rotate(-4deg); display: inline-block; margin-top: 4px; }
+  .sign .flicker { animation: fl 6s infinite; }
+  @keyframes fl { 0%, 92%, 100% { opacity: 1; } 93% { opacity: 0.35; } 94% { opacity: 1; } 96% { opacity: 0.5; } }
+  @media (prefers-reduced-motion: reduce) { .sign .flicker { animation: none; } }
+  .row { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 14px; margin-bottom: 8px; background: rgba(36,18,61,0.8); }
+  .row div { flex: 1; } .row small { display: block; color: var(--dim); }
+  .row .kg { font: 24px 'Tilt Neon', sans-serif; }
+  .row.cur { box-shadow: 0 0 0 2px var(--pink), 0 0 18px rgba(255,62,165,0.4); }
+  .open { display: block; text-align: center; margin-top: 16px; padding: 14px; border-radius: 30px; border: 2px solid var(--cyan); box-shadow: 0 0 14px rgba(62,243,255,0.5), inset 0 0 14px rgba(62,243,255,0.3); font: 22px 'Tilt Neon', sans-serif; }
+  /* set */
+  .bigsign { text-align: center; padding-top: 10px; }
+  .bigsign .num { font: 150px/1 'Tilt Neon', sans-serif; }
+  .bigsign .unit { font: 30px 'Tilt Neon', sans-serif; }
+  .bulbs { display: flex; justify-content: center; gap: 14px; margin: 22px 0; }
+  .bulbs i { width: 22px; height: 22px; border-radius: 50%; background: #3A2758; }
+  .bulbs i.on { background: var(--amber); box-shadow: 0 0 6px #fff, 0 0 16px var(--amber), 0 0 30px var(--amber); }
+  .bulbs i.next { background: transparent; border: 2px solid var(--amber); }
+  .cap { text-align: center; color: var(--dim); }
+  /* wall */
+  .board { padding: 14px; border-radius: 18px; border: 2px solid var(--pink); box-shadow: 0 0 16px rgba(255,62,165,0.35), inset 0 0 16px rgba(255,62,165,0.2); margin-bottom: 16px; }
+  .board h2 { margin: 0 0 8px; font: 28px 'Tilt Neon', sans-serif; text-align: center; }
+  .lb { display: flex; padding: 7px 0; border-bottom: 1px dashed #3A2758; }
+  .lb:last-child { border: 0; }
+  .lb span:first-child { width: 26px; color: var(--dim); }
+  .lb b { flex: 1; font-weight: 500; }
+  .lb.me b, .lb.me span { color: var(--cyan); text-shadow: 0 0 10px var(--cyan); }
+  .recs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .rec { text-align: center; padding: 12px 6px; border-radius: 14px; background: rgba(36,18,61,0.8); }
+  .rec b { display: block; font: 38px/1 'Tilt Neon', sans-serif; }
+  .rec small { color: var(--dim); }
+  .opt { display: flex; align-items: center; padding: 12px 0; border-bottom: 1px solid #2E1A4D; }
+  .opt div { flex: 1; } .opt small { display: block; color: var(--dim); }
+  .tg { width: 46px; height: 26px; border-radius: 13px; border: 2px solid var(--cyan); position: relative; box-shadow: 0 0 10px rgba(62,243,255,0.5); }
+  .tg::after { content: ''; position: absolute; right: 3px; top: 3px; width: 16px; height: 16px; border-radius: 50%; background: var(--cyan); box-shadow: 0 0 8px var(--cyan); }
+  nav { display: flex; justify-content: space-around; padding: 12px 0 28px; position: relative; background: rgba(15,6,28,0.9); }
+  nav button { background: none; border: 0; color: var(--dim); font: 19px 'Tilt Neon', sans-serif; }
+  nav button.is-active { color: #FFE0F1; text-shadow: 0 0 4px #fff, 0 0 12px var(--pink), 0 0 24px var(--pink); }
+</style>
+</head>
+<body class="concept">
+<aside class="concept-info">
+  <div class="num">31 / 32 · BUILT WITH FRONTEND DESIGN</div>
+  <h1>Neon</h1>
+  <p>For the late-evening crowd. The app is a brick wall with neon signs: the plan is the open sign, the current weight glows like a tube, and finished sets light up like marquee bulbs. The leaderboard is a sign on the wall too.</p>
+  <span class="tag">neon tubes</span><span class="tag">night gym</span><span class="tag">marquee bulbs</span>
+  <div class="concept-nav"><a href="30-dojo.html">← Prev</a><a href="index.html">All designs</a><a href="32-anatomy.html">Next →</a></div>
+</aside>
+<div class="device"><div class="app" id="app">
+  <main data-scroll>
+    <section data-screen="tonight" id="s-tonight"></section>
+    <section data-screen="set" id="s-set" hidden></section>
+    <section data-screen="wall" id="s-wall" hidden></section>
+    <section data-screen="you" id="s-you" hidden></section>
+  </main>
+  <nav>
+    <button data-tab="tonight" class="is-active">Tonight</button>
+    <button data-tab="set">Set</button>
+    <button data-tab="wall">Wall</button>
+    <button data-tab="you">You</button>
+  </nav>
+</div></div>
+<script src="data.js"></script>
+<script>
+(function () {
+  const G = GQ, $ = (id) => document.getElementById(id), ex = G.today.exercises;
+  $('s-tonight').innerHTML = '<div class="sign"><div class="l1 neon tube-c">Thursday night is</div><div class="l2 neon tube-p flicker">Push day</div></div>'
+    + ex.map((e, i) => '<div class="row' + (i === 0 ? ' cur' : '') + '"><div>' + e.name + '<small>' + e.sets + ' × ' + e.reps + (i === 0 ? ', 2 sets done' : '') + '</small></div><span class="kg ' + (i === 0 ? 'tube-p' : '') + '">' + (e.weight ? e.weight : 'BW') + '</span></div>').join('')
+    + '<span class="open tube-c">Back to the bench</span>';
+  const e = ex[0];
+  $('s-set').innerHTML = '<div class="bigsign"><div class="neon tube-c" style="font-size:22px">Bench press</div><div class="num tube-p">60</div><div class="unit tube-p">kg × 8</div></div>'
+    + '<div class="bulbs">' + Array.from({ length: e.sets }, (_, k) => '<i class="' + (k < e.done ? 'on' : k === e.done ? 'next' : '') + '"></i>').join('') + '</div>'
+    + '<div class="cap">Set 3 of 4. Last week you did 57.5 kg.</div><span class="open tube-c">Light it up</span>';
+  $('s-wall').innerHTML = '<div class="board"><h2 class="tube-p">This week</h2>' + G.leaderboard.map((r, i) => '<div class="lb' + (r.who === 'me' ? ' me' : '') + '"><span>' + (i + 1) + '</span><b>' + G.person(r.who).name + '</b><span style="width:auto">' + r.xp + ' XP</span></div>').join('') + '</div>'
+    + '<div class="recs">' + G.records.map((r, i) => '<div class="rec"><b class="' + ['tube-a', 'tube-c', 'tube-p', 'tube-a'][i] + '">' + r.kg + '</b><small>' + r.name + '</small></div>').join('') + '</div>';
+  $('s-you').innerHTML = '<div class="sign"><div class="l2 neon tube-a" style="font-size:48px;transform:none">' + G.user.name + '</div><div style="color:var(--dim);margin-top:6px">Level ' + G.user.level + ', ' + G.user.workouts + ' workouts, ' + G.user.streakWeeks + '-week streak</div></div>'
+    + G.reminders.map((r) => '<div class="opt"><div>' + r.label + '<small>' + r.detail.replace(/ · /g, ', ') + '</small></div><span class="tg"></span></div>').join('')
+    + '<div style="margin-top:18px">' + G.achievements.map((a) => '<div class="row"><div>' + a.name + '<small>' + a.desc + '</small></div><span class="' + (a.got ? 'tube-a' : '') + '" style="' + (a.got ? '' : 'color:var(--dim)') + '">' + (a.got ? '★' : a.progress + '%') + '</span></div>').join('') + '</div>';
+  gqTabs(document.getElementById('app'));
+})();
+</script>
+</body>
+</html>

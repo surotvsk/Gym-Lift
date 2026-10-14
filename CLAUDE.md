@@ -97,6 +97,9 @@ the app shows an "update available" notice and never reloads during an active wo
   with VAPID; `webpush.ts` is dependency-free WebCrypto and is imported directly by Node tests) and
   `reminders` (called only by the `pg_cron` job through `pg_net`, JWT verification off, shared secret).
   Tests that roll back a migration use `L.rollbackFrom(n)` / `L.reapply()` (newest first, then in order).
+- **`design-concepts/`** holds standalone redesign prototypes (shared `data.js`, `frame.css`, `icons.js`,
+  and an `index.html` gallery). It is not part of the app, is not precached, and `sw.js` skips every request
+  under `/design-concepts/`.
 
 ## Working conventions in this repo
 

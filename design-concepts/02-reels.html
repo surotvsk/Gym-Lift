@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>02 · Reels — GymQuest concept</title>
+<link rel="stylesheet" href="frame.css">
+<style>
+  .app { position: absolute; inset: 0; background: #000; color: #fff; font: 15px/1.3 -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif; display: flex; flex-direction: column; }
+  main { flex: 1; position: relative; overflow: hidden; }
+  section { position: absolute; inset: 0; overflow-y: auto; }
+  .snap { scroll-snap-type: y mandatory; }
+  .card { position: relative; height: 100%; scroll-snap-align: start; background: #111 center/cover no-repeat; overflow: hidden; }
+  .card::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0) 22%, rgba(0,0,0,0) 50%, rgba(0,0,0,0.75) 100%); }
+  .topseg { position: absolute; top: 52px; left: 0; right: 0; z-index: 3; display: flex; justify-content: center; gap: 22px; font-weight: 700; font-size: 16px; }
+  .topseg span { opacity: 0.6; padding-bottom: 6px; }
+  .topseg span.on { opacity: 1; border-bottom: 2px solid #fff; }
+  .live { position: absolute; top: 50px; left: 14px; z-index: 3; font-size: 12px; font-weight: 700; background: #FE2C55; padding: 3px 7px; border-radius: 4px; }
+  .rail { position: absolute; right: 10px; bottom: 120px; z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 18px; }
+  .rail .who { width: 48px; height: 48px; border-radius: 50%; border: 2px solid #fff; display: grid; place-items: center; font: 700 20px/1 Georgia, serif; position: relative; }
+  .rail .who i { position: absolute; bottom: -9px; left: 50%; transform: translateX(-50%); width: 20px; height: 20px; border-radius: 50%; background: #FE2C55; display: grid; place-items: center; font-style: normal; font-size: 16px; line-height: 1; }
+  .rail button { background: none; border: 0; color: #fff; display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 12px; font-weight: 600; text-shadow: 0 1px 2px rgba(0,0,0,0.5); }
+  .rail .ico { width: 34px; height: 34px; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.5)); }
+  .rail .liked .ico { fill: #FE2C55; stroke: #FE2C55; }
+  .caption { position: absolute; left: 14px; right: 80px; bottom: 98px; z-index: 2; text-shadow: 0 1px 3px rgba(0,0,0,0.6); }
+  .caption b { font-size: 16px; }
+  .caption p { margin: 6px 0; font-size: 14px; line-height: 1.35; }
+  .caption .chip { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.18); backdrop-filter: blur(6px); padding: 6px 10px; border-radius: 6px; font-size: 13px; font-weight: 600; margin-top: 4px; }
+  .caption .chip .ico { width: 16px; height: 16px; }
+  .bigpr { position: absolute; inset: 0; z-index: 1; display: grid; place-content: center; text-align: center; }
+  .bigpr strong { font: 900 120px/0.9 'Helvetica Neue', Arial, sans-serif; letter-spacing: -6px; }
+  .bigpr span { font-weight: 700; letter-spacing: 0.3em; text-transform: uppercase; font-size: 12px; }
+
+  /* workout as vertical cards */
+  .wk .card::after { background: linear-gradient(180deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.05) 30%, rgba(0,0,0,0.85) 70%); }
+  .wk-head { position: absolute; top: 54px; left: 16px; right: 16px; z-index: 2; display: flex; gap: 4px; }
+  .wk-head i { flex: 1; height: 3px; border-radius: 2px; background: rgba(255,255,255,0.3); }
+  .wk-head i.on { background: #fff; }
+  .wk-body { position: absolute; left: 16px; right: 16px; bottom: 100px; z-index: 2; }
+  .wk-body small { font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; font-size: 11px; color: #25F4EE; }
+  .wk-body h2 { font-size: 34px; line-height: 1.02; margin: 6px 0 4px; letter-spacing: -0.5px; }
+  .wk-body p { margin: 0 0 16px; color: #ddd; }
+  .setrow { display: flex; gap: 8px; }
+  .bigset { flex: 1; height: 64px; border-radius: 12px; border: 1.5px solid rgba(255,255,255,0.5); display: grid; place-content: center; text-align: center; font-weight: 800; font-size: 20px; background: rgba(0,0,0,0.25); }
+  .bigset small { display: block; font-size: 11px; font-weight: 600; opacity: 0.7; letter-spacing: 0; text-transform: none; color: #fff; }
+  .bigset.done { background: #fff; color: #000; border-color: #fff; }
+  .bigset.done small { color: #000; }
+  .hint { text-align: center; margin-top: 14px; font-size: 12px; opacity: 0.7; }
+
+  /* plain screens (progress, inbox, profile) on dark */
+  .plain { background: #121212; padding: 54px 0 20px; }
+  .ph { display: flex; align-items: center; justify-content: center; position: relative; padding: 0 16px 14px; font-weight: 700; font-size: 17px; }
+  .ph .r { position: absolute; right: 16px; }
+  .statrow { display: grid; grid-template-columns: repeat(3, 1fr); text-align: center; padding: 6px 16px 18px; }
+  .statrow b { display: block; font-size: 22px; }
+  .statrow span { color: #aaa; font-size: 13px; }
+  .pf { text-align: center; }
+  .pf .ava { width: 96px; height: 96px; border-radius: 50%; background: #2F3B33; margin: 0 auto 10px; display: grid; place-items: center; font: 400 42px/1 Georgia, serif; }
+  .pf h3 { margin: 0; font-size: 18px; }
+  .pf p { color: #aaa; margin: 6px 24px 14px; font-size: 14px; }
+  .pbtns { display: flex; justify-content: center; gap: 6px; margin-bottom: 16px; }
+  .pbtns span { background: #2a2a2a; padding: 11px 22px; border-radius: 4px; font-weight: 600; font-size: 14px; }
+  .pbtns span.red { background: #FE2C55; }
+  .vgrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; }
+  .vgrid div { aspect-ratio: 3/4; background: #222 center/cover; position: relative; }
+  .vgrid div em { position: absolute; left: 6px; bottom: 6px; font: 700 12px/1 sans-serif; font-style: normal; display: flex; align-items: center; gap: 3px; text-shadow: 0 1px 2px #000; }
+  .vgrid div em .ico { width: 14px; height: 14px; }
+  .ptabs { display: flex; border-bottom: 1px solid #2a2a2a; }
+  .ptabs span { flex: 1; text-align: center; padding: 10px; color: #777; }
+  .ptabs span.on { color: #fff; box-shadow: inset 0 -2px #fff; }
+  .blk { margin: 0 16px 16px; background: #1e1e1e; border-radius: 12px; padding: 14px; }
+  .blk h4 { margin: 0 0 10px; font-size: 13px; color: #aaa; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; }
+  .heat { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
+  .heat i { aspect-ratio: 1; border-radius: 4px; background: #2a2a2a; }
+  .heat i.a { background: #25F4EE55; } .heat i.b { background: #25F4EE; } .heat i.c { background: #FE2C55; }
+  .line { display: flex; justify-content: space-between; padding: 9px 0; border-bottom: 1px solid #2a2a2a; font-size: 14px; }
+  .line:last-child { border: 0; }
+  .line b { font-variant-numeric: tabular-nums; }
+  .line .up { color: #25F4EE; margin-left: 6px; font-size: 12px; }
+  .msg { display: flex; gap: 12px; align-items: center; padding: 10px 16px; }
+  .msg .av { width: 50px; height: 50px; border-radius: 50%; display: grid; place-items: center; font: 600 20px/1 Georgia, serif; flex: 0 0 auto; }
+  .msg p { margin: 2px 0 0; color: #aaa; font-size: 13px; }
+  .msg .n { margin-left: auto; background: #FE2C55; border-radius: 10px; font-size: 12px; font-weight: 700; padding: 2px 7px; }
+  .act { display: flex; gap: 12px; padding: 8px 16px; align-items: center; font-size: 14px; }
+  .act .ic { width: 50px; height: 50px; border-radius: 50%; display: grid; place-items: center; flex: 0 0 auto; }
+
+  nav { display: flex; justify-content: space-around; align-items: center; padding: 8px 4px 28px; background: #000; border-top: 1px solid #1d1d1d; }
+  nav button { background: none; border: 0; color: #fff; opacity: 0.6; display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 10px; font-weight: 600; }
+  nav button.is-active { opacity: 1; }
+  nav .create { opacity: 1; width: 46px; height: 30px; border-radius: 9px; background: #fff; color: #000; position: relative; display: grid; place-items: center;
+    box-shadow: -4px 0 0 #25F4EE, 4px 0 0 #FE2C55; }
+  nav .create .ico { width: 20px; height: 20px; stroke-width: 3; }
+</style>
+</head>
+<body class="concept">
+<aside class="concept-info">
+  <div class="num">02 / 32 · BUILT WITHOUT A PLUGIN</div>
+  <h1>Reels</h1>
+  <p>TikTok’s full-screen vertical rhythm. Friends’ lifts play one per screen; your own workout becomes a stack of cards — one exercise per screen, swipe up for the next, huge set buttons you can hit with sweaty fingers.</p>
+  <span class="tag">dark</span><span class="tag">full-bleed</span><span class="tag">one thing per screen</span>
+  <div class="concept-nav"><a href="01-feed.html">← Prev</a><a href="index.html">All designs</a><a href="03-timeline.html">Next →</a></div>
+</aside>
+<div class="device"><div class="app" id="app">
+  <main>
+    <section data-screen="foryou" class="snap" id="s-foryou"></section>
+    <section data-screen="workout" class="snap wk" id="s-workout" hidden></section>
+    <section data-screen="progress" class="plain" id="s-progress" hidden></section>
+    <section data-screen="inbox" class="plain" id="s-inbox" hidden></section>
+    <section data-screen="me" class="plain" id="s-me" hidden></section>
+  </main>
+  <nav>
+    <button data-tab="foryou" class="is-active">ICON:home<span>Home</span></button>
+    <button data-tab="progress">ICON:chart<span>Progress</span></button>
+    <button data-tab="workout" aria-label="Start workout"><span class="create">ICON:plus</span></button>
+    <button data-tab="inbox">ICON:chat<span>Inbox</span></button>
+    <button data-tab="me">ICON:user<span>Me</span></button>
+  </nav>
+</div></div>
+<script src="data.js"></script>
+<script src="icons.js"></script>
+<script>
+(function () {
+  const G = GQ, I = ICON, $ = (id) => document.getElementById(id);
+  document.querySelectorAll('nav button').forEach((b) => { b.innerHTML = b.innerHTML.replace(/ICON:(\w+)/, (_, n) => I(n)); });
+  const fmt = (n) => n >= 1000 ? (n / 1000).toFixed(1) + 'K' : String(n);
+  /* FOR YOU */
+  $('s-foryou').innerHTML = G.feed.map((f, i) => {
+    const p = G.person(f.who);
+    const bg = f.img ? 'background-image:url(' + G.img(f.img) + ')' : 'background:#1b1b1b';
+    let extra = '';
+    if (f.kind === 'pr') extra = '<div class="bigpr"><span>New record · deadlift</span><strong>' + f.pr.kg + '</strong><span>kilograms</span></div>';
+    const chip = f.kind === 'workout' ? '<span class="chip">' + I('dumbbell') + f.workout.plan + ' · ' + f.workout.minutes + ' min · ' + f.workout.sets + ' sets</span>'
+      : f.kind === 'plan' ? '<span class="chip">' + I('bookmark') + 'Plan: ' + f.plan.name + ' — tap to save</span>' : '';
+    return '<div class="card" style="' + bg + '">' + (i === 0 ? '<div class="topseg"><span>Following</span><span class="on">Friends</span></div>' : '') + extra
+      + '<div class="rail"><div class="who" style="background:' + p.color + '">' + p.name[0] + '<i>+</i></div>'
+      + '<button class="' + (i === 1 ? 'liked' : '') + '">' + I('heart') + fmt(f.likes * 3) + '</button><button>' + I('comment') + f.comments + '</button><button>' + I('bookmark') + fmt(f.likes) + '</button><button>' + I('share') + 'Share</button></div>'
+      + '<div class="caption"><b>@' + p.handle + '</b> · ' + f.ago + '<p>' + f.text + '</p>' + chip + '</div></div>';
+  }).join('');
+  /* WORKOUT — one exercise per screen */
+  const ex = G.today.exercises;
+  $('s-workout').innerHTML = ex.map((e, k) => '<div class="card" style="background-image:url(' + e.img + ')">'
+    + '<div class="wk-head">' + ex.map((_, j) => '<i class="' + (j <= k ? 'on' : '') + '"></i>').join('') + '</div>'
+    + '<div class="wk-body"><small>' + G.today.plan + ' · ' + (k + 1) + ' of ' + ex.length + ' · ' + e.muscle + '</small><h2>' + e.name + '</h2>'
+    + '<p>' + e.sets + ' sets × ' + e.reps + ' reps' + (e.weight ? ' · ' + e.weight + ' kg' : ' · bodyweight') + (e.weight > e.last ? ' · last time ' + e.last + ' kg' : '') + '</p>'
+    + '<div class="setrow">' + Array.from({ length: e.sets }, (_, i) => '<div class="bigset' + (i < e.done ? ' done' : '') + '">' + (i < e.done ? I('check') : (e.weight || 'BW')) + '<small>set ' + (i + 1) + '</small></div>').join('') + '</div>'
+    + '<div class="hint">' + (k < ex.length - 1 ? 'Swipe up for ' + ex[k + 1].name.toLowerCase() : 'Last one — finish strong') + '</div></div></div>').join('');
+  /* PROGRESS */
+  const heat = [0,1,0,1,0,0,0, 1,0,1,0,1,0,0, 0,1,0,1,0,0,1, 1,0,1,0,0,2,0, 1,0,1,0,0,0,0];
+  $('s-progress').innerHTML = '<div class="ph">Progress<span class="r">' + I('calendar') + '</span></div>'
+    + '<div class="statrow"><div><b>' + G.user.weekDone + '/' + G.user.weekGoal + '</b><span>this week</span></div><div><b>' + G.user.streakWeeks + '</b><span>week streak</span></div><div><b>' + G.user.minutesThisWeek + '</b><span>minutes</span></div></div>'
+    + '<div class="blk"><h4>Last 5 weeks</h4><div class="heat">' + heat.map((v) => '<i class="' + ['', 'b', 'c'][v] + '"></i>').join('') + '</div></div>'
+    + '<div class="blk"><h4>Records</h4>' + G.records.map((r) => '<div class="line"><span>' + r.name + '</span><span><b>' + r.kg + ' kg</b>' + (r.delta ? '<span class="up">' + r.delta + '</span>' : '') + '</span></div>').join('') + '</div>'
+    + '<div class="blk"><h4>History</h4>' + G.history.map((w) => '<div class="line"><span>' + w.plan + ' <span style="color:#777">· ' + w.date + '</span></span><b>+' + w.xp + ' XP</b></div>').join('') + '</div>';
+  /* INBOX */
+  $('s-inbox').innerHTML = '<div class="ph">Inbox<span class="r">' + I('send') + '</span></div>'
+    + '<div class="act"><span class="ic" style="background:#25F4EE33;color:#25F4EE">' + I('users') + '</span><div><b>New friends</b><p style="margin:2px 0 0;color:#aaa;font-size:13px">Peter accepted your request</p></div></div>'
+    + '<div class="act"><span class="ic" style="background:#FE2C5533;color:#FE2C55">' + I('heart') + '</span><div><b>Activity</b><p style="margin:2px 0 0;color:#aaa;font-size:13px">Anna and 4 others liked your squat PR</p></div></div>'
+    + '<div class="act"><span class="ic" style="background:#ffffff22">' + I('droplet') + '</span><div><b>Reminders</b><p style="margin:2px 0 0;color:#aaa;font-size:13px">Water every 2 h · meals · workout Mon/Wed/Fri</p></div></div>'
+    + '<div class="ph" style="justify-content:flex-start;padding-top:10px">Messages</div>'
+    + ['anna', 'tomas', 'eva', 'peter'].map((k, i) => { const p = G.person(k); return '<div class="msg"><span class="av" style="background:' + p.color + '">' + p.name[0] + '</span><div><b>' + p.name + '</b><p>' + ['Saving this for Friday', 'You: 140?! insane', 'Sent you a plan', 'Same time tomorrow?'][i] + '</p></div>' + (i === 0 ? '<span class="n">2</span>' : '') + '</div>'; }).join('');
+  /* ME */
+  $('s-me').innerHTML = '<div class="ph">' + G.user.name + '<span class="r">' + I('settings') + '</span></div>'
+    + '<div class="pf"><div class="ava">M</div><h3>@' + G.user.handle + '</h3>'
+    + '<div class="statrow" style="padding-top:12px"><div><b>' + G.user.workouts + '</b><span>Workouts</span></div><div><b>148</b><span>Followers</span></div><div><b>Lv ' + G.user.level + '</b><span>' + G.user.xp + ' XP</span></div></div>'
+    + '<div class="pbtns"><span>Edit profile</span><span class="red">Share plan</span></div><p>' + G.user.bio + '</p></div>'
+    + '<div class="ptabs"><span class="on">' + I('grid') + '</span><span>' + I('trophy') + '</span><span>' + I('bookmark') + '</span></div>'
+    + '<div class="vgrid">' + ['squats', 'bench-press', 'lat-pulldown', 'leg-press', 'overhead-press', 'pull-ups'].map((x, i) => '<div style="background-image:url(' + G.img(x) + ')"><em>' + I('play') + [312, 1204, 88, 156, 97, 430][i] + '</em></div>').join('') + '</div>';
+  gqTabs(document.getElementById('app'));
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>03 · Timeline — GymQuest concept</title>
+<link rel="stylesheet" href="frame.css">
+<style>
+  .app { position: absolute; inset: 0; background: #fff; color: #0f1419; font: 15px/1.35 -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; display: flex; flex-direction: column; }
+  header { padding: 50px 16px 0; border-bottom: 1px solid #eff3f4; background: rgba(255,255,255,0.96); }
+  .hrow { display: flex; align-items: center; justify-content: space-between; height: 40px; }
+  .mini { width: 32px; height: 32px; border-radius: 50%; background: #2F3B33; color: #fff; display: grid; place-items: center; font: 600 14px/1 Georgia, serif; }
+  .mark { font: 800 21px/1 Georgia, 'Times New Roman', serif; letter-spacing: -0.5px; }
+  .seg { display: flex; margin: 0 -16px; }
+  .seg span { flex: 1; text-align: center; padding: 14px 0 0; color: #536471; font-weight: 500; }
+  .seg span i { display: inline-block; padding-bottom: 12px; font-style: normal; }
+  .seg span.on { color: #0f1419; font-weight: 700; }
+  .seg span.on i { box-shadow: inset 0 -4px #1d9bf0; border-radius: 2px; }
+  main { flex: 1; overflow-y: auto; position: relative; }
+  .t { display: flex; gap: 12px; padding: 12px 16px; border-bottom: 1px solid #eff3f4; }
+  .t .av { width: 40px; height: 40px; border-radius: 50%; color: #fff; display: grid; place-items: center; font: 600 17px/1 Georgia, serif; flex: 0 0 auto; }
+  .t .body { flex: 1; min-width: 0; }
+  .t .nm { display: flex; gap: 4px; font-size: 15px; white-space: nowrap; overflow: hidden; }
+  .t .nm b { font-weight: 700; }
+  .t .nm span { color: #536471; }
+  .t p { margin: 2px 0 8px; }
+  .t .quote { border: 1px solid #cfd9de; border-radius: 16px; padding: 12px; font-size: 14px; margin-bottom: 8px; }
+  .t .quote b { display: block; margin-bottom: 4px; }
+  .t .quote ul { margin: 0; padding-left: 18px; color: #333; }
+  .t .img { border-radius: 16px; border: 1px solid #cfd9de; aspect-ratio: 16/9; background: #eee center/cover; margin-bottom: 8px; }
+  .t .acts { display: flex; justify-content: space-between; color: #536471; font-size: 13px; max-width: 300px; }
+  .t .acts span { display: flex; align-items: center; gap: 4px; }
+  .t .acts .ico { width: 18px; height: 18px; }
+  .t .acts .on { color: #f91880; } .t .acts .on .ico { fill: #f91880; stroke: #f91880; }
+  .t .acts .rt { color: #00ba7c; }
+  .prbig { font: 800 40px/1 -apple-system, sans-serif; letter-spacing: -1px; }
+  .pinned { color: #536471; font-size: 13px; font-weight: 700; padding: 10px 16px 0 68px; display: flex; gap: 8px; align-items: center; }
+  .pinned .ico { width: 16px; height: 16px; }
+  .fab { position: absolute; right: 16px; bottom: 16px; width: 56px; height: 56px; border-radius: 50%; background: #1d9bf0; color: #fff; display: grid; place-items: center; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+  .fab .ico { stroke-width: 2.5; }
+  /* thread workout */
+  .thread { position: relative; }
+  .thread .t { border: 0; padding-bottom: 0; }
+  .thread .t .av { position: relative; }
+  .thread .t:not(:last-child) .lane { position: absolute; left: 35px; top: 56px; bottom: -14px; width: 2px; background: #cfd9de; }
+  .thread .t { position: relative; }
+  .setline { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .setline span { border: 1px solid #cfd9de; border-radius: 999px; padding: 4px 10px; font-size: 13px; color: #0f1419; }
+  .setline span.done { background: #0f1419; color: #fff; border-color: #0f1419; }
+  .composer { display: flex; gap: 12px; padding: 12px 16px 20px; border-top: 1px solid #eff3f4; align-items: center; }
+  .composer input { flex: 1; border: 0; font-size: 16px; color: #536471; background: none; }
+  .pill { background: #0f1419; color: #fff; border-radius: 999px; padding: 8px 16px; font-weight: 700; font-size: 14px; }
+  .pill.blue { background: #1d9bf0; }
+  /* progress as "analytics" */
+  .an { padding: 14px 16px; border-bottom: 1px solid #eff3f4; }
+  .an h3 { margin: 0 0 2px; font-size: 20px; font-weight: 800; }
+  .an small { color: #536471; }
+  .kpis { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
+  .kpi { border: 1px solid #eff3f4; border-radius: 12px; padding: 12px; }
+  .kpi span { color: #536471; font-size: 13px; }
+  .kpi b { display: block; font-size: 24px; font-weight: 800; margin-top: 2px; }
+  .kpi em { font-style: normal; font-size: 13px; color: #00ba7c; }
+  svg.spark { width: 100%; height: 90px; margin-top: 10px; }
+  .row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f4f6f7; }
+  .row:last-child { border: 0; }
+  .row b { font-variant-numeric: tabular-nums; }
+  /* explore / messages */
+  .search { margin: 0 16px 10px; background: #eff3f4; border-radius: 999px; padding: 10px 16px; color: #536471; display: flex; gap: 10px; align-items: center; }
+  .search .ico { width: 18px; height: 18px; }
+  .trend { padding: 10px 16px; border-bottom: 1px solid #eff3f4; }
+  .trend small { color: #536471; font-size: 13px; }
+  .trend b { display: block; font-size: 15px; }
+  .dm { display: flex; gap: 12px; padding: 12px 16px; }
+  .dm .av { width: 48px; height: 48px; border-radius: 50%; color: #fff; display: grid; place-items: center; font: 600 19px/1 Georgia, serif; flex: 0 0 auto; }
+  .dm p { margin: 2px 0 0; color: #536471; font-size: 14px; }
+  .dm .dot { width: 10px; height: 10px; border-radius: 50%; background: #1d9bf0; margin-left: auto; align-self: center; }
+  /* profile */
+  .banner { height: 120px; background: #2F3B33 url(../media/squats-poster.jpg) center/cover; filter: saturate(0.6); }
+  .pp { padding: 0 16px 12px; border-bottom: 1px solid #eff3f4; position: relative; }
+  .pp .big { position: relative; z-index: 1; width: 80px; height: 80px; border-radius: 50%; border: 4px solid #fff; background: #2F3B33; color: #fff; display: grid; place-items: center; font: 400 34px/1 Georgia, serif; margin-top: -40px; }
+  .pp .edit { float: right; margin-top: 10px; border: 1px solid #cfd9de; border-radius: 999px; padding: 7px 16px; font-weight: 700; font-size: 14px; }
+  .pp h2 { margin: 8px 0 0; font-size: 20px; }
+  .pp .h { color: #536471; }
+  .pp p { margin: 10px 0; }
+  .pp .meta { color: #536471; font-size: 14px; display: flex; gap: 14px; flex-wrap: wrap; }
+  .pp .meta b { color: #0f1419; }
+  .badges { display: flex; gap: 8px; flex-wrap: wrap; padding: 12px 16px; border-bottom: 1px solid #eff3f4; }
+  .badge { border: 1px solid #cfd9de; border-radius: 999px; padding: 5px 12px; font-size: 13px; font-weight: 600; }
+  .badge.no { color: #8b98a5; border-style: dashed; }
+  .rem { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-bottom: 1px solid #eff3f4; }
+  .rem small { display: block; color: #536471; }
+  .sw { margin-left: auto; width: 40px; height: 24px; background: #1d9bf0; border-radius: 12px; position: relative; }
+  .sw::after { content: ''; position: absolute; right: 2px; top: 2px; width: 20px; height: 20px; background: #fff; border-radius: 50%; }
+  nav { display: flex; justify-content: space-around; padding: 10px 0 30px; border-top: 1px solid #eff3f4; background: #fff; }
+  nav button { background: none; border: 0; color: #0f1419; padding: 4px; }
+  nav button .ico { width: 26px; height: 26px; stroke-width: 1.7; }
+  nav button.is-active .ico { stroke-width: 2.6; }
+</style>
+</head>
+<body class="concept">
+<aside class="concept-info">
+  <div class="num">03 / 32 · BUILT WITHOUT A PLUGIN</div>
+  <h1>Timeline</h1>
+  <p>Twitter / X: text first, compact, fast to read. A workout is a thread — every exercise is a reply under the plan, sets are pills you tap. Progress reads like post analytics.</p>
+  <span class="tag">text-first</span><span class="tag">threads</span><span class="tag">dense</span>
+  <div class="concept-nav"><a href="02-reels.html">← Prev</a><a href="index.html">All designs</a><a href="04-channel.html">Next →</a></div>
+</aside>
+<div class="device"><div class="app" id="app">
+  <header id="hdr"></header>
+  <main data-scroll>
+    <section data-screen="home" id="s-home"></section>
+    <section data-screen="train" id="s-train" hidden></section>
+    <section data-screen="stats" id="s-stats" hidden></section>
+    <section data-screen="dm" id="s-dm" hidden></section>
+    <section data-screen="me" id="s-me" hidden></section>
+  </main>
+  <nav>
+    <button data-tab="home" class="is-active" aria-label="Home">ICON:home</button>
+    <button data-tab="train" aria-label="Workout">ICON:dumbbell</button>
+    <button data-tab="stats" aria-label="Progress">ICON:chart</button>
+    <button data-tab="dm" aria-label="Messages">ICON:chat</button>
+    <button data-tab="me" aria-label="Profile">ICON:user</button>
+  </nav>
+</div></div>
+<script src="data.js"></script>
+<script src="icons.js"></script>
+<script>
+(function () {
+  const G = GQ, I = ICON, $ = (id) => document.getElementById(id);
+  document.querySelectorAll('nav button').forEach((b) => { b.innerHTML = b.innerHTML.replace(/ICON:(\w+)/, (_, n) => I(n)); });
+  const av = (k, sz) => { const p = G.person(k); return '<span class="av" style="background:' + p.color + '">' + p.name[0] + '</span>'; };
+  const acts = (f, i) => '<div class="acts"><span>' + I('comment') + f.comments + '</span><span class="rt">' + I('repeat') + Math.round(f.likes / 6) + '</span><span class="' + (i === 0 ? 'on' : '') + '">' + I('heart') + f.likes + '</span><span>' + I('bookmark') + '</span><span>' + I('share') + '</span></div>';
+  /* HOME */
+  $('s-home').innerHTML = '<div class="pinned">' + I('dumbbell') + 'Your plan today</div>'
+    + '<div class="t" style="padding-top:6px">' + av('me') + '<div class="body"><div class="nm"><b>' + G.user.name + '</b><span>@' + G.user.handle + ' · now</span></div>'
+    + '<p>' + G.today.plan + ' — ' + G.today.exercises.length + ' exercises, about ' + G.today.estMinutes + ' min. ' + G.user.weekDone + ' of ' + G.user.weekGoal + ' done this week.</p>'
+    + '<div class="quote"><b>Up next</b><ul>' + G.today.exercises.slice(0, 3).map((e) => '<li>' + e.name + ' ' + e.sets + '×' + e.reps + (e.weight ? ' · ' + e.weight + ' kg' : '') + '</li>').join('') + '</ul></div>'
+    + '<span class="pill blue" data-tab="train">Start thread</span></div></div>'
+    + G.feed.map((f, i) => { const p = G.person(f.who);
+      let x = '';
+      if (f.kind === 'pr') x = '<div class="quote"><span style="color:#536471">Personal record · deadlift</span><div class="prbig">' + f.pr.kg + ' kg</div><span style="color:#00ba7c">+' + (f.pr.kg - f.pr.prev) + ' kg</span></div>';
+      if (f.kind === 'workout') x = '<div class="quote"><b>' + f.workout.plan + ' · ' + f.workout.minutes + ' min · ' + f.workout.sets + ' sets</b><ul>' + f.workout.lines.map((l) => '<li>' + l + '</li>').join('') + '</ul></div>';
+      if (f.kind === 'plan') x = '<div class="quote"><b>📋 ' + f.plan.name + '</b><ul>' + f.plan.lines.map((l) => '<li>' + l + '</li>').join('') + '</ul></div>';
+      if (f.kind === 'photo') x = '<div class="img" style="background-image:url(' + G.img(f.img) + ')"></div>';
+      return '<div class="t">' + av(f.who) + '<div class="body"><div class="nm"><b>' + p.name + '</b><span>@' + p.handle + ' · ' + f.ago + '</span></div><p>' + f.text + '</p>' + x + acts(f, i) + '</div></div>'; }).join('')
+    + '<div class="fab">' + I('plus') + '</div>';
+  /* TRAIN thread */
+  const ex = G.today.exercises;
+  $('s-train').innerHTML = '<div class="thread">'
+    + '<div class="t">' + av('me') + '<span class="lane"></span><div class="body"><div class="nm"><b>' + G.user.name + '</b><span>· started 18:04</span></div><p><b>' + G.today.plan + '</b> — let’s go. Thread below 👇</p></div></div>'
+    + ex.map((e, k) => '<div class="t">' + av('me') + '<span class="lane"></span><div class="body"><div class="nm"><b>' + e.name + '</b><span>· ' + e.sets + '×' + e.reps + '</span></div>'
+      + '<p style="color:#536471">' + (e.weight ? e.weight + ' kg' : 'bodyweight') + (e.weight > e.last ? ' · up from ' + e.last : e.last ? ' · same as last time' : '') + '</p>'
+      + '<div class="setline">' + Array.from({ length: e.sets }, (_, i) => '<span class="' + (i < e.done ? 'done' : '') + '">' + (i < e.done ? '✓ ' : '') + 'Set ' + (i + 1) + '</span>').join('') + '</div></div></div>').join('')
+    + '</div><div class="composer">' + av('me') + '<input placeholder="Add a note to this workout…"><span class="pill">Finish</span></div>';
+  /* STATS */
+  const bw = G.bodyWeight, lo = Math.min.apply(null, bw) - 0.3, hi = Math.max.apply(null, bw) + 0.3;
+  const pts = bw.map((v, i) => (i / (bw.length - 1) * 340 + 5).toFixed(1) + ',' + (85 - (v - lo) / (hi - lo) * 80).toFixed(1)).join(' ');
+  $('s-stats').innerHTML = '<div class="an"><h3>Progress</h3><small>Last 28 days</small><div class="kpis">'
+    + '<div class="kpi"><span>Workouts</span><b>11</b><em>+2 vs before</em></div><div class="kpi"><span>Sets</span><b>' + G.volume.slice(-4).reduce((a, b) => a + b, 0) + '</b><em>+8%</em></div>'
+    + '<div class="kpi"><span>Streak</span><b>' + G.user.streakWeeks + ' wk</b><em>goal met</em></div><div class="kpi"><span>Body weight</span><b>' + bw[bw.length - 1] + '</b><em style="color:#536471">−1.8 kg</em></div></div>'
+    + '<svg class="spark" viewBox="0 0 350 90"><polyline points="' + pts + '" fill="none" stroke="#1d9bf0" stroke-width="2.5" stroke-linejoin="round"/></svg></div>'
+    + '<div class="an"><h3 style="font-size:17px">Records</h3>' + G.records.map((r) => '<div class="row"><span>' + r.name + '</span><b>' + r.kg + ' kg</b></div>').join('') + '</div>'
+    + '<div class="an"><h3 style="font-size:17px">Recent workouts</h3>' + G.history.map((w) => '<div class="row"><span>' + w.plan + '<br><small>' + w.date + ' · ' + w.sets + ' sets</small></span><b>' + w.top + '</b></div>').join('') + '</div>';
+  /* DM */
+  $('s-dm').innerHTML = '<div class="search">' + I('search') + 'Search people and plans</div>'
+    + '<div class="trend"><small>Trending with friends</small><b>#LegDay</b><small>14 workouts this week</small></div>'
+    + '<div class="trend"><small>Saved by 61 people</small><b>Lucia’s home 25</b><small>No-equipment plan</small></div>'
+    + ['anna', 'tomas', 'eva', 'peter'].map((k, i) => { const p = G.person(k); return '<div class="dm">' + av(k) + '<div><b>' + p.name + '</b> <span style="color:#536471">@' + p.handle + '</span><p>' + ['Saving this for Friday', 'You: 140?! insane', 'Sent a plan: Shoulder day', 'Same time tomorrow?'][i] + '</p></div>' + (i === 0 ? '<span class="dot"></span>' : '') + '</div>'; }).join('');
+  /* ME */
+  $('s-me').innerHTML = '<div class="banner"></div><div class="pp"><span class="edit">Edit profile</span><div class="big">M</div><h2>' + G.user.name + '</h2><span class="h">@' + G.user.handle + '</span>'
+    + '<p>' + G.user.bio + '</p><div class="meta"><span>' + I('calendar').replace('ico', 'ico" style="width:16px;height:16px;vertical-align:-3px') + ' Training since 2025</span><span><b>Level ' + G.user.level + '</b></span><span><b>' + G.user.workouts + '</b> workouts</span></div></div>'
+    + '<div class="badges">' + G.achievements.map((a) => '<span class="badge' + (a.got ? '' : ' no') + '">' + a.name + (a.got ? '' : ' · ' + a.progress + '%') + '</span>').join('') + '</div>'
+    + G.reminders.map((r) => '<div class="rem">' + I(r.kind === 'water' ? 'droplet' : r.kind === 'meal' ? 'utensils' : 'bell') + '<div>' + r.label + ' reminders<small>' + r.detail + '</small></div><span class="sw"></span></div>').join('');
+  const hdr = { home: '<div class="hrow"><span class="mini">M</span><span class="mark">GymQuest</span><span style="width:32px">' + I('settings') + '</span></div><div class="seg"><span class="on"><i>Friends</i></span><span><i>Everyone</i></span></div>',
+    train: '<div class="hrow" style="padding-bottom:10px"><span>' + I('back') + '</span><b>' + G.today.plan + '</b><span style="color:#536471;font-size:14px">23:40</span></div>',
+    stats: '<div class="hrow" style="padding-bottom:10px"><b style="font-size:19px">Progress</b><span>' + I('calendar') + '</span></div>',
+    dm: '<div class="hrow" style="padding-bottom:10px"><b style="font-size:19px">Explore & messages</b><span>' + I('settings') + '</span></div>',
+    me: '<div class="hrow" style="padding-bottom:10px"><span>' + I('back') + '</span><b>' + G.user.name + '</b><span>' + I('more') + '</span></div>' };
+  gqTabs(document.getElementById('app'), (n) => { $('hdr').innerHTML = hdr[n]; });
+})();
+</script>
+</body>
+</html>

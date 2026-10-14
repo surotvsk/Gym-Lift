@@ -105,6 +105,7 @@ browser — double-click the file or drag it into a browser window. The app work
 | `manifest.json` | Web app manifest so the app can be installed to a home screen |
 | `apple-touch-icon.png`, `icon-192.png`, `icon-512.png` | Home screen and app icons |
 | `media/` | Licensed exercise photographs and their credits (`media/CREDITS.md`) |
+| `design-concepts/` | 32 clickable redesign prototypes (mockups with sample data, not part of the app). The gallery is `design-concepts/index.html`. The service worker leaves these pages alone, so they always load from the network |
 | `README.md` | This documentation |
 
 ---

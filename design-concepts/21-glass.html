@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>21 · Glass — GymQuest concept</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="frame.css">
+<style>
+  :root { --ink: #fff; --dim: rgba(255,255,255,0.68); --glass: rgba(255,255,255,0.14); --edge: rgba(255,255,255,0.28); }
+  .app { position: absolute; inset: 0; color: var(--ink); font: 400 15px/1.4 Outfit, system-ui, sans-serif; display: flex; flex-direction: column; background: #1B2A4A; overflow: hidden; }
+  .app::before { content: ''; position: absolute; inset: -20%; background: radial-gradient(circle at 20% 15%, #FF7A59 0, transparent 34%), radial-gradient(circle at 85% 30%, #7B61FF 0, transparent 38%), radial-gradient(circle at 40% 80%, #00B3A4 0, transparent 40%), radial-gradient(circle at 90% 90%, #FF4F9A 0, transparent 30%); filter: blur(30px); }
+  main { flex: 1; overflow-y: auto; padding: 54px 16px 16px; position: relative; }
+  .g { background: var(--glass); border: 1px solid var(--edge); border-radius: 24px; backdrop-filter: blur(22px) saturate(1.4); -webkit-backdrop-filter: blur(22px) saturate(1.4); padding: 16px; margin-bottom: 12px; }
+  .hello { font-weight: 300; font-size: 30px; line-height: 1.15; margin: 0 0 16px; }
+  .hello b { font-weight: 600; }
+  .ringrow { display: flex; align-items: center; gap: 16px; }
+  .ringrow svg { width: 96px; height: 96px; flex: 0 0 auto; }
+  .ringrow b { font-size: 22px; font-weight: 600; display: block; }
+  .ringrow span { color: var(--dim); }
+  .row { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.12); }
+  .row:last-child { border: 0; }
+  .row .ph { width: 44px; height: 44px; border-radius: 14px; background: #fff center/cover; flex: 0 0 auto; }
+  .row div { flex: 1; } .row small { display: block; color: var(--dim); }
+  .row .kg { font-weight: 600; }
+  .cta { display: block; text-align: center; padding: 15px; border-radius: 20px; background: rgba(255,255,255,0.92); color: #1B2A4A; font-weight: 600; }
+  /* timer */
+  .timer { text-align: center; padding: 26px 16px; }
+  .timer svg { width: 220px; height: 220px; }
+  .timer .t { font-size: 54px; font-weight: 300; margin-top: -142px; height: 142px; }
+  .timer .t small { display: block; font-size: 15px; color: var(--dim); }
+  .pills { display: flex; gap: 8px; justify-content: center; margin-top: 10px; }
+  .pills span { padding: 8px 14px; border-radius: 20px; background: var(--glass); border: 1px solid var(--edge); }
+  .next { display: flex; gap: 12px; align-items: center; }
+  .next .ph { width: 60px; height: 60px; border-radius: 16px; background: #fff center/cover; }
+  .next small { color: var(--dim); display: block; }
+  /* stats */
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .two .g { margin: 0; }
+  .two b { font-size: 26px; font-weight: 500; display: block; }
+  .two span { color: var(--dim); font-size: 13px; }
+  .spark { margin-top: 8px; }
+  h3 { font-weight: 500; margin: 4px 0 10px; font-size: 17px; }
+  /* me */
+  .who { display: flex; gap: 14px; align-items: center; }
+  .who .av { width: 64px; height: 64px; border-radius: 50%; background: rgba(255,255,255,0.9); color: #1B2A4A; display: grid; place-items: center; font-size: 26px; font-weight: 600; }
+  .who b { font-size: 22px; font-weight: 600; display: block; }
+  .who span { color: var(--dim); }
+  .sw { width: 46px; height: 28px; border-radius: 14px; background: rgba(255,255,255,0.9); position: relative; }
+  .sw::after { content: ''; position: absolute; right: 3px; top: 3px; width: 22px; height: 22px; border-radius: 50%; background: #00B3A4; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chips span { padding: 6px 10px; border-radius: 14px; background: rgba(255,255,255,0.18); font-size: 13px; }
+  .chips span.off { opacity: 0.5; }
+  nav { position: relative; margin: 0 16px 24px; display: flex; justify-content: space-around; padding: 10px; border-radius: 26px; background: rgba(255,255,255,0.16); border: 1px solid var(--edge); backdrop-filter: blur(22px); -webkit-backdrop-filter: blur(22px); }
+  nav button { background: none; border: 0; color: var(--dim); padding: 8px 14px; border-radius: 18px; font: 500 14px Outfit, sans-serif; }
+  nav button.is-active { background: rgba(255,255,255,0.92); color: #1B2A4A; }
+</style>
+</head>
+<body class="concept">
+<aside class="concept-info">
+  <div class="num">21 / 32 · BUILT WITHOUT A PLUGIN</div>
+  <h1>Glass</h1>
+  <p>Soft and calm. Frosted panels float over a slow wash of warm colour, the type is light, and nothing has a hard edge. This one is for people who find gym apps loud, and for the rest timer, which is most of what you look at between sets.</p>
+  <span class="tag">frosted glass</span><span class="tag">calm</span><span class="tag">rest timer first</span>
+  <div class="concept-nav"><a href="20-chalk.html">← Prev</a><a href="index.html">All designs</a><a href="22-ledger.html">Next →</a></div>
+</aside>
+<div class="device"><div class="app" id="app">
+  <main data-scroll>
+    <section data-screen="today" id="s-today"></section>
+    <section data-screen="rest" id="s-rest" hidden></section>
+    <section data-screen="stats" id="s-stats" hidden></section>
+    <section data-screen="me" id="s-me" hidden></section>
+  </main>
+  <nav>
+    <button data-tab="today" class="is-active">Today</button>
+    <button data-tab="rest">Rest</button>
+    <button data-tab="stats">Stats</button>
+    <button data-tab="me">Me</button>
+  </nav>
+</div></div>
+<script src="data.js"></script>
+<script>
+(function () {
+  const G = GQ, $ = (id) => document.getElementById(id), ex = G.today.exercises;
+  const ring = (pct, size, sw) => { const r = size / 2 - sw, c = 2 * Math.PI * r; return '<svg viewBox="0 0 ' + size + ' ' + size + '"><circle cx="' + size / 2 + '" cy="' + size / 2 + '" r="' + r + '" fill="none" stroke="rgba(255,255,255,.2)" stroke-width="' + sw + '"/><circle cx="' + size / 2 + '" cy="' + size / 2 + '" r="' + r + '" fill="none" stroke="#fff" stroke-width="' + sw + '" stroke-linecap="round" stroke-dasharray="' + (c * pct).toFixed(1) + ' ' + c.toFixed(1) + '" transform="rotate(-90 ' + size / 2 + ' ' + size / 2 + ')"/></svg>'; };
+  $('s-today').innerHTML = '<p class="hello">Good evening, <b>' + G.user.name + '</b>.<br>Push day is ready.</p>'
+    + '<div class="g ringrow">' + ring(2 / 3, 96, 9) + '<div><b>2 of 3 this week</b><span>One more and the week is done. ' + G.user.streakWeeks + ' weeks in a row so far.</span></div></div>'
+    + '<div class="g">' + ex.map((e) => '<div class="row"><span class="ph" style="background-image:url(' + e.img + ')"></span><div>' + e.name + '<small>' + e.sets + ' × ' + e.reps + '</small></div><span class="kg">' + (e.weight ? e.weight + ' kg' : 'BW') + '</span></div>').join('') + '</div>'
+    + '<span class="cta">Continue with set 3</span>';
+  const n = ex[1];
+  $('s-rest').innerHTML = '<div class="g timer">' + ring(0.62, 220, 10) + '<div class="t">0:56<small>of 1:30 rest</small></div><div class="pills"><span>−15 s</span><span>+15 s</span><span>Skip</span></div></div>'
+    + '<div class="g"><h3>Set 2 logged</h3><div class="row"><div>Bench press<small>8 reps at 60 kg, 2.5 kg more than last week</small></div></div></div>'
+    + '<div class="g next"><span class="ph" style="background-image:url(' + ex[0].img + ')"></span><div><small>Up next</small>Bench press, set 3<small>8 × 60 kg</small></div></div>';
+  const bw = G.bodyWeight, mn = Math.min(...bw), mx = Math.max(...bw);
+  const pts = bw.map((v, i) => (i * 140 / 7).toFixed(0) + ',' + (40 - (v - mn) / (mx - mn) * 36).toFixed(0)).join(' ');
+  $('s-stats').innerHTML = '<div class="two"><div class="g"><b>' + G.user.minutesThisWeek + '</b><span>minutes this week</span></div><div class="g"><b>' + G.volume[7] + '</b><span>sets this week</span></div>'
+    + '<div class="g"><b>' + bw[7] + '</b><span>kg body weight</span><svg class="spark" viewBox="0 0 140 44" width="100%"><polyline points="' + pts + '" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></div><div class="g"><b>' + G.user.level + '</b><span>level, 160 XP to go</span></div></div>'
+    + '<div class="g" style="margin-top:12px"><h3>Records</h3>' + G.records.map((r) => '<div class="row"><div>' + r.name + '<small>' + r.date + '</small></div><span class="kg">' + r.kg + ' kg</span></div>').join('') + '</div>';
+  $('s-me').innerHTML = '<div class="g who"><span class="av">M</span><div><b>' + G.user.name + '</b><span>' + G.user.bio + '</span></div></div>'
+    + '<div class="g"><h3>Reminders</h3>' + G.reminders.map((r) => '<div class="row"><div>' + r.label + '<small>' + r.detail.replace(/ · /g, ', ') + '</small></div><span class="sw"></span></div>').join('') + '</div>'
+    + '<div class="g"><h3>Achievements</h3><div class="chips">' + G.achievements.map((a) => '<span class="' + (a.got ? '' : 'off') + '">' + a.name + '</span>').join('') + '</div></div>';
+  gqTabs(document.getElementById('app'));
+})();
+</script>
+</body>
+</html>

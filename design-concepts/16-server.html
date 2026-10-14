@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>16 · Server — GymQuest concept</title>
+<link rel="stylesheet" href="frame.css">
+<style>
+  :root { --bg: #313338; --side: #2B2D31; --rail: #1E1F22; --blurple: #5865F2; --ink: #DBDEE1; --mute: #949BA4; --hi: #F2F3F5; --green: #23A55A; --line: #3F4147; --card: #2B2D31; }
+  .app { position: absolute; inset: 0; background: var(--bg); color: var(--ink); font: 15px/1.375 'gg sans', 'Segoe UI', system-ui, -apple-system, sans-serif; display: flex; flex-direction: column; }
+  main { flex: 1; overflow: hidden; display: flex; flex-direction: column; }
+  main > section { flex: 1; overflow-y: auto; }
+  /* server + channels screen */
+  .split { display: flex; height: 100%; }
+  .rail { width: 72px; background: var(--rail); padding: 50px 0 10px; display: flex; flex-direction: column; align-items: center; gap: 8px; flex: 0 0 auto; }
+  .srv { width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; color: #fff; font-weight: 700; font-size: 17px; position: relative; background: var(--bg); }
+  .srv.on { border-radius: 16px; }
+  .srv.on::before { content: ''; position: absolute; left: -12px; width: 4px; height: 40px; border-radius: 0 4px 4px 0; background: #fff; }
+  .srv .ping { position: absolute; right: -3px; bottom: -3px; background: #F23F43; color: #fff; border: 3px solid var(--rail); border-radius: 10px; font-size: 11px; padding: 0 5px; font-weight: 700; }
+  .srv.add { color: var(--green); }
+  .rail hr { width: 32px; border: 0; height: 2px; background: var(--line); margin: 2px 0; }
+  .chans { flex: 1; background: var(--side); border-top-left-radius: 14px; margin-top: 44px; overflow-y: auto; }
+  .chans .head { padding: 14px 14px 10px; border-bottom: 1px solid #1F2023; }
+  .chans .head b { color: var(--hi); font-size: 17px; display: block; }
+  .chans .head small { color: var(--mute); }
+  .cat { color: var(--mute); font-size: 12px; font-weight: 700; padding: 16px 12px 4px 10px; display: flex; gap: 2px; align-items: center; }
+  .cat .ico { width: 12px; height: 12px; transform: rotate(90deg); }
+  .ch { display: flex; align-items: center; gap: 8px; margin: 1px 8px; padding: 7px 8px; border-radius: 6px; color: var(--mute); font-weight: 500; }
+  .ch .hash { font-size: 20px; line-height: 1; width: 18px; text-align: center; color: #80848E; }
+  .ch.unread { color: var(--hi); font-weight: 600; }
+  .ch.sel { background: #404249; color: var(--hi); }
+  .ch .ico { width: 18px; height: 18px; }
+  .voice { margin: 0 8px 0 34px; }
+  .vu { display: flex; align-items: center; gap: 8px; padding: 4px 6px; color: var(--mute); font-size: 14px; }
+  .vu i { width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; color: #fff; font-style: normal; font-size: 11px; font-weight: 700; }
+  .vu i.talk { box-shadow: 0 0 0 2px var(--green); }
+  .vu em { margin-left: auto; font-style: normal; font-size: 11px; color: #fff; background: #ED4245; border-radius: 4px; padding: 0 5px; font-weight: 700; }
+  /* chat */
+  .top { padding: 50px 14px 10px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid #26282C; background: var(--bg); }
+  .top b { color: var(--hi); font-size: 17px; }
+  .top .hash { font-size: 22px; color: #80848E; }
+  .top .ico { margin-left: auto; color: var(--mute); }
+  .msgs { padding: 6px 0; }
+  .msg { display: flex; gap: 12px; padding: 6px 14px; }
+  .msg .av { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; color: #fff; font-weight: 700; flex: 0 0 auto; }
+  .msg .nm { font-weight: 600; }
+  .msg .ts { color: var(--mute); font-size: 12px; margin-left: 6px; }
+  .msg p { margin: 2px 0 0; }
+  .cont { padding: 2px 14px 2px 66px; }
+  .embed { margin-top: 6px; background: var(--card); border-left: 4px solid var(--blurple); border-radius: 4px; padding: 10px 12px; }
+  .embed b { color: var(--hi); display: block; margin-bottom: 4px; }
+  .embed div { font-size: 14px; }
+  .embed .btnrow { display: flex; gap: 8px; margin-top: 10px; }
+  .dbtn { background: var(--blurple); color: #fff; border-radius: 4px; padding: 6px 14px; font-weight: 600; font-size: 14px; }
+  .dbtn.grey { background: #4E5058; }
+  .dbtn.green { background: var(--green); }
+  .rx { display: inline-flex; gap: 4px; align-items: center; margin-top: 6px; background: #3B3D7A; border: 1px solid var(--blurple); border-radius: 8px; padding: 1px 7px; font-size: 13px; color: #DEE0FC; }
+  .rx.n { background: #2B2D31; border-color: transparent; color: var(--mute); }
+  .reply { font-size: 13px; color: var(--mute); padding: 6px 14px 0 66px; position: relative; }
+  .reply::before { content: ''; position: absolute; left: 33px; top: 14px; width: 28px; height: 10px; border-left: 2px solid #4E5058; border-top: 2px solid #4E5058; border-top-left-radius: 6px; }
+  .reply b { color: var(--ink); font-weight: 600; }
+  .sep { display: flex; align-items: center; gap: 8px; color: #F23F43; font-size: 12px; font-weight: 700; padding: 6px 14px; }
+  .sep::before, .sep::after { content: ''; flex: 1; height: 1px; background: #F23F43; }
+  .composer { margin: 0 12px 10px; background: #383A40; border-radius: 22px; padding: 10px 14px; color: var(--mute); display: flex; gap: 10px; align-items: center; }
+  .composer .plus { width: 26px; height: 26px; border-radius: 50%; background: #4E5058; display: grid; place-items: center; color: var(--ink); }
+  .composer .plus .ico { width: 16px; height: 16px; }
+  /* training room */
+  .room { padding: 50px 14px 16px; }
+  .room h2 { margin: 0; color: var(--hi); font-size: 20px; display: flex; gap: 8px; align-items: center; }
+  .room h2 .live { width: 10px; height: 10px; border-radius: 50%; background: var(--green); }
+  .room > small { color: var(--mute); }
+  .tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 14px 0; }
+  .tile { background: #232428; border-radius: 10px; padding: 12px; position: relative; min-height: 132px; display: flex; flex-direction: column; }
+  .tile.talk { box-shadow: 0 0 0 2px var(--green); }
+  .tile .av { width: 56px; height: 56px; border-radius: 50%; display: grid; place-items: center; color: #fff; font-weight: 700; font-size: 22px; margin: 4px auto 8px; }
+  .tile b { color: var(--hi); font-size: 14px; display: block; text-align: center; }
+  .tile small { color: var(--mute); text-align: center; display: block; font-size: 12px; }
+  .tile .set { position: absolute; top: 8px; right: 8px; background: rgba(0,0,0,0.5); border-radius: 4px; font-size: 11px; padding: 1px 6px; color: #fff; }
+  .mine { background: #232428; border-radius: 10px; padding: 12px; }
+  .mine b { color: var(--hi); }
+  .sets { display: flex; gap: 6px; margin: 10px 0; }
+  .sets span { flex: 1; text-align: center; border-radius: 6px; padding: 8px 0; background: #383A40; font-weight: 700; }
+  .sets span.d { background: var(--green); color: #fff; }
+  .sets span.n { background: var(--blurple); color: #fff; }
+  .ctrls { display: flex; justify-content: center; gap: 14px; margin-top: 14px; }
+  .ctrls span { width: 52px; height: 52px; border-radius: 50%; background: #383A40; display: grid; place-items: center; color: var(--hi); }
+  .ctrls span.end { background: #ED4245; }
+  /* stats */
+  .pad { padding: 50px 14px 16px; }
+  .pad h2 { margin: 0 0 4px; color: var(--hi); font-size: 20px; }
+  .pad > small { color: var(--mute); }
+  .box { background: var(--side); border-radius: 8px; padding: 12px; margin-top: 12px; }
+  .box h3 { margin: 0 0 8px; color: var(--hi); font-size: 15px; }
+  .bars { display: flex; align-items: flex-end; gap: 6px; height: 90px; }
+  .bars span { flex: 1; background: #4E5058; border-radius: 3px 3px 0 0; }
+  .bars span.now { background: var(--blurple); }
+  .row { display: flex; justify-content: space-between; padding: 7px 0; border-top: 1px solid var(--line); }
+  .row:first-of-type { border-top: 0; }
+  .row span { color: var(--mute); }
+  .row b { color: var(--hi); font-weight: 600; }
+  /* profile */
+  .pcard { margin: 50px 12px 12px; background: var(--rail); border-radius: 10px; overflow: hidden; }
+  .pcard .ban { height: 90px; background: #2F3B33; }
+  .pcard .in { padding: 0 14px 14px; }
+  .pcard .big { width: 84px; height: 84px; border-radius: 50%; border: 6px solid var(--rail); margin-top: -42px; background: #3E5246; display: grid; place-items: center; color: #fff; font-size: 34px; font-weight: 700; position: relative; }
+  .pcard .big::after { content: ''; position: absolute; right: 0; bottom: 2px; width: 18px; height: 18px; border-radius: 50%; background: var(--green); border: 4px solid var(--rail); }
+  .pcard h2 { margin: 8px 0 0; color: var(--hi); font-size: 20px; }
+  .pcard small { color: var(--mute); }
+  .pcard .inner { background: var(--side); border-radius: 8px; padding: 10px 12px; margin-top: 12px; }
+  .pcard .lbl { color: var(--hi); font-size: 12px; font-weight: 700; margin: 8px 0 6px; }
+  .pcard .lbl:first-child { margin-top: 0; }
+  .roles { display: flex; flex-wrap: wrap; gap: 4px; }
+  .role { display: inline-flex; align-items: center; gap: 5px; background: #383A40; border-radius: 4px; padding: 2px 8px; font-size: 13px; }
+  .role i { width: 10px; height: 10px; border-radius: 50%; }
+  .role.off { opacity: 0.45; }
+  .opt { display: flex; align-items: center; padding: 9px 0; border-top: 1px solid var(--line); }
+  .opt:first-of-type { border-top: 0; }
+  .opt div { flex: 1; } .opt small { display: block; }
+  .sw { width: 40px; height: 24px; border-radius: 12px; background: var(--green); position: relative; }
+  .sw::after { content: ''; position: absolute; right: 3px; top: 3px; width: 18px; height: 18px; border-radius: 50%; background: #fff; }
+  nav { display: flex; justify-content: space-around; padding: 8px 0 26px; background: var(--rail); }
+  nav button { background: none; border: 0; color: var(--mute); display: flex; flex-direction: column; align-items: center; gap: 2px; font: 600 11px system-ui, sans-serif; }
+  nav button.is-active { color: var(--hi); }
+</style>
+</head>
+<body class="concept">
+<aside class="concept-info">
+  <div class="num">16 / 32 · BUILT WITH FRONTEND DESIGN</div>
+  <h1>Server</h1>
+  <p>Discord’s servers, one per gym or friend group. Channels separate form checks, plan sharing and banter. The live “Training now” room shows who is mid-workout and on which set, so training alone at 18:00 still feels like training together.</p>
+  <span class="tag">servers per gym</span><span class="tag">live room</span><span class="tag">dark, dense</span>
+  <div class="concept-nav"><a href="15-forum.html">← Prev</a><a href="index.html">All designs</a><a href="17-quiet.html">Next →</a></div>
+</aside>
+<div class="device"><div class="app" id="app">
+  <main>
+    <section data-screen="servers" id="s-servers"></section>
+    <section data-screen="chat" id="s-chat" hidden></section>
+    <section data-screen="live" id="s-live" hidden></section>
+    <section data-screen="stats" id="s-stats" hidden></section>
+    <section data-screen="you" id="s-you" hidden></section>
+  </main>
+  <nav>
+    <button data-tab="servers" class="is-active">ICON:home<span>Servers</span></button>
+    <button data-tab="chat">ICON:chat<span>Chat</span></button>
+    <button data-tab="live">ICON:dumbbell<span>Training</span></button>
+    <button data-tab="stats">ICON:chart<span>Stats</span></button>
+    <button data-tab="you">ICON:user<span>You</span></button>
+  </nav>
+</div></div>
+<script src="data.js"></script>
+<script src="icons.js"></script>
+<script>
+(function () {
+  const G = GQ, I = ICON, $ = (id) => document.getElementById(id), P = G.person;
+  document.querySelectorAll('nav button').forEach((b) => { b.innerHTML = b.innerHTML.replace(/ICON:(\w+)/, (_, n) => I(n)); });
+  const ch = (name, cls, extra) => '<div class="ch ' + (cls || '') + '"><span class="hash">#</span>' + name + (extra || '') + '</div>';
+  $('s-servers').innerHTML = '<div class="split"><div class="rail">'
+    + '<span class="srv" style="background:var(--blurple)">' + I('chat') + '</span><hr>'
+    + '<span class="srv on" style="background:#0E7C66">FR</span>'
+    + '<span class="srv" style="background:#B5552D">PPL<span class="ping">3</span></span>'
+    + '<span class="srv" style="background:#7A5C99">HW</span>'
+    + '<span class="srv" style="background:#4E6E9E">BL</span>'
+    + '<span class="srv add">' + I('plus') + '</span></div>'
+    + '<div class="chans"><div class="head"><b>Fitinn Ružinov</b><small>412 members, 38 online</small></div>'
+    + '<div class="cat">' + I('chevron') + 'Training</div>'
+    + '<div class="ch sel">' + I('dumbbell') + 'Training now</div>'
+    + '<div class="voice">' + [['tomas', 'Deadlift, set 4', true], ['anna', 'Leg press, set 2'], ['me', 'Bench press, set 3']].map((v) => '<div class="vu"><i class="' + (v[2] ? 'talk' : '') + '" style="background:' + P(v[0]).color + '">' + P(v[0]).name[0] + '</i>' + P(v[0]).name + (v[0] === 'tomas' ? '<em>PR</em>' : '') + '</div>').join('') + '</div>'
+    + ch('form-check', 'unread') + ch('plans', '') + ch('records', 'unread')
+    + '<div class="cat">' + I('chevron') + 'Social</div>' + ch('general', 'unread') + ch('spotter-wanted', '') + ch('food-and-water', '')
+    + '<div class="cat">' + I('chevron') + 'Gym info</div>' + ch('opening-hours', '') + ch('equipment-issues', '') + '</div></div>';
+  const m = (who, t, html) => '<div class="msg"><span class="av" style="background:' + P(who).color + '">' + P(who).name[0] + '</span><div><span class="nm" style="color:' + (who === 'me' ? '#9DB8A6' : P(who).color === '#4A7C6F' ? '#6FC2AE' : '#F2F3F5') + '">' + P(who).name + '</span><span class="ts">Today at ' + t + '</span>' + html + '</div></div>';
+  const c = G.chat.messages;
+  $('s-chat').innerHTML = '<div class="top"><span class="hash">#</span><b>general</b>' + I('users') + '</div><div class="msgs">'
+    + m('anna', c[0].t, '<p>' + c[0].text + '</p>')
+    + m('me', c[1].t, '<p>' + c[1].text + '</p>')
+    + m('anna', c[2].t, '<p>' + c[2].text + '</p><span class="rx">😂 2</span>')
+    + m('me', c[3].t, '<div class="embed"><b>Push day, 5 exercises, 55 min</b><div>Bench press 4 × 8 at 60 kg</div><div>Overhead press 3 × 10 at 35 kg</div><div style="color:var(--mute)">and 3 more</div><div class="btnrow"><span class="dbtn">Save plan</span><span class="dbtn grey">Open</span></div></div>')
+    + '<div class="sep">New</div>'
+    + '<div class="reply"><b>@Martin</b> Push day, 5 exercises, 55 min</div>'
+    + m('anna', c[4].t, '<p>' + c[4].text + '</p><span class="rx">❤️ 1</span> <span class="rx n">💪 3</span>')
+    + m('tomas', '17:41', '<div class="embed" style="border-color:var(--green)"><b>New record: deadlift 140 kg</b><div>Previous best 135 kg. Logged during Training now.</div><div class="btnrow"><span class="dbtn green">Congratulate</span></div></div>')
+    + '</div><div class="composer"><span class="plus">' + I('plus') + '</span>Message #general</div>';
+  const tile = (who, ex, set, talk) => '<div class="tile' + (talk ? ' talk' : '') + '"><span class="set">' + set + '</span><span class="av" style="background:' + P(who).color + '">' + P(who).name[0] + '</span><b>' + P(who).name + '</b><small>' + ex + '</small></div>';
+  const e = G.today.exercises[0];
+  $('s-live').innerHTML = '<div class="room"><h2><span class="live"></span>Training now</h2><small>Fitinn Ružinov, 4 people, started 17:04</small><div class="tiles">'
+    + tile('tomas', 'Deadlift 140 kg', 'Set 4', true) + tile('anna', 'Leg press 120 kg', 'Set 2') + tile('peter', 'Resting, 1:20 left', 'Set 3') + tile('me', 'Bench press 60 kg', 'Set 3') + '</div>'
+    + '<div class="mine"><b>Your set: ' + e.name + '</b><div class="sets">' + Array.from({ length: e.sets }, (_, i) => '<span class="' + (i < e.done ? 'd' : i === e.done ? 'n' : '') + '">' + (i < e.done ? '✓' : (i + 1)) + '</span>').join('') + '</div><span class="dbtn green" style="display:block;text-align:center">Log set 3: 8 × 60 kg</span></div>'
+    + '<div class="ctrls"><span>' + I('timer') + '</span><span>' + I('chat') + '</span><span>' + I('list') + '</span><span class="end">' + I('check') + '</span></div></div>';
+  const vmax = Math.max(...G.volume);
+  $('s-stats').innerHTML = '<div class="pad"><h2>Your stats</h2><small>Level ' + G.user.level + ', ' + G.user.xp + ' of ' + G.user.nextLevelXp + ' XP</small>'
+    + '<div class="box"><h3>Sets per week</h3><div class="bars">' + G.volume.map((v, i) => '<span class="' + (i === 7 ? 'now' : '') + '" style="height:' + Math.round(v / vmax * 100) + '%"></span>').join('') + '</div></div>'
+    + '<div class="box"><h3>Records</h3>' + G.records.map((r) => '<div class="row"><span>' + r.name + '</span><b>' + r.kg + ' kg</b></div>').join('') + '</div>'
+    + '<div class="box"><h3>Server leaderboard this week</h3>' + G.leaderboard.map((r, i) => '<div class="row"><span>' + (i + 1) + '. ' + P(r.who).name + '</span><b>' + r.xp + ' XP</b></div>').join('') + '</div></div>';
+  $('s-you').innerHTML = '<div class="pcard"><div class="ban"></div><div class="in"><span class="big">M</span><h2>' + G.user.name + '</h2><small>' + G.user.handle + '</small>'
+    + '<div class="inner"><div class="lbl">About me</div><div>' + G.user.bio + '</div><div class="lbl">Achievements</div><div class="roles">' + G.achievements.map((a, i) => '<span class="role' + (a.got ? '' : ' off') + '"><i style="background:' + ['#23A55A', '#F0B232', '#ED4245', '#5865F2', '#EB459E'][i] + '"></i>' + a.name + '</span>').join('') + '</div></div>'
+    + '<div class="inner"><div class="lbl">Reminders</div>' + G.reminders.map((r) => '<div class="opt"><div>' + r.label + '<small style="color:var(--mute)">' + r.detail.replace(/ · /g, ', ') + '</small></div><span class="sw"></span></div>').join('') + '</div></div></div>';
+  gqTabs(document.getElementById('app'));
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>32 · Anatomy — GymQuest concept</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Instrument+Serif&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="frame.css">
+<style>
+  :root { --bg: #F7F8FA; --ink: #1F2A44; --mute: #6A7389; --line: #E3E6EC; --rest: #DDE1E8; --h1: #F6D3C8; --h2: #EC9C86; --h3: #C8423A; }
+  .app { position: absolute; inset: 0; background: var(--bg); color: var(--ink); font: 15px/1.45 'Instrument Sans', system-ui, sans-serif; display: flex; flex-direction: column; }
+  main { flex: 1; overflow-y: auto; padding: 52px 16px 16px; }
+  h1 { margin: 0; font: 400 36px/1.05 'Instrument Serif', Georgia, serif; }
+  .sub { color: var(--mute); margin: 4px 0 10px; }
+  .bodies { display: flex; justify-content: center; gap: 4px; position: relative; }
+  .bodies figure { margin: 0; text-align: center; }
+  .bodies svg { width: 150px; height: 330px; }
+  .bodies figcaption { color: var(--mute); font-size: 13px; }
+  .callout { position: absolute; font-size: 12px; font-weight: 600; background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: 2px 7px; white-space: nowrap; }
+  .scale { display: flex; align-items: center; gap: 8px; justify-content: center; color: var(--mute); font-size: 13px; margin: 8px 0 14px; }
+  .scale i { width: 26px; height: 10px; border-radius: 5px; }
+  .tip { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 12px 14px; }
+  .tip b { display: block; }
+  .tip span { color: var(--mute); }
+  /* today */
+  .ex { display: flex; gap: 12px; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--line); }
+  .ex .mini { width: 44px; height: 44px; border-radius: 12px; background: #fff; border: 1px solid var(--line); display: grid; place-items: center; flex: 0 0 auto; }
+  .ex .mini svg { width: 30px; height: 38px; }
+  .ex div { flex: 1; } .ex small { display: block; color: var(--mute); }
+  .ex b { font-weight: 600; }
+  .ex.cur div b { color: var(--h3); }
+  .go { display: block; text-align: center; margin-top: 16px; background: var(--ink); color: #fff; border-radius: 14px; padding: 14px; font-weight: 600; }
+  /* muscle list */
+  .ml { display: flex; align-items: center; gap: 10px; padding: 9px 0; border-bottom: 1px solid var(--line); }
+  .ml span:first-child { width: 110px; }
+  .ml i { flex: 1; height: 8px; border-radius: 4px; background: var(--rest); position: relative; overflow: hidden; }
+  .ml i em { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 4px; }
+  .ml b { width: 52px; text-align: right; font-weight: 600; }
+  .ml small { color: var(--mute); }
+  .opt { display: flex; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--line); }
+  .opt div { flex: 1; } .opt small { display: block; color: var(--mute); }
+  .tg { width: 44px; height: 26px; border-radius: 13px; background: var(--ink); position: relative; }
+  .tg::after { content: ''; position: absolute; right: 3px; top: 3px; width: 20px; height: 20px; border-radius: 50%; background: #fff; }
+  .h2 { font: 400 26px 'Instrument Serif', Georgia, serif; margin: 22px 0 4px; }
+  nav { display: flex; justify-content: space-around; padding: 10px 0 26px; background: #fff; border-top: 1px solid var(--line); }
+  nav button { background: none; border: 0; font: 600 14px 'Instrument Sans', sans-serif; color: var(--mute); padding: 6px 12px; border-radius: 10px; }
+  nav button.is-active { color: var(--ink); background: var(--bg); }
+</style>
+</head>
+<body class="concept">
+<aside class="concept-info">
+  <div class="num">32 / 32 · BUILT WITH FRONTEND DESIGN</div>
+  <h1>Anatomy</h1>
+  <p>The body is the home screen. A front and back figure fill in by how many sets each muscle got this week, so a missed leg day shows up as a pale pair of legs. Pick a muscle to see the exercises that train it. Clinical and quiet, with one warm heat scale.</p>
+  <span class="tag">muscle map</span><span class="tag">weekly heat</span><span class="tag">clinical</span>
+  <div class="concept-nav"><a href="31-neon.html">← Prev</a><a href="index.html">All designs</a><a href="01-feed.html">First →</a></div>
+</aside>
+<div class="device"><div class="app" id="app">
+  <main data-scroll>
+    <section data-screen="body" id="s-body"></section>
+    <section data-screen="today" id="s-today" hidden></section>
+    <section data-screen="muscles" id="s-muscles" hidden></section>
+    <section data-screen="you" id="s-you" hidden></section>
+  </main>
+  <nav>
+    <button data-tab="body" class="is-active">Body</button>
+    <button data-tab="today">Today</button>
+    <button data-tab="muscles">Muscles</button>
+    <button data-tab="you">You</button>
+  </nav>
+</div></div>
+<script src="data.js"></script>
+<script>
+(function () {
+  const G = GQ, $ = (id) => document.getElementById(id), ex = G.today.exercises;
+  const H = ['var(--rest)', 'var(--h1)', 'var(--h2)', 'var(--h3)'];
+  /* jednoduchá postava, svaly ako tvary; heat = 0–3 */
+  function figure(back, heat) {
+    const c = (k) => H[heat[k] || 0];
+    let s = '<svg viewBox="0 0 150 330"><g stroke="#fff" stroke-width="2">';
+    s += '<circle cx="75" cy="24" r="17" fill="#E9ECF1"/><rect x="67" y="40" width="16" height="12" fill="#E9ECF1"/>';
+    if (!back) {
+      s += '<ellipse cx="44" cy="66" rx="15" ry="12" fill="' + c('delts') + '"/><ellipse cx="106" cy="66" rx="15" ry="12" fill="' + c('delts') + '"/>';
+      s += '<path d="M58 56 Q75 52 74 60 L74 92 Q60 96 54 84 Q52 64 58 56Z" fill="' + c('chest') + '"/><path d="M92 56 Q75 52 76 60 L76 92 Q90 96 96 84 Q98 64 92 56Z" fill="' + c('chest') + '"/>';
+      s += '<rect x="60" y="96" width="30" height="62" rx="10" fill="' + c('abs') + '"/>';
+      s += '<ellipse cx="34" cy="100" rx="9" ry="22" fill="' + c('biceps') + '"/><ellipse cx="116" cy="100" rx="9" ry="22" fill="' + c('biceps') + '"/>';
+      s += '<ellipse cx="28" cy="146" rx="7" ry="22" fill="' + c('forearms') + '"/><ellipse cx="122" cy="146" rx="7" ry="22" fill="' + c('forearms') + '"/>';
+      s += '<path d="M58 162 L74 166 L72 250 Q60 254 56 240 Q50 200 58 162Z" fill="' + c('quads') + '"/><path d="M92 162 L76 166 L78 250 Q90 254 94 240 Q100 200 92 162Z" fill="' + c('quads') + '"/>';
+      s += '<ellipse cx="64" cy="288" rx="8" ry="26" fill="' + c('calves') + '"/><ellipse cx="86" cy="288" rx="8" ry="26" fill="' + c('calves') + '"/>';
+    } else {
+      s += '<path d="M56 50 L75 44 L94 50 L88 66 L75 70 L62 66Z" fill="' + c('traps') + '"/>';
+      s += '<ellipse cx="44" cy="66" rx="15" ry="12" fill="' + c('delts') + '"/><ellipse cx="106" cy="66" rx="15" ry="12" fill="' + c('delts') + '"/>';
+      s += '<path d="M56 70 L74 74 L74 140 Q62 132 54 104Z" fill="' + c('lats') + '"/><path d="M94 70 L76 74 L76 140 Q88 132 96 104Z" fill="' + c('lats') + '"/>';
+      s += '<ellipse cx="34" cy="100" rx="9" ry="22" fill="' + c('triceps') + '"/><ellipse cx="116" cy="100" rx="9" ry="22" fill="' + c('triceps') + '"/>';
+      s += '<ellipse cx="28" cy="146" rx="7" ry="22" fill="' + c('forearms') + '"/><ellipse cx="122" cy="146" rx="7" ry="22" fill="' + c('forearms') + '"/>';
+      s += '<ellipse cx="65" cy="160" rx="13" ry="16" fill="' + c('glutes') + '"/><ellipse cx="85" cy="160" rx="13" ry="16" fill="' + c('glutes') + '"/>';
+      s += '<path d="M56 178 L73 180 L72 250 Q60 254 56 240Z" fill="' + c('hams') + '"/><path d="M94 178 L77 180 L78 250 Q90 254 94 240Z" fill="' + c('hams') + '"/>';
+      s += '<ellipse cx="64" cy="288" rx="8" ry="26" fill="' + c('calves') + '"/><ellipse cx="86" cy="288" rx="8" ry="26" fill="' + c('calves') + '"/>';
+    }
+    return s + '</g></svg>';
+  }
+  const week = { chest: 0, delts: 0, triceps: 0, abs: 1, biceps: 2, forearms: 1, lats: 3, traps: 2, quads: 3, glutes: 3, hams: 2, calves: 1 };
+  $('s-body').innerHTML = '<h1>This week</h1><div class="sub">2 workouts, 34 sets, Monday to today</div>'
+    + '<div class="bodies"><figure>' + figure(false, week) + '<figcaption>Front</figcaption></figure><figure>' + figure(true, week) + '<figcaption>Back</figcaption></figure>'
+    + '<span class="callout" style="left:6px;top:78px">Chest, 0 sets</span><span class="callout" style="right:2px;top:118px">Back, 15 sets</span></div>'
+    + '<div class="scale">Rested<i style="background:var(--rest)"></i><i style="background:var(--h1)"></i><i style="background:var(--h2)"></i><i style="background:var(--h3)"></i>Worked hard</div>'
+    + '<div class="tip"><b>Chest and shoulders are waiting</b><span>Today’s push day fills them in. After it, the whole front is covered.</span></div>';
+  const tiny = (k) => figure(false, { [k]: 3 }).replace('viewBox="0 0 150 330"', 'viewBox="0 0 150 330" preserveAspectRatio="xMidYMid meet"');
+  const map = ['chest', 'delts', 'chest', 'delts', 'biceps'];
+  $('s-today').innerHTML = '<h1>Push day</h1><div class="sub">Chest, shoulders and triceps, about 55 minutes</div>'
+    + ex.map((e, i) => '<div class="ex' + (i === 0 ? ' cur' : '') + '"><span class="mini">' + tiny(map[i]) + '</span><div><b>' + e.name + '</b><small>' + e.muscle + ', ' + e.sets + ' × ' + e.reps + (i === 0 ? ', set 3 next' : '') + '</small></div><span>' + (e.weight ? e.weight + ' kg' : 'BW') + '</span></div>').join('')
+    + '<span class="go">Log set 3 of bench press</span>';
+  const ms = [['Back', 15, 3], ['Quads', 12, 3], ['Glutes', 10, 3], ['Hamstrings', 6, 2], ['Biceps', 6, 2], ['Calves', 3, 1], ['Abs', 3, 1], ['Shoulders', 0, 0], ['Chest', 0, 0], ['Triceps', 0, 0]];
+  $('s-muscles').innerHTML = '<h1>Muscles</h1><div class="sub">Sets this week, 10 to 20 is a good range</div>'
+    + ms.map((m) => '<div class="ml"><span>' + m[0] + '</span><i><em style="width:' + Math.min(100, m[1] / 20 * 100) + '%;background:' + H[m[2]] + '"></em></i><b>' + m[1] + '</b></div>').join('')
+    + '<div class="h2">Records</div>' + G.records.map((r) => '<div class="ml"><span>' + r.name + '</span><small style="flex:1">' + r.date + '</small><b>' + r.kg + ' kg</b></div>').join('');
+  $('s-you').innerHTML = '<h1>' + G.user.name + '</h1><div class="sub">Level ' + G.user.level + ', ' + G.user.bio + '</div>'
+    + '<div class="h2">Reminders</div>' + G.reminders.map((r) => '<div class="opt"><div>' + r.label + '<small>' + r.detail.replace(/ · /g, ', ') + '</small></div><span class="tg"></span></div>').join('')
+    + '<div class="h2">Friends this week</div>' + G.leaderboard.slice(0, 4).map((r) => '<div class="opt"><div>' + G.person(r.who).name + '<small>Level ' + r.level + '</small></div><span>' + r.xp + ' XP</span></div>').join('');
+  gqTabs(document.getElementById('app'));
+})();
+</script>
+</body>
+</html>

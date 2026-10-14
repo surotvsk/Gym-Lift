@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>01 · Feed — GymQuest concept</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Grand+Hotel&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="frame.css">
+<style>
+  .app { position: absolute; inset: 0; display: flex; flex-direction: column; background: #fff; color: #111; font: 15px/1.35 -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+  .top { display: flex; align-items: center; gap: 18px; padding: 52px 16px 8px; border-bottom: 1px solid #efefef; }
+  .logo { font-family: 'Grand Hotel', cursive; font-size: 30px; line-height: 1; flex: 1; letter-spacing: 0.3px; }
+  .top h2 { flex: 1; margin: 0; font-size: 18px; font-weight: 700; }
+  .top button { background: none; border: 0; padding: 0; color: #111; position: relative; }
+  .dot { position: absolute; top: -2px; right: -3px; width: 8px; height: 8px; border-radius: 50%; background: #E2442F; border: 2px solid #fff; }
+  main { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+  nav { display: flex; justify-content: space-around; align-items: center; padding: 10px 6px 30px; border-top: 1px solid #efefef; background: #fff; }
+  nav button { background: none; border: 0; color: #111; padding: 6px; opacity: 0.55; }
+  nav button.is-active { opacity: 1; }
+  nav button.is-active .ico { stroke-width: 2.4; }
+  nav .me { width: 26px; height: 26px; border-radius: 50%; background: #2F3B33; color: #fff; font: 700 12px/26px sans-serif; text-align: center; display: inline-block; }
+  nav button.is-active .me { box-shadow: 0 0 0 2px #fff, 0 0 0 3.5px #111; }
+
+  /* stories */
+  .stories { display: flex; gap: 14px; overflow-x: auto; padding: 12px 14px 10px; border-bottom: 1px solid #efefef; scrollbar-width: none; }
+  .story { flex: 0 0 auto; width: 68px; text-align: center; font-size: 12px; color: #262626; }
+  .ring { width: 66px; height: 66px; border-radius: 50%; padding: 2.5px; background: conic-gradient(from 200deg, #F58529, #E2442F, #C13584, #F58529); }
+  .ring.seen { background: #dbdbdb; }
+  .ring.mine { background: none; padding: 0; position: relative; }
+  .ring > span { display: block; width: 100%; height: 100%; border-radius: 50%; border: 2.5px solid #fff; background-size: cover; background-position: center;
+    color: #fff; font: 600 22px/56px Georgia, serif; }
+  .ring.mine > span { border: 0; }
+  .plusbadge { position: absolute; right: 0; bottom: 0; width: 22px; height: 22px; border-radius: 50%; background: #0095F6; color: #fff; border: 2.5px solid #fff; display: grid; place-items: center; }
+  .plusbadge .ico { width: 14px; height: 14px; stroke-width: 3; }
+  .story p { margin: 5px 0 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+  /* posts */
+  .post { border-bottom: 1px solid #efefef; padding-bottom: 10px; }
+  .phead { display: flex; align-items: center; gap: 10px; padding: 10px 12px; }
+  .av { width: 32px; height: 32px; border-radius: 50%; color: #fff; font: 600 14px/32px Georgia, serif; text-align: center; flex: 0 0 auto; }
+  .phead b { font-size: 14px; }
+  .phead small { display: block; color: #737373; font-size: 12px; }
+  .phead .more { margin-left: auto; color: #111; }
+  .media { position: relative; aspect-ratio: 4 / 5; background: #f2f2f2 center/cover no-repeat; }
+  .media.square { aspect-ratio: 1; }
+  .overlay { position: absolute; left: 12px; bottom: 12px; right: 12px; background: rgba(255,255,255,0.94); border-radius: 10px; padding: 10px 12px; font-size: 13px; }
+  .overlay b { display: block; font-size: 14px; margin-bottom: 4px; }
+  .overlay div { color: #333; }
+  .prcard { aspect-ratio: 1; display: grid; place-content: center; text-align: center; background: #F4EEE6; color: #2a2118; }
+  .prcard small { text-transform: uppercase; letter-spacing: 0.14em; font-size: 11px; color: #8a7360; }
+  .prcard strong { font: 400 88px/1 Georgia, serif; display: block; margin: 6px 0 2px; }
+  .prcard span { font-size: 14px; }
+  .actions { display: flex; gap: 16px; padding: 10px 12px 4px; }
+  .actions button { background: none; border: 0; padding: 0; color: #111; }
+  .actions .save { margin-left: auto; }
+  .actions .liked { color: #ED4956; } .actions .liked .ico { fill: #ED4956; stroke: #ED4956; }
+  .likes { padding: 2px 12px; font-weight: 600; font-size: 14px; }
+  .cap { padding: 2px 12px; font-size: 14px; }
+  .cap b { margin-right: 4px; }
+  .ccount { padding: 4px 12px; color: #737373; font-size: 14px; }
+
+  /* pinned today card */
+  .today { margin: 12px; border: 1px solid #efefef; border-radius: 14px; overflow: hidden; }
+  .today-in { display: flex; gap: 12px; padding: 12px; align-items: center; }
+  .thumb { width: 64px; height: 64px; border-radius: 10px; background: #eee center/cover; flex: 0 0 auto; }
+  .today small { color: #737373; font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; }
+  .today h3 { margin: 2px 0; font-size: 17px; }
+  .today p { margin: 0; color: #555; font-size: 13px; }
+  .btn { display: block; width: 100%; border: 0; background: #0095F6; color: #fff; font-weight: 600; font-size: 14px; padding: 10px; border-radius: 8px; }
+  .btn.ghost { background: #efefef; color: #111; }
+  .today .btn { border-radius: 0; padding: 12px; }
+
+  /* train */
+  .ex { display: flex; gap: 12px; padding: 12px; border-bottom: 1px solid #f2f2f2; }
+  .ex .thumb { width: 56px; height: 56px; }
+  .ex h4 { margin: 0; font-size: 15px; }
+  .ex p { margin: 2px 0 8px; color: #737373; font-size: 13px; }
+  .sets { display: flex; gap: 6px; flex-wrap: wrap; }
+  .set { min-width: 46px; padding: 6px 8px; border-radius: 8px; border: 1px solid #dbdbdb; font-size: 13px; text-align: center; background: #fff; }
+  .set.done { background: #111; color: #fff; border-color: #111; }
+  .progressbar { height: 3px; background: #efefef; }
+  .progressbar span { display: block; height: 100%; background: #111; }
+  .sticky { position: sticky; bottom: 0; padding: 12px; background: linear-gradient(transparent, #fff 30%); }
+
+  /* profile */
+  .prof { display: flex; align-items: center; gap: 22px; padding: 14px 16px 6px; }
+  .bigav { width: 84px; height: 84px; border-radius: 50%; background: #2F3B33; color: #fff; font: 400 38px/84px Georgia, serif; text-align: center; flex: 0 0 auto; }
+  .stats { display: flex; flex: 1; justify-content: space-around; text-align: center; }
+  .stats b { display: block; font-size: 17px; }
+  .stats span { font-size: 13px; }
+  .bio { padding: 4px 16px 10px; font-size: 14px; }
+  .bio b { display: block; }
+  .row-btns { display: flex; gap: 6px; padding: 0 16px 12px; }
+  .row-btns .btn { padding: 8px; }
+  .highlights { display: flex; gap: 16px; padding: 4px 16px 14px; overflow-x: auto; }
+  .hl { text-align: center; font-size: 12px; width: 64px; flex: 0 0 auto; }
+  .hl span { display: grid; place-items: center; width: 62px; height: 62px; border-radius: 50%; border: 1px solid #dbdbdb; margin-bottom: 4px; padding: 3px; }
+  .hl span i { display: grid; place-items: center; width: 100%; height: 100%; border-radius: 50%; background: #f4f4f4; font-style: normal; font-weight: 700; font-size: 13px; }
+  .gridtabs { display: flex; border-top: 1px solid #efefef; }
+  .gridtabs span { flex: 1; text-align: center; padding: 10px; color: #a8a8a8; }
+  .gridtabs span.on { color: #111; box-shadow: inset 0 1px #111; }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
+  .grid div { aspect-ratio: 1; background: #eee center/cover; position: relative; }
+  .grid div em { position: absolute; left: 6px; bottom: 6px; color: #fff; font: 600 11px/1 sans-serif; font-style: normal; text-shadow: 0 1px 3px rgba(0,0,0,0.6); }
+
+  /* progress */
+  .sec { padding: 14px 16px; border-bottom: 1px solid #efefef; }
+  .sec h3 { margin: 0 0 10px; font-size: 15px; }
+  .weekrow { display: flex; justify-content: space-between; }
+  .day { text-align: center; font-size: 12px; color: #737373; }
+  .day i { display: block; width: 34px; height: 34px; border-radius: 50%; border: 1.5px solid #dbdbdb; margin: 5px auto 0; font: 600 13px/31px sans-serif; font-style: normal; color: #111; }
+  .day.done i { background: #111; border-color: #111; color: #fff; }
+  .day.is-today i { border-color: #0095F6; color: #0095F6; }
+  .bars { display: flex; align-items: flex-end; gap: 8px; height: 110px; }
+  .bars div { flex: 1; background: #e6e6e6; border-radius: 4px 4px 0 0; position: relative; }
+  .bars div.last { background: #111; }
+  .rec { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #f4f4f4; font-size: 14px; }
+  .rec:last-child { border: 0; }
+  .rec b { font-variant-numeric: tabular-nums; }
+  .rec small { color: #27a35a; margin-left: 6px; }
+
+  /* dm */
+  .dmrow { display: flex; gap: 12px; align-items: center; padding: 10px 16px; }
+  .dmrow .av { width: 52px; height: 52px; line-height: 52px; font-size: 20px; }
+  .dmrow p { margin: 0; color: #737373; font-size: 13px; }
+  .dmrow .unread { width: 8px; height: 8px; border-radius: 50%; background: #0095F6; margin-left: auto; }
+  .lb { display: flex; align-items: center; gap: 12px; padding: 8px 16px; font-size: 14px; }
+  .lb .pos { width: 18px; color: #737373; font-variant-numeric: tabular-nums; }
+  .lb .av { width: 36px; height: 36px; line-height: 36px; }
+  .lb b.xp { margin-left: auto; font-variant-numeric: tabular-nums; }
+  .lb.me { background: #f5f9ff; }
+  .toggle { width: 42px; height: 26px; border-radius: 13px; background: #111; position: relative; flex: 0 0 auto; }
+  .toggle::after { content: ''; position: absolute; top: 3px; right: 3px; width: 20px; height: 20px; border-radius: 50%; background: #fff; }
+  .remrow { display: flex; align-items: center; gap: 12px; padding: 10px 0; font-size: 14px; }
+  .remrow small { display: block; color: #737373; }
+</style>
+</head>
+<body class="concept">
+<aside class="concept-info">
+  <div class="num">01 / 32 · BUILT WITHOUT A PLUGIN</div>
+  <h1>Feed</h1>
+  <p>Instagram’s grammar applied to training: friends’ workouts as story rings, today’s plan pinned as the first post, a profile grid where every square is a finished workout.</p>
+  <span class="tag">white, native</span><span class="tag">photo-first</span><span class="tag">stories</span>
+  <div class="concept-nav"><a href="index.html">All designs</a><a href="02-reels.html">Next →</a></div>
+</aside>
+<div class="device"><div class="app" id="app">
+  <header class="top" id="top"></header>
+  <main data-scroll>
+    <section data-screen="home" id="s-home"></section>
+    <section data-screen="train" id="s-train" hidden></section>
+    <section data-screen="progress" id="s-progress" hidden></section>
+    <section data-screen="inbox" id="s-inbox" hidden></section>
+    <section data-screen="profile" id="s-profile" hidden></section>
+  </main>
+  <nav>
+    <button data-tab="home" class="is-active" aria-label="Home">ICON:home</button>
+    <button data-tab="train" aria-label="Train">ICON:dumbbell</button>
+    <button data-tab="progress" aria-label="Progress">ICON:chart</button>
+    <button data-tab="inbox" aria-label="Messages">ICON:send</button>
+    <button data-tab="profile" aria-label="Profile"><span class="me">M</span></button>
+  </nav>
+</div></div>
+<script src="data.js"></script>
+<script src="icons.js"></script>
+<script>
+(function () {
+  const G = GQ, I = ICON, $ = (id) => document.getElementById(id);
+  document.querySelectorAll('nav button').forEach((b) => { b.innerHTML = b.innerHTML.replace(/ICON:(\w+)/, (_, n) => I(n)); });
+  const av = (k, cls) => { const p = G.person(k); return '<span class="av ' + (cls || '') + '" style="background:' + p.color + '">' + p.name[0] + '</span>'; };
+
+  /* HOME */
+  let h = '<div class="stories">'
+    + '<div class="story"><div class="ring mine"><span style="background-image:url(' + G.today.exercises[0].img + ')"></span><i class="plusbadge">' + I('plus') + '</i></div><p>Your day</p></div>'
+    + G.stories.map((k, i) => { const p = G.person(k); return '<div class="story"><div class="ring' + (i > 2 ? ' seen' : '') + '"><span style="background:' + p.color + '">' + p.name[0] + '</span></div><p>' + p.handle + '</p></div>'; }).join('')
+    + '</div>';
+  h += '<div class="today"><div class="today-in"><div class="thumb" style="background-image:url(' + G.today.exercises[0].img + ')"></div><div><small>Today · ' + G.today.location + '</small><h3>' + G.today.plan + '</h3><p>' + G.today.exercises.length + ' exercises · about ' + G.today.estMinutes + ' min · ' + G.user.weekDone + ' of ' + G.user.weekGoal + ' this week</p></div></div>'
+    + '<button class="btn" data-tab="train">Continue workout</button></div>';
+  h += G.feed.map((f, i) => {
+    const p = G.person(f.who);
+    let media = '';
+    if (f.kind === 'pr') media = '<div class="prcard"><small>New personal record</small><strong>' + f.pr.kg + '</strong><span>kg ' + f.pr.lift.toLowerCase() + ' · was ' + f.pr.prev + '</span></div>';
+    else if (f.kind === 'workout') media = '<div class="media" style="background-image:url(' + G.img(f.img) + ')"><div class="overlay"><b>' + f.workout.plan + ' · ' + f.workout.minutes + ' min</b><div>' + f.workout.lines.join('<br>') + '</div></div></div>';
+    else if (f.kind === 'plan') media = '<div class="media square" style="background-image:url(' + G.img(f.img) + ')"><div class="overlay"><b>' + f.plan.name + '</b><div>' + f.plan.lines.join('<br>') + '</div></div></div>';
+    else media = '<div class="media" style="background-image:url(' + G.img(f.img) + ')"></div>';
+    return '<article class="post"><div class="phead">' + av(f.who) + '<div><b>' + p.handle + '</b><small>' + (f.kind === 'plan' ? 'shared a plan' : f.kind === 'pr' ? 'new record' : f.ago) + '</small></div><span class="more">' + I('more') + '</span></div>'
+      + media + '<div class="actions"><button class="' + (i === 1 ? 'liked' : '') + '">' + I('heart') + '</button><button>' + I('comment') + '</button><button>' + I('send') + '</button><button class="save">' + I('bookmark') + '</button></div>'
+      + '<div class="likes">' + (f.likes + (i === 1 ? 1 : 0)) + ' likes</div><div class="cap"><b>' + p.handle + '</b>' + f.text + '</div><div class="ccount">View all ' + f.comments + ' comments</div></article>';
+  }).join('');
+  $('s-home').innerHTML = h;
+
+  /* TRAIN */
+  const doneSets = G.today.exercises.reduce((s, e) => s + e.done, 0), allSets = G.today.exercises.reduce((s, e) => s + e.sets, 0);
+  $('s-train').innerHTML = '<div class="progressbar"><span style="width:' + Math.round(doneSets / allSets * 100) + '%"></span></div>'
+    + G.today.exercises.map((e) => '<div class="ex"><div class="thumb" style="background-image:url(' + e.img + ')"></div><div style="flex:1"><h4>' + e.name + '</h4><p>' + e.sets + ' × ' + e.reps + ' · ' + (e.weight ? e.weight + ' kg' : 'bodyweight') + (e.weight > e.last ? ' · <span style="color:#27a35a">+' + (e.weight - e.last) + ' kg vs last time</span>' : '') + '</p><div class="sets">'
+      + Array.from({ length: e.sets }, (_, i) => '<span class="set' + (i < e.done ? ' done' : '') + '">' + (e.weight || 'BW') + '</span>').join('') + '</div></div></div>').join('')
+    + '<div class="sticky"><button class="btn">Finish workout · ' + doneSets + '/' + allSets + ' sets</button></div>';
+
+  /* PROGRESS */
+  const max = Math.max.apply(null, G.volume);
+  $('s-progress').innerHTML = '<div class="sec"><h3>This week · ' + G.user.weekDone + ' of ' + G.user.weekGoal + '</h3><div class="weekrow">'
+    + G.week.map((d) => '<div class="day' + (d.done ? ' done' : '') + (d.today ? ' is-today' : '') + '">' + d.d[0] + '<i>' + d.n + '</i></div>').join('') + '</div></div>'
+    + '<div class="sec"><h3>Sets per week</h3><div class="bars">' + G.volume.map((v, i) => '<div class="' + (i === G.volume.length - 1 ? 'last' : '') + '" style="height:' + Math.round(v / max * 100) + '%"></div>').join('') + '</div></div>'
+    + '<div class="sec"><h3>Records</h3>' + G.records.map((r) => '<div class="rec"><span>' + r.name + '</span><span><b>' + r.kg + ' kg</b>' + (r.delta ? '<small>' + r.delta + '</small>' : '') + '</span></div>').join('') + '</div>'
+    + '<div class="sec"><h3>Recent</h3>' + G.history.map((w) => '<div class="rec"><span>' + w.plan + '<br><small style="color:#737373;margin:0">' + w.date + ' · ' + w.minutes + ' min</small></span><span>' + w.top + '</span></div>').join('') + '</div>';
+
+  /* INBOX */
+  const c = G.chat;
+  $('s-inbox').innerHTML = '<div class="sec" style="border:0;padding-bottom:4px"><h3>Messages</h3></div>'
+    + ['anna', 'tomas', 'eva'].map((k, i) => '<div class="dmrow">' + av(k) + '<div><b>' + G.person(k).handle + '</b><p>' + (i === 0 ? 'Saving this for Friday · 2m' : i === 1 ? 'You: congrats on 140!! · 1h' : 'Sent a plan · 1d') + '</p></div>' + (i === 0 ? '<span class="unread"></span>' : '') + '</div>').join('')
+    + '<div class="sec"><h3>Top 20 among friends · this week</h3></div>'
+    + G.leaderboard.map((r, i) => '<div class="lb' + (r.who === 'me' ? ' me' : '') + '"><span class="pos">' + (i + 1) + '</span>' + av(r.who) + '<span>' + G.person(r.who).handle + '</span><b class="xp">' + r.xp + ' XP</b></div>').join('');
+
+  /* PROFILE */
+  const u = G.user;
+  $('s-profile').innerHTML = '<div class="prof"><div class="bigav">M</div><div class="stats"><div><b>' + u.workouts + '</b><span>workouts</span></div><div><b>' + u.level + '</b><span>level</span></div><div><b>' + u.streakWeeks + ' wk</b><span>streak</span></div></div></div>'
+    + '<div class="bio"><b>' + u.name + '</b>' + u.bio + '</div>'
+    + '<div class="row-btns"><button class="btn ghost">Edit profile</button><button class="btn ghost">Share plan</button></div>'
+    + '<div class="highlights">' + G.achievements.filter((a) => a.got).map((a) => '<div class="hl"><span><i>' + a.xp + '</i></span>' + a.name.split(' ')[0] + '</div>').join('') + '</div>'
+    + '<div class="sec"><h3>Reminders</h3>' + G.reminders.map((r) => '<div class="remrow">' + I(r.kind === 'water' ? 'droplet' : r.kind === 'meal' ? 'utensils' : 'dumbbell') + '<div style="flex:1">' + r.label + '<small>' + r.detail + '</small></div><span class="toggle"></span></div>').join('') + '</div>'
+    + '<div class="gridtabs"><span class="on">' + I('grid') + '</span><span>' + I('bookmark') + '</span></div>'
+    + '<div class="grid">' + ['bench-press', 'squats', 'lat-pulldown', 'overhead-press', 'leg-press', 'pull-ups', 'dips', 'lunges', 'cable-rows'].map((x, i) => '<div style="background-image:url(' + G.img(x) + ')"><em>' + ['Oct 3', 'Oct 8', 'Oct 6', 'Sep 26', 'Oct 1', 'Sep 29', 'Sep 26', 'Sep 24', 'Sep 22'][i] + '</em></div>').join('') + '</div>';
+
+  const titles = { home: '<span class="logo">GymQuest</span><button aria-label="Notifications">' + I('heart') + '<i class="dot"></i></button><button aria-label="New post">' + I('plusbox') + '</button>',
+    train: '<h2>Push day</h2><button>' + I('timer') + '</button>', progress: '<h2>Progress</h2><button>' + I('calendar') + '</button>',
+    inbox: '<h2>' + u.handle + '</h2><button>' + I('plusbox') + '</button>', profile: '<h2>' + u.handle + '</h2><button>' + I('settings') + '</button>' };
+  gqTabs(document.getElementById('app'), (name) => { $('top').innerHTML = titles[name]; });
+})();
+</script>
+</body>
+</html>

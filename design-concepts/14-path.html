@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>14 · Path — GymQuest concept</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="frame.css">
+<style>
+  :root { --g: #58CC02; --gd: #46A302; --b: #1CB0F6; --bd: #1899D6; --y: #FFC800; --yd: #E5A500; --r: #FF4B4B; --ink: #3C3C3C; --mute: #AFAFAF; --line: #E5E5E5; }
+  .app { position: absolute; inset: 0; background: #fff; color: var(--ink); font: 700 15px/1.35 Nunito, system-ui, sans-serif; display: flex; flex-direction: column; }
+  header { padding: 50px 16px 10px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--line); }
+  header span { display: flex; align-items: center; gap: 5px; font-weight: 800; font-size: 16px; }
+  header .ico { width: 24px; height: 24px; stroke-width: 2.6; }
+  .st-flame { color: #FF9600; } .st-xp { color: var(--b); } .st-heart { color: var(--r); }
+  main { flex: 1; overflow-y: auto; }
+  .unit { margin: 14px 16px 6px; background: var(--g); color: #fff; border-radius: 16px; padding: 14px 16px; box-shadow: 0 4px 0 var(--gd); display: flex; align-items: center; }
+  .unit div { flex: 1; }
+  .unit small { display: block; opacity: 0.85; font-size: 13px; }
+  .unit b { font-size: 19px; font-weight: 900; }
+  .unit .bk { width: 44px; height: 44px; border-radius: 12px; border: 2px solid rgba(255,255,255,0.4); display: grid; place-items: center; }
+  .path { position: relative; height: 790px; }
+  .node { position: absolute; width: 72px; height: 66px; border-radius: 50%; display: grid; place-items: center; color: #fff; }
+  .node .ico { width: 32px; height: 32px; stroke-width: 3; }
+  .node.done { background: var(--y); box-shadow: 0 7px 0 var(--yd); }
+  .node.cur { background: var(--g); box-shadow: 0 7px 0 var(--gd); }
+  .node.cur::before { content: ''; position: absolute; inset: -11px; border-radius: 50%; border: 7px solid var(--line); border-top-color: var(--g); border-right-color: var(--g); transform: rotate(-20deg); }
+  .node.lock { background: var(--line); box-shadow: 0 7px 0 #CECECE; color: var(--mute); }
+  .node.chest { background: none; box-shadow: none; }
+  .bubble { position: absolute; background: #fff; border: 2px solid var(--line); border-radius: 14px; padding: 8px 12px; font-weight: 900; color: var(--g); white-space: nowrap; }
+  .bubble::after { content: ''; position: absolute; left: -8px; top: 50%; width: 12px; height: 12px; background: #fff; border-left: 2px solid var(--line); border-bottom: 2px solid var(--line); transform: translateY(-50%) rotate(45deg); }
+  .mascot { position: absolute; width: 96px; height: 96px; border-radius: 50%; background: #FFF4CC; display: grid; place-items: center; }
+  .mascot svg { width: 70px; height: 70px; }
+  .divider { position: absolute; left: 16px; right: 16px; display: flex; align-items: center; gap: 10px; color: var(--mute); font-weight: 800; }
+  .divider::before, .divider::after { content: ''; flex: 1; height: 2px; background: var(--line); }
+  /* lesson / workout */
+  .lesson { padding: 16px; }
+  .bar { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
+  .bar .x { color: var(--mute); }
+  .bar i { flex: 1; height: 16px; border-radius: 8px; background: var(--line); overflow: hidden; }
+  .bar i span { display: block; height: 100%; width: 45%; background: var(--g); border-radius: 8px; box-shadow: inset 0 4px 0 rgba(255,255,255,0.3); }
+  .bar .hearts { color: var(--r); display: flex; align-items: center; gap: 4px; font-weight: 900; }
+  .lesson h2 { margin: 0 0 14px; font-size: 22px; font-weight: 900; }
+  .exrow { display: flex; gap: 14px; align-items: center; margin-bottom: 18px; }
+  .exrow .pic { width: 120px; height: 120px; border-radius: 16px; border: 2px solid var(--line); background: #eee center/cover; flex: 0 0 auto; }
+  .speech { position: relative; border: 2px solid var(--line); border-radius: 16px; padding: 12px; font-size: 15px; }
+  .speech b { color: var(--g); }
+  .choices { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .ch { border: 2px solid var(--line); border-bottom-width: 4px; border-radius: 14px; padding: 14px 10px; text-align: center; font-size: 17px; font-weight: 900; }
+  .ch small { display: block; color: var(--mute); font-weight: 700; font-size: 13px; }
+  .ch.sel { border-color: #84D8FF; background: #DDF4FF; color: var(--bd); }
+  .ch.sel small { color: var(--b); }
+  .foot { margin-top: 18px; background: #D7FFB8; border-radius: 0; padding: 16px; margin-left: -16px; margin-right: -16px; }
+  .foot b { display: flex; align-items: center; gap: 8px; color: var(--gd); font-size: 19px; font-weight: 900; }
+  .foot p { margin: 4px 0 12px; color: var(--gd); }
+  .btn3d { display: block; width: 100%; border: 0; border-radius: 14px; padding: 14px; font: 900 16px Nunito, sans-serif; color: #fff; background: var(--g); box-shadow: 0 4px 0 var(--gd); text-align: center; }
+  .btn3d.blue { background: var(--b); box-shadow: 0 4px 0 var(--bd); }
+  .btn3d.ghost { background: #fff; color: var(--b); border: 2px solid var(--line); box-shadow: 0 4px 0 var(--line); }
+  /* league */
+  .league { text-align: center; padding: 18px 16px 8px; }
+  .shields { display: flex; justify-content: center; gap: 10px; margin-bottom: 10px; }
+  .sh { width: 46px; height: 54px; clip-path: polygon(50% 0, 100% 18%, 100% 62%, 50% 100%, 0 62%, 0 18%); background: var(--line); }
+  .sh.on { width: 62px; height: 72px; background: linear-gradient(#FFD900, #E5A500); }
+  .sh.b { background: #CD7F32; } .sh.s { background: #C0C0C0; }
+  .league h2 { margin: 0; font-size: 22px; font-weight: 900; }
+  .league p { margin: 4px 0 0; color: var(--mute); }
+  .lr { display: flex; align-items: center; gap: 12px; padding: 10px 16px; }
+  .lr .pos { width: 22px; text-align: center; font-weight: 900; color: var(--mute); }
+  .lr .pos.g1 { color: #E5A500; } .lr .pos.g2 { color: #9A9A9A; } .lr .pos.g3 { color: #B8722C; }
+  .lr .av { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; color: #fff; font-weight: 900; font-size: 18px; }
+  .lr .nm { flex: 1; font-size: 16px; }
+  .lr.me { background: #DDF4FF; }
+  .zone { margin: 4px 16px; text-align: center; color: var(--g); font-weight: 900; font-size: 13px; border-top: 2px dashed var(--g); padding-top: 6px; }
+  /* progress */
+  .sec { padding: 0 16px; }
+  .sec h3 { font-size: 20px; font-weight: 900; margin: 18px 0 10px; }
+  .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .stat { border: 2px solid var(--line); border-radius: 16px; padding: 12px; display: flex; gap: 10px; align-items: center; }
+  .stat b { display: block; font-size: 19px; font-weight: 900; }
+  .stat small { color: var(--mute); }
+  .stat .ico { width: 26px; height: 26px; stroke-width: 2.6; flex: 0 0 auto; }
+  .quest { border: 2px solid var(--line); border-radius: 16px; padding: 14px; margin-bottom: 10px; }
+  .quest b { display: block; margin-bottom: 8px; }
+  .quest i { display: block; height: 16px; border-radius: 8px; background: var(--line); position: relative; }
+  .quest i span { display: block; height: 100%; border-radius: 8px; background: var(--y); }
+  .quest i em { position: absolute; inset: 0; text-align: center; font-size: 12px; font-style: normal; line-height: 16px; color: #8A6D00; }
+  .chart { display: flex; align-items: flex-end; gap: 8px; height: 120px; border: 2px solid var(--line); border-radius: 16px; padding: 12px; }
+  .chart span { flex: 1; background: var(--b); border-radius: 6px 6px 0 0; box-shadow: inset 0 -4px 0 var(--bd); }
+  .chart span.lo { background: #BBE9FF; box-shadow: none; }
+  /* me */
+  .prof { padding: 18px 16px 12px; display: flex; gap: 14px; align-items: center; border-bottom: 2px solid var(--line); }
+  .prof .big { width: 84px; height: 84px; border-radius: 50%; background: #2F3B33; color: #fff; display: grid; place-items: center; font-size: 36px; font-weight: 900; border: 3px dashed var(--line); outline: 3px solid #fff; }
+  .prof h2 { margin: 0; font-size: 24px; font-weight: 900; }
+  .prof small { color: var(--mute); }
+  .ach { display: flex; gap: 12px; align-items: center; padding: 12px 0; border-bottom: 2px solid var(--line); }
+  .ach .medal { width: 60px; height: 66px; border-radius: 12px; background: var(--y); box-shadow: 0 4px 0 var(--yd); display: grid; place-items: center; color: #fff; flex: 0 0 auto; }
+  .ach .medal.off { background: var(--line); box-shadow: 0 4px 0 #CECECE; color: var(--mute); }
+  .ach .medal .ico { width: 30px; height: 30px; stroke-width: 2.6; }
+  .ach div { flex: 1; }
+  .ach small { color: var(--mute); display: block; }
+  .ach i { display: block; height: 10px; border-radius: 5px; background: var(--line); margin-top: 6px; }
+  .ach i span { display: block; height: 100%; border-radius: 5px; background: var(--y); }
+  .rem { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 2px solid var(--line); }
+  .rem div { flex: 1; } .rem small { display: block; color: var(--mute); }
+  .sw { width: 50px; height: 30px; border-radius: 15px; background: var(--b); position: relative; }
+  .sw::after { content: ''; position: absolute; right: 3px; top: 3px; width: 24px; height: 24px; border-radius: 50%; background: #fff; }
+  nav { display: flex; justify-content: space-around; padding: 8px 0 26px; border-top: 2px solid var(--line); background: #fff; }
+  nav button { background: none; border: 2px solid transparent; border-radius: 12px; padding: 6px 12px; color: var(--mute); }
+  nav button .ico { width: 28px; height: 28px; stroke-width: 2.4; }
+  nav button.is-active { border-color: #84D8FF; background: #DDF4FF; color: var(--b); }
+</style>
+</head>
+<body class="concept">
+<aside class="concept-info">
+  <div class="num">14 / 32 · BUILT WITH FRONTEND DESIGN</div>
+  <h1>Path</h1>
+  <p>Duolingo’s level path, applied to training. Each workout is a stop on a winding path, five stops finish a unit, and the chest at the end pays out XP. Lifting heavier than last time feels like a correct answer. Friends compete in a weekly league with promotion and demotion.</p>
+  <span class="tag">level path</span><span class="tag">chunky 3D buttons</span><span class="tag">weekly league</span>
+  <div class="concept-nav"><a href="13-swipe.html">← Prev</a><a href="index.html">All designs</a><a href="15-forum.html">Next →</a></div>
+</aside>
+<div class="device"><div class="app" id="app">
+  <header>
+    <span class="st-flame">ICON:flame 4</span>
+    <span class="st-xp">ICON:trophy 2 340</span>
+    <span class="st-heart">ICON:heart 5</span>
+  </header>
+  <main data-scroll>
+    <section data-screen="path" id="s-path"></section>
+    <section data-screen="workout" id="s-workout" hidden></section>
+    <section data-screen="league" id="s-league" hidden></section>
+    <section data-screen="progress" id="s-progress" hidden></section>
+    <section data-screen="me" id="s-me" hidden></section>
+  </main>
+  <nav>
+    <button data-tab="path" class="is-active" aria-label="Path">ICON:home</button>
+    <button data-tab="workout" aria-label="Workout">ICON:dumbbell</button>
+    <button data-tab="league" aria-label="League">ICON:trophy</button>
+    <button data-tab="progress" aria-label="Progress">ICON:chart</button>
+    <button data-tab="me" aria-label="Profile">ICON:user</button>
+  </nav>
+</div></div>
+<script src="data.js"></script>
+<script src="icons.js"></script>
+<script>
+(function () {
+  const G = GQ, I = ICON, $ = (id) => document.getElementById(id);
+  document.querySelectorAll('header span, nav button').forEach((b) => { b.innerHTML = b.innerHTML.replace(/ICON:(\w+)/, (_, n) => I(n)); });
+  /* hadia cesta: posuny doľava/doprava */
+  const xs = [159, 99, 69, 109, 189, 219, 179, 109];
+  const kinds = ['done', 'done', 'done', 'cur', 'lock', 'lock', 'chest', 'lock'];
+  const icons = ['check', 'check', 'check', 'dumbbell', 'dumbbell', 'dumbbell', 'trophy', 'dumbbell'];
+  let html = '<div class="unit"><div><small>Unit 3, week 4</small><b>Push, pull, legs</b></div><span class="bk">' + I('list') + '</span></div><div class="path">';
+  xs.forEach((x, i) => {
+    const y = 30 + i * 92 + (i > 6 ? 30 : 0);
+    if (kinds[i] === 'cur') html += '<span class="bubble" style="left:' + (x + 96) + 'px;top:' + (y + 14) + 'px">Push day</span>';
+    if (kinds[i] === 'chest') html += '<span class="node chest" style="left:' + x + 'px;top:' + y + 'px"><svg viewBox="0 0 64 56" width="64" height="56"><rect x="4" y="22" width="56" height="30" rx="5" fill="#CE9A4C"/><path d="M4 26 Q4 6 32 6 Q60 6 60 26 Z" fill="#E0B266"/><rect x="4" y="22" width="56" height="6" fill="#B07D33"/><rect x="27" y="20" width="10" height="14" rx="2" fill="#FFC800"/></svg></span>';
+    else html += '<span class="node ' + kinds[i] + '" style="left:' + x + 'px;top:' + y + 'px">' + I(icons[i]) + '</span>';
+  });
+  html += '<span class="mascot" style="left:24px;top:470px"><svg viewBox="0 0 70 70"><circle cx="35" cy="38" r="24" fill="#58CC02"/><circle cx="27" cy="34" r="7" fill="#fff"/><circle cx="43" cy="34" r="7" fill="#fff"/><circle cx="28" cy="35" r="3.5" fill="#3C3C3C"/><circle cx="44" cy="35" r="3.5" fill="#3C3C3C"/><path d="M29 45 Q35 50 41 45" stroke="#3C3C3C" stroke-width="2.5" fill="none" stroke-linecap="round"/><rect x="6" y="14" width="58" height="5" rx="2.5" fill="#3C3C3C"/><rect x="2" y="9" width="8" height="15" rx="2" fill="#3C3C3C"/><rect x="60" y="9" width="8" height="15" rx="2" fill="#3C3C3C"/></svg></span>';
+  html += '<div class="divider" style="top:730px">Unit 4: heavier</div></div>';
+  $('s-path').innerHTML = html;
+  const e = G.today.exercises[0];
+  $('s-workout').innerHTML = '<div class="lesson"><div class="bar"><span class="x">' + I('plus').replace('class="ico"', 'class="ico" style="transform:rotate(45deg)"') + '</span><i><span></span></i><span class="hearts">' + I('heart') + '5</span></div>'
+    + '<h2>Set 3 of bench press</h2><div class="exrow"><span class="pic" style="background-image:url(' + e.img + ')"></span><div class="speech">Last week you did <b>57.5 kg</b> for 8. Ready to go up?</div></div>'
+    + '<div class="choices"><div class="ch">57.5 kg<small>same as last time</small></div><div class="ch sel">60 kg<small>+2.5 kg</small></div><div class="ch">62.5 kg<small>+5 kg</small></div><div class="ch">Custom<small>type a weight</small></div></div>'
+    + '<div class="foot"><b>' + I('check') + 'Nice, that’s new weight!</b><p>8 reps at 60 kg earns 15 XP and a new record.</p><span class="btn3d">Log set 3</span></div></div>';
+  const lb = G.leaderboard;
+  $('s-league').innerHTML = '<div class="league"><div class="shields"><span class="sh b"></span><span class="sh s"></span><span class="sh on"></span><span class="sh"></span><span class="sh"></span></div><h2>Gold league</h2><p>Top 3 move up. 3 days left.</p></div>'
+    + lb.slice(0, 3).map((r, i) => row(r, i)).join('') + '<div class="zone">Promotion zone</div>' + lb.slice(3).map((r, i) => row(r, i + 3)).join('');
+  function row(r, i) { const p = G.person(r.who); return '<div class="lr' + (r.who === 'me' ? ' me' : '') + '"><span class="pos g' + (i + 1) + '">' + (i + 1) + '</span><span class="av" style="background:' + p.color + '">' + p.name[0] + '</span><span class="nm">' + p.name + '</span><span>' + r.xp + ' XP</span></div>'; }
+  const vmax = Math.max(...G.volume);
+  $('s-progress').innerHTML = '<div class="sec"><h3>Statistics</h3><div class="stats">'
+    + '<div class="stat"><span class="st-flame">' + I('flame') + '</span><div><b>4</b><small>Week streak</small></div></div>'
+    + '<div class="stat"><span class="st-xp">' + I('trophy') + '</span><div><b>2 340</b><small>Total XP</small></div></div>'
+    + '<div class="stat"><span style="color:var(--g)">' + I('dumbbell') + '</span><div><b>' + G.user.workouts + '</b><small>Workouts</small></div></div>'
+    + '<div class="stat"><span style="color:#CE82FF">' + I('up') + '</span><div><b>100 kg</b><small>Best squat</small></div></div></div>'
+    + '<h3>This week’s quests</h3>'
+    + '<div class="quest"><b>Train 3 times</b><i><span style="width:66%"></span><em>2 / 3</em></i></div>'
+    + '<div class="quest"><b>Lift more than last time once</b><i><span style="width:100%"></span><em>Done</em></i></div>'
+    + '<div class="quest"><b>Drink water 6 times a day</b><i><span style="width:40%"></span><em>4 / 6 today</em></i></div>'
+    + '<h3>Sets per week</h3><div class="chart">' + G.volume.map((v, i) => '<span class="' + (i < 7 ? 'lo' : '') + '" style="height:' + Math.round(v / vmax * 100) + '%"></span>').join('') + '</div></div>';
+  $('s-me').innerHTML = '<div class="prof"><span class="big">M</span><div><h2>' + G.user.name + '</h2><small>@' + G.user.handle + ', joined March 2025</small><div style="margin-top:6px">' + G.user.bio + '</div></div></div>'
+    + '<div class="sec"><h3>Achievements</h3>' + G.achievements.map((a) => '<div class="ach"><span class="medal' + (a.got ? '' : ' off') + '">' + I(a.got ? 'trophy' : 'flame') + '</span><div><b>' + a.name + '</b><small>' + a.desc + '</small>' + (a.got ? '' : '<i><span style="width:' + a.progress + '%"></span></i>') + '</div></div>').join('')
+    + '<h3>Reminders</h3>' + G.reminders.map((r) => '<div class="rem">' + I(r.kind === 'water' ? 'droplet' : r.kind === 'meal' ? 'utensils' : 'bell') + '<div>' + r.label + '<small>' + r.detail.replace(/ · /g, ', ') + '</small></div><span class="sw"></span></div>').join('')
+    + '<div style="padding:18px 0 22px"><span class="btn3d ghost">Add friends</span></div></div>';
+  gqTabs(document.getElementById('app'));
+})();
+</script>
+</body>
+</html>

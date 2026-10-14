@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>19 · Plates — GymQuest concept</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="frame.css">
+<style>
+  :root { --p25: #D7262B; --p20: #1D5FB8; --p15: #F2C21B; --p10: #2E9A4B; --p5: #F4F4F4; --p25s: #E9E9E9; --ink: #1F2125; --mute: #80848C; --bar: #A9ADB3; }
+  .app { position: absolute; inset: 0; background: #F6F6F4; color: var(--ink); font: 15px/1.4 Barlow, system-ui, sans-serif; display: flex; flex-direction: column; }
+  main { flex: 1; overflow-y: auto; padding: 50px 16px 16px; }
+  h1 { font: 700 34px/1 'Barlow Condensed', sans-serif; margin: 0 0 4px; }
+  .sub { color: var(--mute); margin: 0 0 14px; }
+  .loader { background: #fff; border-radius: 14px; padding: 16px 0 12px; margin-bottom: 14px; }
+  .loader svg { display: block; width: 100%; height: 150px; }
+  .loader .cap { text-align: center; font: 700 44px/1 'Barlow Condensed', sans-serif; }
+  .loader .cap small { font-size: 20px; color: var(--mute); }
+  .loader .per { text-align: center; color: var(--mute); }
+  .legend { display: flex; justify-content: center; gap: 12px; margin-top: 8px; font: 600 14px 'Barlow Condensed', sans-serif; }
+  .legend i { display: inline-block; width: 12px; height: 12px; border-radius: 50%; margin-right: 4px; vertical-align: -1px; }
+  .ex { display: flex; align-items: center; gap: 12px; background: #fff; border-radius: 14px; padding: 12px; margin-bottom: 8px; }
+  .ex .stack { display: flex; align-items: center; gap: 2px; width: 64px; justify-content: center; }
+  .ex .stack i { width: 7px; border-radius: 2px; }
+  .ex div { flex: 1; } .ex small { color: var(--mute); display: block; }
+  .ex .kg { font: 700 26px/1 'Barlow Condensed', sans-serif; }
+  .ex.cur { outline: 2px solid var(--ink); }
+  /* sets */
+  .setcard { background: #fff; border-radius: 14px; padding: 14px; margin-bottom: 8px; display: flex; align-items: center; gap: 12px; }
+  .setcard .n { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; font: 700 20px 'Barlow Condensed', sans-serif; background: #EDEDEB; }
+  .setcard.d .n { background: var(--p10); color: #fff; }
+  .setcard.c .n { background: var(--p25); color: #fff; }
+  .setcard div { flex: 1; } .setcard small { color: var(--mute); display: block; }
+  .setcard b { font: 700 22px 'Barlow Condensed', sans-serif; }
+  .step { display: flex; gap: 8px; margin: 12px 0; }
+  .step span { flex: 1; text-align: center; padding: 12px 0; border-radius: 30px; color: #fff; font: 700 18px 'Barlow Condensed', sans-serif; }
+  .btn { display: block; text-align: center; background: var(--ink); color: #fff; border-radius: 14px; padding: 15px; font: 700 20px 'Barlow Condensed', sans-serif; }
+  /* progress */
+  .rings { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+  .ring { background: #fff; border-radius: 14px; padding: 14px; text-align: center; }
+  .ring svg { width: 110px; height: 110px; }
+  .ring b { display: block; font: 700 22px 'Barlow Condensed', sans-serif; }
+  .ring small { color: var(--mute); }
+  .hist { background: #fff; border-radius: 14px; padding: 4px 14px; }
+  .hist div { display: flex; justify-content: space-between; padding: 11px 0; border-bottom: 1px solid #F0F0EE; }
+  .hist div:last-child { border: 0; }
+  .hist small { color: var(--mute); }
+  /* people */
+  .pp { display: flex; align-items: center; gap: 12px; background: #fff; border-radius: 14px; padding: 12px; margin-bottom: 8px; }
+  .pp .disc { width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; color: #fff; font: 700 20px 'Barlow Condensed', sans-serif; box-shadow: inset 0 0 0 5px rgba(255,255,255,0.25), inset 0 0 0 16px rgba(0,0,0,0.08); }
+  .pp div { flex: 1; } .pp small { color: var(--mute); display: block; }
+  .pp .xp { font: 700 20px 'Barlow Condensed', sans-serif; }
+  .opt { display: flex; align-items: center; padding: 12px 0; border-bottom: 1px solid #ECECEA; }
+  .opt div { flex: 1; } .opt small { color: var(--mute); display: block; }
+  .tg { width: 44px; height: 26px; border-radius: 13px; background: var(--p10); position: relative; }
+  .tg::after { content: ''; position: absolute; right: 3px; top: 3px; width: 20px; height: 20px; border-radius: 50%; background: #fff; }
+  nav { display: flex; justify-content: space-around; padding: 10px 0 26px; background: #fff; border-top: 1px solid #ECECEA; }
+  nav button { background: none; border: 0; display: flex; flex-direction: column; align-items: center; gap: 4px; font: 600 14px 'Barlow Condensed', sans-serif; color: var(--mute); }
+  nav button i { width: 22px; height: 22px; border-radius: 50%; border: 5px solid #DADAD8; }
+  nav button.is-active { color: var(--ink); }
+  nav button[data-tab="load"].is-active i { border-color: var(--p25); }
+  nav button[data-tab="sets"].is-active i { border-color: var(--p20); }
+  nav button[data-tab="progress"].is-active i { border-color: var(--p15); }
+  nav button[data-tab="people"].is-active i { border-color: var(--p10); }
+</style>
+</head>
+<body class="concept">
+<aside class="concept-info">
+  <div class="num">19 / 32 · BUILT WITHOUT A PLUGIN</div>
+  <h1>Plates</h1>
+  <p>Every colour comes from competition weight plates: red 25, blue 20, yellow 15, green 10. The app shows what to load on each side of the bar, drawn to scale, so you never do plate maths between sets. Everything else stays neutral grey like a steel bar.</p>
+  <span class="tag">plate colours</span><span class="tag">bar loading</span><span class="tag">useful, not decorative</span>
+  <div class="concept-nav"><a href="18-iron.html">← Prev</a><a href="index.html">All designs</a><a href="20-chalk.html">Next →</a></div>
+</aside>
+<div class="device"><div class="app" id="app">
+  <main data-scroll>
+    <section data-screen="load" id="s-load"></section>
+    <section data-screen="sets" id="s-sets" hidden></section>
+    <section data-screen="progress" id="s-progress" hidden></section>
+    <section data-screen="people" id="s-people" hidden></section>
+  </main>
+  <nav>
+    <button data-tab="load" class="is-active"><i></i>Load</button>
+    <button data-tab="sets"><i></i>Sets</button>
+    <button data-tab="progress"><i></i>Progress</button>
+    <button data-tab="people"><i></i>People</button>
+  </nav>
+</div></div>
+<script src="data.js"></script>
+<script>
+(function () {
+  const G = GQ, $ = (id) => document.getElementById(id), ex = G.today.exercises;
+  const PL = [[25, '#D7262B', 120], [20, '#1D5FB8', 120], [15, '#F2C21B', 104], [10, '#2E9A4B', 88], [5, '#E9E9E9', 64], [2.5, '#30333A', 52], [1.25, '#BFC3C9', 44]];
+  /* rozpis kotúčov na jednu stranu (olympijská tyč 20 kg) */
+  const split = (kg) => { let side = (kg - 20) / 2; const out = []; PL.forEach((p) => { while (side >= p[0] - 1e-9) { out.push(p); side -= p[0]; } }); return out; };
+  function bar(kg) {
+    const plates = split(kg); let s = '<svg viewBox="0 0 358 150"><rect x="0" y="69" width="358" height="12" rx="3" fill="#A9ADB3"/><rect x="150" y="65" width="58" height="20" rx="3" fill="#8E9298"/>';
+    let xr = 214, xl = 144;
+    plates.forEach((p) => { const w = p[0] >= 10 ? 16 : 11; s += '<rect x="' + xr + '" y="' + (75 - p[2] / 2) + '" width="' + w + '" height="' + p[2] + '" rx="3" fill="' + p[1] + '" stroke="rgba(0,0,0,.15)"/>'; s += '<rect x="' + (xl - w) + '" y="' + (75 - p[2] / 2) + '" width="' + w + '" height="' + p[2] + '" rx="3" fill="' + p[1] + '" stroke="rgba(0,0,0,.15)"/>'; xr += w + 2; xl -= w + 2; });
+    s += '<rect x="' + xr + '" y="63" width="8" height="24" rx="2" fill="#5C6067"/><rect x="' + (xl - 8) + '" y="63" width="8" height="24" rx="2" fill="#5C6067"/></svg>';
+    return { svg: s, plates };
+  }
+  const b = bar(60);
+  const per = b.plates.map((p) => p[0]).join(' + ');
+  $('s-load').innerHTML = '<h1>Bench press</h1><p class="sub">Set 3 of 4, 8 reps</p><div class="loader">' + b.svg + '<div class="cap">60 <small>kg</small></div><div class="per">Bar 20 kg, then ' + per + ' kg on each side</div>'
+    + '<div class="legend">' + [...new Map(b.plates.map((p) => [p[0], p])).values()].map((p) => '<span><i style="background:' + p[1] + '"></i>' + p[0] + '</span>').join('') + '</div></div>'
+    + ex.map((e, i) => { const pl = e.weight >= 20 && !/dumbbell|raise/i.test(e.name) ? split(e.weight) : []; return '<div class="ex' + (i === 0 ? ' cur' : '') + '"><span class="stack">' + (pl.length ? pl.map((p) => '<i style="background:' + p[1] + ';height:' + p[2] / 3 + 'px"></i>').join('') : '<small>' + (e.weight ? 'pair' : 'body') + '</small>') + '</span><div><b>' + e.name + '</b><small>' + e.sets + ' × ' + e.reps + '</small></div><span class="kg">' + (e.weight || 'BW') + '</span></div>'; }).join('');
+  const e = ex[0];
+  $('s-sets').innerHTML = '<h1>Sets</h1><p class="sub">Bench press, 60 kg today, 57.5 kg last week</p>'
+    + Array.from({ length: e.sets }, (_, k) => '<div class="setcard' + (k < e.done ? ' d' : k === e.done ? ' c' : '') + '"><span class="n">' + (k + 1) + '</span><div><b>' + (k <= e.done ? '8 × 60 kg' : '8 × 60 kg') + '</b><small>' + (k < e.done ? 'Done' : k === e.done ? 'Now' : 'Up next') + '</small></div></div>').join('')
+    + '<div class="step"><span style="background:#30333A">−2.5</span><span style="background:#30333A">+2.5</span><span style="background:var(--p10)">+5</span></div><span class="btn">Log set 3</span>';
+  const ring = (pct, col, label, val) => '<div class="ring"><svg viewBox="0 0 110 110"><circle cx="55" cy="55" r="44" fill="none" stroke="#EEE" stroke-width="16"/><circle cx="55" cy="55" r="44" fill="none" stroke="' + col + '" stroke-width="16" stroke-dasharray="' + (276.5 * pct).toFixed(1) + ' 276.5" transform="rotate(-90 55 55)"/><circle cx="55" cy="55" r="12" fill="#fff" stroke="#DDD"/></svg><b>' + val + '</b><small>' + label + '</small></div>';
+  $('s-progress').innerHTML = '<h1>Progress</h1><p class="sub">Week ' + G.user.streakWeeks + ' of the streak</p><div class="rings">'
+    + ring(2 / 3, '#D7262B', 'workouts this week', '2 of 3') + ring(0.94, '#1D5FB8', 'to level 13', '2340 XP') + ring(0.63, '#F2C21B', 'to 100 workouts', '63') + ring(0.5, '#2E9A4B', 'to eight weeks', '4 weeks') + '</div>'
+    + '<div class="hist">' + G.records.map((r) => '<div><span>' + r.name + '<br><small>' + r.date + '</small></span><b>' + r.kg + ' kg</b></div>').join('') + '</div>';
+  $('s-people').innerHTML = '<h1>People</h1><p class="sub">This week, by XP</p>'
+    + G.leaderboard.slice(0, 5).map((r) => { const p = G.person(r.who); return '<div class="pp"><span class="disc" style="background:' + p.color + '">' + p.name[0] + '</span><div><b>' + p.name + '</b><small>Level ' + r.level + '</small></div><span class="xp">' + r.xp + '</span></div>'; }).join('')
+    + '<h1 style="font-size:24px;margin-top:20px">Reminders</h1>' + G.reminders.map((r) => '<div class="opt"><div>' + r.label + '<small>' + r.detail.replace(/ · /g, ', ') + '</small></div><span class="tg"></span></div>').join('');
+  gqTabs(document.getElementById('app'));
+})();
+</script>
+</body>
+</html>

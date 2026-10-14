@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>24 · Arcade — GymQuest concept</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="frame.css">
+<style>
+  :root { --bg: #14102A; --panel: #231C47; --ink: #F4F1FF; --mute: #9D93D1; --hp: #FF4D6D; --mp: #4DD2FF; --xp: #FFD23F; --ok: #5CF28C; }
+  .app { position: absolute; inset: 0; background: var(--bg); color: var(--ink); font: 22px/1.1 VT323, monospace; display: flex; flex-direction: column; image-rendering: pixelated; }
+  .app::after { content: ''; position: absolute; inset: 0; pointer-events: none; background: repeating-linear-gradient(transparent 0 2px, rgba(0,0,0,0.18) 2px 3px); }
+  main { flex: 1; overflow-y: auto; padding: 50px 12px 12px; }
+  .px { font-family: 'Press Start 2P', monospace; }
+  h1 { font: 14px/1.4 'Press Start 2P', monospace; margin: 0 0 12px; color: var(--xp); }
+  .box { background: var(--panel); border: 4px solid var(--ink); box-shadow: 4px 4px 0 #000, inset -4px -4px 0 rgba(0,0,0,0.3); padding: 10px; margin-bottom: 14px; }
+  .bar { height: 16px; border: 3px solid var(--ink); background: #000; margin: 4px 0 8px; position: relative; }
+  .bar i { display: block; height: 100%; background: repeating-linear-gradient(90deg, currentColor 0 8px, transparent 8px 10px); }
+  .stats { display: grid; grid-template-columns: auto 1fr auto; gap: 0 8px; align-items: center; }
+  .stats .lb { font: 10px 'Press Start 2P', monospace; }
+  .boss { text-align: center; }
+  .boss svg { width: 140px; height: 112px; margin: 6px auto; display: block; }
+  .boss .nm { font: 11px/1.4 'Press Start 2P', monospace; color: var(--hp); }
+  .quest { display: flex; gap: 10px; padding: 6px 0; border-bottom: 2px dashed #3B3373; }
+  .quest:last-child { border: 0; }
+  .quest .ck { color: var(--ok); width: 16px; }
+  .quest span:nth-child(2) { flex: 1; }
+  .quest .r { color: var(--xp); }
+  .start { display: block; text-align: center; font: 12px 'Press Start 2P', monospace; color: var(--bg); background: var(--xp); padding: 14px; border: 4px solid var(--ink); box-shadow: 4px 4px 0 #000; animation: blink 1.2s steps(2) infinite; }
+  @keyframes blink { 50% { background: #FFB800; } }
+  @media (prefers-reduced-motion: reduce) { .start { animation: none; } }
+  /* battle */
+  .fight { display: flex; justify-content: space-between; align-items: flex-end; height: 150px; padding: 0 10px; }
+  .fight svg { width: 96px; height: 96px; }
+  .dmg { font: 18px 'Press Start 2P', monospace; color: var(--hp); position: relative; top: -60px; }
+  .menu { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 14px; font-size: 26px; }
+  .menu span::before { content: '  '; white-space: pre; }
+  .menu span.sel::before { content: '▶ '; color: var(--xp); }
+  .log { font-size: 20px; color: var(--mute); }
+  .log b { color: var(--ink); font-weight: 400; }
+  /* inventory */
+  .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  .slot { aspect-ratio: 1; border: 3px solid var(--mute); background: #1A1538; display: grid; place-items: center; text-align: center; font-size: 16px; line-height: 1; padding: 4px; }
+  .slot b { display: block; font: 12px 'Press Start 2P', monospace; color: var(--xp); margin-bottom: 4px; }
+  .slot.off { opacity: 0.35; }
+  .hi td { padding: 4px 6px; font-size: 22px; }
+  .hi { width: 100%; border-collapse: collapse; }
+  .hi tr.me td { color: var(--xp); }
+  .hi td:last-child { text-align: right; }
+  nav { display: flex; background: #000; border-top: 4px solid var(--ink); padding-bottom: 22px; }
+  nav button { flex: 1; background: none; border: 0; color: var(--mute); font: 9px 'Press Start 2P', monospace; padding: 14px 0; }
+  nav button.is-active { color: var(--bg); background: var(--ok); }
+</style>
+</head>
+<body class="concept">
+<aside class="concept-info">
+  <div class="num">24 / 32 · BUILT WITHOUT A PLUGIN</div>
+  <h1>Arcade</h1>
+  <p>GymQuest already has XP and levels, so this one leans all the way in. Pixel art, a CRT glow, and the weekly goal as a boss with a health bar. Every set you log is an attack, rest is your mana refilling, and achievements are items in an inventory.</p>
+  <span class="tag">pixel art</span><span class="tag">boss fight</span><span class="tag">full game</span>
+  <div class="concept-nav"><a href="23-soft.html">← Prev</a><a href="index.html">All designs</a><a href="25-locker.html">Next →</a></div>
+</aside>
+<div class="device"><div class="app" id="app">
+  <main data-scroll>
+    <section data-screen="quest" id="s-quest"></section>
+    <section data-screen="battle" id="s-battle" hidden></section>
+    <section data-screen="items" id="s-items" hidden></section>
+    <section data-screen="scores" id="s-scores" hidden></section>
+  </main>
+  <nav>
+    <button data-tab="quest" class="is-active">QUEST</button>
+    <button data-tab="battle">FIGHT</button>
+    <button data-tab="items">ITEMS</button>
+    <button data-tab="scores">SCORES</button>
+  </nav>
+</div></div>
+<script src="data.js"></script>
+<script>
+(function () {
+  const G = GQ, $ = (id) => document.getElementById(id), ex = G.today.exercises;
+  /* pixelový sprite z mriežky */
+  const sprite = (rows, pal, s) => { let o = ''; rows.forEach((r, y) => [...r].forEach((c, x) => { if (c !== '.') o += '<rect x="' + x * s + '" y="' + y * s + '" width="' + s + '" height="' + s + '" fill="' + pal[c] + '"/>'; })); return o; };
+  const bossRows = ['....rrrrrr....', '...rrrrrrrr...', '..rrwwrrwwrr..', '..rrwkrrwkrr..', '..rrrrrrrrrr..', '...rrkkkkrr...', 'gg.rrrrrrrr.gg', 'gggggggggggggg', 'gg..rr..rr..gg', '....rr..rr....'];
+  const bossSvg = '<svg viewBox="0 0 140 100">' + sprite(bossRows, { r: '#FF4D6D', w: '#fff', k: '#14102A', g: '#9D93D1' }, 10) + '</svg>';
+  const heroRows = ['...yyyy...', '..yyyyyy..', '..ykyyky..', '..yyyyyy..', '...yyyy...', 'g.bbbbbb.g', 'gggbbbbggg', 'g..bbbb..g', '...b..b...', '..bb..bb..'];
+  const heroSvg = '<svg viewBox="0 0 100 100">' + sprite(heroRows, { y: '#FFD23F', k: '#14102A', b: '#4DD2FF', g: '#F4F1FF' }, 10) + '</svg>';
+  $('s-quest').innerHTML = '<h1>Player 1</h1><div class="box stats"><span class="lb" style="color:var(--hp)">HP</span><div class="bar" style="color:var(--hp)"><i style="width:90%"></i></div><span>90</span>'
+    + '<span class="lb" style="color:var(--mp)">MP</span><div class="bar" style="color:var(--mp)"><i style="width:60%"></i></div><span>60</span>'
+    + '<span class="lb" style="color:var(--xp)">XP</span><div class="bar" style="color:var(--xp)"><i style="width:' + Math.round(G.user.xp / G.user.nextLevelXp * 100) + '%"></i></div><span>LV' + G.user.level + '</span></div>'
+    + '<div class="box boss"><div class="nm">Boss: the week</div>' + bossSvg + '<div class="bar" style="color:var(--hp)"><i style="width:33%"></i></div>1 workout left to beat it</div>'
+    + '<div class="box">' + [['✓', 'Lift more than last time', '+75'], ['✓', 'Train Monday', '+95'], ['✓', 'Train Wednesday', '+110'], [' ', 'Push day today', '+100'], [' ', 'Drink water 6 times', '+20']].map((q) => '<div class="quest"><span class="ck">' + q[0] + '</span><span>' + q[1] + '</span><span class="r">' + q[2] + '</span></div>').join('') + '</div>'
+    + '<span class="start">Press start</span>';
+  $('s-battle').innerHTML = '<h1>Bench press</h1><div class="box"><div class="fight">' + heroSvg + '<span class="dmg">−8</span><div style="text-align:center"><svg viewBox="0 0 140 100" style="width:110px;height:80px">' + sprite(bossRows, { r: '#FF4D6D', w: '#fff', k: '#14102A', g: '#9D93D1' }, 10) + '</svg></div></div>'
+    + '<div class="bar" style="color:var(--hp)"><i style="width:58%"></i></div><div class="log">Set 2: <b>8 reps × 60 kg</b>. It hit for 8!<br>Set 3 is ready. Rest MP refilled.</div></div>'
+    + '<div class="box menu"><span class="sel">Log set</span><span>+2.5 kg</span><span>Rest</span><span>Skip</span></div>'
+    + '<div class="box log">' + ex.slice(1).map((e) => '<div>' + e.name + ' <b>' + e.sets + '×' + e.reps + (e.weight ? ' ' + e.weight + 'kg' : '') + '</b></div>').join('') + '</div>';
+  $('s-items').innerHTML = '<h1>Inventory</h1><div class="box"><div class="grid">'
+    + G.records.map((r) => '<div class="slot"><div><b>' + r.kg + '</b>' + r.name + '</div></div>').join('')
+    + G.achievements.map((a) => '<div class="slot' + (a.got ? '' : ' off') + '"><div><b>' + (a.got ? '★' : a.progress + '%') + '</b>' + a.name + '</div></div>').join('') + '<div class="slot off">?</div><div class="slot off">?</div><div class="slot off">?</div></div></div>'
+    + '<h1>Auto-buffs</h1><div class="box">' + G.reminders.map((r) => '<div class="quest"><span class="ck">●</span><span>' + r.label + ' ' + r.detail.replace(/ · /g, ', ') + '</span><span class="r">ON</span></div>').join('') + '</div>';
+  $('s-scores').innerHTML = '<h1>High scores</h1><div class="box"><table class="hi">' + G.leaderboard.map((r, i) => '<tr class="' + (r.who === 'me' ? 'me' : '') + '"><td>' + (i + 1) + '.</td><td>' + G.person(r.who).name.toUpperCase().replace('Á', 'A').replace('Š', 'S') + '</td><td>LV' + r.level + '</td><td>' + String(r.xp).padStart(5, '0') + '</td></tr>').join('') + '</table></div>'
+    + '<h1>Recent runs</h1><div class="box log">' + G.history.slice(0, 4).map((h) => '<div><b>' + h.plan + '</b> ' + h.date + ', ' + h.minutes + ' min, +' + h.xp + ' XP</div>').join('') + '</div>';
+  gqTabs(document.getElementById('app'));
+})();
+</script>
+</body>
+</html>

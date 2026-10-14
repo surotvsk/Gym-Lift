@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>15 · Forum — GymQuest concept</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="frame.css">
+<style>
+  :root { --or: #FF4500; --blue: #0079D3; --canvas: #DAE0E6; --ink: #1A1A1B; --mute: #787C7E; --line: #EDEFF1; --down: #7193FF; }
+  .app { position: absolute; inset: 0; background: var(--canvas); color: var(--ink); font: 14px/1.4 'Noto Sans', system-ui, sans-serif; display: flex; flex-direction: column; }
+  header { background: #fff; padding: 48px 12px 8px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid #ccc; }
+  header .logo { width: 32px; height: 32px; border-radius: 50%; background: var(--or); display: grid; place-items: center; color: #fff; }
+  header .logo .ico { width: 18px; height: 18px; stroke-width: 2.4; }
+  header .q { flex: 1; background: #F6F7F8; border: 1px solid var(--line); border-radius: 18px; padding: 7px 12px; color: var(--mute); display: flex; gap: 6px; align-items: center; }
+  header .q .ico { width: 16px; height: 16px; }
+  .me-av { width: 30px; height: 30px; border-radius: 50%; background: #2F3B33; color: #fff; display: grid; place-items: center; font-weight: 700; font-size: 13px; }
+  main { flex: 1; overflow-y: auto; }
+  .sort { display: flex; gap: 6px; padding: 8px 10px; background: #fff; margin-bottom: 8px; border-bottom: 1px solid #ccc; }
+  .sort span { padding: 5px 10px; border-radius: 16px; color: var(--mute); font-weight: 700; font-size: 13px; }
+  .sort span.on { background: var(--line); color: var(--blue); }
+  .post { background: #fff; margin-bottom: 8px; padding: 10px 12px 4px; }
+  .meta { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--mute); }
+  .meta .sub { width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; color: #fff; font-size: 11px; font-weight: 700; }
+  .meta b { color: var(--ink); font-weight: 700; }
+  .flair { display: inline-block; font-size: 11px; font-weight: 600; border-radius: 10px; padding: 1px 8px; margin: 6px 0 2px; }
+  .post h2 { margin: 2px 0 6px; font-size: 17px; font-weight: 600; line-height: 1.3; }
+  .post p { margin: 0 0 8px; color: #333; }
+  .post .img { height: 220px; border-radius: 8px; background: #ddd center/cover; margin-bottom: 8px; }
+  .wcard { border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; margin-bottom: 8px; background: #F6F7F8; font-size: 13px; }
+  .wcard b { display: block; font-size: 14px; }
+  .wcard div { padding: 2px 0; }
+  .actions { display: flex; gap: 4px; align-items: center; color: var(--mute); font-weight: 700; font-size: 12px; padding: 2px 0 6px; }
+  .vote { display: flex; align-items: center; gap: 2px; background: #F6F7F8; border-radius: 16px; padding: 2px 4px; }
+  .vote .ico { width: 18px; height: 18px; stroke-width: 2.4; }
+  .vote .up.on { color: var(--or); }
+  .vote .dn { transform: rotate(180deg); }
+  .vote b { min-width: 30px; text-align: center; color: var(--ink); }
+  .vote.voted b { color: var(--or); }
+  .actions .a { display: flex; align-items: center; gap: 4px; background: #F6F7F8; border-radius: 16px; padding: 5px 10px; }
+  .actions .a .ico { width: 16px; height: 16px; }
+  /* thread */
+  .thread { background: #fff; padding: 12px; }
+  .cm { position: relative; padding-left: 14px; margin-top: 10px; }
+  .cm::before { content: ''; position: absolute; left: 4px; top: 26px; bottom: 0; width: 2px; background: var(--line); }
+  .cm .meta .sub { width: 24px; height: 24px; }
+  .cm p { margin: 4px 0; }
+  .cm .actions { padding: 0; }
+  .op { color: var(--blue); font-weight: 700; }
+  .reply-box { margin: 10px 0 0; border: 1px solid #ccc; border-radius: 18px; padding: 8px 12px; color: var(--mute); }
+  /* communities */
+  .comm { background: #fff; margin-bottom: 8px; }
+  .comm .banner { height: 64px; }
+  .comm .in { padding: 0 12px 12px; }
+  .comm .ic { width: 56px; height: 56px; border-radius: 50%; border: 3px solid #fff; margin-top: -26px; display: grid; place-items: center; color: #fff; font-weight: 700; font-size: 20px; }
+  .comm h2 { margin: 4px 0 0; font-size: 18px; }
+  .comm small { color: var(--mute); }
+  .comm p { margin: 6px 0 10px; }
+  .join { display: inline-block; background: var(--blue); color: #fff; font-weight: 700; border-radius: 16px; padding: 5px 16px; }
+  .join.joined { background: #fff; color: var(--blue); border: 1px solid var(--blue); }
+  .list { background: #fff; }
+  .list h3 { margin: 0; padding: 12px; font-size: 14px; color: var(--mute); font-weight: 700; }
+  .li { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-top: 1px solid var(--line); }
+  .li .sub { width: 32px; height: 32px; border-radius: 50%; color: #fff; display: grid; place-items: center; font-weight: 700; flex: 0 0 auto; }
+  .li div { flex: 1; } .li small { display: block; color: var(--mute); }
+  .li .rank { width: 20px; color: var(--mute); font-weight: 700; }
+  /* log */
+  .logp { background: #fff; padding: 12px; margin-bottom: 8px; }
+  .logp h2 { margin: 0 0 2px; font-size: 18px; }
+  .logp > small { color: var(--mute); }
+  table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 13px; }
+  th { text-align: left; color: var(--mute); font-weight: 600; padding: 6px 4px; border-bottom: 1px solid var(--line); }
+  td { padding: 8px 4px; border-bottom: 1px solid var(--line); }
+  td.n { text-align: right; font-variant-numeric: tabular-nums; }
+  tr.cur td { background: #FFF5F0; }
+  .post-btn { display: block; text-align: center; background: var(--or); color: #fff; border-radius: 18px; padding: 9px; font-weight: 700; margin-top: 12px; }
+  /* profile */
+  .uhead { background: linear-gradient(#2F3B33 0 90px, #fff 90px); padding: 50px 12px 12px; }
+  .uhead .big { width: 78px; height: 78px; border-radius: 50%; background: #FF8717; border: 4px solid #fff; display: grid; place-items: center; color: #fff; font-size: 32px; font-weight: 700; }
+  .uhead h2 { margin: 6px 0 0; font-size: 20px; }
+  .uhead small { color: var(--mute); }
+  .karma { display: flex; gap: 24px; margin-top: 10px; }
+  .karma b { display: block; font-size: 15px; }
+  .karma span { color: var(--mute); font-size: 12px; }
+  .trophy { display: flex; gap: 10px; align-items: center; padding: 10px 12px; border-top: 1px solid var(--line); background: #fff; }
+  .trophy .t { width: 36px; height: 36px; border-radius: 8px; background: #FFF4D6; color: #C98A00; display: grid; place-items: center; }
+  .trophy .t.off { background: var(--line); color: #b0b4b6; }
+  .trophy div { flex: 1; } .trophy small { color: var(--mute); display: block; }
+  .tgl { width: 40px; height: 24px; border-radius: 12px; background: var(--blue); position: relative; }
+  .tgl::after { content: ''; position: absolute; right: 3px; top: 3px; width: 18px; height: 18px; border-radius: 50%; background: #fff; }
+  nav { display: flex; justify-content: space-around; padding: 6px 0 26px; background: #fff; border-top: 1px solid #ccc; }
+  nav button { background: none; border: 0; color: var(--mute); display: flex; flex-direction: column; align-items: center; gap: 2px; font: 600 11px 'Noto Sans', sans-serif; }
+  nav button.is-active { color: var(--ink); }
+  nav .create .ico { stroke-width: 2.2; }
+</style>
+</head>
+<body class="concept">
+<aside class="concept-info">
+  <div class="num">15 / 32 · BUILT WITH FRONTEND DESIGN</div>
+  <h1>Forum</h1>
+  <p>Reddit’s threads for people who want to talk about training, not just show it. Gyms and programs are communities, good advice is upvoted to the top, and replies nest so a form check can become a real conversation. Your workout log is a post you can share in one tap.</p>
+  <span class="tag">upvotes</span><span class="tag">nested replies</span><span class="tag">communities per gym</span>
+  <div class="concept-nav"><a href="14-path.html">← Prev</a><a href="index.html">All designs</a><a href="16-server.html">Next →</a></div>
+</aside>
+<div class="device"><div class="app" id="app">
+  <header><span class="logo">ICON:dumbbell</span><span class="q">ICON:search Search GymQuest</span><span class="me-av">M</span></header>
+  <main data-scroll>
+    <section data-screen="home" id="s-home"></section>
+    <section data-screen="thread" id="s-thread" hidden></section>
+    <section data-screen="create" id="s-create" hidden></section>
+    <section data-screen="communities" id="s-comm" hidden></section>
+    <section data-screen="profile" id="s-profile" hidden></section>
+  </main>
+  <nav>
+    <button data-tab="home" class="is-active">ICON:home<span>Home</span></button>
+    <button data-tab="thread">ICON:chat<span>Thread</span></button>
+    <button data-tab="create" class="create">ICON:plus<span>Log</span></button>
+    <button data-tab="communities">ICON:users<span>Communities</span></button>
+    <button data-tab="profile">ICON:user<span>You</span></button>
+  </nav>
+</div></div>
+<script src="data.js"></script>
+<script src="icons.js"></script>
+<script>
+(function () {
+  const G = GQ, I = ICON, $ = (id) => document.getElementById(id);
+  document.querySelectorAll('header span, nav button').forEach((b) => { b.innerHTML = b.innerHTML.replace(/ICON:(\w+)/, (_, n) => I(n)); });
+  const subs = { pr: ['r/PersonalRecords', '#FF4500'], workout: ['r/FitinnRuzinov', '#0079D3'], plan: ['r/HomeWorkouts', '#46D160'], photo: ['r/ShoulderHealth', '#7193FF'] };
+  const titles = { pr: 'Deadlift 140 kg after a year of trying', workout: 'Leg day check-in: 64 minutes, 20 sets', plan: 'My no-equipment home plan, 25 minutes', photo: 'Week 6: shoulders finally feel stable' };
+  const flairs = { pr: ['New record', '#FFE1D6', '#B33100'], workout: ['Workout log', '#D6ECFF', '#005BA1'], plan: ['Plan', '#DDF7E3', '#1E7A35'], photo: ['Progress', '#E5EBFF', '#3854B8'] };
+  const vote = (n, on) => '<span class="vote' + (on ? ' voted' : '') + '"><span class="up' + (on ? ' on' : '') + '">' + I('up') + '</span><b>' + n + '</b><span class="dn">' + I('up') + '</span></span>';
+  const actions = (n, c, on) => '<div class="actions">' + vote(n, on) + '<span class="a">' + I('comment') + c + '</span><span class="a">' + I('share') + 'Share</span></div>';
+  function post(f, i) {
+    const p = G.person(f.who), s = subs[f.kind], fl = flairs[f.kind];
+    let body = '<p>' + f.text + '</p>';
+    if (f.workout) body += '<div class="wcard"><b>' + f.workout.plan + ', ' + f.workout.minutes + ' min</b>' + f.workout.lines.map((l) => '<div>' + l + '</div>').join('') + '</div>';
+    if (f.plan) body += '<div class="wcard"><b>' + f.plan.name + '</b>' + f.plan.lines.map((l) => '<div>' + l + '</div>').join('') + '<div style="color:var(--blue);font-weight:700;padding-top:6px">Save to my plans</div></div>';
+    if (f.img && f.kind === 'photo') body += '<div class="img" style="background-image:url(' + G.img(f.img) + ')"></div>';
+    return '<div class="post"><div class="meta"><span class="sub" style="background:' + s[1] + '">r/</span><b>' + s[0] + '</b> ' + f.ago + ' ago, by u/' + p.handle + '</div>'
+      + '<span class="flair" style="background:' + fl[1] + ';color:' + fl[2] + '">' + fl[0] + '</span><h2>' + titles[f.kind] + '</h2>' + body + actions(f.likes * 7, f.comments, i === 0) + '</div>';
+  }
+  $('s-home').innerHTML = '<div class="sort"><span class="on">Best</span><span>Hot</span><span>New</span><span>Top this week</span></div>' + G.feed.map(post).join('');
+  const t = G.person('tomas');
+  const c = (who, ago, text, n, extra, depth) => '<div class="cm" style="margin-left:' + depth * 14 + 'px"><div class="meta"><span class="sub" style="background:' + G.person(who).color + '">' + G.person(who).name[0] + '</span><b>' + G.person(who).handle + '</b>' + (who === 'tomas' ? ' <span class="op">OP</span>' : '') + ' ' + ago + '</div><p>' + text + '</p>' + '<div class="actions">' + vote(n) + '<span class="a">' + I('comment') + 'Reply</span></div>' + (extra || '') + '</div>';
+  $('s-thread').innerHTML = post(G.feed[0], 0).replace('class="post"', 'class="post" style="margin-bottom:0"')
+    + '<div class="thread"><div class="sort" style="padding:0 0 8px;margin:0;border:0"><span class="on">Top comments</span><span>New</span></div>'
+    + c('peter', '12 min', 'Congrats! What changed in the last few months? I’ve been stuck at 130 since summer.', 48,
+        c('tomas', '9 min', 'Honestly sleep and deficit deadlifts twice a week. And I stopped testing my max every Friday.', 61,
+          c('me', '4 min', 'The “stop testing” part is so real. Saving this.', 12, '', 0), 0), 0)
+    + c('anna', '15 min', 'Form looks clean in the video too. Hips don’t shoot up at all.', 33, '', 0)
+    + '<div class="reply-box">Add a comment</div></div>';
+  $('s-create').innerHTML = '<div class="logp"><h2>Today: ' + G.today.plan + '</h2><small>Started 17:04 at Fitinn Ružinov, 23 min so far</small><table><tr><th>Exercise</th><th class="n">Sets</th><th class="n">kg</th><th class="n">Last</th></tr>'
+    + G.today.exercises.map((e, i) => '<tr class="' + (i === 0 ? 'cur' : '') + '"><td>' + e.name + '</td><td class="n">' + e.done + '/' + e.sets + '</td><td class="n">' + (e.weight || 'BW') + '</td><td class="n">' + (e.last || 'BW') + '</td></tr>').join('')
+    + '</table><span class="post-btn">Finish and post to r/FitinnRuzinov</span></div>'
+    + '<div class="logp"><h2>Records</h2><table>' + G.records.map((r) => '<tr><td>' + r.name + '</td><td class="n">' + r.kg + ' kg</td><td class="n" style="color:var(--mute)">' + r.date + '</td></tr>').join('') + '</table></div>';
+  $('s-comm').innerHTML = '<div class="comm"><div class="banner" style="background:#0079D3"></div><div class="in"><span class="ic" style="background:#0079D3">F</span><h2>r/FitinnRuzinov</h2><small>412 members, 38 training now</small><p>Your gym. Spotters, equipment questions, who has the squat rack at 18:00.</p><span class="join joined">Joined</span></div></div>'
+    + '<div class="list"><h3>Top communities this week</h3>' + [['PersonalRecords', '#FF4500', '18.2k members'], ['HomeWorkouts', '#46D160', '9.4k members'], ['PushPullLegs', '#FFB000', '7.1k members'], ['ShoulderHealth', '#7193FF', '2.3k members'], ['BratislavaLifters', '#D93A00', '1.1k members']]
+      .map((x, i) => '<div class="li"><span class="rank">' + (i + 1) + '</span><span class="sub" style="background:' + x[1] + '">r/</span><div><b>r/' + x[0] + '</b><small>' + x[2] + '</small></div><span class="join' + (i < 2 ? ' joined' : '') + '">' + (i < 2 ? 'Joined' : 'Join') + '</span></div>').join('') + '</div>';
+  $('s-profile').innerHTML = '<div class="uhead"><span class="big">M</span><h2>u/' + G.user.handle + '</h2><small>' + G.user.bio + '</small><div class="karma"><div><b>4 812</b><span>Karma</span></div><div><b>' + G.user.workouts + '</b><span>Workouts</span></div><div><b>Level ' + G.user.level + '</b><span>' + G.user.xp + ' XP</span></div></div></div>'
+    + '<div class="list" style="margin-top:8px"><h3>Trophy case</h3>' + G.achievements.map((a) => '<div class="trophy"><span class="t' + (a.got ? '' : ' off') + '">' + I('trophy') + '</span><div><b>' + a.name + '</b><small>' + a.desc + (a.got ? '' : ', ' + a.progress + '% there') + '</small></div></div>').join('') + '</div>'
+    + '<div class="list" style="margin-top:8px"><h3>Reminders</h3>' + G.reminders.map((r) => '<div class="trophy"><span class="t" style="background:#E5F1FB;color:var(--blue)">' + I(r.kind === 'water' ? 'droplet' : r.kind === 'meal' ? 'utensils' : 'bell') + '</span><div><b>' + r.label + '</b><small>' + r.detail.replace(/ · /g, ', ') + '</small></div><span class="tgl"></span></div>').join('') + '</div>';
+  gqTabs(document.getElementById('app'));
+})();
+</script>
+</body>
+</html>

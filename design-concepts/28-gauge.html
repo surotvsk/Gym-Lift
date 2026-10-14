@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>28 · Gauge — GymQuest concept</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Saira+Semi+Condensed:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="frame.css">
+<style>
+  :root { --alu: #D6D9DD; --alu-d: #B9BEC4; --face: #FAFAF8; --ink: #1E2124; --mute: #6E747B; --needle: #FF5F1F; }
+  .app { position: absolute; inset: 0; background: linear-gradient(180deg, #DDE0E4, #C9CDD2); color: var(--ink); font: 500 15px/1.35 'Saira Semi Condensed', system-ui, sans-serif; display: flex; flex-direction: column; }
+  .app::before { content: ''; position: absolute; inset: 0; pointer-events: none; opacity: 0.4; background: repeating-linear-gradient(90deg, rgba(255,255,255,0.35) 0 1px, transparent 1px 3px); }
+  main { flex: 1; overflow-y: auto; padding: 50px 16px 16px; position: relative; }
+  .bezel { width: 300px; height: 300px; margin: 0 auto; border-radius: 50%; background: conic-gradient(from 200deg, #F4F5F6, #9EA4AA, #F4F5F6, #9EA4AA, #F4F5F6); padding: 12px; box-shadow: 0 10px 22px rgba(0,0,0,0.22); }
+  .bezel svg { width: 100%; height: 100%; display: block; border-radius: 50%; background: var(--face); box-shadow: inset 0 3px 8px rgba(0,0,0,0.2); }
+  .below { text-align: center; margin-top: 12px; }
+  .below h1 { margin: 0; font-size: 24px; font-weight: 700; }
+  .below p { margin: 0; color: var(--mute); }
+  .counter { display: flex; justify-content: center; gap: 3px; margin: 14px 0; }
+  .counter span { width: 34px; height: 48px; border-radius: 4px; background: linear-gradient(#1E2124, #3A3F44 50%, #1E2124); color: #fff; display: grid; place-items: center; font-size: 30px; font-weight: 600; box-shadow: inset 0 0 0 1px #000, 0 1px 0 rgba(255,255,255,0.6); }
+  .counter span.lit { color: var(--needle); }
+  .counter small { align-self: end; margin-left: 6px; color: var(--mute); }
+  .keys { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+  .key { border-radius: 14px; padding: 14px 0; text-align: center; font-weight: 600; font-size: 17px; background: linear-gradient(#F5F6F7, #D9DCE0); box-shadow: 0 3px 0 #A5ABB2, inset 0 1px 0 #fff; }
+  .key.go { background: linear-gradient(#FF7A43, #F0520F); color: #fff; box-shadow: 0 3px 0 #B53A08, inset 0 1px 0 rgba(255,255,255,0.4); }
+  /* panel */
+  .panel { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .mini { background: linear-gradient(#ECEEF0, #D5D9DD); border-radius: 18px; padding: 10px; text-align: center; box-shadow: 0 3px 8px rgba(0,0,0,0.12), inset 0 1px 0 #fff; }
+  .mini svg { width: 130px; height: 82px; }
+  .mini b { display: block; font-size: 20px; font-weight: 700; margin-top: -4px; }
+  .mini small { color: var(--mute); }
+  .strip { margin-top: 12px; background: var(--face); border-radius: 14px; padding: 4px 14px; box-shadow: inset 0 2px 5px rgba(0,0,0,0.12); }
+  .strip div { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #E6E8EA; }
+  .strip div:last-child { border: 0; }
+  .strip small { color: var(--mute); }
+  .h { font-weight: 700; font-size: 22px; margin: 0 0 10px; }
+  .led { display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #3FD16B; box-shadow: 0 0 6px #3FD16B; }
+  .led.off { background: #9AA0A6; box-shadow: none; }
+  nav { display: flex; gap: 8px; padding: 10px 14px 26px; position: relative; }
+  nav button { flex: 1; border: 0; border-radius: 12px; padding: 11px 0; font: 600 14px 'Saira Semi Condensed', sans-serif; color: var(--ink); background: linear-gradient(#F5F6F7, #D9DCE0); box-shadow: 0 3px 0 #A5ABB2; }
+  nav button.is-active { background: linear-gradient(#2A2E33, #1E2124); color: #fff; box-shadow: 0 1px 0 #000; transform: translateY(2px); }
+</style>
+</head>
+<body class="concept">
+<aside class="concept-info">
+  <div class="num">28 / 32 · BUILT WITH FRONTEND DESIGN</div>
+  <h1>Gauge</h1>
+  <p>Built like a piece of gym equipment: brushed aluminium, physical buttons, a needle and rolling counters. The big dial shows today’s weight against your record, so you can see how close you are without reading a number. Everything clicks.</p>
+  <span class="tag">analog dial</span><span class="tag">aluminium</span><span class="tag">tactile buttons</span>
+  <div class="concept-nav"><a href="27-topo.html">← Prev</a><a href="index.html">All designs</a><a href="29-sticker.html">Next →</a></div>
+</aside>
+<div class="device"><div class="app" id="app">
+  <main data-scroll>
+    <section data-screen="dial" id="s-dial"></section>
+    <section data-screen="panel" id="s-panel" hidden></section>
+    <section data-screen="log" id="s-log" hidden></section>
+    <section data-screen="setup" id="s-setup" hidden></section>
+  </main>
+  <nav>
+    <button data-tab="dial" class="is-active">Lift</button>
+    <button data-tab="panel">Panel</button>
+    <button data-tab="log">Log</button>
+    <button data-tab="setup">Setup</button>
+  </nav>
+</div></div>
+<script src="data.js"></script>
+<script>
+(function () {
+  const G = GQ, $ = (id) => document.getElementById(id);
+  /* ciferník 0–80 kg cez 270° */
+  function dial(val, max, rec) {
+    const a0 = 135, span = 270, cx = 138, cy = 138;
+    const ang = (v) => (a0 + span * v / max) * Math.PI / 180;
+    let s = '<svg viewBox="0 0 276 276">';
+    for (let v = 0; v <= max; v += 2.5) {
+      const a = ang(v), major = v % 10 === 0, r1 = major ? 104 : 112, r2 = 122;
+      s += '<line x1="' + (cx + Math.cos(a) * r1).toFixed(1) + '" y1="' + (cy + Math.sin(a) * r1).toFixed(1) + '" x2="' + (cx + Math.cos(a) * r2).toFixed(1) + '" y2="' + (cy + Math.sin(a) * r2).toFixed(1) + '" stroke="#1E2124" stroke-width="' + (major ? 2.5 : 1) + '"/>';
+      if (major) s += '<text x="' + (cx + Math.cos(a) * 88).toFixed(1) + '" y="' + (cy + Math.sin(a) * 88 + 5).toFixed(1) + '" text-anchor="middle" font-size="14" font-weight="600" fill="#1E2124" font-family="Saira Semi Condensed">' + v + '</text>';
+    }
+    const ra = ang(rec);
+    s += '<path d="M' + (cx + Math.cos(ang(rec - 2.5)) * 128) + ' ' + (cy + Math.sin(ang(rec - 2.5)) * 128) + ' A128 128 0 0 1 ' + (cx + Math.cos(ang(max)) * 128) + ' ' + (cy + Math.sin(ang(max)) * 128) + '" fill="none" stroke="#FF5F1F" stroke-width="6" opacity=".35"/>';
+    s += '<text x="' + cx + '" y="196" text-anchor="middle" font-size="13" fill="#6E747B" font-family="Saira Semi Condensed">kg, record ' + rec + '</text>';
+    const na = ang(val);
+    s += '<line x1="' + (cx - Math.cos(na) * 18) + '" y1="' + (cy - Math.sin(na) * 18) + '" x2="' + (cx + Math.cos(na) * 116).toFixed(1) + '" y2="' + (cy + Math.sin(na) * 116).toFixed(1) + '" stroke="#FF5F1F" stroke-width="4" stroke-linecap="round"/>';
+    s += '<circle cx="' + cx + '" cy="' + cy + '" r="12" fill="#1E2124"/><circle cx="' + cx + '" cy="' + cy + '" r="4" fill="#9EA4AA"/></svg>';
+    return s;
+  }
+  $('s-dial').innerHTML = '<div class="bezel">' + dial(60, 80, 60) + '</div><div class="below"><h1>Bench press, set 3</h1><p>Matches your record. One more set to go after this.</p></div>'
+    + '<div class="counter"><span>0</span><span class="lit">8</span><small>reps</small><span style="margin-left:14px">0</span><span>6</span><span>0</span><small>kg</small></div>'
+    + '<div class="keys"><span class="key">−2.5</span><span class="key">+2.5</span><span class="key">Rest</span><span class="key">− rep</span><span class="key">+ rep</span><span class="key go">Log</span></div>';
+  const minig = (pct) => { let s = '<svg viewBox="0 0 130 82">'; s += '<path d="M15 72 A50 50 0 0 1 115 72" fill="none" stroke="#C3C8CD" stroke-width="10" stroke-linecap="round"/>'; const a = Math.PI * (1 + pct); s += '<path d="M15 72 A50 50 0 0 1 ' + (65 + Math.cos(a) * 50).toFixed(1) + ' ' + (72 + Math.sin(a) * 50).toFixed(1) + '" fill="none" stroke="#1E2124" stroke-width="10" stroke-linecap="round"/>'; s += '<line x1="65" y1="72" x2="' + (65 + Math.cos(a) * 40).toFixed(1) + '" y2="' + (72 + Math.sin(a) * 40).toFixed(1) + '" stroke="#FF5F1F" stroke-width="3" stroke-linecap="round"/><circle cx="65" cy="72" r="5" fill="#1E2124"/></svg>'; return s; };
+  $('s-panel').innerHTML = '<div class="h">Panel</div><div class="panel">'
+    + [[2 / 3, '2 of 3', 'workouts this week'], [0.94, 'Level ' + G.user.level, '160 XP to go'], [0.6, '4 of 6', 'glasses of water'], [0.5, G.user.streakWeeks + ' weeks', 'streak, 8 is the goal']].map((g) => '<div class="mini">' + minig(g[0]) + '<b>' + g[1] + '</b><small>' + g[2] + '</small></div>').join('') + '</div>'
+    + '<div class="strip">' + G.records.map((r) => '<div><span>' + r.name + '<br><small>' + r.date + '</small></span><b>' + r.kg + ' kg</b></div>').join('') + '</div>';
+  $('s-log').innerHTML = '<div class="h">Log</div><div class="strip">' + G.history.map((h) => '<div><span>' + h.plan + '<br><small>' + h.date + ', ' + h.top + '</small></span><b>' + h.minutes + ' min</b></div>').join('') + '</div>'
+    + '<div class="h" style="margin-top:18px">Friends this week</div><div class="strip">' + G.leaderboard.map((r) => '<div><span>' + G.person(r.who).name + '</span><b>' + r.xp + ' XP</b></div>').join('') + '</div>';
+  $('s-setup').innerHTML = '<div class="h">Reminders</div><div class="strip">' + G.reminders.map((r) => '<div><span>' + r.label + '<br><small>' + r.detail.replace(/ · /g, ', ') + '</small></span><span class="led"></span></div>').join('') + '</div>'
+    + '<div class="h" style="margin-top:18px">Achievements</div><div class="strip">' + G.achievements.map((a) => '<div><span>' + a.name + '<br><small>' + a.desc + '</small></span><span class="led' + (a.got ? '' : ' off') + '"></span></div>').join('') + '</div>';
+  gqTabs(document.getElementById('app'));
+})();
+</script>
+</body>
+</html>

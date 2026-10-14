@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>26 · Receipt — GymQuest concept</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Inter+Tight:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="frame.css">
+<style>
+  :root { --counter: #CFD4DA; --paper: #FCFCFA; --ink: #2B2733; --fade: #8B8794; --red: #C9302C; }
+  .app { position: absolute; inset: 0; background: var(--counter); color: var(--ink); font: 15px/1.45 'Courier Prime', 'Courier New', monospace; display: flex; flex-direction: column; }
+  main { flex: 1; overflow-y: auto; padding: 48px 22px 18px; }
+  .rc { background: var(--paper); padding: 20px 18px 26px; position: relative; box-shadow: 0 10px 18px rgba(30,30,40,0.18); margin-bottom: 16px; }
+  .rc::after { content: ''; position: absolute; left: 0; right: 0; bottom: -10px; height: 10px; background: linear-gradient(-45deg, transparent 7px, var(--paper) 0) 0 0 / 14px 10px, linear-gradient(45deg, transparent 7px, var(--paper) 0) 0 0 / 14px 10px; }
+  .rc.top::before { content: ''; position: absolute; left: 0; right: 0; top: -10px; height: 10px; background: linear-gradient(-135deg, transparent 7px, var(--paper) 0) 0 0 / 14px 10px, linear-gradient(135deg, transparent 7px, var(--paper) 0) 0 0 / 14px 10px; }
+  .c { text-align: center; }
+  .logo { font: 700 22px/1 'Inter Tight', sans-serif; letter-spacing: -0.5px; }
+  .dash { border: 0; border-top: 2px dashed #C9C6CF; margin: 10px 0; }
+  .ln { display: flex; gap: 8px; }
+  .ln span:first-child { flex: 1; }
+  .ln.sub { color: var(--fade); padding-left: 14px; }
+  .ln.tot { font-weight: 700; font-size: 19px; }
+  .new { display: inline-block; border: 2px solid var(--red); color: var(--red); padding: 0 6px; transform: rotate(-4deg); font-weight: 700; font-size: 13px; margin-left: 4px; }
+  .barcode { height: 46px; margin: 14px 10px 4px; background: repeating-linear-gradient(90deg, var(--ink) 0 2px, transparent 2px 4px, var(--ink) 4px 5px, transparent 5px 8px, var(--ink) 8px 11px, transparent 11px 12px, var(--ink) 12px 13px, transparent 13px 16px); }
+  .printing { position: relative; }
+  .printing::before { content: ''; position: absolute; left: -22px; right: -22px; top: -48px; height: 36px; background: #3A3F46; border-radius: 0 0 6px 6px; box-shadow: 0 4px 0 #2A2E33; }
+  .printing::after { content: ''; position: absolute; left: -10px; right: -10px; top: -16px; height: 6px; background: #15171A; border-radius: 3px; }
+  .cursor { display: inline-block; width: 9px; height: 15px; background: var(--ink); vertical-align: -2px; animation: bl 1s steps(2) infinite; }
+  @keyframes bl { 50% { opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) { .cursor { animation: none; } }
+  .act { display: flex; gap: 8px; margin-top: 4px; font: 600 15px 'Inter Tight', sans-serif; }
+  .act span { flex: 1; text-align: center; padding: 13px 0; border-radius: 10px; background: var(--paper); box-shadow: 0 2px 0 #B5BBC2; }
+  .act span.p { background: var(--ink); color: #fff; box-shadow: 0 2px 0 #000; flex: 2; }
+  .stack { position: relative; height: 180px; margin-bottom: 4px; }
+  .stack .mini { position: absolute; left: 10px; right: 10px; background: var(--paper); padding: 10px 14px; box-shadow: 0 4px 8px rgba(0,0,0,0.12); font-size: 13px; }
+  .h2 { font: 700 20px 'Inter Tight', sans-serif; margin: 0 0 10px; }
+  .sw { font-weight: 700; }
+  nav { display: flex; justify-content: space-around; padding: 10px 6px 26px; background: #E3E6EA; }
+  nav button { background: none; border: 0; font: 600 14px 'Inter Tight', sans-serif; color: #6F7680; padding: 8px 12px; border-radius: 10px; }
+  nav button.is-active { background: var(--ink); color: #fff; }
+</style>
+</head>
+<body class="concept">
+<aside class="concept-info">
+  <div class="num">26 / 32 · BUILT WITH FRONTEND DESIGN</div>
+  <h1>Receipt</h1>
+  <p>Every workout prints out as a receipt: each exercise a line item, weight times reps, a total at the bottom, and a red stamp when you set a record. During training the receipt is still printing. Your history is a spike of receipts, and sharing one is sharing a photo of paper.</p>
+  <span class="tag">thermal paper</span><span class="tag">line items</span><span class="tag">torn edges</span>
+  <div class="concept-nav"><a href="25-locker.html">← Prev</a><a href="index.html">All designs</a><a href="27-topo.html">Next →</a></div>
+</aside>
+<div class="device"><div class="app" id="app">
+  <main data-scroll>
+    <section data-screen="now" id="s-now"></section>
+    <section data-screen="last" id="s-last" hidden></section>
+    <section data-screen="spike" id="s-spike" hidden></section>
+    <section data-screen="you" id="s-you" hidden></section>
+  </main>
+  <nav>
+    <button data-tab="now" class="is-active">Printing</button>
+    <button data-tab="last">Last receipt</button>
+    <button data-tab="spike">History</button>
+    <button data-tab="you">You</button>
+  </nav>
+</div></div>
+<script src="data.js"></script>
+<script>
+(function () {
+  const G = GQ, $ = (id) => document.getElementById(id), ex = G.today.exercises;
+  $('s-now').innerHTML = '<div class="rc printing" style="margin-top:14px"><div class="c"><div class="logo">GymQuest</div>Fitinn Ružinov<br>Thu 09.10.2026  17:04</div><hr class="dash">'
+    + '<div class="ln"><span>PUSH DAY</span><span>23 min</span></div><hr class="dash">'
+    + '<div class="ln"><span>Bench press</span><span></span></div><div class="ln sub"><span>1  8 × 60.0</span><span>480</span></div><div class="ln sub"><span>2  8 × 60.0</span><span>480</span></div><div class="ln sub"><span>3  _ × 60.0</span><span><span class="cursor"></span></span></div>'
+    + '<hr class="dash"><div style="color:var(--fade)">Still to print:<br>' + ex.slice(1).map((e) => e.name + ' ' + e.sets + '×' + e.reps).join('<br>') + '</div></div>'
+    + '<div class="act"><span>−2.5</span><span class="p">Print set 3</span><span>+2.5</span></div>';
+  const h = G.history[0];
+  $('s-last').innerHTML = '<div class="rc top"><div class="c"><div class="logo">GymQuest</div>Fitinn Ružinov<br>Wed 08.10.2026  17:12</div><hr class="dash"><div class="ln"><span>LEG DAY</span><span>58 min</span></div><hr class="dash">'
+    + [['Squat', '5 × 100.0', '2500', true], ['Squat', '5 × 95.0', '1900'], ['Romanian deadlift', '8 × 70.0', '1680'], ['Leg press', '10 × 140.0', '4200'], ['Walking lunges', '12 × 16.0', '576'], ['Calf raise', '15 × 60.0', '2700']]
+      .map((l) => '<div class="ln"><span>' + l[0] + (l[3] ? '<span class="new">Record</span>' : '') + '</span></div><div class="ln sub"><span>' + l[1] + '</span><span>' + l[2] + '</span></div>').join('')
+    + '<hr class="dash"><div class="ln"><span>Sets</span><span>' + h.sets + '</span></div><div class="ln tot"><span>Total lifted</span><span>13 556 kg</span></div><div class="ln"><span>XP earned</span><span>+' + h.xp + '</span></div><hr class="dash">'
+    + '<div class="c">Week 2 of 3 done.<br>Thank you for training!</div><div class="barcode"></div><div class="c" style="font-size:12px;color:var(--fade)">#0063  martin.lifts</div></div>'
+    + '<div class="act"><span>Save as plan</span><span class="p">Share receipt</span></div>';
+  $('s-spike').innerHTML = '<div class="h2">On the spike</div><div class="stack">' + G.history.slice(1, 5).reverse().map((w, i) => '<div class="mini" style="top:' + i * 42 + 'px;transform:rotate(' + [-3, 2, -1.5, 1][i] + 'deg)"><div class="ln"><span>' + w.plan.toUpperCase() + '  ' + w.date + '</span><span>' + w.minutes + ' min</span></div></div>').join('') + '</div>'
+    + '<div class="rc top" style="margin-top:20px"><div class="ln tot"><span>This week</span><span></span></div><hr class="dash"><div class="ln"><span>Workouts</span><span>2 / 3</span></div><div class="ln"><span>Minutes</span><span>' + G.user.minutesThisWeek + '</span></div><div class="ln"><span>Sets</span><span>' + G.volume[7] + '</span></div><div class="ln"><span>Streak</span><span>' + G.user.streakWeeks + ' weeks</span></div><hr class="dash">'
+    + G.records.map((r) => '<div class="ln"><span>Best ' + r.name.toLowerCase() + '</span><span>' + r.kg + ' kg</span></div>').join('') + '</div>';
+  $('s-you').innerHTML = '<div class="rc top"><div class="c"><div class="logo">' + G.user.name + '</div>Level ' + G.user.level + ', member since 03.2025</div><hr class="dash">'
+    + '<div class="h2" style="font-size:16px;margin:0">Reminders</div>' + G.reminders.map((r) => '<div class="ln"><span>' + r.label + '</span><span class="sw">ON</span></div><div class="ln sub"><span>' + r.detail.replace(/ · /g, ', ') + '</span></div>').join('')
+    + '<hr class="dash"><div class="h2" style="font-size:16px;margin:0">Achievements</div>' + G.achievements.map((a) => '<div class="ln"><span>' + a.name + '</span><span>' + (a.got ? '+' + a.xp : a.progress + '%') + '</span></div>').join('')
+    + '<hr class="dash"><div class="ln"><span>Friends</span><span>5</span></div><div class="ln"><span>Weekly XP</span><span>980</span></div></div>';
+  gqTabs(document.getElementById('app'));
+})();
+</script>
+</body>
+</html>

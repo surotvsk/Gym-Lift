@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>12 · Recap — GymQuest concept</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&family=Instrument+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="frame.css">
+<style>
+  :root { --cobalt: #2741D6; --pink: #F7A1C4; --lime: #CDF564; --base: #121212; --card: #1F1F1F; --mute: #A7A7A7; --orange: #FF6437; }
+  .app { position: absolute; inset: 0; background: var(--base); color: #fff; font: 15px/1.35 'Instrument Sans', system-ui, sans-serif; display: flex; flex-direction: column; }
+  .disp { font-family: Unbounded, 'Arial Black', sans-serif; }
+  main { flex: 1; overflow-y: auto; }
+  .home { padding: 54px 14px 20px; background: linear-gradient(180deg, #2a2f63 0%, var(--base) 260px); }
+  .home h1 { font: 700 24px/1.1 Unbounded, sans-serif; margin: 0 0 14px; letter-spacing: -0.5px; }
+  .chips { display: flex; gap: 8px; margin-bottom: 14px; }
+  .chips span { background: #2a2a2a; border-radius: 16px; padding: 7px 13px; font-weight: 600; font-size: 13px; }
+  .chips span.on { background: var(--lime); color: #000; }
+  .quick { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 22px; }
+  .q { display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.08); border-radius: 6px; overflow: hidden; font-weight: 700; font-size: 13px; height: 56px; }
+  .q i { width: 56px; height: 56px; background: #333 center/cover; flex: 0 0 auto; }
+  .q.playing { color: var(--lime); }
+  .shelf h2 { font: 700 19px/1.2 Unbounded, sans-serif; margin: 0 0 12px; letter-spacing: -0.3px; }
+  .row { display: flex; gap: 14px; overflow-x: auto; margin-bottom: 24px; scrollbar-width: none; }
+  .alb { flex: 0 0 auto; width: 140px; }
+  .alb .cov { width: 140px; height: 140px; border-radius: 6px; background: #333 center/cover; position: relative; overflow: hidden; }
+  .alb .cov.type { display: flex; align-items: flex-end; padding: 10px; font: 900 22px/0.95 Unbounded, sans-serif; color: #000; }
+  .alb b { display: block; margin-top: 8px; font-size: 14px; }
+  .alb small { color: var(--mute); font-size: 13px; }
+  /* player */
+  .player { min-height: 100%; padding: 54px 22px 24px; background: linear-gradient(180deg, #7a2a3f 0%, #3a1520 55%, var(--base) 100%); display: flex; flex-direction: column; }
+  .ptop { display: flex; justify-content: space-between; align-items: center; font-size: 12px; font-weight: 600; text-align: center; }
+  .ptop div small { display: block; color: #ddd; font-weight: 400; }
+  .art { margin: 26px 0 22px; aspect-ratio: 1; border-radius: 8px; background: #333 center/cover; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+  .track { display: flex; justify-content: space-between; align-items: center; }
+  .track h2 { margin: 0; font: 700 22px/1.15 Unbounded, sans-serif; letter-spacing: -0.4px; }
+  .track p { margin: 4px 0 0; color: #ccc; }
+  .track .ico { color: var(--lime); width: 28px; height: 28px; }
+  .scrub { margin: 18px 0 6px; height: 4px; border-radius: 2px; background: rgba(255,255,255,0.3); position: relative; }
+  .scrub span { position: absolute; left: 0; top: 0; bottom: 0; width: 50%; background: #fff; border-radius: 2px; }
+  .scrub span::after { content: ''; position: absolute; right: -6px; top: -4px; width: 12px; height: 12px; border-radius: 50%; background: #fff; }
+  .times { display: flex; justify-content: space-between; font-size: 12px; color: #ccc; }
+  .ctrls { display: flex; justify-content: space-between; align-items: center; margin: 16px 6px 10px; }
+  .ctrls .ico { width: 30px; height: 30px; }
+  .pbtn { width: 70px; height: 70px; border-radius: 50%; background: #fff; color: #000; display: grid; place-items: center; font-weight: 800; font-size: 13px; text-align: center; line-height: 1.1; }
+  .queue { margin-top: 18px; background: rgba(0,0,0,0.25); border-radius: 12px; padding: 12px 14px; }
+  .queue h3 { margin: 0 0 8px; font: 700 15px/1 Unbounded, sans-serif; }
+  .qi { display: flex; gap: 10px; align-items: center; padding: 6px 0; }
+  .qi i { width: 40px; height: 40px; border-radius: 4px; background: #333 center/cover; }
+  .qi small { display: block; color: #bbb; font-size: 12px; }
+  /* recap stories */
+  .story { min-height: 100%; padding: 60px 22px 30px; position: relative; overflow: hidden; }
+  .bars { position: absolute; top: 46px; left: 14px; right: 14px; display: flex; gap: 4px; }
+  .bars i { flex: 1; height: 3px; border-radius: 2px; background: rgba(0,0,0,0.25); }
+  .bars i.on { background: #000; }
+  .story.s1 { background: var(--lime); color: #000; }
+  .s1 .hello { font: 700 18px/1.2 Unbounded, sans-serif; margin-top: 30px; }
+  .s1 .giant { position: relative; z-index: 1; font: 900 118px/0.85 Unbounded, sans-serif; letter-spacing: -7px; margin: 18px 0 6px; }
+  .s1 .unit { position: relative; z-index: 1; font: 700 26px/1.05 Unbounded, sans-serif; letter-spacing: -1px; max-width: 260px; }
+  .s1 .blob { position: absolute; right: -90px; bottom: 30px; width: 260px; height: 260px; border-radius: 50%; background: var(--cobalt); }
+  .s1 .blob2 { position: absolute; right: 120px; bottom: -30px; width: 120px; height: 120px; border-radius: 50%; background: var(--pink); }
+  .s1 p { position: relative; z-index: 1; max-width: 220px; font-size: 17px; font-weight: 600; margin-top: 28px; }
+  .tick-list { margin-top: 28px; }
+  .rk { display: flex; align-items: baseline; gap: 14px; font: 700 26px/1.25 Unbounded, sans-serif; letter-spacing: -0.6px; }
+  .rk span { font-size: 15px; width: 20px; }
+  .rk small { font: 600 15px/1 'Instrument Sans', sans-serif; letter-spacing: 0; margin-left: auto; }
+  .card-st { margin: 14px 0; border-radius: 18px; padding: 18px; }
+  .card-st h3 { margin: 0 0 6px; font: 700 15px/1.2 Unbounded, sans-serif; }
+  .card-st .num { font: 900 54px/0.9 Unbounded, sans-serif; letter-spacing: -2px; }
+  .recapnav { display: flex; gap: 8px; padding: 0 22px 22px; background: var(--base); }
+  .recapnav span { flex: 1; text-align: center; border-radius: 20px; padding: 10px; font-weight: 700; background: #fff; color: #000; }
+  .recapnav span.g { background: #2a2a2a; color: #fff; }
+  /* friends */
+  .pad { padding: 54px 16px 20px; }
+  .pad h1 { font: 700 24px/1.1 Unbounded, sans-serif; margin: 0 0 16px; letter-spacing: -0.5px; }
+  .fa { display: flex; gap: 12px; align-items: center; padding: 10px 0; }
+  .fa .av { width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; font: 600 18px/1 Georgia, serif; flex: 0 0 auto; position: relative; }
+  .fa .av.live::after { content: ''; position: absolute; right: 0; bottom: 0; width: 12px; height: 12px; border-radius: 50%; background: var(--lime); border: 2px solid var(--base); }
+  .fa b { font-size: 15px; }
+  .fa p { margin: 2px 0 0; color: var(--mute); font-size: 13px; }
+  .fa p .eq { color: var(--lime); }
+  .fa .t { margin-left: auto; color: var(--mute); font-size: 12px; }
+  .sharecard { background: var(--card); border-radius: 12px; padding: 12px; margin: 6px 0 16px; display: flex; gap: 12px; align-items: center; }
+  .sharecard i { width: 64px; height: 64px; border-radius: 6px; background: var(--pink); flex: 0 0 auto; display: grid; place-items: center; font: 900 13px/1 Unbounded, sans-serif; color: #000; text-align: center; }
+  .sharecard small { display: block; color: var(--mute); }
+  .save { margin-left: auto; border: 1px solid #777; border-radius: 16px; padding: 6px 12px; font-weight: 700; font-size: 13px; }
+  /* you */
+  .youhead { padding: 54px 16px 20px; background: linear-gradient(180deg, #375b54 0%, var(--base) 100%); display: flex; gap: 16px; align-items: flex-end; }
+  .youhead .big { width: 110px; height: 110px; border-radius: 50%; background: #2F3B33; display: grid; place-items: center; font: 400 46px/1 Georgia, serif; box-shadow: 0 8px 24px rgba(0,0,0,0.4); flex: 0 0 auto; }
+  .youhead h1 { margin: 0; font: 900 34px/1 Unbounded, sans-serif; letter-spacing: -1.2px; }
+  .youhead p { margin: 6px 0 0; color: #ddd; font-size: 13px; }
+  .yl { padding: 0 16px; }
+  .yl h2 { font: 700 18px/1.2 Unbounded, sans-serif; margin: 18px 0 10px; }
+  .yi { display: flex; align-items: center; gap: 12px; padding: 8px 0; }
+  .yi .sq { width: 48px; height: 48px; border-radius: 4px; display: grid; place-items: center; flex: 0 0 auto; font: 900 13px/1 Unbounded, sans-serif; color: #000; }
+  .yi small { display: block; color: var(--mute); font-size: 13px; }
+  .tg { margin-left: auto; width: 44px; height: 26px; border-radius: 13px; background: var(--lime); position: relative; }
+  .tg::after { content: ''; position: absolute; right: 3px; top: 3px; width: 20px; height: 20px; border-radius: 50%; background: #000; }
+  nav { display: flex; justify-content: space-around; padding: 10px 0 28px; background: linear-gradient(transparent, #000 40%); }
+  nav button { background: none; border: 0; color: var(--mute); display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 11px; font-weight: 600; }
+  nav button.is-active { color: #fff; }
+  .mini { margin: 0 8px; background: #5a2232; border-radius: 8px; display: flex; align-items: center; gap: 10px; padding: 6px; font-size: 13px; }
+  .mini i { width: 40px; height: 40px; border-radius: 4px; background: #333 center/cover; }
+  .mini small { display: block; color: #ddd; }
+  .mini .ico { margin-left: auto; margin-right: 6px; }
+  .mini .prog { position: absolute; }
+</style>
+</head>
+<body class="concept">
+<aside class="concept-info">
+  <div class="num">12 / 32 · BUILT WITH FRONTEND DESIGN</div>
+  <h1>Recap</h1>
+  <p>Spotify and Wrapped. Plans are albums, the workout is the now-playing screen — an exercise is a track, the big button logs a set, the queue is what’s left. Every week ends with a Wrapped-style story in loud colour blocks that you can share.</p>
+  <span class="tag">player metaphor</span><span class="tag">weekly wrapped</span><span class="tag">cobalt, pink, lime</span>
+  <div class="concept-nav"><a href="11-daily.html">← Prev</a><a href="index.html">All designs</a><a href="13-swipe.html">Next →</a></div>
+</aside>
+<div class="device"><div class="app" id="app">
+  <main data-scroll>
+    <section data-screen="home" id="s-home"></section>
+    <section data-screen="now" id="s-now" hidden></section>
+    <section data-screen="recap" id="s-recap" hidden></section>
+    <section data-screen="friends" id="s-friends" hidden></section>
+    <section data-screen="you" id="s-you" hidden></section>
+  </main>
+  <div class="mini" id="mini"><i></i><div><b>Bench press</b><small>Push day, set 3 of 4</small></div>ICON:play</div>
+  <nav>
+    <button data-tab="home" class="is-active">ICON:home<span>Home</span></button>
+    <button data-tab="now">ICON:dumbbell<span>Now training</span></button>
+    <button data-tab="recap">ICON:chart<span>Your week</span></button>
+    <button data-tab="friends">ICON:users<span>Friends</span></button>
+    <button data-tab="you">ICON:user<span>You</span></button>
+  </nav>
+</div></div>
+<script src="data.js"></script>
+<script src="icons.js"></script>
+<script>
+(function () {
+  const G = GQ, I = ICON, $ = (id) => document.getElementById(id), ex = G.today.exercises;
+  document.querySelectorAll('nav button, #mini').forEach((b) => { b.innerHTML = b.innerHTML.replace(/ICON:(\w+)/, (_, n) => I(n)); });
+  document.querySelector('#mini i').style.backgroundImage = 'url(' + ex[0].img + ')';
+  const colors = ['var(--pink)', 'var(--lime)', 'var(--orange)', '#9BD6FF', '#F5E06B'];
+  $('s-home').innerHTML = '<div class="home"><h1>Good evening, Martin</h1><div class="chips"><span class="on">All</span><span>Plans</span><span>Friends</span></div>'
+    + '<div class="quick">' + [['Push day', 'bench-press', 1], ['Pull day', 'lat-pulldown'], ['Leg day', 'squats'], ['Lucia’s home 25', 'push-up'], ['Liked lifts', 'deadlift'], ['Home starter', 'plank']].map((q) => '<div class="q' + (q[2] ? ' playing' : '') + '"><i style="background-image:url(' + G.img(q[1] === 'deadlift' ? 'hack-squat' : q[1]) + ')"></i>' + q[0] + '</div>').join('') + '</div>'
+    + '<div class="shelf"><h2>Your plans</h2><div class="row">' + G.plans.map((p, i) => '<div class="alb"><div class="cov type" style="background:' + colors[i] + '">' + p.name.replace(' ', '<br>') + '</div><b>' + p.name + '</b><small>' + p.count + ' exercises, ' + p.minutes + ' min</small></div>').join('') + '</div></div>'
+    + '<div class="shelf"><h2>From your friends</h2><div class="row">' + G.feed.filter((f) => f.img).map((f) => '<div class="alb"><div class="cov" style="background-image:url(' + G.img(f.img) + ')"></div><b>' + (f.workout ? f.workout.plan : f.plan ? f.plan.name : 'Shoulders') + '</b><small>' + G.person(f.who).name + '</small></div>').join('') + '</div></div></div>';
+  const e = ex[0];
+  $('s-now').innerHTML = '<div class="player"><div class="ptop">' + I('back') + '<div>Training from plan<small>Push day</small></div>' + I('more') + '</div>'
+    + '<div class="art" style="background-image:url(' + e.img + ')"></div>'
+    + '<div class="track"><div><h2>' + e.name + '</h2><p>Set 3 of ' + e.sets + ', ' + e.reps + ' reps at ' + e.weight + ' kg</p></div>' + I('heart') + '</div>'
+    + '<div class="scrub"><span></span></div><div class="times"><span>2 of 4 sets</span><span>rest 2:00</span></div>'
+    + '<div class="ctrls">' + I('repeat') + I('back') + '<span class="pbtn">Set<br>done</span>' + I('chevron') + I('timer') + '</div>'
+    + '<div class="queue"><h3>Up next</h3>' + ex.slice(1).map((x) => '<div class="qi"><i style="background-image:url(' + x.img + ')"></i><div>' + x.name + '<small>' + x.sets + ' × ' + x.reps + (x.weight ? ' at ' + x.weight + ' kg' : '') + '</small></div></div>').join('') + '</div></div>';
+  $('s-recap').innerHTML = '<div class="story s1"><div class="bars"><i class="on"></i><i></i><i></i><i></i></div><div class="hello">Your week, Martin</div>'
+    + '<div class="giant">' + G.user.minutesThisWeek + '</div><div class="unit">minutes of lifting</div><div class="blob"></div><div class="blob2"></div>'
+    + '<p>That’s 2 workouts and 34 sets. You moved more than anyone else in your friend group on Wednesday.</p></div>'
+    + '<div class="story" style="background:var(--cobalt)"><div class="hello" style="font:700 18px/1.2 Unbounded,sans-serif">Your top lifts</div><div class="tick-list">'
+    + G.records.map((r, i) => '<div class="rk"><span>' + (i + 1) + '</span>' + r.name + '<small>' + r.kg + ' kg</small></div>').join('') + '</div>'
+    + '<div class="card-st" style="background:var(--pink);color:#000;margin-top:26px"><h3>Biggest jump</h3><div class="num">+5 kg</div>Deadlift, now 120 kg</div>'
+    + '<div class="card-st" style="background:var(--lime);color:#000"><h3>Streak</h3><div class="num">' + G.user.streakWeeks + ' weeks</div>Goal met every week since September</div></div>'
+    + '<div class="recapnav"><span>Share your week</span><span class="g">See history</span></div>';
+  $('s-friends').innerHTML = '<div class="pad"><h1>Friend activity</h1>'
+    + G.feed.map((f, i) => { const p = G.person(f.who); return '<div class="fa"><span class="av' + (i < 2 ? ' live' : '') + '" style="background:' + p.color + '">' + p.name[0] + '</span><div><b>' + p.name + '</b><p>' + (i < 2 ? '<span class="eq">▮▮▮</span> training now, ' : '') + (f.workout ? f.workout.plan : f.kind === 'pr' ? 'deadlift record 140 kg' : f.kind === 'plan' ? 'shared a plan' : 'shoulders') + '</p></div><span class="t">' + f.ago + '</span></div>'; }).join('')
+    + '<div class="sharecard"><i>HOME<br>25</i><div><b>Lucia’s home 25</b><small>Plan, 4 exercises, saved by 61</small></div><span class="save">Save</span></div>'
+    + '<h1 style="font-size:19px;margin-top:10px">This week’s chart</h1>' + G.leaderboard.map((r, i) => '<div class="fa"><b style="width:22px;font-family:Unbounded">' + (i + 1) + '</b><span style="flex:1;font-weight:' + (r.who === 'me' ? 700 : 400) + '">' + G.person(r.who).name + '</span><span style="color:var(--mute)">' + r.xp + ' XP</span></div>').join('') + '</div>';
+  $('s-you').innerHTML = '<div class="youhead"><div class="big">M</div><div><h1>' + G.user.name + '</h1><p>Level ' + G.user.level + ', ' + G.user.workouts + ' workouts, 148 followers</p></div></div><div class="yl">'
+    + '<h2>Top achievements</h2>' + G.achievements.filter((a) => a.got).map((a, i) => '<div class="yi"><span class="sq" style="background:' + colors[i] + '">' + a.xp + '</span><div>' + a.name + '<small>' + a.desc + '</small></div></div>').join('')
+    + '<h2>Reminders</h2>' + G.reminders.map((r) => '<div class="yi"><span class="sq" style="background:#2a2a2a;color:#fff">' + I(r.kind === 'water' ? 'droplet' : r.kind === 'meal' ? 'utensils' : 'bell') + '</span><div>' + r.label + '<small>' + r.detail.replace(/ · /g, ', ') + '</small></div><span class="tg"></span></div>').join('') + '</div>';
+  gqTabs(document.getElementById('app'), (n) => { $('mini').hidden = n === 'now' || n === 'recap'; });
+})();
+</script>
+</body>
+</html>

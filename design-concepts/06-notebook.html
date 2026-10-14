@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>06 · Notebook — GymQuest concept</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="frame.css">
+<style>
+  .app { position: absolute; inset: 0; display: flex; flex-direction: column; color: #2a2723; font: 16px/1.4 Newsreader, Georgia, serif;
+    background: #F4EEE2; }
+  main { flex: 1; overflow-y: auto; position: relative; }
+  .page { min-height: 100%; padding: 56px 18px 40px 54px; position: relative;
+    background-image: linear-gradient(90deg, transparent 40px, #D9675A 40px, #D9675A 41.5px, transparent 41.5px),
+      repeating-linear-gradient(180deg, transparent 0, transparent 31px, #C9D6E3 31px, #C9D6E3 32px);
+    background-position: 0 0, 0 12px; }
+  .page::before { content: ''; position: absolute; left: 14px; top: 70px; bottom: 30px; width: 10px;
+    background: radial-gradient(circle, #E4DCCB 4px, transparent 4.5px) 0 0 / 10px 64px repeat-y; }
+  .hand { font-family: Caveat, 'Bradley Hand', cursive; }
+  .date { font-style: italic; color: #7a7266; font-size: 15px; line-height: 32px; }
+  h1.t { font: 600 30px/32px Newsreader, Georgia, serif; margin: 0 0 32px; letter-spacing: -0.3px; }
+  h2.t { font: 600 20px/32px Newsreader, Georgia, serif; margin: 32px 0 0; }
+  p.l { margin: 0; line-height: 32px; }
+  .hand.big { font-size: 28px; line-height: 32px; color: #24447A; }
+  .hand.note { font-size: 24px; line-height: 32px; color: #24447A; }
+  .tick { color: #2E7D4F; }
+  table.log { width: 100%; border-collapse: collapse; margin-top: 0; }
+  table.log td, table.log th { height: 32px; padding: 0; vertical-align: bottom; line-height: 32px; }
+  table.log th { font: italic 400 14px/32px Newsreader, serif; color: #7a7266; text-align: left; }
+  table.log td.ex { font-weight: 600; }
+  table.log td.h { font-family: Caveat, cursive; font-size: 24px; color: #24447A; }
+  .circle { display: inline-block; border: 2px solid #D9675A; border-radius: 50% 45% 55% 48%; padding: 0 6px; line-height: 24px; transform: rotate(-3deg); }
+  .strike { text-decoration: line-through; text-decoration-color: #24447A; text-decoration-thickness: 2px; }
+  .sticky { position: relative; background: #FBE38E; padding: 14px 16px; box-shadow: 0 6px 14px rgba(80,60,20,0.18); transform: rotate(-1.5deg); margin: 18px 0 32px -8px; font-family: Caveat, cursive; font-size: 23px; line-height: 1.15; color: #3b3320; }
+  .sticky.b { background: #CDE6D3; transform: rotate(1.2deg); }
+  .sticky.p { background: #F5C9C0; transform: rotate(-0.6deg); }
+  .sticky::before { content: ''; position: absolute; top: -10px; left: 50%; width: 70px; height: 22px; transform: translateX(-50%) rotate(2deg); background: rgba(255,255,255,0.55); border: 1px solid rgba(0,0,0,0.05); }
+  .btnline { display: inline-block; margin-top: 8px; font: 600 15px/1 Newsreader, serif; border: 1.5px solid #2a2723; padding: 10px 14px; border-radius: 3px; background: #F4EEE2; }
+  .weekhand { display: flex; justify-content: space-between; margin: 0 0 32px; }
+  .weekhand span { width: 32px; text-align: center; font: 14px/32px Newsreader, serif; color: #7a7266; }
+  .weekhand span b { display: block; font: 700 26px/32px Caveat, cursive; color: #24447A; }
+  .weekhand span.x b { color: #2E7D4F; }
+  svg.sketch { width: 100%; height: 160px; display: block; margin: 0 0 16px; }
+  .pb { display: flex; justify-content: space-between; line-height: 32px; border-bottom: 0; }
+  .pb .hand { font-size: 26px; color: #24447A; }
+  .stamp { display: inline-block; border: 2.5px solid currentColor; border-radius: 6px; padding: 4px 10px; font: 700 13px/1.2 Newsreader, serif; text-transform: uppercase; letter-spacing: 0.08em; margin: 0 8px 12px 0; transform: rotate(-4deg); }
+  .stamp.g { color: #2E7D4F; } .stamp.r { color: #B54C40; transform: rotate(3deg); } .stamp.b { color: #24447A; transform: rotate(-1deg); }
+  .stamp.off { color: #b9b0a2; border-style: dashed; transform: none; }
+  .card-letter { background: #FFFDF8; border: 1px solid #E2D8C4; padding: 14px 16px; margin: 0 0 18px -10px; box-shadow: 0 2px 0 #E2D8C4; }
+  .card-letter .from { font: italic 14px/1.2 Newsreader, serif; color: #7a7266; display: flex; justify-content: space-between; }
+  .card-letter .msg { font: 500 23px/1.15 Caveat, cursive; color: #2a2723; margin: 8px 0; }
+  .card-letter .attach { border-top: 1px dashed #D2C6AE; padding-top: 8px; font-size: 14px; color: #4a453e; }
+  .card-letter .act { font: 600 13px/1 Newsreader, serif; color: #24447A; margin-top: 8px; display: flex; gap: 16px; }
+  .photo { width: 100%; aspect-ratio: 4/3; background: #ddd center/cover; border: 8px solid #fff; box-shadow: 0 3px 8px rgba(0,0,0,0.15); transform: rotate(1.5deg); margin: 6px 0 4px; }
+  .rank { display: flex; justify-content: space-between; line-height: 32px; }
+  .rank.me { font-weight: 600; }
+  .rank .hand { font-size: 24px; color: #24447A; }
+  .label { display: inline-block; background: #fff; border: 1px solid #2a2723; padding: 10px 18px; transform: rotate(-1deg); margin: 0 0 24px; box-shadow: 3px 3px 0 #2a2723; }
+  .label small { display: block; font: italic 13px/1 Newsreader, serif; color: #7a7266; margin-bottom: 4px; }
+  .label b { font: 700 34px/1 Caveat, cursive; color: #24447A; }
+  .remlist { margin: 0 0 32px; }
+  .remlist div { display: flex; align-items: center; gap: 10px; line-height: 32px; }
+  .box { width: 18px; height: 18px; border: 1.8px solid #2a2723; display: inline-grid; place-items: center; font: 700 20px/1 Caveat, cursive; color: #2E7D4F; }
+  nav { display: flex; gap: 4px; padding: 0 10px 26px; background: #E9DFCB; box-shadow: inset 0 1px 0 #D5C7AC; }
+  nav button { flex: 1; border: 0; font: 600 14px/1 Newsreader, serif; color: #4a453e; padding: 12px 0 10px; border-radius: 0 0 8px 8px; background: #DCCFB4; margin-top: -1px; }
+  nav button:nth-child(1) { background: #E7C6A5; } nav button:nth-child(2) { background: #C9D9C1; } nav button:nth-child(3) { background: #C6D3E3; } nav button:nth-child(4) { background: #E6CFD8; } nav button:nth-child(5) { background: #E5DCB5; }
+  nav button.is-active { padding-top: 16px; box-shadow: 0 3px 0 rgba(0,0,0,0.08); color: #1d1b18; text-decoration: underline; text-underline-offset: 4px; }
+</style>
+</head>
+<body class="concept">
+<aside class="concept-info">
+  <div class="num">06 / 32 · BUILT WITHOUT A PLUGIN</div>
+  <h1>Notebook</h1>
+  <p>The opposite of an AI app: the paper training log every lifter used to carry. Ruled pages, a red margin, numbers in handwriting, records circled, sticky notes for reminders and coloured dividers as navigation.</p>
+  <span class="tag">analog</span><span class="tag">handwritten</span><span class="tag">warm paper</span>
+  <div class="concept-nav"><a href="05-groups.html">← Prev</a><a href="index.html">All designs</a><a href="07-scoreboard.html">Next →</a></div>
+</aside>
+<div class="device"><div class="app" id="app">
+  <main data-scroll>
+    <section data-screen="today" class="page" id="s-today"></section>
+    <section data-screen="log" class="page" id="s-log" hidden></section>
+    <section data-screen="progress" class="page" id="s-progress" hidden></section>
+    <section data-screen="friends" class="page" id="s-friends" hidden></section>
+    <section data-screen="me" class="page" id="s-me" hidden></section>
+  </main>
+  <nav>
+    <button data-tab="today" class="is-active">Today</button>
+    <button data-tab="log">Log</button>
+    <button data-tab="progress">Progress</button>
+    <button data-tab="friends">Friends</button>
+    <button data-tab="me">Me</button>
+  </nav>
+</div></div>
+<script src="data.js"></script>
+<script>
+(function () {
+  const G = GQ, $ = (id) => document.getElementById(id), ex = G.today.exercises;
+  $('s-today').innerHTML = '<div class="date">Thursday, 9 October</div><h1 class="t">Push day</h1>'
+    + '<p class="l">Week ' + G.user.streakWeeks + ' of the streak. <span class="hand note">' + G.user.weekDone + ' of ' + G.user.weekGoal + ' done — one more!</span></p>'
+    + '<div class="weekhand">' + G.week.map((d) => '<span class="' + (d.done ? 'x' : '') + '">' + d.d[0] + '<b>' + (d.done ? '✓' : d.today ? '→' : '·') + '</b></span>').join('') + '</div>'
+    + '<h2 class="t">The plan</h2>' + ex.map((e) => '<p class="l">' + e.name + ' — <span class="hand note">' + e.sets + '×' + e.reps + (e.weight ? ' @ ' + e.weight : ' BW') + '</span>' + (e.weight > e.last ? ' <span class="hand note" style="color:#B54C40">(+' + (e.weight - e.last) + '!)</span>' : '') + '</p>').join('')
+    + '<span class="btnline" data-tab="log">Open today’s log →</span>'
+    + '<div class="sticky">Drink water! 💧<br>every 2 h, 8 → 21</div>'
+    + '<h2 class="t">Last time</h2><p class="l">Leg day, Wed — <span class="hand note">squat 100 × 5 <span class="circle">PR</span></span></p>';
+  $('s-log').innerHTML = '<div class="date">Thu 9 Oct · started 18:04</div><h1 class="t">Push day — log</h1>'
+    + '<table class="log"><tr><th style="width:44%">Exercise</th><th>Sets (kg × reps)</th></tr>'
+    + ex.map((e) => '<tr><td class="ex">' + e.name + '</td><td class="h">' + Array.from({ length: e.sets }, (_, i) => i < e.done ? '<span class="tick">' + (e.weight || 'BW') + '×' + e.reps + '</span>' : '<span style="opacity:0.28">' + (e.weight || 'BW') + '×' + e.reps + '</span>').join(' · ') + '</td></tr>').join('')
+    + '</table><p class="l" style="margin-top:32px"><i>Notes:</i> <span class="hand note">bench felt light — try 62.5 next week</span></p>'
+    + '<span class="btnline">Rest 2:00</span> <span class="btnline" style="background:#2a2723;color:#F4EEE2">Finish workout</span>';
+  const bw = G.bodyWeight, lo = 80.2, hi = 82.8;
+  const pts = bw.map((v, i) => { const j = [0.6, -0.8, 0.4, -0.3, 0.9, -0.5, 0.3, 0][i]; return (12 + i * 44).toFixed(0) + ',' + (140 - (v - lo) / (hi - lo) * 120 + j).toFixed(1); }).join(' ');
+  $('s-progress').innerHTML = '<div class="date">October</div><h1 class="t">How it’s going</h1>'
+    + '<p class="l"><i>Body weight, last 8 weeks</i></p><svg class="sketch" viewBox="0 0 330 160"><polyline points="' + pts + '" fill="none" stroke="#24447A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>'
+    + bw.map((v, i) => '<circle cx="' + (12 + i * 44) + '" cy="' + (140 - (v - lo) / (hi - lo) * 120).toFixed(1) + '" r="3" fill="#24447A"/>').join('') + '<text x="250" y="152" font-family="Caveat" font-size="20" fill="#B54C40">−1.8 kg</text></svg>'
+    + '<h2 class="t">Personal bests</h2>' + G.records.map((r, i) => '<div class="pb"><span>' + r.name + '</span><span class="hand">' + (i === 0 ? '<span class="circle">' + r.kg + '</span>' : r.kg) + ' kg</span></div>').join('')
+    + '<h2 class="t">Diary</h2>' + G.history.map((w) => '<p class="l">' + w.date + ' — ' + w.plan + ' <span class="hand note">' + w.minutes + ' min</span></p>').join('');
+  $('s-friends').innerHTML = '<div class="date">Notes from friends</div><h1 class="t">The crew</h1>'
+    + G.feed.slice(0, 4).map((f) => { const p = G.person(f.who); let a = '';
+      if (f.kind === 'pr') a = '<div class="attach">Deadlift: <span class="strike">' + f.pr.prev + '</span> <b>' + f.pr.kg + ' kg</b></div>';
+      if (f.kind === 'workout') a = '<div class="attach">' + f.workout.lines.join('<br>') + '</div>';
+      if (f.kind === 'plan') a = '<div class="attach">📎 ' + f.plan.name + ' — ' + f.plan.lines.join(', ') + '</div>';
+      return '<div class="card-letter"><div class="from"><span>from <b>' + p.name + '</b></span><span>' + f.ago + '</span></div><div class="msg">' + f.text + '</div>' + a + '<div class="act"><span>♡ ' + f.likes + '</span><span>reply</span>' + (f.kind === 'plan' ? '<span>copy into my notebook</span>' : '') + '</div></div>'; }).join('')
+    + '<h2 class="t">This week’s table</h2>' + G.leaderboard.map((r, i) => '<div class="rank' + (r.who === 'me' ? ' me' : '') + '"><span>' + (i + 1) + '. ' + G.person(r.who).name + '</span><span class="hand">' + r.xp + '</span></div>').join('');
+  $('s-me').innerHTML = '<div class="label"><small>This notebook belongs to</small><b>Martin</b></div>'
+    + '<p class="l">Level ' + G.user.level + ' · ' + G.user.workouts + ' workouts · <span class="hand note">' + G.user.bio + '</span></p>'
+    + '<h2 class="t" style="margin-bottom:12px">Stamps</h2>' + G.achievements.map((a, i) => '<span class="stamp ' + (a.got ? ['g', 'r', 'b'][i % 3] : 'off') + '">' + a.name + '</span>').join('')
+    + '<h2 class="t">Reminders</h2><div class="remlist">' + G.reminders.map((r) => '<div><span class="box">✓</span>' + r.label + ' — <span class="hand note">' + r.detail + '</span></div>').join('') + '</div>'
+    + '<div class="sticky b">Eat properly 🍽️<br>8:00 · 12:30 · 18:30</div><div class="sticky p">Gym Mon / Wed / Fri at 5 pm</div>';
+  gqTabs(document.getElementById('app'));
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>27 · Topo — GymQuest concept</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="frame.css">
+<style>
+  :root { --map: #E9EFE2; --moss: #3E5641; --contour: #B08A57; --lake: #7FB1C8; --route: #D2452B; --ink: #22301F; --mute: #6C7A66; }
+  .app { position: absolute; inset: 0; background: var(--map); color: var(--ink); font: 15px/1.4 'Bricolage Grotesque', system-ui, sans-serif; display: flex; flex-direction: column; }
+  main { flex: 1; overflow-y: auto; }
+  .mapbox { position: relative; height: 470px; overflow: hidden; }
+  .mapbox svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .title { position: absolute; left: 16px; top: 52px; right: 16px; }
+  .title h1 { margin: 0; font-weight: 800; font-size: 32px; letter-spacing: -0.8px; line-height: 1; }
+  .title p { margin: 4px 0 0; color: var(--mute); }
+  .wp { position: absolute; transform: translate(-50%, -50%); }
+  .wp i { display: block; width: 18px; height: 18px; border-radius: 50%; background: #fff; border: 4px solid var(--route); }
+  .wp.done i { background: var(--route); }
+  .wp.here i { width: 26px; height: 26px; background: var(--route); box-shadow: 0 0 0 6px rgba(210,69,43,0.25); }
+  .wp span { position: absolute; left: 22px; top: -3px; white-space: nowrap; background: rgba(233,239,226,0.9); padding: 1px 6px; border-radius: 4px; font-weight: 600; font-size: 13px; }
+  .wp.here span { top: 1px; left: 30px; font-size: 14px; background: var(--ink); color: #fff; }
+  .wp.l span { left: auto; right: 22px; }
+  .sheet { background: #fff; border-radius: 22px 22px 0 0; margin-top: -24px; position: relative; padding: 16px; }
+  .sheet .grab { width: 40px; height: 4px; border-radius: 2px; background: #D5DBD0; margin: -6px auto 12px; }
+  .stats { display: flex; justify-content: space-between; }
+  .stats div b { display: block; font-size: 22px; font-weight: 800; }
+  .stats div span { color: var(--mute); font-size: 13px; }
+  .elev { margin-top: 14px; }
+  .elev svg { width: 100%; height: 90px; display: block; }
+  .go { display: block; margin-top: 12px; text-align: center; background: var(--moss); color: #fff; border-radius: 14px; padding: 14px; font-weight: 600; }
+  /* trail log */
+  .pad { padding: 52px 16px 16px; }
+  .pad h1 { margin: 0 0 4px; font-weight: 800; font-size: 30px; letter-spacing: -0.6px; }
+  .pad > p { margin: 0 0 14px; color: var(--mute); }
+  .leg { display: flex; gap: 12px; }
+  .leg .rail { display: flex; flex-direction: column; align-items: center; width: 20px; }
+  .leg .rail i { width: 14px; height: 14px; border-radius: 50%; border: 3px solid var(--route); background: #fff; flex: 0 0 auto; }
+  .leg .rail i.d { background: var(--route); }
+  .leg .rail b { flex: 1; width: 3px; background: repeating-linear-gradient(var(--route) 0 6px, transparent 6px 10px); margin: 2px 0; }
+  .leg .body { flex: 1; padding-bottom: 16px; }
+  .leg .body small { color: var(--mute); display: block; }
+  .leg .card { background: #fff; border-radius: 14px; padding: 12px; margin-top: 6px; display: flex; gap: 10px; align-items: center; }
+  .leg .card .sets { display: flex; gap: 4px; }
+  .leg .card .sets em { width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; font-style: normal; font-size: 12px; font-weight: 600; background: var(--map); }
+  .leg .card .sets em.d { background: var(--moss); color: #fff; }
+  .leg .card .sets em.n { box-shadow: inset 0 0 0 2px var(--route); color: var(--route); }
+  .leg .card b { margin-left: auto; font-size: 18px; font-weight: 800; }
+  /* summits */
+  .summit { background: #fff; border-radius: 16px; padding: 14px; margin-bottom: 10px; display: flex; gap: 14px; align-items: center; }
+  .summit svg { width: 64px; height: 48px; flex: 0 0 auto; }
+  .summit div { flex: 1; } .summit small { color: var(--mute); display: block; }
+  .summit b { font-size: 22px; font-weight: 800; }
+  /* party */
+  .pp { display: flex; gap: 12px; align-items: center; padding: 12px 0; border-bottom: 1px solid #D5DBD0; }
+  .pp .av { width: 42px; height: 42px; border-radius: 50%; color: #fff; display: grid; place-items: center; font-weight: 600; }
+  .pp div { flex: 1; } .pp small { color: var(--mute); display: block; }
+  .tg { width: 44px; height: 26px; border-radius: 13px; background: var(--moss); position: relative; }
+  .tg::after { content: ''; position: absolute; right: 3px; top: 3px; width: 20px; height: 20px; border-radius: 50%; background: #fff; }
+  nav { display: flex; justify-content: space-around; padding: 10px 0 26px; background: #fff; border-top: 1px solid #DDE3D7; }
+  nav button { background: none; border: 0; font: 600 14px 'Bricolage Grotesque', sans-serif; color: var(--mute); display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  nav button i { width: 8px; height: 8px; border-radius: 50%; }
+  nav button.is-active { color: var(--ink); }
+  nav button.is-active i { background: var(--route); }
+</style>
+</head>
+<body class="concept">
+<aside class="concept-info">
+  <div class="num">27 / 32 · BUILT WITH FRONTEND DESIGN</div>
+  <h1>Topo</h1>
+  <p>A workout drawn as a trail. Each exercise is a waypoint on a hiking map, and the elevation profile is how hard each part is. Records become summits you have climbed. Moss, contour brown and a red route line, like a printed walking map.</p>
+  <span class="tag">trail map</span><span class="tag">elevation profile</span><span class="tag">summits as records</span>
+  <div class="concept-nav"><a href="26-receipt.html">← Prev</a><a href="index.html">All designs</a><a href="28-gauge.html">Next →</a></div>
+</aside>
+<div class="device"><div class="app" id="app">
+  <main data-scroll>
+    <section data-screen="route" id="s-route"></section>
+    <section data-screen="trail" id="s-trail" hidden></section>
+    <section data-screen="summits" id="s-summits" hidden></section>
+    <section data-screen="party" id="s-party" hidden></section>
+  </main>
+  <nav>
+    <button data-tab="route" class="is-active"><i></i>Route</button>
+    <button data-tab="trail"><i></i>Trail log</button>
+    <button data-tab="summits"><i></i>Summits</button>
+    <button data-tab="party"><i></i>Party</button>
+  </nav>
+</div></div>
+<script src="data.js"></script>
+<script>
+(function () {
+  const G = GQ, $ = (id) => document.getElementById(id), ex = G.today.exercises;
+  /* vrstevnice: sústredné deformované elipsy */
+  let topo = '<svg viewBox="0 0 390 470" preserveAspectRatio="xMidYMid slice"><rect width="390" height="470" fill="#E9EFE2"/>';
+  topo += '<path d="M300 380 q40 -20 70 10 q20 40 -20 60 q-50 10 -60 -30 z" fill="#7FB1C8" opacity=".55"/>';
+  [[250, 190, 1], [90, 330, 0.7]].forEach(([cx, cy, sc]) => {
+    for (let k = 1; k <= 9; k++) {
+      const rx = k * 22 * sc, ry = k * 15 * sc;
+      let d = '';
+      for (let a = 0; a <= 360; a += 15) { const r = a * Math.PI / 180, w = 1 + 0.12 * Math.sin(3 * r + k) + 0.06 * Math.cos(5 * r); d += (a ? 'L' : 'M') + (cx + Math.cos(r) * rx * w).toFixed(1) + ' ' + (cy + Math.sin(r) * ry * w).toFixed(1); }
+      topo += '<path d="' + d + 'Z" fill="none" stroke="#B08A57" stroke-width="' + (k % 4 === 0 ? 1.6 : 0.8) + '" opacity=".7"/>';
+    }
+  });
+  const pts = [[60, 430], [110, 360], [190, 330], [270, 270], [300, 205], [235, 160]];
+  topo += '<path d="M' + pts.map((p) => p.join(' ')).join(' L') + '" fill="none" stroke="#D2452B" stroke-width="4" stroke-dasharray="2 8" stroke-linecap="round"/>';
+  topo += '<path d="M' + pts.slice(0, 2).map((p) => p.join(' ')).join(' L') + '" fill="none" stroke="#D2452B" stroke-width="4" stroke-linecap="round"/></svg>';
+  const names = ['Start, 17:04', ex[0].name, ex[1].name, ex[2].name, ex[3].name, ex[4].name];
+  const wps = pts.map((p, i) => '<span class="wp' + (i === 0 ? ' done' : i === 1 ? ' here' : '') + (i >= 3 ? ' l' : '') + '" style="left:' + p[0] + 'px;top:' + p[1] + 'px"><i></i><span>' + names[i] + '</span></span>').join('');
+  const prof = [10, 70, 52, 40, 22, 30];
+  const ep = prof.map((v, i) => (i * 70).toFixed(0) + ',' + (88 - v).toFixed(0)).join(' ');
+  $('s-route').innerHTML = '<div class="mapbox">' + topo + '<div class="title"><h1>Push day trail</h1><p>5 waypoints, about 55 min</p></div>' + wps + '</div>'
+    + '<div class="sheet"><div class="grab"></div><div class="stats"><div><b>23 min</b><span>on the trail</span></div><div><b>1 of 5</b><span>waypoints</span></div><div><b>960 kg</b><span>lifted so far</span></div></div>'
+    + '<div class="elev"><svg viewBox="0 0 350 90" preserveAspectRatio="none"><polygon points="0,88 ' + ep + ' 350,88" fill="#3E5641" opacity=".15"/><polyline points="' + ep + '" fill="none" stroke="#3E5641" stroke-width="2"/><line x1="70" y1="0" x2="70" y2="90" stroke="#D2452B" stroke-width="2" stroke-dasharray="3 3"/></svg></div>'
+    + '<span class="go">Log set 3 at the bench</span></div>';
+  $('s-trail').innerHTML = '<div class="pad"><h1>Trail log</h1><p>Thursday, Fitinn Ružinov</p>'
+    + ex.map((e, i) => '<div class="leg"><div class="rail"><i class="' + (i === 0 ? 'd' : '') + '"></i>' + (i < ex.length - 1 ? '<b></b>' : '') + '</div><div class="body"><b>' + e.name + '</b><small>' + e.muscle + ', ' + e.sets + ' × ' + e.reps + '</small>' + (i < 2 ? '<div class="card"><span class="sets">' + Array.from({ length: e.sets }, (_, k) => '<em class="' + (k < e.done ? 'd' : i === 0 && k === e.done ? 'n' : '') + '">' + (k + 1) + '</em>').join('') + '</span><b>' + e.weight + ' kg</b></div>' : '') + '</div></div>').join('') + '</div>';
+  const peak = (h) => '<svg viewBox="0 0 64 48"><path d="M2 46 L' + (32 - h / 3) + ' ' + (46 - h) + ' L32 ' + (40 - h) + ' L' + (32 + h / 3) + ' ' + (46 - h) + ' L62 46 Z" fill="#3E5641"/><path d="M32 ' + (40 - h) + ' L32 ' + (30 - h) + ' L42 ' + (34 - h) + ' L32 ' + (36 - h) + '" fill="#D2452B" stroke="#D2452B" stroke-width="1.5"/></svg>';
+  $('s-summits').innerHTML = '<div class="pad"><h1>Summits</h1><p>Your heaviest lifts, climbed once</p>' + G.records.map((r) => '<div class="summit">' + peak(Math.round(r.kg / 120 * 26)) + '<div><b>' + r.kg + ' kg</b><small>' + r.name + ', reached ' + r.date + '</small></div></div>').join('')
+    + '<h1 style="font-size:22px;margin-top:20px">Next summits</h1>' + G.achievements.filter((a) => !a.got).map((a) => '<div class="summit"><div><b style="font-size:17px">' + a.name + '</b><small>' + a.progress + '% of the way</small></div></div>').join('') + '</div>';
+  $('s-party').innerHTML = '<div class="pad"><h1>Party</h1><p>Friends on the trail this week</p>' + G.leaderboard.slice(0, 5).map((r) => { const p = G.person(r.who); return '<div class="pp"><span class="av" style="background:' + p.color + '">' + p.name[0] + '</span><div><b>' + p.name + '</b><small>Level ' + r.level + '</small></div><span>' + r.xp + ' XP</span></div>'; }).join('')
+    + '<h1 style="font-size:22px;margin-top:20px">Reminders</h1>' + G.reminders.map((r) => '<div class="pp"><div><b>' + r.label + '</b><small>' + r.detail.replace(/ · /g, ', ') + '</small></div><span class="tg"></span></div>').join('') + '</div>';
+  gqTabs(document.getElementById('app'));
+})();
+</script>
+</body>
+</html>

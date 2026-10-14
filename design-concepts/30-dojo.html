@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>30 · Dojo — GymQuest concept</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="frame.css">
+<style>
+  :root { --ai: #1F2B4D; --ai-l: #2C3B63; --ai-ll: #3A4C7A; --white: #F2F2EF; --dim: #A9B1C7; --hanko: #C23B22; --belt-b: #6B4A2B; }
+  .app { position: absolute; inset: 0; background: var(--ai); color: var(--white); font: 15px/1.55 'Zen Kaku Gothic New', system-ui, sans-serif; display: flex; flex-direction: column; }
+  .app::before { content: ''; position: absolute; inset: 0; pointer-events: none; opacity: 0.12; background: repeating-linear-gradient(0deg, #fff 0 1px, transparent 1px 4px), repeating-linear-gradient(90deg, #fff 0 1px, transparent 1px 5px); }
+  main { flex: 1; overflow-y: auto; padding: 56px 22px 18px; position: relative; }
+  .serif { font-family: 'Shippori Mincho', serif; }
+  h1 { font: 800 36px/1.1 'Shippori Mincho', serif; margin: 0; }
+  .sub { color: var(--dim); margin: 6px 0 22px; }
+  .belt { margin: 0 -22px 26px; height: 46px; background: var(--belt-b); position: relative; box-shadow: inset 0 4px 0 rgba(255,255,255,0.08), inset 0 -4px 0 rgba(0,0,0,0.2); }
+  .belt::before { content: ''; position: absolute; left: 0; right: 0; top: 21px; height: 1px; background: rgba(0,0,0,0.25); }
+  .belt .stripes { position: absolute; right: 50px; top: 0; bottom: 0; display: flex; gap: 6px; }
+  .belt .stripes i { width: 10px; background: var(--white); }
+  .belt .stripes i.o { background: transparent; border: 1px dashed rgba(255,255,255,0.5); }
+  .belt span { position: absolute; left: 22px; top: 11px; font-weight: 700; }
+  .form { border-top: 1px solid var(--ai-ll); }
+  .kata { display: flex; gap: 16px; padding: 16px 0; border-bottom: 1px solid var(--ai-ll); align-items: baseline; }
+  .kata .n { font: 700 22px 'Shippori Mincho', serif; color: var(--dim); width: 24px; }
+  .kata div { flex: 1; } .kata small { display: block; color: var(--dim); }
+  .kata .w { font: 700 20px 'Shippori Mincho', serif; }
+  .kata.now .n { color: var(--hanko); }
+  .marks { display: inline-flex; gap: 4px; margin-left: 8px; vertical-align: 2px; }
+  .marks i { width: 6px; height: 6px; background: var(--white); transform: rotate(45deg); }
+  .marks i.o { background: transparent; border: 1px solid var(--dim); }
+  .begin { display: block; margin-top: 26px; text-align: center; border: 1px solid var(--white); padding: 14px; font-weight: 700; letter-spacing: 0.5px; }
+  /* focus */
+  .focus { text-align: center; padding-top: 30px; }
+  .enso { width: 240px; height: 240px; margin: 0 auto; position: relative; }
+  .enso svg { width: 100%; height: 100%; }
+  .enso .v { position: absolute; inset: 0; display: grid; place-items: center; font: 800 64px/1 'Shippori Mincho', serif; }
+  .enso .v small { display: block; font-size: 14px; max-width: 130px; margin-left: auto; margin-right: auto; color: var(--dim); font-family: 'Zen Kaku Gothic New', sans-serif; font-weight: 500; margin-top: 4px; }
+  .breath { color: var(--dim); margin-top: 18px; }
+  .breath b { color: var(--white); font-weight: 700; }
+  /* rank */
+  .ranks { display: flex; flex-direction: column; gap: 10px; }
+  .rk { display: flex; align-items: center; gap: 14px; }
+  .rk i { width: 120px; height: 18px; flex: 0 0 auto; box-shadow: inset 0 -3px 0 rgba(0,0,0,0.2); }
+  .rk div { flex: 1; } .rk small { display: block; color: var(--dim); }
+  .rk.cur { background: var(--ai-l); margin: 0 -22px; padding: 10px 22px; }
+  .rk.lock { opacity: 0.45; }
+  .stamp { display: inline-grid; place-items: center; width: 64px; height: 64px; border: 3px solid var(--hanko); color: var(--hanko); border-radius: 6px; font: 800 11px/1.15 'Shippori Mincho', serif; text-align: center; transform: rotate(-6deg); background: rgba(194,59,34,0.08); }
+  .stamps { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 12px; }
+  .stamps .off { border-color: var(--ai-ll); color: var(--ai-ll); background: none; }
+  .h2 { font: 700 22px 'Shippori Mincho', serif; margin: 30px 0 6px; }
+  .rowx { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--ai-ll); }
+  .rowx small { display: block; color: var(--dim); }
+  .tg { width: 44px; height: 24px; border: 1px solid var(--white); position: relative; }
+  .tg::after { content: ''; position: absolute; right: 3px; top: 3px; width: 16px; height: 16px; background: var(--hanko); }
+  nav { display: flex; justify-content: space-around; padding: 12px 0 28px; border-top: 1px solid var(--ai-ll); position: relative; }
+  nav button { background: none; border: 0; color: var(--dim); font: 500 14px 'Zen Kaku Gothic New', sans-serif; padding: 4px 10px; }
+  nav button.is-active { color: var(--white); }
+  nav button.is-active::before { content: ''; display: block; width: 6px; height: 6px; background: var(--hanko); margin: 0 auto 4px; transform: rotate(45deg); }
+</style>
+</head>
+<body class="concept">
+<aside class="concept-info">
+  <div class="num">30 / 32 · BUILT WITH FRONTEND DESIGN</div>
+  <h1>Dojo</h1>
+  <p>Training as practice, not competition. Indigo cloth, a calm serif, and levels shown as belt colours that take months to earn. During a set the screen shows a single brush circle with the weight inside it. Achievements are red hanko stamps.</p>
+  <span class="tag">indigo</span><span class="tag">belt ranks</span><span class="tag">hanko stamps</span>
+  <div class="concept-nav"><a href="29-sticker.html">← Prev</a><a href="index.html">All designs</a><a href="31-neon.html">Next →</a></div>
+</aside>
+<div class="device"><div class="app" id="app">
+  <main data-scroll>
+    <section data-screen="practice" id="s-practice"></section>
+    <section data-screen="focus" id="s-focus" hidden></section>
+    <section data-screen="rank" id="s-rank" hidden></section>
+    <section data-screen="you" id="s-you" hidden></section>
+  </main>
+  <nav>
+    <button data-tab="practice" class="is-active">Practice</button>
+    <button data-tab="focus">Focus</button>
+    <button data-tab="rank">Rank</button>
+    <button data-tab="you">You</button>
+  </nav>
+</div></div>
+<script src="data.js"></script>
+<script>
+(function () {
+  const G = GQ, $ = (id) => document.getElementById(id), ex = G.today.exercises;
+  $('s-practice').innerHTML = '<h1>Push day</h1><div class="sub">Thursday evening. Five forms, about 55 minutes.</div>'
+    + '<div class="belt"><span>Brown belt, level ' + G.user.level + '</span><div class="stripes"><i></i><i></i><i class="o"></i></div></div>'
+    + '<div class="form">' + ex.map((e, i) => '<div class="kata' + (i === 0 ? ' now' : '') + '"><span class="n">' + (i + 1) + '</span><div>' + e.name + (i === 0 ? '<span class="marks">' + Array.from({ length: e.sets }, (_, k) => '<i class="' + (k < e.done ? '' : 'o') + '"></i>').join('') + '</span>' : '') + '<small>' + e.sets + ' sets of ' + e.reps + '</small></div><span class="w">' + (e.weight ? e.weight + ' kg' : '—') + '</span></div>').join('') + '</div>'
+    + '<span class="begin">Return to set 3</span>';
+  $('s-focus').innerHTML = '<div class="focus"><div class="enso"><svg viewBox="0 0 240 240"><path d="M188 66 C 220 110, 206 186, 136 204 C 70 220, 26 170, 34 118 C 42 64, 96 30, 150 38 C 170 42, 182 50, 192 60" fill="none" stroke="#F2F2EF" stroke-width="13" stroke-linecap="round" opacity=".92"/><path d="M60 80 C 80 52, 120 40, 150 42" fill="none" stroke="#F2F2EF" stroke-width="5" stroke-linecap="round" opacity=".5"/></svg><div class="v"><div>60<small>kg, eight times</small></div></div></div>'
+    + '<div class="breath">Bench press, set <b>3</b> of 4.<br>Breathe in on the way down, out on the way up.</div><span class="begin" style="margin-top:30px">Set complete</span></div>';
+  const belts = [['#F2F2EF', 'White', 'Levels 1–3'], ['#E9C440', 'Yellow', 'Levels 4–6'], ['#D9822B', 'Orange', 'Levels 7–9'], ['#3F8F5B', 'Green', 'Levels 10–11'], ['#6B4A2B', 'Brown', 'Levels 12–15, you are here'], ['#111', 'Black', 'Level 16 and up']];
+  $('s-rank').innerHTML = '<h1>Rank</h1><div class="sub">' + G.user.xp + ' of ' + G.user.nextLevelXp + ' XP to the next stripe</div><div class="ranks">'
+    + belts.map((b, i) => '<div class="rk' + (i === 4 ? ' cur' : i > 4 ? ' lock' : '') + '"><i style="background:' + b[0] + (b[0] === '#111' ? ';box-shadow:inset 0 0 0 1px #556' : '') + '"></i><div>' + b[1] + '<small>' + b[2] + '</small></div></div>').join('') + '</div>'
+    + '<div class="h2">Training partners</div>' + G.leaderboard.slice(0, 4).map((r) => '<div class="rowx"><span>' + G.person(r.who).name + '<small>Level ' + r.level + '</small></span><span>' + r.xp + ' XP</span></div>').join('');
+  $('s-you').innerHTML = '<h1>' + G.user.name + '</h1><div class="sub">' + G.user.bio + '</div>'
+    + '<div class="h2" style="margin-top:0">Stamps</div><div class="stamps">' + G.achievements.map((a, i) => '<span class="stamp' + (a.got ? '' : ' off') + '" style="transform:rotate(' + [-6, 4, -3, 5, -5][i] + 'deg)">' + a.name.split(' ').slice(0, 2).join('<br>') + '</span>').join('') + '</div>'
+    + '<div class="h2">Records</div>' + G.records.map((r) => '<div class="rowx"><span>' + r.name + '<small>' + r.date + '</small></span><span class="serif" style="font-weight:700;font-size:18px">' + r.kg + ' kg</span></div>').join('')
+    + '<div class="h2">Reminders</div>' + G.reminders.map((r) => '<div class="rowx" style="align-items:center"><span>' + r.label + '<small>' + r.detail.replace(/ · /g, ', ') + '</small></span><span class="tg"></span></div>').join('');
+  gqTabs(document.getElementById('app'));
+})();
+</script>
+</body>
+</html>

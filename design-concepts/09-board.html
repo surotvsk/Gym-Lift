@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>09 · Board — GymQuest concept</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="frame.css">
+<style>
+  :root { --ink: #2B1A2E; --berry: #C8205B; --mist: #F1EEF0; --soft: #8C7F8E; }
+  .app { position: absolute; inset: 0; background: #fff; color: var(--ink); font: 15px/1.4 'Bricolage Grotesque', system-ui, sans-serif; display: flex; flex-direction: column; }
+  header { padding: 52px 14px 8px; }
+  .srch { display: flex; align-items: center; gap: 10px; background: var(--mist); border-radius: 24px; padding: 11px 16px; color: var(--soft); }
+  .srch .ico { width: 20px; height: 20px; }
+  .boards { display: flex; gap: 18px; padding: 12px 4px 0; overflow-x: auto; scrollbar-width: none; font-weight: 600; }
+  .boards span { flex: 0 0 auto; padding-bottom: 8px; color: var(--soft); }
+  .boards span.on { color: var(--ink); box-shadow: inset 0 -3px var(--ink); }
+  main { flex: 1; overflow-y: auto; }
+  .masonry { columns: 2; column-gap: 8px; padding: 6px 8px 20px; }
+  .pin { break-inside: avoid; margin-bottom: 14px; }
+  .pin .im { border-radius: 16px; background: var(--mist) center/cover; position: relative; overflow: hidden; }
+  .pin .save { position: absolute; top: 8px; right: 8px; background: var(--berry); color: #fff; font-weight: 600; font-size: 13px; padding: 8px 12px; border-radius: 20px; }
+  .pin .save.done { background: var(--ink); }
+  .pin p { margin: 6px 4px 0; font-size: 13.5px; line-height: 1.3; font-weight: 600; }
+  .pin small { display: flex; align-items: center; gap: 6px; margin: 4px 4px 0; color: var(--soft); font-size: 12px; }
+  .pin small i { width: 20px; height: 20px; border-radius: 50%; display: inline-grid; place-items: center; color: #fff; font: 600 10px/1 Georgia, serif; font-style: normal; }
+  .note { border-radius: 16px; padding: 16px 14px; }
+  .note h3 { margin: 0 0 6px; font-size: 22px; line-height: 1.05; font-weight: 800; letter-spacing: -0.5px; }
+  .note ul { margin: 0; padding-left: 16px; font-size: 13px; }
+  .note .big { font-size: 64px; font-weight: 800; line-height: 0.9; letter-spacing: -3px; }
+  /* today board */
+  .boardhead { padding: 4px 16px 12px; }
+  .boardhead h1 { margin: 0; font-size: 34px; font-weight: 800; letter-spacing: -1px; line-height: 1; }
+  .boardhead p { margin: 6px 0 12px; color: var(--soft); }
+  .collab { display: flex; align-items: center; }
+  .collab i { width: 30px; height: 30px; border-radius: 50%; border: 2px solid #fff; margin-right: -8px; display: grid; place-items: center; color: #fff; font: 600 13px/1 Georgia, serif; font-style: normal; }
+  .collab span { margin-left: 16px; font-size: 13px; color: var(--soft); }
+  .pill { display: inline-block; background: var(--mist); border-radius: 20px; padding: 10px 16px; font-weight: 600; margin: 0 6px 6px 0; }
+  .pill.dark { background: var(--ink); color: #fff; }
+  .exgrid { columns: 2; column-gap: 8px; padding: 0 8px 20px; }
+  .expin { break-inside: avoid; margin-bottom: 14px; }
+  .expin .im { border-radius: 16px; aspect-ratio: 3/4; background: #ddd center/cover; position: relative; overflow: hidden; }
+  .expin.tall .im { aspect-ratio: 3/5; }
+  .expin .im.done::after { content: ''; position: absolute; inset: 0; background: rgba(43,26,46,0.45); }
+  .expin .tick { position: absolute; left: 10px; bottom: 10px; z-index: 1; background: #fff; color: var(--ink); border-radius: 20px; padding: 6px 10px; font-weight: 600; font-size: 13px; display: flex; gap: 6px; align-items: center; }
+  .expin .tick .ico { width: 16px; height: 16px; }
+  .expin .tick.go { background: var(--berry); color: #fff; }
+  .expin p { margin: 6px 4px 0; font-weight: 600; font-size: 14px; }
+  .expin small { display: block; margin: 2px 4px 0; color: var(--soft); font-size: 12.5px; }
+  /* progress */
+  .sec { padding: 14px 16px 6px; }
+  .sec h2 { margin: 0 0 10px; font-size: 22px; font-weight: 800; letter-spacing: -0.4px; }
+  .weeks { display: flex; gap: 6px; }
+  .weeks div { flex: 1; text-align: center; font-size: 12px; color: var(--soft); }
+  .weeks b { display: block; height: 54px; border-radius: 14px; background: var(--mist); margin-bottom: 4px; }
+  .weeks .d b { background: var(--berry); }
+  .weeks .t b { background: #fff; border: 2px dashed var(--berry); }
+  .recs { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .rec { background: var(--mist); border-radius: 16px; padding: 12px; }
+  .rec b { display: block; font-size: 28px; font-weight: 800; letter-spacing: -1px; }
+  .rec span { color: var(--soft); font-size: 13px; }
+  .hist { display: flex; gap: 10px; align-items: center; padding: 10px 0; }
+  .hist .im { width: 56px; height: 56px; border-radius: 12px; background: #ddd center/cover; flex: 0 0 auto; }
+  .hist small { display: block; color: var(--soft); }
+  /* inbox */
+  .msg { display: flex; gap: 12px; padding: 10px 16px; align-items: center; }
+  .msg .av { width: 52px; height: 52px; border-radius: 50%; display: grid; place-items: center; color: #fff; font: 600 20px/1 Georgia, serif; flex: 0 0 auto; }
+  .msg p { margin: 2px 0 0; color: var(--soft); font-size: 14px; }
+  .unr { width: 10px; height: 10px; border-radius: 50%; background: var(--berry); margin-left: auto; }
+  /* profile */
+  .pro { text-align: center; padding: 4px 16px 10px; }
+  .pro .big { width: 96px; height: 96px; border-radius: 50%; background: var(--ink); color: #fff; margin: 0 auto 10px; display: grid; place-items: center; font: 400 40px/1 Georgia, serif; }
+  .pro h1 { margin: 0; font-size: 30px; font-weight: 800; letter-spacing: -0.8px; }
+  .pro p { color: var(--soft); margin: 4px 0 10px; }
+  .bcov { display: grid; grid-template-columns: 2fr 1fr; grid-template-rows: 1fr 1fr; gap: 2px; border-radius: 16px; overflow: hidden; height: 130px; }
+  .bcov div { background: #ddd center/cover; }
+  .bcov div:first-child { grid-row: span 2; }
+  .bname { margin: 6px 2px 18px; }
+  .bname b { display: block; font-size: 16px; }
+  .bname small { color: var(--soft); }
+  .bgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 0 12px; }
+  .rem { display: flex; align-items: center; gap: 12px; padding: 12px 16px; }
+  .rem small { display: block; color: var(--soft); }
+  .tg { margin-left: auto; width: 46px; height: 28px; border-radius: 14px; background: var(--ink); position: relative; }
+  .tg::after { content: ''; position: absolute; right: 3px; top: 3px; width: 22px; height: 22px; border-radius: 50%; background: #fff; }
+  nav { display: flex; justify-content: space-around; padding: 10px 0 30px; background: #fff; }
+  nav button { background: none; border: 0; color: var(--soft); padding: 6px; }
+  nav button.is-active { color: var(--ink); }
+  nav button.is-active .ico { stroke-width: 2.6; }
+  nav .me { width: 28px; height: 28px; border-radius: 50%; background: var(--ink); color: #fff; display: grid; place-items: center; font: 600 12px/1 Georgia, serif; }
+  nav button.is-active .me { box-shadow: 0 0 0 2px #fff, 0 0 0 4px var(--ink); }
+</style>
+</head>
+<body class="concept">
+<aside class="concept-info">
+  <div class="num">09 / 32 · BUILT WITH FRONTEND DESIGN</div>
+  <h1>Board</h1>
+  <p>Pinterest for training. Plans, friends’ lifts and progress photos sit on one masonry board you collect from. Today’s workout is its own board — every exercise is a pin you mark done, and you can invite a friend to the board.</p>
+  <span class="tag">masonry</span><span class="tag">collecting</span><span class="tag">plum and raspberry</span>
+  <div class="concept-nav"><a href="08-chat.html">← Prev</a><a href="index.html">All designs</a><a href="10-snap.html">Next →</a></div>
+</aside>
+<div class="device"><div class="app" id="app">
+  <header id="hdr"></header>
+  <main data-scroll>
+    <section data-screen="home" id="s-home"></section>
+    <section data-screen="today" id="s-today" hidden></section>
+    <section data-screen="progress" id="s-progress" hidden></section>
+    <section data-screen="inbox" id="s-inbox" hidden></section>
+    <section data-screen="me" id="s-me" hidden></section>
+  </main>
+  <nav>
+    <button data-tab="home" class="is-active" aria-label="Home">ICON:home</button>
+    <button data-tab="today" aria-label="Today’s board">ICON:dumbbell</button>
+    <button data-tab="progress" aria-label="Progress">ICON:chart</button>
+    <button data-tab="inbox" aria-label="Inbox">ICON:chat</button>
+    <button data-tab="me" aria-label="Profile"><span class="me">M</span></button>
+  </nav>
+</div></div>
+<script src="data.js"></script>
+<script src="icons.js"></script>
+<script>
+(function () {
+  const G = GQ, I = ICON, $ = (id) => document.getElementById(id), ex = G.today.exercises;
+  document.querySelectorAll('nav button').forEach((b) => { b.innerHTML = b.innerHTML.replace(/ICON:(\w+)/, (_, n) => I(n)); });
+  const face = (k) => '<i style="background:' + G.person(k).color + '">' + G.person(k).name[0] + '</i>';
+  const pins = [
+    { h: 250, img: 'squats', t: 'Anna’s leg day — 64 minutes, 20 sets', who: 'anna', saved: false },
+    { note: '<div class="note" style="background:#F6D9E3"><span style="font-size:13px;color:#7a2b48">Tomáš set a record</span><div class="big">140</div><span style="font-weight:600">kg deadlift</span></div>', t: 'Took a year. Worth every session.', who: 'tomas' },
+    { h: 200, img: 'push-up', t: 'Lucia’s home 25 — no equipment', who: 'lucia', saved: true },
+    { note: '<div class="note" style="background:#2B1A2E;color:#fff"><h3>Push day</h3><ul><li>Bench press 4×8</li><li>Overhead press 3×10</li><li>Incline press 3×10</li><li>Lateral raises 3×15</li><li>Dips 3×10</li></ul></div>', t: 'Your plan for today', who: 'me' },
+    { h: 230, img: 'bench-press', t: 'Peter, bench before work', who: 'peter' },
+    { h: 170, img: 'overhead-press', t: 'Shoulders finally stable, week 6', who: 'eva' },
+    { h: 210, img: 'lat-pulldown', t: 'Pull day ideas, 5 exercises', who: 'me', saved: true },
+    { note: '<div class="note" style="background:#E7E9F7"><h3>3-week streak? Make it 4.</h3><span style="font-size:13px">One more workout this week keeps it.</span></div>', t: '', who: null },
+  ];
+  $('s-home').innerHTML = '<div class="masonry">' + pins.map((p) => '<div class="pin">' + (p.note || '<div class="im" style="height:' + p.h + 'px;background-image:url(' + G.img(p.img) + ')"><span class="save' + (p.saved ? ' done' : '') + '">' + (p.saved ? 'Saved' : 'Save') + '</span></div>')
+    + (p.t ? '<p>' + p.t + '</p>' : '') + (p.who && p.who !== 'me' ? '<small>' + face(p.who) + G.person(p.who).name + '</small>' : '') + '</div>').join('') + '</div>';
+  const done = ex.reduce((s, e) => s + e.done, 0), all = ex.reduce((s, e) => s + e.sets, 0);
+  $('s-today').innerHTML = '<div class="boardhead"><h1>Push day</h1><p>' + ex.length + ' pins, about ' + G.today.estMinutes + ' minutes. ' + done + ' of ' + all + ' sets done.</p>'
+    + '<div class="collab">' + face('me') + face('anna') + '<span>Anna is following this board</span></div><div style="margin-top:12px"><span class="pill dark">Finish workout</span><span class="pill">Rest 2:00</span><span class="pill">Invite</span></div></div>'
+    + '<div class="exgrid">' + ex.map((e, k) => '<div class="expin' + (k % 3 === 0 ? ' tall' : '') + '"><div class="im' + (e.done === e.sets ? ' done' : '') + '" style="background-image:url(' + e.img + ')"><span class="tick' + (e.done < e.sets ? ' go' : '') + '">' + (e.done < e.sets ? 'Set ' + (e.done + 1) + ' of ' + e.sets : I('check') + 'Done') + '</span></div><p>' + e.name + '</p><small>' + e.sets + ' × ' + e.reps + (e.weight ? ' at ' + e.weight + ' kg' : ', bodyweight') + '</small></div>').join('') + '</div>';
+  $('s-progress').innerHTML = '<div class="sec"><h2>This week</h2><div class="weeks">' + G.week.map((d) => '<div class="' + (d.done ? 'd' : d.today ? 't' : '') + '"><b></b>' + d.d + '</div>').join('') + '</div><p style="color:var(--soft);font-size:13px;margin:10px 0 0">' + G.user.weekDone + ' of ' + G.user.weekGoal + ' workouts, ' + G.user.streakWeeks + '-week streak</p></div>'
+    + '<div class="sec"><h2>Records</h2><div class="recs">' + G.records.map((r) => '<div class="rec"><b>' + r.kg + '</b><span>kg ' + r.name.toLowerCase() + '</span></div>').join('') + '</div></div>'
+    + '<div class="sec"><h2>Recent</h2>' + G.history.map((w, i) => '<div class="hist"><span class="im" style="background-image:url(' + G.img(['squats', 'cable-rows', 'bench-press', 'leg-press', 'pull-ups'][i]) + ')"></span><div><b>' + w.plan + '</b><small>' + w.date + ', ' + w.minutes + ' min</small></div></div>').join('') + '</div>';
+  $('s-inbox').innerHTML = '<div class="sec"><h2>Messages</h2></div>' + ['anna', 'tomas', 'eva', 'peter'].map((k, i) => { const p = G.person(k); return '<div class="msg"><span class="av" style="background:' + p.color + '">' + p.name[0] + '</span><div><b>' + p.name + '</b><p>' + ['Saved your Push day board', 'You: 140 is unreal', 'Sent you a pin', 'Same time tomorrow?'][i] + '</p></div>' + (i === 0 ? '<span class="unr"></span>' : '') + '</div>'; }).join('')
+    + '<div class="sec"><h2>Top 20 this week</h2>' + G.leaderboard.map((r, i) => '<div class="hist"><b style="width:20px;color:var(--soft)">' + (i + 1) + '</b><span class="collab">' + face(r.who) + '</span><span style="flex:1;margin-left:10px;font-weight:' + (r.who === 'me' ? 800 : 400) + '">' + G.person(r.who).name + '</span><b>' + r.xp + ' XP</b></div>').join('') + '</div>';
+  $('s-me').innerHTML = '<div class="pro"><div class="big">M</div><h1>' + G.user.name + '</h1><p>@' + G.user.handle + '. Level ' + G.user.level + ', ' + G.user.workouts + ' workouts</p></div>'
+    + '<div class="bgrid">' + [['Push day', 'bench-press', 'overhead-press', 'dips', '5 exercises'], ['Leg day', 'squats', 'leg-press', 'lunges', '6 exercises'], ['Saved from friends', 'push-up', 'plank', 'glute-bridge', '7 pins'], ['Progress photos', 'pull-ups', 'lat-pulldown', 'cable-rows', 'private']].map((b) => '<div><div class="bcov"><div style="background-image:url(' + G.img(b[1]) + ')"></div><div style="background-image:url(' + G.img(b[2]) + ')"></div><div style="background-image:url(' + G.img(b[3]) + ')"></div></div><div class="bname"><b>' + b[0] + '</b><small>' + b[4] + '</small></div></div>').join('') + '</div>'
+    + '<div class="sec"><h2>Best achievements</h2><div class="recs">' + G.achievements.filter((a) => a.got).map((a) => '<div class="rec"><b style="font-size:18px;letter-spacing:0">' + a.name + '</b><span>' + a.desc + '</span></div>').join('') + '</div></div>'
+    + '<div class="sec"><h2>Reminders</h2></div>' + G.reminders.map((r) => '<div class="rem">' + I(r.kind === 'water' ? 'droplet' : r.kind === 'meal' ? 'utensils' : 'bell') + '<div>' + r.label + '<small>' + r.detail.replace(/ · /g, ', ') + '</small></div><span class="tg"></span></div>').join('');
+  const hdr = { home: '<div class="srch">' + I('search') + 'Search plans, lifts and people</div><div class="boards"><span class="on">For you</span><span>Friends</span><span>Plans</span><span>Home workouts</span><span>Saved</span></div>',
+    today: '<div style="display:flex;justify-content:space-between">' + I('back') + I('share') + '</div>', progress: '', inbox: '', me: '<div style="display:flex;justify-content:flex-end">' + I('settings') + '</div>' };
+  gqTabs(document.getElementById('app'), (n) => { $('hdr').innerHTML = hdr[n]; $('hdr').style.paddingBottom = hdr[n] ? '8px' : '0'; });
+})();
+</script>
+</body>
+</html>

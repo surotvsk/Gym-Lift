@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>17 · Quiet — GymQuest concept</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="frame.css">
+<style>
+  :root { --ink: #16181D; --soft: #8A8F98; --line: #F0F1F3; --accent: #2F5BEA; }
+  .app { position: absolute; inset: 0; background: #fff; color: var(--ink); font: 16px/1.5 Manrope, system-ui, sans-serif; display: flex; flex-direction: column; }
+  main { flex: 1; overflow-y: auto; padding: 64px 28px 24px; }
+  h1 { font-size: 30px; font-weight: 600; letter-spacing: -0.8px; margin: 0 0 4px; line-height: 1.15; }
+  .lead { color: var(--soft); margin: 0 0 40px; }
+  .ex { display: flex; align-items: baseline; padding: 18px 0; border-bottom: 1px solid var(--line); }
+  .ex:last-of-type { border-bottom: 0; }
+  .ex .nm { flex: 1; }
+  .ex .nm small { display: block; color: var(--soft); font-size: 14px; }
+  .ex .w { font-weight: 600; font-variant-numeric: tabular-nums; }
+  .ex.cur .nm b { color: var(--accent); }
+  .dots { display: flex; gap: 6px; margin-top: 8px; }
+  .dots i { width: 8px; height: 8px; border-radius: 50%; background: var(--line); }
+  .dots i.d { background: var(--ink); }
+  .dots i.n { background: var(--accent); }
+  .go { display: block; margin-top: 40px; background: var(--ink); color: #fff; text-align: center; border-radius: 28px; padding: 16px; font-weight: 600; }
+  /* set screen */
+  .big { margin: 40px 0 8px; font-size: 96px; font-weight: 500; letter-spacing: -4px; line-height: 1; font-variant-numeric: tabular-nums; }
+  .big small { font-size: 28px; letter-spacing: 0; color: var(--soft); font-weight: 500; }
+  .rows { margin-top: 36px; }
+  .rows div { display: flex; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid var(--line); color: var(--soft); }
+  .rows b { color: var(--ink); font-weight: 600; }
+  .adj { display: flex; gap: 12px; margin-top: 32px; }
+  .adj span { flex: 1; text-align: center; border: 1px solid #E2E4E8; border-radius: 28px; padding: 14px; font-weight: 600; }
+  .adj span.p { background: var(--accent); border-color: var(--accent); color: #fff; flex: 2; }
+  /* history */
+  .wk { display: flex; justify-content: space-between; margin-bottom: 40px; }
+  .wk span { text-align: center; color: var(--soft); font-size: 13px; }
+  .wk i { display: block; width: 32px; height: 32px; border-radius: 50%; margin: 0 auto 6px; border: 1px solid #E2E4E8; }
+  .wk .d i { background: var(--ink); border-color: var(--ink); }
+  .wk .t i { border: 2px solid var(--accent); }
+  .h { padding: 16px 0; border-bottom: 1px solid var(--line); display: flex; }
+  .h div { flex: 1; } .h small { display: block; color: var(--soft); font-size: 14px; }
+  .h .r { text-align: right; color: var(--soft); font-size: 14px; }
+  .line { height: 120px; margin: 8px 0 40px; }
+  .label { color: var(--soft); font-size: 14px; margin: 0 0 6px; }
+  /* profile */
+  .opt { display: flex; align-items: center; padding: 16px 0; border-bottom: 1px solid var(--line); }
+  .opt div { flex: 1; } .opt small { display: block; color: var(--soft); font-size: 14px; }
+  .sw { width: 44px; height: 26px; border-radius: 13px; background: var(--ink); position: relative; }
+  .sw::after { content: ''; position: absolute; right: 3px; top: 3px; width: 20px; height: 20px; border-radius: 50%; background: #fff; }
+  .ach { color: var(--soft); }
+  .ach b { color: var(--ink); font-weight: 600; }
+  nav { display: flex; justify-content: center; gap: 36px; padding: 12px 0 30px; }
+  nav button { background: none; border: 0; font: 500 14px Manrope, sans-serif; color: var(--soft); padding: 4px 0; }
+  nav button.is-active { color: var(--ink); box-shadow: inset 0 -2px 0 var(--ink); }
+</style>
+</head>
+<body class="concept">
+<aside class="concept-info">
+  <div class="num">17 / 32 · BUILT WITHOUT A PLUGIN</div>
+  <h1>Quiet</h1>
+  <p>The cleanest version. No cards, no icons, no badges. White space, one typeface, one blue for whatever needs your attention right now. The app gets out of the way so the only thing on screen during a set is the weight.</p>
+  <span class="tag">clean</span><span class="tag">text only</span><span class="tag">one accent</span>
+  <div class="concept-nav"><a href="16-server.html">← Prev</a><a href="index.html">All designs</a><a href="18-iron.html">Next →</a></div>
+</aside>
+<div class="device"><div class="app" id="app">
+  <main data-scroll>
+    <section data-screen="today" id="s-today"></section>
+    <section data-screen="set" id="s-set" hidden></section>
+    <section data-screen="history" id="s-history" hidden></section>
+    <section data-screen="you" id="s-you" hidden></section>
+  </main>
+  <nav>
+    <button data-tab="today" class="is-active">Today</button>
+    <button data-tab="set">Set</button>
+    <button data-tab="history">History</button>
+    <button data-tab="you">You</button>
+  </nav>
+</div></div>
+<script src="data.js"></script>
+<script>
+(function () {
+  const G = GQ, $ = (id) => document.getElementById(id), ex = G.today.exercises;
+  $('s-today').innerHTML = '<h1>Push day</h1><p class="lead">Thursday, about ' + G.today.estMinutes + ' minutes</p>'
+    + ex.map((e, i) => '<div class="ex' + (i === 0 ? ' cur' : '') + '"><div class="nm"><b style="font-weight:500">' + e.name + '</b><small>' + e.sets + ' × ' + e.reps + '</small>' + (i === 0 ? '<div class="dots">' + Array.from({ length: e.sets }, (_, k) => '<i class="' + (k < e.done ? 'd' : k === e.done ? 'n' : '') + '"></i>').join('') + '</div>' : '') + '</div><span class="w">' + (e.weight ? e.weight + ' kg' : 'Body') + '</span></div>').join('')
+    + '<span class="go">Continue workout</span>';
+  const e = ex[0];
+  $('s-set').innerHTML = '<h1>Bench press</h1><p class="lead" style="margin:0">Set 3 of 4</p><div class="big">60<small> kg</small></div><div style="color:var(--soft)">8 reps, 2.5 kg more than last week</div>'
+    + '<div class="rows"><div>Set 1<b>8 × 60 kg</b></div><div>Set 2<b>8 × 60 kg</b></div><div>Rest<b>1:30</b></div></div>'
+    + '<div class="adj"><span>−2.5</span><span>+2.5</span><span class="p">Done</span></div>';
+  const bw = G.bodyWeight, mn = Math.min(...bw) - 0.3, mx = Math.max(...bw) + 0.3;
+  const pts = bw.map((v, i) => (i * 334 / 7).toFixed(1) + ',' + (110 - (v - mn) / (mx - mn) * 100).toFixed(1)).join(' ');
+  $('s-history').innerHTML = '<h1>' + G.user.weekDone + ' of ' + G.user.weekGoal + ' this week</h1><p class="lead">' + G.user.streakWeeks + ' weeks in a row</p>'
+    + '<div class="wk">' + G.week.map((d) => '<span class="' + (d.done ? 'd' : d.today ? 't' : '') + '"><i></i>' + d.d[0] + '</span>').join('') + '</div>'
+    + '<p class="label">Body weight, ' + bw[bw.length - 1] + ' kg</p><svg class="line" viewBox="0 0 334 120" width="100%"><polyline points="' + pts + '" fill="none" stroke="#16181D" stroke-width="1.5"/></svg>'
+    + G.history.map((h) => '<div class="h"><div>' + h.plan + '<small>' + h.date + '</small></div><div class="r">' + h.minutes + ' min<br>' + h.top + '</div></div>').join('');
+  $('s-you').innerHTML = '<h1>' + G.user.name + '</h1><p class="lead">Level ' + G.user.level + ', ' + G.user.workouts + ' workouts</p>'
+    + '<p class="label">Reminders</p>' + G.reminders.map((r) => '<div class="opt"><div>' + r.label + '<small>' + r.detail.replace(/ · /g, ', ') + '</small></div><span class="sw"></span></div>').join('')
+    + '<p class="label" style="margin-top:40px">Achievements</p><p class="ach">' + G.achievements.map((a) => a.got ? '<b>' + a.name + '</b>' : a.name + ' (' + a.progress + '%)').join(', ') + '</p>'
+    + '<p class="label" style="margin-top:40px">Records</p>' + G.records.map((r) => '<div class="h"><div>' + r.name + '</div><div class="r" style="color:var(--ink)">' + r.kg + ' kg</div></div>').join('');
+  gqTabs(document.getElementById('app'));
+})();
+</script>
+</body>
+</html>

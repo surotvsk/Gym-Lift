@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>05 · Groups — GymQuest concept</title>
+<link rel="stylesheet" href="frame.css">
+<style>
+  .app { position: absolute; inset: 0; background: #F0F2F5; color: #050505; font: 15px/1.33 -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; display: flex; flex-direction: column; }
+  .bar { background: #fff; padding: 48px 12px 0; }
+  .brand { display: flex; align-items: center; gap: 8px; height: 40px; }
+  .brand b { flex: 1; color: #1877F2; font: 800 27px/1 'Helvetica Neue', Helvetica, Arial, sans-serif; letter-spacing: -1.2px; }
+  .circ { width: 36px; height: 36px; border-radius: 50%; background: #E4E6EB; display: grid; place-items: center; }
+  .circ .ico { width: 20px; height: 20px; stroke-width: 2.2; }
+  .tabs { display: flex; margin: 4px -12px 0; border-bottom: 1px solid #ced0d4; }
+  .tabs button { flex: 1; background: none; border: 0; padding: 10px 0 9px; color: #65676B; position: relative; }
+  .tabs button.is-active { color: #1877F2; }
+  .tabs button.is-active::after { content: ''; position: absolute; left: 10%; right: 10%; bottom: -1px; height: 3px; background: #1877F2; border-radius: 3px 3px 0 0; }
+  .tabs .ico { width: 26px; height: 26px; }
+  .tabs .b { position: absolute; top: 4px; left: 52%; background: #E41E3F; color: #fff; font-size: 11px; font-weight: 700; border-radius: 10px; padding: 1px 5px; }
+  main { flex: 1; overflow-y: auto; }
+  .card { background: #fff; margin-bottom: 8px; }
+  .pad { padding: 12px; }
+  .comp { display: flex; gap: 8px; align-items: center; }
+  .av { width: 40px; height: 40px; border-radius: 50%; color: #fff; display: grid; place-items: center; font: 600 16px/1 Georgia, serif; flex: 0 0 auto; }
+  .av.s { width: 32px; height: 32px; font-size: 13px; }
+  .comp .fake { flex: 1; border: 1px solid #ced0d4; border-radius: 20px; padding: 9px 14px; color: #65676B; }
+  .comp .ico { color: #45BD62; }
+  .storiesrow { display: flex; gap: 8px; overflow-x: auto; padding: 12px; scrollbar-width: none; }
+  .st { flex: 0 0 auto; width: 104px; height: 176px; border-radius: 12px; background: #ccc center/cover; position: relative; overflow: hidden; color: #fff; }
+  .st::after { content: ''; position: absolute; inset: 0; background: linear-gradient(transparent 55%, rgba(0,0,0,0.6)); }
+  .st .av { position: absolute; top: 8px; left: 8px; width: 36px; height: 36px; border: 3px solid #1877F2; z-index: 1; }
+  .st b { position: absolute; left: 8px; bottom: 8px; z-index: 1; font-size: 13px; }
+  .st.create { background: #fff; color: #050505; border: 1px solid #ced0d4; }
+  .st.create::after { display: none; }
+  .st.create .ph { height: 70%; background: #ddd center/cover; }
+  .st.create .plus { position: absolute; left: 50%; top: 70%; transform: translate(-50%, -50%); width: 36px; height: 36px; border-radius: 50%; background: #1877F2; color: #fff; display: grid; place-items: center; border: 4px solid #fff; }
+  .st.create b { color: #050505; bottom: 10px; left: 0; right: 0; text-align: center; }
+  .plan { border: 1px solid #ced0d4; border-radius: 10px; overflow: hidden; margin-top: 4px; }
+  .plan .top { height: 96px; background: #ddd center/cover; }
+  .plan .in { padding: 10px 12px; }
+  .plan small { color: #65676B; text-transform: uppercase; font-size: 12px; }
+  .plan h3 { margin: 2px 0 2px; font-size: 17px; }
+  .plan p { margin: 0 0 10px; color: #65676B; font-size: 14px; }
+  .bluebtn { display: block; text-align: center; background: #1877F2; color: #fff; font-weight: 600; border-radius: 6px; padding: 9px; }
+  .greybtn { display: block; text-align: center; background: #E4E6EB; color: #050505; font-weight: 600; border-radius: 6px; padding: 9px; }
+  .post .h { display: flex; gap: 8px; align-items: center; padding: 12px 12px 6px; }
+  .post .h small { display: block; color: #65676B; font-size: 13px; }
+  .post .h .x { margin-left: auto; color: #65676B; }
+  .post p { margin: 0; padding: 0 12px 10px; }
+  .post .img { aspect-ratio: 1.15; background: #ddd center/cover; }
+  .post .box { margin: 0 12px 10px; border-radius: 8px; background: #F0F2F5; padding: 10px 12px; font-size: 14px; }
+  .post .box b { display: block; margin-bottom: 4px; }
+  .counts { display: flex; justify-content: space-between; padding: 8px 12px; color: #65676B; font-size: 14px; }
+  .rx { display: inline-flex; align-items: center; gap: 4px; }
+  .rx i { width: 18px; height: 18px; border-radius: 50%; display: inline-grid; place-items: center; font-style: normal; font-size: 10px; color: #fff; border: 1px solid #fff; }
+  .rx i.l { background: #1877F2; } .rx i.h { background: #F33E58; margin-left: -6px; }
+  .acts { display: flex; border-top: 1px solid #ced0d4; margin: 0 12px; }
+  .acts span { flex: 1; display: flex; justify-content: center; align-items: center; gap: 6px; padding: 8px 0; color: #65676B; font-weight: 600; font-size: 14px; }
+  .acts span .ico { width: 20px; height: 20px; }
+  .acts span.on { color: #1877F2; }
+  .prbadge { margin: 0 12px 10px; border-radius: 8px; padding: 18px; background: #E7F3FF; text-align: center; }
+  .prbadge b { font-size: 46px; color: #1877F2; display: block; line-height: 1.05; }
+  /* workout */
+  .wk h2 { margin: 0; font-size: 20px; }
+  .wk .meta { color: #65676B; font-size: 14px; margin-top: 2px; }
+  .meter { height: 8px; border-radius: 4px; background: #E4E6EB; margin: 12px 0 4px; overflow: hidden; }
+  .meter span { display: block; height: 100%; background: #1877F2; }
+  .exr { display: flex; gap: 10px; padding: 10px 12px; border-top: 1px solid #F0F2F5; align-items: center; }
+  .exr .t { width: 54px; height: 54px; border-radius: 8px; background: #ddd center/cover; flex: 0 0 auto; }
+  .exr h4 { margin: 0; font-size: 15px; }
+  .exr p { margin: 2px 0 0; color: #65676B; font-size: 13px; }
+  .exr .chk { margin-left: auto; display: flex; gap: 4px; }
+  .exr .chk i { width: 22px; height: 22px; border-radius: 50%; border: 2px solid #ced0d4; }
+  .exr .chk i.d { background: #1877F2; border-color: #1877F2; }
+  .sect { padding: 12px 12px 4px; font-weight: 700; font-size: 17px; display: flex; justify-content: space-between; }
+  .sect a { color: #1877F2; font-weight: 400; font-size: 15px; }
+  /* groups */
+  .grp { display: flex; gap: 10px; padding: 10px 12px; align-items: center; }
+  .grp .gi { width: 56px; height: 56px; border-radius: 10px; background: #ddd center/cover; flex: 0 0 auto; }
+  .grp small { display: block; color: #65676B; font-size: 13px; }
+  .event { display: flex; gap: 12px; padding: 10px 12px; }
+  .event .date { width: 52px; text-align: center; border-radius: 8px; overflow: hidden; border: 1px solid #ced0d4; flex: 0 0 auto; }
+  .event .date b { display: block; background: #E41E3F; color: #fff; font-size: 11px; padding: 2px 0; }
+  .event .date span { font-size: 22px; font-weight: 700; }
+  .event small { color: #65676B; display: block; }
+  /* progress */
+  .prog { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 0 12px 12px; }
+  .pc { background: #F0F2F5; border-radius: 10px; padding: 12px; }
+  .pc span { color: #65676B; font-size: 13px; }
+  .pc b { display: block; font-size: 22px; }
+  .wkdays { display: flex; gap: 6px; padding: 0 12px 12px; }
+  .wkdays div { flex: 1; text-align: center; font-size: 12px; color: #65676B; }
+  .wkdays i { display: block; height: 40px; border-radius: 8px; background: #E4E6EB; margin-top: 4px; }
+  .wkdays .d i { background: #1877F2; }
+  .wkdays .t i { background: #fff; border: 2px dashed #1877F2; }
+  .li { display: flex; justify-content: space-between; padding: 10px 12px; border-top: 1px solid #F0F2F5; }
+  .li b { font-variant-numeric: tabular-nums; }
+  /* menu */
+  .me { display: flex; gap: 10px; align-items: center; padding: 12px; }
+  .tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 0 12px 12px; }
+  .tile { background: #fff; border-radius: 10px; padding: 12px; box-shadow: 0 1px 2px rgba(0,0,0,0.12); }
+  .tile .ico { color: #1877F2; }
+  .tile b { display: block; margin-top: 8px; font-size: 15px; }
+  .tile small { color: #65676B; }
+  .rem { display: flex; gap: 10px; align-items: center; padding: 10px 12px; border-top: 1px solid #F0F2F5; }
+  .rem small { display: block; color: #65676B; font-size: 13px; }
+  .tg { margin-left: auto; width: 44px; height: 26px; border-radius: 13px; background: #1877F2; position: relative; }
+  .tg::after { content: ''; position: absolute; right: 3px; top: 3px; width: 20px; height: 20px; border-radius: 50%; background: #fff; }
+</style>
+</head>
+<body class="concept">
+<aside class="concept-info">
+  <div class="num">05 / 32 · BUILT WITHOUT A PLUGIN</div>
+  <h1>Groups</h1>
+  <p>Facebook: grey canvas, white cards, the blue that everybody recognises. Training is social and local — a “log a workout” composer, gym groups, group sessions as events, reactions instead of likes.</p>
+  <span class="tag">community</span><span class="tag">cards on grey</span><span class="tag">events</span>
+  <div class="concept-nav"><a href="04-channel.html">← Prev</a><a href="index.html">All designs</a><a href="06-notebook.html">Next →</a></div>
+</aside>
+<div class="device"><div class="app" id="app">
+  <div class="bar">
+    <div class="brand"><b>gymquest</b><span class="circ">ICON:plus</span><span class="circ">ICON:search</span><span class="circ">ICON:chat</span></div>
+    <div class="tabs">
+      <button data-tab="home" class="is-active">ICON:home</button>
+      <button data-tab="workout">ICON:dumbbell</button>
+      <button data-tab="groups">ICON:users<span class="b">3</span></button>
+      <button data-tab="progress">ICON:chart</button>
+      <button data-tab="menu">ICON:list</button>
+    </div>
+  </div>
+  <main data-scroll>
+    <section data-screen="home" id="s-home"></section>
+    <section data-screen="workout" id="s-workout" hidden></section>
+    <section data-screen="groups" id="s-groups" hidden></section>
+    <section data-screen="progress" id="s-progress" hidden></section>
+    <section data-screen="menu" id="s-menu" hidden></section>
+  </main>
+</div></div>
+<script src="data.js"></script>
+<script src="icons.js"></script>
+<script>
+(function () {
+  const G = GQ, I = ICON, $ = (id) => document.getElementById(id);
+  document.querySelectorAll('.bar .circ, .tabs button').forEach((b) => { b.innerHTML = b.innerHTML.replace(/ICON:(\w+)/, (_, n) => I(n)); });
+  const av = (k, s) => { const p = G.person(k); return '<span class="av' + (s ? ' s' : '') + '" style="background:' + p.color + '">' + p.name[0] + '</span>'; };
+  const ex = G.today.exercises;
+  /* HOME */
+  $('s-home').innerHTML = '<div class="card pad"><div class="comp">' + av('me') + '<span class="fake">Log a workout, Martin?</span>' + I('camera') + '</div></div>'
+    + '<div class="card"><div class="storiesrow"><div class="st create"><div class="ph" style="background-image:url(' + ex[0].img + ')"></div><span class="plus">' + I('plus') + '</span><b>Share workout</b></div>'
+    + G.feed.filter((f) => f.img).map((f) => '<div class="st" style="background-image:url(' + G.img(f.img) + ')">' + av(f.who) + '<b>' + G.person(f.who).name + '</b></div>').join('') + '</div></div>'
+    + '<div class="card pad"><div class="plan"><div class="top" style="background-image:url(' + ex[0].img + ')"></div><div class="in"><small>Your plan for today</small><h3>' + G.today.plan + '</h3><p>' + ex.length + ' exercises · ~' + G.today.estMinutes + ' min · ' + G.user.weekDone + ' of ' + G.user.weekGoal + ' this week</p><span class="bluebtn" data-tab="workout">Continue workout</span></div></div></div>'
+    + G.feed.map((f, i) => { const p = G.person(f.who);
+      let mid = '';
+      if (f.kind === 'pr') mid = '<div class="prbadge"><small style="color:#65676B">New personal record · Deadlift</small><b>' + f.pr.kg + ' kg</b><small style="color:#65676B">up from ' + f.pr.prev + ' kg</small></div>';
+      else if (f.kind === 'workout') mid = '<div class="box"><b>' + f.workout.plan + ' · ' + f.workout.minutes + ' min</b>' + f.workout.lines.join('<br>') + '</div>' + (f.img ? '<div class="img" style="background-image:url(' + G.img(f.img) + ')"></div>' : '');
+      else if (f.kind === 'plan') mid = '<div class="box"><b>📋 ' + f.plan.name + '</b>' + f.plan.lines.join('<br>') + '<span class="greybtn" style="margin-top:8px">Save plan</span></div>';
+      else mid = '<div class="img" style="background-image:url(' + G.img(f.img) + ')"></div>';
+      return '<div class="card post"><div class="h">' + av(f.who) + '<div><b>' + p.name + '</b>' + (i === 1 ? ' ▸ <b>Bratislava Lifters</b>' : '') + '<small>' + f.ago + ' · Friends</small></div><span class="x">' + I('more') + '</span></div>'
+        + '<p>' + f.text + '</p>' + mid + '<div class="counts"><span class="rx"><i class="l">👍</i><i class="h">❤</i> ' + f.likes + '</span><span>' + f.comments + ' comments</span></div>'
+        + '<div class="acts"><span class="' + (i === 0 ? 'on' : '') + '">' + I('heart') + 'Like</span><span>' + I('comment') + 'Comment</span><span>' + I('share') + 'Share</span></div></div>'; }).join('');
+  /* WORKOUT */
+  const done = ex.reduce((s, e) => s + e.done, 0), all = ex.reduce((s, e) => s + e.sets, 0);
+  $('s-workout').innerHTML = '<div class="card pad wk"><h2>' + G.today.plan + '</h2><div class="meta">Started 18:04 · 23 min · ' + done + ' of ' + all + ' sets</div><div class="meter"><span style="width:' + Math.round(done / all * 100) + '%"></span></div></div>'
+    + '<div class="card">' + ex.map((e) => '<div class="exr"><div class="t" style="background-image:url(' + e.img + ')"></div><div><h4>' + e.name + '</h4><p>' + e.sets + ' × ' + e.reps + ' · ' + (e.weight ? e.weight + ' kg' : 'bodyweight') + '</p></div><div class="chk">' + Array.from({ length: e.sets }, (_, i) => '<i class="' + (i < e.done ? 'd' : '') + '"></i>').join('') + '</div></div>').join('') + '</div>'
+    + '<div class="card pad"><span class="bluebtn">Finish and share</span><span class="greybtn" style="margin-top:8px">Rest timer · 2:00</span></div>';
+  /* GROUPS */
+  $('s-groups').innerHTML = '<div class="sect">Your groups <a>See all</a></div><div class="card">'
+    + [['Bratislava Lifters', '1.2K members · 14 new posts', 'deadlift'], ['Home workout club', '860 members · 3 new posts', 'push-up'], ['Push / pull / legs', '4.1K members · 22 new posts', 'bench-press']].map((g) => '<div class="grp"><span class="gi" style="background-image:url(' + G.img(g[2] === 'deadlift' ? 'hack-squat' : g[2]) + ')"></span><div><b>' + g[0] + '</b><small>' + g[1] + '</small></div></div>').join('') + '</div>'
+    + '<div class="sect">Upcoming</div><div class="card">'
+    + [['SAT', '18', 'Group leg day', 'Fitinn Ružinov · 10:00 · 6 going'], ['SUN', '19', 'Morning run along the Danube', 'Eurovea · 8:00 · 11 going']].map((e) => '<div class="event"><span class="date"><b>' + e[0] + '</b><span>' + e[1] + '</span></span><div><b>' + e[2] + '</b><small>' + e[3] + '</small></div></div>').join('') + '</div>'
+    + '<div class="sect">Top 20 this week</div><div class="card">' + G.leaderboard.map((r, i) => '<div class="grp">' + '<b style="width:18px;color:#65676B">' + (i + 1) + '</b>' + av(r.who, 1) + '<div style="flex:1"><b>' + G.person(r.who).name + '</b></div><b>' + r.xp + ' XP</b></div>').join('') + '</div>';
+  /* PROGRESS */
+  $('s-progress').innerHTML = '<div class="card"><div class="sect">This week</div><div class="wkdays">' + G.week.map((d) => '<div class="' + (d.done ? 'd' : d.today ? 't' : '') + '">' + d.d + '<i></i></div>').join('') + '</div>'
+    + '<div class="prog"><div class="pc"><span>Workouts</span><b>' + G.user.weekDone + ' / ' + G.user.weekGoal + '</b></div><div class="pc"><span>Streak</span><b>' + G.user.streakWeeks + ' weeks</b></div><div class="pc"><span>Level</span><b>' + G.user.level + '</b></div><div class="pc"><span>Body weight</span><b>' + G.bodyWeight[7] + ' kg</b></div></div></div>'
+    + '<div class="card"><div class="sect">Records</div>' + G.records.map((r) => '<div class="li"><span>' + r.name + '</span><b>' + r.kg + ' kg</b></div>').join('') + '</div>'
+    + '<div class="card"><div class="sect">Memories <a>History</a></div>' + G.history.map((w) => '<div class="li"><span>' + w.plan + '<br><small style="color:#65676B">' + w.date + '</small></span><span>' + w.top + '</span></div>').join('') + '</div>';
+  /* MENU */
+  $('s-menu').innerHTML = '<div class="card me">' + av('me') + '<div><b>' + G.user.name + '</b><br><small style="color:#65676B">Level ' + G.user.level + ' · see your profile</small></div></div>'
+    + '<div class="tiles">' + [['trophy', 'Achievements', '3 of 25'], ['users', 'Friends', '12 · 3 requests'], ['calendar', 'Calendar', 'Oct 2026'], ['bookmark', 'Saved plans', '4 plans'], ['camera', 'Progress photos', 'private'], ['timer', 'Rest timer', '60 · 90 · 120 s']].map((t) => '<div class="tile">' + I(t[0]) + '<b>' + t[1] + '</b><small>' + t[2] + '</small></div>').join('') + '</div>'
+    + '<div class="card"><div class="sect">Reminders</div>' + G.reminders.map((r) => '<div class="rem">' + I(r.kind === 'water' ? 'droplet' : r.kind === 'meal' ? 'utensils' : 'bell') + '<div>' + r.label + '<small>' + r.detail + '</small></div><span class="tg"></span></div>').join('') + '</div>';
+  gqTabs(document.getElementById('app'));
+})();
+</script>
+</body>
+</html>

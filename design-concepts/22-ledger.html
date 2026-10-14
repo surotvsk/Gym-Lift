@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>22 · Ledger — GymQuest concept</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="frame.css">
+<style>
+  :root { --ink: #1D232B; --mute: #6B7480; --grid: #E3E6EA; --head: #F4F5F7; --hl: #FFF6D6; --up: #18794E; --down: #B42318; --sel: #2563EB; }
+  .app { position: absolute; inset: 0; background: #fff; color: var(--ink); font: 13px/1.35 'IBM Plex Sans', system-ui, sans-serif; display: flex; flex-direction: column; font-variant-numeric: tabular-nums; }
+  header { padding: 48px 12px 8px; border-bottom: 1px solid var(--grid); display: flex; align-items: baseline; gap: 8px; }
+  header b { font-size: 17px; font-weight: 600; }
+  header span { color: var(--mute); }
+  header .r { margin-left: auto; color: var(--up); font-weight: 600; }
+  main { flex: 1; overflow-y: auto; }
+  .kpis { display: grid; grid-template-columns: repeat(4, 1fr); border-bottom: 1px solid var(--grid); }
+  .kpis div { padding: 8px 10px; border-right: 1px solid var(--grid); }
+  .kpis div:last-child { border: 0; }
+  .kpis span { color: var(--mute); font-size: 11px; display: block; }
+  .kpis b { font: 600 17px 'IBM Plex Sans Condensed', sans-serif; }
+  .kpis small { color: var(--up); font-size: 11px; display: block; }
+  table { width: 100%; border-collapse: collapse; }
+  th { background: var(--head); color: var(--mute); font-weight: 500; font-size: 11px; text-align: right; padding: 6px 6px; border-bottom: 1px solid var(--grid); position: sticky; top: 0; }
+  th:first-child, td:first-child { text-align: left; padding-left: 12px; }
+  th:last-child, td:last-child { padding-right: 12px; }
+  td { text-align: right; padding: 7px 6px; border-bottom: 1px solid var(--grid); white-space: nowrap; }
+  td.l { text-align: left; }
+  tr.grp td { background: var(--head); font-weight: 600; text-align: left; color: var(--ink); }
+  tr.cur td { background: var(--hl); }
+  tr.cur td:first-child { box-shadow: inset 3px 0 0 var(--sel); }
+  .up { color: var(--up); } .down { color: var(--down); } .mu { color: var(--mute); }
+  .cell-in { display: inline-block; min-width: 34px; border: 1px solid var(--sel); border-radius: 3px; padding: 0 4px; background: #fff; }
+  .sect { padding: 12px 12px 6px; font-weight: 600; font-size: 14px; display: flex; justify-content: space-between; }
+  .sect span { color: var(--mute); font-weight: 400; font-size: 12px; }
+  .chart { padding: 0 12px 10px; }
+  .bar { display: flex; align-items: center; gap: 6px; padding: 3px 0; }
+  .bar span:first-child { width: 70px; color: var(--mute); }
+  .bar i { height: 12px; background: #94A3B8; }
+  .bar i.now { background: var(--sel); }
+  .bar b { font-weight: 500; }
+  .keys { position: sticky; bottom: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--grid); border-top: 1px solid var(--grid); }
+  .keys span { background: #fff; text-align: center; padding: 12px 0; font-size: 16px; font-weight: 500; }
+  .keys span.go { background: var(--sel); color: #fff; }
+  .set { display: flex; padding: 9px 12px; border-bottom: 1px solid var(--grid); }
+  .set span:first-child { flex: 1; } .set small { color: var(--mute); display: block; }
+  .tg { width: 32px; height: 18px; border-radius: 9px; background: var(--sel); position: relative; }
+  .tg::after { content: ''; position: absolute; right: 2px; top: 2px; width: 14px; height: 14px; border-radius: 50%; background: #fff; }
+  nav { display: flex; border-top: 1px solid var(--grid); padding-bottom: 24px; background: var(--head); }
+  nav button { flex: 1; background: none; border: 0; border-right: 1px solid var(--grid); padding: 10px 0; font: 500 12px 'IBM Plex Sans', sans-serif; color: var(--mute); }
+  nav button:last-child { border: 0; }
+  nav button.is-active { background: #fff; color: var(--ink); box-shadow: inset 0 2px 0 var(--sel); }
+</style>
+</head>
+<body class="concept">
+<aside class="concept-info">
+  <div class="num">22 / 32 · BUILT WITHOUT A PLUGIN</div>
+  <h1>Ledger</h1>
+  <p>For people who used to track training in a spreadsheet and miss it. Dense tables, real numbers, change versus last time in every row, and estimated one-rep maxes. Small type, many rows, no decoration. You type a weight straight into the cell.</p>
+  <span class="tag">dense</span><span class="tag">spreadsheet</span><span class="tag">numbers first</span>
+  <div class="concept-nav"><a href="21-glass.html">← Prev</a><a href="index.html">All designs</a><a href="23-soft.html">Next →</a></div>
+</aside>
+<div class="device"><div class="app" id="app">
+  <header id="hdr"></header>
+  <main data-scroll>
+    <section data-screen="session" id="s-session"></section>
+    <section data-screen="lifts" id="s-lifts" hidden></section>
+    <section data-screen="weeks" id="s-weeks" hidden></section>
+    <section data-screen="settings" id="s-settings" hidden></section>
+  </main>
+  <nav>
+    <button data-tab="session" class="is-active">Session</button>
+    <button data-tab="lifts">Lifts</button>
+    <button data-tab="weeks">Weeks</button>
+    <button data-tab="settings">Settings</button>
+  </nav>
+</div></div>
+<script src="data.js"></script>
+<script>
+(function () {
+  const G = GQ, $ = (id) => document.getElementById(id), ex = G.today.exercises;
+  const e1rm = (w, r) => w ? (w * (1 + r / 30)).toFixed(1) : '–';
+  let rows = '';
+  ex.forEach((e, i) => {
+    rows += '<tr class="grp"><td colspan="5">' + e.name + ' <span class="mu" style="font-weight:400">' + e.muscle + '</span></td></tr>';
+    for (let k = 0; k < e.sets; k++) {
+      const done = k < e.done, cur = i === 0 && k === e.done;
+      const d = e.weight - e.last;
+      rows += '<tr class="' + (cur ? 'cur' : '') + '"><td>Set ' + (k + 1) + '</td><td>' + (cur ? '<span class="cell-in">' + e.weight + '</span>' : (e.weight || 'BW')) + '</td><td>' + (done ? e.reps : cur ? '<span class="cell-in">8</span>' : '<span class="mu">' + e.reps + '</span>') + '</td><td class="' + (d > 0 ? 'up' : 'mu') + '">' + (d > 0 ? '+' + d : '0') + '</td><td class="mu">' + (done ? e1rm(e.weight, e.reps) : '') + '</td></tr>';
+      if (i > 0 && k === 0) { rows += '<tr><td class="mu">+' + (e.sets - 1) + ' more</td><td colspan="4"></td></tr>'; break; }
+    }
+  });
+  $('s-session').innerHTML = '<div class="kpis"><div><span>Elapsed</span><b>23:41</b></div><div><span>Sets</span><b>2/16</b></div><div><span>Volume</span><b>960 kg</b></div><div><span>Rest</span><b>0:56</b></div></div>'
+    + '<table><thead><tr><th>Set</th><th>kg</th><th>Reps</th><th>Δ kg</th><th>e1RM</th></tr></thead><tbody>' + rows + '</tbody></table>'
+    + '<div class="keys"><span>−2.5</span><span>+2.5</span><span>Copy prev</span><span>Note</span><span>Skip</span><span class="go">Log set</span></div>';
+  const lifts = [['Squat', 100, 5, 97.5, 'Oct 8'], ['Deadlift', 120, 3, 115, 'Sep 24'], ['Bench press', 60, 8, 57.5, 'Oct 3'], ['Overhead press', 37.5, 6, 37.5, 'Sep 19'], ['Barbell row', 60, 8, 57.5, 'Oct 6'], ['Pull-up', 0, 9, 0, 'Sep 29'], ['Romanian deadlift', 70, 8, 65, 'Oct 1'], ['Incline DB press', 22, 10, 20, 'Oct 3'], ['Lateral raise', 8, 15, 8, 'Oct 3'], ['Leg press', 140, 10, 130, 'Oct 8']];
+  $('s-lifts').innerHTML = '<table><thead><tr><th>Lift</th><th>Best</th><th>Reps</th><th>e1RM</th><th>Δ 4 wk</th><th>Date</th></tr></thead><tbody>'
+    + lifts.map((l) => { const d = l[1] - l[3]; return '<tr><td>' + l[0] + '</td><td>' + (l[1] || 'BW') + '</td><td>' + l[2] + '</td><td>' + e1rm(l[1], l[2]) + '</td><td class="' + (d > 0 ? 'up' : 'mu') + '">' + (d > 0 ? '+' + d : '0') + '</td><td class="mu">' + l[4] + '</td></tr>'; }).join('') + '</tbody></table>';
+  const vmax = Math.max(...G.volume);
+  $('s-weeks').innerHTML = '<div class="sect">Sets per week<span>8 weeks</span></div><div class="chart">' + G.volume.map((v, i) => '<div class="bar"><span>Week ' + (34 + i) + '</span><i class="' + (i === 7 ? 'now' : '') + '" style="width:' + Math.round(v / vmax * 200) + 'px"></i><b>' + v + '</b></div>').join('') + '</div>'
+    + '<table><thead><tr><th>Date</th><th style="text-align:left">Plan</th><th>Min</th><th>Sets</th><th>XP</th></tr></thead><tbody>' + G.history.map((h) => '<tr><td>' + h.date.replace(/^\w+, /, '') + '</td><td class="l">' + h.plan + '</td><td>' + h.minutes + '</td><td>' + h.sets + '</td><td>' + h.xp + '</td></tr>').join('') + '</tbody></table>'
+    + '<div class="sect">Body weight<span>kg</span></div><table><tbody><tr>' + G.bodyWeight.slice(2).map((v, i, a) => '<td class="' + (i && v < a[i - 1] ? 'up' : i ? 'down' : '') + '" style="text-align:center;padding:7px 2px">' + v + '</td>').join('') + '</tr></tbody></table>';
+  $('s-settings').innerHTML = G.reminders.map((r) => '<div class="set"><span>' + r.label + ' reminder<small>' + r.detail.replace(/ · /g, ', ') + '</small></span><span class="tg"></span></div>').join('')
+    + [['Weight unit', 'kg'], ['Rounding', '2.5 kg'], ['e1RM formula', 'Epley'], ['Default rest', '1:30'], ['Export', 'CSV']].map((s) => '<div class="set"><span>' + s[0] + '</span><span class="mu">' + s[1] + '</span></div>').join('')
+    + '<div class="sect">Achievements<span>3 of 5</span></div><table><tbody>' + G.achievements.map((a) => '<tr><td>' + a.name + '</td><td class="' + (a.got ? 'up' : 'mu') + '">' + (a.got ? 'done' : a.progress + '%') + '</td><td class="mu">' + a.xp + ' XP</td></tr>').join('') + '</tbody></table>';
+  const head = { session: ['Push day', 'Thu 9 Oct, 17:04', '+2.5 kg bench'], lifts: ['Lifts', '10 tracked', ''], weeks: ['Weeks', 'since Aug 18', ''], settings: ['Settings', '', ''] };
+  gqTabs(document.getElementById('app'), (n) => { const h = head[n]; $('hdr').innerHTML = '<b>' + h[0] + '</b><span>' + h[1] + '</span><span class="r">' + h[2] + '</span>'; });
+})();
+</script>
+</body>
+</html>

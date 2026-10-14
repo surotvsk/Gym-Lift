@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>23 · Soft — GymQuest concept</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="frame.css">
+<style>
+  :root { --bg: #FFF7F2; --ink: #3B2F4A; --mute: #8D8299; --peach: #FFC9B5; --mint: #BFEBD9; --lav: #D9D0FF; --sky: #C6E4FF; --lemon: #FFEBA8; --rose: #FF8FA3; }
+  .app { position: absolute; inset: 0; background: var(--bg); color: var(--ink); font: 500 16px/1.35 Fredoka, system-ui, sans-serif; display: flex; flex-direction: column; overflow: hidden; }
+  main { flex: 1; overflow-y: auto; overflow-x: hidden; padding: 50px 16px 16px; position: relative; }
+  .blob { position: absolute; border-radius: 42% 58% 63% 37% / 41% 44% 56% 59%; z-index: 0; }
+  section > * { position: relative; z-index: 1; }
+  h1 { font-weight: 700; font-size: 30px; margin: 0; }
+  .mute { color: var(--mute); }
+  .hero { margin: 14px 0; background: var(--lav); border-radius: 32px; padding: 18px; display: flex; gap: 14px; align-items: center; }
+  .hero svg { width: 96px; height: 96px; flex: 0 0 auto; }
+  .hero b { font-size: 21px; font-weight: 600; display: block; }
+  .pill { display: inline-block; background: var(--ink); color: #fff; padding: 10px 18px; border-radius: 24px; font-weight: 600; margin-top: 10px; }
+  .exs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .exc { border-radius: 26px; padding: 14px; min-height: 108px; display: flex; flex-direction: column; justify-content: space-between; }
+  .exc b { font-weight: 600; font-size: 17px; line-height: 1.15; }
+  .exc span { font-size: 14px; }
+  .exc .kg { font-size: 26px; font-weight: 700; }
+  /* set */
+  .bigcard { background: var(--peach); border-radius: 36px; padding: 22px; text-align: center; margin-top: 14px; }
+  .bigcard .w { font-size: 84px; font-weight: 700; line-height: 1; }
+  .bigcard .w small { font-size: 26px; }
+  .bubbles { display: flex; justify-content: center; gap: 10px; margin: 16px 0 6px; }
+  .bubbles i { width: 44px; height: 44px; border-radius: 50%; background: rgba(255,255,255,0.6); display: grid; place-items: center; font-style: normal; font-weight: 600; }
+  .bubbles i.d { background: var(--ink); color: #fff; }
+  .bubbles i.n { background: #fff; box-shadow: 0 0 0 3px var(--ink); }
+  .pm { display: flex; gap: 10px; margin-top: 14px; }
+  .pm span { flex: 1; background: #fff; border-radius: 22px; padding: 14px; text-align: center; font-weight: 600; }
+  .pm span.go { background: var(--ink); color: #fff; flex: 2; }
+  .cheer { margin-top: 14px; background: var(--mint); border-radius: 22px; padding: 12px 16px; display: flex; gap: 10px; align-items: center; }
+  /* week */
+  .wk { display: flex; gap: 6px; margin: 14px 0; }
+  .wk span { flex: 1; text-align: center; padding: 10px 0; border-radius: 20px; background: #fff; font-weight: 600; font-size: 14px; }
+  .wk span.d { background: var(--mint); }
+  .wk span.t { background: var(--lemon); box-shadow: inset 0 0 0 2px var(--ink); }
+  .stat { display: flex; align-items: center; gap: 12px; background: #fff; border-radius: 24px; padding: 12px 14px; margin-bottom: 8px; }
+  .stat .em { width: 44px; height: 44px; border-radius: 16px; display: grid; place-items: center; font-size: 22px; }
+  .stat div { flex: 1; } .stat small { color: var(--mute); display: block; font-size: 14px; }
+  .stat b { font-size: 20px; }
+  /* friends */
+  .fr { display: flex; gap: 12px; overflow-x: auto; scrollbar-width: none; margin: 12px 0; }
+  .fr div { text-align: center; font-size: 14px; flex: 0 0 auto; }
+  .fr i { display: grid; place-items: center; width: 62px; height: 62px; border-radius: 22px; font-style: normal; font-size: 24px; font-weight: 700; color: #fff; margin-bottom: 4px; transform: rotate(-4deg); }
+  .fr div:nth-child(even) i { transform: rotate(5deg); }
+  .note { background: #fff; border-radius: 24px; padding: 14px; margin-bottom: 10px; }
+  .note .h { display: flex; gap: 8px; align-items: center; font-size: 14px; color: var(--mute); }
+  .note .h i { width: 26px; height: 26px; border-radius: 10px; display: grid; place-items: center; color: #fff; font-style: normal; font-size: 13px; }
+  .note p { margin: 6px 0 8px; }
+  .reacts span { display: inline-block; background: var(--bg); border-radius: 14px; padding: 3px 10px; margin-right: 4px; font-size: 14px; }
+  .remi { display: flex; gap: 8px; }
+  .remi span { flex: 1; border-radius: 22px; padding: 12px 10px; font-size: 14px; }
+  .remi b { display: block; font-size: 16px; }
+  nav { display: flex; justify-content: space-around; margin: 0 14px 24px; background: #fff; border-radius: 30px; padding: 8px; box-shadow: 0 6px 20px rgba(59,47,74,0.08); }
+  nav button { background: none; border: 0; font: 600 14px Fredoka, sans-serif; color: var(--mute); padding: 10px 14px; border-radius: 22px; }
+  nav button.is-active { background: var(--lemon); color: var(--ink); }
+</style>
+</head>
+<body class="concept">
+<aside class="concept-info">
+  <div class="num">23 / 32 · BUILT WITHOUT A PLUGIN</div>
+  <h1>Soft</h1>
+  <p>Friendly and a little silly, for beginners who are nervous about the gym. Pastel colours, round shapes, a small dumbbell character that cheers you on, and words like “nice” instead of “PR”. Nothing on screen should make anyone feel they are not strong enough yet.</p>
+  <span class="tag">playful</span><span class="tag">pastel</span><span class="tag">beginner friendly</span>
+  <div class="concept-nav"><a href="22-ledger.html">← Prev</a><a href="index.html">All designs</a><a href="24-arcade.html">Next →</a></div>
+</aside>
+<div class="device"><div class="app" id="app">
+  <main data-scroll>
+    <section data-screen="today" id="s-today"></section>
+    <section data-screen="set" id="s-set" hidden></section>
+    <section data-screen="week" id="s-week" hidden></section>
+    <section data-screen="friends" id="s-friends" hidden></section>
+  </main>
+  <nav>
+    <button data-tab="today" class="is-active">Today</button>
+    <button data-tab="set">Set</button>
+    <button data-tab="week">Week</button>
+    <button data-tab="friends">Friends</button>
+  </nav>
+</div></div>
+<script src="data.js"></script>
+<script>
+(function () {
+  const G = GQ, $ = (id) => document.getElementById(id), ex = G.today.exercises;
+  const buddy = '<svg viewBox="0 0 96 96"><rect x="8" y="40" width="80" height="12" rx="6" fill="#3B2F4A"/><rect x="4" y="22" width="18" height="48" rx="9" fill="#FF8FA3"/><rect x="74" y="22" width="18" height="48" rx="9" fill="#FF8FA3"/><circle cx="48" cy="46" r="20" fill="#FFEBA8"/><circle cx="41" cy="44" r="3" fill="#3B2F4A"/><circle cx="55" cy="44" r="3" fill="#3B2F4A"/><path d="M42 52 Q48 57 54 52" stroke="#3B2F4A" stroke-width="3" fill="none" stroke-linecap="round"/><circle cx="36" cy="50" r="3" fill="#FF8FA3" opacity=".6"/><circle cx="60" cy="50" r="3" fill="#FF8FA3" opacity=".6"/></svg>';
+  const cols = ['var(--peach)', 'var(--sky)', 'var(--mint)', 'var(--lemon)', 'var(--lav)'];
+  $('s-today').innerHTML = '<span class="blob" style="width:220px;height:200px;background:var(--peach);opacity:.5;right:-80px;top:-60px"></span>'
+    + '<h1>Hi ' + G.user.name + '!</h1><div class="mute">Thursday is push day</div>'
+    + '<div class="hero">' + buddy + '<div><b>You’re 2 sets in. Let’s keep going!</b><span class="pill">Continue</span></div></div>'
+    + '<div class="exs">' + ex.map((e, i) => '<div class="exc" style="background:' + cols[i] + '"><b>' + e.name + '</b><div><span class="kg">' + (e.weight ? e.weight : '') + '</span><span>' + (e.weight ? ' kg, ' : 'Bodyweight, ') + e.sets + '×' + e.reps + '</span></div></div>').join('') + '<div class="exc" style="background:#fff;border:2px dashed var(--lav);align-items:center;justify-content:center;color:var(--mute)">Add exercise</div></div>';
+  const e = ex[0];
+  $('s-set').innerHTML = '<h1>Bench press</h1><div class="mute">Set 3, almost there</div><div class="bigcard"><div class="w">60<small> kg</small></div><div>8 times, slow and steady</div><div class="bubbles">' + Array.from({ length: e.sets }, (_, k) => '<i class="' + (k < e.done ? 'd' : k === e.done ? 'n' : '') + '">' + (k < e.done ? '✓' : k + 1) + '</i>').join('') + '</div></div>'
+    + '<div class="pm"><span>Lighter</span><span class="go">I did it</span><span>Heavier</span></div>'
+    + '<div class="cheer"><span style="font-size:26px">🌱</span><span>That’s 2.5 kg more than last week. You’re getting stronger!</span></div>';
+  $('s-week').innerHTML = '<span class="blob" style="width:200px;height:180px;background:var(--mint);opacity:.6;left:-90px;top:120px"></span>'
+    + '<h1>Your week</h1><div class="mute">2 of 3 workouts, one to go</div><div class="wk">' + G.week.map((d) => '<span class="' + (d.done ? 'd' : d.today ? 't' : '') + '">' + d.d + '</span>').join('') + '</div>'
+    + [['🔥', 'var(--peach)', G.user.streakWeeks + ' weeks', 'in a row, wow'], ['⭐', 'var(--lemon)', 'Level ' + G.user.level, '160 XP to the next one'], ['💪', 'var(--lav)', '100 kg squat', 'your heaviest lift ever'], ['💧', 'var(--sky)', '4 of 6', 'glasses of water today']]
+      .map((s) => '<div class="stat"><span class="em" style="background:' + s[1] + '">' + s[0] + '</span><div><b>' + s[2] + '</b><small>' + s[3] + '</small></div></div>').join('')
+    + '<div class="remi" style="margin-top:12px">' + G.reminders.map((r, i) => '<span style="background:' + cols[i + 1] + '"><b>' + r.label + '</b>' + r.detail.split(' · ')[0] + '</span>').join('') + '</div>';
+  $('s-friends').innerHTML = '<h1>Friends</h1><div class="fr">' + G.stories.map((k) => '<div><i style="background:' + G.person(k).color + '">' + G.person(k).name[0] + '</i>' + G.person(k).name + '</div>').join('') + '</div>'
+    + G.feed.slice(0, 3).map((f) => { const p = G.person(f.who); return '<div class="note"><div class="h"><i style="background:' + p.color + '">' + p.name[0] + '</i>' + p.name + ', ' + f.ago + '</div><p>' + f.text + '</p><div class="reacts"><span>❤️ ' + f.likes + '</span><span>💬 ' + f.comments + '</span><span>👏</span></div></div>'; }).join('');
+  gqTabs(document.getElementById('app'));
+})();
+</script>
+</body>
+</html>
