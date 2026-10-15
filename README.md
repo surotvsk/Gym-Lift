@@ -133,6 +133,11 @@ Tap any day in the month to see its full date and status, plus the plan name, ex
 reps, weight, completed sets, XP, note and any achievements unlocked that day. Days are matched to
 your history by local calendar date, so a workout always appears on the day you recorded it.
 
+When Community is on, every workout in the day window also has **Share to Community** (opens a new
+post with that workout attached; it is reviewed by a moderator as usual) and **Send to a friend**
+(pick one of your friends; the workout arrives in your chat with them as a card, and **Open chat**
+takes you there).
+
 ### Workout
 The selected plan name with a **✏️ Edit plan** button, and a **two-column grid of plan cards** for
 switching between plans. Each card is just the plan's name — centred, equal in width, and given the
@@ -158,6 +163,13 @@ to the following sets until you change one of them, so "set 1 at 60 kg, then 65 
 plan is never changed. The history keeps every set's weight (shown as *60 · 65 · 65 · 65 kg*), and
 records, achievements and the "last time" comparison use the heaviest set you actually completed.
 Editing that weight later in the history replaces the per-set weights with the single new weight.
+
+**Different reps per set.** Next to the weight, every set shows its reps (for example *10×*). Tap it to
+change that set's reps (−1 / +1 or type a whole number from 1 to 999). It works like the weight: doing
+10 reps in set 1 and 8 in set 2 is one change on set 2, and the later sets follow until you change one
+of them. For an exercise done one side at a time, both sides of a set use the same reps. Your plan keeps
+its reps; the history and the Calendar show every set (*3 × 10/8/8*), and a shared workout shows them too.
+Editing the reps later in the history replaces the per-set reps with the single new number.
 
 ### Progress
 Totals for this week, this month and all time, your personal records, and the full history of
@@ -710,7 +722,8 @@ seconds.
 
 **Sharing workout plans and workouts.** In a chat, **Share a plan or workout** sends one of your plans
 or one of your last five workouts as a card (exercises, sets × reps, weights; a workout also shows the
-date, duration, XP and each set's weight). In a new post you can **attach your current plan**, your
+date, duration, XP and each set's weight and reps). An exercise done one side at a time shows as
+*2 sets per side* (not as *4/2 sets*), and **Save to my plans** keeps it one side at a time. In a new post you can **attach your current plan**, your
 **last workout** or any plan or recent workout — like a tweet with an attachment; the post is
 reviewed by a moderator as usual and the card follows the post's visibility (everyone / friends).
 After finishing a workout, **Share to Community** opens a new post with that workout already

@@ -8203,6 +8203,53 @@ const SOCIAL2_I18N = {
 };
 for (const lang of Object.keys(SOCIAL2_I18N)) Object.assign(I18N[lang] || (I18N[lang] = {}), SOCIAL2_I18N[lang]);
 
+/* Opakovania jednotlivých sérií a zdieľanie tréningu z kalendára. */
+const SETREPS_DAYSHARE_I18N = {
+  sk: {
+    'setReps.title': 'Zmeniť opakovania tejto série', 'setReps.aria': 'Séria {n}: {reps} opakovaní. Ťuknutím zmeníš opakovania.',
+    'setReps.editorAria': 'Opakovania série {n}', 'setReps.inputAria': 'Počet opakovaní série {n}',
+    'setReps.less': 'O jedno opakovanie menej', 'setReps.more': 'O jedno opakovanie viac',
+    'share.toFriend': 'Poslať priateľovi', 'share.pickFriend': 'Komu to poslať?',
+    'share.noFriends': 'V Community zatiaľ nemáš priateľov.', 'share.sentTo': 'Odoslané: {name}', 'share.goToChat': 'Otvoriť chat',
+  },
+  en: {
+    'setReps.title': 'Change the reps of this set', 'setReps.aria': 'Set {n}: {reps} reps. Tap to change the reps.',
+    'setReps.editorAria': 'Reps of set {n}', 'setReps.inputAria': 'Number of reps in set {n}',
+    'setReps.less': 'One rep less', 'setReps.more': 'One rep more',
+    'share.toFriend': 'Send to a friend', 'share.pickFriend': 'Who should get it?',
+    'share.noFriends': 'You have no friends in Community yet.', 'share.sentTo': 'Sent to {name}', 'share.goToChat': 'Open chat',
+  },
+  es: {
+    'setReps.title': 'Cambiar las repeticiones de esta serie', 'setReps.aria': 'Serie {n}: {reps} repeticiones. Toca para cambiar las repeticiones.',
+    'setReps.editorAria': 'Repeticiones de la serie {n}', 'setReps.inputAria': 'Número de repeticiones de la serie {n}',
+    'setReps.less': 'Una repetición menos', 'setReps.more': 'Una repetición más',
+    'share.toFriend': 'Enviar a un amigo', 'share.pickFriend': '¿A quién se lo envías?',
+    'share.noFriends': 'Todavía no tienes amigos en la Comunidad.', 'share.sentTo': 'Enviado a {name}', 'share.goToChat': 'Abrir chat',
+  },
+  'pt-BR': {
+    'setReps.title': 'Alterar as repetições desta série', 'setReps.aria': 'Série {n}: {reps} repetições. Toque para alterar as repetições.',
+    'setReps.editorAria': 'Repetições da série {n}', 'setReps.inputAria': 'Número de repetições da série {n}',
+    'setReps.less': 'Uma repetição a menos', 'setReps.more': 'Uma repetição a mais',
+    'share.toFriend': 'Enviar para um amigo', 'share.pickFriend': 'Para quem enviar?',
+    'share.noFriends': 'Você ainda não tem amigos na Comunidade.', 'share.sentTo': 'Enviado para {name}', 'share.goToChat': 'Abrir chat',
+  },
+  fr: {
+    'setReps.title': 'Modifier les répétitions de cette série', 'setReps.aria': 'Série {n} : {reps} répétitions. Touche pour modifier les répétitions.',
+    'setReps.editorAria': 'Répétitions de la série {n}', 'setReps.inputAria': 'Nombre de répétitions de la série {n}',
+    'setReps.less': 'Une répétition de moins', 'setReps.more': 'Une répétition de plus',
+    'share.toFriend': 'Envoyer à un ami', 'share.pickFriend': 'À qui l’envoyer ?',
+    'share.noFriends': 'Tu n’as pas encore d’amis dans la Communauté.', 'share.sentTo': 'Envoyé à {name}', 'share.goToChat': 'Ouvrir le chat',
+  },
+  ar: {
+    'setReps.title': 'تغيير عدد تكرارات هذه المجموعة', 'setReps.aria': 'المجموعة {n}: {reps} تكرار. اضغط لتغيير التكرارات.',
+    'setReps.editorAria': 'تكرارات المجموعة {n}', 'setReps.inputAria': 'عدد تكرارات المجموعة {n}',
+    'setReps.less': 'تكرار واحد أقل', 'setReps.more': 'تكرار واحد أكثر',
+    'share.toFriend': 'إرسال إلى صديق', 'share.pickFriend': 'إلى من تريد إرساله؟',
+    'share.noFriends': 'ليس لديك أصدقاء في المجتمع بعد.', 'share.sentTo': 'تم الإرسال إلى {name}', 'share.goToChat': 'فتح المحادثة',
+  },
+};
+for (const lang of Object.keys(SETREPS_DAYSHARE_I18N)) Object.assign(I18N[lang] || (I18N[lang] = {}), SETREPS_DAYSHARE_I18N[lang]);
+
 function t(key, vars) {
   const dict = I18N[activeLang()] || I18N.en;
   let s = dict[key];
@@ -9002,6 +9049,14 @@ function normalizeActiveSession(raw) {
     }
   }
   if (Object.keys(setWeights).length) out.setWeights = setWeights;
+  /* Opakovania jednotlivých sérií: len celé čísla 1–999. */
+  const setReps = {};
+  if (raw.setReps && typeof raw.setReps === 'object' && !Array.isArray(raw.setReps)) {
+    for (const [key, val] of Object.entries(raw.setReps)) {
+      if (/:\d+$/.test(key) && Number.isInteger(val) && val >= 1 && val <= 999) setReps[key] = val;
+    }
+  }
+  if (Object.keys(setReps).length) out.setReps = setReps;
   return out;
 }
 
@@ -10311,6 +10366,64 @@ function historyWeightText(ex) {
   return `${list.join(' · ')} ${t('units.kg')}`;
 }
 
+/* ---------- Opakovania jednotlivých sérií (napr. 10, potom 8) ----------
+   Rovnaký princíp ako váha série: plánované opakovania sa nemenia, zmena sa uloží do
+   session ako výnimka a nasledujúce série ju zdedia, kým sa niektorá nezmení znova.
+   Jednostranný cvik má pre obe strany série rovnaký počet opakovaní. */
+function setRepsOverride(ex, index) {
+  const sess = getSession();
+  const v = sess && sess.setReps ? sess.setReps[setWeightKey(ex, index)] : undefined;
+  return Number.isInteger(v) ? v : undefined;
+}
+function effectiveSetReps(ex, index) {
+  for (let k = index; k >= 0; k--) {
+    const v = setRepsOverride(ex, k);
+    if (v !== undefined) return v;
+  }
+  return Math.round(Number(ex.reps)) || 0;
+}
+function cleanSetRepsValue(reps) {
+  const raw = String(reps == null ? '' : reps).trim();
+  if (!/^\d+$/.test(raw)) return null;   // prázdne alebo nečíselné sa nikdy neuloží
+  const n = Number(raw);
+  return n >= 1 && n <= 999 ? n : null;
+}
+function setSetReps(ex, index, reps) {
+  const v = cleanSetRepsValue(reps);
+  if (v === null) return false;
+  const sess = ensureSession();
+  if (!sess) return false;
+  if (!sess.setReps) sess.setReps = {};
+  sess.setReps[setWeightKey(ex, index)] = v;
+  saveState();
+  return true;
+}
+/* Opakovania sérií pre históriu: pole (séria 1..N), len ak sa niektorá séria líši od plánu. */
+function sessionSetReps(ex) {
+  const sets = Math.max(0, Math.round(Number(ex.sets)) || 0);
+  const planned = Math.round(Number(ex.reps)) || 0;
+  const out = [];
+  let differs = false;
+  for (let i = 0; i < sets; i++) {
+    const r = effectiveSetReps(ex, i);
+    out.push(r);
+    if (r !== planned) differs = true;
+  }
+  return differs ? out : null;
+}
+/* Platné opakovania sérií zo záznamu histórie (alebo null). */
+function cleanHistorySetReps(ex) {
+  const sets = Math.max(0, Math.round(Number(ex && ex.sets)) || 0);
+  if (!ex || !Array.isArray(ex.setReps) || ex.setReps.length !== sets || !sets) return null;
+  const out = ex.setReps.map((v) => Number(v));
+  return out.every((v) => Number.isInteger(v) && v >= 0 && v <= 999) ? out : null;
+}
+/* Opakovania do histórie: "10", pri zmene počas tréningu "10/8/8". */
+function historyRepsValue(ex) {
+  const list = cleanHistorySetReps(ex);
+  return list ? list.join('/') : String(ex.reps);
+}
+
 function planExerciseCount(plan) {
   let n = 0;
   for (const info of exerciseSlots(plan)) {
@@ -10708,46 +10821,58 @@ function buildSetItem(ex, index, plannedFailure, side, readOnly) {
   if (readOnly) weightBtn.disabled = true;
   else weightBtn.addEventListener('click', () => openSetWeightEditor(ex, index, item));
 
-  item.append(setBtn, weightBtn, failBtn);
+  /* Opakovania tejto série: ťuknutím sa dajú zmeniť (napr. 10, potom 8). */
+  const reps = effectiveSetReps(ex, index);
+  const repsBtn = document.createElement('button');
+  repsBtn.type = 'button';
+  repsBtn.className = 'set-reps' + (reps !== (Math.round(Number(ex.reps)) || 0) ? ' changed' : '');
+  repsBtn.textContent = reps + '×';
+  repsBtn.title = t('setReps.title');
+  repsBtn.setAttribute('aria-label', (side ? sideLabel + ' — ' : '') + t('setReps.aria', { n: index + 1, reps }));
+  if (readOnly) repsBtn.disabled = true;
+  else repsBtn.addEventListener('click', () => openSetRepsEditor(ex, index, item));
+
+  item.append(setBtn, repsBtn, weightBtn, failBtn);
   return item;
 }
 
-/* Malý editor váhy jednej série priamo pod sériou: −2,5 / hodnota / +2,5 / OK.
-   Nová váha platí pre túto sériu a nasledujúce série, kým sa niektorá nezmení znova. */
+/* Malý editor jednej série priamo pod sériou: −krok / hodnota / +krok / OK (váha aj opakovania).
+   Nová hodnota platí pre túto sériu a nasledujúce série, kým sa niektorá nezmení znova. */
 let setWeightEditorEl = null;
 function closeSetWeightEditor() {
   if (setWeightEditorEl && setWeightEditorEl.parentNode) setWeightEditorEl.parentNode.removeChild(setWeightEditorEl);
   setWeightEditorEl = null;
 }
-function openSetWeightEditor(ex, index, item) {
+function openSetValueEditor(item, cfg) {
   closeSetWeightEditor();
   const box = document.createElement('div');
-  box.className = 'set-weight-editor';
+  box.className = 'set-weight-editor' + (cfg.extraClass ? ' ' + cfg.extraClass : '');
   box.setAttribute('role', 'group');
-  box.setAttribute('aria-label', t('setWeight.editorAria', { n: index + 1 }));
+  box.setAttribute('aria-label', cfg.editorAria);
   const step = (d) => {
-    const v = cleanSetWeightValue(input.value);
-    input.value = String(cleanSetWeightValue((v === null ? effectiveSetWeight(ex, index) : v) + d));
+    const v = cfg.clean(input.value);
+    const next = cfg.clean((v === null ? cfg.current() : v) + d);
+    if (next !== null) input.value = String(next);
   };
   const minus = document.createElement('button');
-  minus.type = 'button'; minus.className = 'btn btn-secondary btn-sm'; minus.textContent = '−2.5';
-  minus.setAttribute('aria-label', t('setWeight.less'));
-  minus.addEventListener('click', () => step(-2.5));
+  minus.type = 'button'; minus.className = 'btn btn-secondary btn-sm'; minus.textContent = cfg.minusText;
+  minus.setAttribute('aria-label', cfg.lessAria);
+  minus.addEventListener('click', () => step(-cfg.step));
   const input = document.createElement('input');
-  /* Text s desatinnou klávesnicou: čiarka (sk, fr, …) aj bodka fungujú rovnako. */
-  input.type = 'text'; input.className = 'modal-input set-weight-input'; input.inputMode = 'decimal'; input.autocomplete = 'off';
-  input.value = String(effectiveSetWeight(ex, index));
-  input.setAttribute('aria-label', t('setWeight.inputAria', { n: index + 1 }));
+  /* Text s číselnou klávesnicou: pri váhe čiarka (sk, fr, …) aj bodka fungujú rovnako. */
+  input.type = 'text'; input.className = 'modal-input ' + cfg.inputClass; input.inputMode = cfg.inputMode; input.autocomplete = 'off';
+  input.value = String(cfg.current());
+  input.setAttribute('aria-label', cfg.inputAria);
   const unit = document.createElement('span');
-  unit.className = 'set-weight-unit'; unit.textContent = t('units.kg');
+  unit.className = 'set-weight-unit'; unit.textContent = cfg.unit;
   const plus = document.createElement('button');
-  plus.type = 'button'; plus.className = 'btn btn-secondary btn-sm'; plus.textContent = '+2.5';
-  plus.setAttribute('aria-label', t('setWeight.more'));
-  plus.addEventListener('click', () => step(2.5));
+  plus.type = 'button'; plus.className = 'btn btn-secondary btn-sm'; plus.textContent = cfg.plusText;
+  plus.setAttribute('aria-label', cfg.moreAria);
+  plus.addEventListener('click', () => step(cfg.step));
   const ok = document.createElement('button');
-  ok.type = 'button'; ok.className = 'btn btn-primary btn-sm set-weight-ok'; ok.textContent = t('common.ok');
+  ok.type = 'button'; ok.className = 'btn btn-primary btn-sm ' + cfg.okClass; ok.textContent = t('common.ok');
   const apply = () => {
-    if (!setSetWeight(ex, index, input.value)) { input.focus(); return; }
+    if (!cfg.save(input.value)) { input.focus(); return; }
     closeSetWeightEditor();
     setSessionNote(null, 0);
     renderTrening();
@@ -10765,6 +10890,23 @@ function openSetWeightEditor(ex, index, item) {
   setWeightEditorEl = box;
   input.focus();
   input.select();
+}
+function openSetWeightEditor(ex, index, item) {
+  openSetValueEditor(item, {
+    editorAria: t('setWeight.editorAria', { n: index + 1 }), inputAria: t('setWeight.inputAria', { n: index + 1 }),
+    lessAria: t('setWeight.less'), moreAria: t('setWeight.more'), minusText: '−2.5', plusText: '+2.5', step: 2.5,
+    unit: t('units.kg'), inputMode: 'decimal', inputClass: 'set-weight-input', okClass: 'set-weight-ok',
+    current: () => effectiveSetWeight(ex, index), clean: cleanSetWeightValue, save: (v) => setSetWeight(ex, index, v),
+  });
+}
+function openSetRepsEditor(ex, index, item) {
+  openSetValueEditor(item, {
+    extraClass: 'set-reps-editor',
+    editorAria: t('setReps.editorAria', { n: index + 1 }), inputAria: t('setReps.inputAria', { n: index + 1 }),
+    lessAria: t('setReps.less'), moreAria: t('setReps.more'), minusText: '−1', plusText: '+1', step: 1,
+    unit: t('units.reps'), inputMode: 'numeric', inputClass: 'set-reps-input', okClass: 'set-reps-ok',
+    current: () => effectiveSetReps(ex, index), clean: cleanSetRepsValue, save: (v) => setSetReps(ex, index, v),
+  });
 }
 
 function updateSummary() {
@@ -12863,9 +13005,10 @@ function requestUndoSubstitution(slot) {
     const prefix = String(last.key) + ':';
     for (const k of Object.keys(sess.completedSets)) if (k.indexOf(prefix) === 0) delete sess.completedSets[k];
     for (const k of Object.keys(sess.actualFailureSets)) if (k.indexOf(prefix) === 0) delete sess.actualFailureSets[k];
-    if (sess.setWeights) {
-      for (const k of Object.keys(sess.setWeights)) if (k.indexOf(prefix) === 0) delete sess.setWeights[k];
-      if (!Object.keys(sess.setWeights).length) delete sess.setWeights;
+    for (const field of ['setWeights', 'setReps']) {
+      if (!sess[field]) continue;
+      for (const k of Object.keys(sess[field])) if (k.indexOf(prefix) === 0) delete sess[field][k];
+      if (!Object.keys(sess[field]).length) delete sess[field];
     }
     saveState();
     renderTrening();
@@ -14582,6 +14725,8 @@ function shareFromWorkout(w) {
       if (e.unilateral === true) x.u = true;
       const sw = cleanHistorySetWeights(e);
       if (sw) x.sw = sw.map(shareClampKg);
+      const sr = cleanHistorySetReps(e);
+      if (sr) x.sr = sr.map((v) => shareClampInt(v, 0, 999));
       return x;
     }),
   };
@@ -14608,10 +14753,23 @@ function shareCardHtml(a, src, ref, noSave) {
   if (workout && Number(a.xp) > 0) meta.push('+' + Number(a.xp) + ' ' + t('units.xp'));
   meta.push(tPlural('share.exercises', a.exercises.length));
   const rows = a.exercises.slice(0, SHARE_MAX_EXERCISES).map((e) => {
-    const sw = Array.isArray(e.sw) && e.sw.length ? e.sw.map((v) => Number(v)).join(' · ') : String(Number(e.w) || 0);
-    const sets = workout && e.d !== undefined ? t('share.setsDone', { d: Number(e.d) || 0, s: Number(e.s) || 0 }) : (Number(e.s) || 0) + ' × ' + (Number(e.r) || 0);
-    return '<li><span class="cshare-ex">' + esc(shareExerciseName(e)) + '</span><span class="cshare-ex-meta">'
-      + esc(workout ? sets + ' · ' + (Number(e.r) || 0) + ' ' + t('units.reps') : sets) + ' · ' + esc(sw + ' ' + t('units.kg')) + '</span></li>';
+    const sw = Array.isArray(e.sw) && e.sw.length ? e.sw.map((v) => Number(v) || 0).join(' · ') : String(Number(e.w) || 0);
+    const reps = Array.isArray(e.sr) && e.sr.length ? e.sr.map((v) => Math.round(Number(v)) || 0).join('/') : String(Number(e.r) || 0);
+    const s = Number(e.s) || 0;
+    const d = Number(e.d) || 0;
+    /* Jednostranný cvik: "2 série na každú stranu" (hotové série sú súčet oboch strán, 2 × s). */
+    const perSide = e.u === true ? tPlural('unilateral.setsPerSide', s) : '';
+    let sets;
+    if (workout && e.d !== undefined) {
+      if (perSide) sets = d >= 2 * s ? perSide : perSide + ' (' + t('share.setsDone', { d, s: 2 * s }) + ')';
+      else sets = t('share.setsDone', { d, s });
+    } else {
+      sets = perSide || s + ' × ' + reps;
+    }
+    const parts = [sets];
+    if (workout || perSide) parts.push(reps + ' ' + t('units.reps'));
+    parts.push(sw + ' ' + t('units.kg'));
+    return '<li><span class="cshare-ex">' + esc(shareExerciseName(e)) + '</span><span class="cshare-ex-meta">' + esc(parts.join(' · ')) + '</span></li>';
   }).join('');
   return '<div class="cshare-card" data-kind="' + (workout ? 'workout' : 'plan') + '">'
     + '<p class="cshare-kind">' + esc(t(workout ? 'share.kindWorkout' : 'share.kindPlan')) + '</p>'
@@ -17413,13 +17571,13 @@ function historyExerciseDetail(ex, displayName) {
     const done = cleanSideSets(ex.sidesDone, sets);
     const fails = cleanSideSets(ex.sidesFailure, sets);
     const head = `${esc(displayName !== undefined ? displayName : ex.name)} `
-      + `${esc(tPlural('unilateral.setsPerSide', sets))} · ${ex.reps} ${t('units.reps')} · ${historyWeightText(ex)}`;
+      + `${esc(tPlural('unilateral.setsPerSide', sets))} · ${esc(historyRepsValue(ex))} ${t('units.reps')} · ${historyWeightText(ex)}`;
     let out = head + `<div class="history-side-note">${esc(t('unilateral.completed', { sides: completedSidesLabel(done) }))}</div>`;
     const list = sideFailureList(fails);
     if (list) out += `<div class="failure-note">🔥 ${esc(t('unilateral.failureList', { list }))}</div>`;
     return out;
   }
-  const line = `${esc(displayName !== undefined ? displayName : ex.name)} ${ex.sets}×${ex.reps} · ${historyWeightText(ex)}`;
+  const line = `${esc(displayName !== undefined ? displayName : ex.name)} ${ex.sets}×${esc(historyRepsValue(ex))} · ${historyWeightText(ex)}`;
   const fSets = cleanFailureSets(ex.actualFailureSets, ex.sets);
   /* Zlyhanie sa zobrazuje len vtedy, keď bolo naozaj zaznamenané – nikdy z plánu. */
   return fSets.length
@@ -17551,7 +17709,7 @@ function workoutBlock(w) {
       return `
     <div class="day-ex">
       <span class="day-ex-name">${esc(historyExerciseName(ex))}</span>
-      <span class="day-ex-meta">${esc(tPlural('unilateral.setsPerSide', sets))} · ${ex.reps} ${t('units.reps')} · ${historyWeightText(ex)} · ${ex.setsDone} ${t('history.setsDoneLabel')}</span>
+      <span class="day-ex-meta">${esc(tPlural('unilateral.setsPerSide', sets))} · ${esc(historyRepsValue(ex))} ${t('units.reps')} · ${historyWeightText(ex)} · ${ex.setsDone} ${t('history.setsDoneLabel')}</span>
       <span class="day-ex-completed">${esc(t('unilateral.completed', { sides: completedSidesLabel(done) }))}</span>
       ${list ? `<span class="day-ex-failure">🔥 ${esc(t('unilateral.failureList', { list }))}</span>` : ''}
     </div>`;
@@ -17560,7 +17718,7 @@ function workoutBlock(w) {
     return `
     <div class="day-ex">
       <span class="day-ex-name">${esc(historyExerciseName(ex))}</span>
-      <span class="day-ex-meta">${ex.sets} × ${ex.reps} · ${historyWeightText(ex)} · ${ex.setsDone} ${t('history.setsDoneLabel')}</span>
+      <span class="day-ex-meta">${ex.sets} × ${esc(historyRepsValue(ex))} · ${historyWeightText(ex)} · ${ex.setsDone} ${t('history.setsDoneLabel')}</span>
       ${fSets.length ? `<span class="day-ex-failure">🔥 ${esc(t('failure.sets', { sets: fSets.join(', ') }))}</span>` : ''}
     </div>`;
   }).join('');
@@ -17573,7 +17731,87 @@ function workoutBlock(w) {
     ${historyDurationLine(w)}
     ${rows}
     ${w.note ? `<div class="modal-note">“${esc(w.note)}”</div>` : ''}`;
+  if (dayShareAvailable()) div.appendChild(dayShareBlock(w));
   return div;
+}
+
+/* Zdieľanie tréningu z kalendára: príspevok do Community (na schválenie) alebo správa
+   priateľovi. Len keď je Community zapnutá a server má zdieľanie (0011). */
+function dayShareAvailable() {
+  return communityConfigured() && communityOptIn() && communityV5();
+}
+function dayShareBlock(w) {
+  const box = document.createElement('div');
+  box.className = 'day-share';
+  const row = document.createElement('div');
+  row.className = 'day-share-row';
+  const toCommunity = document.createElement('button');
+  toCommunity.type = 'button'; toCommunity.className = 'btn btn-secondary btn-sm day-share-community';
+  toCommunity.textContent = t('share.resultButton');
+  toCommunity.addEventListener('click', () => { closeDay(); shareWorkoutToCommunity(w.id); });
+  const toFriend = document.createElement('button');
+  toFriend.type = 'button'; toFriend.className = 'btn btn-secondary btn-sm day-share-friend';
+  toFriend.textContent = t('share.toFriend');
+  toFriend.setAttribute('aria-expanded', 'false');
+  const picker = document.createElement('div');
+  picker.className = 'day-share-friends';
+  picker.hidden = true;
+  toFriend.addEventListener('click', () => {
+    const open = picker.hidden;
+    picker.hidden = !open;
+    toFriend.setAttribute('aria-expanded', open ? 'true' : 'false');
+    if (open) dayShareLoadFriends(picker, w.id);
+  });
+  row.append(toCommunity, toFriend);
+  box.append(row, picker);
+  return box;
+}
+async function dayShareLoadFriends(picker, workoutId) {
+  picker.innerHTML = `<p class="card-note">${esc(t('community.loading'))}</p>`;
+  const sb = communityClient();
+  let r;
+  try { r = sb ? await sb.rpc('friends_list') : { error: { message: 'offline' } }; } catch (e) { r = { error: e }; }
+  if (r.error) { picker.innerHTML = `<p class="card-note">${esc(communityErrText(r.error))}</p>`; return; }
+  const friends = r.data || [];
+  if (!friends.length) { picker.innerHTML = `<p class="card-note">${esc(t('share.noFriends'))}</p>`; return; }
+  picker.innerHTML = `<p class="modal-label">${esc(t('share.pickFriend'))}</p><div class="day-share-list"></div>`;
+  const list = picker.querySelector('.day-share-list');
+  for (const f of friends) {
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'btn btn-secondary btn-sm day-share-to';
+    b.dataset.user = f.user_id;
+    b.textContent = f.username || t('community.unknownUser');
+    b.addEventListener('click', () => dayShareToFriend(picker, workoutId, f.user_id, f.username || t('community.unknownUser')));
+    list.appendChild(b);
+  }
+}
+async function dayShareToFriend(picker, workoutId, friendId, name) {
+  const a = shareFromWorkout(state.history.find((x) => x.id === workoutId));
+  const sb = communityClient();
+  if (!a || !sb) return;
+  picker.querySelectorAll('button').forEach((b) => { b.disabled = true; });
+  let res;
+  try {
+    const user = await syncSessionUser();
+    const chat = user ? await sb.rpc('open_chat', { p_friend: friendId }) : { error: { message: 'not_signed_in' } };
+    res = chat.error ? chat : await sb.from('messages').insert({ conversation_id: chat.data, sender_id: user.id,
+      body: shareSummaryText(a).slice(0, COMMUNITY_MESSAGE_MAX), attachment: a }).select('id,conversation_id').single();
+  } catch (e) { res = { error: e }; }
+  if (res.error) {
+    picker.querySelectorAll('button').forEach((b) => { b.disabled = false; });
+    let err = picker.querySelector('.day-share-error');
+    if (!err) { err = document.createElement('p'); err.className = 'card-note day-share-error'; picker.appendChild(err); }
+    err.textContent = communityErrText(res.error);
+    return;
+  }
+  pushNotifyMessage(sb, res.data.id);
+  const cid = res.data.conversation_id;
+  picker.innerHTML = `<p class="day-share-sent">✓ ${esc(t('share.sentTo', { name }))}</p>`;
+  const open = document.createElement('button');
+  open.type = 'button'; open.className = 'btn btn-secondary btn-sm day-share-open';
+  open.textContent = t('share.goToChat');
+  open.addEventListener('click', () => { closeDay(); switchTab('komunita'); communityOpenChat(cid); });
+  picker.appendChild(open);
 }
 
 function activityBlock(a) {
@@ -17719,6 +17957,7 @@ function historyExerciseEntry(ex, sess) {
     entry.setsDone = cleanDone.left.length + cleanDone.right.length;
     entry.sidesDone = cleanDone;
     historyApplySetWeights(entry, ex, Array.from(new Set(cleanDone.left.concat(cleanDone.right))));
+    historyApplySetReps(entry, ex);
     entry.sidesFailure = cleanFails;
     /* actualFailureSets zostáva zjednotením čísel sérií – pre staršie zobrazenia aj kompatibilitu. */
     entry.actualFailureSets = Array.from(new Set(cleanFails.left.concat(cleanFails.right)))
@@ -17733,6 +17972,7 @@ function historyExerciseEntry(ex, sess) {
     entry.setsDone = done.length;
     entry.actualFailureSets = cleanFailureSets(fails, ex.sets);
     historyApplySetWeights(entry, ex, done);
+    historyApplySetReps(entry, ex);
   }
   return entry;
 }
@@ -17747,6 +17987,13 @@ function historyApplySetWeights(entry, ex, doneSetNumbers) {
   entry.plannedWeight = Number(ex.weight) || 0;
   const doneWeights = (doneSetNumbers || []).map((n) => list[n - 1]).filter((v) => typeof v === 'number');
   if (doneWeights.length) entry.weight = Math.max.apply(null, doneWeights);
+}
+
+/* Zmena opakovaní počas tréningu: záznam dostane opakovania všetkých sérií (setReps);
+   `reps` zostáva plánovaný počet, takže porovnania a staršie zobrazenia fungujú ako doteraz. */
+function historyApplySetReps(entry, ex) {
+  const list = sessionSetReps(ex);
+  if (list) entry.setReps = list;
 }
 
 function confirmFinish() {
@@ -17914,7 +18161,7 @@ function openHistoryEdit(id) {
   const w = state.history.find(x => x.id === id);
   if (!w) return;
   heWorkoutId = id;
-  heOriginal = w.exercises.map((e) => ({ weight: e.weight, sets: e.sets }));
+  heOriginal = w.exercises.map((e) => ({ weight: e.weight, sets: e.sets, reps: e.reps }));
   document.getElementById('he-date').value = w.date;
   document.getElementById('he-note').value = w.note || '';
   const box = document.getElementById('he-exercises');
@@ -17955,6 +18202,8 @@ function saveHistoryEdit() {
     if (Array.isArray(e.setWeights) && (!orig || e.weight !== orig.weight || e.sets !== orig.sets || !cleanHistorySetWeights(e))) {
       delete e.setWeights; delete e.plannedWeight;
     }
+    /* Rovnako opakovania jednotlivých sérií: ručne zmenené opakovania alebo počet sérií ich nahradia. */
+    if (Array.isArray(e.setReps) && (!orig || e.reps !== orig.reps || e.sets !== orig.sets || !cleanHistorySetReps(e))) delete e.setReps;
     /* Existujúce polia do zlyhania sa orežú na nový počet sérií; starým záznamom sa nepridávajú. */
     if (Array.isArray(e.actualFailureSets)) e.actualFailureSets = cleanFailureSets(e.actualFailureSets, e.sets);
     if (Array.isArray(e.plannedFailureSets)) e.plannedFailureSets = cleanFailureSets(e.plannedFailureSets, e.sets);

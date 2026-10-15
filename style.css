@@ -2209,8 +2209,8 @@ textarea.modal-input { resize: vertical; }
   opacity: 1;
 }
 
-/* ===== Váha jednotlivej série (zmena počas tréningu) ===== */
-.set-weight {
+/* ===== Váha a opakovania jednotlivej série (zmena počas tréningu) ===== */
+.set-weight, .set-reps {
   min-width: 44px;
   min-height: 44px;
   padding: 0 6px;
@@ -2224,8 +2224,9 @@ textarea.modal-input { resize: vertical; }
   font-variant-numeric: tabular-nums;
   cursor: pointer;
 }
-.set-weight:hover:not(:disabled) { border-color: var(--border-strong); color: var(--text); }
-.set-weight.changed { border-color: var(--blue, var(--accent-line)); color: var(--blue, var(--accent)); }
+.set-weight:hover:not(:disabled), .set-reps:hover:not(:disabled) { border-color: var(--border-strong); color: var(--text); }
+.set-reps { min-width: 40px; }
+.set-weight.changed, .set-reps.changed { border-color: var(--blue, var(--accent-line)); color: var(--blue, var(--accent)); }
 .set-weight-editor {
   flex: 1 0 100%;
   display: flex;
@@ -2237,7 +2238,7 @@ textarea.modal-input { resize: vertical; }
   border: 1px solid var(--border-strong);
   border-radius: var(--r-sm);
 }
-.set-weight-editor .set-weight-input { width: 5.5em; min-height: 40px; margin: 0; text-align: center; }
+.set-weight-editor .set-weight-input, .set-weight-editor .set-reps-input { width: 5.5em; min-height: 40px; margin: 0; text-align: center; }
 .set-weight-editor .btn { min-height: 40px; }
 .set-weight-unit { color: var(--text-dim); font-size: var(--fs-sm); }
 .set-weight-note { flex: 1 0 100%; margin: 0; font-size: var(--fs-xs); color: var(--text-faint); }
@@ -3702,3 +3703,13 @@ button.cstat:hover { background: var(--surface-2); }
 /* Automatická záloha bez vypínača: stav "Zapnuté" alebo dlhší text "Netreba – synchronizácia". */
 #auto-backup-state { color: var(--accent); }
 #auto-backup-state.setting-state-ok { color: var(--ok); white-space: normal; text-align: end; max-width: 12em; text-transform: none; letter-spacing: 0; }
+
+/* Zdieľanie tréningu z kalendára: do Community alebo priateľovi. */
+.day-share { margin-top: var(--sp-3); display: flex; flex-direction: column; gap: var(--sp-2); }
+.day-share-row, .day-share-list { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
+.day-share-row .btn { flex: 1 1 10rem; min-height: 40px; }
+.day-share-friends { padding: var(--sp-2) var(--sp-3); border: 1px solid var(--border); border-radius: var(--r-sm); background: var(--surface-2); }
+.day-share-friends[hidden] { display: none; }
+.day-share-friends .modal-label { margin-top: 0; }
+.day-share-to { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.day-share-sent { margin: 0 0 var(--sp-2); color: var(--ok); font-weight: var(--fw-bold); overflow-wrap: anywhere; }
