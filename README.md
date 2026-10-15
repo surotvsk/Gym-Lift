@@ -723,6 +723,10 @@ Community stops them. They start **switched on** (water every 2 hours 08:00–21
 Mon/Wed/Fri at 17:00, in your phone's time zone) as soon as notifications are on; every switch can be
 turned off and stays off.
 
+**Opening a chat** always shows the newest messages, right above the input box (scroll up for older
+ones). A new message from your friend keeps you at the end if you were there, but never pulls you down
+while you are reading older messages; your own message always takes you to the end.
+
 **Replies and reactions in chat.** Tap a message to react with ❤️ 😂 👍 😮 💪 🔥 (one reaction per person
 per message; tap your reaction again to remove it) or to **Reply** — the answer shows the quoted
 message. Tap the quote (or **Show the original message** in the reply's menu) to jump to the original

@@ -143,7 +143,9 @@ async function member(tag, name) {
     check('app shows notifications as on', (await pB.eval('pushState()')) === 'on');
     check('language stored: en', sqlVal(`select lang from public.push_subscriptions where endpoint = ${lit(devB.endpoint)}`) === 'en');
     await rendered(pB);
-    check('the offer disappears once on', await pB.eval(`!document.querySelector('[data-community-action="push-on"]')`));
+    /* appka po zapnutí ešte nastaví predvolené pripomienky a až potom prekreslí – čaká sa na to */
+    const offerGone = await waitFor(() => pB.eval(`!document.querySelector('[data-community-action="push-on"]')`), 15000, 'offer gone').then(() => true, () => false);
+    check('the offer disappears once on', offerGone);
     await view(pB, 'profile');
     check('Profile: switch is on', await pB.eval(`!!document.getElementById('community-push') && document.getElementById('community-push').checked`));
     await shot(pB, 'profile-on-en', '#community-push-card');

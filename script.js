@@ -14539,9 +14539,26 @@ async function communityChatHtml(sb) {
       : '<p class="card-note cchat-closed-note">' + esc(t(meta.closed ? 'community2.chatClosed' : 'community2.chatCannotSend')) + '</p>')
     + '<p class="card-note">' + esc(t('community2.chatPrivacy')) + '</p>';
 }
+/* Chat nie je samostatne posúvaný box – posúva sa celá stránka a pole na písanie je prilepené
+   nad spodnou lištou. "Koniec chatu" = spodok stránky: najnovšia správa je tesne nad poľom na
+   písanie (ako v Messengeri). */
+function communityChatOpen() {
+  return activeTab === 'komunita' && communityView === 'chat' && !!document.getElementById('community-chat-msgs');
+}
+function communityChatAtEnd() {
+  if (!communityChatOpen()) return false;
+  const el = document.scrollingElement || document.documentElement;
+  return el.scrollHeight - (window.scrollY + window.innerHeight) <= 240;
+}
+function communityChatScrollToEnd() {
+  if (!communityChatOpen()) return;
+  const el = document.scrollingElement || document.documentElement;
+  window.scrollTo(0, el.scrollHeight);
+}
 function communityAfterChatRender(sb) {
-  const box = document.getElementById('community-chat-msgs');
-  if (box) box.scrollTop = box.scrollHeight;
+  communityChatScrollToEnd();
+  /* ešte raz po vykreslení (písma, emoji) – stále len ak používateľ medzitým neodscrolloval hore */
+  requestAnimationFrame(() => { if (communityChatAtEnd()) communityChatScrollToEnd(); });
   communityMarkChatRead(sb);
   pushClearChat(communityChatId);
   if (communityV5()) { communityLoadReactions(sb); communityStartReactionPoll(); }
@@ -14553,11 +14570,15 @@ async function communityMarkChatRead(sb) {
   try { await sb.rpc('mark_read', { p_conversation: communityChatId, p_last_id: last }); } catch (e) {}
   communityRefreshBadges(sb);
 }
-function communityAddChatMsg(m) {
+/* Nová správa: vlastná (`mine`) vždy posunie chat na koniec; cudzia len vtedy, keď bol používateľ
+   na konci – kto číta staršie správy, toho appka nikam neodtiahne. */
+function communityAddChatMsg(m, mine) {
   if (!m || communityChatMsgs.some((x) => String(x.id) === String(m.id))) return;
+  const atEnd = mine || communityChatAtEnd();
   communityChatMsgs.push(m);
   const box = document.getElementById('community-chat-msgs');
-  if (box) { box.innerHTML = communityChatMsgsHtml(); box.scrollTop = box.scrollHeight; }
+  if (box) box.innerHTML = communityChatMsgsHtml();
+  if (atEnd) communityChatScrollToEnd();
 }
 async function communitySendMessage() {
   const sb = communityClient();
@@ -14578,7 +14599,7 @@ async function communitySendMessage() {
   el.value = '';
   communityReplyTo = null;
   communitySetMessage(''); communityShowStatus();
-  communityAddChatMsg(res.data);
+  communityAddChatMsg(res.data, true);
   const bar = document.getElementById('community-reply-bar');
   if (bar) bar.outerHTML = communityReplyBarHtml();
   pushNotifyMessage(sb, res.data && res.data.id);
@@ -15064,10 +15085,12 @@ function communityReplyBarHtml() {
     + '<button type="button" class="btn-icon-sm" data-community-action="reply-cancel" aria-label="' + escAttr(t('chat.replyCancel')) + '">✕</button></div>';
 }
 function communityRedrawChatMsgs() {
+  const atEnd = communityChatAtEnd();   // reakcie, panel akcií, odpoveď: kto bol na konci, zostane na konci
   const box = document.getElementById('community-chat-msgs');
   if (box) box.innerHTML = communityChatMsgsHtml();
   const bar = document.getElementById('community-reply-bar');
   if (bar) bar.outerHTML = communityReplyBarHtml();
+  if (atEnd) communityChatScrollToEnd();
 }
 /* Presun na pôvodnú správu, na ktorú niekto odpovedal: posun do stredu a krátke zvýraznenie.
    Ak pôvodná správa nie je načítaná (staršia ako posledných 100 správ) alebo bola zmazaná,
@@ -15189,7 +15212,7 @@ async function communityShareToChat(attachment) {
   if (el) el.outerHTML = communitySharePickerHtml();
   if (res.error) { communitySetMessageText(communityErrText(res.error)); communityShowStatus(); return; }
   communitySetMessage(''); communityShowStatus();
-  communityAddChatMsg(res.data);
+  communityAddChatMsg(res.data, true);
   pushNotifyMessage(sb, res.data && res.data.id);
 }
 
