@@ -8309,6 +8309,17 @@ const DROP_JUMP_I18N = {
 };
 for (const lang of Object.keys(DROP_JUMP_I18N)) Object.assign(I18N[lang] || (I18N[lang] = {}), DROP_JUMP_I18N[lang]);
 
+/* Jasné tlačidlá v potvrdení resetu / vrátenia / vymazania tréningu (nie dvakrát "Zrušiť"). */
+const CONFIRM_LABELS_I18N = {
+  sk: { 'trening.backToWorkout': 'Späť na tréning', 'history.keepWorkout': 'Ponechať tréning' },
+  en: { 'trening.backToWorkout': 'Back to workout', 'history.keepWorkout': 'Keep workout' },
+  es: { 'trening.backToWorkout': 'Volver al entrenamiento', 'history.keepWorkout': 'Conservar entrenamiento' },
+  'pt-BR': { 'trening.backToWorkout': 'Voltar ao treino', 'history.keepWorkout': 'Manter treino' },
+  fr: { 'trening.backToWorkout': 'Retour à la séance', 'history.keepWorkout': 'Garder la séance' },
+  ar: { 'trening.backToWorkout': 'العودة إلى التمرين', 'history.keepWorkout': 'الاحتفاظ بالتمرين' },
+};
+for (const lang of Object.keys(CONFIRM_LABELS_I18N)) Object.assign(I18N[lang] || (I18N[lang] = {}), CONFIRM_LABELS_I18N[lang]);
+
 function t(key, vars) {
   const dict = I18N[activeLang()] || I18N.en;
   let s = dict[key];
@@ -18401,7 +18412,7 @@ function showResultModal() {
 function requestUndoWorkout() {
   const entry = state.history.find(w => w.id === lastWorkoutId);
   if (!entry) return;
-  showGeneric(t('trening.undoConfirmTitle'), t('common.cancel'), () => {
+  showGeneric(t('trening.undoConfirmTitle'), t('trening.undo'), () => {
     state.history = state.history.filter(w => w.id !== lastWorkoutId);
     lastWorkoutId = null;
     lastUnlocked = [];
@@ -18412,19 +18423,19 @@ function requestUndoWorkout() {
     recalculateAll();
     saveState();
     switchTab('trening');
-  }, t('trening.undoConfirm', { xp: entry.xp }));
+  }, t('trening.undoConfirm', { xp: entry.xp }), t('history.keepWorkout'));
 }
 
 function requestDeleteWorkout(id) {
   const entry = state.history.find(w => w.id === id);
   if (!entry) return;
-  showGeneric(t('history.deleteTitle'), t('common.cancel'), () => {
+  showGeneric(t('history.deleteTitle'), t('common.delete'), () => {
     state.history = state.history.filter(w => w.id !== id);
     if (lastWorkoutId === id) lastWorkoutId = null;
     recalculateAll();
     saveState();
     renderPokrok();
-  }, t('history.deleteConfirm', { xp: entry.xp }));
+  }, t('history.deleteConfirm', { xp: entry.xp }), t('history.keepWorkout'));
 }
 
 /* ---------- Úprava tréningu z histórie ---------- */
@@ -18900,11 +18911,14 @@ function requestResetData() {
 
 let genericCallback = null;
 
-function showGeneric(title, okLabel, onOk, text) {
+/* `cancelLabel` (voliteľné) – text druhého tlačidla, keď "Zrušiť" nestačí: napr. pri
+   "Resetovať tréning?" musia byť obe tlačidlá jasné ("Resetovať tréning" / "Späť na tréning"). */
+function showGeneric(title, okLabel, onOk, text, cancelLabel) {
   document.getElementById('generic-title').textContent = title || t('common.confirmTitle');
   document.getElementById('generic-text').innerHTML = text || '';
   const okBtn = document.getElementById('btn-generic-ok');
   okBtn.textContent = okLabel || t('common.ok');
+  document.getElementById('btn-generic-cancel').textContent = cancelLabel || t('common.cancel');
   genericCallback = onOk || null;
   document.getElementById('modal-generic').hidden = false;
 }
@@ -21826,13 +21840,13 @@ function setupEvents() {
   }, 'keydown');
 
   on('btn-reset-session', () => {
-    showGeneric(t('trening.resetSessionTitle'), t('common.cancel'), () => {
+    showGeneric(t('trening.resetSessionTitle'), t('trening.resetSession'), () => {
       /* Session sa ruší až po potvrdení – nič sa nezapisuje do histórie. */
       clearSession();
       stopTimer();
       saveState();
       renderTrening();
-    }, t('trening.resetSessionConfirm'));
+    }, t('trening.resetSessionConfirm'), t('trening.backToWorkout'));
   });
 
   /* Predvoľby časovača oddychu: jeden delegovaný listener, takže prekreslenie

@@ -999,6 +999,8 @@ another device.
   buttons. After any change, counts, streak, XP, level, records and achievements are recalculated.
 - **Reset workout** on the Workout screen clears only the sets you have marked in the current
   session — your history is never touched.
+- These confirmations always name both choices: **Reset workout** / **Back to workout**,
+  **Undo this workout** / **Keep workout**, and **Delete** / **Keep workout**.
 
 ---
 
