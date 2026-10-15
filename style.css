@@ -2210,7 +2210,7 @@ textarea.modal-input { resize: vertical; }
 }
 
 /* ===== Váha a opakovania jednotlivej série (zmena počas tréningu) ===== */
-.set-weight, .set-reps {
+.set-weight, .set-reps, .drop-weight, .drop-reps {
   min-width: 44px;
   min-height: 44px;
   padding: 0 6px;
@@ -2224,8 +2224,8 @@ textarea.modal-input { resize: vertical; }
   font-variant-numeric: tabular-nums;
   cursor: pointer;
 }
-.set-weight:hover:not(:disabled), .set-reps:hover:not(:disabled) { border-color: var(--border-strong); color: var(--text); }
-.set-reps { min-width: 40px; }
+.set-weight:hover:not(:disabled), .set-reps:hover:not(:disabled), .drop-weight:hover:not(:disabled), .drop-reps:hover:not(:disabled) { border-color: var(--border-strong); color: var(--text); }
+.set-reps, .drop-reps { min-width: 40px; }
 .set-weight.changed, .set-reps.changed { border-color: var(--blue, var(--accent-line)); color: var(--blue, var(--accent)); }
 .set-weight-editor {
   flex: 1 0 100%;
@@ -3713,3 +3713,27 @@ button.cstat:hover { background: var(--surface-2); }
 .day-share-friends .modal-label { margin-top: 0; }
 .day-share-to { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .day-share-sent { margin: 0 0 var(--sp-2); color: var(--ok); font-weight: var(--fw-bold); overflow-wrap: anywhere; }
+
+/* Drop série: riadky pod sériami cviku a tlačidlo "+ Drop séria". */
+.drops { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2); margin-top: var(--sp-2); }
+.drops:empty { display: none; }
+.drop-item { flex: 1 1 100%; align-items: center; }
+.drop-label { flex: 1 1 auto; min-width: 0; font-size: var(--fs-sm); font-weight: var(--fw-bold); color: var(--text-dim); overflow-wrap: anywhere; }
+.drop-item .drop-done { flex: 0 0 auto; min-width: 52px; }
+.drop-weight, .drop-reps { color: var(--text); }
+.btn-add-drop { min-height: 40px; }
+.drop-note { display: block; font-size: var(--fs-xs); color: var(--text-dim); margin-top: 2px; }
+.cshare-ex-drop { flex: 1 0 100%; font-size: var(--fs-xs); color: var(--text-dim); }
+
+/* Odpoveď: ťuknutím na citáciu sa chat presunie na pôvodnú správu, ktorá na chvíľu zasvieti. */
+.cmsg-quote[data-community-action] { cursor: pointer; }
+.cmsg-quote[data-community-action]:hover { opacity: 1; }
+.cmsg.cmsg-flash .cmsg-bubble { animation: cmsg-flash 1.6s ease-out; }
+@keyframes cmsg-flash {
+  0%, 35% { box-shadow: 0 0 0 3px var(--accent); }
+  100% { box-shadow: 0 0 0 3px transparent; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cmsg.cmsg-flash .cmsg-bubble { animation: none; box-shadow: 0 0 0 3px var(--accent); }
+}
+.cmsg-gone { font-size: var(--fs-xs); color: var(--text-dim); margin: 2px var(--sp-1) 0; }

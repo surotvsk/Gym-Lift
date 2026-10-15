@@ -199,6 +199,50 @@ async function typeMsg(p, text) {
     check('replies to long messages: inside the screen and wrapped (receiver)', lA.length >= 3 && lA.every((q) => q.inside && q.wraps && q.lines <= 3), J(lA));
     await pA.c.send('Emulation.clearDeviceMetricsOverride');
     await pB.c.send('Emulation.clearDeviceMetricsOverride');
+    /* Ťuknutie na citáciu presunie chat na pôvodnú správu a na chvíľu ju zvýrazní. */
+    await pB.c.send('Emulation.setDeviceMetricsOverride', phone);
+    const longId = sqlVal(`select id from public.messages where conversation_id = ${lit(conv)} and body like '%very very long%' order by id desc limit 1`);
+    const replyId = sqlVal(`select id from public.messages where conversation_id = ${lit(conv)} and reply_to = ${longId} order by id desc limit 1`);
+    const inView = (p, id) => p.eval(`(() => { const r = document.querySelector('.cmsg[data-msg-id="${id}"] .cmsg-bubble').getBoundingClientRect(); const c = (r.top + r.bottom) / 2; return c > 0 && c < innerHeight; })()`);
+    await pB.eval(`(window.scrollTo(0, document.body.scrollHeight), true)`);
+    await wait(400);
+    check('the quote says it leads to the original (title)', (await pB.eval(`document.querySelector('.cmsg[data-msg-id="${replyId}"] .cmsg-quote').title`)) === 'Show the original message');
+    /* Pôvodná správa sa najprv odsunie mimo obrazovky (nad horný okraj). */
+    await pB.eval(`(() => { const r = document.querySelector('.cmsg[data-msg-id="${longId}"]').getBoundingClientRect(); window.scrollBy(0, r.bottom + 20); return true; })()`);
+    await wait(300);
+    const hiddenBefore = !(await inView(pB, longId));
+    await pB.eval(`(document.querySelector('.cmsg[data-msg-id="${replyId}"] .cmsg-quote').click(), true)`);
+    await wait(900);
+    check('the original was off-screen before the tap', hiddenBefore);
+    check('tapping the quote scrolls to the original message and highlights it', (await inView(pB, longId))
+      && await pB.eval(`document.querySelector('.cmsg[data-msg-id="${longId}"]').classList.contains('cmsg-flash')`));
+    check('tapping the quote does not open the message menu', await pB.eval(`communityMsgActions === null && !document.querySelector('.cmsg-actions')`));
+    await shot(pB, 'chat-jump-original', `.cmsg[data-msg-id="${longId}"]`);
+    await pB.c.send('Emulation.setDeviceMetricsOverride', phone);
+    await wait(1900);
+    check('the highlight goes away after a moment', await pB.eval(`!document.querySelector('.cmsg-flash')`));
+    /* Klávesnica / čítačka: menu odpovede má "Zobraziť pôvodnú správu". */
+    await pB.eval(`(window.scrollTo(0, document.body.scrollHeight), true)`);
+    await click(pB, `.cmsg[data-msg-id="${replyId}"] .cmsg-bubble`);
+    check('the reply\'s menu offers "Show the original message"', await pB.eval(`!!document.querySelector('.cmsg-actions [data-community-action="goto-msg"][data-msg="${longId}"]')`));
+    check('a message that is not a reply has no such button', await pB.eval(`(() => { communityToggleMsgActions(${J(longId)}); return !document.querySelector('.cmsg-actions [data-community-action="goto-msg"]'); })()`));
+    await click(pB, `.cmsg[data-msg-id="${replyId}"] .cmsg-bubble`);
+    await pB.eval(`(document.querySelector('.cmsg-actions [data-community-action="goto-msg"]').click(), true)`);
+    await wait(900);
+    check('the menu button also jumps to the original and closes the menu', (await inView(pB, longId)) && await pB.eval(`!document.querySelector('.cmsg-actions') && document.querySelector('.cmsg[data-msg-id="${longId}"]').classList.contains('cmsg-flash') && document.activeElement === document.querySelector('.cmsg[data-msg-id="${longId}"] .cmsg-bubble')`));
+    /* Pôvodná správa nie je načítaná (staršia ako posledných 100) → krátka poznámka, nič sa nerozbije. */
+    await pB.eval(`(() => { communityChatMsgs = communityChatMsgs.filter((m) => String(m.id) !== ${J(longId)}); communityRedrawChatMsgs(); return true; })()`);
+    await pB.eval(`(document.querySelector('.cmsg[data-msg-id="${replyId}"] .cmsg-quote').click(), true)`);
+    await wait(300);
+    check('original not loaded: a short note says so under the reply', (await pB.eval(`(document.querySelector('.cmsg[data-msg-id="${replyId}"] .cmsg-gone') || {}).textContent`)) === 'The original message is no longer in this chat.');
+    await pB.eval(`(document.querySelector('.cmsg[data-msg-id="${replyId}"] .cmsg-quote').click(), true)`);
+    check('tapping again does not stack notes', (await pB.eval(`document.querySelectorAll('.cmsg-gone').length`)) === 1);
+    await wait(3800);
+    check('the note disappears by itself', await pB.eval(`!document.querySelector('.cmsg-gone')`));
+    await pB.c.send('Emulation.clearDeviceMetricsOverride');
+    await pB.eval(`(communityOpenChat(${J(conv)}), true)`);
+    await rendered(pB);
+    await chatShown(pB);
     /* zmena a zrušenie reakcie */
     await click(pB, `.cmsg[data-msg-id="${planMsgId}"] .cmsg-bubble`);
     await click(pB, `.cmsg-actions [data-community-action="react"][data-emoji="🔥"]`);

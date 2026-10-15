@@ -171,6 +171,14 @@ of them. For an exercise done one side at a time, both sides of a set use the sa
 its reps; the history and the Calendar show every set (*3 × 10/8/8*), and a shared workout shows them too.
 Editing the reps later in the history replaces the per-set reps with the single new number.
 
+**Drop sets.** Under the sets of every exercise there is **+ Drop set**: after your last set, lower the
+weight and keep going without a rest. Each drop set is its own row (*Drop set 1*, *Drop set 2*, … up to
+5) with ✓, reps and weight; it starts about 20 % lighter than the set before it (rounded to 2.5 kg) with
+the same reps, and you can change both (only that drop set changes) or remove it with ✕. Your plan is
+not changed. Only completed drop sets are saved; they are extra work, so they do not change the
+"sets done" count or the XP. History, the Calendar and shared workouts show them as
+*Drop sets: 50 kg × 8 · 40 kg × 6*.
+
 ### Progress
 Totals for this week, this month and all time, your personal records, and the full history of
 completed workouts. Every workout in the history can be edited ✏️ or deleted 🗑️.
@@ -717,7 +725,9 @@ turned off and stays off.
 
 **Replies and reactions in chat.** Tap a message to react with ❤️ 😂 👍 😮 💪 🔥 (one reaction per person
 per message; tap your reaction again to remove it) or to **Reply** — the answer shows the quoted
-message. Only the two people in the chat see reactions; reactions in an open chat refresh every few
+message. Tap the quote (or **Show the original message** in the reply's menu) to jump to the original
+message, which lights up briefly; if it is older than the loaded part of the chat or was deleted, a short
+note says so. Only the two people in the chat see reactions; reactions in an open chat refresh every few
 seconds.
 
 **Sharing workout plans and workouts.** In a chat, **Share a plan or workout** sends one of your plans

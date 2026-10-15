@@ -8250,6 +8250,65 @@ const SETREPS_DAYSHARE_I18N = {
 };
 for (const lang of Object.keys(SETREPS_DAYSHARE_I18N)) Object.assign(I18N[lang] || (I18N[lang] = {}), SETREPS_DAYSHARE_I18N[lang]);
 
+/* Drop série a presun na pôvodnú správu pri odpovedi. */
+const DROP_JUMP_I18N = {
+  sk: {
+    'drop.add': '+ Drop séria', 'drop.addTitle': 'Po poslednej sérii zníž váhu a pokračuj bez pauzy.',
+    'drop.label': 'Drop séria {n}', 'drop.doneAria': 'Drop séria {n} hotová',
+    'drop.repsAria': 'Drop séria {n}: {reps} opakovaní. Ťuknutím zmeníš opakovania.', 'drop.weightAria': 'Drop séria {n}: {kg} kg. Ťuknutím zmeníš váhu.',
+    'drop.remove': 'Odstrániť drop sériu {n}', 'drop.editorNote': 'Mení sa iba táto drop séria. Plán sa nemení.',
+    'drop.repsEditor': 'Opakovania drop série {n}', 'drop.weightEditor': 'Váha drop série {n} v kg',
+    'drop.history': 'Drop série: {list}',
+    'chat.gotoOriginal': 'Zobraziť pôvodnú správu', 'chat.originalGone': 'Pôvodná správa už v tomto chate nie je.',
+  },
+  en: {
+    'drop.add': '+ Drop set', 'drop.addTitle': 'After your last set, lower the weight and keep going without a rest.',
+    'drop.label': 'Drop set {n}', 'drop.doneAria': 'Drop set {n} done',
+    'drop.repsAria': 'Drop set {n}: {reps} reps. Tap to change the reps.', 'drop.weightAria': 'Drop set {n}: {kg} kg. Tap to change the weight.',
+    'drop.remove': 'Remove drop set {n}', 'drop.editorNote': 'Only this drop set changes. Your plan stays the same.',
+    'drop.repsEditor': 'Reps of drop set {n}', 'drop.weightEditor': 'Weight of drop set {n} in kg',
+    'drop.history': 'Drop sets: {list}',
+    'chat.gotoOriginal': 'Show the original message', 'chat.originalGone': 'The original message is no longer in this chat.',
+  },
+  es: {
+    'drop.add': '+ Serie descendente', 'drop.addTitle': 'Tras tu última serie, baja el peso y sigue sin descansar.',
+    'drop.label': 'Serie descendente {n}', 'drop.doneAria': 'Serie descendente {n} hecha',
+    'drop.repsAria': 'Serie descendente {n}: {reps} repeticiones. Toca para cambiar las repeticiones.', 'drop.weightAria': 'Serie descendente {n}: {kg} kg. Toca para cambiar el peso.',
+    'drop.remove': 'Quitar la serie descendente {n}', 'drop.editorNote': 'Solo cambia esta serie descendente. Tu plan no cambia.',
+    'drop.repsEditor': 'Repeticiones de la serie descendente {n}', 'drop.weightEditor': 'Peso de la serie descendente {n} en kg',
+    'drop.history': 'Series descendentes: {list}',
+    'chat.gotoOriginal': 'Ver el mensaje original', 'chat.originalGone': 'El mensaje original ya no está en este chat.',
+  },
+  'pt-BR': {
+    'drop.add': '+ Drop set', 'drop.addTitle': 'Depois da última série, reduza o peso e continue sem descanso.',
+    'drop.label': 'Drop set {n}', 'drop.doneAria': 'Drop set {n} concluído',
+    'drop.repsAria': 'Drop set {n}: {reps} repetições. Toque para alterar as repetições.', 'drop.weightAria': 'Drop set {n}: {kg} kg. Toque para alterar o peso.',
+    'drop.remove': 'Remover o drop set {n}', 'drop.editorNote': 'Só este drop set muda. Seu plano não muda.',
+    'drop.repsEditor': 'Repetições do drop set {n}', 'drop.weightEditor': 'Peso do drop set {n} em kg',
+    'drop.history': 'Drop sets: {list}',
+    'chat.gotoOriginal': 'Ver a mensagem original', 'chat.originalGone': 'A mensagem original não está mais neste chat.',
+  },
+  fr: {
+    'drop.add': '+ Série dégressive', 'drop.addTitle': 'Après ta dernière série, baisse la charge et continue sans repos.',
+    'drop.label': 'Série dégressive {n}', 'drop.doneAria': 'Série dégressive {n} faite',
+    'drop.repsAria': 'Série dégressive {n} : {reps} répétitions. Touche pour modifier les répétitions.', 'drop.weightAria': 'Série dégressive {n} : {kg} kg. Touche pour modifier la charge.',
+    'drop.remove': 'Retirer la série dégressive {n}', 'drop.editorNote': 'Seule cette série dégressive change. Ton plan ne change pas.',
+    'drop.repsEditor': 'Répétitions de la série dégressive {n}', 'drop.weightEditor': 'Charge de la série dégressive {n} en kg',
+    'drop.history': 'Séries dégressives : {list}',
+    'chat.gotoOriginal': 'Voir le message d’origine', 'chat.originalGone': 'Le message d’origine n’est plus dans ce chat.',
+  },
+  ar: {
+    'drop.add': '+ مجموعة تنازلية', 'drop.addTitle': 'بعد مجموعتك الأخيرة، خفّف الوزن واستمر دون راحة.',
+    'drop.label': 'مجموعة تنازلية {n}', 'drop.doneAria': 'تمت المجموعة التنازلية {n}',
+    'drop.repsAria': 'المجموعة التنازلية {n}: {reps} تكرار. اضغط لتغيير التكرارات.', 'drop.weightAria': 'المجموعة التنازلية {n}: {kg} كغ. اضغط لتغيير الوزن.',
+    'drop.remove': 'إزالة المجموعة التنازلية {n}', 'drop.editorNote': 'تتغير هذه المجموعة التنازلية فقط. خطتك لا تتغيّر.',
+    'drop.repsEditor': 'تكرارات المجموعة التنازلية {n}', 'drop.weightEditor': 'وزن المجموعة التنازلية {n} بالكغ',
+    'drop.history': 'مجموعات تنازلية: {list}',
+    'chat.gotoOriginal': 'عرض الرسالة الأصلية', 'chat.originalGone': 'الرسالة الأصلية لم تعد في هذه المحادثة.',
+  },
+};
+for (const lang of Object.keys(DROP_JUMP_I18N)) Object.assign(I18N[lang] || (I18N[lang] = {}), DROP_JUMP_I18N[lang]);
+
 function t(key, vars) {
   const dict = I18N[activeLang()] || I18N.en;
   let s = dict[key];
@@ -8420,6 +8479,7 @@ function todayLabel() {
 }
 
 /* ---------- Konstanty ---------- */
+const DROP_MAX = 5;   // najviac drop sérií na jeden cvik v tréningu
 
 /* Kľúč stavu AKTÍVNEHO pracovného priestoru (nastaví wsInit pred loadState):
    pôvodné dáta 'gymquest', priestor účtu 'gymquest@<id>'. */
@@ -9057,6 +9117,16 @@ function normalizeActiveSession(raw) {
     }
   }
   if (Object.keys(setReps).length) out.setReps = setReps;
+  /* Drop série: najviac DROP_MAX platných záznamov na cvik. */
+  const drops = {};
+  if (raw.drops && typeof raw.drops === 'object' && !Array.isArray(raw.drops)) {
+    for (const [key, list] of Object.entries(raw.drops)) {
+      if (!Array.isArray(list)) continue;
+      const clean = list.slice(0, DROP_MAX).map(cleanDropEntry).filter(Boolean);
+      if (clean.length) drops[key] = clean;
+    }
+  }
+  if (Object.keys(drops).length) out.drops = drops;
   return out;
 }
 
@@ -10424,6 +10494,68 @@ function historyRepsValue(ex) {
   return list ? list.join('/') : String(ex.reps);
 }
 
+/* ---------- Drop séria (po poslednej sérii znížiš váhu a pokračuješ bez pauzy) ----------
+   Drop série žijú v session pri cviku (sess.drops[kľúč cviku] = [{ w, r, done }]), plán sa
+   nemení. Do histórie idú len dokončené drop série ({ weight, reps }). Nepočítajú sa do
+   "x z y sérií" ani do XP – sú navyše k plánovaným sériám. */
+function sessionDrops(ex) {
+  const sess = getSession();
+  const list = sess && sess.drops ? sess.drops[exerciseSessionKey(ex)] : null;
+  return Array.isArray(list) ? list : [];
+}
+function cleanDropEntry(d) {
+  if (!d || typeof d !== 'object') return null;
+  const w = Number(d.w), r = Number(d.r);
+  if (!Number.isFinite(w) || w < 0 || w > 999 || !Number.isInteger(r) || r < 1 || r > 999) return null;
+  return { w, r, done: d.done === true };
+}
+function addDrop(ex) {
+  const list = sessionDrops(ex);
+  if (list.length >= DROP_MAX) return false;
+  const sess = ensureSession();
+  if (!sess) return false;
+  const last = Math.max(0, (Math.round(Number(ex.sets)) || 1) - 1);
+  const prevW = list.length ? list[list.length - 1].w : effectiveSetWeight(ex, last);
+  const prevR = list.length ? list[list.length - 1].r : effectiveSetReps(ex, last);
+  /* Predvolene o ~20 % ľahšie (zaokrúhlené na 2,5 kg), opakovania ako posledná séria. */
+  const w = Math.max(0, Math.round(prevW * 0.8 / 2.5) * 2.5);
+  if (!sess.drops) sess.drops = {};
+  sess.drops[exerciseSessionKey(ex)] = list.concat([{ w, r: Math.max(1, prevR || 1), done: false }]);
+  saveState();
+  return true;
+}
+function updateDrop(ex, index, patch) {
+  const sess = getSession();
+  const key = exerciseSessionKey(ex);
+  if (!sess || !sess.drops || !Array.isArray(sess.drops[key]) || !sess.drops[key][index]) return false;
+  const next = cleanDropEntry(Object.assign({}, sess.drops[key][index], patch));
+  if (!next) return false;
+  sess.drops[key][index] = next;
+  saveState();
+  return true;
+}
+function removeDrop(ex, index) {
+  const sess = getSession();
+  const key = exerciseSessionKey(ex);
+  if (!sess || !sess.drops || !Array.isArray(sess.drops[key])) return;
+  sess.drops[key].splice(index, 1);
+  if (!sess.drops[key].length) delete sess.drops[key];
+  if (!Object.keys(sess.drops).length) delete sess.drops;
+  saveState();
+}
+/* Platné drop série zo záznamu histórie (alebo null). */
+function cleanHistoryDrops(ex) {
+  if (!ex || !Array.isArray(ex.drops) || !ex.drops.length || ex.drops.length > DROP_MAX) return null;
+  const out = ex.drops.map((d) => ({ weight: Number(d && d.weight), reps: Number(d && d.reps) }));
+  return out.every((d) => Number.isFinite(d.weight) && d.weight >= 0 && d.weight <= 999 && Number.isInteger(d.reps) && d.reps >= 1 && d.reps <= 999) ? out : null;
+}
+/* "Drop série: 50 kg × 8 · 40 kg × 6" (alebo prázdny text). */
+function historyDropsText(ex) {
+  const list = cleanHistoryDrops(ex);
+  if (!list) return '';
+  return t('drop.history', { list: list.map((d) => `${d.weight} ${t('units.kg')} × ${d.reps}`).join(' · ') });
+}
+
 function planExerciseCount(plan) {
   let n = 0;
   for (const info of exerciseSlots(plan)) {
@@ -10724,6 +10856,7 @@ function buildExerciseBlock(seg, info, plan) {
     }
   }
   div.appendChild(sets);
+  div.appendChild(buildDropsBlock(ex, seg.readOnly));
 
   /* Posledná náhrada sa dá vrátiť späť – pôvodný cvik sa tým znova sprístupní. */
   if (seg.active && seg.step) {
@@ -10836,6 +10969,70 @@ function buildSetItem(ex, index, plannedFailure, side, readOnly) {
   return item;
 }
 
+/* Drop série cviku: riadky "Drop séria 1" (✓ / opakovania / váha / ✕) a tlačidlo "+ Drop séria". */
+function buildDropsBlock(ex, readOnly) {
+  const box = document.createElement('div');
+  box.className = 'drops';
+  const list = sessionDrops(ex);
+  list.forEach((d, i) => {
+    const item = document.createElement('div');
+    item.className = 'set-item drop-item';
+    const label = document.createElement('span');
+    label.className = 'drop-label';
+    label.textContent = '⬇ ' + t('drop.label', { n: i + 1 });
+    const done = document.createElement('button');
+    done.type = 'button';
+    done.className = 'set-btn drop-done' + (d.done ? ' done' : '');
+    done.textContent = '✓';
+    done.setAttribute('aria-label', t('drop.doneAria', { n: i + 1 }));
+    done.setAttribute('aria-pressed', d.done ? 'true' : 'false');
+    const reps = document.createElement('button');
+    reps.type = 'button'; reps.className = 'drop-reps'; reps.textContent = d.r + '×';
+    reps.setAttribute('aria-label', t('drop.repsAria', { n: i + 1, reps: d.r }));
+    const weight = document.createElement('button');
+    weight.type = 'button'; weight.className = 'drop-weight'; weight.textContent = String(d.w);
+    weight.setAttribute('aria-label', t('drop.weightAria', { n: i + 1, kg: d.w }));
+    const remove = document.createElement('button');
+    remove.type = 'button'; remove.className = 'set-fail drop-remove'; remove.textContent = '✕';
+    remove.setAttribute('aria-label', t('drop.remove', { n: i + 1 }));
+    remove.title = t('drop.remove', { n: i + 1 });
+    if (readOnly) {
+      [done, reps, weight, remove].forEach((b) => { b.disabled = true; });
+    } else {
+      done.addEventListener('click', () => { updateDrop(ex, i, { done: !d.done }); setSessionNote(null, 0); renderTrening(); });
+      reps.addEventListener('click', () => openSetValueEditor(item, {
+        extraClass: 'set-reps-editor drop-editor', note: t('drop.editorNote'),
+        editorAria: t('drop.repsEditor', { n: i + 1 }), inputAria: t('drop.repsEditor', { n: i + 1 }),
+        lessAria: t('setReps.less'), moreAria: t('setReps.more'), minusText: '−1', plusText: '+1', step: 1,
+        unit: t('units.reps'), inputMode: 'numeric', inputClass: 'set-reps-input', okClass: 'set-reps-ok',
+        current: () => d.r, clean: cleanSetRepsValue,
+        save: (v) => { const n = cleanSetRepsValue(v); return n !== null && updateDrop(ex, i, { r: n }); },
+      }));
+      weight.addEventListener('click', () => openSetValueEditor(item, {
+        extraClass: 'drop-editor', note: t('drop.editorNote'),
+        editorAria: t('drop.weightEditor', { n: i + 1 }), inputAria: t('drop.weightEditor', { n: i + 1 }),
+        lessAria: t('setWeight.less'), moreAria: t('setWeight.more'), minusText: '−2.5', plusText: '+2.5', step: 2.5,
+        unit: t('units.kg'), inputMode: 'decimal', inputClass: 'set-weight-input', okClass: 'set-weight-ok',
+        current: () => d.w, clean: cleanSetWeightValue,
+        save: (v) => { const n = cleanSetWeightValue(v); return n !== null && updateDrop(ex, i, { w: n }); },
+      }));
+      remove.addEventListener('click', () => { closeSetWeightEditor(); removeDrop(ex, i); renderTrening(); });
+    }
+    item.append(label, done, reps, weight, remove);
+    box.appendChild(item);
+  });
+  if (!readOnly && list.length < DROP_MAX) {
+    const add = document.createElement('button');
+    add.type = 'button';
+    add.className = 'btn btn-secondary btn-sm btn-add-drop';
+    add.textContent = '⬇ ' + t('drop.add');
+    add.title = t('drop.addTitle');
+    add.addEventListener('click', () => { closeSetWeightEditor(); if (addDrop(ex)) { setSessionNote(null, 0); renderTrening(); } });
+    box.appendChild(add);
+  }
+  return box;
+}
+
 /* Malý editor jednej série priamo pod sériou: −krok / hodnota / +krok / OK (váha aj opakovania).
    Nová hodnota platí pre túto sériu a nasledujúce série, kým sa niektorá nezmení znova. */
 let setWeightEditorEl = null;
@@ -10884,7 +11081,7 @@ function openSetValueEditor(item, cfg) {
   });
   const note = document.createElement('p');
   note.className = 'set-weight-note';
-  note.textContent = t('setWeight.note');
+  note.textContent = cfg.note || t('setWeight.note');
   box.append(minus, input, unit, plus, ok, note);
   item.insertAdjacentElement('afterend', box);
   setWeightEditorEl = box;
@@ -13010,6 +13207,10 @@ function requestUndoSubstitution(slot) {
       for (const k of Object.keys(sess[field])) if (k.indexOf(prefix) === 0) delete sess[field][k];
       if (!Object.keys(sess[field]).length) delete sess[field];
     }
+    if (sess.drops) {
+      delete sess.drops[String(last.key)];
+      if (!Object.keys(sess.drops).length) delete sess.drops;
+    }
     saveState();
     renderTrening();
   };
@@ -14295,7 +14496,9 @@ function communityChatMsgsHtml() {
     let quote = '';
     if (v5 && m.reply_to) {
       const orig = communityChatMsgs.find((x) => String(x.id) === String(m.reply_to));
-      quote = '<span class="cmsg-quote">' + esc(communityMsgSnippet(orig)) + '</span>';
+      /* Ťuknutie na citáciu presunie chat na pôvodnú správu (communityJumpToMsg). */
+      quote = '<span class="cmsg-quote" data-community-action="goto-msg" data-msg="' + escAttr(m.reply_to) + '" title="' + escAttr(t('chat.gotoOriginal')) + '">'
+        + esc(communityMsgSnippet(orig)) + '</span>';
     }
     return '<div class="cmsg' + (mine ? ' mine' : '') + '" data-msg-id="' + escAttr(m.id) + '"><button type="button" class="cmsg-bubble" data-community-action="msg-menu" data-msg="' + escAttr(m.id) + '" data-mine="' + (mine ? '1' : '0') + '"'
       + (v5 ? ' aria-expanded="' + (String(communityMsgActions) === String(m.id) ? 'true' : 'false') + '"' : '') + '>'
@@ -14727,6 +14930,8 @@ function shareFromWorkout(w) {
       if (sw) x.sw = sw.map(shareClampKg);
       const sr = cleanHistorySetReps(e);
       if (sr) x.sr = sr.map((v) => shareClampInt(v, 0, 999));
+      const dr = cleanHistoryDrops(e);
+      if (dr) x.dr = dr.map((d) => [shareClampKg(d.weight), shareClampInt(d.reps, 1, 999)]);
       return x;
     }),
   };
@@ -14769,7 +14974,10 @@ function shareCardHtml(a, src, ref, noSave) {
     const parts = [sets];
     if (workout || perSide) parts.push(reps + ' ' + t('units.reps'));
     parts.push(sw + ' ' + t('units.kg'));
-    return '<li><span class="cshare-ex">' + esc(shareExerciseName(e)) + '</span><span class="cshare-ex-meta">' + esc(parts.join(' · ')) + '</span></li>';
+    /* Drop série: [[kg, opakovania], …] – iba platné dvojice, najviac DROP_MAX. */
+    const dr = Array.isArray(e.dr) ? e.dr.slice(0, DROP_MAX).filter((d) => Array.isArray(d) && Number.isFinite(Number(d[0])) && Number(d[1]) >= 1) : [];
+    const drops = dr.length ? '<span class="cshare-ex-drop">⬇ ' + esc(t('drop.history', { list: dr.map((d) => Number(d[0]) + ' ' + t('units.kg') + ' × ' + Math.round(Number(d[1]))).join(' · ') })) + '</span>' : '';
+    return '<li><span class="cshare-ex">' + esc(shareExerciseName(e)) + '</span><span class="cshare-ex-meta">' + esc(parts.join(' · ')) + '</span>' + drops + '</li>';
   }).join('');
   return '<div class="cshare-card" data-kind="' + (workout ? 'workout' : 'plan') + '">'
     + '<p class="cshare-kind">' + esc(t(workout ? 'share.kindWorkout' : 'share.kindPlan')) + '</p>'
@@ -14843,6 +15051,7 @@ function communityMsgActionsHtml(m, mine) {
     + (canReact ? '<div class="cmsg-react-pick">' + CHAT_REACTIONS.map((e) => '<button type="button" class="cmsg-react-opt" data-community-action="react" data-msg="' + escAttr(m.id) + '" data-emoji="' + escAttr(e) + '"'
       + ' aria-label="' + escAttr(t('chat.reactWith', { emoji: e })) + '">' + e + '</button>').join('') + '</div>' : '')
     + '<div class="cmsg-action-row">'
+    + (m.reply_to ? '<button type="button" class="btn btn-secondary btn-sm" data-community-action="goto-msg" data-msg="' + escAttr(m.reply_to) + '">' + esc(t('chat.gotoOriginal')) + '</button>' : '')
     + (canReact ? '<button type="button" class="btn btn-secondary btn-sm" data-community-action="msg-reply" data-msg="' + escAttr(m.id) + '">' + esc(t('chat.reply')) + '</button>' : '')
     + (mine ? '<button type="button" class="btn btn-secondary btn-sm" data-community-action="msg-delete" data-msg="' + escAttr(m.id) + '">' + esc(t('community2.delete')) + '</button>'
       : '<button type="button" class="btn btn-secondary btn-sm" data-community-action="msg-report" data-msg="' + escAttr(m.id) + '">' + esc(t('community.report')) + '</button>')
@@ -14859,6 +15068,35 @@ function communityRedrawChatMsgs() {
   if (box) box.innerHTML = communityChatMsgsHtml();
   const bar = document.getElementById('community-reply-bar');
   if (bar) bar.outerHTML = communityReplyBarHtml();
+}
+/* Presun na pôvodnú správu, na ktorú niekto odpovedal: posun do stredu a krátke zvýraznenie.
+   Ak pôvodná správa nie je načítaná (staršia ako posledných 100 správ) alebo bola zmazaná,
+   pri citácii sa na chvíľu ukáže krátka poznámka. */
+function communityJumpToMsg(id, from) {
+  const src = from && from.closest ? from.closest('.cmsg') : null;
+  if (communityMsgActions !== null) { communityMsgActions = null; communityRedrawChatMsgs(); }
+  const sel = (mid) => '#community-chat-msgs .cmsg[data-msg-id="' + String(mid).replace(/["\\]/g, '') + '"]';
+  const el = document.querySelector(sel(id));
+  if (!el) {
+    const srcNow = src ? document.querySelector(sel(src.dataset.msgId)) : null;
+    if (srcNow && !srcNow.querySelector('.cmsg-gone')) {
+      const note = document.createElement('span');
+      note.className = 'cmsg-gone'; note.setAttribute('role', 'status');
+      note.textContent = t('chat.originalGone');
+      srcNow.appendChild(note);
+      setTimeout(() => { if (note.parentNode) note.parentNode.removeChild(note); }, 3500);
+    }
+    return false;
+  }
+  const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  el.scrollIntoView({ block: 'center', behavior: reduce ? 'auto' : 'smooth' });
+  el.classList.remove('cmsg-flash');
+  void el.offsetWidth;   // reštart animácie pri opakovanom ťuknutí
+  el.classList.add('cmsg-flash');
+  setTimeout(() => el.classList.remove('cmsg-flash'), 1800);
+  const bubble = el.querySelector('.cmsg-bubble');
+  if (bubble) { try { bubble.focus({ preventScroll: true }); } catch (e) {} }
+  return true;
 }
 function communityToggleMsgActions(id) {
   communityMsgActions = String(communityMsgActions) === String(id) ? null : String(id);
@@ -17575,14 +17813,19 @@ function historyExerciseDetail(ex, displayName) {
     let out = head + `<div class="history-side-note">${esc(t('unilateral.completed', { sides: completedSidesLabel(done) }))}</div>`;
     const list = sideFailureList(fails);
     if (list) out += `<div class="failure-note">🔥 ${esc(t('unilateral.failureList', { list }))}</div>`;
-    return out;
+    return out + historyDropsHtml(ex, 'div');
   }
   const line = `${esc(displayName !== undefined ? displayName : ex.name)} ${ex.sets}×${esc(historyRepsValue(ex))} · ${historyWeightText(ex)}`;
   const fSets = cleanFailureSets(ex.actualFailureSets, ex.sets);
   /* Zlyhanie sa zobrazuje len vtedy, keď bolo naozaj zaznamenané – nikdy z plánu. */
-  return fSets.length
+  return (fSets.length
     ? line + `<div class="failure-note">🔥 ${esc(t('failure.sets', { sets: fSets.join(', ') }))}</div>`
-    : line;
+    : line) + historyDropsHtml(ex, 'div');
+}
+/* Riadok s drop sériami v histórii / kalendári (alebo prázdny reťazec). */
+function historyDropsHtml(ex, tag) {
+  const text = historyDropsText(ex);
+  return text ? `<${tag} class="drop-note">⬇ ${esc(text)}</${tag}>` : '';
 }
 
 /* Trvanie uložené v histórii: nezáporné celé sekundy, inak null (nikdy nevymýšľame hodnotu).
@@ -17712,6 +17955,7 @@ function workoutBlock(w) {
       <span class="day-ex-meta">${esc(tPlural('unilateral.setsPerSide', sets))} · ${esc(historyRepsValue(ex))} ${t('units.reps')} · ${historyWeightText(ex)} · ${ex.setsDone} ${t('history.setsDoneLabel')}</span>
       <span class="day-ex-completed">${esc(t('unilateral.completed', { sides: completedSidesLabel(done) }))}</span>
       ${list ? `<span class="day-ex-failure">🔥 ${esc(t('unilateral.failureList', { list }))}</span>` : ''}
+      ${historyDropsHtml(ex, 'span')}
     </div>`;
     }
     const fSets = cleanFailureSets(ex.actualFailureSets, ex.sets);
@@ -17720,6 +17964,7 @@ function workoutBlock(w) {
       <span class="day-ex-name">${esc(historyExerciseName(ex))}</span>
       <span class="day-ex-meta">${ex.sets} × ${esc(historyRepsValue(ex))} · ${historyWeightText(ex)} · ${ex.setsDone} ${t('history.setsDoneLabel')}</span>
       ${fSets.length ? `<span class="day-ex-failure">🔥 ${esc(t('failure.sets', { sets: fSets.join(', ') }))}</span>` : ''}
+      ${historyDropsHtml(ex, 'span')}
     </div>`;
   }).join('');
   div.innerHTML = `
@@ -17958,6 +18203,7 @@ function historyExerciseEntry(ex, sess) {
     entry.sidesDone = cleanDone;
     historyApplySetWeights(entry, ex, Array.from(new Set(cleanDone.left.concat(cleanDone.right))));
     historyApplySetReps(entry, ex);
+    historyApplyDrops(entry, ex);
     entry.sidesFailure = cleanFails;
     /* actualFailureSets zostáva zjednotením čísel sérií – pre staršie zobrazenia aj kompatibilitu. */
     entry.actualFailureSets = Array.from(new Set(cleanFails.left.concat(cleanFails.right)))
@@ -17973,6 +18219,7 @@ function historyExerciseEntry(ex, sess) {
     entry.actualFailureSets = cleanFailureSets(fails, ex.sets);
     historyApplySetWeights(entry, ex, done);
     historyApplySetReps(entry, ex);
+    historyApplyDrops(entry, ex);
   }
   return entry;
 }
@@ -17994,6 +18241,11 @@ function historyApplySetWeights(entry, ex, doneSetNumbers) {
 function historyApplySetReps(entry, ex) {
   const list = sessionSetReps(ex);
   if (list) entry.setReps = list;
+}
+/* Dokončené drop série do histórie: [{ weight, reps }]. */
+function historyApplyDrops(entry, ex) {
+  const list = sessionDrops(ex).filter((d) => d.done).map((d) => ({ weight: d.w, reps: d.r }));
+  if (list.length) entry.drops = list;
 }
 
 function confirmFinish() {
@@ -21798,6 +22050,7 @@ function setupEvents() {
     else if (act === 'msg-delete') communityMessageMenu(a.dataset.msg, true);
     else if (act === 'msg-report') communityMessageMenu(a.dataset.msg, false);
     else if (act === 'msg-reply') communitySetReply(a.dataset.msg);
+    else if (act === 'goto-msg') communityJumpToMsg(a.dataset.msg, a);
     else if (act === 'reply-cancel') { communityReplyTo = null; communityRedrawChatMsgs(); }
     else if (act === 'react') communityToggleReaction(a.dataset.msg, a.dataset.emoji);
     else if (act === 'chat-share-open') communityToggleSharePicker();
