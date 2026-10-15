@@ -3616,10 +3616,15 @@ button.cstat:hover { background: var(--surface-2); }
 
 /* ===== Chat: odpovede, reakcie, akcie správy (migrácia 0011) ===== */
 .cmsg-bubble { display: flex; flex-direction: column; gap: 4px; }
+/* Bublina nesmie byť širšia ako stĺpec správy (inak dlhá citácia vytlačí odpoveď mimo obrazovky). */
+.cmsg { min-width: 0; }
+.cmsg-bubble { max-width: 100%; min-width: 0; }
+/* Citácia: zalomená na najviac 3 riadky, aj dlhé slová bez medzier. */
 .cmsg-quote {
-  display: block; font-size: var(--fs-xs); opacity: 0.85; padding: 4px 8px;
+  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; line-clamp: 3;
+  font-size: var(--fs-xs); line-height: 1.35; opacity: 0.85; padding: 4px 8px;
   border-inline-start: 3px solid currentColor; border-radius: 6px; background: rgba(0, 0, 0, 0.18);
-  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 100%;
+  overflow: hidden; white-space: normal; overflow-wrap: anywhere; max-width: 100%;
 }
 .cmsg-reacts { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 3px; }
 .cmsg-react {
@@ -3645,7 +3650,10 @@ button.cstat:hover { background: var(--surface-2); }
   border-inline-start: 3px solid var(--accent); border-radius: var(--r-sm); background: var(--surface-2);
 }
 .creply-label { font-size: var(--fs-xs); color: var(--accent); font-weight: var(--fw-bold); flex: 0 0 auto; }
-.creply-text { flex: 1 1 auto; min-width: 0; font-size: var(--fs-sm); color: var(--text-dim); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.creply-text {
+  flex: 1 1 auto; min-width: 0; font-size: var(--fs-sm); color: var(--text-dim); overflow: hidden;
+  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; white-space: normal; overflow-wrap: anywhere;
+}
 .cshare-open-row { display: flex; margin-top: var(--sp-2); }
 
 /* ===== Zdieľaný plán / tréning (chat aj príspevok) ===== */

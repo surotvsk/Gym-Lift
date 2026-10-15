@@ -53,6 +53,11 @@ async function rendered(p) {
   await wait(500);
 }
 async function view(p, v) { await p.eval(`(switchTab('komunita'), communitySetView(${J(v)}), true)`); await rendered(p); }
+/* Po otvorení chatu sa čaká na skutočne vykreslený chat (správy), nie na obsah predchádzajúcej obrazovky. */
+async function chatShown(p) {
+  await waitFor(() => p.eval(`(() => { const box = document.getElementById('community-chat-msgs'); return communityView === 'chat' && !!box && !!(box.querySelector('.cmsg') || box.querySelector('.empty-state')); })()`), 30000, 'chat shown');
+  await wait(300);
+}
 async function click(p, selector) {
   await waitFor(() => p.eval(`(() => { const el = document.querySelector(${J(selector)}); if (!el || el.disabled) return false; el.click(); return true; })()`), 15000, 'element ' + selector);
   await wait(500);
@@ -106,6 +111,7 @@ async function typeMsg(p, text) {
     section('chat: share a plan, reply, react, save');
     await pA.eval(`(communityOpenChat(${J(conv)}), true)`);
     await rendered(pA);
+    await chatShown(pA);
     await click(pA, '[data-community-action="chat-share-open"]');
     check('share picker lists the plans', (await bodyText(pA)).includes('Push day'));
     await click(pA, '[data-community-action="chat-share-plan"][data-plan="sharetest"]');
@@ -122,6 +128,7 @@ async function typeMsg(p, text) {
     await signIn(pB, B);
     await pB.eval(`(communityOpenChat(${J(conv)}), true)`);
     await rendered(pB);
+    await chatShown(pB);
     check('B sees the shared plan with its exercises (in B\'s language)', await pB.eval(`(() => { const c = document.querySelector('#community-chat-msgs .cshare-card[data-kind="plan"]'); return !!c && c.innerText.includes('Push day') && c.innerText.includes(t('exercise.bench-press')) && c.innerText.includes('Cable flyes'); })()`));
     check('B sees the finished workout card', await pB.eval(`!!document.querySelector('#community-chat-msgs .cshare-card[data-kind="workout"]')`));
     const before = await pB.eval('Object.keys(state.plans).length');
@@ -132,6 +139,7 @@ async function typeMsg(p, text) {
     check('the saved plan is usable in Workout', await pB.eval(`(() => { switchTab('trening'); selectedPlan = Object.values(state.plans).find((p) => p.customName === 'Push day').id; renderTrening(); return document.querySelectorAll('#exercise-list .exercise').length === 2; })()`));
     await pB.eval(`(switchTab('komunita'), communityOpenChat(${J(conv)}), true)`);
     await rendered(pB);
+    await chatShown(pB);
     /* B odpovie na plán a zareaguje ❤️ */
     const planMsgId = sqlVal(`select id from public.messages where conversation_id = ${lit(conv)} and attachment->>'kind' = 'plan'`);
     await click(pB, `.cmsg[data-msg-id="${planMsgId}"] .cmsg-bubble`);
@@ -151,9 +159,46 @@ async function typeMsg(p, text) {
     /* A vidí reakciu po obnovení (bez Realtime pre reakcie) */
     await pA.eval(`(communityOpenChat(${J(conv)}), true)`);
     await rendered(pA);
+    await chatShown(pA);
     await waitFor(() => pA.eval(`!!document.querySelector('.cmsg[data-msg-id="${planMsgId}"] .cmsg-react')`), 20000, 'A sees reaction');
     check('A sees B\'s ❤️ on the plan', true);
     check('A sees B\'s reply live with the quote', await waitFor(() => pA.eval(`Array.from(document.querySelectorAll('.cmsg-quote')).length > 0`), 15000, 'quote on A'));
+    /* Odpoveď na veľmi dlhú správu (aj slovo bez medzier): citácia sa zalomí, bublina zostane na obrazovke. */
+    const longText = 'This is a very very long message to check how replies look. '.repeat(12).trim();
+    await typeMsg(pA, longText);
+    await typeMsg(pA, 'X'.repeat(300));
+    const phone = { width: 390, height: 844, deviceScaleFactor: 2, mobile: true };
+    await pB.c.send('Emulation.setDeviceMetricsOverride', phone);
+    await pB.eval(`(communityOpenChat(${J(conv)}), true)`);
+    await rendered(pB);
+    await chatShown(pB);
+    for (const [needle, answer] of [['very very long', 'reply to long text'], ['XXXXXXXX', 'reply to long word']]) {
+      const id = sqlVal(`select id from public.messages where conversation_id = ${lit(conv)} and body like ${lit('%' + needle + '%')} order by id desc limit 1`);
+      await click(pB, `.cmsg[data-msg-id="${id}"] .cmsg-bubble`);
+      await click(pB, '[data-community-action="msg-reply"]');
+      check('long message (' + needle + '): reply bar stays inside the screen, at most 2 lines', await pB.eval(`(() => {
+        const bar = document.getElementById('community-reply-bar').getBoundingClientRect(), tx = document.querySelector('#community-reply-bar .creply-text');
+        return bar.left >= 0 && bar.right <= document.documentElement.clientWidth && tx.getBoundingClientRect().height <= 2.5 * parseFloat(getComputedStyle(tx).lineHeight || 20); })()`));
+      await typeMsg(pB, answer);
+    }
+    const layout = (p) => p.eval(`(() => {
+      const vw = document.documentElement.clientWidth;
+      return Array.from(document.querySelectorAll('.cmsg-quote')).map((q) => {
+        const m = q.closest('.cmsg'), b = q.closest('.cmsg-bubble').getBoundingClientRect(), body = m.querySelector('.cmsg-body').getBoundingClientRect();
+        return { inside: b.left >= 0 && b.right <= vw && b.right <= m.getBoundingClientRect().right + 1 && body.left >= 0 && body.right <= vw,
+          lines: Math.round((q.clientHeight - parseFloat(getComputedStyle(q).paddingTop) - parseFloat(getComputedStyle(q).paddingBottom)) / parseFloat(getComputedStyle(q).lineHeight)), wraps: q.scrollWidth <= q.clientWidth + 1 };
+      }); })()`);
+    await waitFor(() => pB.eval(`document.querySelectorAll('.cmsg-quote').length >= 3`), 15000, 'long quotes');
+    const lB = await layout(pB);
+    check('replies to long messages: every bubble and reply text inside the screen (sender)', lB.length >= 3 && lB.every((q) => q.inside), J(lB));
+    check('replies to long messages: quote wrapped, at most 3 lines, no sideways overflow', lB.every((q) => q.wraps && q.lines <= 3), J(lB));
+    await shot(pB, 'chat-reply-long', '.cmsg:last-of-type');
+    await pA.c.send('Emulation.setDeviceMetricsOverride', phone);
+    await waitFor(() => pA.eval(`document.querySelectorAll('.cmsg-quote').length >= 3`), 15000, 'long quotes on A');
+    const lA = await layout(pA);
+    check('replies to long messages: inside the screen and wrapped (receiver)', lA.length >= 3 && lA.every((q) => q.inside && q.wraps && q.lines <= 3), J(lA));
+    await pA.c.send('Emulation.clearDeviceMetricsOverride');
+    await pB.c.send('Emulation.clearDeviceMetricsOverride');
     /* zmena a zrušenie reakcie */
     await click(pB, `.cmsg[data-msg-id="${planMsgId}"] .cmsg-bubble`);
     await click(pB, `.cmsg-actions [data-community-action="react"][data-emoji="🔥"]`);
@@ -229,9 +274,11 @@ async function typeMsg(p, text) {
     section('languages');
     await pB.eval(`(communityOpenChat(${J(conv)}), true)`);
     await rendered(pB);
+    await chatShown(pB);
     for (const lang of ['sk', 'en', 'es', 'pt-BR', 'fr', 'ar']) {
       await pB.eval(`(setLang(${J(lang)}), renderCommunity(), true)`);
       await rendered(pB);
+      await waitFor(() => pB.eval(`document.getElementById('community-body').innerText.includes(t('share.saveAsPlan'))`), 15000, 'chat in ' + lang).catch(() => {});
       const txt = await bodyText(pB);
       check(lang + ': chat with shared items translated (no raw keys)', !/share\.|chat\.|profileAch\./.test(txt) && txt.includes(await pB.eval(`t('share.saveAsPlan')`)),
         J({ txt: txt.slice(0, 200), view: await pB.eval('communityView'), tab: await pB.eval('activeTab'), chat: await pB.eval('communityChatId') }));
