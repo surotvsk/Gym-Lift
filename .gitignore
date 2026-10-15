@@ -34,3 +34,7 @@ node_modules/
 # --- Supabase CLI local link state (machine-specific; may contain connection URLs) ---
 supabase/.temp/
 supabase/.branches/
+
+# --- Local-only redesign prototypes (round 2) and their test; kept on this PC, not published ---
+design-concepts/r2/
+tests/concepts/
