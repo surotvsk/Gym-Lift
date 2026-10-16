@@ -3765,6 +3765,20 @@ button.cstat:hover { background: var(--surface-2); }
 .train-note, .train-privacy { margin: 0; }
 .train-with { color: var(--text-dim); }
 /* ===== Ukážky dizajnov (Nastavenia → Vzhľad aplikácie) ===== */
+/* Výber je vyšší ako displej telefónu: okno sa posúva (ako Nastavenia), Zavrieť zostáva dole na dosah. */
+#modal-designs .modal {
+  max-width: 440px;
+  max-height: calc(100vh - var(--sp-5) * 2);    /* staršie prehliadače */
+  max-height: calc(100dvh - var(--sp-5) * 2);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 0;
+}
+#modal-designs .modal-actions {
+  position: sticky; bottom: 0; margin: 0 calc(-1 * var(--sp-6)); padding: var(--sp-3) var(--sp-6) var(--sp-4);
+  background: linear-gradient(to top, var(--surface) 70%, transparent);
+}
 .design-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--sp-3); margin: var(--sp-3) 0; }
 @media (min-width: 560px) { .design-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 .design-item {

@@ -57,6 +57,23 @@ function check(name, ok, info) {
       && J(items.slice(1).map((x) => x.name)) === J(['Periwinkle', 'Pastel Planner', 'Soft Rings', 'Violet Studio', 'Lilac Player', 'Clay', 'Bloom', 'Bento', 'Atlas', 'Isometric', 'Mint']), items);
     await waitFor(() => p.eval(`Array.from(document.querySelectorAll('#design-grid img.design-thumb')).every((i) => { i.loading = 'eager'; return i.complete && i.naturalWidth > 0; })`), 15000, 'thumbnails');
     check('all 11 thumbnails load', true);
+    /* Výber je vyšší ako displej: musí sa dať posunúť prstom až k poslednému dizajnu a k Zavrieť. */
+    const geo = () => p.eval(`(() => { const m = document.querySelector('#modal-designs .modal'), r = m.getBoundingClientRect();
+      const last = Array.from(document.querySelectorAll('#design-grid .design-item')).pop().getBoundingClientRect();
+      const close = document.getElementById('btn-designs-close').getBoundingClientRect();
+      return { top: Math.round(r.top), bottom: Math.round(r.bottom), vh: innerHeight, scrollTop: Math.round(m.scrollTop), scrollable: m.scrollHeight > m.clientHeight + 1,
+        lastBottom: Math.round(last.bottom), closeTop: Math.round(close.top), closeBottom: Math.round(close.bottom) }; })()`);
+    let g = await geo();
+    check('390 px: the picker window fits the screen and scrolls inside', g.top >= 0 && g.bottom <= g.vh && g.scrollable, g);
+    check('…the Close button is always reachable (pinned at the bottom, on screen)', g.closeTop >= 0 && g.closeBottom <= g.vh, g);
+    /* posun gestom (headless Chrome nevie syntetizovať dotykový posun; na telefóne posúva prst tú istú oblasť) */
+    for (let k = 0; k < 6; k++) await p.c.send('Input.synthesizeScrollGesture', { x: 195, y: 600, yDistance: -500, speed: 2000, gestureSourceType: 'mouse' });
+    await wait(400);
+    g = await geo();
+    check('scrolling moves the picker down to the last design (Mint)', g.scrollTop > 200 && g.lastBottom <= g.closeTop + 2 && g.lastBottom > g.top, g);
+    check('the last design can be tapped after scrolling', await p.eval(`(() => { const el = document.querySelector('#design-grid [data-design="mint"]'), r = el.getBoundingClientRect(); const hit = document.elementFromPoint(r.left + r.width / 2, r.top + Math.min(r.height / 2, 40)); return !!hit && el.contains(hit); })()`));
+    await shot('picker-390-scrolled');
+    await p.eval(`(document.querySelector('#modal-designs .modal').scrollTop = 0, true)`);
     check('390 px: the picker has no horizontal overflow', await p.eval(`(() => { const m = document.querySelector('#modal-designs .modal'); return m.scrollWidth <= m.clientWidth + 1 && document.documentElement.scrollWidth <= innerWidth + 1; })()`));
     await shot('picker-390');
 
