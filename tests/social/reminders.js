@@ -41,7 +41,7 @@ const scenarios = [];
 const scenario = (name, fn) => scenarios.push({ name, fn });
 
 scenario('version, access and validation', async () => {
-  check('community_social_version() is 6', sqlVal('select public.community_social_version()') === '6');
+  check('community_social_version() is 6 or later', Number(sqlVal('select public.community_social_version()')) >= 6);
   check('cron job gymquest-reminders every 5 minutes', sqlVal(`select schedule from cron.job where jobname = 'gymquest-reminders'`) === '*/5 * * * *');
   const a = await member('val');
   let r = await a.c.rpc('reminders_get');
@@ -134,8 +134,8 @@ scenario('cleanup and rollback', async () => {
   check('after rollback: version 5, table and cron job gone', sqlVal('select public.community_social_version()') === '5'
     && sqlVal(`select to_regclass('public.push_reminders') is null and not exists (select 1 from cron.job where jobname = 'gymquest-reminders')`) === 't');
   L.reapply(undone);
-  check('0013 re-applied too (defaults on)', undone.length === 2 && sqlVal(`select column_default from information_schema.columns where table_name = 'push_reminders' and column_name = 'water_on'`) === 'true');
-  check('re-applied: version 6 and the job is back', sqlVal('select public.community_social_version()') === '6'
+  check('0013 (and later) re-applied too (defaults on)', undone.length >= 2 && undone.some((m) => m.n === 13) && sqlVal(`select column_default from information_schema.columns where table_name = 'push_reminders' and column_name = 'water_on'`) === 'true');
+  check('re-applied: version ' + undone.versionBefore + ' again and the job is back', sqlVal('select public.community_social_version()') === undone.versionBefore
     && sqlVal(`select count(*) from cron.job where jobname = 'gymquest-reminders'`) === '1');
   await wait(1500);
 });

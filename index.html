@@ -11,7 +11,7 @@
   <title>GymQuest</title>
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
-  <link rel="stylesheet" href="style.css?v=75">
+  <link rel="stylesheet" href="style.css?v=76">
 </head>
 <body>
 
@@ -51,6 +51,8 @@
 
       <p class="today-date"><time id="today-date" datetime=""></time></p>
 
+      <div class="train-box" id="train-today" hidden></div>
+
       <div class="card">
         <div class="card-head">
           <span class="card-title" data-i18n="dnes.weekTitle">Tréningy tento týždeň</span>
@@ -84,6 +86,9 @@
     <!-- ============ TRÉNING ============ -->
     <section class="screen" id="screen-trening" hidden>
       <h2 class="screen-title" data-i18n="tab.trening">Tréning</h2>
+
+      <!-- Trénovanie s priateľom (migrácia 0014): pozvánka, spoločný tréning, povzbudenia -->
+      <div class="train-box" id="train-box" hidden></div>
 
       <div class="plan-head">
         <div class="plan-head-text">
@@ -928,8 +933,8 @@
     </div>
   </div>
 
-  <script src="community-config.js?v=75"></script>
-  <script src="vendor/supabase-js.js?v=75"></script>
-  <script src="script.js?v=75"></script>
+  <script src="community-config.js?v=76"></script>
+  <script src="vendor/supabase-js.js?v=76"></script>
+  <script src="script.js?v=76"></script>
 </body>
 </html>

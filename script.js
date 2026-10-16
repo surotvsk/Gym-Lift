@@ -8320,6 +8320,143 @@ const CONFIRM_LABELS_I18N = {
 };
 for (const lang of Object.keys(CONFIRM_LABELS_I18N)) Object.assign(I18N[lang] || (I18N[lang] = {}), CONFIRM_LABELS_I18N[lang]);
 
+/* Trénovanie s priateľom (migrácia 0014). */
+const TRAIN_I18N = {
+  sk: {
+    'train.open': 'Trénovať s priateľom', 'train.pickFriend': 'S kým chceš trénovať?',
+    'train.noFriends': 'V Community zatiaľ nemáš priateľov.', 'train.sharePlan': 'Poslať aj môj plán ({plan}), aby sme cvičili to isté',
+    'train.waiting': 'Čakáš, kým sa {name} pridá…', 'train.expiresIn': 'Pozvánka platí ešte {n} min.',
+    'train.cancelInvite': 'Zrušiť pozvánku', 'train.invited': '{name} ťa volá trénovať spolu',
+    'train.usePlan': 'Použiť plán „{plan}“ od {name}', 'train.notNow': 'Teraz nie',
+    'train.join': 'Pridať sa', 'train.with': 'Trénuješ s {name}',
+    'train.end': 'Ukončiť', 'train.openWorkout': 'Otvoriť tréning',
+    'train.partnerNotStarted': '{name} ešte nezačal(a).', 'train.partnerFinished': 'dokončil(a) tréning ✓',
+    'train.setsOf': '{done} z {total} sérií', 'train.lastSet': 'posledná {reps} × {kg} kg',
+    'train.cheerAria': 'Povzbudiť {name}', 'train.cheerWith': 'Poslať {emoji} pre {name}',
+    'train.cheerSent': '{emoji} odoslané pre {name}', 'train.cheerFrom': '{name} ti posiela {emoji}',
+    'train.privacy': '{name} vidí počas tréningu tvoj aktuálny cvik, počet sérií a poslednú sériu. Nič iné.', 'train.joined': '{name} sa pridal(a). Do toho! 💪',
+    'train.ended': 'Spoločný tréning s {name} skončil.', 'train.noAnswer': 'Pozvánka pre {name} už neplatí.',
+    'train.youFinished': 'Tréning je uložený. {name} uvidí, že si hotový(á).', 'train.errBusyFriend': '{name} práve trénuje s niekým iným.',
+    'train.errBusyMe': 'Už máš rozbehnutý spoločný tréning alebo pozvánku.', 'train.errExpired': 'Táto pozvánka už neplatí.',
+    'train.planSaved': 'Plán „{name}“ je uložený v tvojich plánoch a vybraný.', 'train.endTitle': 'Ukončiť spoločný tréning?',
+    'train.endText': 'Tvoj tréning na telefóne zostane, len {name} už neuvidí tvoj postup.', 'train.cancelTitle': 'Zrušiť pozvánku?',
+    'train.cancelText': '{name} sa už nebude môcť pridať.', 'train.keep': 'Pokračovať',
+    'train.trainedWith': 'Trénoval(a) s {name}', 'train.inviteMsg': '🏋️ Poďme trénovať spolu! Otvor GymQuest a pridaj sa.',
+    'train.inviteMsgPlan': '🏋️ Poďme trénovať spolu – plán „{plan}“! Otvor GymQuest a pridaj sa.',
+  },
+  en: {
+    'train.open': 'Train with a friend', 'train.pickFriend': 'Who do you want to train with?',
+    'train.noFriends': 'You have no friends in Community yet.', 'train.sharePlan': 'Also send my plan ({plan}) so we do the same workout',
+    'train.waiting': 'Waiting for {name} to join…', 'train.expiresIn': 'The invitation is valid for {n} more min.',
+    'train.cancelInvite': 'Cancel invitation', 'train.invited': '{name} wants to train with you',
+    'train.usePlan': 'Use {name}’s plan “{plan}”', 'train.notNow': 'Not now',
+    'train.join': 'Join', 'train.with': 'Training with {name}',
+    'train.end': 'End', 'train.openWorkout': 'Open workout',
+    'train.partnerNotStarted': '{name} has not started yet.', 'train.partnerFinished': 'finished the workout ✓',
+    'train.setsOf': '{done} of {total} sets', 'train.lastSet': 'last {reps} × {kg} kg',
+    'train.cheerAria': 'Cheer {name} on', 'train.cheerWith': 'Send {emoji} to {name}',
+    'train.cheerSent': '{emoji} sent to {name}', 'train.cheerFrom': '{name} sends you {emoji}',
+    'train.privacy': 'While you train, {name} sees your current exercise, your set count and your last set. Nothing else.', 'train.joined': '{name} joined. Let’s go! 💪',
+    'train.ended': 'Training together with {name} has ended.', 'train.noAnswer': 'The invitation for {name} is no longer valid.',
+    'train.youFinished': 'Workout saved. {name} will see that you are done.', 'train.errBusyFriend': '{name} is training with someone else right now.',
+    'train.errBusyMe': 'You already have a session or an invitation running.', 'train.errExpired': 'This invitation is no longer valid.',
+    'train.planSaved': 'The plan “{name}” is saved in your plans and selected.', 'train.endTitle': 'End training together?',
+    'train.endText': 'Your workout stays on your phone; {name} just won’t see your progress any more.', 'train.cancelTitle': 'Cancel the invitation?',
+    'train.cancelText': '{name} will no longer be able to join.', 'train.keep': 'Keep going',
+    'train.trainedWith': 'Trained with {name}', 'train.inviteMsg': '🏋️ Let’s train together! Open GymQuest to join.',
+    'train.inviteMsgPlan': '🏋️ Let’s train together – plan “{plan}”! Open GymQuest to join.',
+  },
+  es: {
+    'train.open': 'Entrenar con un amigo', 'train.pickFriend': '¿Con quién quieres entrenar?',
+    'train.noFriends': 'Todavía no tienes amigos en la Comunidad.', 'train.sharePlan': 'Enviar también mi plan ({plan}) para hacer el mismo entrenamiento',
+    'train.waiting': 'Esperando a que {name} se una…', 'train.expiresIn': 'La invitación es válida {n} min más.',
+    'train.cancelInvite': 'Cancelar invitación', 'train.invited': '{name} quiere entrenar contigo',
+    'train.usePlan': 'Usar el plan “{plan}” de {name}', 'train.notNow': 'Ahora no',
+    'train.join': 'Unirme', 'train.with': 'Entrenando con {name}',
+    'train.end': 'Terminar', 'train.openWorkout': 'Abrir entrenamiento',
+    'train.partnerNotStarted': '{name} todavía no ha empezado.', 'train.partnerFinished': 'terminó el entrenamiento ✓',
+    'train.setsOf': '{done} de {total} series', 'train.lastSet': 'última {reps} × {kg} kg',
+    'train.cheerAria': 'Animar a {name}', 'train.cheerWith': 'Enviar {emoji} a {name}',
+    'train.cheerSent': '{emoji} enviado a {name}', 'train.cheerFrom': '{name} te envía {emoji}',
+    'train.privacy': 'Mientras entrenáis, {name} ve tu ejercicio actual, tus series y tu última serie. Nada más.', 'train.joined': '{name} se ha unido. ¡Vamos! 💪',
+    'train.ended': 'El entrenamiento con {name} ha terminado.', 'train.noAnswer': 'La invitación para {name} ya no es válida.',
+    'train.youFinished': 'Entrenamiento guardado. {name} verá que has terminado.', 'train.errBusyFriend': '{name} está entrenando con otra persona ahora.',
+    'train.errBusyMe': 'Ya tienes un entrenamiento conjunto o una invitación en curso.', 'train.errExpired': 'Esta invitación ya no es válida.',
+    'train.planSaved': 'El plan “{name}” está guardado en tus planes y seleccionado.', 'train.endTitle': '¿Terminar el entrenamiento conjunto?',
+    'train.endText': 'Tu entrenamiento sigue en tu teléfono; {name} solo dejará de ver tu progreso.', 'train.cancelTitle': '¿Cancelar la invitación?',
+    'train.cancelText': '{name} ya no podrá unirse.', 'train.keep': 'Seguir',
+    'train.trainedWith': 'Entrenado con {name}', 'train.inviteMsg': '🏋️ ¡Entrenemos juntos! Abre GymQuest para unirte.',
+    'train.inviteMsgPlan': '🏋️ ¡Entrenemos juntos – plan “{plan}”! Abre GymQuest para unirte.',
+  },
+  'pt-BR': {
+    'train.open': 'Treinar com um amigo', 'train.pickFriend': 'Com quem você quer treinar?',
+    'train.noFriends': 'Você ainda não tem amigos na Comunidade.', 'train.sharePlan': 'Enviar também meu plano ({plan}) para fazermos o mesmo treino',
+    'train.waiting': 'Esperando {name} entrar…', 'train.expiresIn': 'O convite vale por mais {n} min.',
+    'train.cancelInvite': 'Cancelar convite', 'train.invited': '{name} quer treinar com você',
+    'train.usePlan': 'Usar o plano “{plan}” de {name}', 'train.notNow': 'Agora não',
+    'train.join': 'Entrar', 'train.with': 'Treinando com {name}',
+    'train.end': 'Encerrar', 'train.openWorkout': 'Abrir treino',
+    'train.partnerNotStarted': '{name} ainda não começou.', 'train.partnerFinished': 'concluiu o treino ✓',
+    'train.setsOf': '{done} de {total} séries', 'train.lastSet': 'última {reps} × {kg} kg',
+    'train.cheerAria': 'Incentivar {name}', 'train.cheerWith': 'Enviar {emoji} para {name}',
+    'train.cheerSent': '{emoji} enviado para {name}', 'train.cheerFrom': '{name} te envia {emoji}',
+    'train.privacy': 'Durante o treino, {name} vê seu exercício atual, suas séries e sua última série. Nada mais.', 'train.joined': '{name} entrou. Vamos lá! 💪',
+    'train.ended': 'O treino com {name} terminou.', 'train.noAnswer': 'O convite para {name} não é mais válido.',
+    'train.youFinished': 'Treino salvo. {name} verá que você terminou.', 'train.errBusyFriend': '{name} está treinando com outra pessoa agora.',
+    'train.errBusyMe': 'Você já tem um treino em conjunto ou um convite em andamento.', 'train.errExpired': 'Este convite não é mais válido.',
+    'train.planSaved': 'O plano “{name}” foi salvo nos seus planos e selecionado.', 'train.endTitle': 'Encerrar o treino em conjunto?',
+    'train.endText': 'Seu treino continua no seu celular; {name} só deixa de ver seu progresso.', 'train.cancelTitle': 'Cancelar o convite?',
+    'train.cancelText': '{name} não poderá mais entrar.', 'train.keep': 'Continuar',
+    'train.trainedWith': 'Treinou com {name}', 'train.inviteMsg': '🏋️ Vamos treinar juntos! Abra o GymQuest para entrar.',
+    'train.inviteMsgPlan': '🏋️ Vamos treinar juntos – plano “{plan}”! Abra o GymQuest para entrar.',
+  },
+  fr: {
+    'train.open': 'S’entraîner avec un ami', 'train.pickFriend': 'Avec qui veux-tu t’entraîner ?',
+    'train.noFriends': 'Tu n’as pas encore d’amis dans la Communauté.', 'train.sharePlan': 'Envoyer aussi mon programme ({plan}) pour faire la même séance',
+    'train.waiting': 'En attente de {name}…', 'train.expiresIn': 'L’invitation est encore valable {n} min.',
+    'train.cancelInvite': 'Annuler l’invitation', 'train.invited': '{name} veut s’entraîner avec toi',
+    'train.usePlan': 'Utiliser le programme « {plan} » de {name}', 'train.notNow': 'Pas maintenant',
+    'train.join': 'Rejoindre', 'train.with': 'Séance avec {name}',
+    'train.end': 'Terminer', 'train.openWorkout': 'Ouvrir la séance',
+    'train.partnerNotStarted': '{name} n’a pas encore commencé.', 'train.partnerFinished': 'a terminé la séance ✓',
+    'train.setsOf': '{done} sur {total} séries', 'train.lastSet': 'dernière {reps} × {kg} kg',
+    'train.cheerAria': 'Encourager {name}', 'train.cheerWith': 'Envoyer {emoji} à {name}',
+    'train.cheerSent': '{emoji} envoyé à {name}', 'train.cheerFrom': '{name} t’envoie {emoji}',
+    'train.privacy': 'Pendant la séance, {name} voit ton exercice en cours, tes séries et ta dernière série. Rien d’autre.', 'train.joined': '{name} a rejoint. C’est parti ! 💪',
+    'train.ended': 'La séance avec {name} est terminée.', 'train.noAnswer': 'L’invitation pour {name} n’est plus valable.',
+    'train.youFinished': 'Séance enregistrée. {name} verra que tu as fini.', 'train.errBusyFriend': '{name} s’entraîne avec quelqu’un d’autre en ce moment.',
+    'train.errBusyMe': 'Tu as déjà une séance commune ou une invitation en cours.', 'train.errExpired': 'Cette invitation n’est plus valable.',
+    'train.planSaved': 'Le programme « {name} » est enregistré dans tes programmes et sélectionné.', 'train.endTitle': 'Terminer la séance commune ?',
+    'train.endText': 'Ta séance reste sur ton téléphone ; {name} ne verra simplement plus ta progression.', 'train.cancelTitle': 'Annuler l’invitation ?',
+    'train.cancelText': '{name} ne pourra plus rejoindre.', 'train.keep': 'Continuer',
+    'train.trainedWith': 'Entraîné avec {name}', 'train.inviteMsg': '🏋️ Entraînons-nous ensemble ! Ouvre GymQuest pour rejoindre.',
+    'train.inviteMsgPlan': '🏋️ Entraînons-nous ensemble – programme « {plan} » ! Ouvre GymQuest pour rejoindre.',
+  },
+  ar: {
+    'train.open': 'التمرّن مع صديق', 'train.pickFriend': 'مع من تريد أن تتمرّن؟',
+    'train.noFriends': 'ليس لديك أصدقاء في المجتمع بعد.', 'train.sharePlan': 'أرسل خطتي أيضًا ({plan}) لنؤدي التمرين نفسه',
+    'train.waiting': 'في انتظار انضمام {name}…', 'train.expiresIn': 'الدعوة صالحة لمدة {n} دقيقة أخرى.',
+    'train.cancelInvite': 'إلغاء الدعوة', 'train.invited': '{name} يريد التمرّن معك',
+    'train.usePlan': 'استخدام خطة «{plan}» من {name}', 'train.notNow': 'ليس الآن',
+    'train.join': 'انضمام', 'train.with': 'تتمرّن مع {name}',
+    'train.end': 'إنهاء', 'train.openWorkout': 'فتح التمرين',
+    'train.partnerNotStarted': 'لم يبدأ {name} بعد.', 'train.partnerFinished': 'أنهى التمرين ✓',
+    'train.setsOf': '{done} من {total} مجموعات', 'train.lastSet': 'الأخيرة {reps} × {kg} كغ',
+    'train.cheerAria': 'شجّع {name}', 'train.cheerWith': 'أرسل {emoji} إلى {name}',
+    'train.cheerSent': 'تم إرسال {emoji} إلى {name}', 'train.cheerFrom': '{name} يرسل لك {emoji}',
+    'train.privacy': 'أثناء التمرين يرى {name} تمرينك الحالي وعدد مجموعاتك ومجموعتك الأخيرة فقط.', 'train.joined': 'انضم {name}. هيا! 💪',
+    'train.ended': 'انتهى التمرين المشترك مع {name}.', 'train.noAnswer': 'لم تعد الدعوة لـ {name} صالحة.',
+    'train.youFinished': 'تم حفظ التمرين. سيرى {name} أنك انتهيت.', 'train.errBusyFriend': '{name} يتمرّن مع شخص آخر الآن.',
+    'train.errBusyMe': 'لديك بالفعل تمرين مشترك أو دعوة قيد التنفيذ.', 'train.errExpired': 'لم تعد هذه الدعوة صالحة.',
+    'train.planSaved': 'تم حفظ الخطة «{name}» في خططك واختيارها.', 'train.endTitle': 'إنهاء التمرين المشترك؟',
+    'train.endText': 'يبقى تمرينك على هاتفك؛ فقط لن يرى {name} تقدّمك بعد الآن.', 'train.cancelTitle': 'إلغاء الدعوة؟',
+    'train.cancelText': 'لن يتمكن {name} من الانضمام بعد الآن.', 'train.keep': 'متابعة',
+    'train.trainedWith': 'تمرّن مع {name}', 'train.inviteMsg': '🏋️ لنتمرّن معًا! افتح GymQuest للانضمام.',
+    'train.inviteMsgPlan': '🏋️ لنتمرّن معًا – خطة «{plan}»! افتح GymQuest للانضمام.',
+  },
+};
+for (const lang of Object.keys(TRAIN_I18N)) Object.assign(I18N[lang] || (I18N[lang] = {}), TRAIN_I18N[lang]);
+
 function t(key, vars) {
   const dict = I18N[activeLang()] || I18N.en;
   let s = dict[key];
@@ -9116,7 +9253,7 @@ function normalizeActiveSession(raw) {
   if (raw.setWeights && typeof raw.setWeights === 'object' && !Array.isArray(raw.setWeights)) {
     for (const [key, val] of Object.entries(raw.setWeights)) {
       const n = Number(val);
-      if (/:\d+$/.test(key) && typeof val === 'number' && Number.isFinite(n) && n >= 0 && n <= 999) setWeights[key] = n;
+      if (/:\d+(:[LR])?$/.test(key) && typeof val === 'number' && Number.isFinite(n) && n >= 0 && n <= 999) setWeights[key] = n;
     }
   }
   if (Object.keys(setWeights).length) out.setWeights = setWeights;
@@ -9124,10 +9261,21 @@ function normalizeActiveSession(raw) {
   const setReps = {};
   if (raw.setReps && typeof raw.setReps === 'object' && !Array.isArray(raw.setReps)) {
     for (const [key, val] of Object.entries(raw.setReps)) {
-      if (/:\d+$/.test(key) && Number.isInteger(val) && val >= 1 && val <= 999) setReps[key] = val;
+      if (/:\d+(:[LR])?$/.test(key) && Number.isInteger(val) && val >= 1 && val <= 999) setReps[key] = val;
     }
   }
   if (Object.keys(setReps).length) out.setReps = setReps;
+  /* Zámky hotových riadkov (váha / opakovania), rovnaké pravidlá ako výnimky. */
+  for (const [field, isReps] of [['setWeightLocks', false], ['setRepsLocks', true]]) {
+    const clean = {};
+    if (raw[field] && typeof raw[field] === 'object' && !Array.isArray(raw[field])) {
+      for (const [key, val] of Object.entries(raw[field])) {
+        const ok = isReps ? Number.isInteger(val) && val >= 1 && val <= 999 : typeof val === 'number' && Number.isFinite(val) && val >= 0 && val <= 999;
+        if (/:\d+(:[LR])?$/.test(key) && ok) clean[key] = val;
+      }
+    }
+    if (Object.keys(clean).length) out[field] = clean;
+  }
   /* Drop série: najviac DROP_MAX platných záznamov na cvik. */
   const drops = {};
   if (raw.drops && typeof raw.drops === 'object' && !Array.isArray(raw.drops)) {
@@ -10180,6 +10328,7 @@ function randomSetMessage() {
 /* ---------- Vykreslenie: DNES ---------- */
 
 function renderDnes() {
+  trainRender();
   const goal = weeklyGoal();
   const weekCount = sessionsInWeek(currentWeekKey());
   const streak = computeStreak();
@@ -10386,23 +10535,109 @@ function setMark(kind, ex, index, side) {
   return !!map[setSessionKey(ex, index, side)];
 }
 
-/* ---------- Váha jednotlivých sérií (napr. zvýšenie váhy počas tréningu) ----------
-   Plánovaná váha cviku sa nemení. Zmenená váha série sa uloží do session ako výnimka
-   a nasledujúce série ju zdedia, kým sa niektorá z nich nezmení znova. Jednostranný cvik
-   má pre obe strany série rovnakú váhu. */
-function setWeightKey(ex, index) { return exerciseSessionKey(ex) + ':' + index; }
-function setWeightOverride(ex, index) {
-  const sess = getSession();
-  const v = sess && sess.setWeights ? sess.setWeights[setWeightKey(ex, index)] : undefined;
-  return typeof v === 'number' && Number.isFinite(v) ? v : undefined;
+/* ---------- Váha a opakovania jednotlivých sérií (napr. 60 → 65 kg, 10 → 8 opakovaní) ----------
+   Plán sa nemení. Zmenená hodnota sa uloží do session ako výnimka (sess.setWeights / sess.setReps)
+   a riadky ZA ňou ju zdedia, kým sa niektorý nezmení znova. Poradie riadkov je poradie na
+   obrazovke: séria 1, séria 2… a pri jednostrannom cviku séria 1 ľavá, séria 1 pravá, séria 2 ľavá…
+   – každá strana má vlastnú hodnotu. Už hotový riadok sa zmenou skoršieho riadka NIKDY neprepíše.
+   Staršia session mohla mať pre jednostranný cvik kľúč bez strany – ten platí pre obe strany. */
+const SET_VALUE_FIELDS = { weight: 'setWeights', reps: 'setReps' };
+/* Zámky hotových riadkov (hodnota v čase, keď sa menil skorší riadok). Platia len pre hotový riadok
+   a NIE sú prekážkou dedenia – zmena sa cez hotový riadok dostane k ďalším otvoreným riadkom. */
+const SET_VALUE_LOCKS = { weight: 'setWeightLocks', reps: 'setRepsLocks' };
+function setWeightKey(ex, index, side) { return setSessionKey(ex, index, side); }
+function setValueRows(ex) {
+  const sets = Math.max(0, Math.round(Number(ex.sets)) || 0);
+  const sides = exerciseSideOrder(ex) || [null];
+  const rows = [];
+  for (let i = 0; i < sets; i++) for (const side of sides) rows.push({ index: i, side });
+  return rows;
 }
-function effectiveSetWeight(ex, index) {
-  for (let k = index; k >= 0; k--) {
-    const v = setWeightOverride(ex, k);
+/* Pozícia riadka; bez strany pri jednostrannom cviku = posledná strana tej série. */
+function setValueRowPos(rows, index, side) {
+  let pos = -1;
+  rows.forEach((r, k) => { if (r.index === index && (!side || r.side === side)) pos = k; });
+  return pos;
+}
+function setValuePlanned(kind, ex) { return kind === 'reps' ? (Math.round(Number(ex.reps)) || 0) : (Number(ex.weight) || 0); }
+function setValueValid(kind, v) { return kind === 'reps' ? Number.isInteger(v) : (typeof v === 'number' && Number.isFinite(v)); }
+function setValueOverride(kind, ex, index, side, exactOnly) {
+  const sess = getSession();
+  const map = sess && sess[SET_VALUE_FIELDS[kind]];
+  if (!map) return undefined;
+  let v = map[setSessionKey(ex, index, side)];
+  if (!setValueValid(kind, v) && side && !exactOnly) v = map[setSessionKey(ex, index)];   // staršia session: pre obe strany
+  return setValueValid(kind, v) ? v : undefined;
+}
+function setValueLock(kind, ex, index, side) {
+  const sess = getSession();
+  const map = sess && sess[SET_VALUE_LOCKS[kind]];
+  const v = map ? map[setSessionKey(ex, index, side)] : undefined;
+  return setValueValid(kind, v) && setMark('done', ex, index, side) ? v : undefined;
+}
+function effectiveSetValue(kind, ex, index, side) {
+  const rows = setValueRows(ex);
+  const pos = setValueRowPos(rows, index, side);
+  if (pos >= 0 && setValueOverride(kind, ex, rows[pos].index, rows[pos].side) === undefined) {
+    const locked = setValueLock(kind, ex, rows[pos].index, rows[pos].side);
+    if (locked !== undefined) return locked;
+  }
+  for (let k = pos; k >= 0; k--) {
+    const v = setValueOverride(kind, ex, rows[k].index, rows[k].side);
     if (v !== undefined) return v;
   }
-  return Number(ex.weight) || 0;
+  return setValuePlanned(kind, ex);
 }
+function setSetValue(kind, ex, index, side, v) {
+  const sess = ensureSession();
+  if (!sess) return false;
+  const field = SET_VALUE_FIELDS[kind], lockField = SET_VALUE_LOCKS[kind];
+  const rows = setValueRows(ex);
+  const pos = setValueRowPos(rows, index, side);
+  /* Hotové neskoršie riadky bez vlastnej zmeny si ponechajú hodnotu, ktorú práve majú (zámok). */
+  const locks = [];
+  for (let k = pos + 1; k < rows.length; k++) {
+    const r = rows[k];
+    if (setMark('done', ex, r.index, r.side) && setValueOverride(kind, ex, r.index, r.side) === undefined
+      && setValueLock(kind, ex, r.index, r.side) === undefined) {
+      locks.push([setSessionKey(ex, r.index, r.side), effectiveSetValue(kind, ex, r.index, r.side)]);
+    }
+  }
+  if (locks.length && !sess[lockField]) sess[lockField] = {};
+  for (const [key, val] of locks) sess[lockField][key] = val;
+  if (!sess[field]) sess[field] = {};
+  sess[field][setSessionKey(ex, index, side)] = v;
+  saveState();
+  return true;
+}
+/* Hodnoty pre históriu: { list } (séria 1..N) alebo pri rozdielnych stranách aj { sides: { left, right } };
+   null, ak sa nič nelíši od plánu (záznam vyzerá presne ako doteraz). `list` je pri stranách vyššia
+   hodnota série – staršie verzie appky (synchronizácia) tak ukážu aspoň rozumné číslo. */
+function sessionSetValues(kind, ex) {
+  const sets = Math.max(0, Math.round(Number(ex.sets)) || 0);
+  const planned = setValuePlanned(kind, ex);
+  const per = (side) => Array.from({ length: sets }, (_, i) => effectiveSetValue(kind, ex, i, side));
+  const sides = exerciseSideOrder(ex);
+  if (!sides) { const l = per(null); return l.some((v) => v !== planned) ? { list: l } : null; }
+  const L = per('left'), R = per('right');
+  if (L.every((v, i) => v === R[i])) return L.some((v) => v !== planned) ? { list: L } : null;
+  return { list: L.map((v, i) => Math.max(v, R[i])), sides: { left: L, right: R } };
+}
+/* Platné hodnoty strán zo záznamu histórie ({ left, right }) alebo null. */
+function cleanHistorySideValues(ex, field, kind) {
+  const sets = Math.max(0, Math.round(Number(ex && ex.sets)) || 0);
+  const sv = ex && ex[field];
+  if (!sets || !sv || typeof sv !== 'object') return null;
+  const ok = (a) => Array.isArray(a) && a.length === sets && a.every((v) => (kind === 'reps' ? Number.isInteger(v) : Number.isFinite(v)) && v >= 0 && v <= 999);
+  return ok(sv.left) && ok(sv.right) ? { left: sv.left.slice(), right: sv.right.slice() } : null;
+}
+function historySidesText(sides, sep) {
+  return `${t('unilateral.left')} ${sides.left.join(sep)} | ${t('unilateral.right')} ${sides.right.join(sep)}`;
+}
+
+/* Váha: rovnaké API ako doteraz, `side` je voliteľná strana jednostranného cviku. */
+function setWeightOverride(ex, index, side) { return setValueOverride('weight', ex, index, side); }
+function effectiveSetWeight(ex, index, side) { return effectiveSetValue('weight', ex, index, side); }
 function cleanSetWeightValue(kg) {
   const raw = String(kg == null ? '' : kg).trim().replace(',', '.');
   if (!raw || !/^\d+(\.\d+)?$/.test(raw)) return null;   // prázdne alebo nečíselné sa nikdy neuloží ako 0
@@ -10410,29 +10645,11 @@ function cleanSetWeightValue(kg) {
   if (!Number.isFinite(n)) return null;
   return Math.max(0, Math.min(999, Math.round(n * 2) / 2));
 }
-function setSetWeight(ex, index, kg) {
+function setSetWeight(ex, index, kg, side) {
   const v = cleanSetWeightValue(kg);
-  if (v === null) return false;
-  const sess = ensureSession();
-  if (!sess) return false;
-  if (!sess.setWeights) sess.setWeights = {};
-  sess.setWeights[setWeightKey(ex, index)] = v;
-  saveState();
-  return true;
+  return v !== null && setSetValue('weight', ex, index, side, v);
 }
-/* Váhy sérií pre históriu: pole efektívnych váh (séria 1..N), len ak sa niektorá
-   odlišuje od plánovanej váhy; inak null (záznam vyzerá presne ako doteraz). */
-function sessionSetWeights(ex) {
-  const sets = Math.max(0, Math.round(Number(ex.sets)) || 0);
-  const out = [];
-  let differs = false;
-  for (let i = 0; i < sets; i++) {
-    const w = effectiveSetWeight(ex, i);
-    out.push(w);
-    if (w !== (Number(ex.weight) || 0)) differs = true;
-  }
-  return differs ? out : null;
-}
+function sessionSetWeights(ex) { const r = sessionSetValues('weight', ex); return r ? r.list : null; }
 /* Platné váhy sérií zo záznamu histórie (alebo null). */
 function cleanHistorySetWeights(ex) {
   const sets = Math.max(0, Math.round(Number(ex && ex.sets)) || 0);
@@ -10440,58 +10657,29 @@ function cleanHistorySetWeights(ex) {
   const out = ex.setWeights.map((v) => Number(v));
   return out.every((v) => Number.isFinite(v) && v >= 0 && v <= 999) ? out : null;
 }
-/* Text váhy do histórie: "60 kg", pri zmene počas tréningu "60 · 60 · 65 · 65 kg". */
+/* Text váhy do histórie: "60 kg", pri zmene "60 · 65 · 65 kg", po stranách "Ľavá 60 · 65 | Pravá 60 · 62.5 kg". */
 function historyWeightText(ex) {
+  const sides = cleanHistorySideValues(ex, 'sideWeights', 'weight');
+  if (sides) return `${historySidesText(sides, ' · ')} ${t('units.kg')}`;
   const list = cleanHistorySetWeights(ex);
   if (!list) return `${ex.weight} ${t('units.kg')}`;
   return `${list.join(' · ')} ${t('units.kg')}`;
 }
 
-/* ---------- Opakovania jednotlivých sérií (napr. 10, potom 8) ----------
-   Rovnaký princíp ako váha série: plánované opakovania sa nemenia, zmena sa uloží do
-   session ako výnimka a nasledujúce série ju zdedia, kým sa niektorá nezmení znova.
-   Jednostranný cvik má pre obe strany série rovnaký počet opakovaní. */
-function setRepsOverride(ex, index) {
-  const sess = getSession();
-  const v = sess && sess.setReps ? sess.setReps[setWeightKey(ex, index)] : undefined;
-  return Number.isInteger(v) ? v : undefined;
-}
-function effectiveSetReps(ex, index) {
-  for (let k = index; k >= 0; k--) {
-    const v = setRepsOverride(ex, k);
-    if (v !== undefined) return v;
-  }
-  return Math.round(Number(ex.reps)) || 0;
-}
+/* Opakovania: rovnaké API, `side` je voliteľná strana jednostranného cviku. */
+function setRepsOverride(ex, index, side) { return setValueOverride('reps', ex, index, side); }
+function effectiveSetReps(ex, index, side) { return effectiveSetValue('reps', ex, index, side); }
 function cleanSetRepsValue(reps) {
   const raw = String(reps == null ? '' : reps).trim();
   if (!/^\d+$/.test(raw)) return null;   // prázdne alebo nečíselné sa nikdy neuloží
   const n = Number(raw);
   return n >= 1 && n <= 999 ? n : null;
 }
-function setSetReps(ex, index, reps) {
+function setSetReps(ex, index, reps, side) {
   const v = cleanSetRepsValue(reps);
-  if (v === null) return false;
-  const sess = ensureSession();
-  if (!sess) return false;
-  if (!sess.setReps) sess.setReps = {};
-  sess.setReps[setWeightKey(ex, index)] = v;
-  saveState();
-  return true;
+  return v !== null && setSetValue('reps', ex, index, side, v);
 }
-/* Opakovania sérií pre históriu: pole (séria 1..N), len ak sa niektorá séria líši od plánu. */
-function sessionSetReps(ex) {
-  const sets = Math.max(0, Math.round(Number(ex.sets)) || 0);
-  const planned = Math.round(Number(ex.reps)) || 0;
-  const out = [];
-  let differs = false;
-  for (let i = 0; i < sets; i++) {
-    const r = effectiveSetReps(ex, i);
-    out.push(r);
-    if (r !== planned) differs = true;
-  }
-  return differs ? out : null;
-}
+function sessionSetReps(ex) { const r = sessionSetValues('reps', ex); return r ? r.list : null; }
 /* Platné opakovania sérií zo záznamu histórie (alebo null). */
 function cleanHistorySetReps(ex) {
   const sets = Math.max(0, Math.round(Number(ex && ex.sets)) || 0);
@@ -10499,8 +10687,10 @@ function cleanHistorySetReps(ex) {
   const out = ex.setReps.map((v) => Number(v));
   return out.every((v) => Number.isInteger(v) && v >= 0 && v <= 999) ? out : null;
 }
-/* Opakovania do histórie: "10", pri zmene počas tréningu "10/8/8". */
+/* Opakovania do histórie: "10", pri zmene "10/8/8", po stranách "Ľavá 10/8 | Pravá 10/7". */
 function historyRepsValue(ex) {
+  const sides = cleanHistorySideValues(ex, 'sideReps', 'reps');
+  if (sides) return historySidesText(sides, '/');
   const list = cleanHistorySetReps(ex);
   return list ? list.join('/') : String(ex.reps);
 }
@@ -10718,6 +10908,7 @@ function setPlanManageMode(on) {
 }
 
 function renderTrening() {
+  trainRender();
   if (!getPlan(selectedPlan)) selectedPlan = activePlanIds()[0] || null;
 
   const chips = document.getElementById('plan-chips');
@@ -10955,7 +11146,7 @@ function buildSetItem(ex, index, plannedFailure, side, readOnly) {
   }
 
   /* Váha tejto série: ťuknutím sa dá zmeniť (napr. zvýšenie váhy počas tréningu). */
-  const weight = effectiveSetWeight(ex, index);
+  const weight = effectiveSetWeight(ex, index, side);
   const weightBtn = document.createElement('button');
   weightBtn.type = 'button';
   weightBtn.className = 'set-weight' + (weight !== (Number(ex.weight) || 0) ? ' changed' : '');
@@ -10963,10 +11154,10 @@ function buildSetItem(ex, index, plannedFailure, side, readOnly) {
   weightBtn.title = t('setWeight.title');
   weightBtn.setAttribute('aria-label', (side ? sideLabel + ' — ' : '') + t('setWeight.aria', { n: index + 1, kg: weight }));
   if (readOnly) weightBtn.disabled = true;
-  else weightBtn.addEventListener('click', () => openSetWeightEditor(ex, index, item));
+  else weightBtn.addEventListener('click', () => openSetWeightEditor(ex, index, item, side));
 
   /* Opakovania tejto série: ťuknutím sa dajú zmeniť (napr. 10, potom 8). */
-  const reps = effectiveSetReps(ex, index);
+  const reps = effectiveSetReps(ex, index, side);
   const repsBtn = document.createElement('button');
   repsBtn.type = 'button';
   repsBtn.className = 'set-reps' + (reps !== (Math.round(Number(ex.reps)) || 0) ? ' changed' : '');
@@ -10974,7 +11165,7 @@ function buildSetItem(ex, index, plannedFailure, side, readOnly) {
   repsBtn.title = t('setReps.title');
   repsBtn.setAttribute('aria-label', (side ? sideLabel + ' — ' : '') + t('setReps.aria', { n: index + 1, reps }));
   if (readOnly) repsBtn.disabled = true;
-  else repsBtn.addEventListener('click', () => openSetRepsEditor(ex, index, item));
+  else repsBtn.addEventListener('click', () => openSetRepsEditor(ex, index, item, side));
 
   item.append(setBtn, repsBtn, weightBtn, failBtn);
   return item;
@@ -11099,21 +11290,21 @@ function openSetValueEditor(item, cfg) {
   input.focus();
   input.select();
 }
-function openSetWeightEditor(ex, index, item) {
+function openSetWeightEditor(ex, index, item, side) {
   openSetValueEditor(item, {
     editorAria: t('setWeight.editorAria', { n: index + 1 }), inputAria: t('setWeight.inputAria', { n: index + 1 }),
     lessAria: t('setWeight.less'), moreAria: t('setWeight.more'), minusText: '−2.5', plusText: '+2.5', step: 2.5,
     unit: t('units.kg'), inputMode: 'decimal', inputClass: 'set-weight-input', okClass: 'set-weight-ok',
-    current: () => effectiveSetWeight(ex, index), clean: cleanSetWeightValue, save: (v) => setSetWeight(ex, index, v),
+    current: () => effectiveSetWeight(ex, index, side), clean: cleanSetWeightValue, save: (v) => setSetWeight(ex, index, v, side),
   });
 }
-function openSetRepsEditor(ex, index, item) {
+function openSetRepsEditor(ex, index, item, side) {
   openSetValueEditor(item, {
     extraClass: 'set-reps-editor',
     editorAria: t('setReps.editorAria', { n: index + 1 }), inputAria: t('setReps.inputAria', { n: index + 1 }),
     lessAria: t('setReps.less'), moreAria: t('setReps.more'), minusText: '−1', plusText: '+1', step: 1,
     unit: t('units.reps'), inputMode: 'numeric', inputClass: 'set-reps-input', okClass: 'set-reps-ok',
-    current: () => effectiveSetReps(ex, index), clean: cleanSetRepsValue, save: (v) => setSetReps(ex, index, v),
+    current: () => effectiveSetReps(ex, index, side), clean: cleanSetRepsValue, save: (v) => setSetReps(ex, index, v, side),
   });
 }
 
@@ -11125,6 +11316,7 @@ function updateSummary() {
   document.getElementById('summary-bar').innerHTML = t('trening.setsDone', { done, total, msg });
   document.getElementById('btn-finish-workout').disabled = done === 0;
   refreshUpdateBanner();   // rozbehnutý tréning skrýva ponuku aktualizácie
+  trainSchedulePublish();  // spoločný tréning: priateľ uvidí nový stav
 }
 
 /* ---------- Editácia plánu ---------- */
@@ -13213,7 +13405,7 @@ function requestUndoSubstitution(slot) {
     const prefix = String(last.key) + ':';
     for (const k of Object.keys(sess.completedSets)) if (k.indexOf(prefix) === 0) delete sess.completedSets[k];
     for (const k of Object.keys(sess.actualFailureSets)) if (k.indexOf(prefix) === 0) delete sess.actualFailureSets[k];
-    for (const field of ['setWeights', 'setReps']) {
+    for (const field of ['setWeights', 'setReps', 'setWeightLocks', 'setRepsLocks']) {
       if (!sess[field]) continue;
       for (const k of Object.keys(sess[field])) if (k.indexOf(prefix) === 0) delete sess[field][k];
       if (!Object.keys(sess[field]).length) delete sess[field];
@@ -14227,12 +14419,14 @@ function communityStartRealtime(sb, uid) {
       .subscribe();
     communityRealtime = { uid, channel: ch };
   } catch (e) { communityRealtime = null; }
+  trainStart(sb, uid);   // spoločný tréning (len pri verzii 7+)
 }
 function communityStopRealtime() {
   if (communityRealtime) {
     try { const sb = communitySb(); if (sb) sb.removeChannel(communityRealtime.channel); } catch (e) {}
   }
   communityRealtime = null;
+  trainStop();
 }
 /* Po odhlásení, opustení Community či vypnutí: žiadne živé spojenie ani odznaky. */
 function communityResetSocial2() {
@@ -14910,6 +15104,330 @@ function communityMessageMenu(id, mine) {
     communityShowStatus();
   }, esc(t('community2.reportMessageNote')) + communityReasonSelectHtml());
 }
+/* ---------- Trénovanie s priateľom (migrácia 0014) ----------
+   Pozveš priateľa (voliteľne s tvojím plánom), on sa pridá a počas tréningu vidíte navzájom malý
+   prehľad: aktuálny cvik, hotové série z plánovaných, poslednú sériu (opakovania × kg) a "hotovo".
+   Viete si poslať povzbudenie (💪 🔥 👏 🙌). Každý telefón si tréning ukladá sám a offline ako doteraz –
+   zdieľa sa len tento prehľad, len s tým priateľom a len počas tréningu. Pozvánka platí 30 minút,
+   spoločný tréning 6 hodín. Zobrazí sa až pri community_social_version() >= 7 a prihlásenom účte. */
+const TRAIN_CHEERS = ['💪', '🔥', '👏', '🙌'];
+const TRAIN_FIN_KEY = 'gymquest_train_fin';   // id spoločného tréningu, v ktorom som už skončil (zariadenie)
+let trainState = null;         // výsledok train_current() alebo null
+let trainUid = null;           // účet, pre ktorý beží živé spojenie
+let trainChannel = null;
+let trainPollTimer = null;
+let trainRefreshTimer = null;
+let trainPublishTimer = null;
+let trainLastPublished = '';
+let trainPickerOpen = false;
+let trainFriends = null;       // null = načítava sa, [] = žiadni priatelia
+let trainSharePlan = true;
+let trainUsePlan = true;
+let trainBusy = false;
+let trainNote = '';            // krátka správa pod panelom (text)
+let trainToast = null;         // { text, until }
+let trainSeenCheers = new Set();
+
+function trainAvailable() { return communityConfigured() && communityOptIn() && communityVersion >= 7 && !!trainUid; }
+function trainActive() { return !!(trainAvailable() && trainState && trainState.status === 'active'); }
+function trainPartnerName() { return (trainState && trainState.partner && trainState.partner.username) || t('community.unknownUser'); }
+function trainFinishedHere(id) { try { return localStorage.getItem(TRAIN_FIN_KEY) === String(id); } catch (e) { return false; } }
+
+function trainStart(sb, uid) {
+  if (!sb || !uid || communityVersion < 7) return;
+  if (trainUid === uid && trainChannel) return;
+  trainStop();
+  trainUid = uid;
+  try {
+    const refresh = () => trainRefreshSoon();
+    trainChannel = sb.channel('gq-train-' + uid)
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'train_sessions' }, refresh)
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'train_progress' }, refresh)
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'train_cheers' }, refresh)
+      .subscribe();
+  } catch (e) { trainChannel = null; }
+  trainSchedulePoll();
+  trainRefresh();
+}
+function trainStop() {
+  if (trainChannel) { try { const sb = communitySb(); if (sb) sb.removeChannel(trainChannel); } catch (e) {} }
+  trainChannel = null;
+  clearTimeout(trainPollTimer); clearTimeout(trainRefreshTimer); clearTimeout(trainPublishTimer);
+  trainPollTimer = trainRefreshTimer = trainPublishTimer = null;
+  trainUid = null; trainState = null; trainPickerOpen = false; trainFriends = null; trainNote = ''; trainToast = null;
+  trainLastPublished = '';
+  trainRender();
+}
+/* Záloha k živým udalostiam: každých 20 s počas pozvánky / tréningu, inak raz za minútu. */
+function trainSchedulePoll() {
+  clearTimeout(trainPollTimer);
+  if (!trainUid) return;
+  trainPollTimer = setTimeout(() => {
+    if (!document.hidden) trainRefresh();
+    trainSchedulePoll();
+  }, trainState ? 20000 : 60000);
+}
+function trainRefreshSoon() {
+  clearTimeout(trainRefreshTimer);
+  trainRefreshTimer = setTimeout(trainRefresh, 250);
+}
+async function trainRefresh() {
+  const sb = communityClient();
+  if (!sb || !trainUid || communityVersion < 7) return;
+  let r;
+  try { r = await sb.rpc('train_current'); } catch (e) { r = { error: e }; }
+  /* Server bez 0014 (napr. po jej vrátení): funkcia už nie je → nič ďalšie sa nepýta, panel zmizne. */
+  if (r.error && communityMissingFn(r.error)) { communityVersion = Math.min(communityVersion, 6); trainStop(); return; }
+  if (r.error) return;   // offline: zostane posledný známy stav, tréning na telefóne beží ďalej
+  const prev = trainState;
+  const next = r.data || null;
+  trainState = next;
+  if (prev && (!next || next.id !== prev.id)) {
+    if (prev.status === 'active') trainNote = t('train.ended', { name: (prev.partner && prev.partner.username) || '' });
+    else if (prev.role === 'host') trainNote = t('train.noAnswer', { name: (prev.partner && prev.partner.username) || '' });
+    trainLastPublished = '';
+  } else if (prev && next && prev.status === 'invited' && next.status === 'active') {
+    trainNote = prev.role === 'host' ? t('train.joined', { name: trainPartnerName() }) : '';
+  }
+  if (next) {
+    for (const c of next.cheers || []) {
+      if (trainSeenCheers.has(c.id)) continue;
+      trainSeenCheers.add(c.id);
+      trainToast = { text: t('train.cheerFrom', { name: trainPartnerName(), emoji: c.emoji }), until: Date.now() + 6000 };
+      setTimeout(() => { if (trainToast && Date.now() >= trainToast.until) { trainToast = null; trainRender(); } }, 6100);
+    }
+    /* Obaja skončili → spoločný tréning sa ukončí sám (urobí to hostiteľ, aby sa to nerobilo dvakrát). */
+    if (next.status === 'active' && next.role === 'host' && next.mine && next.mine.fin && next.theirs && next.theirs.data && next.theirs.data.fin) {
+      try { await sb.rpc('train_end', { p_session: next.id }); } catch (e) {}
+      trainRefreshSoon();
+    }
+    if (next.status === 'active' && !trainFinishedHere(next.id)) trainSchedulePublish();
+  }
+  trainSchedulePoll();
+  trainRender();
+}
+
+/* Môj prehľad pre priateľa – žiadne iné údaje z tréningu. */
+function trainProgressData() {
+  const plan = getPlan(selectedPlan);
+  if (!plan) return null;
+  const sess = getSession();
+  const out = { plan: String(planDisplayName(plan)).slice(0, 80), done: Math.min(999, sess ? totalSetsDone() : 0), total: Math.min(999, planExerciseCount(plan)) };
+  let cur = null, last = null;
+  for (const info of exerciseSlots(plan)) {
+    for (const seg of exerciseSegments(info)) {
+      if (!seg.active && !seg.readOnly) continue;
+      const ex = seg.ex;
+      if (!cur && seg.active && countDoneSets(ex) < exerciseSlotCount(ex)) cur = ex;
+      if (!sess) continue;
+      for (const row of setValueRows(ex)) {
+        if (setMark('done', ex, row.index, row.side)) last = { r: effectiveSetReps(ex, row.index, row.side), w: effectiveSetWeight(ex, row.index, row.side) };
+      }
+    }
+  }
+  if (!cur) { const slots = exerciseSlots(plan); const lastSlot = slots[slots.length - 1]; cur = lastSlot ? exerciseSegments(lastSlot).slice(-1)[0].ex : null; }
+  if (cur) {
+    out.ex = String(exerciseDisplayName(cur)).slice(0, 80);
+    if (cur.id && BUILTIN_EXERCISE_IDS.has(cur.id)) out.exId = cur.id;
+  }
+  if (last) out.last = { r: Math.max(0, Math.min(999, last.r)), w: Math.max(0, Math.min(999, last.w)) };
+  return out;
+}
+function trainSchedulePublish() {
+  if (!trainActive() || trainFinishedHere(trainState.id)) return;
+  clearTimeout(trainPublishTimer);
+  trainPublishTimer = setTimeout(() => trainPublishNow(trainProgressData()), 800);
+}
+async function trainPublishNow(data) {
+  const sb = communityClient();
+  if (!sb || !data || !trainState || trainState.status !== 'active') return;
+  const sig = trainState.id + J_(data);
+  if (sig === trainLastPublished) return;
+  let r;
+  try { r = await sb.rpc('train_progress_put', { p_session: trainState.id, p_data: data }); } catch (e) { r = { error: e }; }
+  if (!r.error) trainLastPublished = sig;
+}
+function J_(v) { try { return JSON.stringify(v); } catch (e) { return ''; } }
+/* Po dokončení tréningu: priateľ uvidí "hotovo" a záznam v histórii dostane meno priateľa. */
+function trainOnWorkoutFinished(entry, data) {
+  if (!trainActive() || !entry) return;
+  entry.trainedWith = String(trainPartnerName()).slice(0, 40);
+  try { localStorage.setItem(TRAIN_FIN_KEY, String(trainState.id)); } catch (e) {}
+  clearTimeout(trainPublishTimer);
+  trainPublishNow(Object.assign({}, data || {}, { fin: true }));
+  trainNote = t('train.youFinished', { name: trainPartnerName() });
+}
+
+async function trainOpenPicker() {
+  trainPickerOpen = !trainPickerOpen;
+  trainNote = '';
+  if (trainPickerOpen) {
+    trainFriends = null;
+    trainRender();
+    const sb = communityClient();
+    let r;
+    try { r = sb ? await sb.rpc('friends_list') : { error: {} }; } catch (e) { r = { error: e }; }
+    trainFriends = r.error ? [] : (r.data || []);
+    if (r.error) trainNote = communityErrText(r.error);
+  }
+  trainRender();
+}
+async function trainInvite(friendId, name) {
+  const sb = communityClient();
+  if (!sb || trainBusy || !friendId) return;
+  const plan = getPlan(selectedPlan);
+  const shared = trainSharePlan && plan ? shareFromPlan(plan) : null;
+  trainBusy = true; trainRender();
+  let r;
+  try { r = await sb.rpc('train_invite', { p_friend: friendId, p_plan: shared }); } catch (e) { r = { error: e }; }
+  trainBusy = false;
+  if (r.error) {
+    const m = String(r.error.message || '');
+    trainNote = /train_busy_friend/.test(m) ? t('train.errBusyFriend', { name }) : /train_busy_me/.test(m) ? t('train.errBusyMe') : communityErrText(r.error);
+    trainRender();
+    return;
+  }
+  trainPickerOpen = false;
+  trainNote = '';
+  /* Pozvánka príde aj ako správa v chate (s upozornením, ak ho má priateľ zapnuté). */
+  try {
+    const conv = await sb.rpc('open_chat', { p_friend: friendId });
+    if (!conv.error) {
+      const row = { conversation_id: conv.data, sender_id: trainUid, body: t(shared ? 'train.inviteMsgPlan' : 'train.inviteMsg', { plan: shared ? shared.name : '' }).slice(0, COMMUNITY_MESSAGE_MAX) };
+      if (shared && communityV5()) row.attachment = shared;
+      const msg = await sb.from('messages').insert(row).select('id').single();
+      if (!msg.error) pushNotifyMessage(sb, msg.data.id);
+    }
+  } catch (e) {}
+  trainRefresh();
+}
+async function trainRespond(accept) {
+  const sb = communityClient();
+  if (!sb || trainBusy || !trainState) return;
+  const st = trainState;
+  trainBusy = true; trainRender();
+  let r;
+  try { r = await sb.rpc('train_respond', { p_session: st.id, p_accept: !!accept }); } catch (e) { r = { error: e }; }
+  trainBusy = false;
+  if (r.error) {
+    trainNote = /train_expired/.test(String(r.error.message || '')) ? t('train.errExpired') : /train_busy_me/.test(String(r.error.message || '')) ? t('train.errBusyMe') : communityErrText(r.error);
+    trainRefresh();
+    return;
+  }
+  trainNote = '';
+  /* Plán priateľa: uloží sa ako kópia a vyberie – ale nikdy uprostred rozbehnutého tréningu. */
+  if (accept && trainUsePlan && st.plan && !getSession()) {
+    const name = shareSaveAsPlan(st.plan);
+    const id = name && Object.keys(state.plans).find((k) => state.plans[k].customName === name);
+    if (id) { selectedPlan = id; saveState(); trainNote = t('train.planSaved', { name }); }
+  }
+  if (accept && activeTab !== 'trening') switchTab('trening');
+  await trainRefresh();
+  if (accept) renderTrening();
+}
+function trainAskEnd() {
+  if (!trainState) return;
+  const invited = trainState.status === 'invited';
+  showGeneric(t(invited ? 'train.cancelTitle' : 'train.endTitle'), t(invited ? 'train.cancelInvite' : 'train.end'), async () => {
+    const sb = communityClient(); if (!sb || !trainState) return;
+    try { await sb.rpc('train_end', { p_session: trainState.id }); } catch (e) {}
+    trainRefresh();
+  }, esc(t(invited ? 'train.cancelText' : 'train.endText', { name: trainPartnerName() })), t('train.keep'));
+}
+async function trainSendCheer(emoji, btn) {
+  const sb = communityClient();
+  if (!sb || !trainActive() || TRAIN_CHEERS.indexOf(emoji) < 0) return;
+  let r;
+  try { r = await sb.rpc('train_cheer', { p_session: trainState.id, p_emoji: emoji }); } catch (e) { r = { error: e }; }
+  trainNote = r.error ? communityErrText(r.error) : t('train.cheerSent', { emoji, name: trainPartnerName() });
+  trainRender();
+  if (btn && !r.error) { const b = document.querySelector('.train-cheer[data-emoji="' + emoji + '"]'); if (b) { b.classList.add('sent'); setTimeout(() => b.classList.remove('sent'), 900); } }
+}
+
+/* Panel na karte Tréning a krátky pruh na karte Dnes. */
+function trainPartnerHtml() {
+  const th = trainState.theirs && trainState.theirs.data;
+  const name = esc(trainPartnerName());
+  if (!th) return '<p class="train-partner-wait">' + esc(t('train.partnerNotStarted', { name: trainPartnerName() })) + '</p>';
+  const exName = th.exId && BUILTIN_EXERCISE_IDS.has(th.exId) ? t('exercise.' + th.exId) : String(th.ex || '');
+  const pct = th.total > 0 ? Math.min(100, Math.round(th.done / th.total * 100)) : 0;
+  return '<div class="train-partner">'
+    + '<p class="train-partner-line"><b>' + name + '</b>' + (th.fin ? ' · <span class="train-fin">' + esc(t('train.partnerFinished')) + '</span>'
+      : (exName ? ' · ' + esc(exName) : '')) + '</p>'
+    + '<div class="progress train-progress" role="img" aria-label="' + escAttr(t('train.setsOf', { done: th.done, total: th.total })) + '"><div class="progress-fill" style="width:' + pct + '%"></div></div>'
+    + '<p class="train-partner-meta">' + esc(t('train.setsOf', { done: th.done, total: th.total }))
+    + (th.last ? ' · ' + esc(t('train.lastSet', { reps: th.last.r, kg: th.last.w })) : '') + '</p></div>';
+}
+function trainBoxHtml(compact) {
+  const st = trainState;
+  const note = trainNote ? '<p class="card-note train-note" role="status">' + esc(trainNote) + '</p>' : '';
+  const toast = trainToast && Date.now() < trainToast.until ? '<p class="train-toast" role="status">' + esc(trainToast.text) + '</p>' : '';
+  if (!st) {
+    if (compact) return '';
+    const plan = getPlan(selectedPlan);
+    let picker = '';
+    if (trainPickerOpen) {
+      picker = '<div class="train-picker">'
+        + (plan && plan.exercises && plan.exercises.length ? '<label class="community-check train-share-plan"><input type="checkbox" id="train-share-plan"' + (trainSharePlan ? ' checked' : '') + '> '
+          + esc(t('train.sharePlan', { plan: planDisplayName(plan) })) + '</label>' : '')
+        + (trainFriends === null ? '<p class="card-note">' + esc(t('community.loading')) + '</p>'
+          : trainFriends.length ? '<p class="modal-label">' + esc(t('train.pickFriend')) + '</p><div class="train-friends">'
+            + trainFriends.map((f) => '<button type="button" class="btn btn-secondary btn-sm train-friend" data-train-action="invite" data-user="' + escAttr(f.user_id) + '" data-name="' + escAttr(f.username || '') + '"' + (trainBusy ? ' disabled' : '') + '>'
+              + esc(f.username || t('community.unknownUser')) + '</button>').join('') + '</div>'
+          : '<p class="card-note">' + esc(t('train.noFriends')) + '</p>')
+        + '</div>';
+    }
+    return '<div class="card train-card"><button type="button" class="btn btn-secondary btn-block train-open" data-train-action="open" aria-expanded="' + (trainPickerOpen ? 'true' : 'false') + '">👥 ' + esc(t('train.open')) + '</button>'
+      + picker + note + '</div>';
+  }
+  const name = trainPartnerName();
+  if (st.status === 'invited' && st.role === 'host') {
+    const left = Math.max(1, 30 - Math.floor((Date.now() - new Date(st.created_at).getTime()) / 60000));
+    return '<div class="card train-card train-waiting"><p class="train-title">👥 ' + esc(t('train.waiting', { name })) + '</p>'
+      + '<p class="card-note">' + esc(t('train.expiresIn', { n: left })) + '</p>'
+      + (compact ? '' : '<button type="button" class="btn btn-secondary btn-sm" data-train-action="end">' + esc(t('train.cancelInvite')) + '</button>') + note + '</div>';
+  }
+  if (st.status === 'invited') {
+    return '<div class="card train-card train-invite"><p class="train-title">👥 ' + esc(t('train.invited', { name })) + '</p>'
+      + (st.plan ? '<label class="community-check"><input type="checkbox" id="train-use-plan"' + (trainUsePlan ? ' checked' : '') + '> ' + esc(t('train.usePlan', { name, plan: st.plan.name })) + '</label>' : '')
+      + '<div class="train-actions"><button type="button" class="btn btn-secondary" data-train-action="decline"' + (trainBusy ? ' disabled' : '') + '>' + esc(t('train.notNow')) + '</button>'
+      + '<button type="button" class="btn btn-primary" data-train-action="join"' + (trainBusy ? ' disabled' : '') + '>' + esc(t('train.join')) + '</button></div>' + note + '</div>';
+  }
+  if (compact) {
+    return '<div class="card train-card train-active-compact"><p class="train-title">👥 ' + esc(t('train.with', { name })) + '</p>'
+      + trainPartnerHtml() + toast + '<button type="button" class="btn btn-secondary btn-sm" data-train-action="go">' + esc(t('train.openWorkout')) + '</button></div>';
+  }
+  return '<div class="card train-card train-active"><div class="train-head"><p class="train-title">👥 ' + esc(t('train.with', { name })) + '</p>'
+    + '<button type="button" class="btn btn-secondary btn-sm" data-train-action="end">' + esc(t('train.end')) + '</button></div>'
+    + trainPartnerHtml() + toast
+    + '<div class="train-cheers" role="group" aria-label="' + escAttr(t('train.cheerAria', { name })) + '">'
+    + TRAIN_CHEERS.map((e) => '<button type="button" class="train-cheer" data-train-action="cheer" data-emoji="' + e + '" aria-label="' + escAttr(t('train.cheerWith', { emoji: e, name })) + '">' + e + '</button>').join('') + '</div>'
+    + '<p class="card-note train-privacy">' + esc(t('train.privacy', { name })) + '</p>' + note + '</div>';
+}
+function trainRender() {
+  const box = document.getElementById('train-box');
+  const today = document.getElementById('train-today');
+  const on = trainAvailable();
+  if (box) { const html = on ? trainBoxHtml(false) : ''; box.hidden = !html; if (box.innerHTML !== html) box.innerHTML = html; }
+  if (today) { const html = on && trainState ? trainBoxHtml(true) : ''; today.hidden = !html; if (today.innerHTML !== html) today.innerHTML = html; }
+}
+function trainOnClick(e) {
+  const a = e.target.closest ? e.target.closest('[data-train-action]') : null;
+  if (!a || a.disabled) return;
+  const act = a.dataset.trainAction;
+  if (act === 'open') trainOpenPicker();
+  else if (act === 'invite') trainInvite(a.dataset.user, a.dataset.name);
+  else if (act === 'join') trainRespond(true);
+  else if (act === 'decline') trainRespond(false);
+  else if (act === 'end') trainAskEnd();
+  else if (act === 'cheer') trainSendCheer(a.dataset.emoji, a);
+  else if (act === 'go') switchTab('trening');
+}
+function trainOnChange(e) {
+  if (e.target && e.target.id === 'train-share-plan') trainSharePlan = !!e.target.checked;
+  if (e.target && e.target.id === 'train-use-plan') trainUsePlan = !!e.target.checked;
+}
+
 /* ---------- Zdieľaný plán / tréning, odpovede a reakcie (migrácia 0011) ----------
    Zapnú sa iba pri community_social_version() >= 5. Zdieľaná položka je malý JSON
    (server ho overí: share_attachment_valid). Správa so zdieľaním má vždy aj krátky text,
@@ -14962,6 +15480,11 @@ function shareFromWorkout(w) {
       if (sw) x.sw = sw.map(shareClampKg);
       const sr = cleanHistorySetReps(e);
       if (sr) x.sr = sr.map((v) => shareClampInt(v, 0, 999));
+      /* jednostranný cvik s rozdielnymi stranami: { l: [...], r: [...] } */
+      const sws = cleanHistorySideValues(e, 'sideWeights', 'weight');
+      if (sws) x.sws = { l: sws.left.map(shareClampKg), r: sws.right.map(shareClampKg) };
+      const srs = cleanHistorySideValues(e, 'sideReps', 'reps');
+      if (srs) x.srs = { l: srs.left.map((v) => shareClampInt(v, 0, 999)), r: srs.right.map((v) => shareClampInt(v, 0, 999)) };
       const dr = cleanHistoryDrops(e);
       if (dr) x.dr = dr.map((d) => [shareClampKg(d.weight), shareClampInt(d.reps, 1, 999)]);
       return x;
@@ -14990,8 +15513,15 @@ function shareCardHtml(a, src, ref, noSave) {
   if (workout && Number(a.xp) > 0) meta.push('+' + Number(a.xp) + ' ' + t('units.xp'));
   meta.push(tPlural('share.exercises', a.exercises.length));
   const rows = a.exercises.slice(0, SHARE_MAX_EXERCISES).map((e) => {
-    const sw = Array.isArray(e.sw) && e.sw.length ? e.sw.map((v) => Number(v) || 0).join(' · ') : String(Number(e.w) || 0);
-    const reps = Array.isArray(e.sr) && e.sr.length ? e.sr.map((v) => Math.round(Number(v)) || 0).join('/') : String(Number(e.r) || 0);
+    /* Hodnoty strán od niekoho iného: len polia čísel, inak sa ignorujú. */
+    const sidePair = (o) => (o && Array.isArray(o.l) && Array.isArray(o.r) && o.l.length && o.l.length <= 99 && o.r.length <= 99
+      && o.l.concat(o.r).every((v) => Number.isFinite(Number(v)))) ? o : null;
+    const sws = sidePair(e.sws), srs = sidePair(e.srs);
+    const sideText = (o, sep, fmt) => t('unilateral.left') + ' ' + o.l.map(fmt).join(sep) + ' | ' + t('unilateral.right') + ' ' + o.r.map(fmt).join(sep);
+    const sw = sws ? sideText(sws, ' · ', (v) => Number(v) || 0)
+      : Array.isArray(e.sw) && e.sw.length ? e.sw.map((v) => Number(v) || 0).join(' · ') : String(Number(e.w) || 0);
+    const reps = srs ? sideText(srs, '/', (v) => Math.round(Number(v)) || 0)
+      : Array.isArray(e.sr) && e.sr.length ? e.sr.map((v) => Math.round(Number(v)) || 0).join('/') : String(Number(e.r) || 0);
     const s = Number(e.s) || 0;
     const d = Number(e.d) || 0;
     /* Jednostranný cvik: "2 série na každú stranu" (hotové série sú súčet oboch strán, 2 × s). */
@@ -17688,6 +18218,7 @@ function renderPokrok() {
       row.innerHTML = `
         <div class="history-main">
           <div class="history-name">${esc(historyPlanName(w))}</div>
+          ${w.trainedWith ? `<div class="history-detail train-with">👥 ${esc(t('train.trainedWith', { name: w.trainedWith }))}</div>` : ''}
           <div class="history-detail">${formatDate(w.date)} · ${tPlural('pokrok.setsCount', setsDone)}</div>
           ${historyDurationLine(w)}
           <div class="history-detail">${detail}</div>
@@ -18007,6 +18538,7 @@ function workoutBlock(w) {
       <span class="day-workout-xp">+${w.xp} ${t('units.xp')}</span>
     </div>
     <div class="day-workout-date">${esc(formatDate(w.date))}</div>
+    ${w.trainedWith ? `<div class="day-ex-meta train-with">👥 ${esc(t('train.trainedWith', { name: w.trainedWith }))}</div>` : ''}
     ${historyDurationLine(w)}
     ${rows}
     ${w.note ? `<div class="modal-note">“${esc(w.note)}”</div>` : ''}`;
@@ -18262,19 +18794,26 @@ function historyExerciseEntry(ex, sess) {
    plánovanú váhu (plannedWeight) a ako `weight` najťažšiu ODCVIČENÚ sériu – rekordy,
    úspechy aj porovnanie s minulým tréningom tak počítajú so skutočne zdvihnutou váhou. */
 function historyApplySetWeights(entry, ex, doneSetNumbers) {
-  const list = sessionSetWeights(ex);
-  if (!list) return;
-  entry.setWeights = list;
+  const vals = sessionSetValues('weight', ex);
+  if (!vals) return;
+  entry.setWeights = vals.list;
+  if (vals.sides) entry.sideWeights = vals.sides;
   entry.plannedWeight = Number(ex.weight) || 0;
-  const doneWeights = (doneSetNumbers || []).map((n) => list[n - 1]).filter((v) => typeof v === 'number');
-  if (doneWeights.length) entry.weight = Math.max.apply(null, doneWeights);
+  /* Po stranách sa berie skutočná váha odcvičenej strany, inak váha série. */
+  const doneWeights = vals.sides && entry.sidesDone
+    ? ['left', 'right'].flatMap((sd) => (entry.sidesDone[sd] || []).map((n) => vals.sides[sd][n - 1]))
+    : (doneSetNumbers || []).map((n) => vals.list[n - 1]);
+  const valid = doneWeights.filter((v) => typeof v === 'number');
+  if (valid.length) entry.weight = Math.max.apply(null, valid);
 }
 
 /* Zmena opakovaní počas tréningu: záznam dostane opakovania všetkých sérií (setReps);
    `reps` zostáva plánovaný počet, takže porovnania a staršie zobrazenia fungujú ako doteraz. */
 function historyApplySetReps(entry, ex) {
-  const list = sessionSetReps(ex);
-  if (list) entry.setReps = list;
+  const vals = sessionSetValues('reps', ex);
+  if (!vals) return;
+  entry.setReps = vals.list;
+  if (vals.sides) entry.sideReps = vals.sides;
 }
 /* Dokončené drop série do histórie: [{ weight, reps }]. */
 function historyApplyDrops(entry, ex) {
@@ -18321,6 +18860,7 @@ function confirmFinish() {
   const doneCount = totalSetsDone();
   const xp = BASE_XP + doneCount * XP_PER_SET;
   const note = document.getElementById('confirm-note').value.trim();
+  const trainData = trainActive() ? trainProgressData() : null;   // pred zrušením session
 
   const entry = {
     id: uid(),
@@ -18333,6 +18873,7 @@ function confirmFinish() {
   };
   /* Trvanie sa zapíše len ak naozaj existuje rozbehnutá session – nikdy nevymýšľame nulu. */
   if (sess) entry.durationSeconds = sessionElapsedSeconds(sess);
+  trainOnWorkoutFinished(entry, trainData);   // "trénoval s …" + priateľ uvidí hotovo
 
   state.history.push(entry);
   syncGoalSnapshot();    // tento týždeň je teraz "pozorovaný" so svojím cieľom
@@ -18486,10 +19027,10 @@ function saveHistoryEdit() {
        sérií ich nahradí jednou váhou (inak by zobrazenie odporovalo upravenej hodnote). */
     const orig = heOriginal[idx];
     if (Array.isArray(e.setWeights) && (!orig || e.weight !== orig.weight || e.sets !== orig.sets || !cleanHistorySetWeights(e))) {
-      delete e.setWeights; delete e.plannedWeight;
+      delete e.setWeights; delete e.plannedWeight; delete e.sideWeights;
     }
     /* Rovnako opakovania jednotlivých sérií: ručne zmenené opakovania alebo počet sérií ich nahradia. */
-    if (Array.isArray(e.setReps) && (!orig || e.reps !== orig.reps || e.sets !== orig.sets || !cleanHistorySetReps(e))) delete e.setReps;
+    if (Array.isArray(e.setReps) && (!orig || e.reps !== orig.reps || e.sets !== orig.sets || !cleanHistorySetReps(e))) { delete e.setReps; delete e.sideReps; }
     /* Existujúce polia do zlyhania sa orežú na nový počet sérií; starým záznamom sa nepridávajú. */
     if (Array.isArray(e.actualFailureSets)) e.actualFailureSets = cleanFailureSets(e.actualFailureSets, e.sets);
     if (Array.isArray(e.plannedFailureSets)) e.plannedFailureSets = cleanFailureSets(e.plannedFailureSets, e.sets);
@@ -21838,6 +22379,12 @@ function setupEvents() {
       saveEditPlan();
     }
   }, 'keydown');
+
+  /* Trénovanie s priateľom: delegované kliky a prepínače na karte Tréning aj Dnes. */
+  on('train-box', trainOnClick);
+  on('train-today', trainOnClick);
+  on('train-box', trainOnChange, 'change');
+  on('train-today', trainOnChange, 'change');
 
   on('btn-reset-session', () => {
     showGeneric(t('trening.resetSessionTitle'), t('trening.resetSession'), () => {

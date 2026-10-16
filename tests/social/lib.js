@@ -141,6 +141,7 @@ const STACK = [
   { n: 12, up: '0012_reminders.sql', down: '0012_down.sql', present: "to_regclass('public.push_reminders') is not null" },
   { n: 13, up: '0013_reminders_default_on.sql', down: '0013_down.sql',
     present: "coalesce((select column_default from information_schema.columns where table_schema = 'public' and table_name = 'push_reminders' and column_name = 'water_on'), '') = 'true'" },
+  { n: 14, up: '0014_train_together.sql', down: '0014_down.sql', present: "to_regclass('public.train_sessions') is not null" },
 ];
 function rollbackFrom(n) {
   const done = [];

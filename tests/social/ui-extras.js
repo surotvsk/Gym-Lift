@@ -55,7 +55,7 @@ async function rendered(p) {
 async function view(p, v) { await p.eval(`(switchTab('komunita'), communitySetView(${J(v)}), true)`); await rendered(p); }
 /* Po otvorení chatu sa čaká na skutočne vykreslený chat (správy), nie na obsah predchádzajúcej obrazovky. */
 async function chatShown(p) {
-  await waitFor(() => p.eval(`(() => { const box = document.getElementById('community-chat-msgs'); return communityView === 'chat' && !!box && !!(box.querySelector('.cmsg') || box.querySelector('.empty-state')); })()`), 30000, 'chat shown');
+  await waitFor(() => p.eval(`(() => { const box = document.getElementById('community-chat-msgs'); return communityView === 'chat' && communityChatMeta !== null && !!box && box.querySelectorAll('.cmsg').length === communityChatMsgs.length && !!(box.querySelector('.cmsg') || box.querySelector('.empty-state')); })()`), 30000, 'chat shown');
   await wait(300);
 }
 async function click(p, selector) {
@@ -91,6 +91,9 @@ async function typeMsg(p, text) {
   fs.mkdirSync(PROFILES, { recursive: true });
   fs.mkdirSync(SHOTS, { recursive: true });
   const server = await startServer(PORT, { new: REPO });
+  /* Moderátor vidí 50 najstarších čakajúcich príspevkov – staré zvyšky z predchádzajúcich behov (len lokálny
+     testovací server) sa zamietnu, aby nový testovací príspevok nebol mimo fronty. */
+  sql("begin; set local session_replication_role = replica; update public.posts set status = 'rejected' where status = 'pending' and created_at < now() - interval '10 minutes'; commit;");
   const M = await member('mod', 'mia'); L.makeModerator(M);
   const A = await member('a', 'ada'), B = await member('b', 'ben');
   const req = await A.c.from('friend_requests').insert({ from_id: A.id, to_id: B.id }).select('id').single();
@@ -143,7 +146,8 @@ async function typeMsg(p, text) {
     /* B odpovie na plán a zareaguje ❤️ */
     const planMsgId = sqlVal(`select id from public.messages where conversation_id = ${lit(conv)} and attachment->>'kind' = 'plan'`);
     await click(pB, `.cmsg[data-msg-id="${planMsgId}"] .cmsg-bubble`);
-    check('tapping a message opens reactions and Reply', await pB.eval(`!!document.querySelector('.cmsg-actions .cmsg-react-opt') && !!document.querySelector('[data-community-action="msg-reply"]')`));
+    check('tapping a message opens reactions and Reply', await pB.eval(`!!document.querySelector('.cmsg-actions .cmsg-react-opt') && !!document.querySelector('[data-community-action="msg-reply"]')`),
+      await pB.eval(`({ actions: communityMsgActions, panel: !!document.querySelector('.cmsg-actions'), canSend: communityChatMeta && communityChatMeta.can_send, view: communityView, tab: activeTab, msgs: communityChatMsgs.length })`));
     await click(pB, `.cmsg-actions [data-community-action="react"][data-emoji="❤️"]`);
     await waitFor(() => sqlVal(`select count(*) from public.message_reactions where message_id = ${planMsgId}`) === '1', 10000, 'reaction');
     check('❤️ saved and shown under the message', await pB.eval(`(() => { const r = document.querySelector('.cmsg[data-msg-id="${planMsgId}"] .cmsg-react.mine'); return !!r && r.textContent.includes('❤️'); })()`));
@@ -353,7 +357,10 @@ async function typeMsg(p, text) {
     section('no errors');
     for (const [name, p] of pages) {
       check(name + ': no exceptions', p.errors.length === 0, J(p.errors));
-      const errs = p.logs.filter((l) => !/favicon|127\.0\.0\.1:54321\/(auth|rest|functions)\/v1\/.*(400|401|404)/.test(l));
+      /* pri vrátenom 0011 (a s ním 0014) appka raz zistí, že train_current už neexistuje (404), a prestane sa pýtať */
+      const errs = p.logs.filter((l) => !/favicon|127\.0\.0\.1:54321\/(auth|rest|functions)\/v1\/.*(400|401|404)/.test(l)
+        && !/status of 404 .*127\.0\.0\.1:54321\/rest\/v1\/rpc\/train_current$/.test(l));
+      check(name + ': asked for train_current at most once after the rollback', p.logs.filter((l) => /rpc\/train_current/.test(l)).length <= 1, J(p.logs));
       check(name + ': no console errors', errs.length === 0, J(errs));
     }
   } catch (e) {

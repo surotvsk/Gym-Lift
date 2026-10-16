@@ -169,6 +169,61 @@ function check(name, ok, info) {
     }
     await p.eval(`(setLang('en'), true)`);
 
+    console.log('== one side at a time: each side keeps its own reps and weight (bug report)');
+    await p.eval(`(() => {
+      state.plans['utest'] = { id: 'utest', builtin: false, customName: 'Side test', location: null,
+        exercises: [{ id: 'cx-u1', name: 'One-arm curl', sets: 2, reps: 12, weight: 8, unilateral: true, startSide: 'left' }] };
+      if (!state.planOrder.includes('utest')) state.planOrder.push('utest');
+      selectedPlan = 'utest'; saveState(); switchTab('trening'); renderTrening(); return true; })()`);
+    await wait(300);
+    const rowsU = () => p.eval(`Array.from(document.querySelectorAll('#exercise-list .exercise')[0].querySelectorAll('.set-item')).map((r) => r.querySelector('.set-side-label').textContent + '|' + r.querySelector('.set-reps').textContent + '|' + r.querySelector('.set-weight').textContent + '|' + (r.querySelector('.set-btn').classList.contains('done') ? 'done' : '-'))`);
+    const rowU = (i) => `document.querySelectorAll('#exercise-list .exercise')[0].querySelectorAll('.set-item')[${i}]`;
+    const editU = async (i, kind, val) => {
+      await p.eval(`(${rowU(i)}.querySelector('.set-${kind}').click(), true)`);
+      await p.eval(`(() => { const inp = document.querySelector('.set-${kind}-input'); inp.value = ${J(String(val))}; inp.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true })); return true; })()`);
+      await wait(150);
+    };
+    check('rows: Set 1 Left, Set 1 Right, Set 2 Left, Set 2 Right — all 12 reps, 8 kg', J(await rowsU()) === J(['Set 1 — Left|12×|8|-', 'Set 1 — Right|12×|8|-', 'Set 2 — Left|12×|8|-', 'Set 2 — Right|12×|8|-']), await rowsU());
+    await p.eval(`(${rowU(0)}.querySelector('.set-btn').click(), true)`);   // Set 1 Left hotová (12)
+    await editU(1, 'reps', 8);                                             // druhá ruka: menej opakovaní
+    check('the bug: fewer reps on Set 1 Right do NOT change the completed Set 1 Left (12 stays)', J(await rowsU()) === J(['Set 1 — Left|12×|8|done', 'Set 1 — Right|8×|8|-', 'Set 2 — Left|8×|8|-', 'Set 2 — Right|8×|8|-']), await rowsU());
+    await editU(2, 'reps', 10);
+    check('Set 2 Left → 10: only it and the rows after it change', J(await rowsU()) === J(['Set 1 — Left|12×|8|done', 'Set 1 — Right|8×|8|-', 'Set 2 — Left|10×|8|-', 'Set 2 — Right|10×|8|-']), await rowsU());
+    await p.eval(`(${rowU(1)}.querySelector('.set-btn').click(), ${rowU(2)}.querySelector('.set-btn').click(), true)`);   // Set 1 Right + Set 2 Left hotové
+    await editU(1, 'reps', 6);
+    check('editing an earlier row never rewrites a later COMPLETED row (Set 2 Left keeps 10); Set 2 Right keeps following your Set 2 change (10)',
+      J(await rowsU()) === J(['Set 1 — Left|12×|8|done', 'Set 1 — Right|6×|8|done', 'Set 2 — Left|10×|8|done', 'Set 2 — Right|10×|8|-']), await rowsU());
+    await editU(1, 'weight', 10);
+    check('weight works the same way: Set 1 Right 10 kg, Set 1 Left keeps 8 kg, completed Set 2 Left keeps 8 kg, the open Set 2 Right follows (10 kg)', J(await rowsU()) === J(['Set 1 — Left|12×|8|done', 'Set 1 — Right|6×|10|done', 'Set 2 — Left|10×|8|done', 'Set 2 — Right|10×|10|-']), await rowsU());
+    await p.eval(`(${rowU(3)}.querySelector('.set-btn').click(), true)`);
+    await p.reload();
+    await p.eval(`(switchTab('trening'), true)`); await wait(300);
+    check('per-side values survive a reload', J(await rowsU()) === J(['Set 1 — Left|12×|8|done', 'Set 1 — Right|6×|10|done', 'Set 2 — Left|10×|8|done', 'Set 2 — Right|10×|10|done']), await rowsU());
+    await p.eval(`(finishWorkout(), confirmFinish(), true)`);
+    await wait(300);
+    const hu = await p.eval(`state.history[state.history.length - 1].exercises[0]`);
+    check('history keeps each side: sideReps left 12/10, right 6/10', J(hu.sideReps) === J({ left: [12, 10], right: [6, 10] }), hu);
+    check('history keeps each side\'s weight: left 8/8, right 10/10; weight = heaviest done side (10)', J(hu.sideWeights) === J({ left: [8, 8], right: [10, 10] }) && hu.weight === 10, hu);
+    check('setReps / setWeights still hold one value per set for older app versions (the higher side)', J(hu.setReps) === J([12, 10]) && J(hu.setWeights) === J([10, 10]), hu);
+    const dayU = await p.eval(`(() => { openDay(todayISO()); const x = document.getElementById('modal-day').innerText; closeDay(); return x; })()`);
+    check('Calendar shows "Left 12/10 | Right 6/10 reps" and "Left 8 · 8 | Right 10 · 10 kg"', dayU.includes('Left 12/10 | Right 6/10 reps') && dayU.includes('Left 8 · 8 | Right 10 · 10 kg'), dayU);
+    const au = await p.eval(`shareFromWorkout(state.history[state.history.length - 1])`);
+    check('the shared workout carries both sides', J(au.exercises[0].srs) === J({ l: [12, 10], r: [6, 10] }) && J(au.exercises[0].sws) === J({ l: [8, 8], r: [10, 10] }), au.exercises[0]);
+    const cardU = await p.eval(`(() => { const d = document.createElement('div'); d.innerHTML = shareCardHtml(${J(au)}, 'msg', 1); document.body.appendChild(d); const tx = d.innerText; d.remove(); return tx; })()`);
+    check('the shared card shows both sides', cardU.includes('2 sets per side · Left 12/10 | Right 6/10 reps · Left 8 · 8 | Right 10 · 10 kg'), cardU);
+    const junk = { kind: 'workout', name: 'J', exercises: [{ n: 'E', s: 1, r: 5, w: 10, d: 2, u: true, srs: { l: ['<b>x'], r: [1] }, sws: 'bad' }] };
+    const cardJ = await p.eval(`(() => { const d = document.createElement('div'); d.innerHTML = shareCardHtml(${J(junk)}, 'msg', 1); return { tx: d.innerText, b: !!d.querySelector('b') }; })()`);
+    check('malformed side values from someone else are ignored safely', !cardJ.b && cardJ.tx.includes('5 reps · 10 kg'), cardJ);
+    /* staršia session (pred touto verziou): hodnota série bez strany platí pre obe strany */
+    await p.eval(`(() => { switchTab('trening'); selectedPlan = 'utest'; renderTrening(); setSetReps(getPlan('utest').exercises[0], 0, '9'); const s = getSession(); s.setReps = { 'cx-u1:0': 9 }; saveState(); renderTrening(); return true; })()`);
+    check('an older running workout (value without side) still shows it on both sides', J((await rowsU()).map((r) => r.split('|')[1])) === J(['9×', '9×', '9×', '9×']), await rowsU());
+    await p.eval(`(clearSession(), saveState(), renderTrening(), true)`);
+    /* aj bežný cvik: hotová séria 2 sa po zmene série 1 nezmení, otvorená séria 3 zmenu prevezme */
+    const bil = await p.eval(`(() => { selectedPlan = 'rtest'; renderTrening(); const ex = getPlan('rtest').exercises[0];
+      toggleSetMark('done', ex, 1, true); setSetReps(ex, 0, '7'); setSetWeight(ex, 0, '50');
+      const out = [0, 1, 2].map((i) => effectiveSetReps(ex, i) + 'x' + effectiveSetWeight(ex, i)); clearSession(); saveState(); return out; })()`);
+    check('two-sided exercise: completed set 2 keeps 10 × 60, set 1 and the open set 3 get 7 × 50', J(bil) === J(['7x50', '10x60', '7x50']), bil);
+
     check('no exceptions', p.errors.length === 0, p.errors);
     check('no console errors', logs.length === 0, logs);
   } catch (e) {

@@ -167,9 +167,16 @@ Editing that weight later in the history replaces the per-set weights with the s
 **Different reps per set.** Next to the weight, every set shows its reps (for example *10×*). Tap it to
 change that set's reps (−1 / +1 or type a whole number from 1 to 999). It works like the weight: doing
 10 reps in set 1 and 8 in set 2 is one change on set 2, and the later sets follow until you change one
-of them. For an exercise done one side at a time, both sides of a set use the same reps. Your plan keeps
-its reps; the history and the Calendar show every set (*3 × 10/8/8*), and a shared workout shows them too.
-Editing the reps later in the history replaces the per-set reps with the single new number.
+of them. Your plan keeps its reps; the history and the Calendar show every set (*3 × 10/8/8*), and a
+shared workout shows them too. Editing the reps later in the history replaces the per-set reps with the
+single new number.
+
+**One side at a time, and completed sets stay as they were.** For an exercise done one side at a time,
+every side of every set has its own reps and weight. A change applies to that row and the rows after it in
+the order they are shown (*Set 1 — Left*, *Set 1 — Right*, *Set 2 — Left*, …), so entering fewer reps for
+the right arm never rewrites the left arm. A set you have already ticked ✓ keeps its numbers even when you
+change an earlier row (this applies to every exercise). When the two sides differ, history, the Calendar
+and shared workouts show both: *Left 12/10 | Right 8/8 reps*.
 
 **Drop sets.** Under the sets of every exercise there is **+ Drop set**: after your last set, lower the
 weight and keep going without a rest. Each drop set is its own row (*Drop set 1*, *Drop set 2*, … up to
@@ -743,6 +750,18 @@ reviewed by a moderator as usual and the card follows the post's visibility (eve
 After finishing a workout, **Share to Community** opens a new post with that workout already
 attached. Anyone who sees a card can tap **Save to my plans** to get their own copy as a new plan
 (the original is never changed).
+
+**Train together with a friend.** On **Workout**, tap **👥 Train with a friend** and pick one of your
+friends; you can also send your current plan so you both do the same workout. Your friend gets a chat
+message (and a notification if they turned them on) and an invitation on **Today** and **Workout**:
+**Join** (optionally with your plan, saved as a copy in their plans) or **Not now**. The invitation is
+valid for 30 minutes. While you train together, each of you sees a small live card of the other —
+current exercise, sets done out of planned, the last set (reps × kg) and *finished ✓* — and you can send
+quick cheers 💪 🔥 👏 🙌. Only that summary is shared, only with that friend and only during the
+session; each phone still saves its own workout offline exactly as before. Either of you can **End** the
+session; it also ends by itself when both have finished, or after 6 hours. Workouts done together show
+*👥 Trained with …* in Progress and in the Calendar. You can be in one session at a time; unfriending or
+leaving Community removes your sessions with that person.
 
 **Top achievements on your profile.** Your profile shows your three best achievements (by XP). The app
 reports which achievements you earned; the server keeps only real ones that match your number of

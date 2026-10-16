@@ -3737,3 +3737,30 @@ button.cstat:hover { background: var(--surface-2); }
   .cmsg.cmsg-flash .cmsg-bubble { animation: none; box-shadow: 0 0 0 3px var(--accent); }
 }
 .cmsg-gone { font-size: var(--fs-xs); color: var(--text-dim); margin: 2px var(--sp-1) 0; }
+
+/* ===== Trénovanie s priateľom (migrácia 0014) ===== */
+.train-box[hidden] { display: none; }
+.train-card { display: flex; flex-direction: column; gap: var(--sp-2); }
+.train-head { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-2); }
+.train-title { margin: 0; font-weight: var(--fw-bold); color: var(--text); overflow-wrap: anywhere; }
+.train-picker { display: flex; flex-direction: column; gap: var(--sp-2); }
+.train-picker .modal-label { margin: 0; }
+.train-friends, .train-actions { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
+.train-actions .btn { flex: 1 1 8rem; min-height: 44px; }
+.train-friend { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.train-partner { display: flex; flex-direction: column; gap: 4px; padding: var(--sp-2) var(--sp-3); border: 1px solid var(--border); border-radius: var(--r-sm); background: var(--surface-2); }
+.train-partner-line, .train-partner-meta, .train-partner-wait { margin: 0; overflow-wrap: anywhere; }
+.train-partner-meta, .train-partner-wait { font-size: var(--fs-sm); color: var(--text-dim); }
+.train-progress { height: 6px; }
+.train-fin { color: var(--ok); font-weight: var(--fw-bold); }
+.train-cheers { display: flex; gap: var(--sp-2); }
+.train-cheer {
+  flex: 1 1 0; min-height: 44px; border: 1px solid var(--border); border-radius: var(--r-full);
+  background: var(--surface-3); font-size: 22px; line-height: 1; cursor: pointer; transition: transform 0.15s ease, border-color 0.15s ease;
+}
+.train-cheer:hover { border-color: var(--border-strong); }
+.train-cheer.sent { border-color: var(--accent); transform: scale(1.08); }
+@media (prefers-reduced-motion: reduce) { .train-cheer { transition: none; } .train-cheer.sent { transform: none; } }
+.train-toast { margin: 0; padding: var(--sp-2) var(--sp-3); border-radius: var(--r-sm); background: var(--accent-soft); color: var(--text); font-weight: var(--fw-bold); }
+.train-note, .train-privacy { margin: 0; }
+.train-with { color: var(--text-dim); }
