@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>03 · Soft Rings — GymQuest concept</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../frame.css">
+<link rel="stylesheet" href="../r2/kit.css">
+<style>
+  .app { position: absolute; inset: 0; display: flex; flex-direction: column; background: #F3F4F6; color: #111214; font: 15px/1.4 'Urbanist', sans-serif;
+    --mute: #74777F; --teal: #7CC6D6; --mint: #B5E2C4; --yel: #F4D98A; --blue: #CFE6F2;
+    --k-bg: #FFFFFF; --k-fg: #111214; --k-mute: #686B73; --k-card: #F3F4F6; --k-line: #E4E6EA; --k-acc: #111214; --k-acc-fg: #fff; --k-radius: 24px; --k-font: 'Urbanist', sans-serif; }
+  body.concept { background: linear-gradient(135deg, #C9DCE6, #E7EEF2); }
+  main { flex: 1; overflow-y: auto; padding: 46px 16px 16px; }
+  .hdr { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; } .hdr .t { flex: 1; } .hdr b { font: 800 18px 'Urbanist'; } .hdr small { display: block; color: var(--mute); }
+  .av { width: 46px; height: 46px; border-radius: 50%; border: 3px solid #fff; background: linear-gradient(135deg, #8FB7D9, #3E6F9E); color: #fff; font: 800 16px 'Urbanist'; display: grid; place-items: center; }
+  .icb { width: 44px; height: 44px; border-radius: 50%; border: 1px solid #E4E6EA; background: #fff; display: grid; place-items: center; cursor: pointer; color: #111214; }
+  .card { background: #fff; border-radius: 26px; padding: 16px; margin-bottom: 12px; }
+  .card h3 { margin: 0 0 6px; font: 800 18px 'Urbanist'; display: flex; justify-content: space-between; align-items: center; }
+  .go { width: 40px; height: 40px; border-radius: 50%; border: 1px solid #E4E6EA; background: #fff; display: grid; place-items: center; cursor: pointer; color: #111214; }
+  .rings { display: block; width: 230px; height: 230px; margin: 0 auto; }
+  .legend { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; font: 600 12px 'Urbanist'; color: var(--mute); } .legend i { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 5px; vertical-align: -1px; }
+  .tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 12px; }
+  .tile { border: 0; background: #fff; border-radius: 22px; padding: 14px 12px; cursor: pointer; text-align: left; font: 700 15px 'Urbanist'; color: #111214; }
+  .tile .ic { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; background: var(--c); margin-bottom: 10px; font-size: 16px; } .tile small { display: block; font: 500 12px 'Urbanist'; color: var(--mute); }
+  .row { display: flex; align-items: center; gap: 12px; width: 100%; border: 0; background: #fff; border-radius: 22px; padding: 14px; margin-bottom: 10px; cursor: pointer; text-align: left; font: 700 15px 'Urbanist'; color: #111214; }
+  .row .ic { width: 38px; height: 38px; border-radius: 50%; background: #F3F4F6; display: grid; place-items: center; flex: 0 0 auto; } .row span { flex: 1; min-width: 0; } .row small { display: block; font: 500 12px 'Urbanist'; color: var(--mute); } .row.on { box-shadow: inset 0 0 0 2px #111214; }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .banner { position: relative; display: block; width: 100%; border: 0; cursor: pointer; text-align: left; border-radius: 26px; padding: 18px; margin-bottom: 12px; background: linear-gradient(135deg, #BFE3EA, #A6D3DF); color: #0F2E36; overflow: hidden; font: 15px 'Urbanist'; }
+  .banner::after { content: ''; position: absolute; right: -40px; top: -40px; width: 160px; height: 160px; border-radius: 50%; background: rgba(255,255,255,.25); }
+  .banner .k { font: 700 11px 'Urbanist'; letter-spacing: .12em; background: rgba(255,255,255,.6); border-radius: 10px; padding: 2px 8px; } .banner h3 { margin: 10px 0 4px; font: 800 24px/1.1 'Urbanist'; } .banner small { color: #2F525B; }
+  .wp { display: flex; align-items: center; gap: 12px; } .wp .tx { flex: 1; } .wp svg { width: 56px; height: 56px; }
+  .muscles { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; } .muscles button { border: 0; background: #F3F4F6; border-radius: 20px; padding: 10px; cursor: pointer; font: 700 13px 'Urbanist'; color: #111214; } .muscles .art { width: 100%; height: 150px; }
+  .sets { display: flex; flex-wrap: wrap; gap: 6px; margin: -2px 0 10px; }
+  .sb { border: 1px solid #E4E6EA; background: #fff; border-radius: 16px; padding: 8px 11px; font: 700 13px 'Urbanist'; cursor: pointer; color: #111214; } .sb.on { background: #111214; color: #fff; border-color: #111214; } .sb.nx { border-color: #111214; } .sb.e { border: 0; background: none; text-decoration: underline; color: var(--mute); }
+  .btn { display: block; width: 100%; border: 0; border-radius: 30px; padding: 15px; margin: 8px 0; cursor: pointer; font: 700 16px 'Urbanist'; background: #111214; color: #fff; } .btn.l { background: #fff; color: #111214; }
+  .week { display: flex; justify-content: space-between; margin-bottom: 12px; } .week button { border: 0; background: none; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 4px; font: 600 12px 'Urbanist'; color: var(--mute); }
+  .week button b { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; color: #111214; } .week button.on b { background: #111214; color: #fff; } .week button.dn b { background: var(--mint); }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+  .mt { border: 0; background: #fff; border-radius: 22px; padding: 14px; text-align: left; cursor: pointer; font: 700 15px 'Urbanist'; color: #111214; position: relative; overflow: hidden; }
+  .mt b { display: block; font: 800 26px 'Urbanist'; margin-top: 8px; } .mt small { color: var(--mute); font-weight: 600; } .mt .ic { position: absolute; right: 12px; top: 12px; width: 30px; height: 30px; border-radius: 50%; background: var(--c); display: grid; place-items: center; font-size: 13px; }
+  .mt.tall { grid-row: span 2; background: linear-gradient(transparent 40%, #CFEBD9 40%); } .mt.tall svg { position: absolute; left: 0; right: 0; bottom: 0; width: 100%; height: 60%; }
+  .stat svg { display: block; width: 100%; height: 170px; }
+  nav { display: flex; justify-content: space-around; align-items: center; background: #fff; margin: 0 14px 22px; padding: 8px; border-radius: 40px; box-shadow: 0 8px 24px rgba(17,18,20,.08); }
+  nav button { width: 50px; height: 50px; border: 0; border-radius: 50%; background: none; color: #111214; cursor: pointer; display: grid; place-items: center; } nav button.is-active { background: #111214; color: #fff; }
+  .post { background: #fff; border-radius: 22px; padding: 12px; margin-bottom: 10px; cursor: pointer; }
+  h2 { font: 800 20px 'Urbanist'; margin: 6px 2px 12px; display: flex; justify-content: space-between; align-items: center; }
+</style>
+</head>
+<body class="concept">
+<aside class="concept-info" id="info"></aside>
+<div class="device"><div class="app" id="app">
+  <main data-scroll><section data-screen="home"></section><section data-screen="records" hidden></section><section data-screen="plans" hidden></section><section data-screen="workout" hidden></section><section data-screen="me" hidden></section></main>
+  <nav id="nav"></nav>
+</div></div>
+<script src="designs.js"></script>
+<script src="../r2/lib.js"></script><script src="../r2/core.js"></script><script src="../r2/kit.js"></script><script src="../r3/r3.js"></script><script src="art.js"></script>
+<script>
+(function () {
+  const G = GQ2, K = Kit, I = K.icon, e = G.esc;
+  document.getElementById('nav').innerHTML = [['home', 'home', 'Home'], ['records', 'trophy', 'Activity'], ['plans', 'star', 'Plans'], ['workout', 'heart', 'Workout'], ['me', 'user', 'Profile']].map(([k, ic, l]) => '<button data-tab="' + k + '" aria-label="' + l + '">' + I(ic) + '</button>').join('');
+  const ROW = (ic, t, sub, attr, cls) => '<button class="row ' + (cls || '') + '" ' + attr + '><span class="ic">' + I(ic) + '</span><span>' + t + (sub ? '<small>' + sub + '</small>' : '') + '</span>' + I('chevron') + '</button>';
+  const link = (l) => ROW(l.icon, l.label, l.sub, l.attr);
+  /* three concentric rings: week goal, sets vs a target, minutes vs a target (dataviz: one hue per measure, legend below) */
+  function rings(vals) {
+    const cols = ['#7CC6D6', '#B5E2C4', '#F4D98A'], R = [100, 78, 56];
+    return '<svg class="rings" viewBox="0 0 230 230" role="img" aria-label="Weekly progress rings">' + vals.map((v, i) => { const r = R[i], c = 2 * Math.PI * r; return '<circle cx="115" cy="115" r="' + r + '" fill="none" stroke="#EEF0F2" stroke-width="16"/><circle cx="115" cy="115" r="' + r + '" fill="none" stroke="' + cols[i] + '" stroke-width="16" stroke-linecap="round" stroke-dasharray="' + c.toFixed(1) + '" stroke-dashoffset="' + (c * (1 - Math.min(1, v))).toFixed(1) + '" transform="rotate(-90 115 115)"/>'; }).join('')
+      + '<text x="115" y="112" text-anchor="middle" font-size="28" font-weight="800" font-family="Urbanist">' + Math.round(vals[0] * 100) + '%</text><text x="115" y="132" text-anchor="middle" font-size="11" fill="#74777F" font-family="Urbanist">of the weekly goal</text></svg>';
+  }
+  function home() {
+    const w = G.weekInfo(), r = G.recommended(), s = G.sess(), sets = G.weeklySeries(1)[0].sets;
+    return '<div class="hdr"><span class="av">' + e((G.state.profile.name || 'G')[0]) + '</span><span class="t"><b>Hi, ' + e(G.state.profile.name || 'there') + '</b><small>' + (new Date().getHours() < 12 ? 'Good morning' : 'Good evening') + '</small></span><button class="icb" data-open="profile" aria-label="Reminders">' + I('bell') + '</button><button class="icb" data-open="newplan" aria-label="New plan">' + I('plus') + '</button></div>'
+      + '<div class="card"><h3>Progress <button class="go" data-open="calendar" aria-label="Open calendar">↗</button></h3>' + rings([w.done / w.goal, sets / 40, w.minutes / 180])
+      + '<div class="legend"><span><i style="background:#7CC6D6"></i>Workouts ' + w.done + '/' + w.goal + '</span><span><i style="background:#B5E2C4"></i>Sets ' + sets + '/40</span><span><i style="background:#F4D98A"></i>Minutes ' + w.minutes + '/180</span></div></div>'
+      + '<div class="tiles"><button class="tile" style="--c:#FCE3CF" data-open="food"><span class="ic">🔥</span>Calories<small>' + G.foodDay().kcal + ' kcal</small></button><button class="tile" style="--c:#DCEBFA" data-open="activity"><span class="ic">👟</span>Steps<small>run, walk, ride</small></button><button class="tile" style="--c:#F8DCE8" data-open="history"><span class="ic">⏱</span>Moving<small>' + w.minutes + ' min</small></button></div>'
+      + (s ? ROW('play', 'Continue ' + e(s.planName), G.progress().done + ' of ' + G.progress().total + ' sets', 'data-tab="workout"', 'on') : r ? ROW('play', 'Start ' + e(r.name), r.exercises.length + ' exercises · ' + G.planMinutes(r) + ' min', 'data-do="start" data-arg="' + r.id + '"', 'on') : '')
+      + ROW('flame', 'Streak', G.streak() + ' weeks in a row', 'data-open="achievements"')
+      + '<div class="two">' + ROW('timer', 'Rest', 'timer', 'data-open="rest"') + ROW('heart', 'Body', 'weight', 'data-open="body"') + '</div>'
+      + ROW('flag', w.excused ? 'Week excused' : 'Excuse this week', 'Ill or busy? The streak is kept', 'data-do="excuse"');
+  }
+  function workout() {
+    const s = G.sess(), r = G.recommended(), p = G.progress(), ms = G.muscleSets(7), mx = Math.max(1, ...Object.values(ms)), norm = Object.fromEntries(Object.entries(ms).map(([k, v]) => [k, v / mx]));
+    const ring = (pct) => { const rr = 22, c = 2 * Math.PI * rr; return '<svg viewBox="0 0 56 56" aria-hidden="true"><circle cx="28" cy="28" r="' + rr + '" fill="none" stroke="#EEF0F2" stroke-width="6"/><circle cx="28" cy="28" r="' + rr + '" fill="none" stroke="#7CC6D6" stroke-width="6" stroke-linecap="round" stroke-dasharray="' + c.toFixed(1) + '" stroke-dashoffset="' + (c * (1 - pct / 100)).toFixed(1) + '" transform="rotate(-90 28 28)"/><text x="28" y="32" text-anchor="middle" font-size="12" font-weight="800" font-family="Urbanist">' + Math.round(pct) + '%</text></svg>'; };
+    const top = '<h2>Workout <button class="go" data-open="newplan" aria-label="New plan">' + I('plus') + '</button></h2>'
+      + (s ? '<button class="banner" data-do="log"><span class="k">IN PROGRESS</span><h3>' + e(s.planName) + '</h3><small>Tap to log the next set · <span data-live="elapsed"></span></small></button>' : r ? '<button class="banner" data-do="start" data-arg="' + r.id + '"><span class="k">NEXT UP</span><h3>' + e(r.name) + ' training</h3><small>' + r.exercises.length + ' exercises · ' + G.planMinutes(r) + ' min · tap to start</small></button>' : '')
+      + '<div class="card wp"><div class="tx"><b>Workout progress</b><br><small style="color:#74777F">' + (s ? (p.total - p.done) + ' sets left · rest <span data-live="rest" data-idle="–" data-done="0:00"></span>' : 'start a workout to track it') + '</small></div>' + ring(p.pct) + '</div>'
+      + '<div class="card"><h3>Muscles workload</h3><small style="color:#74777F">Sets per muscle in the last 7 days</small><div class="muscles" style="margin-top:10px"><button data-open="library">' + Art.body(norm, '#3E8FA3', { label: 'Muscles worked this week, front' }) + 'Upper body</button><button data-open="fullbody">' + Art.body({ legs: norm.legs, glutes: norm.glutes, core: norm.core }, '#5DAF7A', { label: 'Legs and core this week' }) + 'Legs and core</button></div></div>';
+    if (!s) return top + G.plans().map((pl) => ROW('play', 'Start ' + e(pl.name), pl.exercises.length + ' exercises', 'data-do="start" data-arg="' + pl.id + '"')).join('');
+    return top + s.exercises.map((x, i) => ROW(R3.exDone(x) ? 'check' : 'dumbbell', e(x.name), R3.cmp(s, x), 'data-do="cur" data-arg="' + i + '"', i === s.cur ? 'on' : '')
+        + '<div class="sets">' + R3.sets(x, i).map((q) => '<button class="sb ' + (q.done ? 'on' : q.next ? 'nx' : '') + '" ' + q.attr + '>' + (q.side ? q.side + ' ' : '') + q.wb + ' × ' + q.r + '</button>').join('') + (i === s.cur ? R3.sets(x, i).map((q) => '<button class="sb e" ' + q.edit + '>edit ' + (q.j + 1) + '</button>').join('') + R3.tools(i, x, (t) => '<button class="sb e" ' + t.attr + '>' + t.label.toLowerCase() + '</button>') : '') + '</div>').join('')
+      + '<button class="btn" data-do="finish">Finish workout · +' + p.xp + ' XP</button><button class="btn l" data-do="discard">Discard workout</button>';
+  }
+  function records() {
+    const w = G.weekInfo(), ser = G.weeklySeries(7), mx = Math.max(1, ...ser.map((x) => x.minutes)), hi = ser.findIndex((x) => x.minutes === mx);
+    const area = ser.map((x, i) => (i / (ser.length - 1) * 150).toFixed(1) + ',' + (60 - x.minutes / mx * 50).toFixed(1)).join(' ');
+    const bars = '<svg viewBox="0 0 320 170" role="img" aria-label="Training minutes per week, last 7 weeks">' + ser.map((x, i) => { const h = Math.max(8, x.minutes / mx * 120), xx = 10 + i * 44; return '<rect x="' + xx + '" y="' + (140 - h) + '" width="32" height="' + h + '" rx="8" fill="' + (i === hi ? '#7CC6D6' : '#DCEEF4') + '"/>' + (i === hi ? '<rect x="' + (xx - 8) + '" y="' + (118 - h) + '" width="48" height="16" rx="8" fill="#CFE6F2"/><text x="' + (xx + 16) + '" y="' + (130 - h) + '" font-size="9" font-weight="700" text-anchor="middle" font-family="Urbanist">' + x.minutes + ' min</text>' : '') + '<text x="' + (xx + 16) + '" y="158" font-size="10" fill="#74777F" text-anchor="middle" font-family="Urbanist">' + x.label + '</text>'; }).join('') + '</svg>';
+    return '<h2>My Activity <button class="go" data-open="calendar" aria-label="Calendar">' + I('calendar') + '</button></h2>'
+      + '<div class="week">' + w.days.map((d) => '<button class="' + (d.today ? 'on' : d.done ? 'dn' : '') + '" data-open="day" data-arg="' + d.date + '"><b>' + d.n + '</b>' + d.d.slice(0, 3) + '</button>').join('') + '</div>'
+      + '<div class="grid2"><button class="mt" style="--c:#DCEBFA" data-open="food"><span class="ic">💧</span>Food<b>' + G.foodDay().kcal + '</b><small>kcal today</small></button>'
+      + '<button class="mt tall" style="--c:#F8DCE8" data-open="history"><span class="ic">♥</span>Minutes<b>' + w.minutes + '</b><small>this week</small><svg viewBox="0 0 150 60" preserveAspectRatio="none" aria-hidden="true"><polygon points="0,60 ' + area + ' 150,60" fill="#9FD9B4"/></svg></button>'
+      + '<button class="mt" style="--c:#F7E9C2" data-open="records"><span class="ic">❗</span>Sets<b>' + ser[ser.length - 1].sets + '</b><small>this week</small></button></div>'
+      + '<div class="card stat"><h3>Statistic</h3>' + bars + '</div>' + R3.links('log body', link);
+  }
+  function plans() {
+    const r = G.recommended(), s = G.sess();
+    return '<h2>Plans</h2>' + G.plans().map((p) => ROW(p === r ? 'star' : 'dumbbell', e(p.name), p.exercises.length + ' exercises · ' + G.planMinutes(p) + ' min' + (p === r ? ' · next' : ''), 'data-do="select" data-arg="' + p.id + '"', p === G.selected() ? 'on' : '')).join('')
+      + (G.selected() && !s ? '<div class="two"><button class="btn" data-do="start" data-arg="' + G.selected().id + '">Start</button><button class="btn l" data-open="editplan" data-arg="' + G.selected().id + '">Edit plan</button></div>' : '') + R3.links('train', link);
+  }
+  function me() { const x = G.xp(); return '<h2>Profile</h2>' + ROW('medal', 'Level ' + x.level + ' · ' + G.levelTitle(x.level), x.total + ' XP', 'data-open="achievements"') + R3.links('social set', link) + ROW('more', 'Everything', 'Every feature in one list', 'data-open="menu"') + G.feed().map((p) => '<div class="post" data-open="postview" data-arg="' + p.id + '">' + K.postCard(p) + '</div>').join(''); }
+  R3.app({ root: document.getElementById('app'), train: 'workout', screens: { home, records, plans, workout, me } });
+})();
+</script>
+</body>
+</html>

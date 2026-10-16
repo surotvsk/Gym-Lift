@@ -11,7 +11,7 @@
   <title>GymQuest</title>
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
-  <link rel="stylesheet" href="style.css?v=76">
+  <link rel="stylesheet" href="style.css?v=77">
 </head>
 <body>
 
@@ -510,6 +510,13 @@
         <button type="button" class="btn btn-secondary btn-block" id="btn-change-lang" data-i18n="settings.changeLanguage">Zmeniť jazyk</button>
       </div>
 
+      <!-- Ukážky dizajnov: len náhľad iného vzhľadu (vzorové dáta), aplikácia sa nemení -->
+      <div class="setting-block">
+        <span class="card-title" data-i18n="designs.title">Vzhľad aplikácie</span>
+        <span class="card-sub" data-i18n="designs.hint">Pozri si, ako by GymQuest mohol vyzerať. Len ukážky – tvoja aplikácia ani dáta sa nemenia.</span>
+        <button type="button" class="btn btn-secondary btn-block" id="btn-design-previews" data-i18n="designs.open">Ukážky dizajnov</button>
+      </div>
+
       <div class="setting-block">
         <span class="card-title" data-i18n="community.title">Community</span>
         <span class="card-sub" data-i18n="community.settingsHint">Voliteľná online komunita. Predvolene vypnutá a nič neposiela, kým ju nezapneš.</span>
@@ -624,6 +631,30 @@
       </div>
       <input type="file" id="file-import" accept="application/json,.json" hidden>
     </div>
+  </div>
+
+  <!-- ============ MODAL: ukážky dizajnov (výber) ============ -->
+  <div class="modal-backdrop" id="modal-designs" hidden>
+    <div class="modal">
+      <h3 data-i18n="designs.pickTitle">Ukážky dizajnov</h3>
+      <p class="card-note" data-i18n="designs.pickNote">Ťukni na dizajn a pozri si ho. Ukážky používajú vzorové dáta a nie všetko v nich funguje.</p>
+      <div class="design-grid" id="design-grid" role="list"></div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-secondary" id="btn-designs-close" data-i18n="common.close">Zavrieť</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ Ukážka dizajnu na celú obrazovku (vnútri aplikácie, aby sa dalo vrátiť aj v nainštalovanej appke) ============ -->
+  <div class="design-view" id="design-view" role="dialog" aria-modal="true" aria-labelledby="design-view-title" hidden>
+    <div class="design-view-bar">
+      <div class="design-view-text">
+        <span class="design-view-title" id="design-view-title"></span>
+        <span class="design-view-note" data-i18n="designs.viewNote">Len ukážka · vzorové dáta</span>
+      </div>
+      <button type="button" class="btn btn-primary btn-sm" id="btn-design-view-close" data-i18n="designs.back">Späť do aplikácie</button>
+    </div>
+    <iframe class="design-view-frame" id="design-view-frame" title="" loading="lazy"></iframe>
   </div>
 
   <!-- ============ MODAL: výber jazyka ============ -->
@@ -933,8 +964,8 @@
     </div>
   </div>
 
-  <script src="community-config.js?v=76"></script>
-  <script src="vendor/supabase-js.js?v=76"></script>
-  <script src="script.js?v=76"></script>
+  <script src="community-config.js?v=77"></script>
+  <script src="vendor/supabase-js.js?v=77"></script>
+  <script src="script.js?v=77"></script>
 </body>
 </html>

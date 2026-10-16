@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>02 · Pastel Planner — GymQuest concept</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../frame.css">
+<link rel="stylesheet" href="../r2/kit.css">
+<style>
+  .app { position: absolute; inset: 0; display: flex; flex-direction: column; background: linear-gradient(160deg, #F3F4F7, #E9ECF1); color: #15161A; font: 14px/1.4 'Manrope', sans-serif;
+    --mute: #6B6F78; --k-bg: #FFFFFF; --k-fg: #15161A; --k-mute: #6B6F78; --k-card: #F2F3F6; --k-line: #E3E5EA; --k-acc: #15161A; --k-acc-fg: #fff; --k-radius: 22px; --k-font: 'Manrope', sans-serif; }
+  body.concept { background: linear-gradient(135deg, #D7DCE3, #EEF0F3); }
+  main { flex: 1; overflow-y: auto; padding: 46px 16px 110px; }
+  .hdr { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; } .hdr .t { flex: 1; } .hdr b { font: 800 22px 'Manrope'; } .hdr small { display: block; color: var(--mute); }
+  .icb { width: 44px; height: 44px; border-radius: 50%; border: 0; background: rgba(255,255,255,.8); display: grid; place-items: center; cursor: pointer; color: #15161A; }
+  .av { width: 44px; height: 44px; border-radius: 50%; border: 0; cursor: pointer; background: linear-gradient(135deg, #F2C3A0, #B9805E); color: #fff; font: 800 16px 'Manrope'; }
+  .hero { position: relative; display: block; width: 100%; border: 0; text-align: left; cursor: pointer; border-radius: 26px; padding: 18px 16px; margin-bottom: 12px; background: linear-gradient(135deg, var(--a), var(--b)); color: #15161A; overflow: hidden; min-height: 150px; font: 14px 'Manrope'; }
+  .hero h3 { margin: 0 0 4px; font: 800 22px/1.1 'Manrope'; max-width: 58%; } .hero p { margin: 0 0 12px; color: #3C3F47; font-size: 13px; max-width: 58%; }
+  .hero .art { position: absolute; right: -10px; bottom: -6px; width: 190px; height: 150px; }
+  .chip { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,.75); border-radius: 20px; padding: 6px 12px; font: 700 12px 'Manrope'; margin-right: 6px; }
+  .hero .big { font: 800 30px 'Manrope'; margin-top: 10px; display: block; }
+  .cats { display: flex; gap: 8px; overflow-x: auto; margin: 0 -16px 12px; padding: 0 16px; scrollbar-width: none; }
+  .cat { flex: 0 0 auto; display: flex; align-items: center; gap: 8px; border: 0; border-radius: 16px; padding: 8px 12px; cursor: pointer; background: var(--c); font: 700 13px 'Manrope'; color: #15161A; }
+  .cat span { width: 28px; height: 28px; border-radius: 50%; background: rgba(255,255,255,.7); display: grid; place-items: center; }
+  .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+  .glass { background: rgba(255,255,255,.75); border-radius: 22px; padding: 14px; box-shadow: 0 4px 20px rgba(21,22,26,.05); border: 0; text-align: left; font: 14px 'Manrope'; color: #15161A; cursor: pointer; }
+  .glass b { display: block; font: 800 26px 'Manrope'; margin-top: 6px; } .glass small { color: var(--mute); font-weight: 600; }
+  .cal { background: rgba(255,255,255,.8); border-radius: 26px; padding: 14px; margin-bottom: 12px; }
+  .cal .top { display: flex; justify-content: space-between; align-items: center; font-weight: 700; margin-bottom: 10px; } .cal .top button { border: 0; background: none; cursor: pointer; font: 700 14px 'Manrope'; color: #15161A; }
+  .cal .g { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; text-align: center; } .cal .g span { font: 700 11px 'Manrope'; color: var(--mute); }
+  .cal .g button { aspect-ratio: 1; border: 0; border-radius: 50%; background: none; cursor: pointer; font: 600 12px 'Manrope'; color: #15161A; }
+  .cal .g button.dn { background: radial-gradient(circle at 50% 38%, #F2C3A0 0 22%, #3A3F55 23% 100%); color: transparent; box-shadow: 0 0 0 2px #fff, 0 0 0 3px #3A3F55; } .cal .g button.tdy { background: #8E8CF2; color: #fff; } .cal .g button.out { color: #B8BBC3; } .cal .g button.ex { box-shadow: inset 0 0 0 1.5px #8E8CF2; }
+  .plan { position: relative; border-radius: 26px; padding: 16px; margin-bottom: 12px; background: linear-gradient(135deg, var(--a), var(--b)); overflow: hidden; }
+  .plan h3 { margin: 0; font: 800 20px 'Manrope'; max-width: 64%; cursor: pointer; } .plan p { margin: 2px 0 10px; color: #3C3F47; font-size: 12.5px; max-width: 64%; }
+  .plan .art { position: absolute; right: -16px; top: 0; width: 150px; height: 120px; }
+  .acts { position: relative; display: flex; gap: 8px; } .acts button { flex: 1; min-height: 44px; border: 0; border-radius: 26px; padding: 11px; cursor: pointer; font: 700 14px 'Manrope'; display: flex; align-items: center; justify-content: center; gap: 6px; }
+  .acts .rp { background: rgba(255,255,255,.75); color: #15161A; } .acts .pl { background: #15161A; color: #fff; }
+  .sets { position: relative; display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 10px; }
+  .sb { border: 0; background: rgba(255,255,255,.7); border-radius: 14px; padding: 7px 10px; font: 700 12px 'Manrope'; cursor: pointer; color: #15161A; } .sb.on { background: #15161A; color: #fff; } .sb.nx { box-shadow: inset 0 0 0 2px #15161A; } .sb.e { background: none; text-decoration: underline; font-weight: 600; }
+  .seg { display: flex; gap: 8px; overflow-x: auto; margin-bottom: 12px; scrollbar-width: none; } .seg button { flex: 0 0 auto; border: 0; border-radius: 20px; padding: 9px 14px; cursor: pointer; font: 700 13px 'Manrope'; background: var(--c); color: #15161A; display: flex; gap: 6px; align-items: center; }
+  .res svg { display: block; width: 100%; height: 150px; }
+  .ha { display: flex; align-items: center; gap: 10px; } .ha .tx { flex: 1; } .ha .tx b { font-size: 24px; } .ha .rg { width: 76px; height: 76px; }
+  .row { display: flex; align-items: center; gap: 12px; width: 100%; border: 0; background: rgba(255,255,255,.75); border-radius: 20px; padding: 13px 14px; margin-bottom: 8px; cursor: pointer; text-align: left; font: 700 15px 'Manrope'; color: #15161A; }
+  .row span { flex: 1; min-width: 0; } .row small { display: block; font-weight: 500; font-size: 12px; color: var(--mute); } .row.on { box-shadow: inset 0 0 0 2px #15161A; }
+  h2 { font: 800 17px 'Manrope'; margin: 6px 2px 10px; display: flex; justify-content: space-between; } h2 small { font: 600 13px 'Manrope'; color: var(--mute); }
+  nav { position: absolute; left: 50%; bottom: 22px; transform: translateX(-50%); display: flex; gap: 4px; background: rgba(255,255,255,.92); border-radius: 40px; padding: 6px; box-shadow: 0 10px 30px rgba(21,22,26,.15); z-index: 5; }
+  nav button { min-width: 48px; height: 48px; border: 0; border-radius: 26px; background: none; cursor: pointer; color: #15161A; display: flex; align-items: center; justify-content: center; gap: 6px; font: 700 13px 'Manrope'; padding: 0 12px; }
+  nav button span { display: none; } nav button.is-active { background: #E7E8F0; } nav button.is-active span { display: inline; }
+  .post { background: rgba(255,255,255,.8); border-radius: 20px; padding: 12px; margin-bottom: 10px; cursor: pointer; }
+</style>
+</head>
+<body class="concept">
+<aside class="concept-info" id="info"></aside>
+<div class="device"><div class="app" id="app">
+  <main data-scroll><section data-screen="home"></section><section data-screen="planner" hidden></section><section data-screen="analysis" hidden></section><section data-screen="profile" hidden></section></main>
+  <nav id="nav"></nav>
+</div></div>
+<script src="designs.js"></script>
+<script src="../r2/lib.js"></script><script src="../r2/core.js"></script><script src="../r2/kit.js"></script><script src="../r3/r3.js"></script><script src="art.js"></script>
+<script>
+(function () {
+  const G = GQ2, K = Kit, I = K.icon, e = G.esc;
+  document.getElementById('nav').innerHTML = [['home', 'home', 'Home'], ['planner', 'calendar', 'Planner'], ['analysis', 'chart', 'Analysis'], ['profile', 'user', 'Profile']].map(([k, ic, l]) => '<button data-tab="' + k + '" aria-label="' + l + '">' + I(ic) + '<span>' + l + '</span></button>').join('');
+  const PAL = [['#E8D3F7', '#F5D6EA'], ['#CFE3F5', '#E3EEF9'], ['#D3EDCF', '#E9F6E3'], ['#F6D9C9', '#FBE9DE'], ['#F3D1E7', '#F9E4F1'], ['#D7D8F7', '#EAEAFB']];
+  const POSE = ['stretch', 'lift', 'pushup', 'run', 'yoga', 'walk'];
+  const ROW = (ic, t, sub, attr, cls) => '<button class="row ' + (cls || '') + '" ' + attr + '>' + I(ic) + '<span>' + t + (sub ? '<small>' + sub + '</small>' : '') + '</span>' + I('chevron') + '</button>';
+  const link = (l) => ROW(l.icon, l.label, l.sub, l.attr);
+  const fig = (i, pose) => Art.figure(pose || POSE[i % POSE.length], { top: ['#7B5CC9', '#3E7CC9', '#3E9A5A', '#D9683E', '#C24F9B', '#5B5BE6'][i % 6], bottom: '#2B2340' });
+  function home() {
+    const w = G.weekInfo(), r = G.recommended(), s = G.sess(), pl = G.plans();
+    return '<div class="hdr"><span class="t"><b>Hi ' + e(G.state.profile.name || 'there') + '!</b><small>Move better every day · week ' + w.num + ', ' + w.done + ' of ' + w.goal + '</small></span><button class="icb" data-open="library" aria-label="Search exercises">' + I('search') + '</button><button class="av" data-open="profile" aria-label="Profile">' + e((G.state.profile.name || 'G')[0]) + '</button></div>'
+      + (s ? '<button class="hero" style="--a:#E8D3F7;--b:#F5D6EA" data-tab="planner"><h3>' + e(s.planName) + '</h3><p>Workout in progress · ' + G.progress().done + ' of ' + G.progress().total + ' sets</p><span class="chip">' + I('clock') + '<span data-live="elapsed"></span></span>' + fig(0, 'lift') + '</button>'
+        : r ? '<button class="hero" style="--a:#E8D3F7;--b:#F5D6EA" data-do="start" data-arg="' + r.id + '"><h3>' + e(r.name) + ' Training</h3><p>Next in your rotation · tap to start</p><span class="chip">▶ ' + G.planMinutes(r) + ' min</span><span class="chip">' + I('dumbbell') + r.exercises.length + ' exercises</span>' + fig(0, 'lift') + '</button>' : '')
+      + '<div class="cats">' + [['Library', '📚', 'library', '#F5E0B8'], ['Rest timer', '⏱', 'rest', '#D7D8F7'], ['Full Body', '🧩', 'fullbody', '#CFE3F5'], ['New plan', '＋', 'newplan', '#D3EDCF'], ['Plans', '📋', 'plans', '#F3D1E7']].map(([l, ic, o, c]) => '<button class="cat" style="--c:' + c + '" data-open="' + o + '"><span>' + ic + '</span>' + l + '</button>').join('') + '</div>'
+      + pl.map((p, i) => '<button class="hero" style="--a:' + PAL[(i + 1) % 6][0] + ';--b:' + PAL[(i + 1) % 6][1] + ';min-height:130px" data-do="select" data-arg="' + p.id + '"><h3>' + e(p.name) + (p === G.selected() ? ' ✓' : '') + '</h3><p>' + p.exercises.slice(0, 3).map((x) => e(x.name)).join(', ') + '</p><span class="big">' + G.planMinutes(p) + ' min</span>' + fig(i + 1) + '</button>').join('')
+      + (G.selected() && !s ? '<div class="acts" style="margin-bottom:12px"><button class="rp" data-open="editplan" data-arg="' + G.selected().id + '">' + I('edit') + 'Edit ' + e(G.selected().name) + '</button><button class="pl" data-do="start" data-arg="' + G.selected().id + '">' + I('play') + 'Start</button></div>' : '')
+      + ROW('flag', w.excused ? 'Week excused' : 'Excuse this week', 'Ill or busy? The streak is kept', 'data-do="excuse"');
+  }
+  function calendar() {
+    const t = G.parse(G.today()), m = G.month(t.getFullYear(), t.getMonth()), dates = new Set(G.history().map((h) => h.date));
+    return '<div class="cal"><div class="top"><span>' + I('calendar') + ' ' + m.title + '</span><button data-open="calendar">Open ' + I('chevron') + '</button></div><div class="g">' + G.WD.map((d) => '<span>' + d.slice(0, 3) + '</span>').join('')
+      + m.days.map((d) => { const dt = d.date || d, n = G.parse(dt).getDate(), out = G.parse(dt).getMonth() !== t.getMonth(); return '<button class="' + (dt === G.today() ? 'tdy' : dates.has(dt) ? 'dn' : out ? 'out' : '') + (G.isExcused && G.isExcused(G.weekKey(dt)) && !dates.has(dt) ? ' ex' : '') + '" data-open="day" data-arg="' + dt + '" aria-label="' + G.fmtShort(dt) + (dates.has(dt) ? ', trained' : '') + '">' + n + '</button>'; }).join('') + '</div></div>';
+  }
+  function planner() {
+    const w = G.weekInfo(), s = G.sess();
+    const top = '<div class="pair"><button class="glass" data-open="achievements">' + I('flame') + ' XP this week<b>' + G.xp().weekXP + '</b><small>level ' + G.xp().level + '</small></button><button class="glass" data-open="calendar">' + I('check') + ' Days done<b>' + G.history().filter((h) => h.date.slice(0, 7) === G.today().slice(0, 7)).length + '</b><small>this month · streak ' + G.streak() + '</small></button></div>' + calendar();
+    if (!s) return top + '<h2>Daily plan <small>(' + G.fmtShort(G.today()) + ')</small></h2>' + G.plans().slice(0, 4).map((p, i) => '<div class="plan" style="--a:' + PAL[i % 6][0] + ';--b:' + PAL[i % 6][1] + '">' + fig(i) + '<h3>' + e(p.name) + '</h3><p>' + p.exercises.length + ' exercises · ' + G.planMinutes(p) + ' min</p><div class="acts"><button class="rp" data-open="editplan" data-arg="' + p.id + '">' + I('edit') + 'Edit</button><button class="pl" data-do="start" data-arg="' + p.id + '">' + I('play') + 'Play</button></div></div>').join('');
+    const p = G.progress();
+    return top + '<h2>' + e(s.planName) + ' <small><span data-live="elapsed"></span> · rest <span data-live="rest" data-idle="–" data-done="0:00"></span></small></h2>'
+      + s.exercises.map((x, i) => { const ss = R3.sets(x, i), nx = ss.find((q) => q.next); return '<div class="plan" style="--a:' + PAL[i % 6][0] + ';--b:' + PAL[i % 6][1] + '">' + fig(i) + '<h3 data-do="cur" data-arg="' + i + '">' + (R3.exDone(x) ? '✓ ' : '') + e(x.name) + '</h3><p>' + x.sets.length + ' sets × ' + x.reps + ' · ' + R3.cmp(s, x) + '</p>'
+        + '<div class="sets">' + ss.map((q) => '<button class="sb ' + (q.done ? 'on' : q.next ? 'nx' : '') + '" ' + q.attr + '>' + (q.side ? q.side + ' ' : '') + q.wb + '×' + q.r + '</button>').join('') + (i === s.cur ? ss.map((q) => '<button class="sb e" ' + q.edit + '>edit ' + (q.j + 1) + '</button>').join('') + R3.tools(i, x, (t) => t.k === 'replace' ? '' : '<button class="sb e" ' + t.attr + '>' + t.label.toLowerCase() + '</button>') : '') + '</div>'
+        + '<div class="acts"><button class="rp" data-open="replace" data-arg="' + i + '">' + I('swap') + 'Replace</button>' + (nx ? '<button class="pl" ' + nx.attr + '>' + I('play') + 'Play set ' + (nx.j + 1) + '</button>' : '<button class="pl" data-do="next">' + I('check') + 'Done</button>') + '</div></div>'; }).join('')
+      + '<div class="acts" style="margin-bottom:8px"><button class="pl" data-do="finish">' + I('check') + 'Finish · +' + p.xp + ' XP</button></div><div class="acts"><button class="rp" data-do="log">Log next set</button><button class="rp" data-do="discard">Discard</button></div>';
+  }
+  function analysis() {
+    const mons = Array.from({ length: 7 }, (_, k) => { const d = G.parse(G.today()); d.setMonth(d.getMonth() - 6 + k); const ym = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0'); return { l: G.MONTHS[d.getMonth()].slice(0, 3), v: G.history().filter((h) => h.date.slice(0, 7) === ym).reduce((a, h) => a + h.minutes, 0) }; });
+    const mx = Math.max(1, ...mons.map((m) => m.v)), tot = mons[mons.length - 1].v, x = G.xp();
+    const svg = '<svg viewBox="0 0 320 150" role="img" aria-label="Training minutes per month">' + mons.map((m, i) => { const h = Math.max(8, m.v / mx * 110), xx = 12 + i * 44, hi = m.v === mx; return '<rect x="' + xx + '" y="' + (128 - h) + '" width="30" height="' + h + '" rx="10" fill="' + (hi ? 'url(#hb)' : '#E4E6F4') + '"/><text x="' + (xx + 15) + '" y="146" font-size="10" text-anchor="middle" fill="#6B6F78" font-family="Manrope">' + m.l + '</text>'; }).join('') + '<defs><pattern id="hb" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" fill="#D7D8F7"/><rect width="3" height="6" fill="#C4C5F2"/></pattern></defs></svg>';
+    const rg = (pct, lbl) => { const r = 30, c = 2 * Math.PI * r; return '<svg class="rg" viewBox="0 0 76 76" aria-hidden="true"><circle cx="38" cy="38" r="' + r + '" fill="none" stroke="#E4E6F4" stroke-width="8"/><circle cx="38" cy="38" r="' + r + '" fill="none" stroke="#15161A" stroke-width="8" stroke-linecap="round" stroke-dasharray="' + c.toFixed(1) + '" stroke-dashoffset="' + (c * (1 - pct / 100)).toFixed(1) + '" transform="rotate(-90 38 38)"/><text x="38" y="42" text-anchor="middle" font-size="13" font-weight="800" font-family="Manrope">' + lbl + '</text></svg>'; };
+    return '<div class="seg">' + [['Body', '⚖️', 'body', '#F3D1E7'], ['Food', '🍎', 'food', '#E8D3F7'], ['Photos', '📷', 'photos', '#CFE3F5'], ['Records', '🏆', 'records', '#D3EDCF']].map(([l, ic, o, c]) => '<button style="--c:' + c + '" data-open="' + o + '">' + ic + ' ' + l + '</button>').join('') + '</div>'
+      + '<h2>My Results</h2><div class="glass res" style="cursor:default"><small>Your activity this month</small><b>' + Math.floor(tot / 60) + '<small>hr</small> ' + (tot % 60) + '<small>min</small></b>' + svg + '</div>'
+      + '<h2>Recent Result <small data-open="history" style="cursor:pointer">View all</small></h2>'
+      + '<div class="plan" style="--a:#CFE3F5;--b:#E3EEF9"><div class="ha"><div class="tx"><h3 style="max-width:none">Level progress</h3><small>' + x.into + ' of ' + x.need + ' XP to level ' + (x.level + 1) + '</small><br><b>' + x.total + ' XP</b></div>' + rg(x.pct, Math.round(x.pct) + '%') + '</div></div>'
+      + '<div class="plan" style="--a:#D3EDCF;--b:#E9F6E3"><div class="ha"><div class="tx"><h3 style="max-width:none">Weekly goal</h3><small>' + G.weekInfo().done + ' of ' + G.goal() + ' workouts</small><br><b>' + G.weekInfo().minutes + ' min</b></div>' + rg(Math.min(100, G.weekInfo().done / G.goal() * 100), G.weekInfo().done + '/' + G.goal()) + '</div></div>'
+      + R3.links('log body', link);
+  }
+  function profile() { return '<h2>Profile</h2>' + R3.links('social set', link) + ROW('more', 'Everything', 'Every feature in one list', 'data-open="menu"') + '<h2>Community</h2>' + G.feed().map((p) => '<div class="post" data-open="postview" data-arg="' + p.id + '">' + K.postCard(p) + '</div>').join(''); }
+  R3.app({ root: document.getElementById('app'), train: 'planner', screens: { home, planner, analysis, profile } });
+})();
+</script>
+</body>
+</html>

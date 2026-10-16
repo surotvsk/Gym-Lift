@@ -100,6 +100,10 @@ the app shows an "update available" notice and never reloads during an active wo
 - **`design-concepts/`** holds standalone redesign prototypes (shared `data.js`, `frame.css`, `icons.js`,
   and an `index.html` gallery). It is not part of the app, is not precached, and `sw.js` skips every request
   under `/design-concepts/`.
+  `design-concepts/app/` is the exception the app links to: 11 self-contained previews (copies of the
+  owner's chosen round 2/3/4 designs with their shared `frame.css`, `r2/core.js`/`kit.*`/`lib.js`,
+  `r3/r3.js`/`ds.*` and `r4/art.js`) opened full screen in an iframe from Settings → Design previews
+  (`DESIGN_PREVIEWS` in `script.js`). Their sample data lives under `gymquest-concepts-r2`, never the app's key.
 
 ## Working conventions in this repo
 

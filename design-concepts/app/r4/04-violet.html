@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>04 · Violet Studio — GymQuest concept</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../frame.css">
+<link rel="stylesheet" href="../r2/kit.css">
+<style>
+  .app { position: absolute; inset: 0; display: flex; flex-direction: column; background: #EEEBF3; color: #2A1F3D; font: 14px/1.4 'Poppins', sans-serif;
+    --v1: #4B1D7A; --v2: #A64BC8; --mute: #7A7090; --grad: linear-gradient(135deg, #4B1D7A, #A64BC8);
+    --k-bg: #FFFFFF; --k-fg: #2A1F3D; --k-mute: #6E6584; --k-card: #F3F0F8; --k-line: #E4DFEC; --k-acc: #6A2A9C; --k-acc-fg: #fff; --k-radius: 20px; --k-font: 'Poppins', sans-serif; }
+  body.concept { background: linear-gradient(135deg, #D9D3E4, #F1EEF5); }
+  main { flex: 1; overflow-y: auto; padding: 46px 18px 16px; }
+  .welcome h1 { font: 800 30px/1.15 'Poppins'; margin: 0; max-width: 60%; color: #2A1F3D; }
+  .hero { position: relative; height: 270px; margin: -10px -18px 0; }
+  .hero .art { position: absolute; right: -10px; top: 0; width: 300px; height: 250px; }
+  .hero .blob { position: absolute; left: 30px; bottom: 10px; width: 240px; height: 130px; border-radius: 50%; background: #DCD4EA; }
+  .hero .cloud { position: absolute; right: 40px; bottom: 30px; width: 70px; height: 26px; border-radius: 20px; background: #fff; box-shadow: 18px -10px 0 -2px #fff; }
+  .hero .moon { position: absolute; right: 30px; top: 10px; width: 46px; height: 46px; border-radius: 50%; box-shadow: -10px 6px 0 0 #8A3FB3; transform: rotate(-20deg); }
+  .login { position: relative; background: #fff; border-radius: 28px; padding: 20px 18px 34px; box-shadow: 0 10px 30px rgba(75,29,122,.1); margin-top: -40px; }
+  .login h3 { margin: 0 0 12px; font: 700 18px 'Poppins'; }
+  .fld { display: flex; align-items: center; gap: 10px; border: 0; border-bottom: 1px solid #E4DFEC; width: 100%; background: none; padding: 10px 2px; margin-bottom: 4px; font: 500 14px 'Poppins'; color: #2A1F3D; cursor: pointer; text-align: left; } .fld .kico { color: var(--mute); width: 18px; height: 18px; } .fld span { flex: 1; }
+  .lrow { display: flex; justify-content: space-between; margin-top: 10px; } .lrow button { border: 0; background: none; color: var(--mute); font: 500 12px 'Poppins'; cursor: pointer; padding: 6px 0; }
+  .arrow { position: absolute; right: 22px; bottom: -24px; width: 56px; height: 56px; border-radius: 50%; border: 0; background: var(--grad); color: #fff; cursor: pointer; display: grid; place-items: center; box-shadow: 0 8px 18px rgba(75,29,122,.4); }
+  .topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; } .topbar button { border: 0; background: none; cursor: pointer; color: #2A1F3D; padding: 6px; }
+  .av { width: 36px; height: 36px; border-radius: 50%; background: var(--grad); color: #fff; display: grid; place-items: center; font-weight: 700; }
+  h2 { font: 700 20px 'Poppins'; margin: 4px 0 12px; display: flex; justify-content: space-between; align-items: center; } h2 small { font: 500 12px 'Poppins'; color: var(--mute); }
+  .search { display: flex; align-items: center; gap: 10px; width: 100%; border: 0; background: #fff; border-radius: 30px; padding: 12px 16px; color: var(--mute); font: 500 14px 'Poppins'; cursor: pointer; margin-bottom: 14px; text-align: left; }
+  .seg { display: flex; justify-content: space-between; margin-bottom: 14px; } .seg button { border: 0; background: none; border-radius: 20px; padding: 7px 16px; font: 600 13px 'Poppins'; color: var(--mute); cursor: pointer; } .seg button.on { background: var(--v1); color: #fff; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .tile { position: relative; border: 0; background: #fff; border-radius: 22px; padding: 14px; text-align: left; cursor: pointer; font: 700 15px 'Poppins'; color: #2A1F3D; min-height: 150px; }
+  .tile .ic { position: absolute; right: 12px; top: 12px; width: 28px; height: 28px; border-radius: 50%; background: var(--v1); color: #fff; display: grid; place-items: center; font-size: 12px; }
+  .tile.dark { background: var(--grad); color: #fff; } .tile.dark .ic { background: rgba(255,255,255,.25); } .tile.dark b { display: block; font: 700 24px 'Poppins'; margin-top: 18px; } .tile.dark small { color: #EAD9F5; }
+  .tile.tall { grid-row: span 2; }
+  .donut { display: block; width: 110px; height: 110px; margin: 10px auto 0; }
+  .hb { display: flex; align-items: flex-end; gap: 5px; height: 70px; margin-top: 18px; } .hb i { flex: 1; background: linear-gradient(var(--v2), var(--v1)); border-radius: 3px; min-height: 4px; }
+  .row { display: flex; align-items: center; gap: 12px; width: 100%; border: 0; background: #fff; border-radius: 18px; padding: 14px; margin-bottom: 10px; cursor: pointer; text-align: left; font: 600 15px 'Poppins'; color: #2A1F3D; }
+  .row span { flex: 1; min-width: 0; } .row small { display: block; font-weight: 400; font-size: 12px; color: var(--mute); } .row .ic2 { width: 28px; height: 28px; border-radius: 50%; background: var(--v1); color: #fff; display: grid; place-items: center; } .row.on { box-shadow: inset 0 0 0 2px var(--v1); }
+  .sess { text-align: center; } .sess small { color: var(--mute); } .sess h1 { margin: 2px 0; font: 700 26px 'Poppins'; }
+  .days { display: flex; gap: 8px; justify-content: space-between; margin: 10px 0 14px; } .days button { position: relative; flex: 1; border: 0; border-radius: 12px; padding: 10px 0; background: #DCD4EA; color: #4B3A66; font: 700 15px 'Poppins'; cursor: pointer; } .days button small { display: block; font: 500 11px 'Poppins'; color: inherit; }
+  .days button.on { background: var(--grad); color: #fff; padding: 14px 0; margin-top: -4px; } .days button.on::after { content: '🔔'; position: absolute; left: 50%; bottom: -8px; transform: translateX(-50%); font-size: 11px; } .days button.dn { background: #C9B8E0; }
+  .slider { position: relative; height: 8px; border-radius: 4px; background: #DCD4EA; margin: 14px 4px 6px; } .slider i { position: absolute; left: 0; top: 0; bottom: 0; width: var(--p); border-radius: 4px; background: var(--grad); } .slider b { position: absolute; top: 50%; left: var(--p); width: 20px; height: 20px; margin: -10px; border-radius: 50%; background: #fff; box-shadow: 0 0 0 5px var(--v1); }
+  .sets { display: flex; flex-wrap: wrap; gap: 6px; margin: -2px 0 10px; } .sb { border: 0; background: #fff; border-radius: 12px; padding: 8px 11px; font: 600 13px 'Poppins'; cursor: pointer; color: #2A1F3D; } .sb.on { background: var(--grad); color: #fff; } .sb.nx { box-shadow: inset 0 0 0 2px var(--v1); } .sb.e { background: none; text-decoration: underline; color: var(--mute); font-weight: 500; }
+  .btn { display: block; width: 100%; border: 0; border-radius: 30px; padding: 15px; margin: 8px 0; cursor: pointer; font: 600 15px 'Poppins'; background: var(--grad); color: #fff; } .btn.l { background: #fff; color: var(--v1); }
+  .tread { height: 170px; margin: 0 auto; display: block; width: 100%; }
+  nav { display: flex; background: #fff; padding: 8px 6px 24px; border-radius: 24px 24px 0 0; }
+  nav button { flex: 1; border: 0; background: none; cursor: pointer; color: #A49BB6; display: flex; flex-direction: column; align-items: center; gap: 2px; font: 500 10px 'Poppins'; } nav button.is-active { color: var(--v1); }
+  .post { background: #fff; border-radius: 18px; padding: 12px; margin-bottom: 10px; cursor: pointer; }
+</style>
+</head>
+<body class="concept">
+<aside class="concept-info" id="info"></aside>
+<div class="device"><div class="app" id="app">
+  <main data-scroll><section data-screen="welcome"></section><section data-screen="activities" hidden></section><section data-screen="session" hidden></section><section data-screen="community" hidden></section><section data-screen="more" hidden></section></main>
+  <nav id="nav"></nav>
+</div></div>
+<script src="designs.js"></script>
+<script src="../r2/lib.js"></script><script src="../r2/core.js"></script><script src="../r2/kit.js"></script><script src="../r3/r3.js"></script><script src="art.js"></script>
+<script>
+(function () {
+  const G = GQ2, K = Kit, I = K.icon, e = G.esc;
+  let period = 'week';
+  document.getElementById('nav').innerHTML = [['welcome', 'home', 'Welcome'], ['activities', 'grid', 'Activities'], ['session', 'play', 'Session'], ['community', 'users', 'Community'], ['more', 'settings', 'More']].map(([k, ic, l]) => '<button data-tab="' + k + '">' + I(ic) + l + '</button>').join('');
+  const ROW = (t, sub, attr, cls, ic) => '<button class="row ' + (cls || '') + '" ' + attr + '><span>' + t + (sub ? '<small>' + sub + '</small>' : '') + '</span><span class="ic2" style="flex:0 0 auto">' + I(ic || 'chevron') + '</span></button>';
+  const link = (l) => ROW(l.label, l.sub, l.attr, '', l.icon);
+  const donut = (pct, big, small) => { const r = 44, c = 2 * Math.PI * r; return '<svg class="donut" viewBox="0 0 110 110" aria-hidden="true"><defs><linearGradient id="vg" x1="0" x2="1"><stop offset="0" stop-color="#4B1D7A"/><stop offset="1" stop-color="#A64BC8"/></linearGradient></defs><circle cx="55" cy="55" r="' + r + '" fill="none" stroke="#EEE8F5" stroke-width="10"/><circle cx="55" cy="55" r="' + r + '" fill="none" stroke="url(#vg)" stroke-width="10" stroke-linecap="round" stroke-dasharray="' + c.toFixed(1) + '" stroke-dashoffset="' + (c * (1 - Math.min(100, pct) / 100)).toFixed(1) + '" transform="rotate(-90 55 55)"/><text x="55" y="56" text-anchor="middle" font-size="20" font-weight="700" font-family="Poppins" fill="#2A1F3D">' + big + '</text><text x="55" y="72" text-anchor="middle" font-size="10" font-family="Poppins" fill="#7A7090">' + small + '</text></svg>'; };
+  function welcome() {
+    const r = G.recommended(), s = G.sess(), pr = G.state.profile, w = G.weekInfo();
+    return '<div class="welcome"><h1>Fitness You Wanna Have</h1></div><div class="hero"><span class="blob"></span><span class="moon"></span><span class="cloud"></span>' + Art.figure('yoga', { top: '#6A2A9C', bottom: '#4B1D7A', hair: '#2A1F3D', prop: '#8A3FB3' }, { label: 'Yoga pose illustration' }) + '</div>'
+      + '<div class="login"><h3>' + (s ? 'Welcome back' : 'Ready, ' + e(pr.name || 'friend') + '?') + '</h3>'
+      + '<button class="fld" data-open="profile">' + I('user') + '<span>' + e(pr.name || 'Your name') + '</span></button><button class="fld" data-open="profile">' + I('chat') + '<span>@' + e(pr.handle || 'handle') + '</span>👁</button>'
+      + '<div class="lrow"><button data-do="excuse">' + (w.excused ? 'Week excused · undo' : 'Excuse this week') + '</button><button data-open="settings">Settings</button></div>'
+      + (s ? '<button class="arrow" data-tab="session" aria-label="Back to the workout">' + I('chevron') + '</button>' : r ? '<button class="arrow" data-do="start" data-arg="' + r.id + '" aria-label="Start ' + e(r.name) + '">' + I('chevron') + '</button>' : '') + '</div>'
+      + '<h2 style="margin-top:34px">Plans <small>' + (r ? 'next: ' + e(r.name) : '') + '</small></h2>' + G.plans().map((p) => ROW(e(p.name), p.exercises.length + ' exercises · ' + G.planMinutes(p) + ' min', 'data-do="select" data-arg="' + p.id + '"', p === G.selected() ? 'on' : '', p === r ? 'star' : 'dumbbell')).join('')
+      + (G.selected() && !s ? '<button class="btn" data-do="start" data-arg="' + G.selected().id + '">Start ' + e(G.selected().name) + '</button><button class="btn l" data-open="editplan" data-arg="' + G.selected().id + '">Edit plan</button>' : '') + R3.links('train', link);
+  }
+  function activities() {
+    const t = G.totals()[period], w = G.weekInfo(), est = G.calorieEstimate(), food = G.foodDay();
+    const days = period === 'week' ? w.days.map((d) => G.history().filter((h) => h.date === d.date).reduce((a, h) => a + h.exercises.reduce((b, x) => b + x.setsDone, 0), 0)) : G.weeklySeries(period === 'month' ? 5 : 8).map((x) => x.sets), mx = Math.max(1, ...days);
+    return '<div class="topbar"><button data-open="menu" aria-label="Everything">' + I('grid') + '</button><span class="av">' + e((G.state.profile.name || 'G')[0]) + '</span></div><h2>My Activities</h2>'
+      + '<button class="search" data-open="library">' + I('search') + 'Search</button>'
+      + '<div class="seg">' + [['week', 'Daily'], ['month', 'Weekly'], ['all', 'Monthly']].map(([k, l]) => '<button class="' + (period === k ? 'on' : '') + '" data-do="period" data-arg="' + k + '">' + l + '</button>').join('') + '</div>'
+      + '<div class="grid"><button class="tile" data-open="history"><span class="ic">' + I('dumbbell') + '</span>Workouts' + donut(period === 'week' ? w.done / w.goal * 100 : Math.min(100, t.workouts * 8), t.workouts, period === 'week' ? 'of ' + w.goal : 'done') + '</button>'
+      + '<button class="tile dark" data-open="calendar"><span class="ic">' + I('clock') + '</span>Minutes<b>' + Math.floor(t.minutes / 60) + ':' + R3.pad(t.minutes % 60) + '</b><small>hours trained</small></button>'
+      + '<button class="tile" data-open="records"><span class="ic">♥</span>Sets<div class="hb">' + days.map((v) => '<i style="height:' + Math.max(6, v / mx * 100) + '%"></i>').join('') + '</div><small style="color:#7A7090;font-weight:500">' + days.reduce((a, b) => a + b, 0) + ' sets</small></button>'
+      + '<button class="tile" data-open="food"><span class="ic">🍽</span>Calories' + donut(Math.min(100, food.kcal / Math.max(1, est.high) * 100), food.kcal, 'kcal today') + '</button></div>'
+      + ROW('Daily Meals', 'Food log and calories', 'data-open="foodentry"', '', 'utensils') + ROW('Body and photos', 'Measurements and progress photos', 'data-open="body"', '', 'scale') + ROW('Progress photos', '', 'data-open="photos"', '', 'camera') + ROW('Run, walk, ride', '', 'data-open="activity"', '', 'run') + ROW('Achievements', G.xp().total + ' XP', 'data-open="achievements"', '', 'medal');
+  }
+  function session() {
+    const s = G.sess(), w = G.weekInfo();
+    const sched = '<h2>Schedule <small>' + G.fmtShort(G.today()) + '</small></h2><div class="days">' + w.days.slice(0, 5).map((d) => '<button class="' + (d.today ? 'on' : d.done ? 'dn' : '') + '" data-open="day" data-arg="' + d.date + '">' + d.n + '<small>' + d.d[0] + '</small></button>').join('') + '</div>';
+    if (!s) { const r = G.recommended(); return '<div class="sess"><small>Next session</small><h1>' + (r ? G.planMinutes(r) + ' min' : '–') + '</h1><small>' + (r ? e(r.name) : '') + '</small></div>' + sched + '<svg class="tread" viewBox="0 0 200 160" aria-hidden="true">' + Art.figure('run', { top: '#6A2A9C', bottom: '#2A1F3D', prop: '#4B1D7A' }).replace(/<\/?svg[^>]*>/g, '') + '</svg>' + G.plans().map((p) => ROW('Start ' + e(p.name), p.exercises.length + ' exercises', 'data-do="start" data-arg="' + p.id + '"', '', 'play')).join(''); }
+    const p = G.progress(), est = G.planMinutes(G.plan(s.planId) || { exercises: [] }) || 40, el = Math.round(p.elapsed / 60000);
+    return '<div class="topbar"><button data-tab="welcome" aria-label="Back">' + I('back') + '</button><button data-open="library" aria-label="Search">' + I('search') + '</button></div>'
+      + '<div class="sess"><h1 style="font-size:20px">Current Session</h1><h1><span data-live="elapsed"></span></h1><small>' + e(s.planName) + ' · ' + (p.pct > 66 ? 'high' : p.pct > 33 ? 'medium' : 'easy') + ' intensity</small></div>' + sched
+      + '<h2>Your Progress</h2><div class="slider" style="--p:' + Math.min(100, el / est * 100) + '%"><i></i><b></b></div><small style="color:#7A7090">' + el + ' min / ' + est + ' min · ' + p.done + ' of ' + p.total + ' sets · rest <span data-live="rest" data-idle="–" data-done="0:00"></span></small>'
+      + '<svg class="tread" viewBox="0 0 200 160" aria-hidden="true">' + Art.figure('run', { top: '#6A2A9C', bottom: '#2A1F3D', prop: '#4B1D7A' }).replace(/<\/?svg[^>]*>/g, '') + '</svg>'
+      + '<button class="btn" data-do="log">Log the next set</button>'
+      + s.exercises.map((x, i) => ROW(e(x.name), R3.cmp(s, x), 'data-do="cur" data-arg="' + i + '"', i === s.cur ? 'on' : '', R3.exDone(x) ? 'check' : 'dumbbell')
+        + '<div class="sets">' + R3.sets(x, i).map((q) => '<button class="sb ' + (q.done ? 'on' : q.next ? 'nx' : '') + '" ' + q.attr + '>' + (q.side ? q.side + ' ' : '') + q.wb + ' × ' + q.r + '</button>').join('') + (i === s.cur ? R3.sets(x, i).map((q) => '<button class="sb e" ' + q.edit + '>edit ' + (q.j + 1) + '</button>').join('') + R3.tools(i, x, (t) => '<button class="sb e" ' + t.attr + '>' + t.label.toLowerCase() + '</button>') : '') + '</div>').join('')
+      + '<button class="btn" data-do="finish">Finish session · +' + p.xp + ' XP</button><button class="btn l" data-do="discard">Discard session</button>';
+  }
+  function community() { return '<h2>Community</h2>' + R3.links('social', link) + G.feed().map((p) => '<div class="post" data-open="postview" data-arg="' + p.id + '">' + K.postCard(p) + '</div>').join(''); }
+  function more() { return '<h2>More</h2>' + R3.links('log set', link) + ROW('Everything', 'Every feature in one list', 'data-open="menu"', '', 'more'); }
+  R3.app({ root: document.getElementById('app'), train: 'session', screens: { welcome, activities, session, community, more }, actions: { period: (a) => { period = a; GQ2.changed('ui'); } } });
+})();
+</script>
+</body>
+</html>

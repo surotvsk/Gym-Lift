@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>073 · Mint — GymQuest concept</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../frame.css">
+<link rel="stylesheet" href="../r2/kit.css">
+<link rel="stylesheet" href="ds.css">
+<style>
+  /* custom theme · Mint: clinic white #FFFFFF, mint #3EB489, deep mint #1E7A5A, sage wash #E6F5EF, chart ink #10302A; Plus Jakarta Sans 800 / 400 */
+  .app { --bg: #F7FBF9; --surface: #FFFFFF; --surface-2: #E6F5EF; --ink: #10302A; --ink-2: #4A615B; --line: #DCEBE5;
+    --accent: #1E7A5A; --on-accent: #FFFFFF; --accent-2: #E6F5EF; --on-accent-2: #10302A; --good: #1E7A5A; --on-good: #FFFFFF;
+    --font-head: 'Plus Jakarta Sans', sans-serif; --font-body: 'Plus Jakarta Sans', sans-serif; --head-weight: 800; --radius: 20px; --radius-sm: 14px; --shadow: 0 1px 2px rgba(16,48,42,.06), 0 8px 24px rgba(16,48,42,.06); }
+  .vitals { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 8px 0 12px; }
+  .vt { border: 0; text-align: left; cursor: pointer; background: var(--surface); border-radius: var(--radius); padding: 12px; box-shadow: var(--shadow); color: var(--ink); font: 13px var(--font-body); min-height: 100px; }
+  .vt b { display: block; font: 800 26px/1.1 var(--font-head); margin: 2px 0; } .vt small { color: var(--ink-2); } .vt .lbl { color: #1E7A5A; font-weight: 700; font-size: 12px; }
+  .vt svg { display: block; width: 100%; height: 30px; margin-top: 4px; }
+</style>
+</head>
+<body class="concept">
+<aside class="concept-info" id="info"></aside>
+<div class="device"><div class="app ds" id="app">
+  <main data-scroll><section data-screen="overview"></section><section data-screen="session" hidden></section><section data-screen="records" hidden></section><section data-screen="care" hidden></section><section data-screen="profile" hidden></section></main>
+</div></div>
+<script src="designs.js"></script>
+<script src="../r2/lib.js"></script><script src="../r2/core.js"></script><script src="../r2/kit.js"></script><script src="r3.js"></script><script src="ds.js"></script>
+<script>
+(function () {
+  const G = GQ2, D = DS;
+  /* dataviz: one series per tile, one hue, no legend needed; the title names the series */
+  const spark = (vals) => { if (vals.length < 2) return ''; const mn = Math.min(...vals), mx = Math.max(...vals), sp = mx - mn || 1; return '<svg viewBox="0 0 120 30" preserveAspectRatio="none" aria-hidden="true"><polyline fill="none" stroke="#1E7A5A" stroke-width="2" stroke-linejoin="round" points="' + vals.map((v, i) => (i / (vals.length - 1) * 118 + 1).toFixed(1) + ',' + (28 - (v - mn) / sp * 24).toFixed(1)).join(' ') + '"/></svg>'; };
+  function overview() {
+    const w = G.weekInfo(), ser = G.weeklySeries(8), bw = G.bodyLatest('weight'), x = G.xp(), t = G.totals();
+    return '<div class="ds-sub">Your overview</div><div class="ds-h1">Week ' + w.num + '</div>'
+      + '<div class="vitals"><button class="vt" data-open="calendar"><span class="lbl">Workouts this week</span><b>' + w.done + ' / ' + w.goal + '</b><small>streak ' + G.streak() + ' weeks</small>' + spark(ser.map((s) => s.workouts)) + '</button>'
+      + '<button class="vt" data-open="history"><span class="lbl">Minutes this week</span><b>' + w.minutes + '</b><small>8-week trend</small>' + spark(ser.map((s) => s.minutes)) + '</button>'
+      + '<button class="vt" data-open="body"><span class="lbl">Body weight</span><b>' + (bw ? G.fmtW(bw.value) : '–') + '</b><small>' + (bw && bw.change != null ? (bw.change > 0 ? '+' : '') + bw.change + ' since last' : 'add a measurement') + '</small>' + spark(G.bodySeries ? G.bodySeries('weight').map((b) => b.v) : []) + '</button>'
+      + '<button class="vt" data-open="achievements"><span class="lbl">Level</span><b>' + x.level + '</b><small>' + t.all.workouts + ' workouts · ' + x.total + ' XP</small>' + spark(ser.map((s) => s.xp)) + '</button></div>'
+      + D.startCta({ tab: 'session', start: 'Start' }) + D.excuse() + D.week() + D.h2('Programmes') + D.plans() + D.h2('Tools') + D.links('train');
+  }
+  D.boot({ tabs: [['overview', 'grid', 'Overview'], ['session', 'dumbbell', 'Session'], ['records', 'chart', 'Records'], ['care', 'users', 'Care team'], ['profile', 'user', 'Profile']], train: 'session',
+    screens: { overview, session: () => D.session({ variant: 'cards' }), records: () => D.logScreen('Records'), care: () => D.socialScreen('Care team'), profile: () => D.moreScreen('Profile') } });
+})();
+</script>
+</body>
+</html>

@@ -105,7 +105,7 @@ browser — double-click the file or drag it into a browser window. The app work
 | `manifest.json` | Web app manifest so the app can be installed to a home screen |
 | `apple-touch-icon.png`, `icon-192.png`, `icon-512.png` | Home screen and app icons |
 | `media/` | Licensed exercise photographs and their credits (`media/CREDITS.md`) |
-| `design-concepts/` | 32 clickable redesign prototypes (mockups with sample data, not part of the app). The gallery is `design-concepts/index.html`. The service worker leaves these pages alone, so they always load from the network |
+| `design-concepts/` | 32 clickable redesign prototypes (mockups with sample data, not part of the app). The gallery is `design-concepts/index.html`. The service worker leaves these pages alone, so they always load from the network. `design-concepts/app/` holds the 11 previews opened from Settings → Design previews |
 | `README.md` | This documentation |
 
 ---
@@ -258,6 +258,15 @@ no network call, nothing to download:
 
 Portuguese is deliberately **Brazilian Portuguese** and is labelled *Português (Brasil)* everywhere —
 the vocabulary is Brazilian (*treino*, *séries até a falha*, *Duração do treino*).
+
+### Design previews
+
+**⚙️ Settings → App design → Design previews** shows the current GymQuest (in use) and 11 possible new
+looks: *Periwinkle*, *Pastel Planner*, *Soft Rings*, *Violet Studio*, *Lilac Player*, *Clay*, *Bloom*,
+*Bento*, *Atlas*, *Isometric* and *Mint*. Tap one to see it full screen inside the app, and **Back to the
+app** (or Esc) to return. Previews are only for trying the look on your phone: they use sample data,
+not everything in them works, and they never read or change your workouts or settings. The app itself
+keeps its current design.
 
 ### Choosing a language
 

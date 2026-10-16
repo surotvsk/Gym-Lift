@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>14 · Clay — GymQuest concept</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../frame.css">
+<link rel="stylesheet" href="kit.css">
+<style>
+  .app { position: absolute; inset: 0; display: flex; flex-direction: column; background: #EDE7FB; color: #3B3355; font: 15px/1.4 Nunito, system-ui, sans-serif;
+    --k-acc: #7C5CFA; --k-font: Nunito, system-ui, sans-serif; --k-radius: 26px; --k-bg: #F6F2FF; --k-card: #fff; --k-line: #E2DAF6; --k-good: #4FC59A; --k-bad: #F7C6D1; }
+  .k-root .k-btn { box-shadow: inset 0 -4px 0 rgba(0,0,0,.12), 0 6px 12px rgba(124,92,250,.18); }
+  .k-root .k-btn.icon, .k-root .k-btn.link { box-shadow: none; }
+  .clay { border-radius: 30px; background: #fff; box-shadow: inset 0 -8px 16px rgba(124,92,250,.10), inset 0 8px 14px rgba(255,255,255,.9), 0 14px 26px rgba(91,64,190,.16); padding: 18px; margin-bottom: 16px; }
+  .clay.pink { background: #FFD9E4; } .clay.mint { background: #CDF4E3; } .clay.sky { background: #D4E7FF; } .clay.lem { background: #FFF1B8; } .clay.vio { background: #7C5CFA; color: #fff; }
+  main { flex: 1; overflow-y: auto; padding: 50px 16px 20px; }
+  h1 { font: 900 32px/1.05 Nunito; margin: 0 0 14px; }
+  .big { font: 900 52px/1 Nunito; }
+  .row { display: flex; gap: 12px; align-items: center; } .grow { flex: 1; min-width: 0; }
+  .blob { width: 64px; height: 64px; border-radius: 40% 60% 55% 45% / 50% 45% 55% 50%; display: grid; place-items: center; font: 900 24px Nunito; box-shadow: inset 0 -6px 10px rgba(0,0,0,.12), inset 0 6px 8px rgba(255,255,255,.6); }
+  .btn { border: 0; border-radius: 22px; padding: 15px 20px; font: 900 17px Nunito; cursor: pointer; background: #7C5CFA; color: #fff; box-shadow: inset 0 -6px 0 rgba(0,0,0,.18), 0 10px 18px rgba(124,92,250,.35); display: inline-flex; align-items: center; gap: 8px; justify-content: center; transition: transform .1s; }
+  .btn:active { transform: scale(.96) translateY(2px); box-shadow: inset 0 -2px 0 rgba(0,0,0,.18), 0 4px 8px rgba(124,92,250,.3); }
+  .btn.full { width: 100%; } .btn.soft { background: #fff; color: #7C5CFA; box-shadow: inset 0 -5px 0 rgba(124,92,250,.15), 0 8px 14px rgba(124,92,250,.15); }
+  .wk { display: flex; gap: 6px; margin-top: 12px; } .wk i { flex: 1; height: 38px; border-radius: 14px; background: rgba(255,255,255,.6); font-style: normal; font-weight: 800; font-size: 12px; display: grid; place-items: center; box-shadow: inset 0 3px 6px rgba(0,0,0,.06); }
+  .wk i.d { background: #4FC59A; color: #fff; box-shadow: inset 0 -4px 0 rgba(0,0,0,.12); } .wk i.t { outline: 3px solid #7C5CFA; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px; }
+  .grid2 .clay { margin: 0; border: 0; text-align: left; font: inherit; color: inherit; cursor: pointer; }
+  .pills { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+  .pill { border: 0; border-radius: 999px; padding: 9px 14px; font: 800 13px Nunito; cursor: pointer; background: #fff; color: #5B45C9; box-shadow: inset 0 -3px 0 rgba(124,92,250,.15), 0 4px 8px rgba(124,92,250,.12); }
+  .sets { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+  .s { width: 62px; height: 62px; border: 0; border-radius: 22px; background: #fff; font: 900 18px Nunito; cursor: pointer; color: #3B3355; box-shadow: inset 0 -5px 0 rgba(124,92,250,.15), 0 8px 12px rgba(124,92,250,.15); display: flex; flex-direction: column; align-items: center; justify-content: center; transition: transform .12s; }
+  .s small { font-size: 10px; font-weight: 700; opacity: .7; }
+  .s.on { background: #4FC59A; color: #fff; transform: scale(.92); box-shadow: inset 0 4px 8px rgba(0,0,0,.18); }
+  .lst button { display: flex; justify-content: space-between; align-items: center; width: 100%; border: 0; background: #fff; border-radius: 20px; padding: 14px 16px; margin-bottom: 10px; font: 800 15px Nunito; color: #3B3355; cursor: pointer; box-shadow: inset 0 -4px 0 rgba(124,92,250,.1), 0 6px 12px rgba(124,92,250,.1); text-align: left; }
+  .lst small { color: #8A80A8; font-weight: 700; }
+  nav { display: flex; gap: 8px; margin: 0 14px 24px; padding: 8px; border-radius: 28px; background: #fff; box-shadow: inset 0 -6px 10px rgba(124,92,250,.08), 0 12px 24px rgba(91,64,190,.18); }
+  nav button { flex: 1; border: 0; background: none; border-radius: 20px; padding: 10px 0; font: 800 11px Nunito; color: #9B92B8; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 2px; }
+  nav button.is-active { background: #7C5CFA; color: #fff; box-shadow: inset 0 -4px 0 rgba(0,0,0,.18); }
+  .post .k-post { border: 0; padding: 0; } .post { cursor: pointer; }
+</style>
+</head>
+<body class="concept">
+<aside class="concept-info" id="info"></aside>
+<div class="device"><div class="app" id="app">
+  <main data-scroll>
+    <section data-screen="home"></section><section data-screen="move" hidden></section><section data-screen="grow" hidden></section><section data-screen="pals" hidden></section><section data-screen="me" hidden></section>
+  </main>
+  <nav><button data-tab="home"></button><button data-tab="move"></button><button data-tab="grow"></button><button data-tab="pals"></button><button data-tab="me"></button></nav>
+</div></div>
+<script src="designs.js"></script>
+<script src="lib.js"></script><script src="core.js"></script><script src="kit.js"></script>
+<script>
+(function () {
+  const G = GQ2, K = Kit, I = K.icon, e = G.esc;
+  const N = { home: ['home', 'Home'], move: ['dumbbell', 'Move'], grow: ['chart', 'Grow'], pals: ['users', 'Pals'], me: ['smile', 'Me'] };
+  document.querySelectorAll('nav [data-tab]').forEach((b) => { b.innerHTML = I(N[b.dataset.tab][0]) + N[b.dataset.tab][1]; });
+  const C = (cls, inner, attrs) => '<button class="clay ' + cls + '" ' + attrs + '>' + inner + '</button>';
+  const li = (a, b, attrs) => '<button ' + attrs + '><span>' + a + '</span><small>' + (b == null ? I('chevron') : b) + '</small></button>';
+  function home() {
+    const w = G.weekInfo(), rec = G.recommended(), s = G.sess(), X = G.xp();
+    return '<h1>Hey ' + e(G.state.profile.name) + ' 👋</h1>'
+      + '<div class="clay lem"><div class="row"><div class="blob" style="background:#FFD34D">' + w.done + '</div><div class="grow"><b style="font-size:18px">' + w.done + ' of ' + w.goal + ' this week</b><div style="opacity:.75">' + G.motivation() + '</div></div></div><div class="wk">' + w.days.map((d) => '<i class="' + (d.done ? 'd' : '') + (d.today ? ' t' : '') + '">' + d.d.slice(0, 2) + '</i>').join('') + '</div></div>'
+      + (s ? '<div class="clay vio"><b style="font-size:22px">' + e(s.planName) + ' is going!</b><div><span data-live="elapsed"></span> · ' + G.progress().done + '/' + G.progress().total + ' sets</div><div style="height:12px"></div><button class="btn soft full" data-tab="move">Keep going</button></div>'
+        : rec ? '<div class="clay vio"><div style="opacity:.8;font-weight:800">Up next ✦</div><b style="font-size:26px">' + e(rec.name) + '</b><div style="opacity:.85">' + rec.exercises.length + ' moves · about ' + G.planMinutes(rec) + ' min</div><div style="height:14px"></div><button class="btn soft full" data-do="start" data-arg="' + rec.id + '">' + I('play') + ' Let’s go</button></div>' : '')
+      + '<div class="grid2">' + C('pink', '<div class="blob" style="background:#FF8FAE;color:#fff">' + G.streak() + '</div><b>week streak</b>', 'data-open="calendar"') + C('mint', '<div class="blob" style="background:#4FC59A;color:#fff">' + X.level + '</div><b>level · ' + X.total + ' XP</b>', 'data-open="achievements"') + C('sky', I('timer') + '<b style="display:block;margin-top:8px">Rest timer</b>', 'data-open="rest"') + C('', I('run') + '<b style="display:block;margin-top:8px">Activity</b>', 'data-open="activity"') + '</div>'
+      + '<div class="lst">' + li(w.excused ? 'This week is excused 🛟' : 'Tough week? Excuse it', w.excused ? 'undo' : '', 'data-do="excuse"') + '</div>';
+  }
+  function move() {
+    const s = G.sess();
+    if (!s) {
+      const sel = G.selected(), cols = ['lem', 'pink', 'mint', 'sky', ''];
+      return '<h1>Pick a plan</h1><div class="grid2">' + G.plans().map((p, k) => C(p === sel ? 'vio' : cols[k % 5], '<b style="font-size:18px">' + e(p.name) + (p === G.recommended() ? ' ✦' : '') + '</b><div style="opacity:.75;font-weight:700">' + p.exercises.length + ' moves · ' + G.planMinutes(p) + ' min</div>', 'data-do="select" data-arg="' + p.id + '"')).join('') + '</div>'
+        + (sel ? '<div class="clay"><b style="font-size:20px">' + e(sel.name) + '</b>' + sel.exercises.map((x) => '<div class="row" style="padding:6px 0"><span class="grow">' + e(x.name) + '</span><b>' + x.sets + '×' + x.reps + '</b></div>').join('') + '<div style="height:10px"></div><button class="btn full" data-do="start" data-arg="' + sel.id + '">' + I('play') + ' Start</button><div class="pills"><button class="pill" data-open="editplan" data-arg="' + sel.id + '">Edit</button><button class="pill" data-open="plans">Reorder</button><button class="pill" data-open="newplan">New plan</button><button class="pill" data-open="fullbody">Full body</button><button class="pill" data-open="library">Library</button></div></div>' : '');
+    }
+    const p = G.progress();
+    return '<div class="clay vio"><div class="row"><div class="grow"><div style="opacity:.8;font-weight:800">' + e(s.planName) + '</div><div class="big" data-live="elapsed"></div></div><button class="btn soft" data-do="finish">Done!</button></div><div class="k-bar" style="background:rgba(255,255,255,.25)"><i style="width:' + p.pct + '%;background:#fff"></i></div><div class="pills"><button class="pill" data-open="rest">⏱ <span data-live="rest" data-idle="Rest" data-done="Rest over"></span></button><button class="pill" data-do="rest" data-arg="60">60 s</button><button class="pill" data-do="rest" data-arg="90">90 s</button><button class="pill" data-do="discard">Discard</button></div></div>'
+      + s.exercises.map((x, i) => { const c = G.compare(s.planId, x.id, Math.max(...x.sets.map((y) => y.w)), x.reps), done = x.sets.every((y) => y.done);
+        return '<div class="clay ' + (done ? 'mint' : i === s.cur ? 'lem' : '') + '"><div class="row">' + (G.img(x.id) ? '<img src="' + G.img(x.id) + '" alt="" style="width:52px;height:52px;border-radius:18px;object-fit:cover">' : '') + '<div class="grow"><b style="font-size:18px">' + e(x.name) + '</b><div style="font-size:13px;opacity:.75">' + (x.replaces ? 'instead of ' + e(x.replaces) : c.text) + '</div></div></div><div class="sets">'
+          + x.sets.map((st, j) => x.unilateral ? '<button class="s' + (st.L ? ' on' : '') + '" data-do="set" data-arg="' + i + ':' + j + ':L">L<small>' + G.fmtW(st.w) + '</small></button><button class="s' + (st.R ? ' on' : '') + '" data-do="set" data-arg="' + i + ':' + j + ':R">R<small>×' + st.r + '</small></button>' : '<button class="s' + (st.done ? ' on' : '') + '" data-do="set" data-arg="' + i + ':' + j + '">' + st.r + '<small>' + G.fmtW(st.w) + '</small></button>').join('') + '</div>'
+          + '<div class="pills"><button class="pill" data-open="set" data-arg="' + i + ':0">Weight</button><button class="pill" data-do="addset" data-arg="' + i + '">+ set</button><button class="pill" data-open="replace" data-arg="' + i + '">Swap</button><button class="pill" data-open="exercise" data-arg="' + x.id + '">How?</button></div></div>'; }).join('')
+      + '<button class="btn full" data-do="finish">Finish · +' + p.xp + ' XP 🎉</button>';
+  }
+  function grow() {
+    const t = G.totals(), ser = G.weeklySeries(8);
+    return '<h1>Look at you grow</h1><div class="grid2">' + C('lem', '<div class="big">' + t.week.workouts + '</div><b>this week</b>', 'data-open="history"') + C('pink', '<div class="big">' + t.all.workouts + '</div><b>all time</b>', 'data-open="history"') + '</div>'
+      + '<div class="clay"><b>Sets each week</b><div style="color:#7C5CFA">' + K.bars(ser.map((x) => x.sets), { h: 100, labels: ser.map((x) => x.label) }) + '</div></div>'
+      + '<div class="clay mint"><b>Nice lifts</b>' + G.records().list.slice(0, 4).map((r) => '<div class="row" style="padding:5px 0"><span class="grow">' + e(r.name) + '</span><b>' + G.fmtW(r.kg) + '</b></div>').join('') + '</div>'
+      + '<div class="lst">' + li('All your records', null, 'data-open="records"') + li('History', null, 'data-open="history"') + li('Calendar', null, 'data-open="calendar"') + li('Badges', null, 'data-open="achievements"') + li('Body', null, 'data-open="body"') + li('Food', null, 'data-open="food"') + li('Photos', null, 'data-open="photos"') + '</div>';
+  }
+  function pals() {
+    const L = G.leaderboard();
+    return '<h1>Your pals</h1><div class="grid2">' + C('vio', '<div class="big">#' + (L.me ? L.me.rank : '–') + '</div><b>Top 20</b>', 'data-open="leaderboard"') + C('lem', I('edit') + '<b style="display:block;margin-top:8px">New post</b>', 'data-open="post"') + C('sky', I('chat') + '<b style="display:block;margin-top:8px">Chats</b>', 'data-open="chats"') + C('pink', I('users') + '<b style="display:block;margin-top:8px">Friends</b>', 'data-open="friends"') + '</div>'
+      + G.feed().map((p) => '<div class="clay post" data-open="postview" data-arg="' + p.id + '">' + K.postCard(p) + '</div>').join('');
+  }
+  function me() { return '<h1>Me</h1><div class="clay sky"><div class="row">' + K.avatar('me', 56) + '<div><b style="font-size:20px">' + e(G.state.profile.name) + '</b><div>Level ' + G.xp().level + '</div></div></div></div><div class="lst">' + li('Weekly goal', G.goal() + ' a week', 'data-open="settings"') + li('Profile & reminders', null, 'data-open="profile"') + li('Settings', null, 'data-open="settings"') + '</div>'; }
+  K.app({ root: document.getElementById('app'), screens: { home, move, grow, pals, me }, actions: { start: (a) => { G.start(a); document.querySelector('[data-tab=move]').click(); } } });
+})();
+</script>
+</body>
+</html>

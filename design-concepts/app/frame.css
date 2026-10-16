@@ -1,0 +1,33 @@
+/* GymQuest design concepts — shared phone frame. On a computer each concept sits in a phone-sized
+   frame with its name beside it; on a phone it fills the screen. */
+html, body { margin: 0; height: 100%; }
+* { box-sizing: border-box; }
+body.concept {
+  min-height: 100vh;
+  display: flex; align-items: center; justify-content: center; gap: 48px;
+  padding: 24px;
+  background: #E7E4DE;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+.device {
+  position: relative; flex: 0 0 auto;
+  width: 390px; height: min(844px, calc(100vh - 48px));
+  overflow: hidden; border-radius: 38px;
+  box-shadow: 0 0 0 10px #151515, 0 0 0 11px #3a3a3a, 0 30px 80px rgba(0, 0, 0, 0.35);
+  isolation: isolate;
+}
+.concept-info { max-width: 280px; color: #2b2925; }
+.concept-info .num { font: 600 12px/1 ui-monospace, Menlo, monospace; letter-spacing: 0.08em; color: #8a857c; }
+.concept-info h1 { font: 700 28px/1.1 Georgia, 'Times New Roman', serif; margin: 10px 0 12px; }
+.concept-info p { font: 15px/1.5 system-ui, sans-serif; margin: 0 0 12px; color: #4a463f; }
+.concept-info .tag { display: inline-block; font: 600 11px/1 system-ui; letter-spacing: 0.04em; text-transform: uppercase;
+  padding: 6px 8px; border: 1px solid #b9b3a8; border-radius: 4px; margin: 0 4px 6px 0; color: #5b564d; }
+.concept-info a { color: #2b2925; font: 600 14px/1 system-ui; }
+.concept-nav { display: flex; gap: 16px; margin-top: 20px; }
+@media (max-width: 760px) {
+  body.concept { display: block; padding: 0; background: none; }
+  .device { width: 100%; height: 100vh; height: 100dvh; border-radius: 0; box-shadow: none; }
+  .concept-info { display: none; }
+}
+.ico { width: 24px; height: 24px; flex: 0 0 auto; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+[hidden] { display: none !important; }

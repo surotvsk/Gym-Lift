@@ -8456,6 +8456,58 @@ const TRAIN_I18N = {
   },
 };
 for (const lang of Object.keys(TRAIN_I18N)) Object.assign(I18N[lang] || (I18N[lang] = {}), TRAIN_I18N[lang]);
+/* Ukážky dizajnov (Nastavenia → Vzhľad aplikácie). */
+const DESIGNS_I18N = {
+  sk: {
+    'designs.title': 'Vzhľad aplikácie', 'designs.hint': 'Pozri si, ako by GymQuest mohol vyzerať. Len ukážky – tvoja aplikácia ani dáta sa nemenia.',
+    'designs.open': 'Ukážky dizajnov', 'designs.pickTitle': 'Ukážky dizajnov',
+    'designs.pickNote': 'Ťukni na dizajn a pozri si ho. Ukážky používajú vzorové dáta a nie všetko v nich funguje.', 'designs.currentName': 'Súčasný GymQuest',
+    'designs.inUse': 'Používa sa', 'designs.round': 'Kolo {n}',
+    'designs.openAria': 'Otvoriť ukážku dizajnu {name}', 'designs.previewOf': 'Ukážka: {name}',
+    'designs.viewNote': 'Len ukážka · vzorové dáta', 'designs.back': 'Späť do aplikácie',
+  },
+  en: {
+    'designs.title': 'App design', 'designs.hint': 'See how GymQuest could look. Previews only – your app and your data stay the same.',
+    'designs.open': 'Design previews', 'designs.pickTitle': 'Design previews',
+    'designs.pickNote': 'Tap a design to look at it. Previews use sample data and not everything in them works.', 'designs.currentName': 'Current GymQuest',
+    'designs.inUse': 'In use', 'designs.round': 'Round {n}',
+    'designs.openAria': 'Open the {name} design preview', 'designs.previewOf': 'Preview: {name}',
+    'designs.viewNote': 'Preview only · sample data', 'designs.back': 'Back to the app',
+  },
+  es: {
+    'designs.title': 'Diseño de la app', 'designs.hint': 'Mira cómo podría verse GymQuest. Solo vistas previas: tu app y tus datos no cambian.',
+    'designs.open': 'Vistas previas de diseño', 'designs.pickTitle': 'Vistas previas de diseño',
+    'designs.pickNote': 'Toca un diseño para verlo. Las vistas previas usan datos de ejemplo y no todo funciona.', 'designs.currentName': 'GymQuest actual',
+    'designs.inUse': 'En uso', 'designs.round': 'Ronda {n}',
+    'designs.openAria': 'Abrir la vista previa del diseño {name}', 'designs.previewOf': 'Vista previa: {name}',
+    'designs.viewNote': 'Solo vista previa · datos de ejemplo', 'designs.back': 'Volver a la app',
+  },
+  'pt-BR': {
+    'designs.title': 'Visual do app', 'designs.hint': 'Veja como o GymQuest poderia ficar. Só prévias: seu app e seus dados não mudam.',
+    'designs.open': 'Prévias de design', 'designs.pickTitle': 'Prévias de design',
+    'designs.pickNote': 'Toque em um design para vê-lo. As prévias usam dados de exemplo e nem tudo funciona.', 'designs.currentName': 'GymQuest atual',
+    'designs.inUse': 'Em uso', 'designs.round': 'Rodada {n}',
+    'designs.openAria': 'Abrir a prévia do design {name}', 'designs.previewOf': 'Prévia: {name}',
+    'designs.viewNote': 'Só prévia · dados de exemplo', 'designs.back': 'Voltar ao app',
+  },
+  fr: {
+    'designs.title': 'Apparence de l’app', 'designs.hint': 'Découvre à quoi GymQuest pourrait ressembler. Simples aperçus : ton app et tes données ne changent pas.',
+    'designs.open': 'Aperçus de design', 'designs.pickTitle': 'Aperçus de design',
+    'designs.pickNote': 'Touche un design pour le voir. Les aperçus utilisent des données d’exemple et tout n’y fonctionne pas.', 'designs.currentName': 'GymQuest actuel',
+    'designs.inUse': 'Utilisé', 'designs.round': 'Tour {n}',
+    'designs.openAria': 'Ouvrir l’aperçu du design {name}', 'designs.previewOf': 'Aperçu : {name}',
+    'designs.viewNote': 'Aperçu seulement · données d’exemple', 'designs.back': 'Retour à l’app',
+  },
+  ar: {
+    'designs.title': 'مظهر التطبيق', 'designs.hint': 'شاهد كيف يمكن أن يبدو GymQuest. معاينات فقط – لا يتغير تطبيقك ولا بياناتك.',
+    'designs.open': 'معاينات التصميم', 'designs.pickTitle': 'معاينات التصميم',
+    'designs.pickNote': 'اضغط على تصميم لمشاهدته. تستخدم المعاينات بيانات تجريبية ولا يعمل كل شيء فيها.', 'designs.currentName': 'GymQuest الحالي',
+    'designs.inUse': 'قيد الاستخدام', 'designs.round': 'الجولة {n}',
+    'designs.openAria': 'فتح معاينة تصميم {name}', 'designs.previewOf': 'معاينة: {name}',
+    'designs.viewNote': 'معاينة فقط · بيانات تجريبية', 'designs.back': 'العودة إلى التطبيق',
+  },
+};
+for (const lang of Object.keys(DESIGNS_I18N)) Object.assign(I18N[lang] || (I18N[lang] = {}), DESIGNS_I18N[lang]);
 
 function t(key, vars) {
   const dict = I18N[activeLang()] || I18N.en;
@@ -19107,6 +19159,79 @@ function confirmSetup() {
   renderAll();
 }
 
+/* ---------- Ukážky dizajnov (Nastavenia → Vzhľad aplikácie) ----------
+   Len náhľad iného vzhľadu: samostatné stránky v design-concepts/app/ so vzorovými dátami (vlastný
+   kľúč v localStorage, nikdy nie dáta aplikácie). Otvárajú sa v rámci (iframe) na celú obrazovku
+   vnútri aplikácie, takže sa dá vždy vrátiť späť – aj v nainštalovanej appke bez tlačidla Späť.
+   Súčasný vzhľad GymQuestu zostáva jediný skutočný; nič sa neprepína ani neukladá. */
+const DESIGN_PREVIEWS = [
+  { id: 'periwinkle', name: 'Periwinkle', round: 4, path: 'r4/01-periwinkle.html', thumb: 'r4/thumbs/01-periwinkle.jpg' },
+  { id: 'pastel', name: 'Pastel Planner', round: 4, path: 'r4/02-pastel.html', thumb: 'r4/thumbs/02-pastel.jpg' },
+  { id: 'rings', name: 'Soft Rings', round: 4, path: 'r4/03-rings.html', thumb: 'r4/thumbs/03-rings.jpg' },
+  { id: 'violet', name: 'Violet Studio', round: 4, path: 'r4/04-violet.html', thumb: 'r4/thumbs/04-violet.jpg' },
+  { id: 'lilac', name: 'Lilac Player', round: 4, path: 'r4/05-lilac.html', thumb: 'r4/thumbs/05-lilac.jpg' },
+  { id: 'clay', name: 'Clay', round: 2, path: 'r2/14-clay.html', thumb: 'r2/thumbs/14-clay.jpg' },
+  { id: 'bloom', name: 'Bloom', round: 2, path: 'r2/53-bloom.html', thumb: 'r2/thumbs/53-bloom.jpg' },
+  { id: 'bento', name: 'Bento', round: 2, path: 'r2/03-bento.html', thumb: 'r2/thumbs/03-bento.jpg' },
+  { id: 'atlas', name: 'Atlas', round: 2, path: 'r2/01-atlas.html', thumb: 'r2/thumbs/01-atlas.jpg' },
+  { id: 'isometric', name: 'Isometric', round: 2, path: 'r2/47-isometric.html', thumb: 'r2/thumbs/47-isometric.jpg' },
+  { id: 'mint', name: 'Mint', round: 3, path: 'r3/073-mint.html', thumb: 'r3/thumbs/073-mint.jpg' },
+];
+const DESIGN_PREVIEW_BASE = 'design-concepts/app/';
+let designReturnFocus = null;
+
+function renderDesignGrid() {
+  const grid = document.getElementById('design-grid');
+  if (!grid) return;
+  const current = '<button type="button" class="design-item design-current" role="listitem" data-design="current" aria-current="true">'
+    + '<span class="design-thumb design-thumb-current" aria-hidden="true">GymQuest</span>'
+    + '<span class="design-name">' + esc(t('designs.currentName')) + '</span>'
+    + '<span class="design-meta">✓ ' + esc(t('designs.inUse')) + '</span></button>';
+  grid.innerHTML = current + DESIGN_PREVIEWS.map((d) => '<button type="button" class="design-item" role="listitem" data-design="' + escAttr(d.id) + '"'
+    + ' aria-label="' + escAttr(t('designs.openAria', { name: d.name })) + '">'
+    + '<img class="design-thumb" src="' + escAttr(DESIGN_PREVIEW_BASE + d.thumb) + '" alt="" loading="lazy" width="300" height="649">'
+    + '<span class="design-name">' + esc(d.name) + '</span>'
+    + '<span class="design-meta">' + esc(t('designs.round', { n: d.round })) + '</span></button>').join('');
+}
+function openDesignPicker() {
+  renderDesignGrid();
+  document.getElementById('modal-designs').hidden = false;
+  const first = document.querySelector('#design-grid .design-item');
+  if (first) first.focus();
+}
+function closeDesignPicker() {
+  document.getElementById('modal-designs').hidden = true;
+  refreshUpdateBanner();
+}
+function openDesignPreview(id, opener) {
+  const d = DESIGN_PREVIEWS.find((x) => x.id === id);
+  if (!d) { closeDesignPicker(); return; }
+  designReturnFocus = opener || null;
+  const view = document.getElementById('design-view');
+  const frame = document.getElementById('design-view-frame');
+  document.getElementById('design-view-title').textContent = t('designs.previewOf', { name: d.name });
+  frame.title = t('designs.previewOf', { name: d.name });
+  frame.src = DESIGN_PREVIEW_BASE + d.path;
+  view.hidden = false;
+  document.documentElement.classList.add('design-view-open');
+  document.getElementById('btn-design-view-close').focus();
+}
+function closeDesignPreview() {
+  const view = document.getElementById('design-view');
+  if (!view || view.hidden) return;
+  view.hidden = true;
+  document.getElementById('design-view-frame').src = 'about:blank';   // ukážka sa zastaví
+  document.documentElement.classList.remove('design-view-open');
+  if (designReturnFocus && document.contains(designReturnFocus)) designReturnFocus.focus();
+  designReturnFocus = null;
+}
+function onDesignGridClick(e) {
+  const b = e.target.closest ? e.target.closest('[data-design]') : null;
+  if (!b) return;
+  if (b.dataset.design === 'current') { closeDesignPicker(); return; }
+  openDesignPreview(b.dataset.design, b);
+}
+
 function openSettings() {
   renderGoalChips('settings-goal-chips', weeklyGoal());
   setGoalReadout(weeklyGoal());
@@ -22386,6 +22511,13 @@ function setupEvents() {
   on('train-box', trainOnChange, 'change');
   on('train-today', trainOnChange, 'change');
 
+  /* Ukážky dizajnov (Nastavenia) */
+  on('btn-design-previews', openDesignPicker);
+  on('btn-designs-close', closeDesignPicker);
+  on('design-grid', onDesignGridClick);
+  on('btn-design-view-close', closeDesignPreview);
+  on('modal-designs', (e) => { if (e.target === e.currentTarget) closeDesignPicker(); });   // ťuknutie mimo okna
+
   on('btn-reset-session', () => {
     showGeneric(t('trening.resetSessionTitle'), t('trening.resetSession'), () => {
       /* Session sa ruší až po potvrdení – nič sa nezapisuje do histórie. */
@@ -22544,6 +22676,10 @@ function setupEvents() {
   // jeden dokumentový listener pre Esc (modal nie je fokusovateľný kontajner)
   document.addEventListener('keydown', (e) => {
     if (e.key !== 'Escape') return;
+    const designView = document.getElementById('design-view');
+    if (designView && !designView.hidden) { closeDesignPreview(); return; }
+    const designsModal = document.getElementById('modal-designs');
+    if (designsModal && !designsModal.hidden) { closeDesignPicker(); return; }
     const inviteModal = document.getElementById('modal-community-invite');
     if (inviteModal && !inviteModal.hidden) { closeCommunityInvite(); return; }
     const langModal = document.getElementById('modal-lang');

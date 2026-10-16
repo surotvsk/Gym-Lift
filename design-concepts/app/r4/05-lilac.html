@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>05 · Lilac Player — GymQuest concept</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700;6..12,800;6..12,900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../frame.css">
+<link rel="stylesheet" href="../r2/kit.css">
+<style>
+  .app { position: absolute; inset: 0; display: flex; flex-direction: column; background: #F8F7FE; color: #1E1B33; font: 14px/1.45 'Nunito Sans', sans-serif;
+    --acc: #7B5CF0; --acc-l: #EEE9FE; --mute: #7D7A95;
+    --k-bg: #FFFFFF; --k-fg: #1E1B33; --k-mute: #6E6B88; --k-card: #F4F2FD; --k-line: #E6E3F5; --k-acc: #7B5CF0; --k-acc-fg: #fff; --k-radius: 20px; --k-font: 'Nunito Sans', sans-serif; }
+  body.concept { background: linear-gradient(135deg, #CFC3FA, #EEE9FE); }
+  main { flex: 1; overflow-y: auto; padding: 46px 18px 16px; }
+  .hdr { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; } .hdr small { color: var(--mute); font-weight: 600; } .hdr b { display: block; font: 900 24px 'Nunito Sans'; }
+  .icb { width: 44px; height: 44px; border-radius: 50%; border: 0; background: var(--acc-l); color: var(--acc); display: grid; place-items: center; cursor: pointer; }
+  h2 { font: 800 17px 'Nunito Sans'; margin: 4px 0 10px; display: flex; justify-content: space-between; align-items: center; } h2 button { border: 0; background: none; color: var(--mute); font: 600 13px 'Nunito Sans'; cursor: pointer; }
+  .plan { background: #fff; border-radius: 24px; padding: 14px 16px 16px; margin-bottom: 16px; box-shadow: 0 4px 24px rgba(123,92,240,.08); }
+  .plan .t b { font: 800 16px 'Nunito Sans'; } .plan .t small { display: block; color: var(--mute); }
+  .plan .stage { position: relative; height: 150px; margin-top: 8px; border-radius: 18px; background: radial-gradient(circle at 60% 70%, #E4DCFD 0 40%, transparent 41%), #F6F3FF; overflow: hidden; } .plan .stage .art { position: absolute; right: 10px; bottom: 0; width: 210px; height: 150px; }
+  .play { position: absolute; left: 14px; bottom: 14px; width: 46px; height: 46px; border-radius: 50%; border: 0; background: var(--acc); color: #fff; display: grid; place-items: center; cursor: pointer; box-shadow: 0 6px 14px rgba(123,92,240,.4); }
+  .info { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
+  .it { position: relative; border: 0; background: #fff; border-radius: 22px; padding: 14px; text-align: left; cursor: pointer; font: 700 13px 'Nunito Sans'; color: var(--c); overflow: hidden; box-shadow: 0 4px 24px rgba(123,92,240,.06); min-height: 110px; }
+  .it b { display: block; font: 900 28px 'Nunito Sans'; color: #1E1B33; margin-top: 6px; } .it small { color: var(--mute); font-weight: 600; } .it .ic { position: absolute; right: 12px; top: 12px; font-size: 18px; }
+  .it.tall { grid-row: span 2; } .it svg { position: absolute; left: 0; right: 0; bottom: 34px; width: 100%; height: 70px; }
+  .strip { display: flex; justify-content: space-between; margin-bottom: 12px; } .strip button { border: 0; background: none; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 2px; font: 600 11px 'Nunito Sans'; color: var(--mute); padding: 6px 8px; border-radius: 18px; }
+  .strip button b { font: 800 15px 'Nunito Sans'; color: #1E1B33; } .strip button.on { background: var(--acc); color: #EDE7FF; } .strip button.on b { color: #fff; } .strip button.dn b { color: var(--acc); }
+  .big { text-align: center; } .big b { display: block; font: 900 34px 'Nunito Sans'; } .big small { color: var(--mute); }
+  .tri { display: grid; grid-template-columns: repeat(3, 1fr); text-align: center; margin: 12px 0; } .tri b { display: block; font: 800 18px 'Nunito Sans'; } .tri small { color: var(--mute); }
+  .multi svg { display: block; width: 100%; height: 150px; }
+  .legend { display: flex; gap: 12px; flex-wrap: wrap; font: 600 12px 'Nunito Sans'; color: var(--mute); margin: 4px 0 12px; } .legend i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 4px; vertical-align: -1px; }
+  .three { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 14px; } .three button { border: 0; border-radius: 18px; padding: 12px 8px; text-align: left; cursor: pointer; background: #fff; font: 600 12px 'Nunito Sans'; color: var(--mute); } .three button b { display: block; color: #1E1B33; font: 800 17px 'Nunito Sans'; } .three button.on { background: var(--acc); color: #E7E0FF; } .three button.on b { color: #fff; }
+  .player { background: #fff; border-radius: 26px; padding: 14px; margin-bottom: 14px; box-shadow: 0 4px 24px rgba(123,92,240,.08); }
+  .player .stage { position: relative; height: 200px; border-radius: 20px; background: radial-gradient(circle at 50% 65%, #E4DCFD 0 42%, transparent 43%), #F6F3FF; } .player .stage .art { position: absolute; left: 50%; bottom: 6px; width: 230px; height: 184px; transform: translateX(-50%); }
+  .player h3 { margin: 12px 0 0; font: 800 17px 'Nunito Sans'; } .player .sub { color: var(--mute); font-size: 13px; }
+  .bar { height: 6px; border-radius: 3px; background: #ECE8FB; margin: 12px 0 4px; } .bar i { display: block; height: 100%; width: var(--p); border-radius: 3px; background: var(--acc); }
+  .tm { display: flex; justify-content: space-between; color: var(--mute); font: 600 12px 'Nunito Sans'; }
+  .ctl { display: flex; justify-content: space-around; align-items: center; margin-top: 10px; } .ctl button { border: 0; background: none; cursor: pointer; color: #1E1B33; width: 46px; height: 46px; border-radius: 50%; display: grid; place-items: center; font-size: 20px; }
+  .ctl .main { width: 64px; height: 64px; background: var(--acc); color: #fff; font-size: 24px; box-shadow: 0 8px 18px rgba(123,92,240,.35); }
+  .detail { background: #fff; border-radius: 24px; padding: 16px; margin-bottom: 14px; } .detail h3 { margin: 0; font: 900 22px 'Nunito Sans'; display: flex; justify-content: space-between; } .detail p { color: var(--mute); margin: 6px 0 0; } .detail .lv { color: var(--mute); }
+  .meta { display: flex; gap: 14px; margin: 8px 0; font: 700 12px 'Nunito Sans'; } .meta span { color: #F2A93B; } .meta span + span { color: #E5596E; }
+  .sets { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0 0; } .sb { border: 1.5px solid #E6E3F5; background: #fff; border-radius: 14px; padding: 8px 11px; font: 700 13px 'Nunito Sans'; cursor: pointer; color: #1E1B33; } .sb.on { background: var(--acc); border-color: var(--acc); color: #fff; } .sb.nx { border-color: var(--acc); color: var(--acc); } .sb.e { border: 0; background: none; color: var(--acc); text-decoration: underline; }
+  .q { display: flex; align-items: center; gap: 12px; width: 100%; border: 0; background: #fff; border-radius: 18px; padding: 12px; margin-bottom: 8px; cursor: pointer; text-align: left; font: 700 14px 'Nunito Sans'; color: #1E1B33; } .q i { font-style: normal; width: 34px; height: 34px; border-radius: 12px; background: var(--acc-l); color: var(--acc); display: grid; place-items: center; } .q span { flex: 1; min-width: 0; } .q small { display: block; color: var(--mute); font-weight: 600; } .q.on { box-shadow: inset 0 0 0 2px var(--acc); }
+  .btn { display: block; width: 100%; border: 0; border-radius: 18px; padding: 15px; margin: 8px 0; cursor: pointer; font: 800 15px 'Nunito Sans'; background: var(--acc); color: #fff; } .btn.l { background: var(--acc-l); color: var(--acc); }
+  .cal { background: #fff; border-radius: 22px; padding: 14px; margin-bottom: 12px; } .cal .top { display: flex; justify-content: space-between; font-weight: 800; margin-bottom: 8px; }
+  .cal .g { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center; } .cal .g span { font: 700 11px 'Nunito Sans'; color: var(--mute); } .cal .g button { aspect-ratio: 1; border: 0; border-radius: 10px; background: none; cursor: pointer; font: 700 13px 'Nunito Sans'; color: #1E1B33; } .cal .g button.out { color: #C3C0D6; } .cal .g button.dn { background: var(--acc-l); color: var(--acc); } .cal .g button.tdy { background: var(--acc); color: #fff; }
+  .times { display: flex; gap: 8px; overflow-x: auto; margin-bottom: 8px; scrollbar-width: none; } .times button { flex: 0 0 auto; border: 1.5px solid #E6E3F5; background: #fff; border-radius: 14px; padding: 9px 14px; font: 700 13px 'Nunito Sans'; cursor: pointer; color: #1E1B33; } .times button.on { border-color: var(--acc); color: var(--acc); background: var(--acc-l); }
+  nav { display: flex; background: #fff; padding: 10px 6px 24px; box-shadow: 0 -4px 20px rgba(123,92,240,.06); }
+  nav button { flex: 1; border: 0; background: none; cursor: pointer; color: #B6B3CC; display: grid; place-items: center; height: 40px; } nav button.is-active { color: var(--acc); }
+  .post { background: #fff; border-radius: 18px; padding: 12px; margin-bottom: 10px; cursor: pointer; }
+</style>
+</head>
+<body class="concept">
+<aside class="concept-info" id="info"></aside>
+<div class="device"><div class="app" id="app">
+  <main data-scroll><section data-screen="home"></section><section data-screen="stats" hidden></section><section data-screen="player" hidden></section><section data-screen="schedule" hidden></section><section data-screen="profile" hidden></section></main>
+  <nav id="nav"></nav>
+</div></div>
+<script src="designs.js"></script>
+<script src="../r2/lib.js"></script><script src="../r2/core.js"></script><script src="../r2/kit.js"></script><script src="../r3/r3.js"></script><script src="art.js"></script>
+<script>
+(function () {
+  const G = GQ2, K = Kit, I = K.icon, e = G.esc;
+  document.getElementById('nav').innerHTML = [['home', 'home', 'Home'], ['stats', 'chart', 'Statistics'], ['player', 'play', 'Workout'], ['schedule', 'calendar', 'Schedule'], ['profile', 'user', 'Profile']].map(([k, ic, l]) => '<button data-tab="' + k + '" aria-label="' + l + '">' + I(ic) + '</button>').join('');
+  const PAL = { top: '#7B5CF0', bottom: '#5A3FCC', skin: '#B9A6FA', hair: '#3B2A8F', prop: '#7B5CF0' };
+  const POSE = { chest: 'pushup', back: 'lift', shoulders: 'lift', arms: 'lift', legs: 'stretch', glutes: 'stretch', core: 'yoga' };
+  const poseOf = (id) => POSE[(G.LIBMAP[id] || {}).primary] || 'walk';
+  const Q = (ic, t, sub, attr, cls) => '<button class="q ' + (cls || '') + '" ' + attr + '><i>' + ic + '</i><span>' + t + (sub ? '<small>' + sub + '</small>' : '') + '</span>' + I('chevron') + '</button>';
+  const link = (l) => Q(I(l.icon), l.label, l.sub, l.attr);
+  const DAY = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  function home() {
+    const r = G.recommended(), s = G.sess(), w = G.weekInfo(), x = G.xp(), d = G.parse(G.today()), ser = G.weeklySeries(8);
+    const line = ser.map((q, i) => (i / 7 * 160).toFixed(0) + ',' + (60 - q.minutes / Math.max(1, ...ser.map((z) => z.minutes)) * 50).toFixed(0)).join(' ');
+    const lead = s ? G.plan(s.planId) : r;
+    return '<div class="hdr"><div><small>Hello ' + e(G.state.profile.name || 'there') + ',</small><b>' + DAY[d.getDay()].slice(0, 3) + ', ' + d.getDate() + ' ' + G.MONTHS[d.getMonth()].slice(0, 3) + '</b></div><button class="icb" data-open="library" aria-label="Search exercises">' + I('search') + '</button></div>'
+      + '<h2>Today Plan <button data-open="plans" aria-label="All plans">•••</button></h2>'
+      + '<div class="plan"><div class="t"><b>' + (s ? 'In progress · ' + e(s.planName) : lead ? 'Week ' + w.num + ' · ' + e(lead.name) : 'No plan yet') + '</b><small>' + (s ? G.progress().done + ' of ' + G.progress().total + ' sets · <span data-live="elapsed"></span>' : lead ? lead.exercises.length + ' exercises · about ' + G.planMinutes(lead) + ' min' : 'Create a plan to start') + '</small></div>'
+      + '<div class="stage">' + Art.figure('yoga', PAL, { label: 'Workout illustration' }) + (s ? '<button class="play" data-tab="player" aria-label="Back to the workout">' + I('play') + '</button>' : r ? '<button class="play" data-do="start" data-arg="' + r.id + '" aria-label="Start ' + e(r.name) + '">' + I('play') + '</button>' : '') + '</div></div>'
+      + '<h2>Information <button data-open="history">See all</button></h2><div class="info">'
+      + '<button class="it" style="--c:#E8A33A" data-open="achievements"><span class="ic">⚡</span>XP this week<b>' + x.weekXP + '</b><small>level ' + x.level + '</small></button>'
+      + '<button class="it tall" style="--c:#E5596E" data-open="calendar"><span class="ic">♥</span>Minutes<svg viewBox="0 0 160 60" preserveAspectRatio="none" aria-hidden="true"><polyline points="' + line + '" fill="none" stroke="#E5596E" stroke-width="2.5" stroke-linejoin="round"/></svg><b style="position:absolute;bottom:14px;left:14px">' + w.minutes + '</b><small style="position:absolute;bottom:6px;left:14px">min this week</small></button>'
+      + '<button class="it" style="--c:#2BB3A3" data-open="records"><span class="ic">👟</span>Workouts<b>' + w.done + '/' + w.goal + '</b><small>streak ' + G.streak() + ' weeks</small></button></div>'
+      + Q(I('flag'), w.excused ? 'Week excused' : 'Excuse this week', 'Ill or busy? The streak is kept', 'data-do="excuse"')
+      + G.plans().map((p) => Q(I(p === r ? 'star' : 'dumbbell'), e(p.name), p.exercises.length + ' exercises · ' + G.planMinutes(p) + ' min' + (p === r ? ' · next' : ''), 'data-do="select" data-arg="' + p.id + '"', p === G.selected() ? 'on' : '')).join('')
+      + (G.selected() && !s ? '<button class="btn" data-do="start" data-arg="' + G.selected().id + '">Start ' + e(G.selected().name) + '</button><button class="btn l" data-open="editplan" data-arg="' + G.selected().id + '">Edit plan</button>' : '') + R3.links('train', link);
+  }
+  /* dataviz: sets per day this week, split by muscle group in a fixed hue order, legend below and no dual axis */
+  function stats() {
+    const w = G.weekInfo(), GR = [['chest', '#7B5CF0'], ['back', '#2BB3A3'], ['legs', '#E8A33A'], ['other', '#E5596E']];
+    const per = w.days.map((d) => { const o = { chest: 0, back: 0, legs: 0, other: 0 }; G.history().filter((h) => h.date === d.date).forEach((h) => h.exercises.forEach((x) => { const m = (G.LIBMAP[x.id] || {}).primary; const k = m === 'chest' || m === 'back' ? m : m === 'legs' || m === 'glutes' ? 'legs' : 'other'; o[k] += x.setsDone; })); return o; });
+    const mx = Math.max(1, ...per.map((o) => o.chest + o.back + o.legs + o.other));
+    const svg = '<svg viewBox="0 0 320 150" role="img" aria-label="Sets per day this week by muscle group">' + per.map((o, i) => { let y = 128; const xx = 14 + i * 44; return GR.map(([k, c]) => { const h = o[k] / mx * 110; y -= h; return h ? '<rect x="' + xx + '" y="' + y.toFixed(1) + '" width="26" height="' + Math.max(0, h - 2).toFixed(1) + '" rx="4" fill="' + c + '"/>' : ''; }).join('') + '<rect x="' + xx + '" y="128" width="26" height="3" rx="1.5" fill="#E6E3F5"/><text x="' + (xx + 13) + '" y="146" font-size="10" text-anchor="middle" fill="#7D7A95" font-family="Nunito Sans">' + w.days[i].d.slice(0, 2) + '</text>'; }).join('') + '</svg>';
+    const t = G.totals();
+    return '<div class="strip">' + w.days.map((d) => '<button class="' + (d.today ? 'on' : d.done ? 'dn' : '') + '" data-open="day" data-arg="' + d.date + '">' + d.d.slice(0, 1) + '<b>' + d.n + '</b></button>').join('') + '</div>'
+      + '<div class="big"><b>' + G.xp().weekXP + ' XP</b><small>earned this week</small></div>'
+      + '<div class="tri"><div><b>' + w.done + '</b><small>workouts</small></div><div><b>' + G.weeklySeries(1)[0].sets + '</b><small>sets</small></div><div><b>' + w.minutes + '</b><small>minutes</small></div></div>'
+      + '<div class="plan multi">' + svg + '<div class="legend">' + GR.map(([k, c]) => '<span><i style="background:' + c + '"></i>' + (k === 'other' ? 'Other' : G.MUSCLE_LABEL[k]) + '</span>').join('') + '</div></div>'
+      + '<div class="three"><button class="on" data-open="history"><b>' + t.month.workouts + '</b>this month</button><button data-open="activity"><b>' + G.state.activities.length + '</b>cardio</button><button data-open="body"><b>' + (G.bodyLatest('weight') ? G.fmtW(G.bodyLatest('weight').value) : '–') + '</b>weight</button></div>'
+      + R3.links('log body', link);
+  }
+  function player() {
+    const s = G.sess();
+    if (!s) { const r = G.recommended(); return '<div class="player"><div class="stage">' + Art.figure('walk', PAL) + '</div><h3>Nothing playing</h3><div class="sub">Pick a plan to start your session.</div></div>' + G.plans().map((p) => Q(I('play'), 'Play ' + e(p.name), p.exercises.length + ' exercises', 'data-do="start" data-arg="' + p.id + '"', p === r ? 'on' : '')).join(''); }
+    const p = G.progress(), i = Math.min(s.cur, s.exercises.length - 1), x = s.exercises[i], lib = G.LIBMAP[x.id] || {}, est = (G.planMinutes(G.plan(s.planId) || { exercises: [] }) || 40) * 60000;
+    return '<div class="player"><div class="stage">' + Art.figure(poseOf(x.id), PAL, { label: e(x.name) }) + '</div><h3>' + e(s.planName) + ': ' + e(x.name) + '</h3><div class="sub">' + (lib.difficulty ? lib.difficulty[0].toUpperCase() + lib.difficulty.slice(1) : 'Your exercise') + ' · exercise ' + (i + 1) + ' of ' + s.exercises.length + '</div>'
+      + '<div class="bar" style="--p:' + p.pct + '%"><i></i></div><div class="tm"><span data-live="elapsed"></span><span>' + p.done + ' / ' + p.total + ' sets</span><span>~' + G.clock(est) + '</span></div>'
+      + '<div class="ctl"><button data-do="addset" data-arg="' + i + '" aria-label="Add a set">⟳</button><button data-do="prev" aria-label="Previous exercise">⏮</button><button class="main" data-do="log" aria-label="Log the next set">▶</button><button data-do="next" aria-label="Next exercise">⏭</button><button data-open="rest" aria-label="Rest timer">⏱</button></div></div>'
+      + '<div class="detail"><h3>' + e(x.name) + ' <button class="icb" style="width:36px;height:36px" data-open="exercise" data-arg="' + x.id + '" aria-label="How to">' + I('book') + '</button></h3><div class="lv">' + R3.cmp(s, x) + '</div><div class="meta"><span>⏱ rest <span data-live="rest" data-idle="off" data-done="over" style="color:inherit"></span></span><span>🔥 +' + p.xp + ' XP</span></div><p>' + e(lib.how || 'Follow your plan for this exercise.') + '</p>'
+      + '<div class="sets">' + R3.sets(x, i).map((q) => '<button class="sb ' + (q.done ? 'on' : q.next ? 'nx' : '') + '" ' + q.attr + '>' + (q.side ? q.side + ' ' : '') + q.wb + ' × ' + q.r + (q.fail ? ' F' : '') + '</button>').join('') + R3.sets(x, i).map((q) => '<button class="sb e" ' + q.edit + '>edit ' + (q.j + 1) + '</button>').join('') + '<button class="sb e" data-open="replace" data-arg="' + i + '">replace</button></div></div>'
+      + '<h2>Up next</h2>' + s.exercises.map((y, k) => Q(R3.exDone(y) ? '✓' : String(k + 1), e(y.name), y.sets.filter((z) => z.done).length + ' of ' + y.sets.length + ' sets', 'data-do="cur" data-arg="' + k + '"', k === i ? 'on' : '')).join('')
+      + '<button class="btn" data-do="finish">Finish workout · +' + p.xp + ' XP</button><button class="btn l" data-do="discard">Discard workout</button>';
+  }
+  function schedule() {
+    const t = G.parse(G.today()), m = G.month(t.getFullYear(), t.getMonth()), rem = G.state.community.reminders || [];
+    return '<h2>Set up time</h2><div class="cal"><div class="top"><span>' + m.title + '</span><button class="icb" style="width:32px;height:32px" data-open="calendar" aria-label="Open calendar">' + I('chevron') + '</button></div><div class="g">' + G.WD.map((d) => '<span>' + d.slice(0, 2) + '</span>').join('')
+      + m.days.map((d) => '<button class="' + (d.today ? 'tdy' : d.count ? 'dn' : d.out ? 'out' : '') + '" data-open="day" data-arg="' + d.date + '">' + d.n + '</button>').join('') + '</div></div>'
+      + '<h2>Reminders</h2><div class="times">' + rem.map((r) => '<button class="' + (r.on ? 'on' : '') + '" data-do="rem" data-arg="' + r.kind + '">' + e(r.label) + '</button>').join('') + '</div><small style="color:#7D7A95">Tap a reminder to turn it on or off. Reminders need notifications on in your profile.</small>'
+      + '<button class="btn" data-open="profile">Set up notifications</button>' + Q(I('target'), 'Weekly goal', G.goal() + ' workouts a week', 'data-open="settings"');
+  }
+  function profile() { const x = G.xp(); return '<h2>Profile</h2>' + Q(I('medal'), 'Level ' + x.level + ' · ' + G.levelTitle(x.level), x.total + ' XP', 'data-open="achievements"') + Q(I('search'), 'Filter exercises', 'by equipment and level', 'data-open="equipment"') + R3.links('social set', link) + Q(I('more'), 'Everything', 'Every feature in one list', 'data-open="menu"') + G.feed().map((p) => '<div class="post" data-open="postview" data-arg="' + p.id + '">' + K.postCard(p) + '</div>').join(''); }
+  R3.app({ root: document.getElementById('app'), train: 'player', screens: { home, stats, player, schedule, profile }, actions: { rem: (a) => GQ2.toggleReminder(a) } });
+})();
+</script>
+</body>
+</html>

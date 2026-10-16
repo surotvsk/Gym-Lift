@@ -3764,3 +3764,35 @@ button.cstat:hover { background: var(--surface-2); }
 .train-toast { margin: 0; padding: var(--sp-2) var(--sp-3); border-radius: var(--r-sm); background: var(--accent-soft); color: var(--text); font-weight: var(--fw-bold); }
 .train-note, .train-privacy { margin: 0; }
 .train-with { color: var(--text-dim); }
+/* ===== Ukážky dizajnov (Nastavenia → Vzhľad aplikácie) ===== */
+.design-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--sp-3); margin: var(--sp-3) 0; }
+@media (min-width: 560px) { .design-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.design-item {
+  display: flex; flex-direction: column; align-items: stretch; gap: 4px; padding: var(--sp-2);
+  border: 1px solid var(--border); border-radius: var(--r-md); background: var(--surface-2); color: var(--text);
+  font: inherit; text-align: start; cursor: pointer; min-width: 0;
+}
+.design-item:hover { border-color: var(--border-strong); }
+.design-item:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.design-thumb { display: block; width: 100%; height: auto; aspect-ratio: 300 / 649; object-fit: cover; border-radius: var(--r-sm); background: var(--surface-3); }
+.design-thumb-current {
+  display: grid; place-items: center; color: var(--accent); font-weight: var(--fw-black); font-size: var(--fs-md);
+  background: radial-gradient(circle at 50% 35%, var(--accent-soft), var(--surface-3) 70%);
+}
+.design-current { border-color: var(--accent); }
+.design-name { font-weight: var(--fw-bold); font-size: var(--fs-sm); overflow-wrap: anywhere; }
+.design-meta { font-size: var(--fs-xs); color: var(--text-dim); }
+.design-current .design-meta { color: var(--accent); font-weight: var(--fw-bold); }
+
+.design-view { position: fixed; inset: 0; z-index: 40; display: flex; flex-direction: column; background: #000; }
+.design-view[hidden] { display: none; }
+.design-view-bar {
+  display: flex; align-items: center; justify-content: space-between; gap: var(--sp-2);
+  padding: calc(env(safe-area-inset-top, 0px) + 8px) 12px 8px; background: var(--bg); border-bottom: 1px solid var(--border);
+}
+.design-view-text { display: flex; flex-direction: column; min-width: 0; }
+.design-view-title { font-weight: var(--fw-bold); color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.design-view-note { font-size: var(--fs-xs); color: var(--text-dim); }
+.design-view-bar .btn { flex: 0 0 auto; min-height: 40px; }
+.design-view-frame { flex: 1 1 auto; width: 100%; border: 0; background: #fff; }
+html.design-view-open, html.design-view-open body { overflow: hidden; }
