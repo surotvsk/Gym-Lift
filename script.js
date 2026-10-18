@@ -19173,6 +19173,10 @@ const DESIGN_PREVIEWS = [
   { id: 'clay', name: 'Clay', round: 2, path: 'r2/14-clay.html', thumb: 'r2/thumbs/14-clay.jpg' },
   { id: 'bloom', name: 'Bloom', round: 2, path: 'r2/53-bloom.html', thumb: 'r2/thumbs/53-bloom.jpg' },
   { id: 'bento', name: 'Bento', round: 2, path: 'r2/03-bento.html', thumb: 'r2/thumbs/03-bento.jpg' },
+  /* Bento s grafmi z Mint – tri varianty (kolo 5) */
+  { id: 'bento-trends', name: 'Bento Trends', label: 'Bento + Mint', path: 'r5/01-bento-trends.html', thumb: 'r5/thumbs/01-bento-trends.jpg' },
+  { id: 'bento-dashboard', name: 'Bento Dashboard', label: 'Bento + Mint', path: 'r5/02-bento-dashboard.html', thumb: 'r5/thumbs/02-bento-dashboard.jpg' },
+  { id: 'bento-mint', name: 'Bento Mint', label: 'Bento + Mint', path: 'r5/03-bento-mint.html', thumb: 'r5/thumbs/03-bento-mint.jpg' },
   { id: 'atlas', name: 'Atlas', round: 2, path: 'r2/01-atlas.html', thumb: 'r2/thumbs/01-atlas.jpg' },
   { id: 'isometric', name: 'Isometric', round: 2, path: 'r2/47-isometric.html', thumb: 'r2/thumbs/47-isometric.jpg' },
   { id: 'mint', name: 'Mint', round: 3, path: 'r3/073-mint.html', thumb: 'r3/thumbs/073-mint.jpg' },
@@ -19191,7 +19195,7 @@ function renderDesignGrid() {
     + ' aria-label="' + escAttr(t('designs.openAria', { name: d.name })) + '">'
     + '<img class="design-thumb" src="' + escAttr(DESIGN_PREVIEW_BASE + d.thumb) + '" alt="" loading="lazy" width="300" height="649">'
     + '<span class="design-name">' + esc(d.name) + '</span>'
-    + '<span class="design-meta">' + esc(t('designs.round', { n: d.round })) + '</span></button>').join('');
+    + '<span class="design-meta">' + esc(d.label || t('designs.round', { n: d.round })) + '</span></button>').join('');
 }
 function openDesignPicker() {
   renderDesignGrid();

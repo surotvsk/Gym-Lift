@@ -53,10 +53,11 @@ function check(name, ok, info) {
     await p.eval(`(document.getElementById('btn-design-previews').click(), true)`);
     await wait(600);
     const items = await p.eval(`Array.from(document.querySelectorAll('#design-grid .design-item')).map((b) => ({ id: b.dataset.design, name: b.querySelector('.design-name').textContent, meta: b.querySelector('.design-meta').textContent }))`);
-    check('the picker lists the current GymQuest first (in use) and the 11 previews', items.length === 12 && items[0].id === 'current' && items[0].meta.includes('In use')
-      && J(items.slice(1).map((x) => x.name)) === J(['Periwinkle', 'Pastel Planner', 'Soft Rings', 'Violet Studio', 'Lilac Player', 'Clay', 'Bloom', 'Bento', 'Atlas', 'Isometric', 'Mint']), items);
+    check('the picker lists the current GymQuest first (in use) and the 14 previews', items.length === 15 && items[0].id === 'current' && items[0].meta.includes('In use')
+      && J(items.slice(1).map((x) => x.name)) === J(['Periwinkle', 'Pastel Planner', 'Soft Rings', 'Violet Studio', 'Lilac Player', 'Clay', 'Bloom', 'Bento', 'Bento Trends', 'Bento Dashboard', 'Bento Mint', 'Atlas', 'Isometric', 'Mint']), items);
+    check('the three Bento + Mint variants are labelled "Bento + Mint"', items.filter((x) => /^Bento (Trends|Dashboard|Mint)$/.test(x.name)).every((x) => x.meta === 'Bento + Mint'), items);
     await waitFor(() => p.eval(`Array.from(document.querySelectorAll('#design-grid img.design-thumb')).every((i) => { i.loading = 'eager'; return i.complete && i.naturalWidth > 0; })`), 15000, 'thumbnails');
-    check('all 11 thumbnails load', true);
+    check('all 14 thumbnails load', true);
     /* Výber je vyšší ako displej: musí sa dať posunúť prstom až k poslednému dizajnu a k Zavrieť. */
     const geo = () => p.eval(`(() => { const m = document.querySelector('#modal-designs .modal'), r = m.getBoundingClientRect();
       const last = Array.from(document.querySelectorAll('#design-grid .design-item')).pop().getBoundingClientRect();
@@ -90,7 +91,16 @@ function check(name, ok, info) {
           rect: f.getBoundingClientRect().height, bar: document.querySelector('.design-view-bar').getBoundingClientRect().height }; })()`);
       check(it.name + ': opens full screen with its own page, styles and content', r.title === 'Preview: ' + it.name && r.css >= 2 && r.bodyText > 50 && r.rect > 600, r);
       check(it.name + ': exercise images (if any) load', r.mediaBroken.length === 0, r);
-      if (['periwinkle', 'clay', 'mint'].includes(it.id)) await shot('preview-' + it.id);
+      if (/^bento-/.test(it.id)) {
+        const ch = await p.eval(`(() => { const d = document.getElementById('design-view-frame').contentDocument; return { spark: d.querySelectorAll('svg.bm-spark polyline').length, area: d.querySelectorAll('svg.bm-area polyline').length, bars: d.querySelectorAll('svg.bm-bars rect').length, donut: d.querySelectorAll('svg.bm-donut').length }; })()`);
+        check(it.name + ': shows Mint charts in its Bento tiles', ch.spark + ch.area + ch.bars + ch.donut >= 4, ch);
+        if (it.id === 'bento-dashboard') {
+          await p.eval(`(document.getElementById('design-view-frame').contentDocument.querySelector('[data-do="metric"][data-arg="xp"]').click(), true)`);
+          await wait(400);
+          check('Bento Dashboard: the big chart switches to XP', (await p.eval(`document.getElementById('design-view-frame').contentDocument.querySelector('.hero .l').textContent`)) === 'Last 8 weeks · XP');
+        }
+      }
+      if (['periwinkle', 'clay', 'mint', 'bento-trends', 'bento-dashboard', 'bento-mint'].includes(it.id)) await shot('preview-' + it.id);
       await p.eval(`(document.getElementById('btn-design-view-close').click(), true)`);
       await wait(200);
       check(it.name + ': "Back to the app" closes it and stops the preview', await p.eval(`document.getElementById('design-view').hidden && document.getElementById('design-view-frame').getAttribute('src') === 'about:blank' && !document.documentElement.classList.contains('design-view-open')`));
