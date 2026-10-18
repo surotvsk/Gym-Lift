@@ -53,13 +53,15 @@ function check(name, ok, info) {
     await p.eval(`(document.getElementById('btn-design-previews').click(), true)`);
     await wait(600);
     const items = await p.eval(`Array.from(document.querySelectorAll('#design-grid .design-item')).map((b) => ({ id: b.dataset.design, name: b.querySelector('.design-name').textContent, meta: b.querySelector('.design-meta').textContent }))`);
-    check('the picker lists the current GymQuest first (in use) and the 24 previews', items.length === 25 && items[0].id === 'current' && items[0].meta.includes('In use')
-      && J(items.slice(1).map((x) => x.name)) === J(['Periwinkle', 'Pastel Planner', 'Soft Rings', 'Violet Studio', 'Lilac Player', 'Clay', 'Bloom', 'Bento', 'Bento Trends', 'Bento Dashboard', 'Bento Mint', 'Bento Ocean Light', 'Bento Ocean Dark', 'Bento Sunset Light', 'Bento Sunset Dark', 'Bento Forest Light', 'Bento Forest Dark', 'Bento Berry Light', 'Bento Berry Dark', 'Bento Mono Light', 'Bento Mono Dark', 'Atlas', 'Isometric', 'Mint']), items);
+    check('the picker lists the current GymQuest first (in use) and the 30 previews', items.length === 31 && items[0].id === 'current' && items[0].meta.includes('In use')
+      && J(items.slice(1).map((x) => x.name)) === J(['Periwinkle', 'Pastel Planner', 'Soft Rings', 'Violet Studio', 'Lilac Player', 'Clay', 'Bloom', 'Bento', 'Bento Classic Light', 'Bento Classic Dark', 'Bento Soft Light', 'Bento Soft Dark', 'Bento Vivid Light', 'Bento Vivid Dark', 'Bento Trends', 'Bento Dashboard', 'Bento Mint', 'Bento Ocean Light', 'Bento Ocean Dark', 'Bento Sunset Light', 'Bento Sunset Dark', 'Bento Forest Light', 'Bento Forest Dark', 'Bento Berry Light', 'Bento Berry Dark', 'Bento Mono Light', 'Bento Mono Dark', 'Atlas', 'Isometric', 'Mint']), items);
+    check('the 6 default-colour Bento variants are labelled "Bento · default colours"', items.filter((x) => /^Bento (Classic|Soft|Vivid) (Light|Dark)$/.test(x.name)).length === 6
+      && items.filter((x) => /^Bento (Classic|Soft|Vivid) (Light|Dark)$/.test(x.name)).every((x) => x.meta === 'Bento · default colours'), items);
     check('the 10 Bento colourways are labelled light / dark mode', items.filter((x) => /^Bento (Ocean|Sunset|Forest|Berry|Mono) (Light|Dark)$/.test(x.name)).every((x) => x.meta === 'Bento · ' + (/Light$/.test(x.name) ? 'light' : 'dark') + ' mode')
       && items.filter((x) => /^Bento (Ocean|Sunset|Forest|Berry|Mono) /.test(x.name)).length === 10, items);
     check('the three Bento + Mint variants are labelled "Bento + Mint"', items.filter((x) => /^Bento (Trends|Dashboard|Mint)$/.test(x.name)).every((x) => x.meta === 'Bento + Mint'), items);
     await waitFor(() => p.eval(`Array.from(document.querySelectorAll('#design-grid img.design-thumb')).every((i) => { i.loading = 'eager'; return i.complete && i.naturalWidth > 0; })`), 15000, 'thumbnails');
-    check('all 24 thumbnails load', true);
+    check('all 30 thumbnails load', true);
     /* Výber je vyšší ako displej: musí sa dať posunúť prstom až k poslednému dizajnu a k Zavrieť. */
     const geo = () => p.eval(`(() => { const m = document.querySelector('#modal-designs .modal'), r = m.getBoundingClientRect();
       const last = Array.from(document.querySelectorAll('#design-grid .design-item')).pop().getBoundingClientRect();
@@ -98,7 +100,7 @@ function check(name, ok, info) {
           rect: f.getBoundingClientRect().height, bar: document.querySelector('.design-view-bar').getBoundingClientRect().height }; })()`);
       check(it.name + ': opens full screen with its own page, styles and content', r.title === 'Preview: ' + it.name && r.css >= 2 && r.bodyText > 50 && r.rect > 600, r);
       check(it.name + ': exercise images (if any) load', r.mediaBroken.length === 0, r);
-      if (/^bento-(ocean|sunset|forest|berry|mono)-/.test(it.id)) {
+      if (/^bento-(ocean|sunset|forest|berry|mono|classic|soft|vivid)-/.test(it.id)) {
         const lum = await p.eval(`(() => { const d = document.getElementById('design-view-frame').contentDocument; const c = getComputedStyle(d.getElementById('app')).backgroundColor.match(/\\d+/g).map(Number); return (0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2]) / 255; })()`);
         check(it.name + ': background matches its mode', /dark$/.test(it.id) ? lum < 0.15 : lum > 0.8, lum);
       }

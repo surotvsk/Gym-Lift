@@ -19173,6 +19173,13 @@ const DESIGN_PREVIEWS = [
   { id: 'clay', name: 'Clay', round: 2, path: 'r2/14-clay.html', thumb: 'r2/thumbs/14-clay.jpg' },
   { id: 'bloom', name: 'Bloom', round: 2, path: 'r2/53-bloom.html', thumb: 'r2/thumbs/53-bloom.jpg' },
   { id: 'bento', name: 'Bento', round: 2, path: 'r2/03-bento.html', thumb: 'r2/thumbs/03-bento.jpg' },
+  /* Bento v pôvodných farbách – Classic, Soft, Vivid, každý svetlý aj tmavý (kolo 7) */
+  { id: 'bento-classic-light', name: 'Bento Classic Light', label: 'Bento · default colours', path: 'r7/01-classic-light.html', thumb: 'r7/thumbs/01-classic-light.jpg' },
+  { id: 'bento-classic-dark', name: 'Bento Classic Dark', label: 'Bento · default colours', path: 'r7/02-classic-dark.html', thumb: 'r7/thumbs/02-classic-dark.jpg' },
+  { id: 'bento-soft-light', name: 'Bento Soft Light', label: 'Bento · default colours', path: 'r7/03-soft-light.html', thumb: 'r7/thumbs/03-soft-light.jpg' },
+  { id: 'bento-soft-dark', name: 'Bento Soft Dark', label: 'Bento · default colours', path: 'r7/04-soft-dark.html', thumb: 'r7/thumbs/04-soft-dark.jpg' },
+  { id: 'bento-vivid-light', name: 'Bento Vivid Light', label: 'Bento · default colours', path: 'r7/05-vivid-light.html', thumb: 'r7/thumbs/05-vivid-light.jpg' },
+  { id: 'bento-vivid-dark', name: 'Bento Vivid Dark', label: 'Bento · default colours', path: 'r7/06-vivid-dark.html', thumb: 'r7/thumbs/06-vivid-dark.jpg' },
   /* Bento s grafmi z Mint – tri varianty (kolo 5) */
   { id: 'bento-trends', name: 'Bento Trends', label: 'Bento + Mint', path: 'r5/01-bento-trends.html', thumb: 'r5/thumbs/01-bento-trends.jpg' },
   { id: 'bento-dashboard', name: 'Bento Dashboard', label: 'Bento + Mint', path: 'r5/02-bento-dashboard.html', thumb: 'r5/thumbs/02-bento-dashboard.jpg' },

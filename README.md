@@ -105,7 +105,7 @@ browser — double-click the file or drag it into a browser window. The app work
 | `manifest.json` | Web app manifest so the app can be installed to a home screen |
 | `apple-touch-icon.png`, `icon-192.png`, `icon-512.png` | Home screen and app icons |
 | `media/` | Licensed exercise photographs and their credits (`media/CREDITS.md`) |
-| `design-concepts/` | 32 clickable redesign prototypes (mockups with sample data, not part of the app). The gallery is `design-concepts/index.html`. The service worker leaves these pages alone, so they always load from the network. `design-concepts/app/` holds the 24 previews opened from Settings → Design previews |
+| `design-concepts/` | 32 clickable redesign prototypes (mockups with sample data, not part of the app). The gallery is `design-concepts/index.html`. The service worker leaves these pages alone, so they always load from the network. `design-concepts/app/` holds the 30 previews opened from Settings → Design previews |
 | `README.md` | This documentation |
 
 ---
@@ -261,14 +261,15 @@ the vocabulary is Brazilian (*treino*, *séries até a falha*, *Duração do tre
 
 ### Design previews
 
-**⚙️ Settings → App design → Design previews** shows the current GymQuest (in use) and 24 possible new
+**⚙️ Settings → App design → Design previews** shows the current GymQuest (in use) and 30 possible new
 looks: *Periwinkle*, *Pastel Planner*, *Soft Rings*, *Violet Studio*, *Lilac Player*, *Clay*, *Bloom*,
 *Bento*, *Atlas*, *Isometric*, *Mint*, and three *Bento + Mint* variants that add Mint's charts to Bento's
 tiles — *Bento Trends* (a trend line in every number tile), *Bento Dashboard* (a big chart of the last 8
 weeks, switchable between minutes, sets and XP) and *Bento Mint* (Bento's grid in Mint's colours with a
 small chart in every tile) — and Bento in five colourways, each as a light and a dark mode: *Ocean*
 (aqua and blues), *Sunset* (coral, rose, amber), *Forest* (moss, sage, wheat), *Berry* (pink, lilac,
-orchid) and *Mono* (greys with one electric-orange accent). Tap one to see it full screen inside the app, and **Back to the
+orchid) and *Mono* (greys with one electric-orange accent). Bento also comes in its own default colours, each light and dark: *Classic* (the original
+lime, lavender, peach, sky and sand), *Soft* (a little paler) and *Vivid* (a little punchier). Tap one to see it full screen inside the app, and **Back to the
 app** (or Esc) to return. Previews are only for trying the look on your phone: they use sample data,
 not everything in them works, and they never read or change your workouts or settings. The app itself
 keeps its current design.
