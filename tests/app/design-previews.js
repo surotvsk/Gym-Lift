@@ -53,11 +53,13 @@ function check(name, ok, info) {
     await p.eval(`(document.getElementById('btn-design-previews').click(), true)`);
     await wait(600);
     const items = await p.eval(`Array.from(document.querySelectorAll('#design-grid .design-item')).map((b) => ({ id: b.dataset.design, name: b.querySelector('.design-name').textContent, meta: b.querySelector('.design-meta').textContent }))`);
-    check('the picker lists the current GymQuest first (in use) and the 14 previews', items.length === 15 && items[0].id === 'current' && items[0].meta.includes('In use')
-      && J(items.slice(1).map((x) => x.name)) === J(['Periwinkle', 'Pastel Planner', 'Soft Rings', 'Violet Studio', 'Lilac Player', 'Clay', 'Bloom', 'Bento', 'Bento Trends', 'Bento Dashboard', 'Bento Mint', 'Atlas', 'Isometric', 'Mint']), items);
+    check('the picker lists the current GymQuest first (in use) and the 24 previews', items.length === 25 && items[0].id === 'current' && items[0].meta.includes('In use')
+      && J(items.slice(1).map((x) => x.name)) === J(['Periwinkle', 'Pastel Planner', 'Soft Rings', 'Violet Studio', 'Lilac Player', 'Clay', 'Bloom', 'Bento', 'Bento Trends', 'Bento Dashboard', 'Bento Mint', 'Bento Ocean Light', 'Bento Ocean Dark', 'Bento Sunset Light', 'Bento Sunset Dark', 'Bento Forest Light', 'Bento Forest Dark', 'Bento Berry Light', 'Bento Berry Dark', 'Bento Mono Light', 'Bento Mono Dark', 'Atlas', 'Isometric', 'Mint']), items);
+    check('the 10 Bento colourways are labelled light / dark mode', items.filter((x) => /^Bento (Ocean|Sunset|Forest|Berry|Mono) (Light|Dark)$/.test(x.name)).every((x) => x.meta === 'Bento · ' + (/Light$/.test(x.name) ? 'light' : 'dark') + ' mode')
+      && items.filter((x) => /^Bento (Ocean|Sunset|Forest|Berry|Mono) /.test(x.name)).length === 10, items);
     check('the three Bento + Mint variants are labelled "Bento + Mint"', items.filter((x) => /^Bento (Trends|Dashboard|Mint)$/.test(x.name)).every((x) => x.meta === 'Bento + Mint'), items);
     await waitFor(() => p.eval(`Array.from(document.querySelectorAll('#design-grid img.design-thumb')).every((i) => { i.loading = 'eager'; return i.complete && i.naturalWidth > 0; })`), 15000, 'thumbnails');
-    check('all 14 thumbnails load', true);
+    check('all 24 thumbnails load', true);
     /* Výber je vyšší ako displej: musí sa dať posunúť prstom až k poslednému dizajnu a k Zavrieť. */
     const geo = () => p.eval(`(() => { const m = document.querySelector('#modal-designs .modal'), r = m.getBoundingClientRect();
       const last = Array.from(document.querySelectorAll('#design-grid .design-item')).pop().getBoundingClientRect();
@@ -68,7 +70,12 @@ function check(name, ok, info) {
     check('390 px: the picker window fits the screen and scrolls inside', g.top >= 0 && g.bottom <= g.vh && g.scrollable, g);
     check('…the Close button is always reachable (pinned at the bottom, on screen)', g.closeTop >= 0 && g.closeBottom <= g.vh, g);
     /* posun gestom (headless Chrome nevie syntetizovať dotykový posun; na telefóne posúva prst tú istú oblasť) */
-    for (let k = 0; k < 6; k++) await p.c.send('Input.synthesizeScrollGesture', { x: 195, y: 600, yDistance: -500, speed: 2000, gestureSourceType: 'mouse' });
+    for (let k = 0, prevTop = -1; k < 30; k++) {   // až na koniec zoznamu, nech je akokoľvek dlhý
+      await p.c.send('Input.synthesizeScrollGesture', { x: 195, y: 600, yDistance: -800, speed: 3000, gestureSourceType: 'mouse' });
+      const top = await p.eval(`document.querySelector('#modal-designs .modal').scrollTop`);
+      if (top === prevTop) break;
+      prevTop = top;
+    }
     await wait(400);
     g = await geo();
     check('scrolling moves the picker down to the last design (Mint)', g.scrollTop > 200 && g.lastBottom <= g.closeTop + 2 && g.lastBottom > g.top, g);
@@ -91,7 +98,11 @@ function check(name, ok, info) {
           rect: f.getBoundingClientRect().height, bar: document.querySelector('.design-view-bar').getBoundingClientRect().height }; })()`);
       check(it.name + ': opens full screen with its own page, styles and content', r.title === 'Preview: ' + it.name && r.css >= 2 && r.bodyText > 50 && r.rect > 600, r);
       check(it.name + ': exercise images (if any) load', r.mediaBroken.length === 0, r);
-      if (/^bento-/.test(it.id)) {
+      if (/^bento-(ocean|sunset|forest|berry|mono)-/.test(it.id)) {
+        const lum = await p.eval(`(() => { const d = document.getElementById('design-view-frame').contentDocument; const c = getComputedStyle(d.getElementById('app')).backgroundColor.match(/\\d+/g).map(Number); return (0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2]) / 255; })()`);
+        check(it.name + ': background matches its mode', /dark$/.test(it.id) ? lum < 0.15 : lum > 0.8, lum);
+      }
+      if (/^bento-(trends|dashboard|mint)$/.test(it.id)) {
         const ch = await p.eval(`(() => { const d = document.getElementById('design-view-frame').contentDocument; return { spark: d.querySelectorAll('svg.bm-spark polyline').length, area: d.querySelectorAll('svg.bm-area polyline').length, bars: d.querySelectorAll('svg.bm-bars rect').length, donut: d.querySelectorAll('svg.bm-donut').length }; })()`);
         check(it.name + ': shows Mint charts in its Bento tiles', ch.spark + ch.area + ch.bars + ch.donut >= 4, ch);
         if (it.id === 'bento-dashboard') {
