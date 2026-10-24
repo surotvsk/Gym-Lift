@@ -70,7 +70,9 @@ scenario('reports XP after a workout', async () => {
 });
 
 async function openBoard(p) {
-  await waitFor(() => p.eval(`(() => { const b = document.querySelector('.cnav [data-community-view="leaderboard"]'); if (!b) return false; b.click(); return true; })()`), 20000, 'Top 20 tab');
+  /* Bento: Top 20 je dlaždica na hlavnej stránke Community – z iného listu sa najprv ide Späť */
+  await waitFor(() => p.eval(`(() => { const b = document.querySelector('.cnav [data-community-view="leaderboard"]'); if (b) { b.click(); return true; }
+    const back = document.querySelector('#community-tabs [data-community-view="feed"], #community-body [data-community-action="back"]'); if (back) back.click(); return false; })()`), 20000, 'Top 20 tab');
   await waitFor(() => p.eval(`!!document.querySelector('#community-body .lb-table, #community-body .lb-state')`), 20000, 'board');
   await wait(300);
 }

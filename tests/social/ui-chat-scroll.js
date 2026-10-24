@@ -112,12 +112,15 @@ async function typeMsg(p, text) {
     const m = Array.from(document.querySelectorAll('#community-chat-msgs .cmsg')).find((x) => x.querySelector('.cmsg-body') && x.querySelector('.cmsg-body').textContent === ${J(needle)});
     if (!m) return null;
     /* viditeľné = nad prilepeným poľom na písanie a nad spodnou lištou */
-    const r = m.getBoundingClientRect(), bar = document.querySelector('.tab-bar').getBoundingClientRect();
+    /* Bento: chat je celostránkový list, ktorý menu prekryje – vtedy je spodnou hranicou spodok obrazovky */
+    const barEl = document.querySelector('.tab-bar'), br = barEl.getBoundingClientRect(), hitBar = document.elementFromPoint(br.left + br.width / 2, br.top + br.height / 2);
+    const r = m.getBoundingClientRect(), bar = hitBar && barEl.contains(hitBar) ? br : { top: innerHeight };
     const comp = document.querySelector('#community-body .ccomposer');
     const limit = Math.min(bar.top, comp ? comp.getBoundingClientRect().top : bar.top);
     return { top: Math.round(r.top), bottom: Math.round(r.bottom), limit: Math.round(limit), visible: r.top >= 0 && r.bottom <= limit + 1, scrollY: Math.round(scrollY) };
   })()`);
-  const composerVisible = (p) => p.eval(`(() => { const r = document.querySelector('#community-body .ccomposer').getBoundingClientRect(), bar = document.querySelector('.tab-bar').getBoundingClientRect(); return r.top >= 0 && r.bottom <= bar.top; })()`);
+  const composerVisible = (p) => p.eval(`(() => { const r = document.querySelector('#community-body .ccomposer').getBoundingClientRect(), barEl = document.querySelector('.tab-bar'), br = barEl.getBoundingClientRect(), hit = document.elementFromPoint(br.left + br.width / 2, br.top + br.height / 2);
+    const bottom = hit && barEl.contains(hit) ? br.top : innerHeight; return r.top >= 0 && r.bottom <= bottom + 1; })()`);
   try {
     const pB = await device('B');
     await signIn(pB, B);
@@ -144,14 +147,16 @@ async function typeMsg(p, text) {
     await waitFor(() => pos(pB, 'Live one').then((x) => !!x), 15000, 'live message');
     await wait(300);
     check('at the end: a friend\'s new message stays in view', (await pos(pB, 'Live one')).visible, J(await pos(pB, 'Live one')));
-    await pB.eval(`(window.scrollTo(0, 0), true)`);
+    /* Bento: chat sa posúva vo svojom liste (celostránkový list), nie celá stránka */
+    const SCROLLER = `(communitySheetScroller() || document.scrollingElement)`;
+    await pB.eval(`(${SCROLLER}.scrollTop = 0, true)`);
     await wait(300);
-    const yTop = await pB.eval('Math.round(scrollY)');
+    const yTop = await pB.eval(`Math.round(${SCROLLER}.scrollTop)`);
     r = await pA.c.from('messages').insert({ conversation_id: conv, sender_id: A.id, body: 'Live two' });
     if (r.error) throw new Error(errText(r));
     await waitFor(() => pos(pB, 'Live two').then((x) => !!x), 15000, 'live message 2');
     await wait(300);
-    check('reading older messages: a new message does not pull you down', (await pB.eval('Math.round(scrollY)')) === yTop && !(await pos(pB, 'Live two')).visible, { yTop, now: await pB.eval('Math.round(scrollY)') });
+    check('reading older messages: a new message does not pull you down', (await pB.eval(`Math.round(${SCROLLER}.scrollTop)`)) === yTop && !(await pos(pB, 'Live two')).visible, { yTop, now: await pB.eval(`Math.round(${SCROLLER}.scrollTop)`) });
     await pB.eval(`(() => { const el = document.getElementById('community-chat-text'); el.value = 'My answer'; el.dispatchEvent(new Event('input', { bubbles: true })); return true; })()`);
     await click(pB, '[data-community-action="chat-send"]');
     await waitFor(() => pos(pB, 'My answer').then((x) => !!x), 15000, 'own message');

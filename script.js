@@ -1434,7 +1434,7 @@ const I18N = {
     'kalendar.legendTitle': 'Legenda',
     'kalendar.legendWorkout': 'Zelená — Dokončený tréning',
     'kalendar.legendMissed': 'Červená — Žiadny zaznamenaný tréning',
-    'kalendar.legendToday': 'Oranžový okraj — Dnes',
+    'kalendar.legendToday': 'Obrys — Dnes',
     'kalendar.statusWorkout': 'Dokončený tréning',
     'kalendar.statusNone': 'Žiadny zaznamenaný tréning',
     'kalendar.statusTodayNone': 'Dnes — zatiaľ bez zaznamenaného tréningu',
@@ -1545,7 +1545,7 @@ const I18N = {
     'trening.finish': 'Dokončiť tréning',
     'trening.finishTitle': 'Dokončiť tréning?',
     'trening.doneTitle': '🏆 Tréning dokončený!',
-    'trening.confirmText': '{plan} · {done} z {total} sérií<br>Získaš <b style="color:#a3e635">+{xp} XP</b>',
+    'trening.confirmText': '{plan} · {done} z {total} sérií<br>Získaš <b class="xp-gain">+{xp} XP</b>',
     'trening.noteLabel': 'Poznámka (voliteľná)',
     'trening.super': 'Super!',
     'trening.undo': 'Vrátiť tento tréning späť',
@@ -2343,7 +2343,7 @@ const I18N = {
     'kalendar.legendTitle': 'Legend',
     'kalendar.legendWorkout': 'Green — Workout completed',
     'kalendar.legendMissed': 'Red — No workout recorded',
-    'kalendar.legendToday': 'Orange outline — Today',
+    'kalendar.legendToday': 'Outline — Today',
     'kalendar.statusWorkout': 'Workout completed',
     'kalendar.statusNone': 'No workout recorded',
     'kalendar.statusTodayNone': 'Today — no workout recorded yet',
@@ -2454,7 +2454,7 @@ const I18N = {
     'trening.finish': 'Finish workout',
     'trening.finishTitle': 'Finish workout?',
     'trening.doneTitle': '🏆 Workout complete!',
-    'trening.confirmText': '{plan} · {done} of {total} sets<br>You get <b style="color:#a3e635">+{xp} XP</b>',
+    'trening.confirmText': '{plan} · {done} of {total} sets<br>You get <b class="xp-gain">+{xp} XP</b>',
     'trening.noteLabel': 'Note (optional)',
     'trening.super': 'Awesome!',
     'trening.undo': 'Undo this workout',
@@ -3258,7 +3258,7 @@ const I18N = {
     'kalendar.legendTitle': 'Leyenda',
     'kalendar.legendWorkout': 'Verde — Entrenamiento completado',
     'kalendar.legendMissed': 'Rojo — Sin entrenamiento registrado',
-    'kalendar.legendToday': 'Borde naranja — Hoy',
+    'kalendar.legendToday': 'Contorno — Hoy',
     'kalendar.statusWorkout': 'Entrenamiento completado',
     'kalendar.statusNone': 'Sin entrenamiento registrado',
     'kalendar.statusTodayNone': 'Hoy — todavía sin entrenamiento registrado',
@@ -3369,7 +3369,7 @@ const I18N = {
     'trening.finish': 'Terminar entrenamiento',
     'trening.finishTitle': '¿Terminar entrenamiento?',
     'trening.doneTitle': '🏆 ¡Entrenamiento completado!',
-    'trening.confirmText': '{plan} · {done} de {total} series<br>Ganas <b style="color:#a3e635">+{xp} XP</b>',
+    'trening.confirmText': '{plan} · {done} de {total} series<br>Ganas <b class="xp-gain">+{xp} XP</b>',
     'trening.noteLabel': 'Nota (opcional)',
     'trening.super': '¡Genial!',
     'trening.undo': 'Deshacer este entrenamiento',
@@ -4165,7 +4165,7 @@ const I18N = {
     'kalendar.legendTitle': 'Legenda',
     'kalendar.legendWorkout': 'Verde — Treino concluído',
     'kalendar.legendMissed': 'Vermelho — Nenhum treino registrado',
-    'kalendar.legendToday': 'Contorno laranja — Hoje',
+    'kalendar.legendToday': 'Contorno — Hoje',
     'kalendar.statusWorkout': 'Treino concluído',
     'kalendar.statusNone': 'Nenhum treino registrado',
     'kalendar.statusTodayNone': 'Hoje — ainda sem treino registrado',
@@ -4276,7 +4276,7 @@ const I18N = {
     'trening.finish': 'Finalizar treino',
     'trening.finishTitle': 'Finalizar treino?',
     'trening.doneTitle': '🏆 Treino concluído!',
-    'trening.confirmText': '{plan} · {done} de {total} séries<br>Você ganha <b style="color:#a3e635">+{xp} XP</b>',
+    'trening.confirmText': '{plan} · {done} de {total} séries<br>Você ganha <b class="xp-gain">+{xp} XP</b>',
     'trening.noteLabel': 'Observação (opcional)',
     'trening.super': 'Muito bom!',
     'trening.undo': 'Desfazer este treino',
@@ -5072,7 +5072,7 @@ const I18N = {
     'kalendar.legendTitle': 'Légende',
     'kalendar.legendWorkout': 'Vert — Entraînement terminé',
     'kalendar.legendMissed': 'Rouge — Aucun entraînement enregistré',
-    'kalendar.legendToday': 'Contour orange — Aujourd’hui',
+    'kalendar.legendToday': 'Contour — Aujourd’hui',
     'kalendar.statusWorkout': 'Entraînement terminé',
     'kalendar.statusNone': 'Aucun entraînement enregistré',
     'kalendar.statusTodayNone': 'Aujourd’hui — pas encore d’entraînement enregistré',
@@ -5183,7 +5183,7 @@ const I18N = {
     'trening.finish': 'Terminer l’entraînement',
     'trening.finishTitle': 'Terminer l’entraînement ?',
     'trening.doneTitle': '🏆 Entraînement terminé !',
-    'trening.confirmText': '{plan} · {done} sur {total} séries<br>Tu gagnes <b style="color:#a3e635">+{xp} XP</b>',
+    'trening.confirmText': '{plan} · {done} sur {total} séries<br>Tu gagnes <b class="xp-gain">+{xp} XP</b>',
     'trening.noteLabel': 'Note (facultative)',
     'trening.super': 'Génial !',
     'trening.undo': 'Annuler cet entraînement',
@@ -5979,7 +5979,7 @@ const I18N = {
     'kalendar.legendTitle': 'المفتاح',
     'kalendar.legendWorkout': 'أخضر — تمرين مكتمل',
     'kalendar.legendMissed': 'أحمر — لا يوجد تمرين مسجَّل',
-    'kalendar.legendToday': 'إطار برتقالي — اليوم',
+    'kalendar.legendToday': 'إطار — اليوم',
     'kalendar.statusWorkout': 'تمرين مكتمل',
     'kalendar.statusNone': 'لا يوجد تمرين مسجَّل',
     'kalendar.statusTodayNone': 'اليوم — لا يوجد تمرين مسجَّل بعد',
@@ -6109,7 +6109,7 @@ const I18N = {
     'trening.finish': 'إنهاء التمرين',
     'trening.finishTitle': 'إنهاء التمرين؟',
     'trening.doneTitle': '🏆 اكتمل التمرين!',
-    'trening.confirmText': '{plan} · {done} من {total} سلسلة<br>ستحصل على <b style="color:#a3e635">+{xp} XP</b>',
+    'trening.confirmText': '{plan} · {done} من {total} سلسلة<br>ستحصل على <b class="xp-gain">+{xp} XP</b>',
     'trening.noteLabel': 'ملاحظة (اختيارية)',
     'trening.super': 'رائع!',
     'trening.undo': 'تراجع عن هذا التمرين',
@@ -8509,6 +8509,215 @@ const DESIGNS_I18N = {
 };
 for (const lang of Object.keys(DESIGNS_I18N)) Object.assign(I18N[lang] || (I18N[lang] = {}), DESIGNS_I18N[lang]);
 
+/* Vzhľad (Bento svetlý / tmavý). */
+const THEME_I18N = {
+  sk: { 'theme.title': 'Vzhľad', 'theme.hint': 'Svetlý, tmavý alebo podľa nastavenia zariadenia. Platí na tomto zariadení, tvoje dáta sa nemenia.', 'theme.light': 'Svetlý', 'theme.dark': 'Tmavý', 'theme.auto': 'Podľa systému' },
+  en: { 'theme.title': 'Appearance', 'theme.hint': 'Light, dark, or follow your device setting. Applies to this device; your data stays the same.', 'theme.light': 'Light', 'theme.dark': 'Dark', 'theme.auto': 'System' },
+  es: { 'theme.title': 'Apariencia', 'theme.hint': 'Modo claro u oscuro. Se aplica en este dispositivo; tus datos no cambian.', 'theme.light': 'Claro', 'theme.dark': 'Oscuro', 'theme.auto': 'Sistema' },
+  'pt-BR': { 'theme.title': 'Aparência', 'theme.hint': 'Modo claro ou escuro. Vale para este dispositivo; seus dados não mudam.', 'theme.light': 'Claro', 'theme.dark': 'Escuro', 'theme.auto': 'Sistema' },
+  fr: { 'theme.title': 'Apparence', 'theme.hint': 'Mode clair ou sombre. S’applique à cet appareil ; tes données ne changent pas.', 'theme.light': 'Clair', 'theme.dark': 'Sombre', 'theme.auto': 'Système' },
+  ar: { 'theme.title': 'المظهر', 'theme.hint': 'الوضع الفاتح أو الداكن. يُطبَّق على هذا الجهاز؛ لا تتغير بياناتك.', 'theme.light': 'فاتح', 'theme.dark': 'داكن', 'theme.auto': 'النظام' },
+};
+for (const lang of Object.keys(THEME_I18N)) Object.assign(I18N[lang] || (I18N[lang] = {}), THEME_I18N[lang]);
+
+/* Bento: texty dlaždíc na obrazovke Dnes. */
+const BENTO_I18N = {
+  sk: {
+    'bento.hello': 'Ahoj', 'bento.helloName': 'Ahoj, {name}', 'bento.nextUp': 'Ďalší tréning', 'bento.inProgress': 'Prebieha · {time}',
+    'bento.start': 'Štart', 'bento.continue': 'Pokračovať', 'bento.week': 'Tento týždeň',
+    'bento.streak': 'Séria', 'bento.weeksOne': '{n} týždeň', 'bento.weeksFew': '{n} týždne', 'bento.weeksMany': '{n} týždňa', 'bento.weeksOther': '{n} týždňov',
+    'bento.busyWeek': 'Rušný týždeň?', 'bento.excuseLine': 'Ospravedlň ho, séria ostane', 'bento.excused': 'Ospravedlnený ✓ · ťukni na zrušenie',
+    'bento.level': 'Level {n}', 'bento.toNext': '{xp} XP do levelu {n}', 'bento.body': 'Telo', 'bento.bestLift': 'Najlepší výkon', 'bento.noLift': 'Zatiaľ žiadny',
+    'bento.food': 'Jedlo dnes', 'bento.foodOff': 'Vypnuté', 'bento.rest': 'Oddych', 'bento.activity': 'Aktivita', 'bento.friends': 'Priatelia',
+    'bento.community': 'Community', 'bento.addFriends': 'Pridaj priateľov', 'bento.messages': 'Správy', 'bento.photos': 'Fotky', 'bento.library': 'Cviky',
+    'bento.settings': 'Nastavenia', 'bento.top20': 'Top 20', 'bento.logActivity': 'Zapísať aktivitu',
+    'bento.calMonthOne': 'Kalendár · {n} tréning tento mesiac', 'bento.calMonthFew': 'Kalendár · {n} tréningy tento mesiac',
+    'bento.calMonthMany': 'Kalendár · {n} tréningu tento mesiac', 'bento.calMonthOther': 'Kalendár · {n} tréningov tento mesiac',
+  },
+  en: {
+    'bento.hello': 'Hi', 'bento.helloName': 'Hi, {name}', 'bento.nextUp': 'Next up', 'bento.inProgress': 'In progress · {time}',
+    'bento.start': 'Start', 'bento.continue': 'Continue', 'bento.week': 'This week',
+    'bento.streak': 'Streak', 'bento.weeksOne': '{n} week', 'bento.weeksOther': '{n} weeks',
+    'bento.busyWeek': 'Busy week?', 'bento.excuseLine': 'Excuse it, keep the streak', 'bento.excused': 'Excused ✓ · tap to undo',
+    'bento.level': 'Level {n}', 'bento.toNext': '{xp} XP to level {n}', 'bento.body': 'Body', 'bento.bestLift': 'Best lift', 'bento.noLift': 'None yet',
+    'bento.food': 'Food today', 'bento.foodOff': 'Off', 'bento.rest': 'Rest', 'bento.activity': 'Activity', 'bento.friends': 'Friends',
+    'bento.community': 'Community', 'bento.addFriends': 'Add friends', 'bento.messages': 'Messages', 'bento.photos': 'Photos', 'bento.library': 'Exercises',
+    'bento.settings': 'Settings', 'bento.top20': 'Top 20', 'bento.logActivity': 'Log activity',
+    'bento.calMonthOne': 'Calendar · {n} workout this month', 'bento.calMonthOther': 'Calendar · {n} workouts this month',
+  },
+  es: {
+    'bento.hello': 'Hola', 'bento.helloName': 'Hola, {name}', 'bento.nextUp': 'Siguiente', 'bento.inProgress': 'En curso · {time}',
+    'bento.start': 'Empezar', 'bento.continue': 'Continuar', 'bento.week': 'Esta semana',
+    'bento.streak': 'Racha', 'bento.weeksOne': '{n} semana', 'bento.weeksOther': '{n} semanas',
+    'bento.busyWeek': '¿Semana ocupada?', 'bento.excuseLine': 'Justifícala y mantén la racha', 'bento.excused': 'Justificada ✓ · toca para deshacer',
+    'bento.level': 'Nivel {n}', 'bento.toNext': '{xp} XP para el nivel {n}', 'bento.body': 'Cuerpo', 'bento.bestLift': 'Mejor marca', 'bento.noLift': 'Aún nada',
+    'bento.food': 'Comida hoy', 'bento.foodOff': 'Desactivado', 'bento.rest': 'Descanso', 'bento.activity': 'Actividad', 'bento.friends': 'Amigos',
+    'bento.community': 'Comunidad', 'bento.addFriends': 'Añade amigos', 'bento.messages': 'Mensajes', 'bento.photos': 'Fotos', 'bento.library': 'Ejercicios',
+    'bento.settings': 'Ajustes', 'bento.top20': 'Top 20', 'bento.logActivity': 'Registrar actividad',
+    'bento.calMonthOne': 'Calendario · {n} entreno este mes', 'bento.calMonthOther': 'Calendario · {n} entrenos este mes',
+  },
+  'pt-BR': {
+    'bento.hello': 'Oi', 'bento.helloName': 'Oi, {name}', 'bento.nextUp': 'Próximo', 'bento.inProgress': 'Em andamento · {time}',
+    'bento.start': 'Começar', 'bento.continue': 'Continuar', 'bento.week': 'Esta semana',
+    'bento.streak': 'Sequência', 'bento.weeksOne': '{n} semana', 'bento.weeksOther': '{n} semanas',
+    'bento.busyWeek': 'Semana corrida?', 'bento.excuseLine': 'Justifique e mantenha a sequência', 'bento.excused': 'Justificada ✓ · toque para desfazer',
+    'bento.level': 'Nível {n}', 'bento.toNext': '{xp} XP para o nível {n}', 'bento.body': 'Corpo', 'bento.bestLift': 'Melhor carga', 'bento.noLift': 'Nada ainda',
+    'bento.food': 'Comida hoje', 'bento.foodOff': 'Desligado', 'bento.rest': 'Descanso', 'bento.activity': 'Atividade', 'bento.friends': 'Amigos',
+    'bento.community': 'Comunidade', 'bento.addFriends': 'Adicione amigos', 'bento.messages': 'Mensagens', 'bento.photos': 'Fotos', 'bento.library': 'Exercícios',
+    'bento.settings': 'Ajustes', 'bento.top20': 'Top 20', 'bento.logActivity': 'Registrar atividade',
+    'bento.calMonthOne': 'Calendário · {n} treino este mês', 'bento.calMonthOther': 'Calendário · {n} treinos este mês',
+  },
+  fr: {
+    'bento.hello': 'Salut', 'bento.helloName': 'Salut, {name}', 'bento.nextUp': 'Prochaine séance', 'bento.inProgress': 'En cours · {time}',
+    'bento.start': 'Démarrer', 'bento.continue': 'Continuer', 'bento.week': 'Cette semaine',
+    'bento.streak': 'Série', 'bento.weeksOne': '{n} semaine', 'bento.weeksOther': '{n} semaines',
+    'bento.busyWeek': 'Semaine chargée\u00a0?', 'bento.excuseLine': 'Excuse-la, garde ta série', 'bento.excused': 'Excusée ✓ · touche pour annuler',
+    'bento.level': 'Niveau {n}', 'bento.toNext': '{xp} XP avant le niveau {n}', 'bento.body': 'Corps', 'bento.bestLift': 'Meilleure charge', 'bento.noLift': 'Rien encore',
+    'bento.food': 'Repas du jour', 'bento.foodOff': 'Désactivé', 'bento.rest': 'Repos', 'bento.activity': 'Activité', 'bento.friends': 'Amis',
+    'bento.community': 'Communauté', 'bento.addFriends': 'Ajoute des amis', 'bento.messages': 'Messages', 'bento.photos': 'Photos', 'bento.library': 'Exercices',
+    'bento.settings': 'Réglages', 'bento.top20': 'Top 20', 'bento.logActivity': 'Noter une activité',
+    'bento.calMonthOne': 'Calendrier · {n} séance ce mois-ci', 'bento.calMonthOther': 'Calendrier · {n} séances ce mois-ci',
+  },
+  ar: {
+    'bento.hello': 'مرحبًا', 'bento.helloName': 'مرحبًا، {name}', 'bento.nextUp': 'التالي', 'bento.inProgress': 'جارٍ · {time}',
+    'bento.start': 'ابدأ', 'bento.continue': 'متابعة', 'bento.week': 'هذا الأسبوع',
+    'bento.streak': 'السلسلة', 'bento.weeksZero': '{n} أسابيع', 'bento.weeksOne': 'أسبوع واحد', 'bento.weeksTwo': 'أسبوعان', 'bento.weeksFew': '{n} أسابيع',
+    'bento.weeksMany': '{n} أسبوعًا', 'bento.weeksOther': '{n} أسبوع',
+    'bento.busyWeek': 'أسبوع مزدحم؟', 'bento.excuseLine': 'اعذره واحتفظ بالسلسلة', 'bento.excused': 'معذور ✓ · اضغط للتراجع',
+    'bento.level': 'المستوى {n}', 'bento.toNext': '{xp} XP حتى المستوى {n}', 'bento.body': 'الجسم', 'bento.bestLift': 'أفضل رفعة', 'bento.noLift': 'لا شيء بعد',
+    'bento.food': 'طعام اليوم', 'bento.foodOff': 'متوقف', 'bento.rest': 'راحة', 'bento.activity': 'نشاط', 'bento.friends': 'الأصدقاء',
+    'bento.community': 'المجتمع', 'bento.addFriends': 'أضف أصدقاء', 'bento.messages': 'الرسائل', 'bento.photos': 'الصور', 'bento.library': 'التمارين',
+    'bento.settings': 'الإعدادات', 'bento.top20': 'أفضل 20', 'bento.logActivity': 'سجّل نشاطًا',
+    'bento.calMonthZero': 'التقويم · لا تمارين هذا الشهر', 'bento.calMonthOne': 'التقويم · تمرين واحد هذا الشهر', 'bento.calMonthTwo': 'التقويم · تمرينان هذا الشهر',
+    'bento.calMonthFew': 'التقويم · {n} تمارين هذا الشهر', 'bento.calMonthMany': 'التقويم · {n} تمرينًا هذا الشهر', 'bento.calMonthOther': 'التقويم · {n} تمرين هذا الشهر',
+  },
+};
+for (const lang of Object.keys(BENTO_I18N)) Object.assign(I18N[lang] || (I18N[lang] = {}), BENTO_I18N[lang]);
+
+/* Bento: texty ďalších obrazoviek (dlaždice plánov, počty). */
+const BENTO_UI_I18N = {
+  sk: {
+    'bento.nextMark': 'Ďalší ✦', 'bento.planN': 'Plán {n}',
+    'bento.exCountOne': '{n} cvik', 'bento.exCountFew': '{n} cviky', 'bento.exCountMany': '{n} cviku', 'bento.exCountOther': '{n} cvikov',
+    'bento.setCountOne': '{n} séria', 'bento.setCountFew': '{n} série', 'bento.setCountMany': '{n} série', 'bento.setCountOther': '{n} sérií',
+  },
+  en: {
+    'bento.nextMark': 'Next ✦', 'bento.planN': 'Plan {n}',
+    'bento.exCountOne': '{n} exercise', 'bento.exCountOther': '{n} exercises',
+    'bento.setCountOne': '{n} set', 'bento.setCountOther': '{n} sets',
+  },
+  es: {
+    'bento.nextMark': 'Siguiente ✦', 'bento.planN': 'Plan {n}',
+    'bento.exCountOne': '{n} ejercicio', 'bento.exCountOther': '{n} ejercicios',
+    'bento.setCountOne': '{n} serie', 'bento.setCountOther': '{n} series',
+  },
+  'pt-BR': {
+    'bento.nextMark': 'Próximo ✦', 'bento.planN': 'Plano {n}',
+    'bento.exCountOne': '{n} exercício', 'bento.exCountOther': '{n} exercícios',
+    'bento.setCountOne': '{n} série', 'bento.setCountOther': '{n} séries',
+  },
+  fr: {
+    'bento.nextMark': 'Prochain ✦', 'bento.planN': 'Plan {n}',
+    'bento.exCountOne': '{n} exercice', 'bento.exCountOther': '{n} exercices',
+    'bento.setCountOne': '{n} série', 'bento.setCountOther': '{n} séries',
+  },
+  ar: {
+    'bento.nextMark': 'التالي ✦', 'bento.planN': 'الخطة {n}',
+    'bento.exCountZero': 'لا تمارين', 'bento.exCountOne': 'تمرين واحد', 'bento.exCountTwo': 'تمرينان', 'bento.exCountFew': '{n} تمارين', 'bento.exCountMany': '{n} تمرينًا', 'bento.exCountOther': '{n} تمرين',
+    'bento.setCountZero': 'لا مجموعات', 'bento.setCountOne': 'مجموعة واحدة', 'bento.setCountTwo': 'مجموعتان', 'bento.setCountFew': '{n} مجموعات', 'bento.setCountMany': '{n} مجموعة', 'bento.setCountOther': '{n} مجموعة',
+  },
+};
+for (const lang of Object.keys(BENTO_UI_I18N)) Object.assign(I18N[lang] || (I18N[lang] = {}), BENTO_UI_I18N[lang]);
+
+/* Bento (podľa návrhu): karta Ty, Štatistiky, dlaždice Tréningu a Community. */
+const BENTO_REF_I18N = {
+  sk: {
+    'tab.pokrok': 'Štatistiky', 'tab.ty': 'Ty', 'bento.bw': 'VV', 'bento.editPlan': 'Upraviť plán', 'bento.finish': 'Dokončiť', 'bento.discard': 'Zahodiť', 'bento.weekNo': 'týždeň {n}', 'bento.nextUp': 'Ďalší ✦', 'bento.setsOf': '{done} / {total} sérií',
+    'bento.weeksWordOne': 'týždeň', 'bento.weeksWordFew': 'týždne', 'bento.weeksWordMany': 'týždňa', 'bento.weeksWordOther': 'týždňov',
+    'bento.excusedTitle': 'Ospravedlnený ✓', 'bento.tapUndo': 'Ťukni na zrušenie', 'bento.levelLower': 'level {n}',
+    'bento.goalLineOne': 'Cieľ: {n} týždenne', 'bento.goalLineFew': 'Cieľ: {n} týždenne', 'bento.goalLineMany': 'Cieľ: {n} týždenne', 'bento.goalLineOther': 'Cieľ: {n} týždenne',
+    'bento.tapPlan': 'ťukni na plán', 'bento.edit': 'Upraviť', 'bento.newPlan': 'Nový plán', 'bento.fullBody': 'Full Body zostava', 'bento.library': 'Knižnica cvikov',
+    'bento.historyTitle': 'Rekordy a história', 'bento.achievements': 'Úspechy', 'bento.communityProfile': 'Community profil',
+    'bento.settingsLine': 'Nastavenia · jazyk, jednotky, zvuk, záloha', 'bento.noExercises': 'Zatiaľ žiadne cviky', 'bento.lr': 'Ľ / P', 'bento.sideL': 'Ľ', 'bento.sideR': 'P',
+    'bento.setShort': 'S{n}', 'bento.exerciseInfo': 'O cviku {name}', 'bento.statWeek': 'Týždeň', 'bento.statMonth': 'Mesiac', 'bento.statAll': 'Spolu',
+    'bento.workoutsWordOne': 'tréning', 'bento.workoutsWordFew': 'tréningy', 'bento.workoutsWordMany': 'tréningu', 'bento.workoutsWordOther': 'tréningov',
+    'bento.setsPerWeek': 'Série za týždeň', 'bento.weekShort': 'T{n}', 'bento.records': 'Rekordy', 'bento.unlocked': 'odomknuté', 'bento.history': 'História',
+    'bento.foodTitle': 'Jedlo', 'bento.minutes': '{n} min', 'bento.moderate': 'Moderovanie', 'bento.thisWeekLower': 'tento týždeň',
+    'bento.requestsOne': '{n} žiadosť', 'bento.requestsFew': '{n} žiadosti', 'bento.requestsMany': '{n} žiadosti', 'bento.requestsOther': '{n} žiadostí',
+  },
+  en: {
+    'tab.pokrok': 'Stats', 'tab.ty': 'You', 'bento.bw': 'BW', 'bento.editPlan': 'Edit plan', 'bento.finish': 'Finish', 'bento.discard': 'Discard', 'bento.weekNo': 'week {n}', 'bento.nextUp': 'Next up ✦', 'bento.setsOf': '{done} / {total} sets',
+    'bento.weeksWordOne': 'week', 'bento.weeksWordOther': 'weeks',
+    'bento.excusedTitle': 'Excused ✓', 'bento.tapUndo': 'Tap to undo', 'bento.levelLower': 'level {n}',
+    'bento.goalLineOne': 'Goal: {n} a week', 'bento.goalLineOther': 'Goal: {n} a week',
+    'bento.tapPlan': 'tap a plan', 'bento.edit': 'Edit', 'bento.newPlan': 'New plan', 'bento.fullBody': 'Full Body builder', 'bento.library': 'Exercise library',
+    'bento.historyTitle': 'Records and history', 'bento.achievements': 'Achievements', 'bento.communityProfile': 'Community profile',
+    'bento.settingsLine': 'Settings · language, units, sound, backup', 'bento.noExercises': 'No exercises yet', 'bento.lr': 'L / R', 'bento.sideL': 'L', 'bento.sideR': 'R',
+    'bento.setShort': 'S{n}', 'bento.exerciseInfo': 'About {name}', 'bento.statWeek': 'Week', 'bento.statMonth': 'Month', 'bento.statAll': 'All',
+    'bento.workoutsWordOne': 'workout', 'bento.workoutsWordOther': 'workouts',
+    'bento.setsPerWeek': 'Sets per week', 'bento.weekShort': 'W{n}', 'bento.records': 'Records', 'bento.unlocked': 'unlocked', 'bento.history': 'History',
+    'bento.foodTitle': 'Food', 'bento.minutes': '{n} min', 'bento.moderate': 'Moderation', 'bento.thisWeekLower': 'this week',
+    'bento.requestsOne': '{n} request', 'bento.requestsOther': '{n} requests',
+  },
+  es: {
+    'tab.pokrok': 'Estadísticas', 'tab.ty': 'Tú', 'bento.bw': 'PC', 'bento.editPlan': 'Editar plan', 'bento.finish': 'Terminar', 'bento.discard': 'Descartar', 'bento.weekNo': 'semana {n}', 'bento.nextUp': 'Siguiente ✦', 'bento.setsOf': '{done} / {total} series',
+    'bento.weeksWordOne': 'semana', 'bento.weeksWordOther': 'semanas',
+    'bento.excusedTitle': 'Justificada ✓', 'bento.tapUndo': 'Toca para deshacer', 'bento.levelLower': 'nivel {n}',
+    'bento.goalLineOne': 'Meta: {n} por semana', 'bento.goalLineOther': 'Meta: {n} por semana',
+    'bento.tapPlan': 'toca un plan', 'bento.edit': 'Editar', 'bento.newPlan': 'Nuevo plan', 'bento.fullBody': 'Creador Full Body', 'bento.library': 'Biblioteca de ejercicios',
+    'bento.historyTitle': 'Récords e historial', 'bento.achievements': 'Logros', 'bento.communityProfile': 'Perfil de Comunidad',
+    'bento.settingsLine': 'Ajustes · idioma, unidades, sonido, copia', 'bento.noExercises': 'Aún no hay ejercicios', 'bento.lr': 'I / D', 'bento.sideL': 'I', 'bento.sideR': 'D',
+    'bento.setShort': 'S{n}', 'bento.exerciseInfo': 'Sobre {name}', 'bento.statWeek': 'Semana', 'bento.statMonth': 'Mes', 'bento.statAll': 'Todo',
+    'bento.workoutsWordOne': 'entreno', 'bento.workoutsWordOther': 'entrenos',
+    'bento.setsPerWeek': 'Series por semana', 'bento.weekShort': 'S{n}', 'bento.records': 'Récords', 'bento.unlocked': 'desbloqueados', 'bento.history': 'Historial',
+    'bento.foodTitle': 'Comida', 'bento.minutes': '{n} min', 'bento.moderate': 'Moderación', 'bento.thisWeekLower': 'esta semana',
+    'bento.requestsOne': '{n} solicitud', 'bento.requestsOther': '{n} solicitudes',
+  },
+  'pt-BR': {
+    'tab.pokrok': 'Estatísticas', 'tab.ty': 'Você', 'bento.bw': 'PC', 'bento.editPlan': 'Editar plano', 'bento.finish': 'Concluir', 'bento.discard': 'Descartar', 'bento.weekNo': 'semana {n}', 'bento.nextUp': 'Próximo ✦', 'bento.setsOf': '{done} / {total} séries',
+    'bento.weeksWordOne': 'semana', 'bento.weeksWordOther': 'semanas',
+    'bento.excusedTitle': 'Justificada ✓', 'bento.tapUndo': 'Toque para desfazer', 'bento.levelLower': 'nível {n}',
+    'bento.goalLineOne': 'Meta: {n} por semana', 'bento.goalLineOther': 'Meta: {n} por semana',
+    'bento.tapPlan': 'toque em um plano', 'bento.edit': 'Editar', 'bento.newPlan': 'Novo plano', 'bento.fullBody': 'Montar Full Body', 'bento.library': 'Biblioteca de exercícios',
+    'bento.historyTitle': 'Recordes e histórico', 'bento.achievements': 'Conquistas', 'bento.communityProfile': 'Perfil na Comunidade',
+    'bento.settingsLine': 'Ajustes · idioma, unidades, som, backup', 'bento.noExercises': 'Ainda sem exercícios', 'bento.lr': 'E / D', 'bento.sideL': 'E', 'bento.sideR': 'D',
+    'bento.setShort': 'S{n}', 'bento.exerciseInfo': 'Sobre {name}', 'bento.statWeek': 'Semana', 'bento.statMonth': 'Mês', 'bento.statAll': 'Tudo',
+    'bento.workoutsWordOne': 'treino', 'bento.workoutsWordOther': 'treinos',
+    'bento.setsPerWeek': 'Séries por semana', 'bento.weekShort': 'S{n}', 'bento.records': 'Recordes', 'bento.unlocked': 'desbloqueadas', 'bento.history': 'Histórico',
+    'bento.foodTitle': 'Comida', 'bento.minutes': '{n} min', 'bento.moderate': 'Moderação', 'bento.thisWeekLower': 'esta semana',
+    'bento.requestsOne': '{n} pedido', 'bento.requestsOther': '{n} pedidos',
+  },
+  fr: {
+    'tab.pokrok': 'Stats', 'tab.ty': 'Toi', 'bento.bw': 'PDC', 'bento.editPlan': 'Modifier le plan', 'bento.finish': 'Terminer', 'bento.discard': 'Abandonner', 'bento.weekNo': 'semaine {n}', 'bento.nextUp': 'Prochaine ✦', 'bento.setsOf': '{done} / {total} séries',
+    'bento.weeksWordOne': 'semaine', 'bento.weeksWordOther': 'semaines',
+    'bento.excusedTitle': 'Excusée ✓', 'bento.tapUndo': 'Touche pour annuler', 'bento.levelLower': 'niveau {n}',
+    'bento.goalLineOne': 'Objectif : {n} par semaine', 'bento.goalLineOther': 'Objectif : {n} par semaine',
+    'bento.tapPlan': 'touche un plan', 'bento.edit': 'Modifier', 'bento.newPlan': 'Nouveau plan', 'bento.fullBody': 'Créer un Full Body', 'bento.library': 'Bibliothèque d’exercices',
+    'bento.historyTitle': 'Records et historique', 'bento.achievements': 'Succès', 'bento.communityProfile': 'Profil Communauté',
+    'bento.settingsLine': 'Réglages · langue, unités, son, sauvegarde', 'bento.noExercises': 'Pas encore d’exercices', 'bento.lr': 'G / D', 'bento.sideL': 'G', 'bento.sideR': 'D',
+    'bento.setShort': 'S{n}', 'bento.exerciseInfo': 'À propos de {name}', 'bento.statWeek': 'Semaine', 'bento.statMonth': 'Mois', 'bento.statAll': 'Total',
+    'bento.workoutsWordOne': 'séance', 'bento.workoutsWordOther': 'séances',
+    'bento.setsPerWeek': 'Séries par semaine', 'bento.weekShort': 'S{n}', 'bento.records': 'Records', 'bento.unlocked': 'débloqués', 'bento.history': 'Historique',
+    'bento.foodTitle': 'Repas', 'bento.minutes': '{n} min', 'bento.moderate': 'Modération', 'bento.thisWeekLower': 'cette semaine',
+    'bento.requestsOne': '{n} demande', 'bento.requestsOther': '{n} demandes',
+  },
+  ar: {
+    'tab.pokrok': 'الإحصاءات', 'tab.ty': 'أنت', 'bento.bw': 'وزن الجسم', 'bento.editPlan': 'تعديل الخطة', 'bento.finish': 'إنهاء', 'bento.discard': 'تجاهل', 'bento.weekNo': 'الأسبوع {n}', 'bento.nextUp': 'التالي ✦', 'bento.setsOf': '{done} / {total} مجموعات',
+    'bento.weeksWordZero': 'أسابيع', 'bento.weeksWordOne': 'أسبوع', 'bento.weeksWordTwo': 'أسبوعان', 'bento.weeksWordFew': 'أسابيع', 'bento.weeksWordMany': 'أسبوعًا', 'bento.weeksWordOther': 'أسبوع',
+    'bento.excusedTitle': 'معذور ✓', 'bento.tapUndo': 'اضغط للتراجع', 'bento.levelLower': 'المستوى {n}',
+    'bento.goalLineZero': 'الهدف: {n} أسبوعيًا', 'bento.goalLineOne': 'الهدف: {n} أسبوعيًا', 'bento.goalLineTwo': 'الهدف: {n} أسبوعيًا', 'bento.goalLineFew': 'الهدف: {n} أسبوعيًا', 'bento.goalLineMany': 'الهدف: {n} أسبوعيًا', 'bento.goalLineOther': 'الهدف: {n} أسبوعيًا',
+    'bento.tapPlan': 'اضغط على خطة', 'bento.edit': 'تعديل', 'bento.newPlan': 'خطة جديدة', 'bento.fullBody': 'منشئ الجسم الكامل', 'bento.library': 'مكتبة التمارين',
+    'bento.historyTitle': 'الأرقام القياسية والسجل', 'bento.achievements': 'الإنجازات', 'bento.communityProfile': 'ملف المجتمع',
+    'bento.settingsLine': 'الإعدادات · اللغة، الوحدات، الصوت، النسخ الاحتياطي', 'bento.noExercises': 'لا تمارين بعد', 'bento.lr': 'يسار / يمين', 'bento.sideL': 'يسار', 'bento.sideR': 'يمين',
+    'bento.setShort': 'م{n}', 'bento.exerciseInfo': 'عن {name}', 'bento.statWeek': 'الأسبوع', 'bento.statMonth': 'الشهر', 'bento.statAll': 'الكل',
+    'bento.workoutsWordZero': 'تمارين', 'bento.workoutsWordOne': 'تمرين', 'bento.workoutsWordTwo': 'تمرينان', 'bento.workoutsWordFew': 'تمارين', 'bento.workoutsWordMany': 'تمرينًا', 'bento.workoutsWordOther': 'تمرين',
+    'bento.setsPerWeek': 'المجموعات أسبوعيًا', 'bento.weekShort': 'أ{n}', 'bento.records': 'الأرقام القياسية', 'bento.unlocked': 'مفتوحة', 'bento.history': 'السجل',
+    'bento.foodTitle': 'الطعام', 'bento.minutes': '{n} د', 'bento.moderate': 'الإشراف', 'bento.thisWeekLower': 'هذا الأسبوع',
+    'bento.requestsZero': '{n} طلبات', 'bento.requestsOne': 'طلب واحد', 'bento.requestsTwo': 'طلبان', 'bento.requestsFew': '{n} طلبات', 'bento.requestsMany': '{n} طلبًا', 'bento.requestsOther': '{n} طلب',
+  },
+};
+for (const lang of Object.keys(BENTO_REF_I18N)) Object.assign(I18N[lang] || (I18N[lang] = {}), BENTO_REF_I18N[lang]);
+
 function t(key, vars) {
   const dict = I18N[activeLang()] || I18N.en;
   let s = dict[key];
@@ -10410,15 +10619,273 @@ function renderDnes() {
       ? t('dnes.streakGoing')
       : tPlural('dnes.streakContinue', goal).replace('{g}', String(goal)));
 
-  const btnExcuse = document.getElementById('btn-excuse');
-  btnExcuse.textContent = excused ? t('dnes.excuseActive') : t('dnes.excuse');
   const note = document.getElementById('excuse-note');
   note.hidden = !excused;
   note.textContent = t('dnes.excuseNote');
 
   document.getElementById('motivation-text').textContent = motivationText();
 
-  document.getElementById('dnes-next-plan').textContent = t('dnes.nextPlan', { plan: planNameOf(recommendedPlan()) });
+  renderBento({ goal, weekCount, streak, excused });
+}
+
+/* ---------- Bento: dlaždice obrazovky Dnes ----------
+   Každá dlaždica je iba vstup do existujúcej funkcie (tréning, časovač, správy, priatelia…).
+   Hodnoty sa počítajú z rovnakého `state` ako doteraz; nič sa neukladá navyše. */
+function bentoSetText(id, text) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = text;
+}
+
+/* Hodnota s menšou jednotkou: "3350 <small>XP</small>". */
+function bentoSetValue(id, value, unit) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.innerHTML = esc(String(value)) + (unit ? '<small> ' + esc(unit) + '</small>' : '');
+}
+
+function bentoCountsText(e, sets) {
+  return tPlural('bento.exCount', e).replace('{n}', String(e)) + ' · ' + tPlural('bento.setCount', sets).replace('{n}', String(sets));
+}
+
+function bentoPlanStats(plan) {
+  const list = (plan && Array.isArray(plan.exercises)) ? plan.exercises : [];
+  let sets = 0;
+  for (const ex of list) sets += Math.max(0, Number(ex.sets) || 0);
+  return { exercises: list.length, sets, first: list[0] || null };
+}
+
+function bentoExerciseImage(plan) {
+  const list = (plan && Array.isArray(plan.exercises)) ? plan.exercises : [];
+  for (const ex of list) {
+    if (!ex || !ex.id) continue;
+    const video = EXERCISE_VIDEO_MEDIA[ex.id];
+    if (video && video.poster) return video.poster;
+    const photos = EXERCISE_PHOTO_MEDIA[ex.id];
+    if (photos && photos[0] && photos[0].src) return photos[0].src;
+  }
+  return '';
+}
+
+/* Sedem bodiek aktuálneho ISO týždňa (pondelok až nedeľa): plná = tréning alebo aktivita. */
+function bentoWeekDots() {
+  const now = new Date();
+  const monday = addDays(now, -((now.getDay() + 6) % 7));
+  const workouts = historyByDate();
+  const acts = activitiesByDate();
+  const today = todayISO();
+  let html = '';
+  for (let i = 0; i < 7; i++) {
+    const key = localDateKey(addDays(monday, i));
+    const done = !!(workouts[key] || acts[key]);
+    /* Ako v návrhu Bento: plná = tréning, obrys = dnes bez tréningu */
+    html += '<i class="' + (done ? 'd' : (key === today ? 'n' : '')) + '"></i>';
+  }
+  return html;
+}
+
+/* Krátky dátum do hlavičky Dnes: "Pi, 23. októbra · Týždeň 43" / "Fri, Oct 23 · Week 43". */
+function bentoShortDate(d) {
+  const L = localeData();
+  const pattern = L.datePattern.replace(/[\s,.]*\{y\}/, '');
+  return L.weekdaysShort[mondayIndex(d)] + ', ' + fillDatePattern(pattern, d, '');
+}
+function bentoShortDay(iso) {
+  return fillDatePattern(localeData().datePattern.replace(/[\s,.]*\{y\}/, ''), parseDate(iso), '');
+}
+
+/* Ikony z návrhu Bento (tenká čiara, currentColor). */
+const BENTO_ICONS = {
+  play: '<path d="M7 4.5v15l12-7.5-12-7.5Z"/>', chevron: '<path d="m9 5 7 7-7 7"/>', back: '<path d="m15 5-7 7 7 7"/>',
+  timer: '<circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2M9.5 2.5h5"/>', plus: '<path d="M12 5v14M5 12h14"/>',
+  swap: '<path d="M7 4 3.5 7.5 7 11M3.5 7.5h13M17 13l3.5 3.5L17 20M20.5 16.5h-13"/>', info: '<circle cx="12" cy="12" r="8.5"/><path d="M12 11v5.5M12 7.5h.01"/>',
+  calendar: '<rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/>', clock: '<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>',
+  scale: '<rect x="3.5" y="3.5" width="17" height="17" rx="4"/><path d="M8.5 9a5 5 0 0 1 7 0l-2.3 2.6a1.6 1.6 0 0 0-2.4 0L8.5 9Z"/>',
+  camera: '<path d="M4 7.5h3.2L9 5h6l1.8 2.5H20a1.5 1.5 0 0 1 1.5 1.5v9.5A1.5 1.5 0 0 1 20 20H4a1.5 1.5 0 0 1-1.5-1.5V9A1.5 1.5 0 0 1 4 7.5Z"/><circle cx="12" cy="13.5" r="3.6"/>',
+  utensils: '<path d="M7 3v8M5 3v5a2 2 0 0 0 4 0V3M7 11v10M17 21V3c-2 1.5-3 4-3 7v4h3"/>', run: '<circle cx="14" cy="4.5" r="1.8"/><path d="m8 21 3-6 3 2v5M6 11l3-3h4l2 4 3 1M11 15l-1.5-3"/>',
+  edit: '<path d="M4 20h4L19 9l-4-4L4 16v4Z"/><path d="m13.5 6.5 4 4"/>', chat: '<path d="M4 5.5h16v11H9l-5 4v-15Z"/>',
+  users: '<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c1.2-3.5 3.6-5 6.5-5s5.3 1.5 6.5 5"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 15c2 .6 3.3 2.2 4 5"/>',
+  trash: '<path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/>',
+};
+function bentoIcon(n) { return '<svg class="kico" viewBox="0 0 24 24" aria-hidden="true">' + (BENTO_ICONS[n] || '') + '</svg>'; }
+
+function renderBento(info) {
+  if (!document.getElementById('bento-grid')) return;
+  const name = communityProfile && communityProfile.username ? String(communityProfile.username) : '';
+  bentoSetText('bh-hello', name ? t('bento.helloName', { name }) : t('bento.hello'));
+  bentoSetText('today-date', bentoShortDate(new Date()) + ' · ' + t('bento.weekNo', { n: currentIsoWeekNumber() }));
+
+  /* Ďalší tréning / prebiehajúci tréning (dlaždica "Next up ✦" / "In progress · 0:07") */
+  const sess = getSession();
+  const plan = getPlan(sess ? sess.planId : recommendedPlan());
+  const ps = bentoPlanStats(plan);
+  bentoSetText('bt-next-label', sess
+    ? t('bento.inProgress', { time: formatDurationClock(sessionElapsedSeconds(sess)) })
+    : t('bento.nextUp'));
+  bentoSetText('bt-next-name', sess && !plan ? (sess.planName || t('pokrok.workoutFallback')) : planDisplayName(plan));
+  bentoSetText('dnes-next-plan', sess && plan
+    ? t('bento.setsOf', { done: totalSetsDone(), total: planExerciseCount(plan) })
+    : (plan ? bentoCountsText(ps.exercises, ps.sets) : t('dnes.nextPlan', { plan: planNameOf(recommendedPlan()) })));
+  const startBtn = document.getElementById('btn-start-workout');
+  if (startBtn) {
+    startBtn.innerHTML = sess
+      ? '<span id="bt-start-text">' + esc(t('bento.continue')) + '</span>' + bentoIcon('chevron')
+      : bentoIcon('play') + '<span id="bt-start-text">' + esc(t('bento.start')) + '</span>';
+  }
+  const img = document.getElementById('bt-next-img');
+  const src = sess ? '' : bentoExerciseImage(plan);
+  if (img) {
+    if (src) { if (img.getAttribute('src') !== src) img.setAttribute('src', src); img.hidden = false; }
+    else { img.removeAttribute('src'); img.hidden = true; }
+  }
+
+  /* Týždeň: "2 / 3" a sedem dní */
+  bentoSetValue('week-count', info.weekCount, '/ ' + info.goal);
+  const dots = document.getElementById('bt-week-dots');
+  if (dots) dots.innerHTML = bentoWeekDots();
+  const weekTile = document.getElementById('bt-week');
+  if (weekTile) weekTile.setAttribute('aria-label', t('bento.week') + ': ' + t('dnes.weekDone', { n: info.weekCount, g: info.goal }));
+
+  /* Séria a ospravedlnený týždeň */
+  bentoSetValue('bt-streak-v', info.streak, tPluralWord('bento.weeksWord', info.streak));
+  bentoSetText('bt-excuse-l', info.excused ? t('bento.excusedTitle') : t('bento.busyWeek'));
+  bentoSetText('bt-excuse-line', info.excused ? t('bento.tapUndo') : t('bento.excuseLine'));
+  const ex = document.getElementById('btn-excuse');
+  if (ex) ex.setAttribute('aria-pressed', info.excused ? 'true' : 'false');
+
+  /* Level */
+  const lv = levelInfo();
+  bentoSetText('bt-level-l', t('bento.level', { n: lv.level }));
+  bentoSetValue('bt-level-v', lv.xp, t('units.xp'));
+  const bar = document.getElementById('bt-level-bar');
+  if (bar) bar.style.width = Math.min(100, Math.round((lv.levelXP / lv.total) * 100)) + '%';
+  bentoSetText('bt-level-line', t('bento.toNext', { xp: lv.total - lv.levelXP, n: lv.level + 1 }));
+
+  /* Telo, najlepší výkon, jedlo */
+  const weights = sortedMeasurements().filter((x) => x.weightKg !== null && x.weightKg !== undefined);
+  const m = weights[weights.length - 1];
+  if (m) bentoSetValue('bt-body-v', formatMeasure(m.weightKg, 'weight'), weightUnitLabel());
+  else bentoSetText('bt-body-v', '—');
+  const pr = personalRecords()[0];
+  if (pr) bentoSetText('bt-lift-v', pr.weight + ' ' + t('units.kg'));
+  else bentoSetText('bt-lift-v', '—');
+  bentoSetText('bt-lift-line', pr ? recordedNameToDisplay(pr.name) : t('bento.noLift'));
+  const foodOn = state.settings.foodLogEnabled === true;
+  if (foodOn) bentoSetValue('bt-food-v', foodTotals(foodEntriesFor(todayISO())).kcal, t('units.kcal'));
+  else bentoSetText('bt-food-v', t('bento.foodOff'));
+
+  bentoShowChatsBadge();
+  const train = document.getElementById('bt-train');
+  if (train) train.hidden = !trainAvailable();
+  if (!timerInterval) bentoSetText('bt-rest-line', t('bento.rest'));
+  bentoRenderFriends();
+}
+
+function bentoShowChatsBadge() {
+  const b = document.getElementById('bt-chats-badge');
+  if (!b) return;
+  const n = communityBadges.chats + communityBadges.requests;
+  b.hidden = !n;
+  b.textContent = n > 99 ? '99+' : String(n);
+}
+
+/* Avatary priateľov (ako v návrhu: kruhy s farebným okrajom). Bez Community dlaždica otvorí Community. */
+let bentoFriendsCache = null;   // { at, rows }
+let bentoFriendsLoading = false;
+const BENTO_AV_COLORS = ['#E4572E', '#2E86AB', '#7A9E3B', '#A23B72', '#F18F01', '#3B8EA5', '#6C4AB6'];
+function bentoAvatarHtml(r, i) {
+  const url = r.avatar_path ? communityPublicUrl(communityClient(), 'avatars', r.avatar_path) : '';
+  if (url) return '<span class="k-av"><img src="' + escAttr(url) + '" alt=""></span>';
+  const nm = String(r.username || '?');
+  return '<span class="k-av" style="--av:' + BENTO_AV_COLORS[i % BENTO_AV_COLORS.length] + '">' + esc(nm.slice(0, 1).toUpperCase()) + '</span>';
+}
+function bentoRenderFriends() {
+  const box = document.getElementById('bt-friends-avs');
+  const label = document.getElementById('bt-friends-l');
+  if (!box) return;
+  const ready = communityConfigured() && communityOptIn() && communityV2() && !!communityProfile;
+  if (label) label.textContent = ready ? t('bento.friends') : t('bento.community');
+  if (!ready) { box.innerHTML = ''; return; }
+  const rows = bentoFriendsCache ? bentoFriendsCache.rows : [];
+  box.innerHTML = rows.slice(0, 5).map(bentoAvatarHtml).join('')
+    + (!rows.length && bentoFriendsCache ? '<span class="bt-line">' + esc(t('bento.addFriends')) + '</span>' : '');
+  if (bentoFriendsLoading || (bentoFriendsCache && Date.now() - bentoFriendsCache.at < 5 * 60 * 1000)) return;
+  const sb = communityClient();
+  if (!sb) return;
+  bentoFriendsLoading = true;
+  Promise.resolve(sb.rpc('friends_list')).then((r) => {
+    bentoFriendsCache = { at: Date.now(), rows: (r && !r.error && Array.isArray(r.data)) ? r.data : [] };
+  }).catch(() => {
+    bentoFriendsCache = { at: Date.now(), rows: [] };
+  }).finally(() => {
+    bentoFriendsLoading = false;
+    if (activeTab === 'dnes') bentoRenderFriends();
+  });
+}
+
+/* Časovač oddychu ako list (v návrhu Bento "Rest" otvára list). */
+function openRestSheet() {
+  document.getElementById('modal-rest').hidden = false;
+  renderTimerPresets();
+}
+function closeRestSheet() {
+  if (typeof hideCustomTimer === 'function') hideCustomTimer();
+  if (presetManageMode && typeof setPresetManageMode === 'function') setPresetManageMode(false);
+  document.getElementById('modal-rest').hidden = true;
+  refreshUpdateBanner();
+}
+
+/* Ťuknutie na dlaždicu = otvorenie existujúcej obrazovky alebo funkcie. */
+function bentoGo(where) {
+  if (where === 'calendar') { openCalendarPage(); return; }
+  if (where === 'motivation' || where === 'body' || where === 'food' || where === 'photos' || where === 'history') {
+    switchTab('pokrok'); setPokrokView(where === 'history' ? 'progress' : where); return;
+  }
+  if (where === 'records') {
+    switchTab('pokrok'); setPokrokView('progress');
+    const r = document.getElementById('records-list');
+    if (r && r.scrollIntoView) r.closest('.card').scrollIntoView({ block: 'start' });
+    return;
+  }
+  if (where === 'rest') { openRestSheet(); return; }
+  if (where === 'friends' || where === 'chats' || where === 'top20' || where === 'compose' || where === 'profile') {
+    switchTab('komunita');
+    if (communityV2() && communityProfile) communitySetView(where === 'top20' ? 'leaderboard' : where);
+    return;
+  }
+  if (where === 'library') { openLibrary('browse'); return; }
+  if (where === 'settings') { openSettings(); return; }
+  if (where === 'goal') {
+    openSettings();
+    const g = document.getElementById('settings-goal-chips');
+    if (g && g.scrollIntoView) g.scrollIntoView({ block: 'center' });
+    return;
+  }
+  if (where === 'train') {
+    switchTab('trening');
+    if (!trainPickerOpen) trainOpenPicker();
+    const box = document.getElementById('train-box');
+    if (box && box.scrollIntoView) box.scrollIntoView({ block: 'start' });
+  }
+}
+
+/* ---------- Bento: karta Ty (profil, cieľ, nastavenia) ---------- */
+function renderTy() {
+  const lv = levelInfo();
+  const p = communityProfile;
+  const name = p && p.username ? String(p.username) : 'GymQuest';
+  bentoSetText('ty-name', name);
+  bentoSetText('ty-av', name.slice(0, 1).toUpperCase());
+  bentoSetText('ty-handle', (p && p.username ? '@' + p.username + ' · ' : '') + t('bento.levelLower', { n: lv.level }));
+  bentoSetText('motivation-text', p && p.bio ? String(p.bio) : motivationText());
+  bentoSetText('ty-goal-line', tPlural('bento.goalLine', weeklyGoal()).replace('{n}', String(weeklyGoal())));
+}
+
+/* Kalendár: celostránkový list (ako v návrhu), Späť vráti na kartu, odkiaľ sa otvoril. */
+let calendarReturnTab = 'dnes';
+function openCalendarPage() {
+  if (activeTab !== 'kalendar') calendarReturnTab = activeTab || 'dnes';
+  switchTab('kalendar');
+  window.scrollTo(0, 0);
 }
 
 /* ---------- Vykreslenie: TRÉNING ---------- */
@@ -10874,7 +11341,11 @@ function updateDurationDisplay() {
   const sess = getSession();
   row.hidden = !sess;
   if (!sess) return;
-  document.getElementById('duration-value').textContent = formatDurationClock(sessionElapsedSeconds(sess));
+  /* Bento: krátky zápis ako v návrhu (0:07, 12:30, 1:02:15) */
+  const secs = sessionElapsedSeconds(sess), hh = Math.floor(secs / 3600), mm = Math.floor((secs % 3600) / 60), ss = secs % 60;
+  document.getElementById('duration-value').textContent = (hh ? hh + ':' + String(mm).padStart(2, '0') : String(mm)) + ':' + String(ss).padStart(2, '0');
+  /* Bento: dlaždica Ďalší tréning na obrazovke Dnes ukazuje bežiaci čas tréningu */
+  if (activeTab === 'dnes') bentoSetText('bt-next-label', t('bento.inProgress', { time: formatDurationClock(sessionElapsedSeconds(sess)) }));
 }
 
 /* Jeden interval na celý beh aplikácie – po prekreslení nikdy nevznikne druhý.
@@ -10948,7 +11419,8 @@ function updatePlanManageButton() {
   const btn = document.getElementById('btn-manage-plans');
   if (!btn) return;
   btn.setAttribute('aria-pressed', planManageMode ? 'true' : 'false');
-  btn.textContent = t(planManageMode ? 'trening.managePlansDone' : 'trening.managePlans');
+  const label = btn.querySelector('.bt-line') || btn;
+  label.textContent = t(planManageMode ? 'trening.managePlansDone' : 'trening.managePlans');
   const hint = document.getElementById('plan-manage-hint');
   if (hint) hint.hidden = !planManageMode;
 }
@@ -10986,7 +11458,14 @@ function renderTrening() {
 
     const btn = document.createElement('button');
     btn.className = 'chip' + (id === selectedPlan ? ' active' : '') + (id === rec ? ' recommended' : '');
-    btn.textContent = planDisplayName(p);
+    /* Bento: dlaždica plánu – štítok (Ďalší ✦ / Plán N), názov a počet cvikov a sérií */
+    const order = activePlanIds().indexOf(id);
+    btn.dataset.tile = String(order % 5);
+    const stats = bentoPlanStats(p);
+    btn.innerHTML = '<span class="chip-l">' + esc(id === rec ? t('bento.nextMark') : t('bento.planN', { n: order + 1 })) + '</span>'
+      + '<b class="chip-name">' + esc(planDisplayName(p)) + '</b>'
+      + '<span class="chip-meta">' + esc(bentoCountsText(stats.exercises, stats.sets)) + '</span>';
+    btn.setAttribute('aria-pressed', id === selectedPlan ? 'true' : 'false');
     btn.addEventListener('click', () => {
       // výber iného plánu vždy zatvorí editor, aby meno v poli nepatrilo inému plánu
       if (editingPlan !== null && editingPlan !== id && closeEditor()) saveState();
@@ -11017,6 +11496,7 @@ function renderTrening() {
 
   const plan = getPlan(selectedPlan);
   document.getElementById('plan-title').textContent = plan ? planDisplayName(plan) : t('pokrok.workoutFallback');
+  renderTrainDetail(plan);
   const list = document.getElementById('exercise-list');
   list.innerHTML = '';
   /* Poznámka: značky sérií sa tu Zámerne NEmažú – žijú v state.activeSession,
@@ -11026,6 +11506,7 @@ function renderTrening() {
   if (!plan) {
     document.getElementById('summary-bar').innerHTML = '';
     document.getElementById('btn-finish-workout').disabled = true;
+    bentoTrainMode();
     return;
   }
 
@@ -11040,11 +11521,65 @@ function renderTrening() {
   refreshUpdateBanner();   // otvorenie/zatvorenie editora plánu mení stav "zaneprázdnený"
 }
 
+/* Bento: karta Tréning má dva stavy ako návrh – výber plánu (dlaždice plánov, detail plánu so
+   Štart/Upraviť, dlaždice akcií) a prebiehajúci tréning (tmavá dlaždica s časom a dlaždice cvikov).
+   Počas tréningu sa dá plán prepnúť ťuknutím na jeho názov v tmavej dlaždici (ako doteraz). */
+let trainShowPlans = false;
+function bentoTrainMode() {
+  const sess = getSession();
+  const screen = document.getElementById('screen-trening');
+  if (!screen) return;
+  if (!sess) trainShowPlans = false;
+  screen.classList.toggle('in-session', !!sess);
+  document.getElementById('tr-pick').hidden = !!sess && !trainShowPlans;
+  document.getElementById('tr-detail').hidden = !!sess;
+  document.querySelector('#tr-pick .tr-tiles').hidden = !!sess;
+  document.getElementById('tr-session').hidden = !sess;
+  const label = document.getElementById('tr-sess-plan');
+  if (label) {
+    const plan = getPlan(selectedPlan);
+    label.innerHTML = esc(plan ? planDisplayName(plan) : (sess && sess.planName) || '') + ' <span aria-hidden="true">' + (trainShowPlans ? '▴' : '▾') + '</span>';
+    label.setAttribute('aria-expanded', trainShowPlans ? 'true' : 'false');
+  }
+}
+function renderTrainDetail(plan) {
+  const box = document.getElementById('tr-detail-rows');
+  if (!box) return;
+  const list = plan && Array.isArray(plan.exercises) ? plan.exercises : [];
+  box.innerHTML = list.map((ex) => {
+    const w = Number(ex.weight) || 0;
+    return '<div class="tr-row"><span>' + esc(exerciseDisplayName(ex)) + '</span><b>' + ex.sets + '×' + ex.reps + ' ' + (w > 0 ? w + ' ' + esc(t('units.kg')) : esc(t('bento.bw'))) + '</b></div>';
+  }).join('') || '<p class="bt-line">' + esc(t('bento.noExercises')) + '</p>';
+}
+
+/* Bento: dlaždica cviku je limetková, keď sú všetky jej série hotové, a levanduľová,
+   keď je to práve cvičený cvik (prvý nedokončený počas tréningu). Len vzhľad, z DOM značiek. */
+function bentoMarkExercises() {
+  const list = document.getElementById('exercise-list');
+  if (!list) return;
+  const sess = !!getSession();
+  let current = false;
+  for (const block of list.querySelectorAll('.exercise')) {
+    const sets = [...block.querySelectorAll('.sets .set-btn')];
+    const done = sets.length > 0 && sets.every((b) => b.classList.contains('done'));
+    const isCurrent = sess && !current && !done && !block.classList.contains('exercise-closed');
+    if (isCurrent) current = true;
+    block.classList.toggle('ex-done', done);
+    block.classList.toggle('ex-current', isCurrent);
+  }
+}
+
 /* Jeden blok cviku v aktívnom tréningu (plánový cvik alebo segment po výmene). */
 function buildExerciseBlock(seg, info, plan) {
   const ex = seg.ex;
   const div = document.createElement('div');
   div.className = 'exercise' + (seg.readOnly ? ' exercise-closed' : '');
+
+  /* Bento: štítok = porovnanie s minulým tréningom, pod ním veľký názov cviku */
+  const hint = document.createElement('div');
+  hint.className = 'compare-hint bt-l';
+  hint.innerHTML = comparisonHint(ex, plan.id);
+  div.appendChild(hint);
 
   const head = document.createElement('div');
   head.className = 'exercise-head';
@@ -11052,27 +11587,20 @@ function buildExerciseBlock(seg, info, plan) {
   name.className = 'exercise-name';
   name.textContent = exerciseDisplayName(ex);
   head.appendChild(name);
+  const sides = exerciseSideOrder(ex);
+  if (sides) {
+    const lr = document.createElement('small');
+    lr.className = 'exercise-lr';
+    lr.textContent = t('bento.lr');
+    head.appendChild(lr);
+  }
   const meta = document.createElement('span');
   meta.className = 'exercise-meta';
   meta.innerHTML = `${ex.sets} × ${ex.reps} &nbsp;·&nbsp; <b>${ex.weight} ${t('units.kg')}</b>`;
   head.appendChild(meta);
-
-  /* Aktívny cvik je možné vymeniť – ale iba počas rozbehnutého tréningu, aby výmena
-     nikdy nezačala meranie trvania nechtiac. Pred tréningom sa plán upravuje normálne. */
-  if (seg.active && getSession()) {
-    const swap = document.createElement('button');
-    swap.type = 'button';
-    swap.className = 'btn-icon-sm exercise-swap';
-    swap.textContent = '⇄';
-    swap.title = t('exercise.replace');
-    swap.setAttribute('aria-label', t('exercise.replace') + ': ' + exerciseDisplayName(ex));
-    swap.addEventListener('click', () => openLibrary('replace', { slot: info.slot, base: info.base, ex }));
-    head.appendChild(swap);
-  }
   div.appendChild(head);
 
   /* Jednostranný cvik: každá strana má vlastné série, vlastné značky aj vlastné zlyhania. */
-  const sides = exerciseSideOrder(ex);
   if (sides) {
     const sideNote = document.createElement('p');
     sideNote.className = 'exercise-side-note';
@@ -11094,11 +11622,7 @@ function buildExerciseBlock(seg, info, plan) {
     div.appendChild(note);
   }
 
-  const hint = document.createElement('div');
-  hint.className = 'compare-hint';
-  hint.innerHTML = comparisonHint(ex, plan.id);
-  div.appendChild(hint);
-
+  /* Štvorce sérií (ťuknutie = hotová) a pod nimi pilulky S1, S2 … s opakovaniami, váhou a zlyhaním */
   const sets = document.createElement('div');
   sets.className = 'sets';
   const plannedFailure = cleanFailureSets(ex.plannedFailureSets, ex.sets);
@@ -11110,7 +11634,33 @@ function buildExerciseBlock(seg, info, plan) {
     }
   }
   div.appendChild(sets);
-  div.appendChild(buildDropsBlock(ex, seg.readOnly));
+
+  const mini = document.createElement('div');
+  mini.className = 'mini ex-mini';
+  mini.appendChild(buildDropsBlock(ex, seg.readOnly));
+  /* Aktívny cvik je možné vymeniť – ale iba počas rozbehnutého tréningu, aby výmena
+     nikdy nezačala meranie trvania nechtiac. Pred tréningom sa plán upravuje normálne. */
+  if (seg.active && getSession()) {
+    const swap = document.createElement('button');
+    swap.type = 'button';
+    swap.className = 'exercise-swap mini-icon';
+    swap.innerHTML = bentoIcon('swap');
+    swap.title = t('exercise.replace');
+    swap.setAttribute('aria-label', t('exercise.replace') + ': ' + exerciseDisplayName(ex));
+    swap.addEventListener('click', () => openLibrary('replace', { slot: info.slot, base: info.base, ex }));
+    mini.appendChild(swap);
+  }
+  if (ex.id && BUILTIN_EXERCISE_IDS.has(ex.id)) {
+    const infoBtn = document.createElement('button');
+    infoBtn.type = 'button';
+    infoBtn.className = 'exercise-info mini-icon';
+    infoBtn.innerHTML = bentoIcon('info');
+    infoBtn.title = exerciseDisplayName(ex);
+    infoBtn.setAttribute('aria-label', t('bento.exerciseInfo', { name: exerciseDisplayName(ex) }));
+    infoBtn.addEventListener('click', () => openExerciseSheet(ex.id, 'browse'));
+    mini.appendChild(infoBtn);
+  }
+  div.appendChild(mini);
 
   /* Posledná náhrada sa dá vrátiť späť – pôvodný cvik sa tým znova sprístupní. */
   if (seg.active && seg.step) {
@@ -11146,18 +11696,14 @@ function buildSetItem(ex, index, plannedFailure, side, readOnly) {
 
   const sideLabel = side ? t('unilateral.setSide', { n: index + 1, side: sideName(side) }) : '';
 
-  if (side) {
-    const label = document.createElement('span');
-    label.className = 'set-side-label';
-    label.textContent = sideLabel;
-    item.appendChild(label);
-  }
-
+  /* Bento: štvorec série ukazuje opakovania a váhu (ako návrh); ťuknutie = hotová séria */
   const setBtn = document.createElement('button');
   setBtn.type = 'button';
-  setBtn.className = 'set-btn';
-  /* Pri jednostrannom cviku nesie číslo série už popisok strany, preto stačí začiarknutie. */
-  setBtn.textContent = side ? '✓' : `${index + 1} ✓`;
+  setBtn.className = 'set-btn sq';
+  const sqReps = effectiveSetReps(ex, index, side);
+  const sqKg = effectiveSetWeight(ex, index, side);
+  setBtn.innerHTML = (side ? '<i>' + esc(t(side === 'right' ? 'bento.sideR' : 'bento.sideL')) + '</i>' : '')
+    + '<b>' + sqReps + '</b><small>' + (sqKg > 0 ? sqKg : esc(t('bento.bw'))) + (setMark('failure', ex, index, side) ? ' F' : '') + '</small>';
   setBtn.classList.toggle('done', setMark('done', ex, index, side));
   setBtn.setAttribute('aria-label', (side ? sideLabel + ' — ' : '') + t('trening.setDoneAria', { n: index + 1 }));
   if (readOnly) {
@@ -11194,6 +11740,8 @@ function buildSetItem(ex, index, plannedFailure, side, readOnly) {
       toggleSetMark('failure', ex, index, !setMark('failure', ex, index, side), side);
       setSessionNote(null, 0);
       syncFail();
+      const sm = setBtn.querySelector('small');
+      if (sm) sm.textContent = (effectiveSetWeight(ex, index, side) > 0 ? effectiveSetWeight(ex, index, side) : t('bento.bw')) + (setMark('failure', ex, index, side) ? ' F' : '');
     });
   }
 
@@ -11219,7 +11767,14 @@ function buildSetItem(ex, index, plannedFailure, side, readOnly) {
   if (readOnly) repsBtn.disabled = true;
   else repsBtn.addEventListener('click', () => openSetRepsEditor(ex, index, item, side));
 
-  item.append(setBtn, repsBtn, weightBtn, failBtn);
+  weightBtn.dataset.unit = t('units.kg');
+  const pill = document.createElement('span');
+  pill.className = 'set-pill';
+  const label = document.createElement('span');
+  label.className = side ? 'set-side-label' : 'set-n';
+  label.textContent = side ? sideLabel : t('bento.setShort', { n: index + 1 });
+  pill.append(label, repsBtn, weightBtn, failBtn);
+  item.append(setBtn, pill);
   return item;
 }
 
@@ -11278,8 +11833,8 @@ function buildDropsBlock(ex, readOnly) {
   if (!readOnly && list.length < DROP_MAX) {
     const add = document.createElement('button');
     add.type = 'button';
-    add.className = 'btn btn-secondary btn-sm btn-add-drop';
-    add.textContent = '⬇ ' + t('drop.add');
+    add.className = 'btn-add-drop';
+    add.textContent = t('drop.add');
     add.title = t('drop.addTitle');
     add.addEventListener('click', () => { closeSetWeightEditor(); if (addDrop(ex)) { setSessionNote(null, 0); renderTrening(); } });
     box.appendChild(add);
@@ -11367,6 +11922,10 @@ function updateSummary() {
   const msg = done === 0 ? t('trening.setsHint') : randomSetMessage();
   document.getElementById('summary-bar').innerHTML = t('trening.setsDone', { done, total, msg });
   document.getElementById('btn-finish-workout').disabled = done === 0;
+  const xpEl = document.getElementById('tr-finish-xp');
+  if (xpEl) xpEl.textContent = ' · +' + (BASE_XP + done * XP_PER_SET) + ' ' + t('units.xp');
+  bentoMarkExercises();
+  bentoTrainMode();
   refreshUpdateBanner();   // rozbehnutý tréning skrýva ponuku aktualizácie
   trainSchedulePublish();  // spoločný tréning: priateľ uvidí nový stav
 }
@@ -13500,7 +14059,7 @@ function addLibraryExerciseToDraft(entryId) {
    Spodná päťkarta zostáva nezmenená; tieto tri podpohľady žijú vnútri obrazovky
    Pokrok. Stav je len v pamäti – rovnako ako mesiac v kalendári. */
 
-let pokrokView = 'progress';
+let pokrokView = 'stats';   // Bento: prehľad štatistík; podpohľady sa otvárajú ako listy
 let chartField = 'weightKg';
 let measureEditId = null;
 let foodModalMode = 'entry';
@@ -14331,7 +14890,7 @@ async function communityLeaderboardHtml(sb) {
   const period = leaderboardPeriod;
   const tab = (p, key) => '<button type="button" class="goal-chip' + (period === p ? ' active' : '') + '" data-community-action="lb-period" data-period="' + p + '" aria-pressed="' + (period === p ? 'true' : 'false') + '">' + esc(t(key)) + '</button>';
   const head = communityTabbar()
-    + communitySubHead(esc(t('lb.title')), '<button type="button" class="btn-icon" data-community-action="lb-refresh" aria-label="' + escAttr(t('lb.refresh')) + '">↻</button>', true)
+    + communitySubHead(esc(t('lb.title')), '<button type="button" class="btn-icon" data-community-action="lb-refresh" aria-label="' + escAttr(t('lb.refresh')) + '">↻</button>')
     + '<div class="goal-chips lb-tabs" role="group" aria-label="' + escAttr(t('lb.title')) + '">' + tab('all', 'lb.tabAll') + tab('week', 'lb.tabWeek') + '</div>';
   await leaderboardSend(false);
   let top, me;
@@ -14385,24 +14944,49 @@ function communityIcon(name) { return COMMUNITY_SVG + (COMMUNITY_ICONS[name] || 
 /* Navigácia vo vnútri Community (ako Instagram): Domov, Hľadať, Nový, Správy, Profil. */
 function communityNavHtml() {
   const v = communityView;
-  const ownUser = v === 'user' && communityProfile && communityViewUser === communityProfile.id;
-  const item = (view, icon, key, active, badge) => '<button type="button" class="cnav-btn' + (active ? ' active' : '') + '" data-community-view="' + view + '"'
-    + ' aria-label="' + escAttr(t(key)) + '"' + (active ? ' aria-current="page"' : '') + '>'
-    + '<span class="cnav-icon">' + communityIcon(icon) + '</span><span class="cnav-label">' + esc(t(key)) + '</span>'
-    + (badge ? '<span class="cnav-badge">' + (badge > 99 ? '99+' : badge) + '</span>' : '') + '</button>';
-  return '<nav class="cnav" id="community-tabs">'
-    + item('feed', 'home', 'community2.navHome', ['feed', 'following', 'comments'].indexOf(v) >= 0 || (v === 'user' && !ownUser))
-    + item('search', 'search', 'community2.navSearch', v === 'search')
-    + (communityVersion >= 3 ? item('leaderboard', 'trophy', 'lb.nav', v === 'leaderboard') : '')
-    + item('compose', 'plus', 'community.newPost', v === 'compose')
-    + item('chats', 'chat', 'community2.navChats', v === 'chats' || v === 'chat', communityBadges.chats)
-    + item('profile', 'user', 'community2.navProfile', ['profile', 'myposts', 'friends', 'list', 'moderate'].indexOf(v) >= 0 || ownUser, communityBadges.requests)
+  /* Bento: na hlavnej stránke Community sú dlaždice z návrhu (Top 20, Nový príspevok, Správy, Priatelia);
+     ostatné pohľady sú celostránkové listy s tlačidlom Späť (ako v návrhu). */
+  if (v === 'feed' || v === 'following') return communityBentoTilesHtml();
+  if (['leaderboard', 'comments', 'friends', 'chats', 'chat', 'user', 'list'].indexOf(v) >= 0) return '';   // majú vlastnú hlavičku
+  const titles = { search: 'community2.navSearch', compose: 'community.newPost', profile: 'community2.navProfile', myposts: 'community.tabMyPosts', moderate: 'bento.moderate' };
+  return '<div class="k-head" id="community-tabs"><button type="button" class="k-x" data-community-view="feed" aria-label="' + escAttr(t('community2.back')) + '">' + bentoIcon('back') + '</button>'
+    + '<h2>' + esc(t(titles[v] || 'community.title')) + '</h2></div>';
+}
+/* Bento: dlaždice nad príspevkami (Top 20, Nový príspevok, Správy, Priatelia) – rovnaké
+   pohľady ako horná navigácia, len ako dlaždice z návrhu Bento. */
+function communityBentoTilesHtml() {
+  const chats = communityBadges.chats, reqs = communityBadges.requests;
+  const tile = (view, cls, inner, label) => '<button type="button" class="bt cnav-btn ' + cls + '" data-community-view="' + view + '"' + (label ? ' aria-label="' + escAttr(label) + '"' : '') + '>' + inner + '</button>';
+  const top = communityVersion >= 3;
+  const lb = communityLbRank;
+  return '<nav class="cnav bento-grid cbento" id="community-tabs" aria-label="' + escAttr(t('community.title')) + '">'
+    + (top ? tile('leaderboard', 'bt-dark w2 h2', '<span class="bt-l">' + esc(t('lb.nav')) + '</span><span class="bt-v">' + (lb ? '#' + lb : '–') + '</span><span class="bt-line">' + esc(t('bento.thisWeekLower')) + '</span>', t('lb.nav')) : '')
+    + tile('compose', 'bt-lime w2', bentoIcon('edit') + '<span class="bt-line bt-bottom">' + esc(t('community.newPost')) + '</span>')
+    + tile('chats', 'bt-lav w2', bentoIcon('chat') + '<span class="bt-line bt-bottom">' + esc(t('community2.navChats')) + (chats ? ' •' : '') + '</span>'
+      + (chats ? '<span class="cnav-badge bt-badge">' + (chats > 99 ? '99+' : chats) + '</span>' : ''))
+    + tile('friends', 'w4', bentoIcon('users') + '<span class="bt-line bt-bottom">' + esc(t('community2.friendsTitle'))
+      + (reqs ? ' · ' + esc(tPlural('bento.requests', reqs).replace('{n}', String(reqs))) : '') + '</span>'
+      + (reqs ? '<span class="cnav-badge bt-badge">' + (reqs > 99 ? '99+' : reqs) + '</span>' : ''))
     + '</nav>';
+}
+/* Poradie používateľa v Top 20 pre dlaždicu (načíta sa raz pri otvorení Community, ak je rebríček zapnutý). */
+let communityLbRank = null;
+let communityLbRankAt = 0;
+function communityRefreshLbRank(sb) {
+  if (!sb || communityVersion < 3 || Date.now() - communityLbRankAt < 60000) return;
+  communityLbRankAt = Date.now();
+  Promise.resolve(sb.rpc('leaderboard_top', { p_period: 'week' })).then((r) => {
+    const rows = r && !r.error && Array.isArray(r.data) ? r.data : [];
+    const me = rows.find((x) => x.is_me);
+    const rank = me && Number(me.xp) > 0 ? Number(me.pos) || null : null;
+    if (rank !== communityLbRank) { communityLbRank = rank; if (activeTab === 'komunita' && (communityView === 'feed' || communityView === 'following')) renderCommunity(); }
+  }).catch(() => {});
 }
 /* Hlavička podpohľadu: Späť + názov (+ voliteľné tlačidlá vpravo). */
 function communitySubHead(titleHtml, extra, noBack) {
   return '<div class="csub-head">'
-    + (noBack ? '' : '<button type="button" class="btn-icon csub-back" data-community-action="back" aria-label="' + escAttr(t('community2.back')) + '">←</button>')
+    /* Bento: každý podpohľad je list s tlačidlom Späť (chevron ako v návrhu) */
+    + '<button type="button" class="btn-icon csub-back k-x" data-community-action="back" aria-label="' + escAttr(t('community2.back')) + '">' + bentoIcon('back') + '</button>'
     + '<div class="csub-title">' + titleHtml + '</div>' + (extra || '') + '</div>';
 }
 /* Prechod do podpohľadu s možnosťou návratu. */
@@ -14512,6 +15096,7 @@ function communityShowBadges() {
   const total = communityBadges.chats + communityBadges.requests;
   const b = document.getElementById('tab-community-badge');
   if (b) { b.hidden = !total; b.textContent = total > 99 ? '99+' : String(total); }
+  bentoShowChatsBadge();
   const nav = document.getElementById('community-tabs');
   if (nav && communityV2() && nav.classList.contains('cnav')) nav.outerHTML = communityNavHtml();
 }
@@ -14528,6 +15113,8 @@ async function communityBackgroundStart() {
     if (!communityConsent) return;
     communityStartRealtime(sb, s.user.id);
     communityRefreshBadges(sb, s.user.id);
+    /* Bento: meno v pozdrave a avatary priateľov na obrazovke Dnes */
+    communityEnsureProfile(sb, s.user).then(() => { if (activeTab === 'dnes') renderDnes(); }).catch(() => {});
     pushRefresh(sb, s.user.id);   // obnovená adresa odberu (prehliadač ju môže zmeniť) sa dostane na server
   } catch (e) {}
 }
@@ -14802,13 +15389,21 @@ async function communityChatHtml(sb) {
 function communityChatOpen() {
   return activeTab === 'komunita' && communityView === 'chat' && !!document.getElementById('community-chat-msgs');
 }
+/* Bento: podpohľady Community sú celostránkové listy – posúva sa list (#community-body), nie stránka. */
+function communitySheetScroller() {
+  return document.querySelector('#screen-komunita.sheet-open #community-body');
+}
 function communityChatAtEnd() {
   if (!communityChatOpen()) return false;
+  const sc = communitySheetScroller();
+  if (sc) return sc.scrollHeight - (sc.scrollTop + sc.clientHeight) <= 240;
   const el = document.scrollingElement || document.documentElement;
   return el.scrollHeight - (window.scrollY + window.innerHeight) <= 240;
 }
 function communityChatScrollToEnd() {
   if (!communityChatOpen()) return;
+  const sc = communitySheetScroller();
+  if (sc) { sc.scrollTop = sc.scrollHeight; return; }
   const el = document.scrollingElement || document.documentElement;
   window.scrollTo(0, el.scrollHeight);
 }
@@ -15914,7 +16509,14 @@ async function renderCommunity() {
   if (!body) return;
   /* Novšie vykreslenie vždy vyhrá: pomalšia staršia odpoveď už nič neprepíše. */
   const seq = ++communityRenderSeq;
-  const put = (html) => { if (seq !== communityRenderSeq) return false; body.innerHTML = html; return true; };
+  const put = (html) => {
+    if (seq !== communityRenderSeq) return false;
+    body.innerHTML = html;
+    /* Bento: podpohľady s hlavičkou Späť sú celostránkové listy (prekryjú menu, ako v návrhu) */
+    const screen = document.getElementById('screen-komunita');
+    if (screen) screen.classList.toggle('sheet-open', !!body.querySelector('.k-head, .csub-head'));
+    return true;
+  };
   if (!communityConfigured()) { put(communitySetupHtml()); return; }
   if (!communityOptIn()) { put(communityIntroHtml()); return; }
   const sb = communityClient();
@@ -15956,6 +16558,7 @@ async function renderCommunity() {
       if (put(head + communityFeedListHtml())) await communityLoadFeed(sb, true);
       return;
     }
+    if (communityV2() && communityConsent) communityRefreshLbRank(sb);
     const scope = communityV2() ? communityScope : (communityView === 'following' ? 'following' : 'everyone');
     communityFeed = { items: [], offset: 0, done: false, loading: false, scope, user: null };
     if (put(communityFeedShellHtml())) await communityLoadFeed(sb, true);
@@ -17351,7 +17954,7 @@ async function initAuthCallback() {
 }
 
 function setPokrokView(view) {
-  pokrokView = (view === 'body' || view === 'food' || view === 'photos' || view === 'motivation') ? view : 'progress';
+  pokrokView = (view === 'stats' || view === 'body' || view === 'food' || view === 'photos' || view === 'motivation') ? view : 'progress';
   renderPokrok();
   refreshUpdateBanner();
 }
@@ -17368,6 +17971,70 @@ function renderPokrokSubtabs() {
     const el = document.getElementById('subview-' + v);
     if (el) el.hidden = v !== pokrokView;
   }
+  const grid = document.getElementById('stats-grid');
+  if (grid) grid.hidden = pokrokView !== 'stats';
+  const screen = document.getElementById('screen-pokrok');
+  if (screen) screen.classList.toggle('sheet-open', pokrokView !== 'stats');
+  if (pokrokView === 'stats') renderStatsGrid();
+}
+
+/* ---------- Bento: prehľad Štatistiky (dlaždice ako návrh) ---------- */
+function historySets(w) {
+  return (w.exercises || []).reduce((a, e) => a + (Number(e.setsDone) || 0), 0);
+}
+function bentoStatValue(n, sets) {
+  return '<span class="bt-v">' + n + '<small> ' + esc(tPluralWord('bento.workoutsWord', n)) + ' · '
+    + esc(tPlural('bento.setCount', sets).replace('{n}', String(sets))) + '</small></span>';
+}
+function bentoBars(vals, labels, aria) {
+  const W = 320, H = 110, gap = 6, lh = 14;
+  const max = Math.max(1, ...vals), bw = (W - gap * (vals.length - 1)) / vals.length;
+  return '<svg class="k-chart" viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + escAttr(aria) + '">' + vals.map((v, i) => {
+    const bh = Math.max(2, v / max * (H - lh - 4));
+    return '<rect x="' + (i * (bw + gap)) + '" y="' + (H - lh - bh) + '" width="' + bw + '" height="' + bh + '" rx="3" class="k-col' + (i === vals.length - 1 ? ' last' : '') + '"/>'
+      + '<text x="' + (i * (bw + gap) + bw / 2) + '" y="' + (H - 2) + '" text-anchor="middle" class="k-chart-t">' + esc(labels[i]) + '</text>';
+  }).join('') + '</svg>';
+}
+function renderStatsGrid() {
+  const grid = document.getElementById('stats-grid');
+  if (!grid) return;
+  const hist = state.history || [];
+  const wk = currentWeekKey(), mk = currentMonthKey();
+  const inWeek = hist.filter((w) => weekKey(parseDate(w.date)) === wk);
+  const inMonth = hist.filter((w) => monthKey(parseDate(w.date)) === mk);
+  const sum = (list) => list.reduce((a, w) => a + historySets(w), 0);
+  /* posledných 8 ISO týždňov: série za týždeň */
+  const vals = [], labels = [];
+  for (let i = 7; i >= 0; i--) {
+    const key = weekKey(addDays(new Date(), -7 * i));
+    vals.push(sum(hist.filter((w) => weekKey(parseDate(w.date)) === key)));
+    labels.push(t('bento.weekShort', { n: Number(key.split('-W')[1]) }));
+  }
+  const recs = personalRecords().slice(0, 3);
+  const ach = Object.keys(state.achievements || {}).length;
+  const recent = hist.slice().sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0)).slice(0, 4);
+  const tile = (cls, go, inner, label) => '<button type="button" class="bt ' + cls + '" data-go="' + go + '"' + (label ? ' aria-label="' + escAttr(label) + '"' : '') + '>' + inner + '</button>';
+  const L = (k) => '<span class="bt-l">' + esc(t(k)) + '</span>';
+  grid.innerHTML = tile('bt-lime w2', 'history', L('bento.statWeek') + bentoStatValue(inWeek.length, sum(inWeek)))
+    + tile('w2', 'history', L('bento.statMonth') + bentoStatValue(inMonth.length, sum(inMonth)))
+    + tile('bt-lav w4', 'history', L('bento.statAll') + bentoStatValue(hist.length, sum(hist)))
+    + '<div class="bt w4 h2 bt-static">' + L('bento.setsPerWeek') + bentoBars(vals, labels, t('bento.setsPerWeek')) + '</div>'
+    + tile('bt-dark w2 h2', 'records', L('bento.records') + (recs.length
+      ? recs.map((r) => '<span class="st-rec"><span>' + esc(recordedNameToDisplay(r.name)) + '</span><b>' + r.weight + '</b></span>').join('')
+      : '<span class="bt-line">' + esc(t('pokrok.recordsEmpty')) + '</span>'))
+    + tile('bt-peach w2 h2', 'motivation', L('bento.achievements') + '<span class="bt-v">' + ach + '</span><span class="bt-line">' + esc(t('bento.unlocked')) + '</span>')
+    + tile('w2', 'calendar', bentoIcon('calendar') + '<span class="bt-line bt-bottom">' + esc(t('tab.kalendar')) + '</span>')
+    + tile('w2', 'history', bentoIcon('clock') + '<span class="bt-line bt-bottom">' + esc(t('bento.history')) + '</span>')
+    + recent.map((w) => '<button type="button" class="bt w2" data-day="' + escAttr(w.date) + '"><span class="bt-l">' + esc(bentoShortDay(w.date)) + '</span><b class="st-plan">'
+      + esc(historyPlanName(w)) + '</b><span class="bt-line">' + esc(bentoWorkoutLine(w)) + '</span></button>').join('')
+    + tile('bt-sky w2', 'body', bentoIcon('scale') + '<span class="bt-line bt-bottom">' + esc(t('bento.body')) + '</span>')
+    + tile('w2', 'photos', bentoIcon('camera') + '<span class="bt-line bt-bottom">' + esc(t('bento.photos')) + '</span>')
+    + tile('w2', 'food', bentoIcon('utensils') + '<span class="bt-line bt-bottom">' + esc(t('bento.foodTitle')) + '</span>')
+    + tile('w2', 'history', bentoIcon('run') + '<span class="bt-line bt-bottom">' + esc(t('pokrok.actCount')) + '</span>');
+}
+function bentoWorkoutLine(w) {
+  const mins = Math.round((Number(w.durationSeconds) || 0) / 60);
+  return (mins ? t('bento.minutes', { n: mins }) + ' · ' : '') + '+' + (Number(w.xp) || 0) + ' ' + t('units.xp');
 }
 
 /* ---------- Veľkosť uložených dát (len upozornenie, nikdy sa nemaže) ---------- */
@@ -18760,16 +19427,23 @@ function renderAll() {
 
 function switchTab(tab) {
   activeTab = tab;
-  for (const s of ['dnes', 'trening', 'pokrok', 'kalendar', 'komunita']) {
+  document.body.dataset.tab = tab;
+  for (const s of ['dnes', 'trening', 'pokrok', 'kalendar', 'komunita', 'ty']) {
     document.getElementById(`screen-${s}`).hidden = s !== tab;
   }
+  /* Kalendár nie je v menu (v návrhu Bento sa otvára z dlaždíc) – zvýraznená ostáva karta, odkiaľ sa otvoril. */
+  const navTab = tab === 'kalendar' ? calendarReturnTab : tab;
   document.querySelectorAll('.tab').forEach(el => {
-    el.classList.toggle('active', el.dataset.tab === tab);
+    const on = el.dataset.tab === navTab;
+    el.classList.toggle('active', on);
+    if (el.closest('.tab-bar')) el.setAttribute('aria-current', on ? 'page' : 'false');
   });
+  if (tab === 'dnes') renderDnes();
   if (tab === 'trening') renderTrening();
   if (tab === 'pokrok') renderPokrok();
   if (tab === 'kalendar') renderKalendar();
   if (tab === 'komunita') renderCommunity();
+  if (tab === 'ty') renderTy();
   refreshUpdateBanner();
 }
 
@@ -19159,6 +19833,66 @@ function confirmSetup() {
   renderAll();
 }
 
+/* ---------- Vzhľad: Bento svetlý / tmavý / podľa telefónu ----------
+   Voľba tohto zariadenia (localStorage 'gymquest_theme'), mimo stavu aplikácie: nesynchronizuje
+   sa, nie je v exporte a nikdy nemení dáta. Skript v <head> ju použije ešte pred vykreslením,
+   tu sa len prepína a reaguje na zmenu režimu telefónu. */
+const THEME_KEY = 'gymquest_theme';
+const THEME_COLORS = { light: '#E9E8E4', dark: '#0E0E0F' };
+function themePref() {
+  let v = null;
+  try { v = localStorage.getItem(THEME_KEY); } catch (e) {}
+  return v === 'light' || v === 'dark' ? v : 'auto';
+}
+function themeResolved(pref) {
+  const p = pref || themePref();
+  if (p === 'light' || p === 'dark') return p;
+  return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+}
+function applyTheme() {
+  const t = themeResolved();
+  document.documentElement.setAttribute('data-theme', t);
+  const m = document.querySelector('meta[name="theme-color"]');
+  if (m) m.setAttribute('content', THEME_COLORS[t]);
+  renderThemeChips();
+}
+function setThemePref(v) {
+  try {
+    if (v === 'light' || v === 'dark') localStorage.setItem(THEME_KEY, v);
+    else localStorage.removeItem(THEME_KEY);
+  } catch (e) {}
+  applyTheme();
+}
+function renderThemeChips() {
+  const pref = themePref();
+  document.querySelectorAll('#theme-chips [data-theme-choice]').forEach((b) => {
+    const on = b.dataset.themeChoice === pref;
+    b.classList.toggle('active', on);
+    b.setAttribute('aria-checked', on ? 'true' : 'false');
+    b.tabIndex = on ? 0 : -1;   // skupina prepínačov: Tab vstúpi na vybraný, šípky menia voľbu
+  });
+}
+function themeChipsKey(e) {
+  const keys = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 };
+  if (!(e.key in keys)) return;
+  const list = [...document.querySelectorAll('#theme-chips [data-theme-choice]')];
+  const i = list.indexOf(document.activeElement);
+  if (i < 0) return;
+  e.preventDefault();
+  const dir = document.documentElement.dir === 'rtl' && (e.key === 'ArrowLeft' || e.key === 'ArrowRight') ? -keys[e.key] : keys[e.key];
+  const next = list[(i + dir + list.length) % list.length];
+  setThemePref(next.dataset.themeChoice);
+  next.focus();
+}
+(function watchSystemTheme() {
+  try {
+    const mq = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)');
+    const onChange = () => { if (themePref() === 'auto') applyTheme(); };
+    if (mq && mq.addEventListener) mq.addEventListener('change', onChange);
+    else if (mq && mq.addListener) mq.addListener(onChange);
+  } catch (e) {}
+})();
+
 /* ---------- Ukážky dizajnov (Nastavenia → Vzhľad aplikácie) ----------
    Len náhľad iného vzhľadu: samostatné stránky v design-concepts/app/ so vzorovými dátami (vlastný
    kľúč v localStorage, nikdy nie dáta aplikácie). Otvárajú sa v rámci (iframe) na celú obrazovku
@@ -19255,6 +19989,7 @@ function onDesignGridClick(e) {
 }
 
 function openSettings() {
+  renderThemeChips();
   renderGoalChips('settings-goal-chips', weeklyGoal());
   setGoalReadout(weeklyGoal());
   renderLangSetting();
@@ -19980,6 +20715,11 @@ function updateTimerDisplay() {
   const m = String(Math.floor(left / 60)).padStart(2, '0');
   const s = String(left % 60).padStart(2, '0');
   document.getElementById('timer-time').textContent = `${m}:${s}`;
+  /* Bento: dlaždica Oddych na obrazovke Dnes ukazuje bežiaci časovač. */
+  const rest = document.getElementById('bt-rest-line');
+  if (rest) rest.textContent = `${m}:${s}`;
+  const tile = document.getElementById('bt-rest');
+  if (tile) tile.classList.add('bt-running');
 }
 
 function stopTimer() {
@@ -19988,6 +20728,10 @@ function stopTimer() {
   persistRestTimerEnd(null);
   const bar = document.getElementById('timer-bar');
   if (bar) bar.hidden = true;
+  const rest = document.getElementById('bt-rest-line');
+  if (rest) rest.textContent = t('bento.rest');
+  const tile = document.getElementById('bt-rest');
+  if (tile) tile.classList.remove('bt-running');
 }
 
 /* ---------- Časovač oddychu: predvoľby a vlastný čas ----------
@@ -22427,7 +23171,8 @@ async function syncStartup() {
 
 function setupEvents() {
   document.querySelectorAll('.tab').forEach(tab => {
-    tab.addEventListener('click', () => switchTab(tab.dataset.tab));
+    /* Bento: ťuknutie na kartu v menu otvorí jej prehľad (listy štatistík sa zatvoria) */
+    tab.addEventListener('click', () => { if (tab.dataset.tab === 'pokrok') pokrokView = 'stats'; switchTab(tab.dataset.tab); window.scrollTo(0, 0); });
   });
 
   on('btn-change-lang', openLanguagePicker);
@@ -22435,8 +23180,12 @@ function setupEvents() {
   on('btn-settings', openSettings);
 
   on('btn-start-workout', startWorkoutNow);
+  on('bento-grid', (e) => {
+    const tile = e.target.closest ? e.target.closest('[data-go]') : null;
+    if (tile) bentoGo(tile.dataset.go);
+  });
   on('btn-choose-mode', openActivityChoice);
-  on('btn-choose-manual', openManualActivity);
+  on('btn-choose-manual', () => { closeModeModal(); openManualActivity(); });
   on('btn-mode-cancel', closeModeModal);
   on('btn-location-close', closeLocationSheet);
   on('btn-activity-close', () => { if (!activityManual) syncActivityInputs(); closeActivityModal(); });
@@ -22532,6 +23281,10 @@ function setupEvents() {
   on('train-today', trainOnClick);
   on('train-box', trainOnChange, 'change');
   on('train-today', trainOnChange, 'change');
+
+  /* Vzhľad: svetlý / tmavý / podľa telefónu – platí hneď, bez Uložiť */
+  on('theme-chips', (e) => { const b = e.target.closest ? e.target.closest('[data-theme-choice]') : null; if (b) setThemePref(b.dataset.themeChoice); });
+  { const tc = document.getElementById('theme-chips'); if (tc) tc.addEventListener('keydown', themeChipsKey); }
 
   /* Ukážky dizajnov (Nastavenia) */
   on('btn-design-previews', openDesignPicker);
@@ -22718,8 +23471,13 @@ function setupEvents() {
     const ctPanel = document.getElementById('custom-timer');
     if (ctPanel && !ctPanel.hidden) { hideCustomTimer(); return; }
     if (presetManageMode) { setPresetManageMode(false); return; }
+    const restSheet = document.getElementById('modal-rest');
+    if (restSheet && !restSheet.hidden) { closeRestSheet(); return; }
     const modal = document.getElementById('modal-day');
-    if (modal && !modal.hidden) closeDay();
+    if (modal && !modal.hidden) { closeDay(); return; }
+    /* Bento listy (kalendár, podpohľady štatistík) sa zatvárajú ako list: Esc = späť */
+    if (activeTab === 'kalendar') { document.getElementById('back-calendar').click(); return; }
+    if (activeTab === 'pokrok' && pokrokView !== 'stats') setPokrokView('stats');
   });
 
   /* ---------- Pokrok: podpohľady, telo a jedlo ---------- */
@@ -22954,6 +23712,17 @@ function setupEvents() {
 
   /* ---------- Knižnica cvikov a výmena počas tréningu ---------- */
   on('btn-exercise-library', () => openLibrary('browse', null));
+  /* Bento: časovač oddychu ako list, štart plánu z dlaždice, Full Body, návraty z listov */
+  on('btn-open-rest', openRestSheet);
+  on('btn-rest-close', closeRestSheet);
+  on('tr-start', () => { const p = getPlan(selectedPlan); if (p && ensureSession(p)) saveState(); renderTrening(); window.scrollTo(0, 0); });
+  on('btn-fullbody-tile', openFullBodyBuilder);
+  on('edit-back', () => document.getElementById('btn-edit-cancel').click());
+  on('tr-sess-plan', () => { trainShowPlans = !trainShowPlans; bentoTrainMode(); });
+  on('back-calendar', () => switchTab(calendarReturnTab === 'kalendar' ? 'dnes' : calendarReturnTab));
+  for (const v of ['progress', 'body', 'food', 'photos', 'motivation']) on('back-' + v, () => { setPokrokView('stats'); window.scrollTo(0, 0); });
+  on('stats-grid', (e) => { const b = e.target.closest ? e.target.closest('[data-go]') : null; if (b) bentoGo(b.dataset.go); else { const w = e.target.closest ? e.target.closest('[data-day]') : null; if (w) openDay(w.dataset.day); } });
+  on('screen-ty', (e) => { const b = e.target.closest ? e.target.closest('[data-go]') : null; if (b) bentoGo(b.dataset.go); });
   on('btn-library-close', closeLibrary);
   on('btn-exercise-close', closeExerciseSheet);
 

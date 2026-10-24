@@ -6,7 +6,7 @@
    so no update would ever be offered.
    Bump it and the new worker installs, re-fetches everything and deletes the old cache. */
 
-const CACHE_VERSION = 'v77';
+const CACHE_VERSION = 'v78';
 const CACHE_PREFIX = 'gymquest-';
 const CACHE_NAME = CACHE_PREFIX + CACHE_VERSION;
 
@@ -23,14 +23,17 @@ const mediaKey = (url) => url.origin + url.pathname;
    Cache kľúč je celá URL, takže "style.css" a "style.css?v=27" sú dve rôzne položky. */
 const PRECACHE = [
   'index.html',
-  'style.css?v=81',
-  'script.js?v=81',
-  'community-config.js?v=81',
-  'vendor/supabase-js.js?v=81',
+  'style.css?v=84',
+  'script.js?v=84',
+  'community-config.js?v=84',
+  'vendor/supabase-js.js?v=84',
   'manifest.json',
   'apple-touch-icon.png',
   'icon-192.png',
   'icon-512.png',
+  /* písmo Bento (Space Grotesk) – aby vzhľad fungoval aj offline */
+  'fonts/space-grotesk-latin.woff2',
+  'fonts/space-grotesk-latin-ext.woff2',
 ];
 
 /* Zoznam precache URL sa počíta až pri prvej požiadavke – na najvyššej úrovni

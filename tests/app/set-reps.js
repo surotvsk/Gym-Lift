@@ -112,7 +112,7 @@ function check(name, ok, info) {
     check('Curl (per side): reps per set stored, 4 side-sets done', J(h[1].sr) === J([12, 10]) && h[1].done === 4 && h[1].u === true, h[1]);
     check('Row (no change): saved exactly as before (no setReps)', h[2].sr === undefined && h[2].reps === 10, h[2]);
     check('the plan still says 10 reps', (await p.eval(`state.plans['rtest'].exercises[0].reps`)) === 10);
-    await p.eval(`(document.getElementById('modal-result').hidden = true, switchTab('pokrok'), renderPokrok(), true)`);
+    await p.eval(`(document.getElementById('modal-result').hidden = true, switchTab('pokrok'), setPokrokView('progress'), true)`);
     await wait(300);
     const histText = await p.eval(`document.body.innerText`);
     check('Progress history shows "3×10/8/8"', histText.includes('3×10/8/8 · 60 kg'), histText.slice(0, 0));

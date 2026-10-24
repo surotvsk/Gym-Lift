@@ -113,6 +113,20 @@ async function typeMsg(p, text) {
       if (!state.planOrder.includes('tp')) state.planOrder.push('tp');
       selectedPlan = 'tp'; saveState(); switchTab('trening'); renderTrening(); return true; })()`);
 
+    section('Bento Today (signed in)');
+    await pA.eval(`(switchTab('dnes'), true)`);
+    await waitFor(() => pA.eval(`document.querySelectorAll('#bt-friends-avs .k-av').length === 2`), 20000, 'friend avatars');
+    check('Today greets by username and shows both friends on the Friends tile', (await pA.eval(`document.getElementById('bh-hello').textContent`)) === 'Hi, ' + A.name
+      && (await pA.eval(`document.getElementById('bt-friends-l').textContent`)) === 'Friends');
+    check('the "Train with a friend" tile is shown and opens the picker on Workout', await pA.eval(`!document.getElementById('bt-train').hidden`));
+    await shot(pA, 'bento-today-signed-in');
+    await pA.c.send('Emulation.setDeviceMetricsOverride', phone);
+    await click(pA, '#bt-train');
+    await waitFor(() => pA.eval(`activeTab === 'trening' && document.querySelectorAll('[data-train-action="invite"]').length === 2`), 15000, 'picker from tile');
+    check('tile → Workout with the friend picker open', true);
+    await click(pA, '[data-train-action="open"]');   // zavrie výber, test pokračuje ako doteraz
+    await pA.eval(`(switchTab('trening'), true)`);
+
     section('inviting');
     await waitFor(() => box(pA).then((x) => x.includes('Train with a friend')), 20000, 'train button');
     check('Workout shows "👥 Train with a friend"', (await box(pA)).includes('👥 Train with a friend'));
@@ -172,7 +186,7 @@ async function typeMsg(p, text) {
     await wait(500);
     const h = await pA.eval(`state.history[state.history.length - 1]`);
     check('ada\'s workout is saved with "trainedWith: ben"', h.trainedWith === B.name, h.trainedWith);
-    await pA.eval(`(document.getElementById('modal-result').hidden = true, switchTab('pokrok'), renderPokrok(), true)`);
+    await pA.eval(`(document.getElementById('modal-result').hidden = true, switchTab('pokrok'), setPokrokView('progress'), true)`);
     check('Progress history shows "Trained with ben"', (await pA.eval(`document.body.innerText`)).includes('Trained with ' + B.name));
     check('the Calendar day shows it too', await pA.eval(`(() => { openDay(todayISO()); const x = document.getElementById('modal-day').innerText; closeDay(); return x; })()`).then((x) => x.includes('Trained with ' + B.name)));
     await waitFor(() => box(pB).then((x) => x.includes('finished the workout')), 30000, 'ada finished on B');

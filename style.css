@@ -3810,3 +3810,605 @@ button.cstat:hover { background: var(--surface-2); }
 .design-view-bar .btn { flex: 0 0 auto; min-height: 40px; }
 .design-view-frame { flex: 1 1 auto; width: 100%; border: 0; background: #fff; }
 html.design-view-open, html.design-view-open body { overflow: hidden; }
+
+/* ==========================================================================
+   ===== Bento dizajn (v78): svetlý a tmavý režim =====
+   Celá aplikácia v dizajne Bento: teplé sivé pozadie, zaoblené dlaždice, čierne
+   a limetkové akcenty, pastelové dlaždice, plávajúca čierna lišta. Mení sa LEN vzhľad:
+   žiadne dáta, žiadne funkcie. Režim volí Nastavenia → Vzhľad (svetlý / tmavý / podľa
+   telefónu); <html data-theme="light|dark"> nastaví skript v <head> ešte pred vykreslením.
+   ========================================================================== */
+
+/* Písmo Bento (Space Grotesk, SIL OFL 1.1 – fonts/OFL.txt), uložené v aplikácii, funguje offline.
+   Arabčina a iné písma, ktoré Space Grotesk nemá, použijú systémové písmo. */
+@font-face {
+  font-family: 'Space Grotesk'; font-style: normal; font-weight: 400 700; font-display: swap;
+  src: url('fonts/space-grotesk-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Space Grotesk'; font-style: normal; font-weight: 400 700; font-display: swap;
+  src: url('fonts/space-grotesk-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* ---- Farby: svetlý režim (aj predvolený, keby skript v <head> nebežal) ---- */
+:root, html[data-theme="light"] {
+  --bg: #E9E8E4; --bg-elev: #F2F1ED;
+  --surface: #FFFFFF; --surface-2: #F2F1ED; --surface-3: #E6E4DE;
+  --border: #E0DED8; --border-strong: #CCC9C1;
+  --text: #121212; --text-dim: #5F5D57; --text-faint: #8A8882;
+  --accent: #121212; --accent-strong: #000000; --accent-soft: rgba(18, 18, 18, 0.07); --accent-line: rgba(18, 18, 18, 0.35);
+  --on-accent: #F4F3EF;
+  --blue: #3550C8; --blue-soft: rgba(53, 80, 200, 0.10); --blue-line: rgba(53, 80, 200, 0.40);
+  --danger: #C2362C; --danger-soft: rgba(194, 54, 44, 0.09); --danger-line: rgba(194, 54, 44, 0.38);
+  --ok: #2E7D4F; --ok-soft: rgba(46, 125, 79, 0.13); --ok-line: rgba(46, 125, 79, 0.45);
+  --miss: #B24E5B; --miss-soft: rgba(178, 78, 91, 0.10); --miss-line: rgba(178, 78, 91, 0.36);
+  --shadow-1: 0 1px 2px rgba(0, 0, 0, 0.04), 0 4px 14px rgba(0, 0, 0, 0.04);
+  --shadow-2: 0 10px 30px rgba(0, 0, 0, 0.14);
+  /* Bento dlaždice */
+  --lime: #D6F35A; --on-lime: #121212;
+  --tile-lime: #D6F35A; --tile-lav: #CFC8FF; --tile-peach: #FFC9A8; --tile-sky: #BFE3F2; --tile-sand: #EFE3C8; --tile-fg: #121212;
+  --ink: #121212; --on-ink: #F4F3EF;
+  --nav-bg: #121212; --nav-fg: #9C9A94;
+  --scrim: rgba(18, 18, 18, 0.38);
+  --fig-near: #2B2B2B; --fig-far: #8B8981; --fig-torso: #3A3A3A; --fig-equip: #6B6963; --fig-equip-2: #9C9A94; --fig-soft: #C9C6BE;
+  color-scheme: light;
+}
+/* ---- Farby: tmavý režim ---- */
+html[data-theme="dark"] {
+  --bg: #0E0E0F; --bg-elev: #141416;
+  --surface: #1A1A1C; --surface-2: #222225; --surface-3: #2B2B2F;
+  --border: #2C2C30; --border-strong: #3B3B41;
+  --text: #F4F3EF; --text-dim: #A3A19B; --text-faint: #75736D;
+  --accent: #D6F35A; --accent-strong: #C8F03A; --accent-soft: rgba(214, 243, 90, 0.12); --accent-line: rgba(214, 243, 90, 0.45);
+  --on-accent: #121212;
+  --blue: #9AB0FF; --blue-soft: rgba(154, 176, 255, 0.14); --blue-line: rgba(154, 176, 255, 0.45);
+  --danger: #FF6B6B; --danger-soft: rgba(255, 107, 107, 0.12); --danger-line: rgba(255, 107, 107, 0.42);
+  --ok: #6BCB8B; --ok-soft: rgba(107, 203, 139, 0.14); --ok-line: rgba(107, 203, 139, 0.45);
+  --miss: #D98A94; --miss-soft: rgba(217, 138, 148, 0.10); --miss-line: rgba(217, 138, 148, 0.34);
+  --shadow-1: none;
+  --shadow-2: 0 12px 34px rgba(0, 0, 0, 0.6);
+  --lime: #D6F35A; --on-lime: #121212;
+  --tile-lime: #4B5A13; --tile-lav: #3B3470; --tile-peach: #6A3B22; --tile-sky: #1F4A5C; --tile-sand: #4A4130; --tile-fg: #F4F3EF;
+  --ink: #000000; --on-ink: #F4F3EF;
+  --nav-bg: #1C1E22; --nav-fg: #A3A19B;
+  --scrim: rgba(0, 0, 0, 0.66);
+  --fig-near: #C6CBD7; --fig-far: #6F7482; --fig-torso: #B6BCC9; --fig-equip: #7C8290; --fig-equip-2: #A7ADBA; --fig-soft: #454A56;
+  color-scheme: dark;
+}
+
+/* ---- Tvar: zaoblené dlaždice, pilulky ---- */
+:root { --r-sm: 12px; --r-md: 18px; --r-lg: 24px; --tile-r: 22px; --tabbar-h: 88px; }
+
+body {
+  font-family: 'Space Grotesk', system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans Arabic", "Geeza Pro", Tahoma, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+}
+html[dir="rtl"] body, body:lang(ar) { font-family: "Noto Sans Arabic", "Geeza Pro", system-ui, -apple-system, Tahoma, sans-serif; }
+
+.app-title { font-size: 26px; letter-spacing: -0.04em; font-weight: 700; }
+.screen-title { font-size: 32px; font-weight: 700; letter-spacing: -0.045em; line-height: 1.05; margin-bottom: var(--sp-4); }
+.today-date { margin-top: calc(-1 * var(--sp-2)); }
+.header-level { background: var(--ink); color: var(--lime); border-color: transparent; }
+.btn-icon { background: var(--surface); border-color: transparent; box-shadow: var(--shadow-1); }
+html[data-theme="dark"] .btn-icon { border-color: var(--border); }
+
+/* Dlaždice (karty) */
+.card, .summary-bar, .exercise, .stat-card, .fig-box, .motivation-card {
+  border-radius: var(--tile-r);
+}
+.card { border: 0; box-shadow: var(--shadow-1); }
+html[data-theme="dark"] .card { border: 1px solid var(--border); }
+.card-title { letter-spacing: -0.02em; }
+.card-value { letter-spacing: -0.045em; font-weight: 700; }
+
+/* Tlačidlá: pilulky. Hlavné = limetka s čiernym textom (Bento „Start“). */
+.btn { border-radius: var(--r-full); letter-spacing: 0; }
+.btn-primary { background: var(--lime); color: var(--on-lime); box-shadow: none; }
+.btn-primary:hover:not(:disabled) { background: #CBEB45; }
+.btn-primary:disabled { background: var(--surface-3); color: var(--text-faint); border: 0; }
+.btn-secondary { background: var(--surface); border: 1px solid var(--border); color: var(--text); }
+.btn-secondary:hover:not(:disabled) { background: var(--surface-2); }
+html[data-theme="dark"] .btn-secondary { background: var(--surface-2); }
+.btn-danger:hover:not(:disabled) { background: var(--danger-soft); filter: brightness(0.97); }
+.btn-big { box-shadow: none; min-height: 60px; font-size: var(--fs-lg); }
+#btn-start-workout { background: var(--ink); color: var(--lime); }
+html[data-theme="dark"] #btn-start-workout { background: var(--lime); color: var(--on-lime); }
+
+/* Pokrok */
+.progress { box-shadow: none; }
+.stat-card { background: var(--surface); border: 0; box-shadow: var(--shadow-1); }
+html[data-theme="dark"] .stat-card { border: 1px solid var(--border); }
+.stats-row .stat-card:nth-child(1) { background: var(--tile-lime); }
+.stats-row .stat-card:nth-child(3) { background: var(--tile-lav); }
+.stats-row .stat-card:nth-child(1) .stat-value, .stats-row .stat-card:nth-child(3) .stat-value,
+.stats-row .stat-card:nth-child(1) .stat-label, .stats-row .stat-card:nth-child(3) .stat-label { color: var(--tile-fg); }
+.stat-value { letter-spacing: -0.045em; font-weight: 700; }
+.record-weight { color: var(--text); }
+
+/* Tréning: plány ako farebné dlaždice, vybraný = čierny */
+.chip.recommended::after { color: inherit; }
+.chip:not(.plan-chips .chip) { border-radius: var(--r-full); }
+.exercise { border: 0; box-shadow: var(--shadow-1); }
+html[data-theme="dark"] .exercise { border: 1px solid var(--border); }
+.exercise-meta b { color: var(--text); }
+.set-btn { border-radius: 14px; background: var(--surface-2); border: 2px solid var(--border); color: var(--text-dim); }
+.set-btn.done { background: var(--ink); border-color: var(--ink); color: var(--lime); }
+html[data-theme="dark"] .set-btn.done { background: var(--lime); border-color: var(--lime); color: var(--on-lime); }
+.set-weight, .set-reps, .drop-weight, .drop-reps, .set-fail { border-radius: 14px; }
+.summary-bar { border: 0; box-shadow: var(--shadow-1); }
+html[data-theme="dark"] .summary-bar { border: 1px solid var(--border); }
+.summary-bar b { color: var(--text); }
+
+/* Kalendár */
+.cal-cell { border-radius: 12px; }
+
+/* Plávajúca čierna lišta (Bento): pilulka v strede, iba ikony, aktívna karta = limetkový kruh.
+   Názov karty ostáva v DOM (čítačky obrazovky), len je vizuálne skrytý. */
+.tab-bar {
+  left: 50%; right: auto; transform: translateX(-50%);
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 18px);
+  width: auto; max-width: calc(100% - 24px); height: auto;
+  padding: 6px; gap: 4px;
+  background: var(--nav-bg);
+  border: 0; border-radius: var(--r-full);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  backdrop-filter: none; -webkit-backdrop-filter: none;
+}
+html[data-theme="dark"] .tab-bar { box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6), inset 0 0 0 1px var(--border); }
+.tab-bar .tab {
+  flex: 0 0 auto; width: 54px; min-width: 0; height: 46px; min-height: 46px; padding: 0;
+  justify-content: center; color: var(--nav-fg); border-radius: var(--r-full);
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.tab-bar .tab::before { display: none; }
+.tab-bar .tab.active { background: var(--lime); color: var(--on-lime); }
+.tab-bar .tab > span[data-i18n] {
+  position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden;
+  clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; border: 0;
+}
+.tab-bar .tab-icon svg { width: 22px; height: 22px; }
+@media (max-width: 340px) { .tab-bar .tab { width: 48px; } }
+.update-banner { bottom: calc(var(--tabbar-h) + env(safe-area-inset-bottom, 0px)); border-radius: var(--tile-r); left: 10px; right: 10px; max-width: calc(var(--maxw) - 20px); border-top: 0; background: var(--ink); }
+.update-banner .update-text { color: var(--on-ink); }
+
+/* Okná */
+.modal-backdrop { background: var(--scrim); }
+.modal { border: 0; border-radius: var(--r-lg); }
+html[data-theme="dark"] .modal { border: 1px solid var(--border-strong); }
+.modal .modal-xp { color: var(--text); }
+.modal-input { border-radius: 14px; }
+
+/* Text na akcentovej farbe (namiesto pevnej tmavej) */
+.fb-ex[aria-pressed="true"] .fb-check, .lang-item.active .lang-check { color: var(--on-accent); }
+.cnav-badge, .tab-badge { color: var(--on-accent) !important; }
+.cmsg.mine .cmsg-bubble { color: var(--on-accent); }
+.cal-cell .cal-badge, .cal-count { color: var(--bg); }
+
+/* Ilustrácie cvikov: odtiene podľa režimu */
+.fig-far { stroke: var(--fig-far); }
+.fig-near { stroke: var(--fig-near); }
+.fig-torso { fill: var(--fig-torso); stroke: var(--fig-torso); }
+.fig-neck { stroke: var(--fig-torso); }
+.fig-head, .fig-hand { fill: var(--fig-near); }
+.fig-foot { stroke: var(--fig-near); }
+.fig-bar, .fig-cable-line { stroke: var(--fig-equip-2); }
+.fig-plate { fill: var(--fig-equip); stroke: var(--fig-equip-2); }
+.fig-plate-sm { fill: var(--fig-equip); }
+.fig-bench-pad { stroke: var(--fig-equip-2); }
+.fig-post, .fig-post-base, .fig-anchor { stroke: var(--fig-equip); }
+.fig-pulley { fill: var(--fig-equip-2); }
+.fig-stack { fill: var(--fig-equip); }
+.fig-box-body { fill: var(--fig-soft); stroke: var(--fig-equip); }
+.fig-mat { fill: var(--fig-soft); }
+.fig-props, .fig-props-thin { stroke: var(--fig-soft); }
+
+/* Community: lepiace hlavičky a pole na písanie podľa pozadia */
+html[data-theme="light"] .cnav, html[data-theme="light"] #community-tabs { background: rgba(233, 232, 228, 0.94); }
+.ccomposer { background: linear-gradient(to top, var(--bg) 75%, transparent); }
+
+/* Bento: biele dlaždice cvikov, vybrané voľby ako čierna/limetková pilulka, kompaktnejšie tlačidlo v dlaždici */
+.exercise { background: var(--surface); }
+.goal-chip { border-radius: var(--r-full); }
+.goal-chip.active { background: var(--ink); border-color: var(--ink); color: var(--lime); }
+html[data-theme="dark"] .goal-chip.active { background: var(--lime); border-color: var(--lime); color: var(--on-lime); }
+/* XP v potvrdení dokončenia tréningu (predtým pevná svetlozelená farba v texte) */
+.xp-gain { color: var(--ok); font-weight: var(--fw-black); }
+html[data-theme="dark"] .xp-gain { color: var(--lime); }
+
+
+/* =====================================================================
+   Bento podľa referencie (design-concepts/app/r2/03-bento.html, tmavý: r7/02-classic-dark.html)
+   Hodnoty sú prevzaté z referencie: mriežka 4 × 84 px, medzera 8 px, dlaždica 22 px / 14 px,
+   štítok 12 px, hodnota 34 px, menu 52 × 44 px. Mení sa iba vzhľad – prvky, id a obsluha ostávajú.
+   ===================================================================== */
+:root, html[data-theme="light"] {
+  --b-bg: #E9E8E4; --b-tile: #FFFFFF; --b-fg: #121212; --b-hd-small: #6E6C66; --b-tile-shadow: none;
+  --b-dark: #121212; --b-on-dark: #F4F3EF; --b-dark-ring: none;
+  --b-lime: #D6F35A; --b-lav: #CFC8FF; --b-peach: #FFC9A8; --b-sky: #BFE3F2; --b-sand: #EFE3C8; --b-pastel-fg: #121212;
+  --b-line-op: .7; --b-tline: inherit;
+  --b-dot: rgba(0,0,0,.1); --b-bar: rgba(0,0,0,.1);
+  --b-sq-bd: rgba(0,0,0,.15); --b-sq-bg: rgba(255,255,255,.5); --b-sq-on-bg: #121212; --b-sq-on-fg: #D6F35A;
+  --b-mini: rgba(0,0,0,.08);
+  --b-nav: #121212; --b-nav-fg: #9C9A94; --b-nav-shadow: 0 10px 30px rgba(0,0,0,.25);
+  /* listy (kit referencie) */
+  --k-bg: #FFFFFF; --k-fg: #17191D; --k-mute: #6B7079; --k-card: #F2F1ED; --k-line: #E0DED8; --k-acc: #121212; --k-acc-fg: #FFFFFF;
+  --k-danger: #C8372D; --k-good: #2E9A5B; --k-bad: #D9A39D; --k-radius: 22px; --k-scrim: rgba(10,12,16,.45); --k-shadow: 0 -10px 40px rgba(0,0,0,.22);
+}
+html[data-theme="dark"] {
+  --b-bg: #0E0E0F; --b-tile: #1A1A1C; --b-fg: #F4F3EF; --b-hd-small: #9C9A94; --b-tile-shadow: inset 0 0 0 1px #2C2C2F;
+  --b-dark: #000000; --b-on-dark: #F4F3EF; --b-dark-ring: inset 0 0 0 1px #2C2C2F;
+  --b-lime: #4B5A13; --b-lav: #3B3470; --b-peach: #6A3B22; --b-sky: #1F4A5C; --b-sand: #4A4130; --b-pastel-fg: #F4F3EF;
+  --b-line-op: 1; --b-tline: #9C9A94;
+  --b-dot: rgba(255,255,255,.14); --b-bar: rgba(255,255,255,.14);
+  --b-sq-bd: rgba(255,255,255,.18); --b-sq-bg: rgba(255,255,255,.06); --b-sq-on-bg: #D6F35A; --b-sq-on-fg: #121212;
+  --b-mini: rgba(255,255,255,.14);
+  --b-nav: #1C1E22; --b-nav-fg: #9C9A94; --b-nav-shadow: 0 10px 30px rgba(0,0,0,.6), inset 0 0 0 1px #2C2C2F;
+  --k-bg: #1A1A1C; --k-fg: #F4F3EF; --k-mute: #9C9A94; --k-card: #0E0E0F; --k-line: #2C2C2F; --k-acc: #D6F35A; --k-acc-fg: #121212;
+  --k-scrim: rgba(0,0,0,.6);
+}
+html { background: var(--b-bg); }
+body { background: var(--b-bg); color: var(--b-fg); font: 15px/1.35 'Space Grotesk', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; }
+html[dir="rtl"] body, body:lang(ar) { font-family: "Noto Sans Arabic", "Geeza Pro", system-ui, -apple-system, Tahoma, sans-serif; }
+.kico { width: 22px; height: 22px; flex: 0 0 auto; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; vertical-align: middle; }
+.sr-only { position: absolute !important; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; border: 0; }
+
+/* Hlavička aplikácie z predošlej verzie nie je v referencii: ostáva v DOM (nastavenia a level sú v dlaždiciach) */
+.app-header { display: none; }
+/* main: 50px 12px 110px */
+.app-main { padding: max(50px, calc(env(safe-area-inset-top, 0px) + 16px)) 12px calc(110px + env(safe-area-inset-bottom, 0px)); max-width: 600px; }
+.screen { animation: none; }
+/* .hd { display:flex; align-items:flex-end; justify-content:space-between; padding:0 4px 12px } h1 30px −1px */
+.hd { display: flex; align-items: flex-end; justify-content: space-between; gap: 8px; padding: 0 4px 12px; margin: 0; }
+.hd > div { min-width: 0; }
+.hd .screen-title, .bh-hello { margin: 0; font-size: 30px; font-weight: 700; letter-spacing: -1px; line-height: 1.15; color: inherit; overflow-wrap: anywhere; }
+.hd small, .hd .today-date { color: var(--b-hd-small); font-size: 12.5px; margin: 0; display: block; }
+#screen-trening.in-session > .hd { display: none; }
+
+/* ---- mriežka a dlaždice ---- */
+.bento-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); grid-auto-rows: minmax(84px, auto); gap: 8px; margin: 0; }
+.bt {
+  position: relative; display: flex; flex-direction: column; align-items: stretch; min-width: 0; text-align: start;
+  border-radius: 22px; padding: 14px; background: var(--b-tile); color: var(--b-fg); overflow: hidden; border: 0;
+  font: inherit; cursor: pointer; box-shadow: var(--b-tile-shadow); -webkit-tap-highlight-color: transparent;
+}
+.bt > * { position: relative; }
+.bt.bt-static { cursor: default; }
+.bt[hidden] { display: none !important; }
+.bt.w2 { grid-column: span 2; } .bt.w4 { grid-column: span 4; } .bt.h2 { grid-row: span 2; } .bt.h3 { grid-row: span 3; }
+.bt-dark { background: var(--b-dark); color: var(--b-on-dark); box-shadow: var(--b-dark-ring); }
+.bt-lime { background: var(--b-lime); color: var(--b-pastel-fg); box-shadow: none; }
+.bt-lav { background: var(--b-lav); color: var(--b-pastel-fg); box-shadow: none; }
+.bt-peach { background: var(--b-peach); color: var(--b-pastel-fg); box-shadow: none; }
+.bt-sky { background: var(--b-sky); color: var(--b-pastel-fg); box-shadow: none; }
+.bt-sand { background: var(--b-sand); color: var(--b-pastel-fg); box-shadow: none; }
+.bt-l { font-size: 12px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; opacity: .6; line-height: 1.35; overflow-wrap: anywhere; }
+.bt-v { font-size: 34px; font-weight: 700; letter-spacing: -1.5px; line-height: 1; margin-top: auto; overflow-wrap: anywhere; }
+.bt-v small { font-size: 14px; letter-spacing: 0; font-weight: 500; opacity: .7; }
+.bt-v.bt-v24 { font-size: 24px; } .bt-v.bt-v22 { font-size: 22px; }
+.bt-line { font-size: 12px; opacity: var(--b-line-op); }
+.bt:not(.bt-dark):not(.bt-lime):not(.bt-lav):not(.bt-peach):not(.bt-sky):not(.bt-sand) .bt-line { color: var(--b-tline); }
+html[data-theme="light"] .bt-line, :root:not([data-theme]) .bt-line { opacity: .7; }
+html[data-theme="dark"] .bt-dark .bt-line, html[data-theme="dark"] :is(.bt-lime, .bt-lav, .bt-peach, .bt-sky, .bt-sand) .bt-line { color: #F4F3EF; opacity: .75; }
+.bt-bottom { margin-top: auto; }
+.bt .kico { width: 20px; height: 20px; }
+.bt-bg { position: absolute !important; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: .38; }
+/* Ďalší tréning */
+.bt-next .bt-plan { font-size: 30px; font-weight: 700; margin-top: 6px; line-height: 1.1; overflow-wrap: anywhere; }
+.bt-next .bt-line { opacity: .75; }
+.bt-start, #bt-next #btn-start-workout {
+  margin-top: auto; align-self: flex-start; display: inline-flex; align-items: center; gap: 6px; width: auto; min-height: 0;
+  background: #D6F35A; color: #121212; border: 0; border-radius: 999px; padding: 11px 18px; font: 700 16px 'Space Grotesk', system-ui, sans-serif; cursor: pointer; box-shadow: none;
+}
+.bt-start .kico { width: 20px; height: 20px; }
+/* týždeň */
+.bt-dots { display: flex; gap: 5px; margin-top: 8px; }
+.bt-dots i { flex: 1; height: 26px; border-radius: 8px; background: var(--b-dot); }
+.bt-dots i.d { background: currentColor; } .bt-dots i.n { box-shadow: inset 0 0 0 2px currentColor; }
+/* level */
+.bt-bar { display: block; height: 8px; border-radius: 4px; background: var(--b-bar); overflow: hidden; margin: 10px 0 0; }
+.bt-bar i { display: block; height: 100%; background: currentColor; border-radius: 4px; }
+.bt-lav .bt-bar + .bt-line { margin-top: 6px; }
+/* priatelia */
+.bt-avs { display: flex; margin-top: auto; }
+.k-av { --s: 32px; width: var(--s); height: var(--s); flex: 0 0 auto; border-radius: 50%; display: inline-grid; place-items: center; background: var(--av, #888); color: #fff; font: 700 calc(var(--s) * .42) 'Space Grotesk', system-ui, sans-serif; overflow: hidden; }
+.k-av img { width: 100%; height: 100%; object-fit: cover; }
+.bt-avs .k-av { margin-inline-end: -8px; border: 2px solid var(--b-lav); }
+.bt-badge { position: absolute !important; top: 12px; inset-inline-end: 12px; min-width: 20px; height: 20px; padding: 0 6px; border-radius: 999px; background: #121212; color: #D6F35A; font: 700 12px/20px 'Space Grotesk', system-ui, sans-serif; text-align: center; }
+html[data-theme="dark"] .bt-badge { background: #D6F35A; color: #121212; }
+#bt-rest.bt-running { background: #D6F35A; color: #121212; }
+#bt-rest.bt-running .bt-line { font: 700 18px 'Space Grotesk', sans-serif; opacity: 1; color: #121212; font-variant-numeric: tabular-nums; }
+
+/* ---- menu: tmavá pilulka, 52 × 44, aktívna karta limetková ---- */
+.tab-bar {
+  position: fixed; left: 50%; right: auto; top: auto; transform: translateX(-50%); bottom: calc(26px + env(safe-area-inset-bottom, 0px));
+  display: flex; gap: 4px; width: auto; height: auto; max-width: none; margin: 0; padding: 6px; border: 0; border-radius: 999px;
+  background: var(--b-nav); box-shadow: var(--b-nav-shadow); z-index: 10; backdrop-filter: none; -webkit-backdrop-filter: none;
+}
+.tab-bar .tab {
+  flex: 0 0 auto; width: 52px; height: 44px; min-width: 0; min-height: 0; padding: 0; margin: 0; border: 0; border-radius: 999px;
+  background: none; color: var(--b-nav-fg); display: grid; place-items: center; cursor: pointer; font: inherit; letter-spacing: 0; text-transform: none;
+}
+.tab-bar .tab::before { display: none; }
+.tab-bar .tab.active { background: #D6F35A; color: #121212; }
+.tab-bar .tab-icon { position: relative; display: grid; place-items: center; }
+.tab-bar .tab .kico { width: 22px; height: 22px; }
+.tab-bar .tab > span[data-i18n] { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; border: 0; }
+.tab-bar .tab:focus-visible { outline: 2px solid #D6F35A; outline-offset: 2px; }
+.tab-badge { position: absolute; top: -6px; inset-inline-end: -10px; min-width: 16px; height: 16px; padding: 0 4px; border-radius: 999px; background: #D6F35A; color: #121212 !important; font: 700 10px/16px 'Space Grotesk', sans-serif; }
+.tab.active .tab-badge { background: #121212; color: #D6F35A !important; }
+
+/* ---- časovač oddychu: limetková pilulka (restpill) ---- */
+.timer-bar {
+  position: fixed; left: 12px; right: 12px; bottom: calc(92px + env(safe-area-inset-bottom, 0px)); z-index: 9; margin: 0 auto; max-width: 576px;
+  display: flex; align-items: center; gap: 10px; background: #D6F35A; color: #121212; border: 0; border-radius: 22px; padding: 12px 14px; box-shadow: 0 10px 24px rgba(0,0,0,.18);
+}
+.timer-bar[hidden] { display: none; }
+.timer-bar .timer-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); }
+.timer-bar .timer-time { flex: 1; font: 700 26px 'Space Grotesk', sans-serif; color: #121212; font-variant-numeric: tabular-nums; letter-spacing: 0; }
+.timer-bar #timer-stop { border: 0; background: #121212; color: #fff; border-radius: 999px; padding: 8px 12px; width: auto; height: auto; min-height: 0; font: 600 13px 'Space Grotesk', sans-serif; box-shadow: none; }
+html[data-theme="dark"] .timer-bar #timer-stop { background: #000; color: #F4F3EF; }
+.timer-bar.done { background: #D6F35A; }
+
+/* ---- Tréning ---- */
+.plan-chips { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin: 0 0 8px; }
+.chip-wrap { display: flex; min-width: 0; }
+.plan-chips .chip {
+  flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; align-items: flex-start; text-align: start; gap: 0;
+  min-height: 176px; padding: 14px; border: 0; border-radius: 22px; background: var(--b-lime); color: var(--b-pastel-fg); box-shadow: none; font: inherit; cursor: pointer;
+}
+.plan-chips .chip[data-tile="1"] { background: var(--b-lav); } .plan-chips .chip[data-tile="2"] { background: var(--b-peach); }
+.plan-chips .chip[data-tile="3"] { background: var(--b-sky); } .plan-chips .chip[data-tile="4"] { background: var(--b-sand); }
+.plan-chips .chip.active { background: var(--b-dark); color: var(--b-on-dark); box-shadow: var(--b-dark-ring); }
+.plan-chips .chip:hover { filter: none; }
+.plan-chips .chip.recommended::after { content: none; }
+.chip-l { font-size: 12px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; opacity: .6; }
+.chip-name { font-size: 22px; font-weight: 700; margin-top: 4px; line-height: 1.15; overflow-wrap: anywhere; }
+.chip-meta { margin-top: auto; font-size: 12px; opacity: .7; font-weight: 400; }
+.plan-chips.managing { grid-template-columns: minmax(0, 1fr); }
+.plan-chips.managing .chip { min-height: 64px; border-radius: 0; }
+.plan-chips.managing .chip-wrap { border-radius: 22px; overflow: hidden; }
+.plan-chips.managing .chip-drag, .plan-chips.managing .chip-edit { display: inline-flex; align-items: center; justify-content: center; background: var(--b-tile); border: 0; color: var(--b-fg); width: 44px; }
+.tr-detail { min-height: 268px; margin: 0 0 8px; cursor: default; }
+.tr-rows { display: flex; flex-direction: column; margin-top: 4px; }
+.tr-row { display: flex; justify-content: space-between; gap: 10px; padding: 4px 0; font-size: 14px; }
+.tr-row b { white-space: nowrap; font-weight: 700; }
+.mini { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; align-items: center; }
+.tr-detail .mini { margin-top: auto; padding-top: 8px; }
+.mini > button, .mini > .mini-icon, .btn-add-drop, .set-pill {
+  border: 0; background: var(--b-mini); border-radius: 999px; padding: 6px 10px; font: 600 12px 'Space Grotesk', system-ui, sans-serif; cursor: pointer; color: inherit;
+  display: inline-flex; gap: 4px; align-items: center; min-height: 28px; width: auto; box-shadow: none; text-transform: none; letter-spacing: 0;
+}
+.mini .kico { width: 14px; height: 14px; }
+.mini .mini-dark, .tr-detail #tr-start { background: #121212; color: #D6F35A; }
+html[data-theme="dark"] .tr-detail #tr-start { background: #D6F35A; color: #121212; }
+.tr-tiles { margin-bottom: 8px; }
+.plan-manage-hint { margin: 8px 4px; font-size: 13px; color: var(--b-hd-small); }
+/* prebiehajúci tréning */
+.bt-session { margin-bottom: 8px; min-height: 176px; cursor: default; display: flex; }
+.bt-session[hidden] { display: none; }
+.bt-session .tr-switch { background: none; border: 0; padding: 0; color: inherit; font: inherit; font-size: 12px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; text-align: start; cursor: pointer; align-self: flex-start; }
+.bt-session .duration-value { color: inherit; font-size: 40px; letter-spacing: -1.5px; margin-top: auto; font-variant-numeric: tabular-nums; }
+.bt-session .summary-bar { display: block; background: none; border: 0; box-shadow: none; padding: 0; margin: 4px 0 0; border-radius: 0; color: inherit; }
+.bt-session .summary-bar b { color: inherit; font-size: inherit; font-weight: 700; }
+.bt-session .mini > button { background: rgba(255,255,255,.12); color: inherit; }
+.bt-session .mini > .mini-lime { background: #D6F35A; color: #121212; }
+.bt-session .mini > button:disabled { opacity: .5; cursor: default; }
+.bt-session .duration-note { font-size: 12px; opacity: .7; }
+.tr-session[hidden] { display: none; }
+.failure-hint { margin: 0 4px 8px; font-size: 12px; color: var(--b-hd-small); background: none; border: 0; padding: 0; }
+/* cviky = dlaždice w4: aktuálny levanduľový, hotový limetkový */
+.exercise-list { display: flex; flex-direction: column; gap: 8px; }
+.exercise { position: relative; display: flex; flex-direction: column; border-radius: 22px; padding: 14px; background: var(--b-tile); color: var(--b-fg); border: 0; box-shadow: var(--b-tile-shadow); margin: 0; min-height: 176px; }
+.exercise.ex-current { background: var(--b-lav); color: var(--b-pastel-fg); box-shadow: none; }
+.exercise.ex-done { background: var(--b-lime); color: var(--b-pastel-fg); box-shadow: none; }
+.exercise .compare-hint { font-size: 12px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; opacity: .6; margin: 0; color: inherit; }
+.exercise .compare-hint :is(.up, .down) { color: inherit; font-weight: 700; }
+.exercise-head { display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap; margin: 0; }
+.exercise-name { font-size: 20px; font-weight: 700; color: inherit; letter-spacing: 0; }
+.exercise-lr { font-size: 13px; font-weight: 500; }
+.exercise-meta { margin-inline-start: auto; font-size: 12px; opacity: .7; color: inherit; }
+.exercise-meta b { color: inherit; }
+.exercise-side-note, .exercise-swap-note { font-size: 12px; opacity: .7; margin: 2px 0 0; color: inherit; }
+.exercise .sets { display: flex; flex-wrap: wrap; gap: 6px; margin-top: auto; padding-top: 10px; }
+.exercise .sets::after { content: ''; order: 2; flex-basis: 100%; height: 0; }
+.exercise .set-item { display: contents; }
+.exercise .set-btn.sq {
+  order: 1; flex: 0 0 calc((100% - 24px) / 5); height: 52px; min-height: 0; min-width: 0; padding: 0; border-radius: 14px;
+  border: 2px solid var(--b-sq-bd); background: var(--b-sq-bg); color: inherit; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  font: 700 14px 'Space Grotesk', system-ui, sans-serif; cursor: pointer; line-height: 1.1; box-shadow: none;
+}
+.exercise .set-btn.sq small { font-size: 10px; font-weight: 500; opacity: .7; }
+.exercise .set-btn.sq i { font-style: normal; font-size: 10px; font-weight: 700; opacity: .7; }
+.exercise .set-btn.sq.done { background: var(--b-sq-on-bg); color: var(--b-sq-on-fg); border-color: var(--b-sq-on-bg); }
+.exercise .set-pill { order: 3; padding: 0 4px 0 10px; gap: 0; cursor: default; }
+.exercise .set-pill .set-n, .exercise .set-pill .set-side-label { font-weight: 700; padding-inline-end: 4px; }
+.exercise .set-pill :is(.set-reps, .set-weight, .set-fail) {
+  background: none; border: 0; border-radius: 999px; min-height: 28px; min-width: 24px; padding: 0 6px; font: 600 12px 'Space Grotesk', system-ui, sans-serif; color: inherit; box-shadow: none; cursor: pointer;
+}
+.exercise .set-pill .set-weight::after { content: ' ' attr(data-unit); }
+.exercise .set-pill .set-fail { opacity: .45; } .exercise .set-pill .set-fail.active { opacity: 1; } .exercise .set-pill .set-fail.planned { opacity: .75; }
+.exercise .set-pill :is(.set-reps, .set-weight).changed { text-decoration: underline; text-underline-offset: 2px; }
+.exercise .set-weight-editor { order: 4; flex-basis: 100%; margin: 4px 0 0; }
+.exercise .set-locked .set-btn.sq { opacity: .55; }
+.ex-mini { margin-top: 8px; }
+.ex-mini .drops { display: contents; }
+.ex-mini .drop-item { display: inline-flex; align-items: center; gap: 0; background: var(--b-mini); border-radius: 999px; padding: 0 4px 0 10px; min-height: 28px; font: 600 12px 'Space Grotesk', sans-serif; }
+.ex-mini .drop-item :is(.drop-done, .drop-reps, .drop-weight, .drop-remove) { background: none; border: 0; min-height: 28px; min-width: 24px; padding: 0 6px; font: inherit; color: inherit; border-radius: 999px; box-shadow: none; }
+.ex-mini .drop-item .drop-done.done { background: #121212; color: #D6F35A; }
+.ex-mini .drop-label { padding-inline-end: 4px; }
+.ex-mini .mini-icon { padding: 6px 8px; }
+.ex-mini .mini-icon .kico { width: 14px; height: 14px; }
+.btn-undo-swap { margin-top: 8px; }
+.edit-panel { background: var(--b-tile); border-radius: 22px; padding: 14px; margin: 0 0 8px; box-shadow: var(--b-tile-shadow); border: 0; }
+
+/* ---- Štatistiky: graf série za týždeň, rekordy ---- */
+.k-chart { width: 100%; height: auto; display: block; margin: 6px 0; color: currentColor; overflow: visible; }
+.k-col { fill: currentColor; opacity: .45; } .k-col.last { opacity: 1; }
+.k-chart-t { fill: var(--b-hd-small); font: 600 11px 'Space Grotesk', system-ui, sans-serif; }
+.st-rec { display: flex; justify-content: space-between; gap: 8px; font-size: 13px; margin-top: 6px; }
+.st-rec span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } .st-rec b { white-space: nowrap; }
+.st-plan { font-weight: 700; overflow-wrap: anywhere; }
+.stats-grid[hidden] { display: none; }
+#subview-progress > .stats-row:first-child { display: none; }
+
+/* ---- celostránkové listy (ako k-full v referencii): podpohľady Štatistík, kalendár, Community ---- */
+.k-head { display: flex; align-items: center; gap: 8px; padding: max(14px, env(safe-area-inset-top, 0px)) 14px 10px; border-bottom: 1px solid var(--k-line); background: var(--k-bg); position: sticky; top: 0; z-index: 2; margin: 0 -16px 12px; }
+.k-head h2 { flex: 1; margin: 0; font: 700 18px/1.2 'Space Grotesk', system-ui, sans-serif; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--k-fg); }
+.k-x { background: none; border: 0; color: var(--k-fg); padding: 6px; margin: -6px 0 -6px -4px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; min-width: 34px; min-height: 34px; }
+[dir="rtl"] .k-x .kico { transform: scaleX(-1); }
+#screen-pokrok.sheet-open > .subview:not([hidden]), #screen-kalendar, #screen-komunita.sheet-open #community-body {
+  position: fixed; inset: 0; z-index: 15; overflow-y: auto; background: var(--k-bg); color: var(--k-fg);
+  padding: 0 16px max(26px, env(safe-area-inset-bottom, 0px)); -webkit-overflow-scrolling: touch;
+}
+#screen-kalendar[hidden] { display: none; }
+#screen-pokrok.sheet-open > .hd, #screen-pokrok.sheet-open > .subtabs { display: none; }
+.subtabs { display: none; }
+/* obsah listov: bez kariet, sekcie so štítkami (k-sec) a riadkami */
+:is(#screen-pokrok.sheet-open > .subview, #screen-kalendar, #screen-komunita.sheet-open #community-body) .card {
+  background: transparent; border: 0; box-shadow: none; border-radius: 0; padding: 0; margin: 0 0 18px;
+}
+:is(#screen-pokrok.sheet-open > .subview, #screen-kalendar) .card-title, #screen-komunita.sheet-open .csection {
+  display: flex; justify-content: space-between; align-items: center; margin: 18px 0 6px; font: 700 12px/1.2 'Space Grotesk', sans-serif; text-transform: uppercase; letter-spacing: .06em; color: var(--k-mute);
+}
+:is(#screen-pokrok.sheet-open > .subview, #screen-kalendar) :is(.record-row, .history-row) { border-bottom: 1px solid var(--k-line); padding: 11px 2px; }
+:is(#screen-pokrok.sheet-open > .subview, #screen-kalendar) :is(.card-note, .card-sub, .record-meta) { color: var(--k-mute); font-size: 13px; }
+.k-head + * { margin-top: 0; }
+/* kalendár ako v referencii */
+.calendar-head { display: flex; align-items: center; gap: 6px; margin-bottom: 10px; }
+.calendar-head .calendar-title { flex: 1; text-align: center; font: 700 17px 'Space Grotesk', sans-serif; }
+.calendar-head .btn-icon { background: none; border: 0; box-shadow: none; border-radius: 50%; }
+.calendar-weekday { font-size: 12px; color: var(--k-mute); font-weight: 600; text-transform: none; letter-spacing: 0; }
+.cal-cell { border-radius: 10px; background: var(--k-card); color: inherit; font: 600 14px 'Space Grotesk', sans-serif; border: 0; box-shadow: none; }
+.cal-cell.cal-done { background: var(--k-good); color: #fff; border: 0; }
+.cal-cell.cal-miss { background: var(--k-bad); color: var(--k-fg); border: 0; }
+html[data-theme="dark"] .cal-cell.cal-miss { color: #121212; }
+.cal-cell.cal-future { background: var(--k-card); color: inherit; }
+.cal-cell.cal-today { box-shadow: inset 0 0 0 2px #E8862B; color: inherit; }
+.cal-cell.cal-done.cal-today { color: #fff; }
+.cal-cell.cal-outside { opacity: .4; }
+.legend-swatch { border-radius: 4px; width: 12px; height: 12px; }
+.legend-swatch.swatch-ok { background: var(--k-good); border-color: var(--k-good); }
+.legend-swatch.swatch-miss { background: var(--k-bad); border-color: var(--k-bad); }
+.legend-swatch.swatch-today { background: transparent; box-shadow: inset 0 0 0 2px #E8862B; border: 0; }
+.calendar-legend { color: var(--k-mute); font-size: 13px; }
+
+/* ---- Community ---- */
+.chd { align-items: center; }
+.hd-icon { background: none; border: 0; color: inherit; padding: 8px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; min-width: 40px; min-height: 40px; }
+.community-screen { gap: 8px; }
+.cnav.cbento { position: static; display: grid; padding: 0; margin: 0; background: none; border: 0; backdrop-filter: none; -webkit-backdrop-filter: none; }
+.cnav.cbento .cnav-btn { flex-direction: column; align-items: stretch; justify-content: flex-start; gap: 0; padding: 14px; font: inherit; font-size: inherit; letter-spacing: 0; min-height: 84px; }
+.cnav.cbento .cnav-btn.active { background: inherit; color: inherit; }
+.cnav.cbento .bt-dark .bt-l { color: inherit; }
+.cnav.cbento .cnav-badge { position: absolute !important; top: 12px; inset-inline-end: 12px; inset-inline-start: auto; }
+#screen-komunita.sheet-open .chd { visibility: hidden; }
+#community-body .card, #community-body .community-card, #community-body .cfeed > * { border-radius: 22px; }
+.cfeed > .card, #community-feed > .card, #community-feed > .community-card { background: var(--b-tile); border: 0; box-shadow: var(--b-tile-shadow); padding: 14px; }
+.csub-head { display: flex; align-items: center; gap: 8px; padding: max(14px, env(safe-area-inset-top, 0px)) 14px 10px; margin: 0 -16px 12px; border-bottom: 1px solid var(--k-line); background: var(--k-bg); position: sticky; top: 0; z-index: 2; }
+.csub-head .csub-title { flex: 1; font: 700 18px/1.2 'Space Grotesk', sans-serif; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.csub-back { background: none; border: 0; box-shadow: none; color: inherit; }
+#screen-komunita.sheet-open .ccomposer { background: var(--k-bg); }
+.goal-chips.cscope, .community-scope { margin: 4px 0; }
+
+/* ---- Ty ---- */
+.ty-card { cursor: default; }
+.ty-top { display: flex; gap: 12px; align-items: center; }
+.ty-av { width: 56px; height: 56px; border-radius: 50%; display: grid; place-items: center; background: #2F4F4F; color: #fff; font: 700 24px 'Space Grotesk', sans-serif; flex: 0 0 auto; }
+.ty-who { display: flex; flex-direction: column; min-width: 0; }
+.ty-who b { font-size: 22px; overflow-wrap: anywhere; }
+.ty-card .motivation-text { margin: 0; margin-top: auto; padding-top: 8px; font-size: 12px; font-weight: 400; color: inherit; line-height: 1.35; }
+
+/* ---- listy (bottom sheets) a ovládacie prvky ako kit referencie ---- */
+.modal-backdrop { background: var(--k-scrim); backdrop-filter: none; -webkit-backdrop-filter: none; align-items: flex-end; padding: 0; z-index: 20; }
+.modal {
+  background: var(--k-bg); color: var(--k-fg); border: 0; border-radius: 22px 22px 0 0; box-shadow: var(--k-shadow);
+  width: 100%; max-width: 600px; max-height: 88vh; max-height: 88dvh; overflow-y: auto; padding: 0 16px calc(22px + env(safe-area-inset-bottom, 0px)); text-align: start;
+  font: 15px/1.4 'Space Grotesk', system-ui, sans-serif; animation: gq-sheet-up .2s ease;
+}
+@keyframes gq-sheet-up { from { transform: translateY(30px); opacity: 0; } to { transform: none; opacity: 1; } }
+.modal > h3:first-child {
+  margin: 0 -16px 12px; padding: 14px 16px 10px; border-bottom: 1px solid var(--k-line); font: 700 18px/1.2 'Space Grotesk', sans-serif; text-align: start;
+  position: sticky; top: 0; background: var(--k-bg); z-index: 1;
+}
+.modal p { color: var(--k-fg); }
+.modal .card-note, .modal .card-sub, .modal .modal-label { color: var(--k-mute); }
+.modal.modal-sheet, .modal.modal-fb { padding: 0; max-height: 88dvh; }
+@media (min-width: 700px) { .modal-backdrop { align-items: center; padding: 20px; } .modal { border-radius: 22px; } }
+.setting-block { background: none; border: 0; border-bottom: 1px solid var(--k-line); border-radius: 0; padding: 11px 2px; margin: 0; }
+.setting-block > .card-title, .goal-head > .card-title, .setting-main > .card-title { font: 700 12px/1.2 'Space Grotesk', sans-serif; text-transform: uppercase; letter-spacing: .06em; color: var(--k-mute); }
+/* tlačidlá (k-btn) */
+.btn { font: 600 15px/1.2 'Space Grotesk', system-ui, sans-serif; padding: 11px 14px; border-radius: 16.5px; border: 1px solid transparent; min-height: 44px; letter-spacing: 0; text-transform: none; box-shadow: none; }
+.btn-primary { background: var(--k-acc); color: var(--k-acc-fg); border-color: var(--k-acc); }
+.btn-primary:hover:not(:disabled) { background: var(--k-acc); filter: brightness(1.08); }
+.btn-secondary { background: var(--k-card); color: var(--k-fg); border-color: transparent; }
+.btn-secondary:hover:not(:disabled) { background: var(--k-card); border-color: var(--k-line); }
+.btn-sm { padding: 7px 12px; min-height: 36px; font-size: 14px; }
+.btn-big { min-height: 52px; font-size: 16px; }
+/* čipy (k-chip) */
+.goal-chip, .chip:not(.plan-chips .chip), .metric-chip, .unit-chip, .timer-chip {
+  border: 1px solid var(--k-line); background: none; color: inherit; border-radius: 999px; padding: 6px 12px; font: 600 13px/1.2 'Space Grotesk', sans-serif; min-height: 36px; box-shadow: none;
+}
+:is(.goal-chip, .metric-chip, .timer-chip).active, .metric-chip[aria-pressed="true"], .unit-chip[aria-pressed="true"], .timer-chip[aria-pressed="true"] { background: var(--k-acc); border-color: var(--k-acc); color: var(--k-acc-fg); }
+/* segment (k-seg) pre Svetlý / Tmavý / Systém */
+.theme-chips { display: flex; background: var(--k-card); border-radius: 15.4px; padding: 3px; gap: 3px; margin: 6px 0; }
+.theme-chips .goal-chip { flex: 1; border: 0; padding: 9px 0; border-radius: 12.1px; font: 600 14px 'Space Grotesk', sans-serif; justify-content: center; text-align: center; }
+.theme-chips .goal-chip.active { background: var(--k-acc); color: var(--k-acc-fg); }
+/* prepínač (k-sw) 48 × 28 */
+.switch { width: 48px; height: 28px; }
+.switch::before { inset-inline-start: 0; top: 0; width: 48px; height: 28px; border-radius: 14px; border: 0; background: var(--k-line); }
+.switch-knob { top: 3px; inset-inline-start: 3px; width: 22px; height: 22px; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.3); }
+.switch[aria-checked="true"]::before { background: var(--k-acc); border: 0; }
+.switch[aria-checked="true"] .switch-knob { transform: translateX(20px); background: #fff; }
+[dir="rtl"] .switch[aria-checked="true"] .switch-knob { transform: translateX(-20px); }
+/* polia formulárov */
+.modal-input, .modal input:not([type=checkbox]):not([type=radio]), .modal select, .modal textarea, #community-body input:not([type=checkbox]):not([type=radio]), #community-body textarea {
+  font: 16px/1.3 'Space Grotesk', system-ui, sans-serif; color: var(--k-fg); background: var(--k-card); border: 1px solid var(--k-line); border-radius: 13.2px; padding: 10px 11px;
+}
+.update-banner { left: 12px; right: 12px; bottom: calc(92px + env(safe-area-inset-bottom, 0px)); border-radius: 22px; background: #121212; color: #F4F3EF; border: 0; }
+.storage-warning { border-radius: 14px; }
+.empty-state { color: var(--k-mute); text-align: center; padding: 18px 8px; margin: 0; }
+
+/* ---- prístupnosť ---- */
+:where(button, a, input, select, textarea, [tabindex]):focus-visible { outline: 3px solid var(--focus, #3550C8); outline-offset: 2px; }
+:root, html[data-theme="light"] { --focus: #3550C8; } html[data-theme="dark"] { --focus: #D6F35A; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .001ms !important; transition-duration: .001ms !important; scroll-behavior: auto !important; } }
+
+/* ---- tablet a počítač: stĺpec 600 px ako telefón v referencii; od 900 px širší a mriežka v 8 stĺpcoch ---- */
+@media (min-width: 900px) {
+  .app-main { max-width: 880px; }
+  .bento-grid { grid-template-columns: repeat(8, minmax(0, 1fr)); grid-auto-flow: row dense; }
+  .plan-chips { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .timer-bar { max-width: 856px; }
+  #screen-pokrok.sheet-open > .subview:not([hidden]), #screen-kalendar, #screen-komunita.sheet-open #community-body { left: 50%; right: auto; width: 600px; transform: translateX(-50%); box-shadow: 0 0 0 100vmax var(--k-scrim); }
+}
+html[data-theme] .bt-session .summary-bar { border: 0; background: none; box-shadow: none; }
+.bt .k-chart { color: var(--k-acc); }
+.bt-session .mini > .mini-lime:disabled { opacity: .65; }
+/* plán: editor ako celostránkový list (referencia: "Edit plan") */
+.edit-panel:not([hidden]) { position: fixed; inset: 0; z-index: 15; margin: 0; border-radius: 0; overflow-y: auto; background: var(--k-bg); color: var(--k-fg); padding: 0 16px max(26px, env(safe-area-inset-bottom, 0px)); box-shadow: none; }
+.edit-panel .modal-actions { position: sticky; bottom: 0; background: var(--k-bg); padding: 10px 0; margin: 10px 0 0; }
+/* história: súhrny ako k-stats (sivé karty) */
+#subview-progress .stats-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin: 6px 0 10px; }
+#subview-progress .stats-row .stat-card { background: var(--k-card); border: 0; box-shadow: none; border-radius: 22px; padding: 10px; min-height: 0; display: flex; flex-direction: column-reverse; justify-content: flex-end; text-align: start; gap: 2px; grid-column: auto; }
+#subview-progress .stats-row .stat-value { font: 800 24px/1.1 'Space Grotesk', sans-serif; color: var(--k-fg); letter-spacing: 0; }
+#subview-progress .stats-row .stat-label { font-size: 12px; color: var(--k-mute); text-transform: none; letter-spacing: 0; opacity: 1; }
+/* úspechy ako k-ach */
+.achievements { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 8px; }
+.achievement { background: var(--k-card); border: 0; border-radius: 22px; padding: 10px; text-align: start; opacity: .6; box-shadow: none; filter: none; display: flex; flex-direction: column; gap: 2px; }
+.achievement.unlocked { opacity: 1; background: var(--k-card); border: 0; box-shadow: none; }
+.achievement .achievement-icon { font-size: 24px; filter: grayscale(1); margin: 0; } .achievement.unlocked .achievement-icon { filter: none; }
+.achievement .achievement-name { font-size: 13px; line-height: 1.2; color: var(--k-fg); }
+.achievement :is(.achievement-desc, .achievement-date, .achievement-xp) { font-size: 11px; color: var(--k-mute); }
+#subview-motivation > .card:nth-of-type(1) .card-value { font: 800 28px/1.15 'Space Grotesk', sans-serif; }
+/* nastavenia ako celostránkový list */
+#modal-settings .modal { max-width: none; height: 100%; max-height: none; border-radius: 0; }
+@media (min-width: 700px) { #modal-settings .modal { max-width: 600px; height: auto; max-height: calc(100dvh - 40px); border-radius: 22px; } }
+.bt-session .tr-switch { min-height: 28px; padding: 6px 10px 6px 0; margin: -6px 0; }
+/* Prístupnosť: o odtieň tmavšie než referencia, aby malý text a dni v kalendári mali kontrast aspoň 4,5 : 1 */
+:root, html[data-theme="light"] { --b-hd-small: #605E58; --k-good: #2A7F4B; }
+html[data-theme="dark"] { --k-good: #2A7F4B; }
+#modal-designs .modal-actions { margin-inline: -16px; padding-inline: 16px; }
+#screen-komunita.sheet-open #community-body .ccomposer { position: sticky; bottom: 0; }
+#screen-komunita.sheet-open #community-body > * { flex-shrink: 0; }

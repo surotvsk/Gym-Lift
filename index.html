@@ -3,7 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#0f1218">
+  <meta name="theme-color" content="#E9E8E4">
+  <script>
+    /* Vzhľad (Bento svetlý / tmavý) ešte pred vykreslením: voľba zariadenia, nie dáta účtu. */
+    (function () {
+      var pref = 'auto';
+      try { pref = localStorage.getItem('gymquest_theme') || 'auto'; } catch (e) {}
+      var dark = pref === 'dark' || (pref !== 'light' && window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches);
+      document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+      var m = document.querySelector('meta[name="theme-color"]');
+      if (m) m.setAttribute('content', dark ? '#0E0E0F' : '#E9E8E4');
+    })();
+  </script>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -11,9 +22,9 @@
   <title>GymQuest</title>
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
-  <link rel="stylesheet" href="style.css?v=81">
+  <link rel="stylesheet" href="style.css?v=84">
 </head>
-<body>
+<body data-tab="dnes">
 
   <header class="app-header">
     <h1 class="app-title">GymQuest</h1>
@@ -46,71 +57,118 @@
     </div>
 
     <!-- ============ DNES ============ -->
-    <section class="screen" id="screen-dnes">
-      <h2 class="screen-title" data-i18n="tab.dnes">Dnes</h2>
-
-      <p class="today-date"><time id="today-date" datetime=""></time></p>
+    <section class="screen bento-home" id="screen-dnes">
+      <h2 class="screen-title sr-only" data-i18n="tab.dnes">Dnes</h2>
+      <div class="hd bh-head">
+        <div><small class="today-date"><time id="today-date" datetime=""></time></small><p class="bh-hello" id="bh-hello"></p></div>
+      </div>
 
       <div class="train-box" id="train-today" hidden></div>
 
-      <div class="card">
-        <div class="card-head">
-          <span class="card-title" data-i18n="dnes.weekTitle">Tréningy tento týždeň</span>
-          <span class="card-value" id="week-count">0 z 3</span>
+      <!-- Bento: dlaždice sú vstupy do všetkých funkcií aplikácie (rovnaké funkcie ako doteraz) -->
+      <div class="bento-grid" id="bento-grid">
+        <div class="bt bt-dark w4 h2 bt-next" id="bt-next">
+          <img class="bt-bg" id="bt-next-img" alt="" hidden>
+          <span class="bt-l" id="bt-next-label"></span>
+          <b class="bt-plan" id="bt-next-name"></b>
+          <span class="bt-line" id="dnes-next-plan"></span>
+          <button type="button" class="bt-start" id="btn-start-workout"><svg class="kico" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l12-7.5-12-7.5Z"/></svg><span id="bt-start-text" data-i18n="bento.start">Štart</span></button>
         </div>
-        <div class="progress"><div class="progress-fill" id="week-progress"></div></div>
-        <p class="card-sub" id="week-sub">Ešte 3 tréningy do splnenia cieľa.</p>
+        <button type="button" class="bt bt-lime w2 h2" data-go="calendar" id="bt-week">
+          <span class="bt-l" data-i18n="bento.week">Tento týždeň</span>
+          <span class="bt-v" id="week-count">0 / 3</span>
+          <span class="bt-dots" id="bt-week-dots" aria-hidden="true"></span>
+          <span class="sr-only" id="week-sub"></span>
+          <span class="progress" hidden><span class="progress-fill" id="week-progress"></span></span>
+        </button>
+        <button type="button" class="bt w2" data-go="motivation" id="bt-streak">
+          <span class="bt-l" data-i18n="bento.streak">Séria</span>
+          <span class="bt-v" id="bt-streak-v"></span>
+          <span class="sr-only"><span id="streak-value"></span> <span id="streak-sub"></span></span>
+        </button>
+        <button type="button" class="bt w2" id="btn-excuse">
+          <span class="bt-l" id="bt-excuse-l"></span>
+          <span class="bt-line bt-bottom" id="bt-excuse-line"></span>
+          <span class="sr-only" id="excuse-note" hidden></span>
+        </button>
+        <button type="button" class="bt bt-lav w2 h2" data-go="motivation" id="bt-level">
+          <span class="bt-l" id="bt-level-l"></span>
+          <span class="bt-v" id="bt-level-v"></span>
+          <span class="bt-bar"><i id="bt-level-bar"></i></span>
+          <span class="bt-line" id="bt-level-line"></span>
+        </button>
+        <button type="button" class="bt bt-sky w2" data-go="body" id="bt-body">
+          <span class="bt-l" data-i18n="bento.body">Telo</span>
+          <span class="bt-v bt-v24" id="bt-body-v"></span>
+        </button>
+        <button type="button" class="bt w2" data-go="records" id="bt-lift">
+          <span class="bt-l" data-i18n="bento.bestLift">Najlepší výkon</span>
+          <span class="bt-v bt-v22" id="bt-lift-v"></span>
+          <span class="bt-line" id="bt-lift-line"></span>
+        </button>
+        <button type="button" class="bt bt-peach w2" data-go="food" id="bt-food">
+          <span class="bt-l" data-i18n="bento.food">Jedlo dnes</span>
+          <span class="bt-v bt-v24" id="bt-food-v"></span>
+        </button>
+        <button type="button" class="bt bt-sand" data-go="rest" id="bt-rest"><svg class="kico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2M9.5 2.5h5"/></svg><span class="bt-line bt-bottom" id="bt-rest-line" data-i18n="bento.rest">Oddych</span></button>
+        <button type="button" class="bt" id="btn-choose-mode"><svg class="kico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="14" cy="4.5" r="1.8"/><path d="m8 21 3-6 3 2v5M6 11l3-3h4l2 4 3 1M11 15l-1.5-3"/></svg><span class="bt-line bt-bottom" data-i18n="bento.activity">Aktivita</span></button>
+        <button type="button" class="bt bt-lav w2" data-go="chats" id="bt-friends">
+          <span class="bt-l" id="bt-friends-l" data-i18n="bento.friends">Priatelia</span>
+          <span class="bt-badge" id="bt-chats-badge" hidden></span>
+          <span class="bt-avs" id="bt-friends-avs"></span>
+        </button>
+        <button type="button" class="bt" data-go="photos" id="bt-photos"><svg class="kico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7.5h3.2L9 5h6l1.8 2.5H20a1.5 1.5 0 0 1 1.5 1.5v9.5A1.5 1.5 0 0 1 20 20H4a1.5 1.5 0 0 1-1.5-1.5V9A1.5 1.5 0 0 1 4 7.5Z"/><circle cx="12" cy="13.5" r="3.6"/></svg><span class="bt-line bt-bottom" data-i18n="bento.photos">Fotky</span></button>
+        <button type="button" class="bt bt-dark" data-go="settings" id="bt-settings"><svg class="kico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2.5v3M12 18.5v3M21.5 12h-3M5.5 12h-3M18.7 5.3l-2.1 2.1M7.4 16.6l-2.1 2.1M18.7 18.7l-2.1-2.1M7.4 7.4 5.3 5.3"/></svg><span class="bt-line bt-bottom" data-i18n="bento.settings">Nastavenia</span></button>
+        <button type="button" class="bt bt-lime w4" data-go="train" id="bt-train" hidden><svg class="kico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c1.2-3.5 3.6-5 6.5-5s5.3 1.5 6.5 5"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 15c2 .6 3.3 2.2 4 5"/></svg><span class="bt-line bt-bottom" data-i18n="train.open">Trénovať s priateľom</span></button>
       </div>
-
-      <div class="card">
-        <div class="card-head">
-          <span class="card-title" data-i18n="dnes.streakTitle">🔥 Súdržnosť</span>
-          <span class="card-value" id="streak-value">0 týždňov</span>
-        </div>
-        <p class="card-sub" id="streak-sub">Absolvuj aspoň 3 tréningy za týždeň.</p>
-        <button class="btn btn-secondary btn-block" id="btn-excuse" data-i18n="dnes.excuse">Škola / choroba</button>
-        <p class="card-note" id="excuse-note" hidden></p>
-      </div>
-
-      <div class="card motivation-card">
-        <p class="motivation-text" id="motivation-text">Každý tréning ťa posúva bližšie k cieľu.</p>
-      </div>
-
-      <p class="card-sub next-plan" id="dnes-next-plan"></p>
-
-      <button class="btn btn-primary btn-big" id="btn-start-workout" data-i18n="dnes.start">Začať tréning</button>
-      <button class="btn btn-secondary btn-block" id="btn-choose-mode" data-i18n="mode.open">Čo chceš robiť?</button>
-      <button class="btn btn-secondary btn-block" id="btn-choose-manual" data-i18n="act.logManually">Zapísať aktivitu ručne</button>
     </section>
 
     <!-- ============ TRÉNING ============ -->
     <section class="screen" id="screen-trening" hidden>
-      <h2 class="screen-title" data-i18n="tab.trening">Tréning</h2>
+      <div class="hd">
+        <h2 class="screen-title" data-i18n="tab.trening">Tréning</h2>
+        <small id="tr-hint" data-i18n="bento.tapPlan">ťukni na plán</small>
+      </div>
 
       <!-- Trénovanie s priateľom (migrácia 0014): pozvánka, spoločný tréning, povzbudenia -->
       <div class="train-box" id="train-box" hidden></div>
 
-      <div class="plan-head">
-        <div class="plan-head-text">
-          <span class="plan-head-label" data-i18n="trening.planLabel">Tréningový plán</span>
-          <h3 class="plan-head-name" id="plan-title">Push</h3>
+      <!-- Bento: prebiehajúci tréning – tmavá dlaždica (čas, Oddych, Dokončiť, Zahodiť) -->
+      <div class="bt bt-dark w4 bt-session duration-row" id="duration-row" hidden>
+        <button type="button" class="bt-l tr-switch" id="tr-sess-plan" aria-expanded="false"></button>
+        <span class="sr-only duration-label" data-i18n="trening.durationLabel">Trvanie tréningu</span>
+        <span class="bt-v duration-value" id="duration-value">00:00:00</span>
+        <span class="duration-note" id="duration-note" hidden></span>
+        <span class="bt-line summary-bar" id="summary-bar"></span>
+        <div class="mini">
+          <button type="button" class="mini-ghost" id="btn-open-rest"><svg class="kico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2M9.5 2.5h5"/></svg><span data-i18n="bento.rest">Oddych</span></button>
+          <button type="button" class="mini-lime" id="btn-finish-workout" disabled><span data-i18n="bento.finish">Dokončiť</span><span id="tr-finish-xp"></span></button>
+          <button type="button" class="mini-ghost" id="btn-reset-session" data-i18n="bento.discard" data-i18n-aria="trening.resetSession">Zahodiť</button>
         </div>
-        <button class="btn btn-secondary plan-edit-btn" id="btn-plan-rename" data-i18n="trening.editPlanButton">✏️ Upraviť plán</button>
       </div>
 
-      <div class="plan-chips" id="plan-chips"></div>
-
-      <div class="plan-actions">
-        <button type="button" class="btn btn-secondary" id="btn-manage-plans" aria-pressed="false" data-i18n="trening.managePlans">Upraviť plány</button>
-        <button class="btn btn-secondary" id="btn-add-plan" data-i18n="trening.addPlan">+ Pridať tréning</button>
-      </div>
-      <p class="edit-hint plan-manage-hint" id="plan-manage-hint" hidden data-i18n="trening.manageHint">Potiahni plán a zmeň jeho poradie, alebo ťukni na ✏️ a uprav ho.</p>
-
-      <div class="plan-actions">
-        <button type="button" class="btn btn-secondary" id="btn-exercise-library" data-i18n="library.open">📚 Knižnica cvikov</button>
+      <!-- Bento: výber plánu (bez rozbehnutého tréningu) -->
+      <div class="tr-pick" id="tr-pick">
+        <div class="plan-chips" id="plan-chips"></div>
+        <div class="bt w4 tr-detail" id="tr-detail">
+          <span class="bt-l" id="plan-title">Push</span>
+          <div class="tr-rows" id="tr-detail-rows"></div>
+          <div class="mini">
+            <button type="button" class="mini-dark" id="tr-start"><svg class="kico" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l12-7.5-12-7.5Z"/></svg><span data-i18n="bento.start">Štart</span></button>
+            <button type="button" class="plan-edit-btn" id="btn-plan-rename"><svg class="kico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16v4Z"/><path d="m13.5 6.5 4 4"/></svg><span data-i18n="bento.edit">Upraviť</span></button>
+          </div>
+        </div>
+        <div class="bento-grid tr-tiles">
+          <button type="button" class="bt w2" id="btn-manage-plans" aria-pressed="false"><svg class="kico" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3.5 6h.01M3.5 12h.01M3.5 18h.01"/></svg><span class="bt-line bt-bottom" data-i18n="trening.managePlans">Upraviť plány</span></button>
+          <button type="button" class="bt w2" id="btn-add-plan"><svg class="kico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg><span class="bt-line bt-bottom" data-i18n="bento.newPlan">Nový plán</span></button>
+          <button type="button" class="bt bt-lime w2" id="btn-exercise-library"><svg class="kico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4.5h6a2 2 0 0 1 2 2V20a2 2 0 0 0-2-2H4V4.5ZM20 4.5h-6a2 2 0 0 0-2 2V20a2 2 0 0 1 2-2h6V4.5Z"/></svg><span class="bt-line bt-bottom" data-i18n="bento.library">Knižnica cvikov</span></button>
+          <button type="button" class="bt w2" id="btn-fullbody-tile"><svg class="kico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="1"/><rect x="13.5" y="3.5" width="7" height="7" rx="1"/><rect x="3.5" y="13.5" width="7" height="7" rx="1"/><rect x="13.5" y="13.5" width="7" height="7" rx="1"/></svg><span class="bt-line bt-bottom" data-i18n="bento.fullBody">Full Body</span></button>
+        </div>
+        <p class="edit-hint plan-manage-hint" id="plan-manage-hint" hidden data-i18n="trening.manageHint">Potiahni plán a zmeň jeho poradie, alebo ťukni na ✏️ a uprav ho.</p>
       </div>
 
       <div class="edit-panel" id="edit-panel" hidden>
+        <div class="k-head"><button type="button" class="k-x" id="edit-back" data-i18n-aria="common.cancel" aria-label="Zrušiť"><svg class="kico" viewBox="0 0 24 24" aria-hidden="true"><path d="m15 5-7 7 7 7"/></svg></button><h2 data-i18n="bento.editPlan">Upraviť plán</h2></div>
         <label class="modal-label" for="edit-plan-name" data-i18n="trening.planNameLabel">Názov plánu</label>
         <div class="edit-head">
           <button class="btn-icon" id="btn-plan-left" data-i18n-title="trening.movePlanLeft" data-i18n-aria="trening.movePlanLeft">‹</button>
@@ -129,94 +187,19 @@
         </div>
       </div>
 
-      <div class="duration-row" id="duration-row" hidden>
-        <span class="duration-label" data-i18n="trening.durationLabel">Trvanie tréningu</span>
-        <span class="duration-value" id="duration-value">00:00:00</span>
-        <span class="duration-note" id="duration-note" hidden></span>
+      <!-- Bento: cviky počas tréningu -->
+      <div class="tr-session" id="tr-session">
+        <div class="exercise-list" id="exercise-list"></div>
+        <p class="failure-hint" data-i18n="trening.failureHint">🔥 Zlyhanie — označ iba sériu, ktorú si reálne odcvičil do zlyhania.</p>
       </div>
-
-      <p class="failure-hint" data-i18n="trening.failureHint">🔥 Zlyhanie — označ iba sériu, ktorú si reálne odcvičil do zlyhania.</p>
-
-      <div class="exercise-list" id="exercise-list"></div>
-
-      <div class="summary-bar" id="summary-bar"></div>
-
-      <div class="timer-bar" id="timer-bar" hidden>
-        <span class="timer-label" id="timer-label" data-i18n="trening.timerLabel">Oddych</span>
-        <span class="timer-time" id="timer-time">01:30</span>
-        <button class="btn-icon" id="timer-stop" data-i18n-title="trening.timerStop">✕</button>
-      </div>
-
-      <h3 class="card-title" data-i18n="trening.timerSection">Časovač oddychu</h3>
-      <div class="timer-chips" id="timer-presets">
-        <button type="button" class="chip timer-chip timer-chip-custom" id="btn-custom-timer" aria-pressed="false" data-i18n="trening.timerCustom" data-i18n-aria="trening.customStartAlt">Vlastný</button>
-      </div>
-
-      <div class="custom-timer" id="custom-timer" hidden>
-        <span class="custom-title" data-i18n="trening.customTitle">Vlastný čas pauzy</span>
-        <div class="custom-fields">
-          <div class="custom-field">
-            <label for="ct-minutes" data-i18n="trening.customMinutes">Minúty</label>
-            <input type="number" id="ct-minutes" min="0" max="60" inputmode="numeric" autocomplete="off">
-          </div>
-          <div class="custom-field">
-            <label for="ct-seconds" data-i18n="trening.customSeconds">Sekundy</label>
-            <input type="number" id="ct-seconds" min="0" max="3599" inputmode="numeric" autocomplete="off">
-          </div>
-        </div>
-        <p class="custom-preview" id="ct-preview">2:30</p>
-        <p class="card-note ct-error" id="ct-error" hidden></p>
-        <p class="card-note ct-ok" id="ct-ok" hidden></p>
-        <div class="row-actions">
-          <button type="button" class="btn btn-secondary" id="btn-start-custom" data-i18n="rest.startOnce">Spustiť raz</button>
-          <button type="button" class="btn btn-primary" id="btn-save-preset" data-i18n="rest.savePreset">Uložiť predvoľbu</button>
-        </div>
-        <div class="preset-offer" id="preset-offer" hidden>
-          <p class="card-note preset-offer-text"></p>
-          <button type="button" class="btn btn-secondary btn-block" id="btn-preset-convert" data-i18n="rest.convert">Uložiť ako predvoľbu</button>
-        </div>
-      </div>
-
-      <div class="preset-manage" id="preset-manage" hidden>
-        <p class="edit-hint" data-i18n="rest.manageHint">Uprav, premenuj, preusporiadaj alebo vymaž predvoľby časovača.</p>
-        <div class="preset-rows" id="preset-rows"></div>
-
-        <div class="preset-form" id="preset-form" hidden>
-          <span class="custom-title" id="preset-form-title" data-i18n="rest.editPreset">Upraviť predvoľbu</span>
-          <div class="custom-fields">
-            <div class="custom-field">
-              <label for="pf-minutes" data-i18n="trening.customMinutes">Minúty</label>
-              <input type="number" id="pf-minutes" min="0" max="60" inputmode="numeric" autocomplete="off">
-            </div>
-            <div class="custom-field">
-              <label for="pf-seconds" data-i18n="trening.customSeconds">Sekundy</label>
-              <input type="number" id="pf-seconds" min="0" max="3599" inputmode="numeric" autocomplete="off">
-            </div>
-          </div>
-          <label class="modal-label" for="pf-name" data-i18n="rest.nameLabel">Názov (voliteľný)</label>
-          <input type="text" class="modal-input" id="pf-name" maxlength="40" autocomplete="off" data-i18n-placeholder="rest.namePlaceholder" placeholder="napr. Ťažké drepy">
-          <p class="card-note ct-error" id="pf-error" hidden></p>
-          <div class="row-actions">
-            <button type="button" class="btn btn-secondary" id="btn-preset-cancel" data-i18n="common.cancel">Zrušiť</button>
-            <button type="button" class="btn btn-primary" id="btn-preset-save" data-i18n="common.save">Uložiť</button>
-          </div>
-        </div>
-
-        <button type="button" class="btn btn-secondary btn-block" id="btn-preset-add" data-i18n="rest.addPreset">+ Pridať predvoľbu</button>
-      </div>
-
-      <button type="button" class="btn btn-secondary btn-block" id="btn-manage-presets" aria-pressed="false" data-i18n="rest.manage">Spravovať časovače</button>
-
-      <div class="row-actions">
-        <button class="btn btn-secondary" id="btn-reset-session" data-i18n="trening.resetSession">Resetovať tréning</button>
-      </div>
-
-      <button class="btn btn-primary btn-big" id="btn-finish-workout" disabled data-i18n="trening.finish">Dokončiť tréning</button>
     </section>
 
     <!-- ============ POKROK ============ -->
     <section class="screen" id="screen-pokrok" hidden>
-      <h2 class="screen-title" data-i18n="tab.pokrok">Pokrok</h2>
+      <div class="hd"><h2 class="screen-title" data-i18n="tab.pokrok">Pokrok</h2></div>
+
+      <!-- Bento: prehľad štatistík (dlaždice), každá otvorí existujúci podpohľad -->
+      <div class="bento-grid stats-grid" id="stats-grid"></div>
 
       <div class="subtabs" id="pokrok-subtabs" role="tablist">
         <button type="button" class="subtab active" data-pokrok="progress" role="tab" aria-selected="true" data-i18n="pokrok.subProgress">Pokrok</button>
@@ -228,6 +211,7 @@
 
       <!-- ---- podpohľad: Pokrok (pôvodný obsah, nezmenený) ---- -->
       <div class="subview" id="subview-progress">
+        <div class="k-head"><button type="button" class="k-x" id="back-progress" data-i18n-aria="community2.back" aria-label="Späť"><svg class="kico" viewBox="0 0 24 24" aria-hidden="true"><path d="m15 5-7 7 7 7"/></svg></button><h2 data-i18n="bento.historyTitle">Rekordy a história</h2></div>
         <div class="stats-row">
           <div class="stat-card">
             <span class="stat-value" id="stat-week">0</span>
@@ -266,6 +250,7 @@
 
       <!-- ---- podpohľad: Telo ---- -->
       <div class="subview" id="subview-body" hidden>
+        <div class="k-head"><button type="button" class="k-x" id="back-body" data-i18n-aria="community2.back" aria-label="Späť"><svg class="kico" viewBox="0 0 24 24" aria-hidden="true"><path d="m15 5-7 7 7 7"/></svg></button><h2 data-i18n="pokrok.subBody">Telo</h2></div>
         <p class="storage-notice" id="body-storage-notice" hidden></p>
 
         <div class="card">
@@ -337,6 +322,7 @@
 
       <!-- ---- podpohľad: Jedlo ---- -->
       <div class="subview" id="subview-food" hidden>
+        <div class="k-head"><button type="button" class="k-x" id="back-food" data-i18n-aria="community2.back" aria-label="Späť"><svg class="kico" viewBox="0 0 24 24" aria-hidden="true"><path d="m15 5-7 7 7 7"/></svg></button><h2 data-i18n="pokrok.subFood">Jedlo</h2></div>
         <p class="storage-notice" id="food-storage-notice" hidden></p>
 
         <div class="card" id="food-off">
@@ -377,6 +363,7 @@
 
       <!-- ---- podpohľad: Fotky progresu ---- -->
       <div class="subview" id="subview-photos" hidden>
+        <div class="k-head"><button type="button" class="k-x" id="back-photos" data-i18n-aria="community2.back" aria-label="Späť"><svg class="kico" viewBox="0 0 24 24" aria-hidden="true"><path d="m15 5-7 7 7 7"/></svg></button><h2 data-i18n="photos.subtab">Fotky progresu</h2></div>
         <div class="card">
           <p class="card-sub" data-i18n="photos.emptyHint">Pridaj fotky a porovnaj, ako vyzeráš v čase. Ostávajú na tomto zariadení.</p>
           <div class="plan-actions" id="photos-tools" hidden>
@@ -396,6 +383,7 @@
 
       <!-- ---- podpohľad: Motivácia (úroveň a úspechy, pôvodne samostatná karta) ---- -->
       <div class="subview" id="subview-motivation" hidden>
+        <div class="k-head"><button type="button" class="k-x" id="back-motivation" data-i18n-aria="community2.back" aria-label="Späť"><svg class="kico" viewBox="0 0 24 24" aria-hidden="true"><path d="m15 5-7 7 7 7"/></svg></button><h2 data-i18n="bento.achievements">Úspechy</h2></div>
         <div class="card">
           <div class="card-head">
             <span class="card-title" data-i18n="motivacia.levelTitle">Úroveň</span>
@@ -415,12 +403,14 @@
 
     <!-- ============ COMMUNITY (karta v spodnom paneli) ============ -->
     <section class="screen screen-komunita" id="screen-komunita" hidden>
+      <div class="hd chd"><h2 class="screen-title" data-i18n="community.title">Community</h2><button type="button" class="hd-icon" id="btn-csearch" data-community-view="search" data-i18n-aria="community2.navSearch" aria-label="Hľadať"><svg class="kico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20.5 20.5-4.5-4.5"/></svg></button></div>
       <div class="community-screen" id="community-body"></div>
     </section>
 
     <!-- ============ KALENDÁR ============ -->
-    <section class="screen" id="screen-kalendar" hidden>
-      <h2 class="screen-title" data-i18n="tab.kalendar">Kalendár</h2>
+    <section class="screen sheet-page" id="screen-kalendar" hidden>
+      <h2 class="sr-only" data-i18n="tab.kalendar">Kalendár</h2>
+      <div class="k-head"><button type="button" class="k-x" id="back-calendar" data-i18n-aria="community2.back" aria-label="Späť"><svg class="kico" viewBox="0 0 24 24" aria-hidden="true"><path d="m15 5-7 7 7 7"/></svg></button><h2 data-i18n="tab.kalendar">Kalendár</h2></div>
 
       <div class="card">
         <div class="calendar-head">
@@ -445,15 +435,108 @@
       </div>
     </section>
 
+
+    <!-- ============ TY (profil, cieľ, nastavenia) ============ -->
+    <section class="screen" id="screen-ty" hidden>
+      <div class="hd"><h2 class="screen-title" data-i18n="tab.ty">Ty</h2></div>
+      <div class="bento-grid">
+        <div class="bt bt-lav w4 h2 ty-card" id="ty-card">
+          <div class="ty-top"><span class="ty-av" id="ty-av" aria-hidden="true">G</span><div class="ty-who"><b id="ty-name"></b><span class="bt-line" id="ty-handle"></span></div></div>
+          <p class="bt-line bt-bottom motivation-text" id="motivation-text"></p>
+        </div>
+        <button type="button" class="bt w2" data-go="profile" id="ty-profile"><svg class="kico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg><span class="bt-line bt-bottom" data-i18n="bento.communityProfile">Community profil</span></button>
+        <button type="button" class="bt bt-lime w2" data-go="goal" id="ty-goal"><svg class="kico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r=".8"/></svg><span class="bt-line bt-bottom" id="ty-goal-line"></span></button>
+        <button type="button" class="bt bt-dark w4" data-go="settings" id="ty-settings"><svg class="kico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2.5v3M12 18.5v3M21.5 12h-3M5.5 12h-3M18.7 5.3l-2.1 2.1M7.4 16.6l-2.1 2.1M18.7 18.7l-2.1-2.1M7.4 7.4 5.3 5.3"/></svg><span class="bt-line bt-bottom" data-i18n="bento.settingsLine">Nastavenia · jazyk, jednotky, zvuk, záloha</span></button>
+      </div>
+    </section>
+
   </main>
 
-  <nav class="tab-bar">
-    <button class="tab active" data-tab="dnes"><span class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M9 21v-6h6v6"/></svg></span><span data-i18n="tab.dnes">Dnes</span></button>
-    <button class="tab" data-tab="trening"><span class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6.5 6.5 17.5 17.5"/><path d="M7 4 4 7l13 13 3-3L7 4z"/><path d="M11 8 8 11"/><path d="M16 13l-3 3"/></svg></span><span data-i18n="tab.trening">Tréning</span></button>
-    <button class="tab" data-tab="pokrok"><span class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10"/><path d="M10 20V4"/><path d="M16 20v-8"/><path d="M22 20H2"/></svg></span><span data-i18n="tab.pokrok">Pokrok</span></button>
-    <button class="tab" data-tab="kalendar"><span class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18"/><path d="M8 3v4"/><path d="M16 3v4"/></svg></span><span data-i18n="tab.kalendar">Kalendár</span></button>
-    <button class="tab" data-tab="komunita"><span class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.6-3.6 3.2-5.5 6.5-5.5s5.9 1.9 6.5 5.5"/><circle cx="17" cy="9" r="2.5"/><path d="M16 14.6c2.8.1 4.8 1.7 5.4 4.9"/></svg><span class="tab-badge" id="tab-community-badge" hidden></span></span><span data-i18n="community.title">Community</span></button>
+  <!-- Bento: bežiaci časovač oddychu – limetková pilulka nad menu (na každej karte) -->
+  <div class="timer-bar" id="timer-bar" hidden>
+    <svg class="kico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2M9.5 2.5h5"/></svg>
+    <span class="timer-label" id="timer-label" data-i18n="trening.timerLabel">Oddych</span>
+    <span class="timer-time" id="timer-time">01:30</span>
+    <button class="btn-icon" id="timer-stop" data-i18n-title="trening.timerStop">✕</button>
+  </div>
+
+
+  <nav class="tab-bar" aria-label="GymQuest">
+    <button class="tab active" data-tab="dnes"><span class="tab-icon"><svg class="kico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="1"/><rect x="13.5" y="3.5" width="7" height="7" rx="1"/><rect x="3.5" y="13.5" width="7" height="7" rx="1"/><rect x="13.5" y="13.5" width="7" height="7" rx="1"/></svg></span><span data-i18n="tab.dnes">Dnes</span></button>
+    <button class="tab" data-tab="trening"><span class="tab-icon"><svg class="kico" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 6.5v11M3.5 9v6M17.5 6.5v11M20.5 9v6M6.5 12h11"/></svg></span><span data-i18n="tab.trening">Tréning</span></button>
+    <button class="tab" data-tab="pokrok"><span class="tab-icon"><svg class="kico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></span><span data-i18n="tab.pokrok">Pokrok</span></button>
+    <button class="tab" data-tab="komunita"><span class="tab-icon"><svg class="kico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c1.2-3.5 3.6-5 6.5-5s5.3 1.5 6.5 5"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 15c2 .6 3.3 2.2 4 5"/></svg><span class="tab-badge" id="tab-community-badge" hidden></span></span><span data-i18n="community.title">Community</span></button>
+    <button class="tab" data-tab="ty"><span class="tab-icon"><svg class="kico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg></span><span data-i18n="tab.ty">Ty</span></button>
   </nav>
+
+
+  <!-- ============ MODAL: časovač oddychu (Bento list) ============ -->
+  <div class="modal-backdrop" id="modal-rest" hidden>
+    <div class="modal modal-form modal-rest">
+      <h3 data-i18n="trening.timerSection">Časovač oddychu</h3>
+        <div class="timer-chips" id="timer-presets">
+          <button type="button" class="chip timer-chip timer-chip-custom" id="btn-custom-timer" aria-pressed="false" data-i18n="trening.timerCustom" data-i18n-aria="trening.customStartAlt">Vlastný</button>
+        </div>
+
+        <div class="custom-timer" id="custom-timer" hidden>
+          <span class="custom-title" data-i18n="trening.customTitle">Vlastný čas pauzy</span>
+          <div class="custom-fields">
+            <div class="custom-field">
+              <label for="ct-minutes" data-i18n="trening.customMinutes">Minúty</label>
+              <input type="number" id="ct-minutes" min="0" max="60" inputmode="numeric" autocomplete="off">
+            </div>
+            <div class="custom-field">
+              <label for="ct-seconds" data-i18n="trening.customSeconds">Sekundy</label>
+              <input type="number" id="ct-seconds" min="0" max="3599" inputmode="numeric" autocomplete="off">
+            </div>
+          </div>
+          <p class="custom-preview" id="ct-preview">2:30</p>
+          <p class="card-note ct-error" id="ct-error" hidden></p>
+          <p class="card-note ct-ok" id="ct-ok" hidden></p>
+          <div class="row-actions">
+            <button type="button" class="btn btn-secondary" id="btn-start-custom" data-i18n="rest.startOnce">Spustiť raz</button>
+            <button type="button" class="btn btn-primary" id="btn-save-preset" data-i18n="rest.savePreset">Uložiť predvoľbu</button>
+          </div>
+          <div class="preset-offer" id="preset-offer" hidden>
+            <p class="card-note preset-offer-text"></p>
+            <button type="button" class="btn btn-secondary btn-block" id="btn-preset-convert" data-i18n="rest.convert">Uložiť ako predvoľbu</button>
+          </div>
+        </div>
+
+        <div class="preset-manage" id="preset-manage" hidden>
+          <p class="edit-hint" data-i18n="rest.manageHint">Uprav, premenuj, preusporiadaj alebo vymaž predvoľby časovača.</p>
+          <div class="preset-rows" id="preset-rows"></div>
+
+          <div class="preset-form" id="preset-form" hidden>
+            <span class="custom-title" id="preset-form-title" data-i18n="rest.editPreset">Upraviť predvoľbu</span>
+            <div class="custom-fields">
+              <div class="custom-field">
+                <label for="pf-minutes" data-i18n="trening.customMinutes">Minúty</label>
+                <input type="number" id="pf-minutes" min="0" max="60" inputmode="numeric" autocomplete="off">
+              </div>
+              <div class="custom-field">
+                <label for="pf-seconds" data-i18n="trening.customSeconds">Sekundy</label>
+                <input type="number" id="pf-seconds" min="0" max="3599" inputmode="numeric" autocomplete="off">
+              </div>
+            </div>
+            <label class="modal-label" for="pf-name" data-i18n="rest.nameLabel">Názov (voliteľný)</label>
+            <input type="text" class="modal-input" id="pf-name" maxlength="40" autocomplete="off" data-i18n-placeholder="rest.namePlaceholder" placeholder="napr. Ťažké drepy">
+            <p class="card-note ct-error" id="pf-error" hidden></p>
+            <div class="row-actions">
+              <button type="button" class="btn btn-secondary" id="btn-preset-cancel" data-i18n="common.cancel">Zrušiť</button>
+              <button type="button" class="btn btn-primary" id="btn-preset-save" data-i18n="common.save">Uložiť</button>
+            </div>
+          </div>
+
+          <button type="button" class="btn btn-secondary btn-block" id="btn-preset-add" data-i18n="rest.addPreset">+ Pridať predvoľbu</button>
+        </div>
+
+        <button type="button" class="btn btn-secondary btn-block" id="btn-manage-presets" aria-pressed="false" data-i18n="rest.manage">Spravovať časovače</button>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-secondary" id="btn-rest-close" data-i18n="common.close">Zavrieť</button>
+      </div>
+    </div>
+  </div>
 
   <!-- ============ MODAL: potvrdenie dokončenia ============ -->
   <div class="modal-backdrop" id="modal-confirm" hidden>
@@ -508,6 +591,17 @@
         <span class="card-title" data-i18n="settings.language">Jazyk</span>
         <span class="card-sub" id="lang-setting-value">Slovenčina</span>
         <button type="button" class="btn btn-secondary btn-block" id="btn-change-lang" data-i18n="settings.changeLanguage">Zmeniť jazyk</button>
+      </div>
+
+      <!-- Vzhľad: Bento svetlý / tmavý / podľa telefónu (voľba tohto zariadenia) -->
+      <div class="setting-block" id="theme-setting">
+        <span class="card-title" data-i18n="theme.title">Vzhľad</span>
+        <span class="card-sub" data-i18n="theme.hint">Svetlý alebo tmavý režim. Platí na tomto zariadení, tvoje dáta sa nemenia.</span>
+        <div class="goal-chips theme-chips" id="theme-chips" role="radiogroup" data-i18n-aria="theme.title">
+          <button type="button" class="goal-chip theme-chip" role="radio" data-theme-choice="light" data-i18n="theme.light">Svetlý</button>
+          <button type="button" class="goal-chip theme-chip" role="radio" data-theme-choice="dark" data-i18n="theme.dark">Tmavý</button>
+          <button type="button" class="goal-chip theme-chip" role="radio" data-theme-choice="auto" data-i18n="theme.auto">Podľa telefónu</button>
+        </div>
       </div>
 
       <!-- Ukážky dizajnov: len náhľad iného vzhľadu (vzorové dáta), aplikácia sa nemení -->
@@ -829,6 +923,7 @@
     <div class="modal">
       <h3 id="mode-title" data-i18n="mode.title">Čo chceš robiť?</h3>
       <div class="mode-grid" id="mode-grid"></div>
+      <button type="button" class="btn btn-secondary btn-block" id="btn-choose-manual" data-i18n="bento.logActivity">Zapísať aktivitu</button>
       <div class="modal-actions">
         <button class="btn btn-secondary" id="btn-mode-cancel" data-i18n="common.cancel">Zrušiť</button>
       </div>
@@ -964,8 +1059,8 @@
     </div>
   </div>
 
-  <script src="community-config.js?v=81"></script>
-  <script src="vendor/supabase-js.js?v=81"></script>
-  <script src="script.js?v=81"></script>
+  <script src="community-config.js?v=84"></script>
+  <script src="vendor/supabase-js.js?v=84"></script>
+  <script src="script.js?v=84"></script>
 </body>
 </html>

@@ -49,7 +49,7 @@ function check(name, ok, info) {
     console.log('== Settings entry and picker');
     await p.eval(`(openSettings(), true)`);
     await wait(300);
-    check('Settings has "App design" with a "Design previews" button', await p.eval(`(() => { const b = document.getElementById('btn-design-previews'); return !!b && b.textContent === 'Design previews' && b.closest('.setting-block').innerText.includes('App design'); })()`));
+    check('Settings has "App design" with a "Design previews" button', await p.eval(`(() => { const b = document.getElementById('btn-design-previews'); return !!b && b.textContent === 'Design previews' && b.closest('.setting-block').textContent.includes('App design'); })()`));
     await p.eval(`(document.getElementById('btn-design-previews').click(), true)`);
     await wait(600);
     const items = await p.eval(`Array.from(document.querySelectorAll('#design-grid .design-item')).map((b) => ({ id: b.dataset.design, name: b.querySelector('.design-name').textContent, meta: b.querySelector('.design-meta').textContent }))`);

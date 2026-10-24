@@ -110,12 +110,76 @@ browser — double-click the file or drag it into a browser window. The app work
 
 ---
 
+## Design: Bento, light and dark
+
+GymQuest follows the **Bento** prototype (`design-concepts/app/r2/03-bento.html`, dark version
+`r7/02-classic-dark.html`) on every screen: a warm grey background, 22 px rounded tiles on a 4-column
+grid, bold type, lime and pastel tiles (lavender, peach, sky, sand), and a floating dark menu with five
+icons — **Today** (grid), **Workout** (dumbbell), **Stats** (bar chart), **Community** (two people) and
+**You** (person); the selected tab is a lime pill. Deeper screens open as sheets with a back arrow, as
+in the prototype.
+
+- **Today** — see below.
+- **Workout** — the plans as coloured tiles (*Next ✦* or *Plan N*, exercises and sets; the selected
+  one is dark), a tile with the selected plan's exercises and **Start** / **Edit**, then *Manage plans*,
+  *New plan*, *Exercise library* and *Full Body builder*. During a workout a dark tile shows the plan
+  (tap its name to switch plans), the running time and **Rest**, **Finish · +XP** and **Discard**; every
+  exercise is a tile (the one you are on is lavender, a finished one lime) with square set buttons
+  showing reps and weight, and below them a pill per set for its reps, weight and failure mark, the
+  drop-set button, replace and exercise details. The plan editor opens as a full-screen sheet.
+- **Rest timer** — a sheet (presets, custom time, managing timers) opened from **Rest**; a running timer
+  is a lime pill above the menu on every tab.
+- **Stats** — Week (lime), Month and All tiles with workouts and sets, *Sets per week* for the last
+  8 weeks, Records (dark), Achievements (peach), Calendar, History, your four latest workouts, Body,
+  Photos, Food and Activities. Each opens its sheet (records and history, body, food, photos,
+  achievements, the calendar, or that day).
+- **Calendar** — opens from the *This week* tile on Today or the Calendar tile on Stats as a full sheet;
+  workout days are green, past days without a workout pink, today has an orange outline.
+- **Community** — Top 20 (with your rank this week), New post, Messages and Friends tiles above the feed;
+  search is the magnifier at the top. Messages, chats, friends, Top 20, profiles, the composer and the
+  moderator queue open as sheets.
+- **You** — your profile tile (Community name, level, bio or a motivational line), *Community profile*,
+  your weekly goal and **Settings**.
+- Dialogs slide up from the bottom; on a wider screen they are centred. From 900 px the grid has
+  8 columns.
+
+The font is Space Grotesk (SIL Open Font License, `fonts/OFL.txt`), stored in the app so it also works
+offline; Arabic keeps an Arabic system font. Keyboard focus is always visible, the theme choice works
+with the arrow keys, and with *reduce motion* switched on in the system the sheets do not animate.
+
+**⚙️ Settings → Appearance** chooses **Light**, **Dark** (near-black background, deep-toned tiles, lime
+accents) or **System** (follows the device's light/dark setting, also when it changes while the app is
+open). System is the default. The choice belongs to this device only: it is applied before the first
+paint, it is not part of your data, the export or the account sync, and switching never changes
+anything you saved.
+
+Updating from an earlier version keeps everything exactly as it was — plans, workout history and
+calendar, measurements, food log, progress photos, personal exercise media, settings, Community
+messages and the account — only the look changes. Every feature works as before.
+
 ## Screens
 
 ### Today
-How many workouts you have completed this week, your current consistency streak, a motivational
-line, the recommended next workout, and the big **Start workout** button. You can also mark a week
-as excused if you are busy or ill.
+The date and week, a greeting (with your Community username when you are signed in), and the Bento
+grid. Every tile shows live numbers from your own data and opens the feature it stands for:
+
+| Tile | Shows | Tap opens |
+|---|---|---|
+| **Next up ✦** (dark, with an exercise photo) | the recommended plan, its exercises and sets; during a workout **In progress** with the time and sets done | **Start** begins it, **Continue** returns to it |
+| **This week** (lime) | workouts done / weekly goal, and seven day squares (filled = trained, outlined = today) | Calendar |
+| **Streak** | weeks in a row | Achievements |
+| **Busy week?** | excuse this week and keep the streak; *Excused ✓ · Tap to undo* | (toggles the excused week) |
+| **Level** (lavender) | level, total XP, a bar and the XP to the next level | Achievements |
+| **Body** (sky) | your latest body weight | Body |
+| **Best lift** | your heaviest record and its exercise | Records |
+| **Food today** (peach) | today's calories (or *Off*) | Food |
+| **Rest** (sand) | the running rest timer | the rest timer |
+| **Activity** | | run, walk, cycle, home or outdoor workout — and *Log activity* for a past one |
+| **Friends** (lavender) | your friends' avatars and the number of unread messages and requests | Messages |
+| **Photos** | | Progress photos |
+| **Settings** (dark) | | Settings |
+| **Train with a friend** (only with Community) | | Workout → pick a friend |
+
 
 The current date, weekday and ISO week number are shown under the heading.
 
@@ -124,7 +188,7 @@ A monthly grid with Monday as the first day of the week, previous/next month nav
 **Today** button. Each day shows its status at a glance: **green** means a workout was completed
 that day (with a small badge when you trained more than once), a **muted red** day is a past day
 with no workout recorded, a **neutral** day is in the future, and **today** always carries an
-orange outline. The legend repeats the same meaning in words. The first and last rows also show a
+outline (black in light mode, lime in dark mode). The legend repeats the same meaning in words. The first and last rows also show a
 few days of the previous and next month so every week is complete; those days are **faded** (their
 green/red still shows, but pale) and each of them carries a small month name such as *Nov*,
 so a workout from another month never looks like it belongs to the one you are viewing.
@@ -211,7 +275,7 @@ badges earned for personal records.
   1 to 7 and confirm with **Save goal**. Doctor's-note weeks can be marked as excused in Settings so
   the streak stays intact.
 - **Streak** — counted in weeks: hitting your weekly goal extends the streak by one week.
-- **Excused weeks** — mark a heavy week with the button on the Today screen and your streak is not
+- **Excused weeks** — mark a heavy week with the **Busy week?** tile on the Today screen and your streak is not
   broken.
 - **XP and levels** — every workout gives **20 XP** plus **2 XP** for each completed set. You need
   100 XP to reach the next level.

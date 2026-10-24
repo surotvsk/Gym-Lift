@@ -109,7 +109,7 @@ function check(name, ok, info) {
     check('an exercise without drop sets has none', h.exercises[1].drops === undefined, h.exercises[1]);
     check('XP is the same as without drop sets', h.xp === xpBefore, { xp: h.xp, xpBefore });
     check('setsDone counts only the normal sets', h.exercises[0].setsDone === 3);
-    await p.eval(`(document.getElementById('modal-result').hidden = true, switchTab('pokrok'), renderPokrok(), true)`);
+    await p.eval(`(document.getElementById('modal-result').hidden = true, switchTab('pokrok'), setPokrokView('progress'), true)`);
     await wait(300);
     const text = 'Drop sets: 55 kg × 8 · 42.5 kg × 6';
     check('Progress history shows "' + text + '"', (await p.eval(`document.body.innerText`)).includes(text));

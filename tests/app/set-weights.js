@@ -90,7 +90,7 @@ function check(name, ok, info) {
     check('Row (no change): saved exactly as before (no setWeights / plannedWeight)', h[1].weight === 40 && h[1].sw === undefined && h[1].planned === undefined, h[1]);
     check('the plan still says 60 kg', (await p.eval(`state.plans['wtest'].exercises[0].weight`)) === 60);
     check('records use the heaviest set (65 kg)', (await p.eval(`personalRecords().some((r) => r.name === 'Bench test' && r.weight === 65)`)), await p.eval(`personalRecords().filter((r) => r.name === 'Bench test')`));
-    await p.eval(`(document.getElementById('modal-result').hidden = true, switchTab('pokrok'), renderPokrok(), true)`);
+    await p.eval(`(document.getElementById('modal-result').hidden = true, switchTab('pokrok'), setPokrokView('progress'), true)`);
     await wait(300);
     const histText = await p.eval(`document.body.innerText`);
     check('Progress history shows "60 · 65 · 65 · 62.5 kg"', histText.includes('60 · 65 · 65 · 62.5 kg'), histText.slice(0, 0));

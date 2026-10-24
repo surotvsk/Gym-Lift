@@ -92,7 +92,7 @@ function check(name, ok, info) {
     await p.eval(`(finishWorkout(), confirmFinish(), document.getElementById('modal-result').hidden = true, true)`);
     await wait(300);
     const id = await p.eval(`state.history.filter((w) => w.planId === 'ctest')[0].id`);
-    await p.eval(`(switchTab('pokrok'), renderPokrok(), true)`);
+    await p.eval(`(switchTab('pokrok'), setPokrokView('progress'), true)`);
     await wait(300);
     await p.eval(`(requestDeleteWorkout(${J(id)}), true)`);
     d = await dialog();
