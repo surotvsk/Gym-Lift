@@ -3764,52 +3764,6 @@ button.cstat:hover { background: var(--surface-2); }
 .train-toast { margin: 0; padding: var(--sp-2) var(--sp-3); border-radius: var(--r-sm); background: var(--accent-soft); color: var(--text); font-weight: var(--fw-bold); }
 .train-note, .train-privacy { margin: 0; }
 .train-with { color: var(--text-dim); }
-/* ===== Ukážky dizajnov (Nastavenia → Vzhľad aplikácie) ===== */
-/* Výber je vyšší ako displej telefónu: okno sa posúva (ako Nastavenia), Zavrieť zostáva dole na dosah. */
-#modal-designs .modal {
-  max-width: 440px;
-  max-height: calc(100vh - var(--sp-5) * 2);    /* staršie prehliadače */
-  max-height: calc(100dvh - var(--sp-5) * 2);
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  -webkit-overflow-scrolling: touch;
-  padding-bottom: 0;
-}
-#modal-designs .modal-actions {
-  position: sticky; bottom: 0; margin: 0 calc(-1 * var(--sp-6)); padding: var(--sp-3) var(--sp-6) var(--sp-4);
-  background: linear-gradient(to top, var(--surface) 70%, transparent);
-}
-.design-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--sp-3); margin: var(--sp-3) 0; }
-@media (min-width: 560px) { .design-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-.design-item {
-  display: flex; flex-direction: column; align-items: stretch; gap: 4px; padding: var(--sp-2);
-  border: 1px solid var(--border); border-radius: var(--r-md); background: var(--surface-2); color: var(--text);
-  font: inherit; text-align: start; cursor: pointer; min-width: 0;
-}
-.design-item:hover { border-color: var(--border-strong); }
-.design-item:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-.design-thumb { display: block; width: 100%; height: auto; aspect-ratio: 300 / 649; object-fit: cover; border-radius: var(--r-sm); background: var(--surface-3); }
-.design-thumb-current {
-  display: grid; place-items: center; color: var(--accent); font-weight: var(--fw-black); font-size: var(--fs-md);
-  background: radial-gradient(circle at 50% 35%, var(--accent-soft), var(--surface-3) 70%);
-}
-.design-current { border-color: var(--accent); }
-.design-name { font-weight: var(--fw-bold); font-size: var(--fs-sm); overflow-wrap: anywhere; }
-.design-meta { font-size: var(--fs-xs); color: var(--text-dim); }
-.design-current .design-meta { color: var(--accent); font-weight: var(--fw-bold); }
-
-.design-view { position: fixed; inset: 0; z-index: 40; display: flex; flex-direction: column; background: #000; }
-.design-view[hidden] { display: none; }
-.design-view-bar {
-  display: flex; align-items: center; justify-content: space-between; gap: var(--sp-2);
-  padding: calc(env(safe-area-inset-top, 0px) + 8px) 12px 8px; background: var(--bg); border-bottom: 1px solid var(--border);
-}
-.design-view-text { display: flex; flex-direction: column; min-width: 0; }
-.design-view-title { font-weight: var(--fw-bold); color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.design-view-note { font-size: var(--fs-xs); color: var(--text-dim); }
-.design-view-bar .btn { flex: 0 0 auto; min-height: 40px; }
-.design-view-frame { flex: 1 1 auto; width: 100%; border: 0; background: #fff; }
-html.design-view-open, html.design-view-open body { overflow: hidden; }
 
 /* ==========================================================================
    ===== Bento dizajn (v78): svetlý a tmavý režim =====
@@ -4409,6 +4363,60 @@ html[data-theme] .bt-session .summary-bar { border: 0; background: none; box-sha
 /* Prístupnosť: o odtieň tmavšie než referencia, aby malý text a dni v kalendári mali kontrast aspoň 4,5 : 1 */
 :root, html[data-theme="light"] { --b-hd-small: #605E58; --k-good: #2A7F4B; }
 html[data-theme="dark"] { --k-good: #2A7F4B; }
-#modal-designs .modal-actions { margin-inline: -16px; padding-inline: 16px; }
 #screen-komunita.sheet-open #community-body .ccomposer { position: sticky; bottom: 0; }
 #screen-komunita.sheet-open #community-body > * { flex-shrink: 0; }
+
+/* ===== Úpravy po vydaní v78 ===== */
+/* Menu so šiestimi kartami (pribudli Správy): na úzkom displeji užšie tlačidlá, aby sa pilulka zmestila */
+@media (max-width: 400px) { .tab-bar .tab { width: 46px; } }
+@media (max-width: 340px) { .tab-bar { gap: 2px; padding: 5px; } .tab-bar .tab { width: 42px; } }
+
+/* Full Body, detail cviku, knižnica a prehliadač fotiek: na telefóne celostránkový list od vrchu (pod
+   stavovým riadkom), obsah sa posúva vnútri listu, hlavička a spodné tlačidlá ostávajú na mieste. */
+@media (max-width: 699px) {
+  .modal-backdrop:has(> .modal.modal-sheet), .modal-backdrop:has(> .modal.modal-fb) { padding: 0; align-items: stretch; }
+  .modal.modal-sheet, .modal.modal-fb {
+    height: 100%; height: 100dvh; max-height: none; width: 100%; max-width: none; border-radius: 0; border: 0;
+    padding: env(safe-area-inset-top, 0px) 0 0; display: flex; flex-direction: column; overflow: hidden; animation: none;
+  }
+  .modal-sheet .sheet-scroll, .modal-fb .fb-body { flex: 1 1 auto; min-height: 0; overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; }
+  .modal-sheet .sheet-head, .modal-sheet .sheet-search, .modal-fb .fb-head, .modal-fb .fb-foot { flex: 0 0 auto; }
+  .modal-fb .fb-foot { padding-bottom: calc(14px + env(safe-area-inset-bottom, 0px)); }
+}
+
+/* Kalendár: mesiac presne v strede, šípky rovnako veľké po stranách */
+.calendar-head { display: grid; grid-template-columns: 44px minmax(0, 1fr) 44px; align-items: center; gap: 8px; margin: 4px 0 12px; }
+.calendar-head .calendar-title { text-align: center; font: 700 18px/1.2 'Space Grotesk', system-ui, sans-serif; letter-spacing: -0.02em; margin: 0; }
+.calendar-head .cal-nav { width: 44px; height: 44px; min-height: 44px; padding: 0; display: grid; place-items: center; border: 0; border-radius: 50%; background: var(--k-card); color: var(--k-fg); box-shadow: none; }
+.calendar-head .cal-nav .kico { width: 20px; height: 20px; }
+[dir="rtl"] .calendar-head .cal-nav .kico { transform: scaleX(-1); }
+#btn-cal-today { display: block; margin: 12px auto 0; }
+
+/* Trénovať s priateľom: levanduľová dlaždica medzi akciami Tréningu; výber priateľa a spoločný tréning ako dlaždice */
+.train-tile { flex-direction: row; align-items: center; gap: 12px; min-height: 84px; }
+.train-tile > .kico { width: 26px; height: 26px; flex: 0 0 auto; }
+.train-tile-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.train-tile-text b { font-size: 17px; }
+.train-box { margin: 0 0 8px; }
+.train-box .train-card, .train-today .train-card, #train-today .train-card {
+  background: var(--b-lav); color: var(--b-pastel-fg); border: 0; border-radius: 22px; padding: 14px; box-shadow: none; margin: 0;
+}
+.train-card .train-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.train-card .train-title { margin: 0; font: 700 18px/1.2 'Space Grotesk', system-ui, sans-serif; color: inherit; }
+.train-card .k-x { color: inherit; }
+.train-card :is(.card-note, .modal-label, .train-privacy, .train-with) { color: inherit; opacity: .75; }
+.train-card .train-friends { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+.train-card .btn { border-radius: 999px; }
+.train-card .btn-secondary { background: rgba(255,255,255,.55); color: var(--b-pastel-fg); border: 0; }
+html[data-theme="dark"] .train-card .btn-secondary { background: rgba(255,255,255,.14); }
+.train-card .btn-primary { background: #121212; color: #D6F35A; border: 0; }
+html[data-theme="dark"] .train-card .btn-primary { background: #D6F35A; color: #121212; }
+.train-card .train-cheer { background: rgba(255,255,255,.55); border: 0; border-radius: 999px; }
+html[data-theme="dark"] .train-card .train-cheer { background: rgba(255,255,255,.14); }
+#train-today { margin: 0 0 8px; }
+
+/* Správy: rozhovory sú hlavná stránka karty; nadpis Community sa vtedy skryje */
+#screen-komunita.msg-mode:has(.chats-hd) > .chd { display: none; }
+.chats-hd { padding: 0 4px 12px; align-items: center; }
+.cchat-list { display: flex; flex-direction: column; gap: 8px; }
+#screen-komunita:not(.sheet-open) .cchat-row { background: var(--b-tile); border-radius: 22px; padding: 12px 14px; border: 0; box-shadow: var(--b-tile-shadow); }

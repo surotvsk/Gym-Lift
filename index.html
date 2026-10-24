@@ -22,7 +22,7 @@
   <title>GymQuest</title>
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
-  <link rel="stylesheet" href="style.css?v=84">
+  <link rel="stylesheet" href="style.css?v=85">
 </head>
 <body data-tab="dnes">
 
@@ -119,7 +119,6 @@
         </button>
         <button type="button" class="bt" data-go="photos" id="bt-photos"><svg class="kico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7.5h3.2L9 5h6l1.8 2.5H20a1.5 1.5 0 0 1 1.5 1.5v9.5A1.5 1.5 0 0 1 20 20H4a1.5 1.5 0 0 1-1.5-1.5V9A1.5 1.5 0 0 1 4 7.5Z"/><circle cx="12" cy="13.5" r="3.6"/></svg><span class="bt-line bt-bottom" data-i18n="bento.photos">Fotky</span></button>
         <button type="button" class="bt bt-dark" data-go="settings" id="bt-settings"><svg class="kico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2.5v3M12 18.5v3M21.5 12h-3M5.5 12h-3M18.7 5.3l-2.1 2.1M7.4 16.6l-2.1 2.1M18.7 18.7l-2.1-2.1M7.4 7.4 5.3 5.3"/></svg><span class="bt-line bt-bottom" data-i18n="bento.settings">Nastavenia</span></button>
-        <button type="button" class="bt bt-lime w4" data-go="train" id="bt-train" hidden><svg class="kico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c1.2-3.5 3.6-5 6.5-5s5.3 1.5 6.5 5"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 15c2 .6 3.3 2.2 4 5"/></svg><span class="bt-line bt-bottom" data-i18n="train.open">Trénovať s priateľom</span></button>
       </div>
     </section>
 
@@ -129,9 +128,6 @@
         <h2 class="screen-title" data-i18n="tab.trening">Tréning</h2>
         <small id="tr-hint" data-i18n="bento.tapPlan">ťukni na plán</small>
       </div>
-
-      <!-- Trénovanie s priateľom (migrácia 0014): pozvánka, spoločný tréning, povzbudenia -->
-      <div class="train-box" id="train-box" hidden></div>
 
       <!-- Bento: prebiehajúci tréning – tmavá dlaždica (čas, Oddych, Dokončiť, Zahodiť) -->
       <div class="bt bt-dark w4 bt-session duration-row" id="duration-row" hidden>
@@ -163,6 +159,7 @@
           <button type="button" class="bt w2" id="btn-add-plan"><svg class="kico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg><span class="bt-line bt-bottom" data-i18n="bento.newPlan">Nový plán</span></button>
           <button type="button" class="bt bt-lime w2" id="btn-exercise-library"><svg class="kico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4.5h6a2 2 0 0 1 2 2V20a2 2 0 0 0-2-2H4V4.5ZM20 4.5h-6a2 2 0 0 0-2 2V20a2 2 0 0 1 2-2h6V4.5Z"/></svg><span class="bt-line bt-bottom" data-i18n="bento.library">Knižnica cvikov</span></button>
           <button type="button" class="bt w2" id="btn-fullbody-tile"><svg class="kico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="1"/><rect x="13.5" y="3.5" width="7" height="7" rx="1"/><rect x="3.5" y="13.5" width="7" height="7" rx="1"/><rect x="13.5" y="13.5" width="7" height="7" rx="1"/></svg><span class="bt-line bt-bottom" data-i18n="bento.fullBody">Full Body</span></button>
+          <button type="button" class="bt bt-lav w4 train-tile" id="btn-train-tile" data-train-action="open" aria-expanded="false" hidden><svg class="kico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c1.2-3.5 3.6-5 6.5-5s5.3 1.5 6.5 5"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 15c2 .6 3.3 2.2 4 5"/></svg><span class="train-tile-text"><b data-i18n="train.open">Trénovať s priateľom</b><span class="bt-line" data-i18n="bento.trainLine">Pozvi priateľa a vidíte si navzájom série naživo</span></span></button>
         </div>
         <p class="edit-hint plan-manage-hint" id="plan-manage-hint" hidden data-i18n="trening.manageHint">Potiahni plán a zmeň jeho poradie, alebo ťukni na ✏️ a uprav ho.</p>
       </div>
@@ -186,6 +183,9 @@
           <button class="btn btn-primary" id="btn-edit-save" data-i18n="common.save">Uložiť</button>
         </div>
       </div>
+
+      <!-- Trénovanie s priateľom (migrácia 0014): výber priateľa, pozvánka, spoločný tréning, povzbudenia -->
+      <div class="train-box" id="train-box" hidden></div>
 
       <!-- Bento: cviky počas tréningu -->
       <div class="tr-session" id="tr-session">
@@ -414,9 +414,9 @@
 
       <div class="card">
         <div class="calendar-head">
-          <button class="btn-icon" id="btn-cal-prev" data-i18n-title="kalendar.prevMonth" data-i18n-aria="kalendar.prevMonth">‹</button>
+          <button class="btn-icon cal-nav" id="btn-cal-prev" data-i18n-title="kalendar.prevMonth" data-i18n-aria="kalendar.prevMonth"><svg class="kico" viewBox="0 0 24 24" aria-hidden="true"><path d="m15 5-7 7 7 7"/></svg></button>
           <span class="calendar-title" id="calendar-title">September 2026</span>
-          <button class="btn-icon" id="btn-cal-next" data-i18n-title="kalendar.nextMonth" data-i18n-aria="kalendar.nextMonth">›</button>
+          <button class="btn-icon cal-nav" id="btn-cal-next" data-i18n-title="kalendar.nextMonth" data-i18n-aria="kalendar.nextMonth"><svg class="kico" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></button>
         </div>
         <div class="calendar-weekdays" id="calendar-weekdays" aria-hidden="true"></div>
         <div class="calendar-grid" id="calendar-grid" role="grid" data-i18n-aria="tab.kalendar"></div>
@@ -465,6 +465,7 @@
     <button class="tab active" data-tab="dnes"><span class="tab-icon"><svg class="kico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="1"/><rect x="13.5" y="3.5" width="7" height="7" rx="1"/><rect x="3.5" y="13.5" width="7" height="7" rx="1"/><rect x="13.5" y="13.5" width="7" height="7" rx="1"/></svg></span><span data-i18n="tab.dnes">Dnes</span></button>
     <button class="tab" data-tab="trening"><span class="tab-icon"><svg class="kico" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 6.5v11M3.5 9v6M17.5 6.5v11M20.5 9v6M6.5 12h11"/></svg></span><span data-i18n="tab.trening">Tréning</span></button>
     <button class="tab" data-tab="pokrok"><span class="tab-icon"><svg class="kico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></span><span data-i18n="tab.pokrok">Pokrok</span></button>
+    <button class="tab" data-tab="spravy"><span class="tab-icon"><svg class="kico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5h16v11H9l-5 4v-15Z"/></svg><span class="tab-badge" id="tab-messages-badge" hidden></span></span><span data-i18n="bento.messages">Správy</span></button>
     <button class="tab" data-tab="komunita"><span class="tab-icon"><svg class="kico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c1.2-3.5 3.6-5 6.5-5s5.3 1.5 6.5 5"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 15c2 .6 3.3 2.2 4 5"/></svg><span class="tab-badge" id="tab-community-badge" hidden></span></span><span data-i18n="community.title">Community</span></button>
     <button class="tab" data-tab="ty"><span class="tab-icon"><svg class="kico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg></span><span data-i18n="tab.ty">Ty</span></button>
   </nav>
@@ -604,13 +605,6 @@
         </div>
       </div>
 
-      <!-- Ukážky dizajnov: len náhľad iného vzhľadu (vzorové dáta), aplikácia sa nemení -->
-      <div class="setting-block">
-        <span class="card-title" data-i18n="designs.title">Vzhľad aplikácie</span>
-        <span class="card-sub" data-i18n="designs.hint">Pozri si, ako by GymQuest mohol vyzerať. Len ukážky – tvoja aplikácia ani dáta sa nemenia.</span>
-        <button type="button" class="btn btn-secondary btn-block" id="btn-design-previews" data-i18n="designs.open">Ukážky dizajnov</button>
-      </div>
-
       <div class="setting-block">
         <span class="card-title" data-i18n="community.title">Community</span>
         <span class="card-sub" data-i18n="community.settingsHint">Voliteľná online komunita. Predvolene vypnutá a nič neposiela, kým ju nezapneš.</span>
@@ -725,30 +719,6 @@
       </div>
       <input type="file" id="file-import" accept="application/json,.json" hidden>
     </div>
-  </div>
-
-  <!-- ============ MODAL: ukážky dizajnov (výber) ============ -->
-  <div class="modal-backdrop" id="modal-designs" hidden>
-    <div class="modal">
-      <h3 data-i18n="designs.pickTitle">Ukážky dizajnov</h3>
-      <p class="card-note" data-i18n="designs.pickNote">Ťukni na dizajn a pozri si ho. Ukážky používajú vzorové dáta a nie všetko v nich funguje.</p>
-      <div class="design-grid" id="design-grid" role="list"></div>
-      <div class="modal-actions">
-        <button type="button" class="btn btn-secondary" id="btn-designs-close" data-i18n="common.close">Zavrieť</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ============ Ukážka dizajnu na celú obrazovku (vnútri aplikácie, aby sa dalo vrátiť aj v nainštalovanej appke) ============ -->
-  <div class="design-view" id="design-view" role="dialog" aria-modal="true" aria-labelledby="design-view-title" hidden>
-    <div class="design-view-bar">
-      <div class="design-view-text">
-        <span class="design-view-title" id="design-view-title"></span>
-        <span class="design-view-note" data-i18n="designs.viewNote">Len ukážka · vzorové dáta</span>
-      </div>
-      <button type="button" class="btn btn-primary btn-sm" id="btn-design-view-close" data-i18n="designs.back">Späť do aplikácie</button>
-    </div>
-    <iframe class="design-view-frame" id="design-view-frame" title="" loading="lazy"></iframe>
   </div>
 
   <!-- ============ MODAL: výber jazyka ============ -->
@@ -1059,8 +1029,8 @@
     </div>
   </div>
 
-  <script src="community-config.js?v=84"></script>
-  <script src="vendor/supabase-js.js?v=84"></script>
-  <script src="script.js?v=84"></script>
+  <script src="community-config.js?v=85"></script>
+  <script src="vendor/supabase-js.js?v=85"></script>
+  <script src="script.js?v=85"></script>
 </body>
 </html>

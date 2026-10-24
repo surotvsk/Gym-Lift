@@ -105,7 +105,7 @@ browser — double-click the file or drag it into a browser window. The app work
 | `manifest.json` | Web app manifest so the app can be installed to a home screen |
 | `apple-touch-icon.png`, `icon-192.png`, `icon-512.png` | Home screen and app icons |
 | `media/` | Licensed exercise photographs and their credits (`media/CREDITS.md`) |
-| `design-concepts/` | 32 clickable redesign prototypes (mockups with sample data, not part of the app). The gallery is `design-concepts/index.html`. The service worker leaves these pages alone, so they always load from the network. `design-concepts/app/` holds the 30 previews opened from Settings → Design previews |
+| `design-concepts/` | 32 clickable redesign prototypes (mockups with sample data, not part of the app). The gallery is `design-concepts/index.html`. The service worker leaves these pages alone, so they always load from the network. `design-concepts/app/` holds copies of the chosen designs; `app/r2/03-bento.html` is the reference the app follows |
 | `README.md` | This documentation |
 
 ---
@@ -114,15 +114,17 @@ browser — double-click the file or drag it into a browser window. The app work
 
 GymQuest follows the **Bento** prototype (`design-concepts/app/r2/03-bento.html`, dark version
 `r7/02-classic-dark.html`) on every screen: a warm grey background, 22 px rounded tiles on a 4-column
-grid, bold type, lime and pastel tiles (lavender, peach, sky, sand), and a floating dark menu with five
-icons — **Today** (grid), **Workout** (dumbbell), **Stats** (bar chart), **Community** (two people) and
-**You** (person); the selected tab is a lime pill. Deeper screens open as sheets with a back arrow, as
+grid, bold type, lime and pastel tiles (lavender, peach, sky, sand), and a floating dark menu with six
+icons — **Today** (grid), **Workout** (dumbbell), **Stats** (bar chart), **Messages** (speech bubble),
+**Community** (two people) and **You** (person); the selected tab is a lime pill. The Messages icon shows
+your unread messages, the Community icon your friend requests. Deeper screens open as sheets with a back arrow, as
 in the prototype.
 
 - **Today** — see below.
 - **Workout** — the plans as coloured tiles (*Next ✦* or *Plan N*, exercises and sets; the selected
   one is dark), a tile with the selected plan's exercises and **Start** / **Edit**, then *Manage plans*,
-  *New plan*, *Exercise library* and *Full Body builder*. During a workout a dark tile shows the plan
+  *New plan*, *Exercise library*, *Full Body builder* and — with Community — **Train with a friend**
+  (a lavender tile; tapping it opens the friend picker as a tile right below). During a workout a dark tile shows the plan
   (tap its name to switch plans), the running time and **Rest**, **Finish · +XP** and **Discard**; every
   exercise is a tile (the one you are on is lavender, a finished one lime) with square set buttons
   showing reps and weight, and below them a pill per set for its reps, weight and failure mark, the
@@ -135,12 +137,16 @@ in the prototype.
   achievements, the calendar, or that day).
 - **Calendar** — opens from the *This week* tile on Today or the Calendar tile on Stats as a full sheet;
   workout days are green, past days without a workout pink, today has an orange outline.
+- **Messages** — your conversations open straight away; tap one to chat, *New message* picks a friend.
+  Back from a chat returns to the list.
 - **Community** — Top 20 (with your rank this week), New post, Messages and Friends tiles above the feed;
   search is the magnifier at the top. Messages, chats, friends, Top 20, profiles, the composer and the
   moderator queue open as sheets.
-- **You** — your profile tile (Community name, level, bio or a motivational line), *Community profile*,
-  your weekly goal and **Settings**.
-- Dialogs slide up from the bottom; on a wider screen they are centred. From 900 px the grid has
+- **You** — your profile tile (Community name, level, bio or a motivational line), *Community profile*
+  (opens your profile directly; Back returns to You), your weekly goal and **Settings**.
+- Dialogs slide up from the bottom; the exercise library, exercise details, the Full Body builder and the
+  photo viewer open full-screen from the top on a phone, with their content scrolling inside. On a wider
+  screen dialogs are centred. From 900 px the grid has
   8 columns.
 
 The font is Space Grotesk (SIL Open Font License, `fonts/OFL.txt`), stored in the app so it also works
@@ -175,10 +181,9 @@ grid. Every tile shows live numbers from your own data and opens the feature it 
 | **Food today** (peach) | today's calories (or *Off*) | Food |
 | **Rest** (sand) | the running rest timer | the rest timer |
 | **Activity** | | run, walk, cycle, home or outdoor workout — and *Log activity* for a past one |
-| **Friends** (lavender) | your friends' avatars and the number of unread messages and requests | Messages |
+| **Friends** (lavender) | your friends' avatars and the number of unread messages and requests | the Messages tab |
 | **Photos** | | Progress photos |
 | **Settings** (dark) | | Settings |
-| **Train with a friend** (only with Community) | | Workout → pick a friend |
 
 
 The current date, weekday and ISO week number are shown under the heading.
@@ -322,21 +327,6 @@ no network call, nothing to download:
 
 Portuguese is deliberately **Brazilian Portuguese** and is labelled *Português (Brasil)* everywhere —
 the vocabulary is Brazilian (*treino*, *séries até a falha*, *Duração do treino*).
-
-### Design previews
-
-**⚙️ Settings → App design → Design previews** shows the current GymQuest (in use) and 30 possible new
-looks: *Periwinkle*, *Pastel Planner*, *Soft Rings*, *Violet Studio*, *Lilac Player*, *Clay*, *Bloom*,
-*Bento*, *Atlas*, *Isometric*, *Mint*, and three *Bento + Mint* variants that add Mint's charts to Bento's
-tiles — *Bento Trends* (a trend line in every number tile), *Bento Dashboard* (a big chart of the last 8
-weeks, switchable between minutes, sets and XP) and *Bento Mint* (Bento's grid in Mint's colours with a
-small chart in every tile) — and Bento in five colourways, each as a light and a dark mode: *Ocean*
-(aqua and blues), *Sunset* (coral, rose, amber), *Forest* (moss, sage, wheat), *Berry* (pink, lilac,
-orchid) and *Mono* (greys with one electric-orange accent). Bento also comes in its own default colours, each light and dark: *Classic* (the original
-lime, lavender, peach, sky and sand), *Soft* (a little paler) and *Vivid* (a little punchier). Tap one to see it full screen inside the app, and **Back to the
-app** (or Esc) to return. Previews are only for trying the look on your phone: they use sample data,
-not everything in them works, and they never read or change your workouts or settings. The app itself
-keeps its current design.
 
 ### Choosing a language
 

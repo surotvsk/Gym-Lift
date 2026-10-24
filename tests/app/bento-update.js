@@ -58,7 +58,9 @@ function check(name, ok, info) {
     await p.reload(); await p.eval(HELPERS);
     const oldVer = await p.eval(`(caches.keys()).then((k) => k.join(','))`);
     check('the previous release is installed and controls the page (' + oldVer + ')', await p.eval('!!navigator.serviceWorker.controller') && /gymquest-v\d+/.test(oldVer));
-    check('the previous release has no Bento design yet', !(await p.eval(`document.documentElement.hasAttribute('data-theme')`)));
+    const qOf = (dir) => /script\.js\?v=(\d+)/.exec(fs.readFileSync(path.join(dir, 'sw.js'), 'utf8'))[1];
+    const runningQ = () => p.eval(`(() => { const s = document.querySelector('script[src*="script.js?v="]'); return s ? s.getAttribute('src').split('?v=')[1] : null; })()`);
+    check('the previous release runs (its own script version)', (await runningQ()) === qOf(OLD));
 
     console.log('== a full set of user data in the old app');
     await p.eval(`(async () => {
@@ -92,7 +94,8 @@ function check(name, ok, info) {
     await waitFor(() => p.loads > lu, 60000, 'update reload');
     await p.ready(); await p.eval(HELPERS);
     const keys = await p.eval('caches.keys()');
-    check('the new build runs from its own cache (v78), the old cache is removed', keys.indexOf('gymquest-v78') >= 0 && keys.filter((k) => /^gymquest-v\d+$/.test(k)).length === 1, keys);
+    const newCache = 'gymquest-' + /CACHE_VERSION = '(v\d+)'/.exec(fs.readFileSync(path.join(REPO, 'sw.js'), 'utf8'))[1];
+    check('the new build runs from its own cache (' + newCache + '), the old cache is removed', (await runningQ()) === qOf(REPO) && keys.indexOf(newCache) >= 0 && keys.filter((k) => /^gymquest-v\d+$/.test(k)).length === 1, keys);
     check('the Bento design is active (light by default on a light phone)', (await p.eval(`document.documentElement.getAttribute('data-theme')`)) === 'light' && (await p.eval(`getComputedStyle(document.body).fontFamily`)).includes('Space Grotesk'));
     const after = await snapshot();
     const diff = Object.keys(Object.assign({}, before.ls, after.ls)).filter((k) => before.ls[k] !== after.ls[k]);

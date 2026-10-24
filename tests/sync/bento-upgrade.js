@@ -66,12 +66,14 @@ function prepareBuilds() {
   fs.cpSync(OLD, BACK, { recursive: true });
   const newSw = fs.readFileSync(path.join(REPO, 'sw.js'), 'utf8');
   const newVer = Number(/CACHE_VERSION = 'v(\d+)'/.exec(newSw)[1]);
-  const newQ = Number(/\?v=(\d+)/.exec(newSw)[1]);
+  const newQ = Number(/script\.js\?v=(\d+)/.exec(newSw)[1]);
   const backVer = 'v' + (newVer + 1), backQ = newQ + 1;
   let sw = fs.readFileSync(path.join(BACK, 'sw.js'), 'utf8').replace(/CACHE_VERSION = 'v\d+'/, "CACHE_VERSION = '" + backVer + "'").replace(/\?v=\d+/g, '?v=' + backQ);
   fs.writeFileSync(path.join(BACK, 'sw.js'), sw);
   fs.writeFileSync(path.join(BACK, 'index.html'), fs.readFileSync(path.join(BACK, 'index.html'), 'utf8').replace(/\?v=\d+/g, '?v=' + backQ));
-  const oldVer = /CACHE_VERSION = '(v\d+)'/.exec(fs.readFileSync(path.join(OLD, 'sw.js'), 'utf8'))[1];
+  const oldSw = fs.readFileSync(path.join(OLD, 'sw.js'), 'utf8');
+  const oldVer = /CACHE_VERSION = '(v\d+)'/.exec(oldSw)[1];
+  QS.old = String(/script\.js\?v=(\d+)/.exec(oldSw)[1]); QS.new = String(newQ); QS.back = String(backQ);
   return { OLD, BACK, oldVer, newVer: 'v' + newVer, backVer };
 }
 
@@ -168,8 +170,11 @@ async function cloudState(obs) {
   const files = (await obs.listAll(obs.creds.id)).sort();
   return { rev: row ? row.revision : null, payloadHash: row ? sha(J(row.payload)) : null, hist: row && row.payload && row.payload.history ? row.payload.history.map((h) => h.id).sort() : [], files };
 }
-const isBento = (p) => p.eval(`document.documentElement.hasAttribute('data-theme') && !!document.getElementById('bento-grid')`);
-const oldUi = (p) => p.eval(`!document.getElementById('bento-grid')`);
+/* Ktorá verzia beží: podľa ?v= skriptu, ktorý stránka naozaj načítala (stará / nová / spätná). */
+const QS = { old: null, new: null, back: null };
+const runningQ = (p) => p.eval(`(() => { const s = document.querySelector('script[src*="script.js?v="]'); return s ? s.getAttribute('src').split('?v=')[1] : null; })()`);
+const isBento = async (p) => (await runningQ(p)) === QS.new;
+const oldUi = async (p) => { const q = await runningQ(p); return q === QS.old || q === QS.back; };
 
 /* ============================ scenarios ============================ */
 const scenarios = [];
@@ -177,7 +182,7 @@ const scenario = (name, fn) => scenarios.push({ name, fn });
 
 scenario('guest: local data + active workout → update → restart → offline start → rollback', async ({ server, B: builds }) => {
   const d = await installOld('guest', server);
-  check('old release (' + builds.oldVer + ') installed and controlling, no Bento yet', await d.p.eval('!!navigator.serviceWorker.controller') && await oldUi(d.p));
+  check('previous release (' + builds.oldVer + ') installed and controlling', await d.p.eval('!!navigator.serviceWorker.controller') && await oldUi(d.p));
   await d.p.eval(SEED_RICH('g'));
   /* rozbehnutý tréning so značkami sérií */
   await d.p.eval(`(() => { selectedPlan = 'legs-g'; startWorkoutNow(); const b = document.querySelectorAll('#exercise-list .set-btn'); b[0].click(); b[1].click(); return true; })()`);
@@ -197,7 +202,7 @@ scenario('guest: local data + active workout → update → restart → offline 
   d.p = await d.b.restart(true); await d.p.navigate(BASE); await R(d.p);
   const keysG = await d.p.eval('caches.keys()');
   check('after closing and reopening the app the redesign (' + builds.newVer + ') runs from its own cache', keysG.indexOf('gymquest-' + builds.newVer) >= 0 && keysG.filter((k) => /^gymquest-v\d+$/.test(k)).length === 1, keysG);
-  check('the Bento redesign is running', await isBento(d.p));
+  check('the new build is running', await isBento(d.p));
   compareSnaps('guest update', before, await d.p.eval(SNAP_JS));
   const ui = await d.p.eval(`(() => { renderAll(); switchTab('dnes'); const next = document.getElementById('bt-next-label').textContent; switchTab('trening');
     const tiles = [...document.querySelectorAll('.plan-chips .chip-name')].map((x) => x.textContent);
@@ -219,7 +224,7 @@ scenario('guest: local data + active workout → update → restart → offline 
   check('the redesign also never reloads during the active workout', d.p.loads === l1 && await isBento(d.p));
   d.p = await d.b.restart(true); await d.p.navigate(BASE); await R(d.p);
   check('rollback: the previous code shipped as ' + builds.backVer + ' runs after reopening', (await d.p.eval('caches.keys()')).indexOf('gymquest-' + builds.backVer) >= 0);
-  check('the previous design is running again', await oldUi(d.p));
+  check('the previous build is running again', await oldUi(d.p));
   compareSnaps('guest rollback', before, await d.p.eval(SNAP_JS));
   const old = await d.p.eval(`(() => { switchTab('trening'); return { chips: [...document.querySelectorAll('.plan-chips .chip')].map((c) => c.textContent), done: document.querySelectorAll('#exercise-list .set-btn.done').length, hist: state.history.length }; })()`);
   check('previous version shows the same plans, the active workout (2 done sets) and history', old.chips.some((c) => /Moje nohy g/.test(c)) && old.done === 2 && old.hist === before.counts.history, old);

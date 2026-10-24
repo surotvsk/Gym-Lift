@@ -8456,58 +8456,6 @@ const TRAIN_I18N = {
   },
 };
 for (const lang of Object.keys(TRAIN_I18N)) Object.assign(I18N[lang] || (I18N[lang] = {}), TRAIN_I18N[lang]);
-/* Ukážky dizajnov (Nastavenia → Vzhľad aplikácie). */
-const DESIGNS_I18N = {
-  sk: {
-    'designs.title': 'Vzhľad aplikácie', 'designs.hint': 'Pozri si, ako by GymQuest mohol vyzerať. Len ukážky – tvoja aplikácia ani dáta sa nemenia.',
-    'designs.open': 'Ukážky dizajnov', 'designs.pickTitle': 'Ukážky dizajnov',
-    'designs.pickNote': 'Ťukni na dizajn a pozri si ho. Ukážky používajú vzorové dáta a nie všetko v nich funguje.', 'designs.currentName': 'Súčasný GymQuest',
-    'designs.inUse': 'Používa sa', 'designs.round': 'Kolo {n}',
-    'designs.openAria': 'Otvoriť ukážku dizajnu {name}', 'designs.previewOf': 'Ukážka: {name}',
-    'designs.viewNote': 'Len ukážka · vzorové dáta', 'designs.back': 'Späť do aplikácie',
-  },
-  en: {
-    'designs.title': 'App design', 'designs.hint': 'See how GymQuest could look. Previews only – your app and your data stay the same.',
-    'designs.open': 'Design previews', 'designs.pickTitle': 'Design previews',
-    'designs.pickNote': 'Tap a design to look at it. Previews use sample data and not everything in them works.', 'designs.currentName': 'Current GymQuest',
-    'designs.inUse': 'In use', 'designs.round': 'Round {n}',
-    'designs.openAria': 'Open the {name} design preview', 'designs.previewOf': 'Preview: {name}',
-    'designs.viewNote': 'Preview only · sample data', 'designs.back': 'Back to the app',
-  },
-  es: {
-    'designs.title': 'Diseño de la app', 'designs.hint': 'Mira cómo podría verse GymQuest. Solo vistas previas: tu app y tus datos no cambian.',
-    'designs.open': 'Vistas previas de diseño', 'designs.pickTitle': 'Vistas previas de diseño',
-    'designs.pickNote': 'Toca un diseño para verlo. Las vistas previas usan datos de ejemplo y no todo funciona.', 'designs.currentName': 'GymQuest actual',
-    'designs.inUse': 'En uso', 'designs.round': 'Ronda {n}',
-    'designs.openAria': 'Abrir la vista previa del diseño {name}', 'designs.previewOf': 'Vista previa: {name}',
-    'designs.viewNote': 'Solo vista previa · datos de ejemplo', 'designs.back': 'Volver a la app',
-  },
-  'pt-BR': {
-    'designs.title': 'Visual do app', 'designs.hint': 'Veja como o GymQuest poderia ficar. Só prévias: seu app e seus dados não mudam.',
-    'designs.open': 'Prévias de design', 'designs.pickTitle': 'Prévias de design',
-    'designs.pickNote': 'Toque em um design para vê-lo. As prévias usam dados de exemplo e nem tudo funciona.', 'designs.currentName': 'GymQuest atual',
-    'designs.inUse': 'Em uso', 'designs.round': 'Rodada {n}',
-    'designs.openAria': 'Abrir a prévia do design {name}', 'designs.previewOf': 'Prévia: {name}',
-    'designs.viewNote': 'Só prévia · dados de exemplo', 'designs.back': 'Voltar ao app',
-  },
-  fr: {
-    'designs.title': 'Apparence de l’app', 'designs.hint': 'Découvre à quoi GymQuest pourrait ressembler. Simples aperçus : ton app et tes données ne changent pas.',
-    'designs.open': 'Aperçus de design', 'designs.pickTitle': 'Aperçus de design',
-    'designs.pickNote': 'Touche un design pour le voir. Les aperçus utilisent des données d’exemple et tout n’y fonctionne pas.', 'designs.currentName': 'GymQuest actuel',
-    'designs.inUse': 'Utilisé', 'designs.round': 'Tour {n}',
-    'designs.openAria': 'Ouvrir l’aperçu du design {name}', 'designs.previewOf': 'Aperçu : {name}',
-    'designs.viewNote': 'Aperçu seulement · données d’exemple', 'designs.back': 'Retour à l’app',
-  },
-  ar: {
-    'designs.title': 'مظهر التطبيق', 'designs.hint': 'شاهد كيف يمكن أن يبدو GymQuest. معاينات فقط – لا يتغير تطبيقك ولا بياناتك.',
-    'designs.open': 'معاينات التصميم', 'designs.pickTitle': 'معاينات التصميم',
-    'designs.pickNote': 'اضغط على تصميم لمشاهدته. تستخدم المعاينات بيانات تجريبية ولا يعمل كل شيء فيها.', 'designs.currentName': 'GymQuest الحالي',
-    'designs.inUse': 'قيد الاستخدام', 'designs.round': 'الجولة {n}',
-    'designs.openAria': 'فتح معاينة تصميم {name}', 'designs.previewOf': 'معاينة: {name}',
-    'designs.viewNote': 'معاينة فقط · بيانات تجريبية', 'designs.back': 'العودة إلى التطبيق',
-  },
-};
-for (const lang of Object.keys(DESIGNS_I18N)) Object.assign(I18N[lang] || (I18N[lang] = {}), DESIGNS_I18N[lang]);
 
 /* Vzhľad (Bento svetlý / tmavý). */
 const THEME_I18N = {
@@ -8632,7 +8580,7 @@ for (const lang of Object.keys(BENTO_UI_I18N)) Object.assign(I18N[lang] || (I18N
 /* Bento (podľa návrhu): karta Ty, Štatistiky, dlaždice Tréningu a Community. */
 const BENTO_REF_I18N = {
   sk: {
-    'tab.pokrok': 'Štatistiky', 'tab.ty': 'Ty', 'bento.bw': 'VV', 'bento.editPlan': 'Upraviť plán', 'bento.finish': 'Dokončiť', 'bento.discard': 'Zahodiť', 'bento.weekNo': 'týždeň {n}', 'bento.nextUp': 'Ďalší ✦', 'bento.setsOf': '{done} / {total} sérií',
+    'tab.pokrok': 'Štatistiky', 'tab.ty': 'Ty', 'bento.trainLine': 'Pozvi priateľa a navzájom uvidíte svoje série naživo', 'bento.bw': 'VV', 'bento.editPlan': 'Upraviť plán', 'bento.finish': 'Dokončiť', 'bento.discard': 'Zahodiť', 'bento.weekNo': 'týždeň {n}', 'bento.nextUp': 'Ďalší ✦', 'bento.setsOf': '{done} / {total} sérií',
     'bento.weeksWordOne': 'týždeň', 'bento.weeksWordFew': 'týždne', 'bento.weeksWordMany': 'týždňa', 'bento.weeksWordOther': 'týždňov',
     'bento.excusedTitle': 'Ospravedlnený ✓', 'bento.tapUndo': 'Ťukni na zrušenie', 'bento.levelLower': 'level {n}',
     'bento.goalLineOne': 'Cieľ: {n} týždenne', 'bento.goalLineFew': 'Cieľ: {n} týždenne', 'bento.goalLineMany': 'Cieľ: {n} týždenne', 'bento.goalLineOther': 'Cieľ: {n} týždenne',
@@ -8646,7 +8594,7 @@ const BENTO_REF_I18N = {
     'bento.requestsOne': '{n} žiadosť', 'bento.requestsFew': '{n} žiadosti', 'bento.requestsMany': '{n} žiadosti', 'bento.requestsOther': '{n} žiadostí',
   },
   en: {
-    'tab.pokrok': 'Stats', 'tab.ty': 'You', 'bento.bw': 'BW', 'bento.editPlan': 'Edit plan', 'bento.finish': 'Finish', 'bento.discard': 'Discard', 'bento.weekNo': 'week {n}', 'bento.nextUp': 'Next up ✦', 'bento.setsOf': '{done} / {total} sets',
+    'tab.pokrok': 'Stats', 'tab.ty': 'You', 'bento.trainLine': 'Invite a friend and see each other’s sets live', 'bento.bw': 'BW', 'bento.editPlan': 'Edit plan', 'bento.finish': 'Finish', 'bento.discard': 'Discard', 'bento.weekNo': 'week {n}', 'bento.nextUp': 'Next up ✦', 'bento.setsOf': '{done} / {total} sets',
     'bento.weeksWordOne': 'week', 'bento.weeksWordOther': 'weeks',
     'bento.excusedTitle': 'Excused ✓', 'bento.tapUndo': 'Tap to undo', 'bento.levelLower': 'level {n}',
     'bento.goalLineOne': 'Goal: {n} a week', 'bento.goalLineOther': 'Goal: {n} a week',
@@ -8660,7 +8608,7 @@ const BENTO_REF_I18N = {
     'bento.requestsOne': '{n} request', 'bento.requestsOther': '{n} requests',
   },
   es: {
-    'tab.pokrok': 'Estadísticas', 'tab.ty': 'Tú', 'bento.bw': 'PC', 'bento.editPlan': 'Editar plan', 'bento.finish': 'Terminar', 'bento.discard': 'Descartar', 'bento.weekNo': 'semana {n}', 'bento.nextUp': 'Siguiente ✦', 'bento.setsOf': '{done} / {total} series',
+    'tab.pokrok': 'Estadísticas', 'tab.ty': 'Tú', 'bento.trainLine': 'Invita a un amigo y veréis vuestras series en directo', 'bento.bw': 'PC', 'bento.editPlan': 'Editar plan', 'bento.finish': 'Terminar', 'bento.discard': 'Descartar', 'bento.weekNo': 'semana {n}', 'bento.nextUp': 'Siguiente ✦', 'bento.setsOf': '{done} / {total} series',
     'bento.weeksWordOne': 'semana', 'bento.weeksWordOther': 'semanas',
     'bento.excusedTitle': 'Justificada ✓', 'bento.tapUndo': 'Toca para deshacer', 'bento.levelLower': 'nivel {n}',
     'bento.goalLineOne': 'Meta: {n} por semana', 'bento.goalLineOther': 'Meta: {n} por semana',
@@ -8674,7 +8622,7 @@ const BENTO_REF_I18N = {
     'bento.requestsOne': '{n} solicitud', 'bento.requestsOther': '{n} solicitudes',
   },
   'pt-BR': {
-    'tab.pokrok': 'Estatísticas', 'tab.ty': 'Você', 'bento.bw': 'PC', 'bento.editPlan': 'Editar plano', 'bento.finish': 'Concluir', 'bento.discard': 'Descartar', 'bento.weekNo': 'semana {n}', 'bento.nextUp': 'Próximo ✦', 'bento.setsOf': '{done} / {total} séries',
+    'tab.pokrok': 'Estatísticas', 'tab.ty': 'Você', 'bento.trainLine': 'Convide um amigo e vejam as séries um do outro ao vivo', 'bento.bw': 'PC', 'bento.editPlan': 'Editar plano', 'bento.finish': 'Concluir', 'bento.discard': 'Descartar', 'bento.weekNo': 'semana {n}', 'bento.nextUp': 'Próximo ✦', 'bento.setsOf': '{done} / {total} séries',
     'bento.weeksWordOne': 'semana', 'bento.weeksWordOther': 'semanas',
     'bento.excusedTitle': 'Justificada ✓', 'bento.tapUndo': 'Toque para desfazer', 'bento.levelLower': 'nível {n}',
     'bento.goalLineOne': 'Meta: {n} por semana', 'bento.goalLineOther': 'Meta: {n} por semana',
@@ -8688,7 +8636,7 @@ const BENTO_REF_I18N = {
     'bento.requestsOne': '{n} pedido', 'bento.requestsOther': '{n} pedidos',
   },
   fr: {
-    'tab.pokrok': 'Stats', 'tab.ty': 'Toi', 'bento.bw': 'PDC', 'bento.editPlan': 'Modifier le plan', 'bento.finish': 'Terminer', 'bento.discard': 'Abandonner', 'bento.weekNo': 'semaine {n}', 'bento.nextUp': 'Prochaine ✦', 'bento.setsOf': '{done} / {total} séries',
+    'tab.pokrok': 'Stats', 'tab.ty': 'Toi', 'bento.trainLine': 'Invite un ami et voyez vos séries en direct', 'bento.bw': 'PDC', 'bento.editPlan': 'Modifier le plan', 'bento.finish': 'Terminer', 'bento.discard': 'Abandonner', 'bento.weekNo': 'semaine {n}', 'bento.nextUp': 'Prochaine ✦', 'bento.setsOf': '{done} / {total} séries',
     'bento.weeksWordOne': 'semaine', 'bento.weeksWordOther': 'semaines',
     'bento.excusedTitle': 'Excusée ✓', 'bento.tapUndo': 'Touche pour annuler', 'bento.levelLower': 'niveau {n}',
     'bento.goalLineOne': 'Objectif : {n} par semaine', 'bento.goalLineOther': 'Objectif : {n} par semaine',
@@ -8702,7 +8650,7 @@ const BENTO_REF_I18N = {
     'bento.requestsOne': '{n} demande', 'bento.requestsOther': '{n} demandes',
   },
   ar: {
-    'tab.pokrok': 'الإحصاءات', 'tab.ty': 'أنت', 'bento.bw': 'وزن الجسم', 'bento.editPlan': 'تعديل الخطة', 'bento.finish': 'إنهاء', 'bento.discard': 'تجاهل', 'bento.weekNo': 'الأسبوع {n}', 'bento.nextUp': 'التالي ✦', 'bento.setsOf': '{done} / {total} مجموعات',
+    'tab.pokrok': 'الإحصاءات', 'tab.ty': 'أنت', 'bento.trainLine': 'ادعُ صديقًا وشاهدا مجموعات بعضكما مباشرة', 'bento.bw': 'وزن الجسم', 'bento.editPlan': 'تعديل الخطة', 'bento.finish': 'إنهاء', 'bento.discard': 'تجاهل', 'bento.weekNo': 'الأسبوع {n}', 'bento.nextUp': 'التالي ✦', 'bento.setsOf': '{done} / {total} مجموعات',
     'bento.weeksWordZero': 'أسابيع', 'bento.weeksWordOne': 'أسبوع', 'bento.weeksWordTwo': 'أسبوعان', 'bento.weeksWordFew': 'أسابيع', 'bento.weeksWordMany': 'أسبوعًا', 'bento.weeksWordOther': 'أسبوع',
     'bento.excusedTitle': 'معذور ✓', 'bento.tapUndo': 'اضغط للتراجع', 'bento.levelLower': 'المستوى {n}',
     'bento.goalLineZero': 'الهدف: {n} أسبوعيًا', 'bento.goalLineOne': 'الهدف: {n} أسبوعيًا', 'bento.goalLineTwo': 'الهدف: {n} أسبوعيًا', 'bento.goalLineFew': 'الهدف: {n} أسبوعيًا', 'bento.goalLineMany': 'الهدف: {n} أسبوعيًا', 'bento.goalLineOther': 'الهدف: {n} أسبوعيًا',
@@ -10704,7 +10652,7 @@ const BENTO_ICONS = {
   utensils: '<path d="M7 3v8M5 3v5a2 2 0 0 0 4 0V3M7 11v10M17 21V3c-2 1.5-3 4-3 7v4h3"/>', run: '<circle cx="14" cy="4.5" r="1.8"/><path d="m8 21 3-6 3 2v5M6 11l3-3h4l2 4 3 1M11 15l-1.5-3"/>',
   edit: '<path d="M4 20h4L19 9l-4-4L4 16v4Z"/><path d="m13.5 6.5 4 4"/>', chat: '<path d="M4 5.5h16v11H9l-5 4v-15Z"/>',
   users: '<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c1.2-3.5 3.6-5 6.5-5s5.3 1.5 6.5 5"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 15c2 .6 3.3 2.2 4 5"/>',
-  trash: '<path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/>',
+  trash: '<path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/>', x: '<path d="M6 6l12 12M18 6 6 18"/>',
 };
 function bentoIcon(n) { return '<svg class="kico" viewBox="0 0 24 24" aria-hidden="true">' + (BENTO_ICONS[n] || '') + '</svg>'; }
 
@@ -10847,7 +10795,10 @@ function bentoGo(where) {
     return;
   }
   if (where === 'rest') { openRestSheet(); return; }
-  if (where === 'friends' || where === 'chats' || where === 'top20' || where === 'compose' || where === 'profile') {
+  if (where === 'profile') { openOwnProfileSheet(activeTab); return; }
+  if (where === 'chats') { openMessagesTab(); return; }
+  if (where === 'friends' || where === 'top20' || where === 'compose') {
+    communityMode = 'community';
     switchTab('komunita');
     if (communityV2() && communityProfile) communitySetView(where === 'top20' ? 'leaderboard' : where);
     return;
@@ -14944,12 +14895,13 @@ function communityIcon(name) { return COMMUNITY_SVG + (COMMUNITY_ICONS[name] || 
 /* Navigácia vo vnútri Community (ako Instagram): Domov, Hľadať, Nový, Správy, Profil. */
 function communityNavHtml() {
   const v = communityView;
+  if (v === 'chats' && communityMode === 'messages') return '';
   /* Bento: na hlavnej stránke Community sú dlaždice z návrhu (Top 20, Nový príspevok, Správy, Priatelia);
      ostatné pohľady sú celostránkové listy s tlačidlom Späť (ako v návrhu). */
   if (v === 'feed' || v === 'following') return communityBentoTilesHtml();
   if (['leaderboard', 'comments', 'friends', 'chats', 'chat', 'user', 'list'].indexOf(v) >= 0) return '';   // majú vlastnú hlavičku
   const titles = { search: 'community2.navSearch', compose: 'community.newPost', profile: 'community2.navProfile', myposts: 'community.tabMyPosts', moderate: 'bento.moderate' };
-  return '<div class="k-head" id="community-tabs"><button type="button" class="k-x" data-community-view="feed" aria-label="' + escAttr(t('community2.back')) + '">' + bentoIcon('back') + '</button>'
+  return '<div class="k-head" id="community-tabs"><button type="button" class="k-x" data-community-action="back" aria-label="' + escAttr(t('community2.back')) + '">' + bentoIcon('back') + '</button>'
     + '<h2>' + esc(t(titles[v] || 'community.title')) + '</h2></div>';
 }
 /* Bento: dlaždice nad príspevkami (Top 20, Nový príspevok, Správy, Priatelia) – rovnaké
@@ -14969,6 +14921,39 @@ function communityBentoTilesHtml() {
       + (reqs ? '<span class="cnav-badge bt-badge">' + (reqs > 99 ? '99+' : reqs) + '</span>' : ''))
     + '</nav>';
 }
+/* Bento: karta Správy (rozhovory) a Community zdieľajú jednu obrazovku; režim určuje, ktorá karta
+   v menu svieti a čo je hlavná stránka. communityReturnTab = karta, kam vedie Späť z listu otvoreného
+   priamo z inej karty (Ty → Community profil). */
+let communityMode = 'community';
+let communityReturnTab = null;
+function communitySheetSkeleton(title) {
+  const body = document.getElementById('community-body');
+  if (!body) return;
+  body.innerHTML = '<div class="k-head"><button type="button" class="k-x" data-community-action="back" aria-label="' + escAttr(t('community2.back')) + '">' + bentoIcon('back') + '</button><h2>' + esc(title) + '</h2></div>'
+    + '<p class="card-note">' + esc(t('community.loading')) + '</p>';
+  document.getElementById('screen-komunita').classList.add('sheet-open');
+}
+function openMessagesTab() {
+  communityMode = 'messages';
+  communityReturnTab = null;
+  communityBack = [];
+  communityView = 'chats';
+  const body = document.getElementById('community-body');
+  if (body && communityV2() && communityProfile) {
+    body.innerHTML = '<div class="hd chats-hd"><h2 class="screen-title">' + esc(t('bento.messages')) + '</h2></div><p class="card-note">' + esc(t('community.loading')) + '</p>';
+    document.getElementById('screen-komunita').classList.remove('sheet-open');
+  }
+  switchTab('komunita');
+}
+function openOwnProfileSheet(returnTab) {
+  communityMode = 'community';
+  communityBack = [];
+  communityView = 'profile';
+  communityReturnTab = returnTab || null;
+  if (communityV2() && communityProfile) communitySheetSkeleton(t('community2.navProfile'));
+  switchTab('komunita');
+}
+
 /* Poradie používateľa v Top 20 pre dlaždicu (načíta sa raz pri otvorení Community, ak je rebríček zapnutý). */
 let communityLbRank = null;
 let communityLbRankAt = 0;
@@ -15001,6 +14986,8 @@ function communityGo(view, apply) {
 function communityGoBack() {
   const prev = communityBack.pop();
   communitySetMessage('');
+  if (!prev && communityReturnTab) { const tab = communityReturnTab; communityReturnTab = null; communityView = 'feed'; switchTab(tab); return; }
+  if (!prev && communityMode === 'messages') { communityView = 'chats'; renderCommunity(); return; }
   if (!prev) { communityView = 'feed'; renderCommunity(); return; }
   communityViewUser = prev.user; communityPostId = prev.post; communityChatId = prev.chat;
   communityView = prev.view;
@@ -15095,7 +15082,11 @@ async function communityRefreshBadges(sb, uid) {
 function communityShowBadges() {
   const total = communityBadges.chats + communityBadges.requests;
   const b = document.getElementById('tab-community-badge');
-  if (b) { b.hidden = !total; b.textContent = total > 99 ? '99+' : String(total); }
+  const req = communityBadges.requests;
+  if (b) { b.hidden = !req; b.textContent = req > 99 ? '99+' : String(req); }
+  const mb = document.getElementById('tab-messages-badge');
+  const ch = communityBadges.chats;
+  if (mb) { mb.hidden = !ch; mb.textContent = ch > 99 ? '99+' : String(ch); }
   bentoShowChatsBadge();
   const nav = document.getElementById('community-tabs');
   if (nav && communityV2() && nav.classList.contains('cnav')) nav.outerHTML = communityNavHtml();
@@ -15324,8 +15315,12 @@ async function communityChatsHtml(sb) {
     + (c.unread ? '<span class="cnav-badge cchat-badge">' + c.unread + '</span>' : '')
     + (c.closed ? '<span class="cchat-closed">' + esc(t('community2.chatClosedShort')) + '</span>' : '') + '</span></button>';
   return communityTabbar()
-    + communitySubHead(esc(t('community2.chatsTitle')),
-      '<button type="button" class="btn btn-secondary btn-sm" data-community-action="go-friends">' + esc(t('community2.newChat')) + '</button>', true)
+    + (communityMode === 'messages'
+      /* Bento: karta Správy – zoznam rozhovorov je hlavná stránka karty (nie list so Späť) */
+      ? '<div class="hd chats-hd"><h2 class="screen-title">' + esc(t('bento.messages')) + '</h2>'
+        + '<button type="button" class="btn btn-secondary btn-sm" data-community-action="go-friends">' + esc(t('community2.newChat')) + '</button></div>'
+      : communitySubHead(esc(t('community2.chatsTitle')),
+        '<button type="button" class="btn btn-secondary btn-sm" data-community-action="go-friends">' + esc(t('community2.newChat')) + '</button>', true))
     + communityStatusHtml()
     + pushHintHtml()
     + (rows.length ? '<div class="cchat-list">' + rows.map(item).join('') + '</div>' : '<p class="empty-state">' + esc(t('community2.chatsEmpty')) + '</p>')
@@ -16024,7 +16019,11 @@ function trainBoxHtml(compact) {
           : '<p class="card-note">' + esc(t('train.noFriends')) + '</p>')
         + '</div>';
     }
-    return '<div class="card train-card"><button type="button" class="btn btn-secondary btn-block train-open" data-train-action="open" aria-expanded="' + (trainPickerOpen ? 'true' : 'false') + '">👥 ' + esc(t('train.open')) + '</button>'
+    /* Bento: v pokoji je „Trénovať s priateľom" dlaždica medzi akciami Tréningu (#btn-train-tile);
+       tu sa ukáže len otvorený výber priateľa ako dlaždica. */
+    if (!trainPickerOpen) return note ? '<div class="card train-card">' + note + '</div>' : '';
+    return '<div class="card train-card train-pick"><div class="train-head"><p class="train-title">' + esc(t('train.open')) + '</p>'
+      + '<button type="button" class="k-x train-close" data-train-action="open" aria-expanded="true" aria-label="' + escAttr(t('common.close')) + '">' + bentoIcon('x') + '</button></div>'
       + picker + note + '</div>';
   }
   const name = trainPartnerName();
@@ -16052,6 +16051,8 @@ function trainBoxHtml(compact) {
     + '<p class="card-note train-privacy">' + esc(t('train.privacy', { name })) + '</p>' + note + '</div>';
 }
 function trainRender() {
+  const tile = document.getElementById('btn-train-tile');
+  if (tile) { tile.hidden = !trainAvailable() || !!trainState; tile.setAttribute('aria-expanded', trainPickerOpen ? 'true' : 'false'); }
   const box = document.getElementById('train-box');
   const today = document.getElementById('train-today');
   const on = trainAvailable();
@@ -19426,13 +19427,14 @@ function renderAll() {
 /* ---------- Prepínanie kariet ---------- */
 
 function switchTab(tab) {
+  if (tab === 'spravy') { openMessagesTab(); return; }   // Bento: karta Správy = Community obrazovka v režime rozhovorov
   activeTab = tab;
   document.body.dataset.tab = tab;
   for (const s of ['dnes', 'trening', 'pokrok', 'kalendar', 'komunita', 'ty']) {
     document.getElementById(`screen-${s}`).hidden = s !== tab;
   }
   /* Kalendár nie je v menu (v návrhu Bento sa otvára z dlaždíc) – zvýraznená ostáva karta, odkiaľ sa otvoril. */
-  const navTab = tab === 'kalendar' ? calendarReturnTab : tab;
+  const navTab = tab === 'kalendar' ? calendarReturnTab : (tab === 'komunita' && communityMode === 'messages' ? 'spravy' : tab);
   document.querySelectorAll('.tab').forEach(el => {
     const on = el.dataset.tab === navTab;
     el.classList.toggle('active', on);
@@ -19442,7 +19444,10 @@ function switchTab(tab) {
   if (tab === 'trening') renderTrening();
   if (tab === 'pokrok') renderPokrok();
   if (tab === 'kalendar') renderKalendar();
-  if (tab === 'komunita') renderCommunity();
+  if (tab === 'komunita') {
+    document.getElementById('screen-komunita').classList.toggle('msg-mode', communityMode === 'messages');
+    renderCommunity();
+  }
   if (tab === 'ty') renderTy();
   refreshUpdateBanner();
 }
@@ -19892,101 +19897,6 @@ function themeChipsKey(e) {
     else if (mq && mq.addListener) mq.addListener(onChange);
   } catch (e) {}
 })();
-
-/* ---------- Ukážky dizajnov (Nastavenia → Vzhľad aplikácie) ----------
-   Len náhľad iného vzhľadu: samostatné stránky v design-concepts/app/ so vzorovými dátami (vlastný
-   kľúč v localStorage, nikdy nie dáta aplikácie). Otvárajú sa v rámci (iframe) na celú obrazovku
-   vnútri aplikácie, takže sa dá vždy vrátiť späť – aj v nainštalovanej appke bez tlačidla Späť.
-   Súčasný vzhľad GymQuestu zostáva jediný skutočný; nič sa neprepína ani neukladá. */
-const DESIGN_PREVIEWS = [
-  { id: 'periwinkle', name: 'Periwinkle', round: 4, path: 'r4/01-periwinkle.html', thumb: 'r4/thumbs/01-periwinkle.jpg' },
-  { id: 'pastel', name: 'Pastel Planner', round: 4, path: 'r4/02-pastel.html', thumb: 'r4/thumbs/02-pastel.jpg' },
-  { id: 'rings', name: 'Soft Rings', round: 4, path: 'r4/03-rings.html', thumb: 'r4/thumbs/03-rings.jpg' },
-  { id: 'violet', name: 'Violet Studio', round: 4, path: 'r4/04-violet.html', thumb: 'r4/thumbs/04-violet.jpg' },
-  { id: 'lilac', name: 'Lilac Player', round: 4, path: 'r4/05-lilac.html', thumb: 'r4/thumbs/05-lilac.jpg' },
-  { id: 'clay', name: 'Clay', round: 2, path: 'r2/14-clay.html', thumb: 'r2/thumbs/14-clay.jpg' },
-  { id: 'bloom', name: 'Bloom', round: 2, path: 'r2/53-bloom.html', thumb: 'r2/thumbs/53-bloom.jpg' },
-  { id: 'bento', name: 'Bento', round: 2, path: 'r2/03-bento.html', thumb: 'r2/thumbs/03-bento.jpg' },
-  /* Bento v pôvodných farbách – Classic, Soft, Vivid, každý svetlý aj tmavý (kolo 7) */
-  { id: 'bento-classic-light', name: 'Bento Classic Light', label: 'Bento · default colours', path: 'r7/01-classic-light.html', thumb: 'r7/thumbs/01-classic-light.jpg' },
-  { id: 'bento-classic-dark', name: 'Bento Classic Dark', label: 'Bento · default colours', path: 'r7/02-classic-dark.html', thumb: 'r7/thumbs/02-classic-dark.jpg' },
-  { id: 'bento-soft-light', name: 'Bento Soft Light', label: 'Bento · default colours', path: 'r7/03-soft-light.html', thumb: 'r7/thumbs/03-soft-light.jpg' },
-  { id: 'bento-soft-dark', name: 'Bento Soft Dark', label: 'Bento · default colours', path: 'r7/04-soft-dark.html', thumb: 'r7/thumbs/04-soft-dark.jpg' },
-  { id: 'bento-vivid-light', name: 'Bento Vivid Light', label: 'Bento · default colours', path: 'r7/05-vivid-light.html', thumb: 'r7/thumbs/05-vivid-light.jpg' },
-  { id: 'bento-vivid-dark', name: 'Bento Vivid Dark', label: 'Bento · default colours', path: 'r7/06-vivid-dark.html', thumb: 'r7/thumbs/06-vivid-dark.jpg' },
-  /* Bento s grafmi z Mint – tri varianty (kolo 5) */
-  { id: 'bento-trends', name: 'Bento Trends', label: 'Bento + Mint', path: 'r5/01-bento-trends.html', thumb: 'r5/thumbs/01-bento-trends.jpg' },
-  { id: 'bento-dashboard', name: 'Bento Dashboard', label: 'Bento + Mint', path: 'r5/02-bento-dashboard.html', thumb: 'r5/thumbs/02-bento-dashboard.jpg' },
-  { id: 'bento-mint', name: 'Bento Mint', label: 'Bento + Mint', path: 'r5/03-bento-mint.html', thumb: 'r5/thumbs/03-bento-mint.jpg' },
-  /* Bento v piatich farebných variantoch, každý svetlý aj tmavý (kolo 6) */
-  { id: 'bento-ocean-light', name: 'Bento Ocean Light', label: 'Bento · light mode', path: 'r6/01-ocean-light.html', thumb: 'r6/thumbs/01-ocean-light.jpg' },
-  { id: 'bento-ocean-dark', name: 'Bento Ocean Dark', label: 'Bento · dark mode', path: 'r6/02-ocean-dark.html', thumb: 'r6/thumbs/02-ocean-dark.jpg' },
-  { id: 'bento-sunset-light', name: 'Bento Sunset Light', label: 'Bento · light mode', path: 'r6/03-sunset-light.html', thumb: 'r6/thumbs/03-sunset-light.jpg' },
-  { id: 'bento-sunset-dark', name: 'Bento Sunset Dark', label: 'Bento · dark mode', path: 'r6/04-sunset-dark.html', thumb: 'r6/thumbs/04-sunset-dark.jpg' },
-  { id: 'bento-forest-light', name: 'Bento Forest Light', label: 'Bento · light mode', path: 'r6/05-forest-light.html', thumb: 'r6/thumbs/05-forest-light.jpg' },
-  { id: 'bento-forest-dark', name: 'Bento Forest Dark', label: 'Bento · dark mode', path: 'r6/06-forest-dark.html', thumb: 'r6/thumbs/06-forest-dark.jpg' },
-  { id: 'bento-berry-light', name: 'Bento Berry Light', label: 'Bento · light mode', path: 'r6/07-berry-light.html', thumb: 'r6/thumbs/07-berry-light.jpg' },
-  { id: 'bento-berry-dark', name: 'Bento Berry Dark', label: 'Bento · dark mode', path: 'r6/08-berry-dark.html', thumb: 'r6/thumbs/08-berry-dark.jpg' },
-  { id: 'bento-mono-light', name: 'Bento Mono Light', label: 'Bento · light mode', path: 'r6/09-mono-light.html', thumb: 'r6/thumbs/09-mono-light.jpg' },
-  { id: 'bento-mono-dark', name: 'Bento Mono Dark', label: 'Bento · dark mode', path: 'r6/10-mono-dark.html', thumb: 'r6/thumbs/10-mono-dark.jpg' },
-  { id: 'atlas', name: 'Atlas', round: 2, path: 'r2/01-atlas.html', thumb: 'r2/thumbs/01-atlas.jpg' },
-  { id: 'isometric', name: 'Isometric', round: 2, path: 'r2/47-isometric.html', thumb: 'r2/thumbs/47-isometric.jpg' },
-  { id: 'mint', name: 'Mint', round: 3, path: 'r3/073-mint.html', thumb: 'r3/thumbs/073-mint.jpg' },
-];
-const DESIGN_PREVIEW_BASE = 'design-concepts/app/';
-let designReturnFocus = null;
-
-function renderDesignGrid() {
-  const grid = document.getElementById('design-grid');
-  if (!grid) return;
-  const current = '<button type="button" class="design-item design-current" role="listitem" data-design="current" aria-current="true">'
-    + '<span class="design-thumb design-thumb-current" aria-hidden="true">GymQuest</span>'
-    + '<span class="design-name">' + esc(t('designs.currentName')) + '</span>'
-    + '<span class="design-meta">✓ ' + esc(t('designs.inUse')) + '</span></button>';
-  grid.innerHTML = current + DESIGN_PREVIEWS.map((d) => '<button type="button" class="design-item" role="listitem" data-design="' + escAttr(d.id) + '"'
-    + ' aria-label="' + escAttr(t('designs.openAria', { name: d.name })) + '">'
-    + '<img class="design-thumb" src="' + escAttr(DESIGN_PREVIEW_BASE + d.thumb) + '" alt="" loading="lazy" width="300" height="649">'
-    + '<span class="design-name">' + esc(d.name) + '</span>'
-    + '<span class="design-meta">' + esc(d.label || t('designs.round', { n: d.round })) + '</span></button>').join('');
-}
-function openDesignPicker() {
-  renderDesignGrid();
-  document.getElementById('modal-designs').hidden = false;
-  const first = document.querySelector('#design-grid .design-item');
-  if (first) first.focus();
-}
-function closeDesignPicker() {
-  document.getElementById('modal-designs').hidden = true;
-  refreshUpdateBanner();
-}
-function openDesignPreview(id, opener) {
-  const d = DESIGN_PREVIEWS.find((x) => x.id === id);
-  if (!d) { closeDesignPicker(); return; }
-  designReturnFocus = opener || null;
-  const view = document.getElementById('design-view');
-  const frame = document.getElementById('design-view-frame');
-  document.getElementById('design-view-title').textContent = t('designs.previewOf', { name: d.name });
-  frame.title = t('designs.previewOf', { name: d.name });
-  frame.src = DESIGN_PREVIEW_BASE + d.path;
-  view.hidden = false;
-  document.documentElement.classList.add('design-view-open');
-  document.getElementById('btn-design-view-close').focus();
-}
-function closeDesignPreview() {
-  const view = document.getElementById('design-view');
-  if (!view || view.hidden) return;
-  view.hidden = true;
-  document.getElementById('design-view-frame').src = 'about:blank';   // ukážka sa zastaví
-  document.documentElement.classList.remove('design-view-open');
-  if (designReturnFocus && document.contains(designReturnFocus)) designReturnFocus.focus();
-  designReturnFocus = null;
-}
-function onDesignGridClick(e) {
-  const b = e.target.closest ? e.target.closest('[data-design]') : null;
-  if (!b) return;
-  if (b.dataset.design === 'current') { closeDesignPicker(); return; }
-  openDesignPreview(b.dataset.design, b);
-}
 
 function openSettings() {
   renderThemeChips();
@@ -23172,7 +23082,13 @@ async function syncStartup() {
 function setupEvents() {
   document.querySelectorAll('.tab').forEach(tab => {
     /* Bento: ťuknutie na kartu v menu otvorí jej prehľad (listy štatistík sa zatvoria) */
-    tab.addEventListener('click', () => { if (tab.dataset.tab === 'pokrok') pokrokView = 'stats'; switchTab(tab.dataset.tab); window.scrollTo(0, 0); });
+    tab.addEventListener('click', () => {
+      communityReturnTab = null;
+      if (tab.dataset.tab === 'spravy') { openMessagesTab(); window.scrollTo(0, 0); return; }
+      if (tab.dataset.tab === 'komunita' && communityMode === 'messages') { communityMode = 'community'; communityBack = []; communityView = 'feed'; }
+      if (tab.dataset.tab === 'pokrok') pokrokView = 'stats';
+      switchTab(tab.dataset.tab); window.scrollTo(0, 0);
+    });
   });
 
   on('btn-change-lang', openLanguagePicker);
@@ -23286,12 +23202,6 @@ function setupEvents() {
   on('theme-chips', (e) => { const b = e.target.closest ? e.target.closest('[data-theme-choice]') : null; if (b) setThemePref(b.dataset.themeChoice); });
   { const tc = document.getElementById('theme-chips'); if (tc) tc.addEventListener('keydown', themeChipsKey); }
 
-  /* Ukážky dizajnov (Nastavenia) */
-  on('btn-design-previews', openDesignPicker);
-  on('btn-designs-close', closeDesignPicker);
-  on('design-grid', onDesignGridClick);
-  on('btn-design-view-close', closeDesignPreview);
-  on('modal-designs', (e) => { if (e.target === e.currentTarget) closeDesignPicker(); });   // ťuknutie mimo okna
 
   on('btn-reset-session', () => {
     showGeneric(t('trening.resetSessionTitle'), t('trening.resetSession'), () => {
@@ -23451,10 +23361,6 @@ function setupEvents() {
   // jeden dokumentový listener pre Esc (modal nie je fokusovateľný kontajner)
   document.addEventListener('keydown', (e) => {
     if (e.key !== 'Escape') return;
-    const designView = document.getElementById('design-view');
-    if (designView && !designView.hidden) { closeDesignPreview(); return; }
-    const designsModal = document.getElementById('modal-designs');
-    if (designsModal && !designsModal.hidden) { closeDesignPicker(); return; }
     const inviteModal = document.getElementById('modal-community-invite');
     if (inviteModal && !inviteModal.hidden) { closeCommunityInvite(); return; }
     const langModal = document.getElementById('modal-lang');
@@ -23485,6 +23391,7 @@ function setupEvents() {
   on('btn-photo-viewer-share', () => { const id = currentViewerPhotoId(); if (id) communityAskShare(id); });
   on('screen-komunita', (e) => {
     const tab = e.target.closest ? e.target.closest('[data-community-view]') : null;
+    if (tab && tab.dataset.communityView === 'chats' && communityMode !== 'messages') { openMessagesTab(); return; }
     if (tab && tab.dataset.communityView) { communitySetView(tab.dataset.communityView); return; }
     const a = e.target.closest ? e.target.closest('[data-community-action]') : null;
     if (!a) return;
@@ -23717,6 +23624,11 @@ function setupEvents() {
   on('btn-rest-close', closeRestSheet);
   on('tr-start', () => { const p = getPlan(selectedPlan); if (p && ensureSession(p)) saveState(); renderTrening(); window.scrollTo(0, 0); });
   on('btn-fullbody-tile', openFullBodyBuilder);
+  on('btn-train-tile', () => {
+    if (!trainPickerOpen) trainOpenPicker();
+    const box = document.getElementById('train-box');
+    if (box && box.scrollIntoView) setTimeout(() => box.scrollIntoView({ block: 'nearest', behavior: 'smooth' }), 50);
+  });
   on('edit-back', () => document.getElementById('btn-edit-cancel').click());
   on('tr-sess-plan', () => { trainShowPlans = !trainShowPlans; bentoTrainMode(); });
   on('back-calendar', () => switchTab(calendarReturnTab === 'kalendar' ? 'dnes' : calendarReturnTab));

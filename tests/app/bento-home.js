@@ -92,7 +92,7 @@ function check(name, ok, info) {
       ['#bt-photos', `activeTab === 'pokrok' && pokrokView === 'photos'`, 'photos → Photos'],
       ['#bt-rest', `!document.getElementById('modal-rest').hidden && !!document.querySelector('#modal-rest #timer-presets')`, 'rest → Rest timer sheet'],
       ['#bt-settings', `!document.getElementById('modal-settings').hidden`, 'settings → Settings'],
-      ['#bt-friends', `activeTab === 'komunita'`, 'friends → Community (Messages)'],
+      ['#bt-friends', `activeTab === 'komunita' && communityMode === 'messages' && document.querySelector('.tab-bar .tab.active').dataset.tab === 'spravy'`, 'friends → the Messages tab'],
       ['#btn-choose-mode', `!document.getElementById('modal-mode').hidden`, 'activity → activity choice'],
       ['#btn-choose-manual', `!document.getElementById('modal-activity').hidden && document.getElementById('modal-mode').hidden`, 'activity choice → log a past activity'],
     ];
@@ -103,7 +103,7 @@ function check(name, ok, info) {
       check(name, await p.eval(`!!(${cond})`), await p.eval(`({ tab: activeTab, view: pokrokView })`));
     }
     await home();
-    check('train-together tile stays hidden without Community', await p.eval(`document.getElementById('bt-train').hidden`));
+    check('Train with a friend is not on Today, and its Workout tile stays hidden without Community', !(await p.eval(`!!document.getElementById('bt-train')`)) && await p.eval(`document.getElementById('btn-train-tile').hidden`));
 
     console.log('== Start, Continue, excuse');
     await click('#btn-start-workout'); await wait(200);

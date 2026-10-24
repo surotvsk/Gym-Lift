@@ -98,6 +98,7 @@ async function typeMsg(p, text) {
     await y.c.rpc('accept_friend_request', { p_request: req.data.id });
   }
   const phone = { width: 390, height: 844, deviceScaleFactor: 2, mobile: true };
+  const tileShown = (p) => p.eval(`!document.getElementById('btn-train-tile').hidden`);
   const box = (p) => p.eval(`(() => { const b = document.getElementById('train-box'); return b && !b.hidden ? b.innerText : ''; })()`);
   const today = (p) => p.eval(`(() => { const b = document.getElementById('train-today'); return b && !b.hidden ? b.innerText : ''; })()`);
   const sessRow = () => { const r = sql(`select status || '|' || coalesce(plan->>'name', '-') from public.train_sessions where host_id = ${lit(A.id)} order by created_at desc limit 1`).split('\n')[0]; return r; };
@@ -118,18 +119,14 @@ async function typeMsg(p, text) {
     await waitFor(() => pA.eval(`document.querySelectorAll('#bt-friends-avs .k-av').length === 2`), 20000, 'friend avatars');
     check('Today greets by username and shows both friends on the Friends tile', (await pA.eval(`document.getElementById('bh-hello').textContent`)) === 'Hi, ' + A.name
       && (await pA.eval(`document.getElementById('bt-friends-l').textContent`)) === 'Friends');
-    check('the "Train with a friend" tile is shown and opens the picker on Workout', await pA.eval(`!document.getElementById('bt-train').hidden`));
     await shot(pA, 'bento-today-signed-in');
     await pA.c.send('Emulation.setDeviceMetricsOverride', phone);
-    await click(pA, '#bt-train');
-    await waitFor(() => pA.eval(`activeTab === 'trening' && document.querySelectorAll('[data-train-action="invite"]').length === 2`), 15000, 'picker from tile');
-    check('tile → Workout with the friend picker open', true);
-    await click(pA, '[data-train-action="open"]');   // zavrie výber, test pokračuje ako doteraz
     await pA.eval(`(switchTab('trening'), true)`);
 
     section('inviting');
-    await waitFor(() => box(pA).then((x) => x.includes('Train with a friend')), 20000, 'train button');
-    check('Workout shows "👥 Train with a friend"', (await box(pA)).includes('👥 Train with a friend'));
+    /* Bento: „Trénovať s priateľom" je dlaždica medzi akciami Tréningu; panel pod ňou je v pokoji skrytý */
+    await waitFor(() => tileShown(pA), 20000, 'train tile');
+    check('Workout shows the "Train with a friend" tile (and no idle panel)', (await pA.eval(`document.getElementById('btn-train-tile').textContent`)).includes('Train with a friend') && (await box(pA)) === '');
     await click(pA, '[data-train-action="open"]');
     await waitFor(() => pA.eval(`document.querySelectorAll('[data-train-action="invite"]').length === 2`), 15000, 'friend list');
     check('the picker lists only friends (ben, cyd) and offers to send the plan (checked)', J((await pA.eval(`Array.from(document.querySelectorAll('[data-train-action="invite"]')).map((b) => b.textContent).sort()`))) === J([B.name, C.name].sort())
@@ -195,12 +192,12 @@ async function typeMsg(p, text) {
     check('ben\'s workout is saved with "trainedWith: ada"', (await pB.eval(`state.history[state.history.length - 1].trainedWith`)) === A.name);
     await waitFor(() => Promise.resolve(sessRow().startsWith('ended|')), 40000, 'auto end');
     check('both finished → the session ended by itself', sessRow().startsWith('ended|'), sessRow());
-    await waitFor(() => box(pB).then((x) => x.includes('Train with a friend')), 30000, 'B back to button');
-    check('ben\'s panel is back to "Train with a friend" with "Training together with ada has ended."', (await box(pB)).includes('has ended'));
+    await waitFor(() => tileShown(pB), 30000, 'B back to tile');
+    check('ben\'s "Train with a friend" tile is back, with "Training together with ada has ended."', (await box(pB)).includes('has ended'));
 
     section('declining');
     await pA.eval(`(switchTab('trening'), true)`);
-    await waitFor(() => box(pA).then((x) => x.includes('Train with a friend')), 30000, 'A button again');
+    await waitFor(() => tileShown(pA), 30000, 'A tile again');
     if (!(await pA.eval(`!!document.querySelector('[data-train-action="invite"]')`))) await click(pA, '[data-train-action="open"]');
     await waitFor(() => pA.eval(`!!document.querySelector('[data-train-action="invite"]')`), 15000, 'picker again');
     await click(pA, `[data-train-action="invite"][data-user="${B.id}"]`);
@@ -213,8 +210,9 @@ async function typeMsg(p, text) {
     section('languages');
     for (const lang of ['sk', 'en', 'es', 'pt-BR', 'fr', 'ar']) {
       await pA.eval(`(setLang(${J(lang)}), switchTab('trening'), renderTrening(), true)`);
-      const txt = await box(pA);
-      check(lang + ': panel translated', !!txt && !/train\.|community\./.test(txt) && txt.includes(await pA.eval(`t('train.open')`)), txt);
+      /* Bento: nápis „Trénovať s priateľom" je na dlaždici v Tréningu, panel pod ňou nesie len stav (napr. neplatná pozvánka) */
+      const txt = (await box(pA)) + ' ' + (await pA.eval(`document.getElementById('btn-train-tile').innerText`));
+      check(lang + ': tile and panel translated', !/train\.|bento\.|community\./.test(txt) && txt.includes(await pA.eval(`t('train.open')`)) && txt.includes(await pA.eval(`t('bento.trainLine')`)), txt);
     }
     await pA.eval(`(setLang('ar'), true)`);
     await shot(pA, 'train-ar', '#train-box');

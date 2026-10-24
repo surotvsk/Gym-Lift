@@ -95,11 +95,12 @@ const ENTRY = [
   ['Menu: Today', `switchTab('trening')`, '.tab-bar .tab[data-tab="dnes"]'],
   ['Menu: Workout', `switchTab('dnes')`, '.tab-bar .tab[data-tab="trening"]'],
   ['Menu: Stats', `switchTab('dnes')`, '.tab-bar .tab[data-tab="pokrok"]'],
+  ['Menu: Messages', `switchTab('dnes')`, '.tab-bar .tab[data-tab="spravy"]'],
   ['Menu: Community', `switchTab('dnes')`, '.tab-bar .tab[data-tab="komunita"]'],
   ['Menu: You', `switchTab('dnes')`, '.tab-bar .tab[data-tab="ty"]'],
 ];
 const SETTINGS = ['#btn-change-lang', '#theme-chips [data-theme-choice="light"]', '#theme-chips [data-theme-choice="dark"]', '#theme-chips [data-theme-choice="auto"]',
-  '#btn-design-previews', '#btn-community-settings', '#settings-goal-chips .goal-chip', '#btn-rest-sound', '#btn-test-sound', '#btn-backup-now',
+  '#btn-community-settings', '#settings-goal-chips .goal-chip', '#btn-rest-sound', '#btn-test-sound', '#btn-backup-now',
   '#btn-export', '#btn-import', '#btn-load-demo', '#btn-reset-data', '#btn-check-update', '#btn-settings-close', '#btn-settings-save'];
 
 const REACH_JS = (sel) => `(() => {
@@ -131,8 +132,12 @@ const REACH_JS = (sel) => `(() => {
   const newHtml = fs.readFileSync(path.join(REPO, 'index.html'), 'utf8');
   const ids = (s) => new Set([...s.matchAll(/\bid="([^"]+)"/g)].map((m) => m[1]));
   const oldIds = ids(oldHtml), newIds = ids(newHtml);
-  const missing = [...oldIds].filter((x) => !newIds.has(x));
-  check('all ' + oldIds.size + ' element ids of the previous release are present (' + newIds.size + ' now)', missing.length === 0, missing);
+  /* Zámerne odstránené na žiadosť majiteľa (2026-10-24): Ukážky dizajnov v Nastaveniach a ich okná; dlaždica
+     „Trénovať s priateľom“ na Dnes (bt-train) sa presunula do Tréningu ako #btn-train-tile. */
+  const REMOVED = new Set(['bt-train', 'btn-design-previews', 'modal-designs', 'design-grid', 'btn-designs-close', 'design-view', 'design-view-title', 'btn-design-view-close', 'design-view-frame']);
+  const missing = [...oldIds].filter((x) => !newIds.has(x) && !REMOVED.has(x));
+  check('all ' + oldIds.size + ' element ids of the previous release are present, except the removed Design previews (' + newIds.size + ' now)', missing.length === 0, missing);
+  check('Design previews are gone from the app (no entry point, no dialog)', [...REMOVED].every((x) => !newIds.has(x)) && !/designs\.open|design-concepts\/app/.test(newHtml));
 
   const emptyCfg = path.join(WORK, 'community-config.empty.js');
   fs.writeFileSync(emptyCfg, "window.GYMQUEST_COMMUNITY = { supabaseUrl: '', supabaseAnonKey: '' };\n");
@@ -143,7 +148,7 @@ const REACH_JS = (sel) => `(() => {
   try {
     await p.navigate(BASE);
     await p.eval(`(() => { const ok = document.getElementById('btn-setup-ok'); if (ok && !document.getElementById('modal-setup').hidden) ok.click(); setLang('en'); seedSampleData(); renderAll(); return true; })()`);
-    const reset = `(() => { for (const m of document.querySelectorAll('.modal-backdrop')) m.hidden = true; if (typeof stopTimer === 'function') stopTimer(); pokrokView = 'stats'; trainShowPlans = false;
+    const reset = `(() => { for (const m of document.querySelectorAll('.modal-backdrop')) m.hidden = true; if (typeof stopTimer === 'function') stopTimer(); pokrokView = 'stats'; trainShowPlans = false; communityMode = 'community'; communityReturnTab = null;
       if (getSession()) { clearSession(); saveState(); } if (editingPlan !== null) { closeEditor(); } document.getElementById('modal-library').hidden = true; renderAll(); return true; })()`;
     for (const [w, mobile] of [[320, true], [390, true], [820, true], [1280, false]]) {
       for (const mode of ['light', 'dark']) {
@@ -194,6 +199,12 @@ const REACH_JS = (sel) => `(() => {
       ['You profile tile opens Community', `switchTab('ty')`, '#ty-profile', `activeTab === 'komunita'`],
       ['menu You selects only the You tab', `switchTab('dnes')`, '.tab-bar .tab[data-tab="ty"]', `activeTab === 'ty' && document.querySelectorAll('.tab-bar .tab.active').length === 1 && document.querySelector('.tab-bar .tab.active').dataset.tab === 'ty'`],
       ['menu Today selects only Today', `switchTab('ty')`, '.tab-bar .tab[data-tab="dnes"]', `document.querySelectorAll('.tab-bar .tab.active').length === 1 && document.querySelector('.tab-bar .tab.active').dataset.tab === 'dnes'`],
+      ['menu Messages opens the conversations (Messages selected)', `switchTab('dnes')`, '.tab-bar .tab[data-tab="spravy"]', `activeTab === 'komunita' && communityMode === 'messages' && communityView === 'chats' && document.querySelector('.tab-bar .tab.active').dataset.tab === 'spravy'`],
+      ['menu Community goes back to the Community page', `openMessagesTab()`, '.tab-bar .tab[data-tab="komunita"]', `communityMode === 'community' && communityView === 'feed' && document.querySelector('.tab-bar .tab.active').dataset.tab === 'komunita'`],
+      ['Full Body builder opens full-screen from the top', `switchTab('trening')`, '#btn-fullbody-tile', `(() => { const r = document.querySelector('#modal-fullbody .modal').getBoundingClientRect(); return r.top === 0 && Math.round(r.height) === innerHeight; })()`],
+      ['exercise detail opens full-screen from the top', `(switchTab('trening'), ensureSession(getPlan(selectedPlan)), saveState(), renderTrening())`, '#exercise-list .exercise-info', `(() => { const r = document.querySelector('#modal-exercise .modal').getBoundingClientRect(); const b = document.getElementById('exercise-body'); return r.top === 0 && Math.round(r.height) === innerHeight && getComputedStyle(b).overflowY === 'auto'; })()`],
+      ['calendar month title is centred between the arrows', `openCalendarPage()`, '#btn-cal-today', `(() => { const t = document.getElementById('calendar-title').getBoundingClientRect(), a = document.getElementById('btn-cal-prev').getBoundingClientRect(), b = document.getElementById('btn-cal-next').getBoundingClientRect(), g = document.getElementById('calendar-grid').getBoundingClientRect();
+        const mid = (t.left + t.right) / 2, gmid = (g.left + g.right) / 2; return Math.abs(mid - gmid) < 2 && Math.abs(a.width - b.width) < 1 && Math.abs((a.top + a.bottom) / 2 - (t.top + t.bottom) / 2) < 3; })()`],
       ['language picker opens from settings', `openSettings()`, '#btn-change-lang', `!document.getElementById('modal-lang').hidden`],
       ['dark mode from settings', `openSettings()`, '#theme-chips [data-theme-choice="dark"]', `document.documentElement.dataset.theme === 'dark' && localStorage.getItem('gymquest_theme') === 'dark'`],
       ['system mode from settings', `openSettings()`, '#theme-chips [data-theme-choice="auto"]', `localStorage.getItem('gymquest_theme') === null`],
