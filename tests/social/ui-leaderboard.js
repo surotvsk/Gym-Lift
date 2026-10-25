@@ -105,7 +105,7 @@ scenario('hidden state and the privacy switch', async () => {
   const me = await member('h-me');
   const p = await device('hidden');
   await signIn(p, me);
-  await p.eval(`(communitySetView('profile'), true)`);
+  await p.eval(`(communitySetView('editprofile'), true)`);   // v80: prepínač je v Upraviť profil
   await waitFor(() => p.eval(`!!document.getElementById('community-leaderboard')`), 15000, 'privacy switch');
   check('switch is on by default', await p.eval(`document.getElementById('community-leaderboard').checked === true`));
   await p.eval(`(() => { const c = document.getElementById('community-leaderboard'); c.checked = false; c.dispatchEvent(new Event('change', { bubbles: true })); return true; })()`);

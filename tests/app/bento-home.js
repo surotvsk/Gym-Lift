@@ -115,10 +115,24 @@ function check(name, ok, info) {
     await p.eval(`(clearSession(), saveState(), switchTab('dnes'), true)`);
     check('after the workout ends the tile says Start again', (await txt('bt-start-text')) === 'Start');
     const wk = await p.eval(`currentWeekKey()`);
+    /* v80: dlaždica otvorí list (tento / budúci týždeň), už nič neprepína jedným ťuknutím */
+    const nwk = await p.eval(`nextWeekKey(currentWeekKey())`);
     await click('#btn-excuse'); await wait(100);
-    check('excuse tile excuses this week', await p.eval(`state.excusedWeeks.includes(${J(wk)})`) && (await txt('bt-excuse-l')).startsWith('Excused') && (await txt('bt-excuse-line')) === 'Tap to undo' && await p.eval(`document.getElementById('btn-excuse').getAttribute('aria-pressed') === 'true'`));
+    check('excuse tile opens the sheet and changes nothing by itself', await p.eval(`!document.getElementById('modal-excuse').hidden && !state.excusedWeeks.includes(${J(wk)})`)
+      && await p.eval(`document.querySelectorAll('#excuse-weeks [data-excuse-week]').length === 2`));
+    await click('#excuse-weeks [data-excuse-week="' + wk + '"]'); await wait(100);
+    check('the This week switch excuses this week', await p.eval(`state.excusedWeeks.includes(${J(wk)})`) && await p.eval(`document.querySelector('#excuse-weeks [data-excuse-week="${wk}"]').getAttribute('aria-checked') === 'true'`));
+    await click('#excuse-weeks [data-excuse-week="' + nwk + '"]'); await wait(100);
+    check('next week can be excused in advance', await p.eval(`state.excusedWeeks.includes(${J(nwk)})`));
+    await click('#btn-excuse-done'); await wait(100);
+    check('tile says excused, sheet closed', (await txt('bt-excuse-l')).startsWith('Excused') && (await txt('bt-excuse-line')) === 'This week · tap to change' && await p.eval(`document.getElementById('modal-excuse').hidden`));
     await click('#btn-excuse'); await wait(100);
-    check('tapping again undoes it', !(await p.eval(`state.excusedWeeks.includes(${J(wk)})`)) && (await txt('bt-excuse-l')) === 'Busy week?' && (await txt('bt-excuse-line')) === 'Excuse it, keep the streak');
+    await click('#excuse-weeks [data-excuse-week="' + wk + '"]'); await wait(100);
+    await click('#btn-excuse-done'); await wait(100);
+    check('turning it off undoes this week; the tile still shows next week', !(await p.eval(`state.excusedWeeks.includes(${J(wk)})`)) && (await txt('bt-excuse-l')) === 'Busy week?' && (await txt('bt-excuse-line')) === 'Next week excused ✓');
+    check('past weeks cannot be changed from the app', await p.eval(`(() => { const old = prevWeekKey(currentWeekKey()); setWeekExcused(old, true); return !state.excusedWeeks.includes(old); })()`));
+    await p.eval(`(setWeekExcused(${J(nwk)}, false), true)`);
+    check('with nothing excused the tile reads as before', (await txt('bt-excuse-l')) === 'Busy week?' && (await txt('bt-excuse-line')) === 'Excuse it, keep the streak');
 
     console.log('== rest timer and messages badge');
     await p.eval(`(startTimer(90), switchTab('dnes'), true)`); await wait(1200);

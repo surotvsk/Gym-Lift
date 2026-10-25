@@ -33,7 +33,7 @@ const scenarios = [];
 const scenario = (name, fn) => scenarios.push({ name, fn });
 
 scenario('version and access', async () => {
-  check('community_social_version() is 7', sqlVal('select public.community_social_version()') === '7');
+  check('community_social_version() is 7 or later (0015 = 8)', Number(sqlVal('select public.community_social_version()')) >= 7);
   const anon = L.anon();
   for (const t of ['train_sessions', 'train_progress', 'train_cheers']) {
     const r = await anon.from(t).select('*').limit(1);
@@ -229,7 +229,7 @@ scenario('rollback 0014_down and re-apply', async () => {
   check('after rollback: unfriending still works', !del.error && rows(del).length === 1, errText(del));
   check('after rollback: leave cleanup still works', !(await L.admin.rpc('community_leave_cleanup', { p_user: a.id })).error);
   L.reapply(undone);
-  check('re-applied: version 7 again', sqlVal('select public.community_social_version()') === '7');
+  check('re-applied: version ' + undone.versionBefore + ' again', sqlVal('select public.community_social_version()') === undone.versionBefore);
   await new Promise((r) => setTimeout(r, 1500));
 });
 

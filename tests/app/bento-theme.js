@@ -102,7 +102,7 @@ const CONTRAST_JS = `(() => {
     console.log('== contrast (WCAG)');
     await p.eval(CONTRAST_JS);
     const pairs = [['dnes', '#bh-hello', 4.5], ['dnes', '#week-count', 3], ['dnes', '#bt-streak-v', 3], ['dnes', '#bt-level-v', 3], ['dnes', '#bt-body-v', 3], ['dnes', '#bt-food-v', 3],
-      ['dnes', '#bt-lift-line', 4.5], ['dnes', '#bt-excuse-line', 4.5], ['trening', '#tr-detail .tr-row', 4.5], ['dnes', '#bt-settings .bt-line', 4.5], ['dnes', '#bt-week .bt-l', 4.5], ['ty', '.motivation-text', 4.5], ['ty', '#ty-name', 4.5], ['ty', '#ty-settings .bt-line', 4.5], ['dnes', '#btn-start-workout', 4.5],
+      ['dnes', '#bt-lift-line', 4.5], ['dnes', '#bt-excuse-line', 4.5], ['trening', '#tr-detail .tr-row', 4.5], ['dnes', '#bt-settings .bt-line', 4.5], ['dnes', '#bt-week .bt-l', 4.5], ['ty', '.motivation-text', 4.5], ['ty', '#ty-name', 4.5], ['ty', '#ty-level-line', 4.5], ['ty', '#ty-goal-line', 4.5], ['ty', '#ty-seg .ty-filter.on', 4.5], ['ty', '#ty-private', 4.5], ['dnes', '#btn-start-workout', 4.5],
       ['dnes', '.today-date', 4.5], ['dnes', '.tab.active', 4.5], ['dnes', '.tab:not(.active)', 4.5], ['trening', '.plan-chips .chip.active', 4.5], ['trening', '.plan-chips .chip-wrap:nth-child(2) .chip', 4.5],
       ['trening', '.exercise-name', 4.5], ['trening', '.set-btn', 4.5], ['pokrok', '#stats-grid .bt-v', 3], ['pokrok', '#stats-grid .bt-l', 4.5], ['pokrok', '#stats-grid .st-rec span', 4.5], ['pokrok', '#stats-grid .k-chart-t', 4.5], ['kalendar', '#calendar-title', 3], ['kalendar', '.cal-cell', 3],
       ['kalendar', '.cal-cell.cal-done', 4.5], ['kalendar', '.cal-cell.cal-miss', 4.5], ['trening', '.plan-chips .chip.active .chip-name', 4.5], ['trening', '.plan-chips .chip-wrap:nth-child(3) .chip-name', 4.5],

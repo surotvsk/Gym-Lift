@@ -302,6 +302,7 @@ async function typeMsg(p, text) {
     await waitFor(() => pA.eval(`!!document.querySelector('.cprofile-ach-item')`), 15000, 'own achievements');
     const own = await pA.eval(`Array.from(document.querySelectorAll('.cprofile-ach-item')).map((x) => x.innerText.replace(/\\s+/g, ' ').trim())`);
     check('own profile shows up to 3 achievements', own.length >= 1 && own.length <= 3, own);
+    await view(pA, 'editprofile');   // v80: prepínač je v Upraviť profil, úspechy v hlavičke profilu
     check('the hide switch is on by default', await pA.eval(`document.getElementById('community-profile-ach').checked`));
     await pB.eval(`(communityOpenUser ? communityOpenUser(${J(A.id)}) : communityGo('user', () => { communityViewUser = ${J(A.id)}; }), true)`).catch(() => {});
     await pB.eval(`(communityGo('user', () => { communityViewUser = ${J(A.id)}; }), true)`);
@@ -309,7 +310,7 @@ async function typeMsg(p, text) {
     const seen = await pB.eval(`Array.from(document.querySelectorAll('.cprofile-ach-item')).map((x) => x.innerText.replace(/\\s+/g, ' ').trim())`);
     check('a friend sees the same top achievements', J(seen) === J(own), { seen, own });
     await shot(pB, 'profile-achievements', '.cprofile-ach');
-    await view(pA, 'profile');
+    await view(pA, 'editprofile');
     await click(pA, '#community-profile-ach');
     await waitFor(() => sqlVal(`select hidden from public.profile_achievements where user_id = ${lit(A.id)}`) === 't', 10000, 'hidden');
     await pB.eval(`(communityGo('user', () => { communityViewUser = ${J(A.id)}; }), true)`);
@@ -317,6 +318,7 @@ async function typeMsg(p, text) {
     check('after hiding, the friend sees none', await pB.eval(`!document.querySelector('.cprofile-ach-item')`));
     await view(pA, 'profile');
     check('the owner still sees them with a "hidden" note', await pA.eval(`!!document.querySelector('.cprofile-ach-item') && document.querySelector('.cprofile-ach').innerText.includes(t('profileAch.hiddenNote'))`));
+    await view(pA, 'editprofile');
     await click(pA, '#community-profile-ach');
 
     section('languages');

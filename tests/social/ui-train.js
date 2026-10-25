@@ -227,7 +227,7 @@ async function typeMsg(p, text) {
     await wait(1500);
     check('without 0014 the feature is hidden (no panel), Workout works', (await pC.eval(`document.getElementById('train-box').hidden && !!document.getElementById('exercise-list')`)));
     L.reapply(undone); reapplyLater = null;
-    check('0014 re-applied', sqlVal('select public.community_social_version()') === '7');
+    check('0014 re-applied (version ' + undone.versionBefore + ')', sqlVal('select public.community_social_version()') === undone.versionBefore);
 
     section('no errors');
     for (const [name, p] of pages) {

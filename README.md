@@ -138,12 +138,45 @@ in the prototype.
 - **Calendar** — opens from the *This week* tile on Today or the Calendar tile on Stats as a full sheet;
   workout days are green, past days without a workout pink, today has an orange outline.
 - **Messages** — your conversations open straight away; tap one to chat, *New message* picks a friend.
-  Back from a chat returns to the list.
+  Back from a chat returns to the list. The list is kept in memory (for the signed-in account only), so after
+  the first time it appears instantly and refreshes in the background; the requests that run before it are
+  sent together instead of one after another. Under your last message you see **Sent**, which turns into
+  **Seen** (live) once your friend has opened the chat — only when your message is the last one, like in
+  Messenger. Needs server version 8 (migration 0015); on an older server no label is shown.
 - **Community** — Top 20 (with your rank this week), New post, Messages and Friends tiles above the feed;
   search is the magnifier at the top. Messages, chats, friends, Top 20, profiles, the composer and the
   moderator queue open as sheets.
-- **You** — your profile tile (Community name, level, bio or a motivational line), *Community profile*
-  (opens your profile directly; Back returns to You), your weekly goal and **Settings**.
+- **Profiles** (v81) are organised like Instagram, in Bento colours and shapes: a compact top bar (**Back**,
+  the username, **⋯**), the avatar with *posts · followers · following* (and *friends* on your own), the name,
+  bio and top achievements (small chips), the actions, and the posts right below as a grid of rounded squares
+  — photos (a mark for several photos, a share or friends-only mark) and text-only posts as readable pastel
+  tiles. Tapping a tile opens the full post (likes, comments, its menu). *Load more* pages as before.
+  **Your own profile** (You → Community profile, or tapping your own name anywhere): **Edit profile** (name,
+  bio, avatar, privacy switches, notifications, reminders, delete account / leave / sign out) and **Friends**;
+  the ⋯ menu has *Settings and privacy*, *My posts*, *Moderation* (moderators only) and *Sign out*. Your posts
+  still waiting for the moderator (or rejected) come first in the grid, marked, and open *My posts*.
+  **Someone else's profile**: Follow / Following, the friendship button, Message (friends); ⋯ has Block and
+  Report (and the leaderboard moderation items for moderators only). Followers / Following open the lists.
+  A profile opens straight away with a skeleton carrying the right name — the Community tiles or the feed are
+  never shown in between — and **Back** returns to the previous screen exactly as it was (content, search text
+  and scroll position), refreshing profiles and lists quietly in place. Only what the server lets you see is
+  shown (another person's pending or friends-only posts never).
+- **You** (v80) is your own profile, the moment you tap it — like opening your profile on Instagram, in Bento
+  shapes and colours. At the top: *You* with **New post**, **⋯** and the **Settings** gear. A compact header card
+  holds your profile photo (or its letter), your name and @username, your bio (or a motivational line), your real
+  counts (posts · followers · following · friends; without Community: workouts · week streak · achievements) and
+  small pills for **Level · XP** (achievements), **Goal** (Settings at the goal) and **Progress photos** (private),
+  plus **Edit profile** (name, bio, avatar, privacy, notifications, reminders, account) and **Friends**. The ⋯ menu
+  has *Settings and privacy*, *My posts*, *Moderation* (moderators only) and *Sign out*.
+  Below it is your published history, newest first: **All** (photos in a Bento mosaic — one wide, two halves or three
+  in a row — text posts as readable cards, shared workouts and plans as summary cards with name, date, duration, XP and
+  exercises), and filters **Pics**, **Text** and **Workouts**. Older posts load by themselves as you scroll (the same
+  pages as the profile, never twice). Posts still waiting for the moderator or rejected come first, marked "only you
+  see this", and open *My posts*. Tapping a post opens it in full (likes, comments, its menu); Back returns to You
+  with the same filter and scroll position. **History** (lock) is owner-only: your finished workouts from this device,
+  never posts and never on the server; a tap opens that day. Private chats stay in Messages and progress photos stay
+  private — none of them ever appears among your posts. Without Community (or signed out, or offline) the header
+  and History still work and a short note offers Community — nothing is switched on by itself.
 - Dialogs slide up from the bottom; the exercise library, exercise details, the Full Body builder and the
   photo viewer open full-screen from the top on a phone, with their content scrolling inside. On a wider
   screen dialogs are centred. From 900 px the grid has
@@ -152,6 +185,13 @@ in the prototype.
 The font is Space Grotesk (SIL Open Font License, `fonts/OFL.txt`), stored in the app so it also works
 offline; Arabic keeps an Arabic system font. Keyboard focus is always visible, the theme choice works
 with the arrow keys, and with *reduce motion* switched on in the system the sheets do not animate.
+
+**⚙️ Settings** (v81) is grouped into Bento cards: **General** (language, appearance, weekly goal),
+**Rest timer** (the sound switch; its length and *Test sound* appear only when the sound is on),
+**Backup & sync** (account sync, *Sync now*, automatic backup, *Save backup now*), **Community**, and a
+collapsed **More options** with the rarely used tools: export, import, load from account, recovery copies,
+delete cloud backup, demo data and reset. Then updates, about and **Close**. Nothing was removed except the
+separate *Save goal* button — the goal is saved as soon as you tap it (and Close saves it once more).
 
 **⚙️ Settings → Appearance** chooses **Light**, **Dark** (near-black background, deep-toned tiles, lime
 accents) or **System** (follows the device's light/dark setting, also when it changes while the app is
@@ -174,7 +214,7 @@ grid. Every tile shows live numbers from your own data and opens the feature it 
 | **Next up ✦** (dark, with an exercise photo) | the recommended plan, its exercises and sets; during a workout **In progress** with the time and sets done | **Start** begins it, **Continue** returns to it |
 | **This week** (lime) | workouts done / weekly goal, and seven day squares (filled = trained, outlined = today) | Calendar |
 | **Streak** | weeks in a row | Achievements |
-| **Busy week?** | excuse this week and keep the streak; *Excused ✓ · Tap to undo* | (toggles the excused week) |
+| **Busy week?** | excuse a week and keep the streak; *Excused ✓ · This week · tap to change* or *Next week excused ✓* | the **Busy week?** sheet: switches for **This week** and **Next week** (with their dates) |
 | **Level** (lavender) | level, total XP, a bar and the XP to the next level | Achievements |
 | **Body** (sky) | your latest body weight | Body |
 | **Best lift** | your heaviest record and its exercise | Records |
@@ -276,12 +316,15 @@ badges earned for personal records.
   (for example Push → Pull → Legs → your own plan), based on the last completed workout. You can
   always pick a different plan manually. The recommendation is shown on the Today screen and marked
   with ✦ on the plan chips.
-- **Weekly goal** — set on first launch and changeable any time in ⚙️ Settings. Pick a number from
-  1 to 7 and confirm with **Save goal**. Doctor's-note weeks can be marked as excused in Settings so
-  the streak stays intact.
+- **Weekly goal** — set on first launch and changeable any time in ⚙️ Settings. Tap a number from
+  1 to 7; it applies right away (there is no separate Save button).
 - **Streak** — counted in weeks: hitting your weekly goal extends the streak by one week.
-- **Excused weeks** — mark a heavy week with the **Busy week?** tile on the Today screen and your streak is not
-  broken.
+- **Excused weeks** — the **Busy week?** tile on the Today screen opens a sheet with two switches: **This week**
+  and **Next week** (so a holiday or exam week can be excused in advance). An excused week keeps the streak
+  alive but never adds to it; workouts done in it still count. A week whose goal is already reached has
+  nothing to excuse (its switch is off and disabled). Past weeks cannot be changed, so a broken streak cannot
+  be repaired afterwards. A tap on the tile never changes anything by itself. The stored format is the same
+  list of ISO weeks as before (`excusedWeeks`).
 - **XP and levels** — every workout gives **20 XP** plus **2 XP** for each completed set. You need
   100 XP to reach the next level.
 - **Achievements** — unlocked automatically and stored with the date they were earned. Each exercise
@@ -1130,9 +1173,9 @@ was created and where to look, and nothing more.
 
 ### Using it
 
-- **⚙️ Settings → Automatic backup** — its state (*On*, or *Not needed* while account sync is on), the
-  honest explanation, the date of the last backup offered, and **Save backup now** (always available,
-  with or without an account).
+- **⚙️ Settings → Backup & sync → Automatic backup** — its state (*On*), the honest explanation and the date
+  of the last backup offered. While account sync is on the row is hidden (it would only say *Not needed*).
+  **Save backup now** is always available, with or without an account.
 - When a backup is due you also get a small strip above the tab bar with **Save backup now** (or
   **Save again**), the filename, and the plain truth about confirmation. Dismissing it hides it for
   that session only; export/import and the manual button are always there.

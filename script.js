@@ -8259,7 +8259,7 @@ const DROP_JUMP_I18N = {
     'drop.remove': 'Odstrániť drop sériu {n}', 'drop.editorNote': 'Mení sa iba táto drop séria. Plán sa nemení.',
     'drop.repsEditor': 'Opakovania drop série {n}', 'drop.weightEditor': 'Váha drop série {n} v kg',
     'drop.history': 'Drop série: {list}',
-    'chat.gotoOriginal': 'Zobraziť pôvodnú správu', 'chat.originalGone': 'Pôvodná správa už v tomto chate nie je.',
+    'chat.seen': 'Videné', 'chat.sent': 'Odoslané', 'chat.gotoOriginal': 'Zobraziť pôvodnú správu', 'chat.originalGone': 'Pôvodná správa už v tomto chate nie je.',
   },
   en: {
     'drop.add': '+ Drop set', 'drop.addTitle': 'After your last set, lower the weight and keep going without a rest.',
@@ -8268,7 +8268,7 @@ const DROP_JUMP_I18N = {
     'drop.remove': 'Remove drop set {n}', 'drop.editorNote': 'Only this drop set changes. Your plan stays the same.',
     'drop.repsEditor': 'Reps of drop set {n}', 'drop.weightEditor': 'Weight of drop set {n} in kg',
     'drop.history': 'Drop sets: {list}',
-    'chat.gotoOriginal': 'Show the original message', 'chat.originalGone': 'The original message is no longer in this chat.',
+    'chat.seen': 'Seen', 'chat.sent': 'Sent', 'chat.gotoOriginal': 'Show the original message', 'chat.originalGone': 'The original message is no longer in this chat.',
   },
   es: {
     'drop.add': '+ Serie descendente', 'drop.addTitle': 'Tras tu última serie, baja el peso y sigue sin descansar.',
@@ -8277,7 +8277,7 @@ const DROP_JUMP_I18N = {
     'drop.remove': 'Quitar la serie descendente {n}', 'drop.editorNote': 'Solo cambia esta serie descendente. Tu plan no cambia.',
     'drop.repsEditor': 'Repeticiones de la serie descendente {n}', 'drop.weightEditor': 'Peso de la serie descendente {n} en kg',
     'drop.history': 'Series descendentes: {list}',
-    'chat.gotoOriginal': 'Ver el mensaje original', 'chat.originalGone': 'El mensaje original ya no está en este chat.',
+    'chat.seen': 'Visto', 'chat.sent': 'Enviado', 'chat.gotoOriginal': 'Ver el mensaje original', 'chat.originalGone': 'El mensaje original ya no está en este chat.',
   },
   'pt-BR': {
     'drop.add': '+ Drop set', 'drop.addTitle': 'Depois da última série, reduza o peso e continue sem descanso.',
@@ -8286,7 +8286,7 @@ const DROP_JUMP_I18N = {
     'drop.remove': 'Remover o drop set {n}', 'drop.editorNote': 'Só este drop set muda. Seu plano não muda.',
     'drop.repsEditor': 'Repetições do drop set {n}', 'drop.weightEditor': 'Peso do drop set {n} em kg',
     'drop.history': 'Drop sets: {list}',
-    'chat.gotoOriginal': 'Ver a mensagem original', 'chat.originalGone': 'A mensagem original não está mais neste chat.',
+    'chat.seen': 'Visto', 'chat.sent': 'Enviado', 'chat.gotoOriginal': 'Ver a mensagem original', 'chat.originalGone': 'A mensagem original não está mais neste chat.',
   },
   fr: {
     'drop.add': '+ Série dégressive', 'drop.addTitle': 'Après ta dernière série, baisse la charge et continue sans repos.',
@@ -8295,7 +8295,7 @@ const DROP_JUMP_I18N = {
     'drop.remove': 'Retirer la série dégressive {n}', 'drop.editorNote': 'Seule cette série dégressive change. Ton plan ne change pas.',
     'drop.repsEditor': 'Répétitions de la série dégressive {n}', 'drop.weightEditor': 'Charge de la série dégressive {n} en kg',
     'drop.history': 'Séries dégressives : {list}',
-    'chat.gotoOriginal': 'Voir le message d’origine', 'chat.originalGone': 'Le message d’origine n’est plus dans ce chat.',
+    'chat.seen': 'Vu', 'chat.sent': 'Envoyé', 'chat.gotoOriginal': 'Voir le message d’origine', 'chat.originalGone': 'Le message d’origine n’est plus dans ce chat.',
   },
   ar: {
     'drop.add': '+ مجموعة تنازلية', 'drop.addTitle': 'بعد مجموعتك الأخيرة، خفّف الوزن واستمر دون راحة.',
@@ -8304,7 +8304,7 @@ const DROP_JUMP_I18N = {
     'drop.remove': 'إزالة المجموعة التنازلية {n}', 'drop.editorNote': 'تتغير هذه المجموعة التنازلية فقط. خطتك لا تتغيّر.',
     'drop.repsEditor': 'تكرارات المجموعة التنازلية {n}', 'drop.weightEditor': 'وزن المجموعة التنازلية {n} بالكغ',
     'drop.history': 'مجموعات تنازلية: {list}',
-    'chat.gotoOriginal': 'عرض الرسالة الأصلية', 'chat.originalGone': 'الرسالة الأصلية لم تعد في هذه المحادثة.',
+    'chat.seen': 'تمت المشاهدة', 'chat.sent': 'أُرسلت', 'chat.gotoOriginal': 'عرض الرسالة الأصلية', 'chat.originalGone': 'الرسالة الأصلية لم تعد في هذه المحادثة.',
   },
 };
 for (const lang of Object.keys(DROP_JUMP_I18N)) Object.assign(I18N[lang] || (I18N[lang] = {}), DROP_JUMP_I18N[lang]);
@@ -8665,6 +8665,52 @@ const BENTO_REF_I18N = {
   },
 };
 for (const lang of Object.keys(BENTO_REF_I18N)) Object.assign(I18N[lang] || (I18N[lang] = {}), BENTO_REF_I18N[lang]);
+/* v80: karta Ty (príspevky, fotky), ospravedlnenie týždňa, nastavenia */
+const V80_I18N = {
+  sk: { 'ty.all': 'Všetko', 'ty.text': 'Text', 'ty.workouts': 'Tréningy', 'ty.history': 'História', 'ty.historyPrivate': 'Len pre teba – tvoje tréningy z tohto zariadenia. Nie sú to príspevky a nikto iný ich nevidí.', 'ty.historyEmpty': 'Zatiaľ žiadny dokončený tréning.', 'ty.streak': 'týž. séria', 'ty.achievements': 'úspechy', 'ty.offLine': 'Community je vypnutá. Tvoje príspevky by sa ukázali tu – zapneš ju len ty.', 'ty.signedOutLine': 'Prihlás sa do Community a uvidíš tu svoje príspevky.', 'ty.unavailableLine': 'Príspevky tu nie sú k dispozícii. História tréningov funguje ďalej.', 'ty.offlineLine': 'Si offline – príspevky sa načítajú, keď budeš znova online.', 'ty.errorLine': 'Príspevky sa nepodarilo načítať. Skús to neskôr.', 'ty.noPosts': 'Zatiaľ nemáš žiadne príspevky.', 'ty.noneOfKind': 'Tu zatiaľ nič nie je.', 'ty.repostOf': 'Zdieľané od {name}', 'ty.onlyYou': 'vidíš len ty', 'ty.contentAria': 'Moje príspevky',
+    'pf.settings': 'Nastavenia a súkromie',
+    'set.general': 'Všeobecné', 'set.timer': 'Časovač oddychu', 'set.backup': 'Záloha a synchronizácia', 'set.more': 'Ďalšie možnosti', 'set.moreHint': 'Export, import, obnova, ukážkové dáta, reset',
+    'excuse.intro': 'Ospravedlnený týždeň udrží sériu. Nepripočíta sa do nej a tréningy, ktoré spravíš, sa rátajú ďalej.', 'excuse.thisWeek': 'Tento týždeň', 'excuse.nextWeek': 'Budúci týždeň',
+    'excuse.goalMet': 'Cieľ je splnený – netreba ospravedlňovať.', 'excuse.kept': 'Séria je v bezpečí.', 'excuse.tileThis': 'Tento týždeň · ťukni na zmenu', 'excuse.tileNext': 'Budúci týždeň ospravedlnený ✓',
+    'excuse.past': 'Predtým ospravedlnené týždne: {n}', 'ty.yourPosts': 'Tvoje príspevky', 'ty.posts': 'Príspevky', 'ty.pics': 'Fotky', 'ty.noPics': 'V príspevkoch zatiaľ nemáš žiadne fotky.',
+    'ty.openPhoto': 'Zväčšiť fotku', 'ty.photoOnly': 'Fotka', 'ty.joinLine': 'Pridaj sa do Community a tu uvidíš svoje príspevky a fotky.' },
+  en: { 'ty.all': 'All', 'ty.text': 'Text', 'ty.workouts': 'Workouts', 'ty.history': 'History', 'ty.historyPrivate': 'Only you – your workouts on this device. They are not posts and nobody else sees them.', 'ty.historyEmpty': 'No finished workout yet.', 'ty.streak': 'week streak', 'ty.achievements': 'achievements', 'ty.offLine': 'Community is off. Your posts would appear here – only you can turn it on.', 'ty.signedOutLine': 'Sign in to Community to see your posts here.', 'ty.unavailableLine': 'Posts are not available here. Your workout history still works.', 'ty.offlineLine': 'You are offline – your posts load when you are back online.', 'ty.errorLine': 'Your posts could not be loaded. Try again later.', 'ty.noPosts': 'You have no posts yet.', 'ty.noneOfKind': 'Nothing here yet.', 'ty.repostOf': 'Reposted from {name}', 'ty.onlyYou': 'only you see this', 'ty.contentAria': 'My posts',
+    'pf.settings': 'Settings and privacy',
+    'set.general': 'General', 'set.timer': 'Rest timer', 'set.backup': 'Backup & sync', 'set.more': 'More options', 'set.moreHint': 'Export, import, recovery, demo data, reset',
+    'excuse.intro': 'An excused week keeps your streak alive. It doesn’t add to it, and any workouts you do still count.', 'excuse.thisWeek': 'This week', 'excuse.nextWeek': 'Next week',
+    'excuse.goalMet': 'Goal reached – nothing to excuse.', 'excuse.kept': 'Your streak is safe.', 'excuse.tileThis': 'This week · tap to change', 'excuse.tileNext': 'Next week excused ✓',
+    'excuse.past': 'Weeks excused before: {n}', 'ty.yourPosts': 'Your posts', 'ty.posts': 'Posts', 'ty.pics': 'Pics', 'ty.noPics': 'None of your posts has a photo yet.',
+    'ty.openPhoto': 'Open photo', 'ty.photoOnly': 'Photo', 'ty.joinLine': 'Join Community to see your posts and pics here.' },
+  es: { 'ty.all': 'Todo', 'ty.text': 'Texto', 'ty.workouts': 'Entrenamientos', 'ty.history': 'Historial', 'ty.historyPrivate': 'Solo tú: tus entrenamientos de este dispositivo. No son publicaciones y nadie más los ve.', 'ty.historyEmpty': 'Aún no hay entrenamientos terminados.', 'ty.streak': 'semanas seguidas', 'ty.achievements': 'logros', 'ty.offLine': 'Community está desactivada. Tus publicaciones aparecerían aquí; solo tú puedes activarla.', 'ty.signedOutLine': 'Inicia sesión en Community para ver aquí tus publicaciones.', 'ty.unavailableLine': 'Las publicaciones no están disponibles aquí. Tu historial sigue funcionando.', 'ty.offlineLine': 'Estás sin conexión: tus publicaciones se cargarán al volver.', 'ty.errorLine': 'No se pudieron cargar tus publicaciones. Inténtalo más tarde.', 'ty.noPosts': 'Aún no tienes publicaciones.', 'ty.noneOfKind': 'Aún no hay nada aquí.', 'ty.repostOf': 'Compartido de {name}', 'ty.onlyYou': 'solo tú lo ves', 'ty.contentAria': 'Mis publicaciones',
+    'pf.settings': 'Ajustes y privacidad',
+    'set.general': 'General', 'set.timer': 'Temporizador de descanso', 'set.backup': 'Copia y sincronización', 'set.more': 'Más opciones', 'set.moreHint': 'Exportar, importar, recuperar, datos de ejemplo, restablecer',
+    'excuse.intro': 'Una semana justificada mantiene tu racha. No suma a ella y los entrenamientos que hagas siguen contando.', 'excuse.thisWeek': 'Esta semana', 'excuse.nextWeek': 'La próxima semana',
+    'excuse.goalMet': 'Objetivo cumplido: no hace falta justificar.', 'excuse.kept': 'Tu racha está a salvo.', 'excuse.tileThis': 'Esta semana · toca para cambiar', 'excuse.tileNext': 'Próxima semana justificada ✓',
+    'excuse.past': 'Semanas justificadas antes: {n}', 'ty.yourPosts': 'Tus publicaciones', 'ty.posts': 'Publicaciones', 'ty.pics': 'Fotos', 'ty.noPics': 'Ninguna de tus publicaciones tiene fotos todavía.',
+    'ty.openPhoto': 'Abrir foto', 'ty.photoOnly': 'Foto', 'ty.joinLine': 'Únete a Community para ver aquí tus publicaciones y fotos.' },
+  'pt-BR': { 'ty.all': 'Tudo', 'ty.text': 'Texto', 'ty.workouts': 'Treinos', 'ty.history': 'Histórico', 'ty.historyPrivate': 'Só você – seus treinos deste aparelho. Não são posts e ninguém mais os vê.', 'ty.historyEmpty': 'Nenhum treino concluído ainda.', 'ty.streak': 'semanas seguidas', 'ty.achievements': 'conquistas', 'ty.offLine': 'A Community está desligada. Seus posts apareceriam aqui – só você pode ligá-la.', 'ty.signedOutLine': 'Entre na Community para ver seus posts aqui.', 'ty.unavailableLine': 'Os posts não estão disponíveis aqui. Seu histórico continua funcionando.', 'ty.offlineLine': 'Você está offline – seus posts carregam quando voltar a conexão.', 'ty.errorLine': 'Não foi possível carregar seus posts. Tente mais tarde.', 'ty.noPosts': 'Você ainda não tem posts.', 'ty.noneOfKind': 'Nada aqui ainda.', 'ty.repostOf': 'Compartilhado de {name}', 'ty.onlyYou': 'só você vê', 'ty.contentAria': 'Meus posts',
+    'pf.settings': 'Configurações e privacidade',
+    'set.general': 'Geral', 'set.timer': 'Timer de descanso', 'set.backup': 'Backup e sincronização', 'set.more': 'Mais opções', 'set.moreHint': 'Exportar, importar, recuperar, dados de exemplo, redefinir',
+    'excuse.intro': 'Uma semana justificada mantém sua sequência. Ela não soma à sequência e os treinos que você fizer continuam contando.', 'excuse.thisWeek': 'Esta semana', 'excuse.nextWeek': 'Próxima semana',
+    'excuse.goalMet': 'Meta cumprida – não precisa justificar.', 'excuse.kept': 'Sua sequência está segura.', 'excuse.tileThis': 'Esta semana · toque para mudar', 'excuse.tileNext': 'Próxima semana justificada ✓',
+    'excuse.past': 'Semanas justificadas antes: {n}', 'ty.yourPosts': 'Seus posts', 'ty.posts': 'Posts', 'ty.pics': 'Fotos', 'ty.noPics': 'Nenhum dos seus posts tem foto ainda.',
+    'ty.openPhoto': 'Abrir foto', 'ty.photoOnly': 'Foto', 'ty.joinLine': 'Entre na Community para ver aqui seus posts e fotos.' },
+  fr: { 'ty.all': 'Tout', 'ty.text': 'Texte', 'ty.workouts': 'Séances', 'ty.history': 'Historique', 'ty.historyPrivate': 'Toi seul – tes séances sur cet appareil. Ce ne sont pas des publications, personne d’autre ne les voit.', 'ty.historyEmpty': 'Aucune séance terminée pour l’instant.', 'ty.streak': 'semaines d’affilée', 'ty.achievements': 'succès', 'ty.offLine': 'Community est désactivée. Tes publications apparaîtraient ici – toi seul peux l’activer.', 'ty.signedOutLine': 'Connecte-toi à Community pour voir ici tes publications.', 'ty.unavailableLine': 'Les publications ne sont pas disponibles ici. Ton historique fonctionne toujours.', 'ty.offlineLine': 'Tu es hors ligne – tes publications se chargeront au retour du réseau.', 'ty.errorLine': 'Impossible de charger tes publications. Réessaie plus tard.', 'ty.noPosts': 'Tu n’as encore aucune publication.', 'ty.noneOfKind': 'Rien ici pour l’instant.', 'ty.repostOf': 'Partagé de {name}', 'ty.onlyYou': 'visible par toi seul', 'ty.contentAria': 'Mes publications',
+    'pf.settings': 'Paramètres et confidentialité',
+    'set.general': 'Général', 'set.timer': 'Minuteur de repos', 'set.backup': 'Sauvegarde et synchro', 'set.more': 'Plus d’options', 'set.moreHint': 'Exporter, importer, récupérer, données d’exemple, réinitialiser',
+    'excuse.intro': 'Une semaine excusée garde ta série. Elle ne s’y ajoute pas, et les entraînements que tu fais comptent toujours.', 'excuse.thisWeek': 'Cette semaine', 'excuse.nextWeek': 'La semaine prochaine',
+    'excuse.goalMet': 'Objectif atteint – rien à excuser.', 'excuse.kept': 'Ta série est à l’abri.', 'excuse.tileThis': 'Cette semaine · touche pour changer', 'excuse.tileNext': 'Semaine prochaine excusée ✓',
+    'excuse.past': 'Semaines excusées avant : {n}', 'ty.yourPosts': 'Tes publications', 'ty.posts': 'Publications', 'ty.pics': 'Photos', 'ty.noPics': 'Aucune de tes publications n’a encore de photo.',
+    'ty.openPhoto': 'Ouvrir la photo', 'ty.photoOnly': 'Photo', 'ty.joinLine': 'Rejoins Community pour voir ici tes publications et tes photos.' },
+  ar: { 'ty.all': 'الكل', 'ty.text': 'نص', 'ty.workouts': 'التمارين', 'ty.history': 'سجل التمارين', 'ty.historyPrivate': 'لك وحدك – تمارينك على هذا الجهاز. ليست منشورات ولا يراها أحد غيرك.', 'ty.historyEmpty': 'لا يوجد تمرين مكتمل بعد.', 'ty.streak': 'أسابيع متتالية', 'ty.achievements': 'إنجازات', 'ty.offLine': 'Community متوقفة. ستظهر منشوراتك هنا – أنت فقط من يمكنه تشغيلها.', 'ty.signedOutLine': 'سجّل الدخول إلى Community لترى منشوراتك هنا.', 'ty.unavailableLine': 'المنشورات غير متاحة هنا. سجل تمارينك يعمل كالمعتاد.', 'ty.offlineLine': 'أنت غير متصل – ستُحمَّل منشوراتك عند عودة الاتصال.', 'ty.errorLine': 'تعذّر تحميل منشوراتك. حاول لاحقًا.', 'ty.noPosts': 'ليس لديك منشورات بعد.', 'ty.noneOfKind': 'لا شيء هنا بعد.', 'ty.repostOf': 'مُشارك من {name}', 'ty.onlyYou': 'تراه أنت فقط', 'ty.contentAria': 'منشوراتي',
+    'pf.settings': 'الإعدادات والخصوصية',
+    'set.general': 'عام', 'set.timer': 'مؤقت الراحة', 'set.backup': 'النسخ الاحتياطي والمزامنة', 'set.more': 'خيارات أخرى', 'set.moreHint': 'تصدير، استيراد، استعادة، بيانات تجريبية، إعادة ضبط',
+    'excuse.intro': 'الأسبوع المعذور يحافظ على سلسلتك. لا يُضاف إليها، والتمارين التي تقوم بها تُحتسب كالمعتاد.', 'excuse.thisWeek': 'هذا الأسبوع', 'excuse.nextWeek': 'الأسبوع القادم',
+    'excuse.goalMet': 'تم بلوغ الهدف – لا حاجة للعذر.', 'excuse.kept': 'سلسلتك في أمان.', 'excuse.tileThis': 'هذا الأسبوع · اضغط للتغيير', 'excuse.tileNext': 'الأسبوع القادم معذور ✓',
+    'excuse.past': 'أسابيع معذورة سابقًا: {n}', 'ty.yourPosts': 'منشوراتك', 'ty.posts': 'المنشورات', 'ty.pics': 'الصور', 'ty.noPics': 'لا توجد صور في منشوراتك بعد.',
+    'ty.openPhoto': 'فتح الصورة', 'ty.photoOnly': 'صورة', 'ty.joinLine': 'انضم إلى Community لترى منشوراتك وصورك هنا.' }
+};
+for (const lang of Object.keys(V80_I18N)) Object.assign(I18N[lang] || (I18N[lang] = {}), V80_I18N[lang]);
 
 function t(key, vars) {
   const dict = I18N[activeLang()] || I18N.en;
@@ -9847,6 +9893,69 @@ function isWeekExcused(key) {
   return state.excusedWeeks.includes(key);
 }
 
+/* ---------- Ospravedlnenie týždňa (list) ----------
+   Predtým jedno ťuknutie na dlaždicu hneď prepínalo – ľahko sa to stalo omylom a nedalo sa
+   ospravedlniť dopredu. Teraz dlaždica otvorí list: tento týždeň a nasledujúci (dovolenka, skúšky).
+   Minulé týždne sa nemenia – séria sa nedá spätne opraviť. Formát dát ostáva rovnaký:
+   state.excusedWeeks = ['2026-W43', …] (staršie verzie appky mu rozumejú). */
+function weekThursday(key) {
+  const [y, w] = String(key).split('-W').map(Number);
+  const d = new Date(y, 0, 4);
+  d.setDate(d.getDate() - ((d.getDay() + 6) % 7) + 3 + (w - 1) * 7);
+  return d;
+}
+function nextWeekKey(key) { return weekKey(addDays(weekThursday(key), 7)); }
+function weekRangeText(key) {
+  const th = weekThursday(key);
+  const pat = localeData().datePattern.replace(/[\s,.]*\{y\}/, '');
+  return fillDatePattern(pat, addDays(th, -3), '') + ' – ' + fillDatePattern(pat, addDays(th, 3), '');
+}
+function excuseWeekOptions() {
+  const cur = currentWeekKey();
+  return [{ key: cur, label: 'excuse.thisWeek' }, { key: nextWeekKey(cur), label: 'excuse.nextWeek' }];
+}
+function setWeekExcused(key, on) {
+  if (!excuseWeekOptions().some((o) => o.key === key)) return;   // len tento a budúci týždeň
+  const i = state.excusedWeeks.indexOf(key);
+  if (on && i < 0) state.excusedWeeks.push(key);
+  else if (!on && i >= 0) state.excusedWeeks.splice(i, 1);
+  else return;
+  saveState();
+  renderAll();
+  renderExcuseSheet();
+}
+function renderExcuseSheet() {
+  const box = document.getElementById('excuse-weeks');
+  if (!box) return;
+  box.innerHTML = excuseWeekOptions().map((o) => {
+    const on = isWeekExcused(o.key);
+    const met = sessionsInWeek(o.key) >= goalForWeek(o.key);
+    const locked = met && !on;   // cieľ splnený – niet čo ospravedlňovať
+    const range = weekRangeText(o.key);
+    const hint = locked ? t('excuse.goalMet') : on ? t('excuse.kept') : '';
+    return '<div class="excuse-row' + (on ? ' on' : '') + '">'
+      + '<div class="excuse-text"><b>' + esc(t(o.label)) + '</b><span>' + esc(range) + '</span>'
+      + (hint ? '<span class="excuse-hint">' + esc(hint) + '</span>' : '') + '</div>'
+      + '<button type="button" class="switch" role="switch" data-excuse-week="' + escAttr(o.key) + '" aria-checked="' + (on ? 'true' : 'false') + '"'
+      + ' aria-label="' + escAttr(t(o.label) + ', ' + range) + '"' + (locked ? ' disabled' : '') + '><span class="switch-knob" aria-hidden="true"></span></button></div>';
+  }).join('');
+  const cur = currentWeekKey();
+  const past = state.excusedWeeks.filter((k) => typeof k === 'string' && k < cur).length;
+  const pastEl = document.getElementById('excuse-past');
+  if (pastEl) { pastEl.hidden = !past; pastEl.textContent = past ? t('excuse.past', { n: past }) : ''; }
+}
+function openExcuseSheet() {
+  renderExcuseSheet();
+  document.getElementById('modal-excuse').hidden = false;
+  const first = document.querySelector('#excuse-weeks .switch:not([disabled])') || document.getElementById('btn-excuse-done');
+  if (first) first.focus();
+}
+function closeExcuseSheet() {
+  document.getElementById('modal-excuse').hidden = true;
+  refreshUpdateBanner();
+  const tile = document.getElementById('btn-excuse'); if (tile && activeTab === 'dnes') tile.focus();
+}
+
 /* Zapíše cieľ pre práve bežiaci týždeň. Minulé týždne nikdy neprepisuje. */
 function syncGoalSnapshot() {
   if (!state.goalHistory) state.goalHistory = {};
@@ -10695,10 +10804,11 @@ function renderBento(info) {
 
   /* Séria a ospravedlnený týždeň */
   bentoSetValue('bt-streak-v', info.streak, tPluralWord('bento.weeksWord', info.streak));
+  const nextExcused = isWeekExcused(nextWeekKey(currentWeekKey()));
   bentoSetText('bt-excuse-l', info.excused ? t('bento.excusedTitle') : t('bento.busyWeek'));
-  bentoSetText('bt-excuse-line', info.excused ? t('bento.tapUndo') : t('bento.excuseLine'));
+  bentoSetText('bt-excuse-line', info.excused ? t('excuse.tileThis') : nextExcused ? t('excuse.tileNext') : t('bento.excuseLine'));
   const ex = document.getElementById('btn-excuse');
-  if (ex) ex.setAttribute('aria-pressed', info.excused ? 'true' : 'false');
+  if (ex) { ex.removeAttribute('aria-pressed'); ex.setAttribute('aria-haspopup', 'dialog'); ex.classList.toggle('bt-excused', !!info.excused); }
 
   /* Level */
   const lv = levelInfo();
@@ -10786,6 +10896,7 @@ function closeRestSheet() {
 function bentoGo(where) {
   if (where === 'calendar') { openCalendarPage(); return; }
   if (where === 'motivation' || where === 'body' || where === 'food' || where === 'photos' || where === 'history') {
+    pokrokReturnTab = activeTab && activeTab !== 'pokrok' ? activeTab : null;
     switchTab('pokrok'); setPokrokView(where === 'history' ? 'progress' : where); return;
   }
   if (where === 'records') {
@@ -10820,15 +10931,340 @@ function bentoGo(where) {
 }
 
 /* ---------- Bento: karta Ty (profil, cieľ, nastavenia) ---------- */
+/* ---------- Ty = môj profil (v80) ----------
+   Ťuknutím na Ty sa hneď otvorí môj profil: fotka, meno, @meno, bio, počty, kompaktné akcie (úroveň, cieľ,
+   fotky progresu, Upraviť profil, Priatelia) a pod tým moje zverejnené príspevky (Všetko / Fotky / Text /
+   Tréningy) s postupným načítaním starších. „História tréningov“ je súkromná (len táto appka, len ja) –
+   tréningy z histórie sa nikdy nezverejnia ani nemiešajú s príspevkami. Príspevky sa len čítajú zo servera
+   (community_feed, rovnaké pravidlá viditeľnosti) a držia sa iba v pamäti. */
+let tyFilter = 'all';            // all | photos | text | workouts | history
+let tyFeed = null;               // { uid, items, extra, done, loading, error, card, ach }
+let tyLoadedAt = 0;
+let tyReturn = null;             // { y, filter } – návrat z príspevku / listu na rovnaké miesto
+let tyHistoryShown = 20;
+let tyObserver = null;
+const TY_FILTERS = ['all', 'photos', 'text', 'workouts', 'history'];
+
+function tyState() {
+  if (!communityConfigured()) return 'unavailable';
+  if (!communityOptIn()) return 'off';
+  if (communityProfile && communityV2()) return 'ready';
+  if (tyFeed && tyFeed.signedOut) return 'signedout';
+  if (tyFeed && tyFeed.legacy && communitySocial !== null) return 'unavailable';
+  return 'loading';
+}
+function tyKind(p) { return p.share ? 'workouts' : (p.photos && p.photos.length ? 'photos' : 'text'); }
+
 function renderTy() {
-  const lv = levelInfo();
+  const st = tyState();
+  const ready = st === 'ready';
   const p = communityProfile;
-  const name = p && p.username ? String(p.username) : 'GymQuest';
+  const lv = levelInfo();
+  const name = ready && p.username ? String(p.username) : t('tab.ty');
+  /* lišta: meno ako na Instagrame; nastavenia vždy, ⋯ a Nový príspevok len s Community */
+  bentoSetText('ty-title', t('tab.ty'));
+  const el = (id) => document.getElementById(id);
+  el('ty-compose').hidden = !ready;
+  el('ty-more').hidden = !ready;
+  if (!ready) { el('ty-menu').hidden = true; el('ty-more').setAttribute('aria-expanded', 'false'); }
+  /* avatar: skutočná fotka profilu, inak písmeno */
+  const av = el('ty-av');
+  const avUrl = ready && p.avatar_path ? communityPublicUrl(communityClient(), 'avatars', p.avatar_path) : '';
+  if (avUrl) { const img = av.querySelector('img'); if (!img || img.getAttribute('src') !== avUrl) av.innerHTML = '<img src="' + escAttr(avUrl) + '" alt="">'; }
+  else av.textContent = name.slice(0, 1).toUpperCase();
   bentoSetText('ty-name', name);
-  bentoSetText('ty-av', name.slice(0, 1).toUpperCase());
-  bentoSetText('ty-handle', (p && p.username ? '@' + p.username + ' · ' : '') + t('bento.levelLower', { n: lv.level }));
-  bentoSetText('motivation-text', p && p.bio ? String(p.bio) : motivationText());
+  bentoSetText('ty-handle', ready && p.username ? '@' + p.username : '');
+  bentoSetText('motivation-text', ready && p.bio ? String(p.bio) : motivationText());
+  el('motivation-text').classList.toggle('ty-bio-real', !!(ready && p.bio));
+  /* počty: Community (príspevky, sledovatelia, sledovaní, priatelia) alebo z tohto zariadenia */
+  const card = ready && tyFeed && tyFeed.uid === p.id ? tyFeed.card : null;
+  const stat = (n, label, attrs) => '<' + (attrs ? 'button type="button" ' + attrs : 'span') + ' class="cstat">'
+    + '<span class="cstat-n">' + (Number(n) || 0) + '</span><span class="cstat-l">' + esc(label) + '</span></' + (attrs ? 'button' : 'span') + '>';
+  const hist = state.history || [];
+  el('ty-stats').innerHTML = ready
+    ? stat(card ? card.posts : '–', t('community2.statPosts'), 'data-ty-stat="posts"')
+      + stat(card ? card.followers : '–', t('community2.statFollowers'), 'data-ty-stat="followers"')
+      + stat(card ? card.following : '–', t('community2.statFollowing'), 'data-ty-stat="following"')
+      + stat(card ? card.friends : '–', t('community2.statFriends'), 'data-ty-stat="friends"')
+    : stat(hist.length, tPluralWord('bento.workoutsWord', hist.length)) + stat(computeStreak(), t('ty.streak')) + stat(Object.keys(state.achievements || {}).length, t('ty.achievements'));
+  if (ready && !card) el('ty-stats').querySelectorAll('.cstat-n').forEach((x) => { x.textContent = '–'; });
+  /* kompaktné akcie */
+  bentoSetText('ty-level-line', t('bento.levelLower', { n: lv.level }).replace(/^./, (c) => c.toUpperCase()) + ' · ' + lv.xp + ' ' + t('units.xp'));
   bentoSetText('ty-goal-line', tPlural('bento.goalLine', weeklyGoal()).replace('{n}', String(weeklyGoal())));
+  const prof = el('ty-profile');
+  prof.textContent = ready ? t('community2.editProfile') : t('community.title');
+  prof.dataset.tyAction = ready ? 'edit' : 'community';
+  const fr = el('ty-friends');
+  fr.hidden = !ready;
+  const reqs = communityBadges.requests;
+  fr.innerHTML = esc(t('community2.friendsTitle')) + (reqs ? ' <span class="cnav-badge cbadge-inline">' + reqs + '</span>' : '');
+  fr.dataset.tyAction = 'friends';
+  renderTyMenu();
+  renderTyFilters();
+  renderTyPosts();
+}
+function renderTyMenu() {
+  const menu = document.getElementById('ty-menu');
+  if (!menu) return;
+  const mod = communityProfile && communityProfile.role === 'moderator';
+  menu.innerHTML = [
+    pfMenuItem('data-ty-action="edit"', t('pf.settings')),
+    pfMenuItem('data-ty-action="myposts"', t('community.tabMyPosts')),
+  ].concat(mod ? [pfMenuItem('data-ty-action="moderate"', t('community.tabModerate'))] : [])
+    .concat([pfMenuItem('data-ty-action="signout"', t('community.signOut'), true)]).join('');
+}
+function renderTyFilters() {
+  const box = document.getElementById('ty-seg');
+  if (!box) return;
+  const ready = tyState() === 'ready';
+  if (!ready && tyFilter !== 'history') tyFilter = 'history';
+  const list = ready ? TY_FILTERS : ['history'];
+  const label = { all: 'ty.all', photos: 'ty.pics', text: 'ty.text', workouts: 'ty.workouts', history: 'ty.history' };
+  box.innerHTML = list.map((f) => '<button type="button" role="tab" class="ty-filter' + (f === tyFilter ? ' on' : '') + (f === 'history' ? ' ty-filter-private' : '') + '" data-ty-filter="' + f + '" aria-selected="' + (f === tyFilter ? 'true' : 'false') + '" tabindex="' + (f === tyFilter ? '0' : '-1') + '">'
+    + (f === 'history' ? '<svg class="kico" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10.5" width="14" height="10" rx="2.5"/><path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5"/></svg>' : '')
+    + esc(t(label[f])) + '</button>').join('');
+  const priv = document.getElementById('ty-private');
+  priv.hidden = tyFilter !== 'history';
+  priv.textContent = t('ty.historyPrivate');
+}
+/* Kartička stavu namiesto propagačnej dlaždice: Community vypnutá / odhlásený / offline / chyba. */
+function tyNoticeHtml(st) {
+  const f = tyFeed || {};
+  let key = null, btn = null;
+  if (st === 'off') { key = 'ty.offLine'; btn = 'community.title'; }
+  else if (st === 'signedout') { key = 'ty.signedOutLine'; btn = 'community.signIn'; }
+  else if (st === 'unavailable') key = 'ty.unavailableLine';
+  else if (st === 'ready' && f.error && !(f.items || []).length) key = navigator.onLine === false ? 'ty.offlineLine' : 'ty.errorLine';
+  if (!key) return '';
+  return '<div class="ty-note"><span>' + esc(t(key)) + '</span>'
+    + (btn ? '<button type="button" class="btn btn-secondary btn-sm" data-ty-action="community">' + esc(t(btn)) + '</button>' : '') + '</div>';
+}
+function tyTimeLabel(iso) { return communityTimeAgo(iso); }
+function tyTextCardHtml(p) {
+  const repost = p.reposted_by && communityProfile && p.user_id !== communityProfile.id;
+  return '<button type="button" class="ty-card ty-text" data-ty-post="' + escAttr(p.id) + '">'
+    + '<span class="ty-meta">' + (repost ? communityIcon('share') + esc(t('ty.repostOf', { name: p.name || '' })) + ' · ' : '') + esc(tyTimeLabel(p.published))
+    + (p.visibility === 'friends' ? ' · ' + esc(t('community2.friendsOnly')) : '') + '</span>'
+    + '<span class="ty-body">' + esc(p.caption) + '</span>'
+    + '<span class="ty-counts-row">' + communityIcon('heart') + p.likes + ' ' + communityIcon('chat') + (p.comments || 0) + '</span></button>';
+}
+function tyWorkoutCardHtml(p) {
+  const a = p.share || {};
+  const workout = a.kind === 'workout';
+  const meta = [];
+  if (workout && a.date) meta.push(formatDate(String(a.date)));
+  if (workout && Number(a.duration) > 0) meta.push(formatDurationNatural(Number(a.duration)));
+  if (workout && Number(a.xp) > 0) meta.push('+' + Number(a.xp) + ' ' + t('units.xp'));
+  if (Array.isArray(a.exercises)) meta.push(tPlural('share.exercises', a.exercises.length));
+  const ph = p.photos && p.photos[0];
+  const url = ph && p.urls ? p.urls[ph.thumb] : '';
+  const ex = Array.isArray(a.exercises) ? a.exercises.slice(0, 3).map((e) => esc(e && (e.id && BUILTIN_EXERCISE_IDS.has(e.id) ? t('exercise.' + e.id) : (e.n || e.name || '')))).filter(Boolean).join(' · ') : '';
+  return '<button type="button" class="ty-card ty-workout ' + (workout ? 'ty-w-done' : 'ty-w-plan') + '" data-ty-post="' + escAttr(p.id) + '">'
+    + '<span class="ty-w-icon" aria-hidden="true">' + PF_GLYPHS[workout ? 'check' : 'dumbbell'] + '</span>'
+    + '<span class="ty-w-main"><span class="ty-meta">' + esc(t(workout ? 'share.kindWorkout' : 'share.kindPlan')) + ' · ' + esc(tyTimeLabel(p.published)) + '</span>'
+    + '<b class="ty-w-name">' + esc(a.name || '') + '</b>'
+    + '<span class="ty-w-sub">' + esc(meta.join(' · ')) + '</span>'
+    + (ex ? '<span class="ty-w-ex">' + ex + '</span>' : '')
+    + (p.caption ? '<span class="ty-body ty-body-sm">' + esc(p.caption) + '</span>' : '') + '</span>'
+    + (url ? '<span class="ty-w-thumb"><img loading="lazy" decoding="async" src="' + escAttr(url) + '" alt=""></span>' : '') + '</button>';
+}
+function tyPhotoTileHtml(p) {
+  const ph = p.photos[0];
+  const url = p.urls ? p.urls[ph.thumb] : '';
+  const n = p.photos.length;
+  const repost = p.reposted_by && communityProfile && p.user_id !== communityProfile.id;
+  const label = (repost ? t('ty.repostOf', { name: p.name || '' }) + ' · ' : '') + (p.caption || t('ty.photoOnly')) + ' · ' + tyTimeLabel(p.published);
+  return '<button type="button" class="ty-photo" data-ty-post="' + escAttr(p.id) + '" aria-label="' + escAttr(label) + '">'
+    + (url ? '<img loading="lazy" decoding="async" src="' + escAttr(url) + '" alt="">' : '')
+    + ((n > 1 || repost) ? '<span class="pf-marks">' + (n > 1 ? '<span class="pf-mark pf-count">' + n + '</span>' : '') + (repost ? '<span class="pf-mark">' + communityIcon('share') + '</span>' : '') + '</span>' : '')
+    + '</button>';
+}
+function tyPendingHtml(r) {
+  const ph = (r.photos || [])[0];
+  const url = ph && r.urls ? r.urls[ph.thumb] : '';
+  const status = t('community.status' + r.status.charAt(0).toUpperCase() + r.status.slice(1));
+  return '<button type="button" class="ty-card ty-pending ty-' + escAttr(r.status) + '" data-ty-action="myposts">'
+    + '<span class="ty-w-main"><span class="ty-meta"><span class="ty-status">' + esc(status) + '</span> · ' + esc(t('ty.onlyYou')) + '</span>'
+    + '<span class="ty-body ty-body-sm">' + esc(r.caption || t('ty.photoOnly')) + '</span></span>'
+    + (url ? '<span class="ty-w-thumb"><img loading="lazy" decoding="async" src="' + escAttr(url) + '" alt=""></span>' : '') + '</button>';
+}
+/* Všetko: poradie od najnovšieho; po sebe idúce fotky v riadkoch po 3, text a tréningy ako celé karty. */
+function tyMixedHtml(items) {
+  let html = '', row = [];
+  /* 1 fotka = široká dlaždica, 2 = polovice, 3 = tretiny (mozaika Bento, poradie ostáva) */
+  const flush = () => { if (row.length) html += '<div class="ty-photos ty-mosaic" data-n="' + row.length + '">' + row.join('') + '</div>'; row = []; };
+  items.forEach((p) => {
+    const k = tyKind(p);
+    if (k === 'photos') { row.push(tyPhotoTileHtml(p)); if (row.length === 3) flush(); }
+    else { flush(); html += k === 'workouts' ? tyWorkoutCardHtml(p) : tyTextCardHtml(p); }
+  });
+  flush();
+  return html;
+}
+function tyHistoryHtml() {
+  const hist = (state.history || []).slice().sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0));
+  if (!hist.length) return '<p class="empty-state ty-empty">' + esc(t('ty.historyEmpty')) + '</p>';
+  const shown = hist.slice(0, tyHistoryShown);
+  return '<div class="ty-history">' + shown.map((w) => '<button type="button" class="ty-card ty-hist" data-ty-day="' + escAttr(w.date) + '">'
+    + '<span class="ty-hist-date"><b>' + esc(String(parseDate(w.date).getDate())) + '</b><span>' + esc(localeData().monthsShort ? localeData().monthsShort[parseDate(w.date).getMonth()] : '') + '</span></span>'
+    + '<span class="ty-w-main"><b class="ty-w-name">' + esc(historyPlanName(w)) + '</b>'
+    + '<span class="ty-w-sub">' + esc(formatDate(w.date)) + ' · ' + esc(tPlural('bento.setCount', historySets(w)).replace('{n}', String(historySets(w)))) + ' · ' + esc(bentoWorkoutLine(w)) + '</span></span></button>').join('')
+    + '</div>' + (hist.length > tyHistoryShown ? '<button type="button" class="btn btn-secondary btn-block ty-more-btn" data-ty-action="history-more">' + esc(t('community.loadMore')) + '</button>' : '');
+}
+function renderTyPosts() {
+  const box = document.getElementById('ty-posts');
+  if (!box) return;
+  const st = tyState();
+  if (tyFilter === 'history') { box.innerHTML = tyNoticeHtml(st) + tyHistoryHtml(); return; }
+  const f = tyFeed;
+  if (st !== 'ready' || !f || f.uid !== communityProfile.id) {
+    box.innerHTML = tyNoticeHtml(st) || '<p class="ty-loading">' + esc(t('community.loading')) + '</p>';
+    return;
+  }
+  const items = tyFilter === 'all' ? f.items : f.items.filter((p) => tyKind(p) === tyFilter);
+  let html = tyNoticeHtml(st);
+  if (tyFilter === 'all' && f.extra.length) html += '<div class="ty-pend">' + f.extra.map(tyPendingHtml).join('') + '</div>';
+  if (tyFilter === 'photos') html += items.length ? '<div class="ty-photos">' + items.map(tyPhotoTileHtml).join('') + '</div>' : '';
+  else if (tyFilter === 'text') html += items.map(tyTextCardHtml).join('');
+  else if (tyFilter === 'workouts') html += items.map(tyWorkoutCardHtml).join('');
+  else html += tyMixedHtml(items);
+  if (!items.length && !(tyFilter === 'all' && f.extra.length) && f.done && !f.error) {
+    html += '<div class="ty-empty"><p class="empty-state">' + esc(t(tyFilter === 'all' ? 'ty.noPosts' : 'ty.noneOfKind')) + '</p>'
+      + (tyFilter === 'all' ? '<button type="button" class="btn btn-primary btn-sm" data-go="compose">' + esc(t('community.newPost')) + '</button>' : '') + '</div>';
+  }
+  if (f.loading) html += '<p class="ty-loading">' + esc(t('community.loading')) + '</p>';
+  else if (!f.done) html += '<button type="button" class="btn btn-secondary btn-block ty-more-btn" data-ty-action="more">' + esc(t('community.loadMore')) + '</button>';
+  box.innerHTML = html;
+  tyWatchSentinel();
+}
+/* Načítanie: hlavička (profile_card), čakajúce vlastné príspevky a prvá strana; ďalšie strany kurzorom. */
+async function tyLoad(force) {
+  if (!communityConfigured() || !communityOptIn()) { renderTy(); return; }
+  const sb = communityClient(); if (!sb) return;
+  let session = null;
+  try { const r = await sb.auth.getSession(); session = r && r.data ? r.data.session : null; } catch (e) {}
+  if (!session) { tyFeed = { signedOut: true, items: [], extra: [] }; renderTy(); return; }
+  if (!communityProfile || communityProfile.id !== session.user.id || communitySocial === null) {
+    try { await communityEnsureProfile(sb, session.user); await communityDetectSocial(sb); } catch (e) {}
+  }
+  if (!communityProfile || !communityV2()) { tyFeed = { legacy: true, items: [], extra: [] }; renderTy(); return; }
+  const uid = communityProfile.id;
+  if (!force && tyFeed && tyFeed.uid === uid && Date.now() - tyLoadedAt < 60000) { renderTy(); return; }
+  const feed = { uid, items: [], extra: [], done: false, loading: true, error: false, card: tyFeed && tyFeed.uid === uid ? tyFeed.card : null };
+  if (!(tyFeed && tyFeed.uid === uid && tyFeed.items.length)) { tyFeed = feed; renderTy(); }
+  let res, card, pend;
+  try {
+    [res, card, pend] = await Promise.all([
+      sb.rpc('community_feed', { p_scope: 'user', p_user: uid, p_before: null, p_before_id: null, p_limit: COMMUNITY_PAGE }),
+      communityProfileCard(sb, uid),
+      Promise.resolve(sb.from('posts').select('id,status,caption,image_path,thumb_path,created_at').eq('user_id', uid).neq('status', 'approved').order('created_at', { ascending: false }).limit(30)).catch((e) => ({ error: e }))
+    ]);
+  } catch (e) { res = { error: e }; }
+  feed.loading = false;
+  if (!res || res.error) { feed.error = true; if (tyFeed && tyFeed.uid === uid && tyFeed.items.length) { tyFeed.error = true; renderTy(); return; } tyFeed = feed; renderTy(); return; }
+  feed.items = await communityFeedItemsFromRows(sb, res.data || []);
+  feed.done = (res.data || []).length < COMMUNITY_PAGE;
+  feed.card = card || feed.card;
+  const rows = pend && !pend.error ? (pend.data || []) : [];
+  if (rows.length) {
+    const photos = await communityPostPhotos(sb, rows);
+    const urls = await communitySignedUrls(sb, [].concat(...Object.values(photos).map((l) => l.map((ph) => ph.thumb))));
+    feed.extra = rows.map((r) => Object.assign({}, r, { photos: photos[r.id] || [], urls }));
+  }
+  if (!communityProfile || communityProfile.id !== uid) return;
+  tyFeed = feed;
+  tyLoadedAt = Date.now();
+  renderTy();
+}
+async function tyLoadMore() {
+  const f = tyFeed;
+  if (!f || f.loading || f.done || !f.uid) return;
+  const sb = communityClient(); if (!sb) return;
+  const last = f.items[f.items.length - 1];
+  f.loading = true;
+  renderTyPosts();
+  let res;
+  try {
+    res = await sb.rpc('community_feed', { p_scope: 'user', p_user: f.uid, p_before: last ? last.at : null, p_before_id: last ? last.id : null, p_limit: COMMUNITY_PAGE });
+  } catch (e) { res = { error: e }; }
+  f.loading = false;
+  if (res.error) { f.error = true; renderTyPosts(); return; }
+  const add = await communityFeedItemsFromRows(sb, res.data || []);
+  const seen = new Set(f.items.map((p) => p.id + '|' + (p.reposted_by || '')));   // nikdy dvakrát to isté
+  add.forEach((p) => { const k = p.id + '|' + (p.reposted_by || ''); if (!seen.has(k)) { seen.add(k); f.items.push(p); } });
+  f.done = (res.data || []).length < COMMUNITY_PAGE;
+  f.error = false;
+  if (tyFeed === f) renderTyPosts();
+}
+/* Staršie príspevky sa načítajú samy, keď sa pri posúvaní priblížiš ku koncu (a pri filtri, kým je čo ukázať). */
+function tyWatchSentinel() {
+  const s = document.getElementById('ty-sentinel');
+  if (!s || typeof IntersectionObserver !== 'function') return;
+  if (!tyObserver) {
+    tyObserver = new IntersectionObserver((entries) => {
+      if (activeTab !== 'ty' || tyFilter === 'history') return;
+      if (entries.some((e) => e.isIntersecting)) tyLoadMore();
+    }, { rootMargin: '600px 0px' });
+    tyObserver.observe(s);
+  }
+  if (activeTab === 'ty' && tyFilter !== 'history' && tyFeed && !tyFeed.done && !tyFeed.loading) {
+    const r = s.getBoundingClientRect();
+    if (r.top < innerHeight + 600) setTimeout(tyLoadMore, 0);
+  }
+}
+/* Príspevok, zoznam či úprava profilu sa otvoria ako list Community; Späť vráti na Ty na rovnaké miesto. */
+function tyOpenSheet(view, apply) {
+  tyReturn = { y: window.scrollY || 0, filter: tyFilter };
+  communityMode = 'community';
+  communityBack = [];
+  communityReturnTab = 'ty';
+  if (apply) apply();
+  communityView = view;
+  communitySetMessage('');
+  switchTab('komunita');
+}
+function tyOpenPost(id) {
+  const f = tyFeed;
+  if (!f) return;
+  tyOpenSheet('comments', () => {
+    communityPostId = id;
+    communityFeed = { items: f.items, offset: 0, done: f.done, loading: false, scope: 'user', user: f.uid, grid: true, own: true, extra: [] };
+  });
+}
+function tyAction(act) {
+  const me = communityProfile && communityProfile.id;
+  if (act === 'edit') tyOpenSheet('editprofile');
+  else if (act === 'friends') tyOpenSheet('friends');
+  else if (act === 'myposts') openOwnPostsSheet('ty');
+  else if (act === 'moderate') tyOpenSheet('moderate');
+  else if (act === 'signout') { tyMenu(false); communitySignOut(); }
+  else if (act === 'community') { communityMode = 'community'; communityBack = []; communityReturnTab = null; communityView = 'feed'; switchTab('komunita'); }
+  else if (act === 'more') tyLoadMore();
+  else if (act === 'history-more') { tyHistoryShown += 20; renderTyPosts(); }
+  else if ((act === 'followers' || act === 'following') && me) tyOpenSheet('list', () => { communityListKind = act; communityViewUser = me; });
+}
+function tyMenu(open) {
+  const m = document.getElementById('ty-menu'), b = document.getElementById('ty-more');
+  if (!m || !b) return;
+  m.hidden = !open;
+  b.setAttribute('aria-expanded', open ? 'true' : 'false');
+  if (open) { const f = m.querySelector('button'); if (f) f.focus(); }
+}
+function tySetFilter(f) {
+  if (TY_FILTERS.indexOf(f) < 0) return;
+  tyFilter = f;
+  renderTyFilters();
+  renderTyPosts();
+}
+/* Otvorenie listu Community s návratom na kartu, odkiaľ prišiel (Ty, Dnes …). */
+function openOwnPostsSheet(returnTab) {
+  if (returnTab === 'ty') tyReturn = { y: window.scrollY || 0, filter: tyFilter };
+  communityMode = 'community';
+  communityBack = [];
+  communityView = 'myposts';
+  communityReturnTab = returnTab || null;
+  if (communityV2() && communityProfile) communitySheetSkeleton(t('community.tabMyPosts'));
+  switchTab('komunita');
 }
 
 /* Kalendár: celostránkový list (ako v návrhu), Späť vráti na kartu, odkiaľ sa otvoril. */
@@ -14011,6 +14447,7 @@ function addLibraryExerciseToDraft(entryId) {
    Pokrok. Stav je len v pamäti – rovnako ako mesiac v kalendári. */
 
 let pokrokView = 'stats';   // Bento: prehľad štatistík; podpohľady sa otvárajú ako listy
+let pokrokReturnTab = null; // list otvorený z inej karty (Dnes, Ty) – Späť vráti tam
 let chartField = 'weightKg';
 let measureEditId = null;
 let foodModalMode = 'entry';
@@ -14762,6 +15199,7 @@ let communityPostId = null;             // pohľad 'comments'
 let communityChatId = null;             // pohľad 'chat'
 let communityChatMeta = null;           // riadok z chat_list (druhá osoba, dá sa písať?)
 let communityChatMsgs = [];
+let communityChatSeen = 0;             // „Videné“: posledná správa, ktorú si druhá osoba prečítala (verzia 8+)
 let communityRealtime = null;           // { uid, channel } – živé správy a žiadosti
 let communityBadges = { chats: 0, requests: 0 };
 let communitySearchQuery = '';
@@ -14899,7 +15337,7 @@ function communityNavHtml() {
   /* Bento: na hlavnej stránke Community sú dlaždice z návrhu (Top 20, Nový príspevok, Správy, Priatelia);
      ostatné pohľady sú celostránkové listy s tlačidlom Späť (ako v návrhu). */
   if (v === 'feed' || v === 'following') return communityBentoTilesHtml();
-  if (['leaderboard', 'comments', 'friends', 'chats', 'chat', 'user', 'list'].indexOf(v) >= 0) return '';   // majú vlastnú hlavičku
+  if (['leaderboard', 'comments', 'friends', 'chats', 'chat', 'user', 'list', 'profile', 'editprofile'].indexOf(v) >= 0) return '';   // majú vlastnú hlavičku
   const titles = { search: 'community2.navSearch', compose: 'community.newPost', profile: 'community2.navProfile', myposts: 'community.tabMyPosts', moderate: 'bento.moderate' };
   return '<div class="k-head" id="community-tabs"><button type="button" class="k-x" data-community-action="back" aria-label="' + escAttr(t('community2.back')) + '">' + bentoIcon('back') + '</button>'
     + '<h2>' + esc(t(titles[v] || 'community.title')) + '</h2></div>';
@@ -14940,7 +15378,9 @@ function openMessagesTab() {
   communityView = 'chats';
   const body = document.getElementById('community-body');
   if (body && communityV2() && communityProfile) {
-    body.innerHTML = '<div class="hd chats-hd"><h2 class="screen-title">' + esc(t('bento.messages')) + '</h2></div><p class="card-note">' + esc(t('community.loading')) + '</p>';
+    const cached = communityCachedChats();
+    body.innerHTML = cached ? communityChatsListHtml(cached)
+      : '<div class="hd chats-hd"><h2 class="screen-title">' + esc(t('bento.messages')) + '</h2></div><p class="card-note">' + esc(t('community.loading')) + '</p>';
     document.getElementById('screen-komunita').classList.remove('sheet-open');
   }
   switchTab('komunita');
@@ -14950,7 +15390,12 @@ function openOwnProfileSheet(returnTab) {
   communityBack = [];
   communityView = 'profile';
   communityReturnTab = returnTab || null;
-  if (communityV2() && communityProfile) communitySheetSkeleton(t('community2.navProfile'));
+  const body = document.getElementById('community-body');
+  if (body && communityV2() && communityProfile) {
+    body.innerHTML = communityProfileSkeletonHtml(communityProfile.username);
+    document.getElementById('screen-komunita').classList.add('sheet-open');
+    body.scrollTop = 0;
+  }
   switchTab('komunita');
 }
 
@@ -14976,12 +15421,50 @@ function communitySubHead(titleHtml, extra, noBack) {
 }
 /* Prechod do podpohľadu s možnosťou návratu. */
 function communityGo(view, apply) {
-  communityBack.push({ view: communityView, user: communityViewUser, post: communityPostId, chat: communityChatId });
+  /* v80: Späť obnoví predošlú obrazovku tak, ako bola (obsah, zoznam príspevkov aj posunutie) */
+  const body = document.getElementById('community-body');
+  communityBack.push({ view: communityView, user: communityViewUser, post: communityPostId, chat: communityChatId,
+    html: body ? body.innerHTML : '', scroll: communityScrollPos(), feed: communityFeed,
+    search: (document.getElementById('community-search') || {}).value || '' });
   if (communityBack.length > 30) communityBack.shift();
   if (apply) apply();
   communityView = view;
   communitySetMessage('');
+  /* profil: hneď kostra s menom (nikdy predošlá obrazovka ani dlaždice Community, kým sa načíta) */
+  if (body && communityV2() && (view === 'user' || view === 'profile')) {
+    const own = view === 'profile' || (communityProfile && communityViewUser === communityProfile.id);
+    body.innerHTML = communityProfileSkeletonHtml(own ? (communityProfile && communityProfile.username) : communityKnownName(communityViewUser));
+    document.getElementById('screen-komunita').classList.add('sheet-open');
+    body.scrollTop = 0;
+  }
+  communityShownKey = '';   // nová obrazovka začína hore
   renderCommunity();
+}
+function communityScrollPos() {
+  const sc = communitySheetScroller();
+  return sc ? { sheet: true, y: sc.scrollTop } : { sheet: false, y: window.scrollY || 0 };
+}
+const COMMUNITY_RESTORE_VIEWS = ['feed', 'user', 'profile', 'list', 'friends', 'leaderboard', 'search', 'comments'];
+function communityRestore(prev) {
+  const body = document.getElementById('community-body');
+  if (!body || !prev.html || COMMUNITY_RESTORE_VIEWS.indexOf(prev.view) < 0) return false;
+  communityRenderSeq++;   // rozbehnuté staršie vykreslenie už nič neprepíše
+  if (prev.feed) communityFeed = prev.feed;
+  body.innerHTML = prev.html;
+  communityShownKey = communityViewKey(prev.view, prev.user, prev.post, prev.chat);
+  const screen = document.getElementById('screen-komunita');
+  if (screen) screen.classList.toggle('sheet-open', !!body.querySelector('.k-head, .csub-head'));
+  const menu = document.getElementById('community-profile-menu'); if (menu) menu.hidden = true;
+  const q = document.getElementById('community-search'); if (q) q.value = prev.search || '';
+  if (document.getElementById('community-feed')) communityRefreshFeed();   // lajky a pod. z pamäte
+  if (typeof communityShowBadges === 'function') communityShowBadges();
+  const y = prev.scroll ? prev.scroll.y : 0;
+  if (prev.scroll && prev.scroll.sheet) { const sc = communitySheetScroller(); if (sc) sc.scrollTop = y; }
+  else window.scrollTo(0, y);
+  /* Profily a zoznamy sa potichu obnovia na mieste (posunutie ostane) – zmeny z ďalšej obrazovky
+     (sledovanie, úprava profilu, zmazaný príspevok) sa tak prejavia. Prehľad sa obnoví len z pamäte. */
+  if (prev.view !== 'feed' && prev.view !== 'search') renderCommunity();   // hľadanie: výsledky aj text ostanú
+  return true;
 }
 function communityGoBack() {
   const prev = communityBack.pop();
@@ -14991,6 +15474,7 @@ function communityGoBack() {
   if (!prev) { communityView = 'feed'; renderCommunity(); return; }
   communityViewUser = prev.user; communityPostId = prev.post; communityChatId = prev.chat;
   communityView = prev.view;
+  if (communityRestore(prev)) return;
   renderCommunity();
 }
 /* "pred 5 min", "pred 3 h", inak dátum – podľa jazyka aplikácie. */
@@ -15038,8 +15522,10 @@ function communityStartRealtime(sb, uid) {
       .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'friend_requests' }, () => {
         communityRefreshBadges();
         if (activeTab === 'komunita' && communityView === 'friends') renderCommunity();
-      })
-      .subscribe();
+      });
+    /* „Videné“: druhá osoba si otvorila chat (len verzia 8+; staršiemu serveru sa nič nové neposiela) */
+    if (communitySeenAvailable()) ch.on('postgres_changes', { event: '*', schema: 'public', table: 'chat_reads' }, (p) => communityOnChatRead(p && p.new));
+    ch.subscribe();
     communityRealtime = { uid, channel: ch };
   } catch (e) { communityRealtime = null; }
   trainStart(sb, uid);   // spoločný tréning (len pri verzii 7+)
@@ -15105,7 +15591,11 @@ async function communityBackgroundStart() {
     communityStartRealtime(sb, s.user.id);
     communityRefreshBadges(sb, s.user.id);
     /* Bento: meno v pozdrave a avatary priateľov na obrazovke Dnes */
-    communityEnsureProfile(sb, s.user).then(() => { if (activeTab === 'dnes') renderDnes(); }).catch(() => {});
+    communityEnsureProfile(sb, s.user).then(() => {
+      if (activeTab === 'dnes') renderDnes();
+      if (activeTab === 'ty') tyLoad(false);   // Ty: profil sa ukáže, hneď ako je známy
+      if (!communityCachedChats()) communityFetchChatList(sb);   // prvé otvorenie Správ je hneď
+    }).catch(() => {});
     pushRefresh(sb, s.user.id);   // obnovená adresa odberu (prehliadač ju môže zmeniť) sa dostane na server
   } catch (e) {}
 }
@@ -15302,11 +15792,25 @@ function communityOpenChat(cid) {
   communityReplyTo = null; communityMsgActions = null; communityReactions = {}; communitySharePickerOpen = false;
   communityGo('chat', () => { communityChatId = cid; communityChatMeta = null; communityChatMsgs = []; });
 }
-async function communityChatsHtml(sb) {
+/* Zoznam rozhovorov: posledná odpoveď sa drží v pamäti (len pre prihlásený účet, nikdy nie v úložisku),
+   aby sa karta Správy otvorila hneď a nie až po niekoľkých požiadavkách na server. */
+let communityChatsCache = null;   // { uid, rows }
+function communityFetchChatList(sb) {
+  return Promise.resolve().then(() => sb.rpc('chat_list')).then((res) => {
+    if (res && !res.error && Array.isArray(res.data) && communityProfile) communityChatsCache = { uid: communityProfile.id, rows: res.data };
+    return res;
+  }, (e) => ({ error: e }));
+}
+function communityCachedChats() {
+  return communityChatsCache && communityProfile && communityChatsCache.uid === communityProfile.id && communityV2() ? communityChatsCache.rows : null;
+}
+async function communityChatsHtml(sb, early) {
   let res;
-  try { res = await sb.rpc('chat_list'); } catch (e) { res = { error: e }; }
-  if (res.error) communitySetMessageText(communityErrText(res.error));
-  const rows = res.data || [];
+  try { res = await (early || communityFetchChatList(sb)); } catch (e) { res = { error: e }; }
+  if (!res || res.error) communitySetMessageText(communityErrText(res && res.error));
+  return communityChatsListHtml((res && res.data) || []);
+}
+function communityChatsListHtml(rows) {
   const item = (c) => '<button type="button" class="cchat-row' + (c.unread ? ' unread' : '') + '" data-community-action="open-chat" data-chat="' + escAttr(c.conversation_id) + '">'
     + communityAvatarHtml(c.other_avatar, 'md')
     + '<span class="cchat-text"><span class="cchat-name">' + esc(c.other_name || t('community.unknownUser')) + '</span>'
@@ -15330,6 +15834,9 @@ function communityChatMsgsHtml() {
   if (!communityChatMsgs.length) return '<p class="empty-state">' + esc(t('community2.chatEmpty')) + '</p>';
   const me = communityProfile && communityProfile.id;
   const v5 = communityV5();
+  /* „Videné / Odoslané“ len pod mojou poslednou správou, ak je posledná v rozhovore (ako v Messengeri) */
+  const lastMsg = communityChatMsgs[communityChatMsgs.length - 1];
+  const seenOn = communitySeenAvailable() && lastMsg && lastMsg.sender_id === me ? String(lastMsg.id) : null;
   return communityChatMsgs.map((m) => {
     const mine = m.sender_id === me;
     let quote = '';
@@ -15344,23 +15851,31 @@ function communityChatMsgsHtml() {
       + quote + '<span class="cmsg-body">' + esc(m.body) + '</span></button>'
       + (v5 && m.attachment ? shareCardHtml(m.attachment, 'msg', m.id) : '')
       + (v5 ? communityReactionsHtml(m) : '')
-      + '<span class="cmsg-time">' + esc(communityTimeAgo(m.created_at)) + '</span>'
+      + '<span class="cmsg-time">' + esc(communityTimeAgo(m.created_at))
+      + (seenOn === String(m.id) ? ' · <span class="cmsg-seen' + (Number(m.id) <= communityChatSeen ? ' on' : '') + '" id="community-chat-seen">'
+        + esc(t(Number(m.id) <= communityChatSeen ? 'chat.seen' : 'chat.sent')) + '</span>' : '') + '</span>'
       + (v5 && String(communityMsgActions) === String(m.id) ? communityMsgActionsHtml(m, mine) : '')
       + '</div>';
   }).join('');
 }
-async function communityChatHtml(sb) {
+/* Rozhovor: zoznam (kto je druhá osoba), správy a pri verzii 8 aj „Videné“ – všetko naraz. */
+function communityFetchChat(sb, cid, uid) {
+  return Promise.all([sb.rpc('chat_list'),
+    sb.from('messages').select(communityV5() ? 'id,conversation_id,sender_id,body,created_at,reply_to,attachment' : 'id,conversation_id,sender_id,body,created_at')
+      .eq('conversation_id', cid).order('id', { ascending: false }).limit(100),
+    communitySeenAvailable() && uid
+      ? sb.from('chat_reads').select('last_read_id').eq('conversation_id', cid).neq('user_id', uid).maybeSingle()
+      : Promise.resolve(null)
+  ]).catch((e) => [{ error: e }, { error: e }, null]);
+}
+async function communityChatHtml(sb, early) {
   const cid = communityChatId;
-  let list, msgs;
-  try {
-    [list, msgs] = await Promise.all([sb.rpc('chat_list'),
-      sb.from('messages').select(communityV5() ? 'id,conversation_id,sender_id,body,created_at,reply_to,attachment' : 'id,conversation_id,sender_id,body,created_at')
-        .eq('conversation_id', cid).order('id', { ascending: false }).limit(100)]);
-  } catch (e) { list = { error: e }; msgs = { error: e }; }
+  const [list, msgs, seen] = await (early || communityFetchChat(sb, cid, communityProfile && communityProfile.id));
   const meta = ((list && list.data) || []).find((c) => c.conversation_id === cid);
   if (!meta) return communityTabbar() + communitySubHead('') + communityNote('community2.chatGone');
   communityChatMeta = meta;
   communityChatMsgs = ((msgs && msgs.data) || []).slice().reverse();
+  communityChatSeen = seen && !seen.error && seen.data ? Number(seen.data.last_read_id) || 0 : 0;
   return communityTabbar()
     + communitySubHead('<button type="button" class="cchat-who" data-community-action="open-user" data-user="' + escAttr(meta.other_id) + '">'
       + communityAvatarHtml(meta.other_avatar) + '<span>' + esc(meta.other_name || t('community.unknownUser')) + '</span></button>',
@@ -15450,6 +15965,15 @@ async function communitySendMessage() {
   const bar = document.getElementById('community-reply-bar');
   if (bar) bar.outerHTML = communityReplyBarHtml();
   pushNotifyMessage(sb, res.data && res.data.id);
+}
+function communityOnChatRead(r) {
+  if (!r || !communityChatOpen() || r.conversation_id !== communityChatId) return;
+  if (communityProfile && r.user_id === communityProfile.id) return;
+  const n = Number(r.last_read_id) || 0;
+  if (n <= communityChatSeen) return;
+  communityChatSeen = n;
+  const box = document.getElementById('community-chat-msgs');
+  if (box) { const atEnd = communityChatAtEnd(); box.innerHTML = communityChatMsgsHtml(); if (atEnd) communityChatScrollToEnd(); }
 }
 /* Živá správa: v otvorenom chate sa hneď pridá (a označí ako prečítaná), inak len odznak. */
 function communityOnMessage(m) {
@@ -16092,6 +16616,8 @@ let communitySharePickerOpen = false;
 let communityShareBusy = false;
 
 function communityV5() { return communityVersion >= 5; }
+/* „Videné“ v chate: druhá osoba prečítala moju poslednú správu (migrácia 0015, verzia 8). */
+function communitySeenAvailable() { return communityVersion >= 8; }
 const shareClampInt = (v, lo, hi) => Math.max(lo, Math.min(hi, Math.round(Number(v)) || 0));
 const shareClampKg = (v) => Math.max(0, Math.min(999, Math.round((Number(v) || 0) * 2) / 2));
 
@@ -16484,6 +17010,130 @@ async function communitySetProfileAchHidden(hidden) {
   communitySetMessageText(res.error ? communityErrText(res.error) : t(hidden ? 'profileAch.hiddenOn' : 'profileAch.shownOn'));
   renderCommunity();
 }
+/* ---------- Profil (v80): usporiadanie ako na Instagrame, vzhľad Bento ----------
+   Horná lišta (Späť · meno · ⋯), avatar s počtami, meno a bio, top úspechy, akcie a pod nimi príspevky
+   v mriežke (aj textové). Žiadne dlaždice Community nad profilom. Len existujúce dáta a akcie; čo smieš
+   vidieť, určuje server (community_feed, profile_card) ako doteraz. */
+function communityProfileBarHtml(name, hasMenu) {
+  return communitySubHead('<span class="pf-bar-name">' + esc(name || '') + '</span>',
+    hasMenu ? '<button type="button" class="btn-icon pf-more" data-community-action="profile-menu" aria-haspopup="true" aria-controls="community-profile-menu" aria-expanded="false" aria-label="' + escAttr(t('community2.menuAria')) + '">' + communityIcon('more') + '</button>' : '');
+}
+function pfMenuItem(attrs, label, danger) {
+  return '<button type="button" class="pf-menu-item' + (danger ? ' pf-danger' : '') + '" ' + attrs + '>' + esc(label) + '</button>';
+}
+function communityProfileMenuHtml(items) {
+  return items.length ? '<div class="pf-menu" id="community-profile-menu" hidden>' + items.join('') + '</div>' : '';
+}
+function communityProfileSkeletonHtml(name) {
+  return communityProfileBarHtml(name, false)
+    + '<div class="cprofile pf-skel" aria-busy="true"><div class="cprofile-top"><span class="community-avatar community-avatar-lg pf-skel-av"></span>'
+    + '<div class="cprofile-stats"><span class="pf-skel-bar"></span></div></div>'
+    + '<p class="card-note">' + esc(t('community.loading')) + '</p></div>';
+}
+/* Meno na kostru profilu z toho, čo už appka pozná (príspevky, rozhovory, tlačidlo s menom). */
+function communityKnownName(uid) {
+  if (!uid) return '';
+  const it = (communityFeed.items || []).find((x) => x.user_id === uid && x.name);
+  if (it) return it.name;
+  const ch = communityChatsCache && (communityChatsCache.rows || []).find((r) => r.other_id === uid);
+  if (ch && ch.other_name) return ch.other_name;
+  if (communityChatMeta && communityChatMeta.other_id === uid) return communityChatMeta.other_name || '';
+  const btn = document.querySelector('#community-body .community-name-btn[data-user="' + uid + '"]');
+  return btn ? btn.textContent.trim() : '';
+}
+/* Mriežka príspevkov ako list ikon aplikácie (app-icons/overview.png): zaoblené „squircle“ dlaždice vo farbách
+   Bento s jedným výrazným znakom a krátkym popisom pod nimi. Fotka vyplní dlaždicu; textový príspevok = veľké
+   začiatočné písmeno (ako ikony „G“), zdieľaný plán = činka, tréning = fajka. Farba podľa id príspevku (stála). */
+const PF_TONES = ['ink', 'lime', 'lav', 'peach', 'sky', 'sand', 'warm', 'olive'];
+const PF_GLYPHS = {
+  dumbbell: '<svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><rect x="1.5" y="9" width="3" height="6" rx="1.2"/><rect x="5" y="6.3" width="3.6" height="11.4" rx="1.4"/><rect x="8.4" y="10.7" width="7.2" height="2.6" rx=".6"/><rect x="15.4" y="6.3" width="3.6" height="11.4" rx="1.4"/><rect x="19.5" y="9" width="3" height="6" rx="1.2"/></svg>',
+  check: '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m7.8 12.3 3 3 5.6-6"/></svg>',
+};
+function pfTone(id) {
+  let h = 0;
+  for (const ch of String(id || '')) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
+  return PF_TONES[h % PF_TONES.length];
+}
+function pfInitial(text) {
+  const m = /[\p{L}\p{N}]/u.exec(String(text || ''));
+  return m ? m[0].toLocaleUpperCase() : '“';
+}
+function pfCaption(text, fallback) {
+  const s = String(text || '').replace(/\s+/g, ' ').trim();
+  return s ? (s.length > 60 ? s.slice(0, 59) + '…' : s) : fallback;
+}
+function pfSquareHtml(p, url) {
+  if (url) return '<span class="pf-sq pf-photo"><img loading="lazy" decoding="async" src="' + escAttr(url) + '" alt=""></span>';
+  const tone = pfTone(p.id);
+  const glyph = p.share && !p.caption ? PF_GLYPHS[p.share.kind === 'workout' ? 'check' : 'dumbbell'] : '<b class="pf-letter">' + esc(pfInitial(p.caption || (p.share && p.share.name))) + '</b>';
+  return '<span class="pf-sq pf-' + tone + '">' + glyph + '</span>';
+}
+function communityGridTileHtml(p) {
+  const ph = p.photos && p.photos[0];
+  const url = ph && p.urls ? p.urls[ph.thumb] : '';
+  const label = p.caption || (p.share && p.share.name) || '';
+  const n = p.photos ? p.photos.length : 0;
+  const marks = (n > 1 ? '<span class="pf-mark pf-count">' + n + '</span>' : '')
+    + (p.reposted_by ? '<span class="pf-mark">' + communityIcon('share') + '</span>' : '')
+    + (p.visibility === 'friends' ? '<span class="pf-mark">' + communityIcon('friends') + '</span>' : '');
+  const aria = (p.reposted_by ? t('community.sharedBy', { name: p.reposted_by_name || '' }) + ' · ' : '') + (label || t('ty.photoOnly')) + ' · ' + communityTimeAgo(p.published);
+  return '<button type="button" class="pf-tile' + (url ? '' : ' pf-text') + '" data-community-action="open-post" data-post="' + escAttr(p.id) + '" aria-label="' + escAttr(aria) + '">'
+    + '<span class="pf-sqw">' + pfSquareHtml(p, url) + (marks ? '<span class="pf-marks">' + marks + '</span>' : '') + '</span>'
+    + '<span class="pf-cap" aria-hidden="true">' + esc(pfCaption(label, communityTimeAgo(p.published))) + '</span></button>';
+}
+function communityPendingTileHtml(r) {
+  const ph = (r.photos || [])[0];
+  const url = ph && r.urls ? r.urls[ph.thumb] : '';
+  const status = t('community.status' + r.status.charAt(0).toUpperCase() + r.status.slice(1));
+  return '<button type="button" class="pf-tile pf-pending' + (url ? '' : ' pf-text') + '" data-community-action="go-myposts" aria-label="' + escAttr(status + ' · ' + (r.caption || t('ty.photoOnly'))) + '">'
+    + '<span class="pf-sqw">' + pfSquareHtml(r, url) + '<span class="pf-marks"><span class="pf-mark pf-dot" aria-hidden="true"></span></span></span>'
+    + '<span class="pf-cap pf-status pf-' + escAttr(r.status) + '">' + esc(status) + '</span>'
+    + '<span class="sr-only">' + esc(pfCaption(r.caption, '')) + '</span></button>';
+}
+function communityGridHtml() {
+  const f = communityFeed;
+  const extra = (f.extra || []).map(communityPendingTileHtml).join('');
+  if (!f.items.length && !extra) return f.loading ? '' : '<p class="empty-state pf-empty">' + esc(t(f.own ? 'community.myPostsEmpty' : 'community.userPostsEmpty')) + '</p>';
+  return '<div class="pf-sheet"><div class="pf-grid">' + extra + f.items.map(communityGridTileHtml).join('') + '</div></div>';
+}
+async function communityOwnProfileHtml(sb, user) {
+  const p = communityProfile || {};
+  const feed = { items: [], offset: 0, done: false, loading: false, scope: 'user', user: user.id, grid: true, own: true, extra: [] };
+  communityFeed = feed;
+  const pendingQ = sb.from('posts').select('id,status,caption,image_path,thumb_path,created_at').eq('user_id', user.id).neq('status', 'approved')
+    .order('created_at', { ascending: false }).limit(30);
+  const [card, achMe, , pend] = await Promise.all([
+    communityProfileCard(sb, user.id),
+    communityV5() ? profileAchievementsSend(false).then(() => profileAchievementsGet(sb, user.id)) : Promise.resolve(null),
+    communityLoadFeed(sb, true),
+    Promise.resolve(pendingQ).catch((e) => ({ error: e }))
+  ]);
+  if (!card) return null;
+  const rows = pend && !pend.error ? (pend.data || []) : [];
+  if (rows.length) {
+    const photos = await communityPostPhotos(sb, rows);
+    const urls = await communitySignedUrls(sb, [].concat(...Object.values(photos).map((l) => l.map((ph) => ph.thumb))));
+    feed.extra = rows.map((r) => Object.assign({}, r, { photos: photos[r.id] || [], urls }));
+  }
+  const mod = p.role === 'moderator';
+  const menu = [
+    pfMenuItem('data-community-action="edit-profile"', t('pf.settings')),
+    pfMenuItem('data-community-action="go-myposts"', t('community.tabMyPosts')),
+  ].concat(mod ? [pfMenuItem('data-community-action="go-moderate"', t('community.tabModerate'))] : [])
+    .concat([pfMenuItem('data-community-action="signout"', t('community.signOut'), true)]);
+  const reqs = communityBadges.requests;
+  return communityProfileBarHtml(card.username || p.username, true)
+    + communityProfileMenuHtml(menu)
+    + communityProfileHeadHtml(card, true)
+    + (communityV5() ? profileAchievementsHtml(achMe, true) : '')
+    + '<div class="cprofile-actions pf-actions">'
+    + '<button type="button" class="btn btn-secondary btn-sm" data-community-action="edit-profile">' + esc(t('community2.editProfile')) + '</button>'
+    + '<button type="button" class="btn btn-secondary btn-sm" data-community-action="go-friends">' + esc(t('community2.friendsTitle'))
+    + (reqs ? ' <span class="cnav-badge cbadge-inline">' + reqs + '</span>' : '') + '</button>'
+    + '</div>'
+    + communityStatusHtml()
+    + communityFeedListHtml();
+}
 function communityProfileHeadHtml(card, mine) {
   const stat = (n, key, act, kind) => {
     const inner = '<span class="cstat-n">' + (Number(n) || 0) + '</span><span class="cstat-l">' + esc(t(key)) + '</span>';
@@ -16505,33 +17155,50 @@ function communityProfileHeadHtml(card, mine) {
 
 /* ---------- Vykreslenie ---------- */
 let communityRenderSeq = 0;
+let communityShownKey = '';   // ktorá obrazovka je práve vykreslená (pre zachovanie posunutia)
+function communityViewKey(view, user, post, chat) {
+  return view + ':' + (view === 'user' || view === 'list' ? user : view === 'comments' ? post : view === 'chat' ? chat : '');
+}
 async function renderCommunity() {
   const body = document.getElementById('community-body');
   if (!body) return;
   /* Novšie vykreslenie vždy vyhrá: pomalšia staršia odpoveď už nič neprepíše. */
   const seq = ++communityRenderSeq;
+  /* v80: prekreslenie tej istej obrazovky (napr. po Sledovať) nechá posunutie tam, kde bolo */
+  const viewKey = communityViewKey(communityView, communityViewUser, communityPostId, communityChatId);
+  const keep = communityShownKey === viewKey && communityView !== 'chat' ? communityScrollPos() : null;
   const put = (html) => {
     if (seq !== communityRenderSeq) return false;
     body.innerHTML = html;
     /* Bento: podpohľady s hlavičkou Späť sú celostránkové listy (prekryjú menu, ako v návrhu) */
     const screen = document.getElementById('screen-komunita');
     if (screen) screen.classList.toggle('sheet-open', !!body.querySelector('.k-head, .csub-head'));
+    communityShownKey = viewKey;
+    if (keep && keep.y) { if (keep.sheet) { const sc = communitySheetScroller(); if (sc) sc.scrollTop = keep.y; } else window.scrollTo(0, keep.y); }
     return true;
   };
   if (!communityConfigured()) { put(communitySetupHtml()); return; }
   if (!communityOptIn()) { put(communityIntroHtml()); return; }
   const sb = communityClient();
   if (!sb) { put(communityNote('community.errUnavailable')); return; }
-  if (!body.innerHTML) put(communityNote('community.loading'));
+  /* Správy: posledný známy zoznam rozhovorov sa ukáže hneď a obnoví sa, keď príde odpoveď servera. */
+  const cachedChats = communityView === 'chats' ? communityCachedChats() : null;
+  if (cachedChats) put(communityChatsListHtml(cachedChats));
+  else if (!body.innerHTML) put(communityNote('community.loading'));
   try {
     const res = await sb.auth.getSession();
     const session = res && res.data ? res.data.session : null;
     if (!session) { put(communityAuthHtml()); return; }
-    await communityEnsureProfile(sb, session.user);
-    await communityLoadBlocks(sb, session.user.id);
-    const social = await communityDetectSocial(sb);
-    if (social) await communityLoadConsent(sb);
-    else if (['following', 'user', 'list', 'compose'].indexOf(communityView) >= 0) communityView = 'feed';
+    /* Rýchlejšie načítanie: profil, blokovania a súhlas sa pýtajú naraz (nie jedno po druhom)
+       a zoznam rozhovorov sa pri Správach začne načítavať hneď popri nich. */
+    const chatsEarly = communityView === 'chats' && communityV2() ? communityFetchChatList(sb) : null;
+    const chatEarly = communityView === 'chat' && communityV2() && communityChatId ? communityFetchChat(sb, communityChatId, session.user.id) : null;
+    const [, , social] = await Promise.all([
+      communityEnsureProfile(sb, session.user),
+      communityLoadBlocks(sb, session.user.id),
+      communityDetectSocial(sb).then(async (s) => { if (s) await communityLoadConsent(sb); return s; })
+    ]);
+    if (!social && ['following', 'user', 'list', 'compose'].indexOf(communityView) >= 0) communityView = 'feed';
     if (!communityV2() && ['search', 'friends', 'chats', 'chat', 'comments', 'leaderboard'].indexOf(communityView) >= 0) communityView = 'feed';
     if (communityView === 'leaderboard' && communityVersion < 3) communityView = 'feed';
     if (communityV2() && communityView === 'following') { communityScope = 'following'; communityView = 'feed'; }
@@ -16541,21 +17208,35 @@ async function renderCommunity() {
     if (seq !== communityRenderSeq) return;
     if (communityView === 'myposts') { put(await communityMyPostsHtml(sb, session.user)); return; }
     if (communityView === 'moderate') { put(await communityModerateHtml(sb, session.user)); return; }
-    if (communityView === 'profile') { put(await communityProfileHtml(sb, session.user)); return; }
+    if (communityView === 'profile' || (communityView === 'user' && communityV2() && communityProfile && communityViewUser === communityProfile.id)) {
+      const own = communityV2() ? await communityOwnProfileHtml(sb, session.user) : null;
+      put(own || await communityProfileHtml(sb, session.user));
+      return;
+    }
+    if (communityView === 'editprofile') { put(await communityProfileHtml(sb, session.user)); return; }
     if (communityView === 'compose') { if (put(communityComposeHtml())) communityMountDraft(); return; }
     const ownProfile = communityView === 'user' && communityProfile && communityViewUser === communityProfile.id;
     if (social && !communityConsent && !ownProfile) { put(communityTabbar() + communityAgeCardHtml()); return; }
     if (communityView === 'search') { if (put(communitySearchHtml())) communityRunSearch(true); return; }
     if (communityView === 'friends') { put(await communityFriendsHtml(sb)); return; }
     if (communityView === 'leaderboard') { put(await communityLeaderboardHtml(sb)); return; }
-    if (communityView === 'chats') { put(await communityChatsHtml(sb)); return; }
-    if (communityView === 'chat') { if (put(await communityChatHtml(sb))) communityAfterChatRender(sb); return; }
+    if (communityView === 'chats') { put(await communityChatsHtml(sb, chatsEarly)); return; }
+    if (communityView === 'chat') { if (put(await communityChatHtml(sb, chatEarly))) communityAfterChatRender(sb); return; }
     if (communityView === 'comments') { put(await communityCommentsHtml(sb)); return; }
     if (communityView === 'list') { put(await communityListHtml(sb, true)); return; }
     if (communityView === 'user') {
-      const head = await communityUserHtml(sb, communityViewUser);
+      const uid = communityViewUser;
+      if (communityV2()) {
+        /* v80: profil a jeho príspevky sa načítajú naraz a ukážu sa naraz (žiadne medzistavy) */
+        communityFeed = { items: [], offset: 0, done: false, loading: false, scope: 'user', user: uid, grid: true };
+        const [head] = await Promise.all([communityUserHtml(sb, uid), communityLoadFeed(sb, true)]);
+        if (!head) { put(communityProfileBarHtml('', false) + communityNote('community.profileUnavailable')); return; }
+        put(head + communityFeedListHtml());
+        return;
+      }
+      const head = await communityUserHtml(sb, uid);
       if (!head) { put(communityTabbar() + communityNote('community.profileUnavailable')); return; }
-      communityFeed = { items: [], offset: 0, done: false, loading: false, scope: 'user', user: communityViewUser };
+      communityFeed = { items: [], offset: 0, done: false, loading: false, scope: 'user', user: uid };
       if (put(head + communityFeedListHtml())) await communityLoadFeed(sb, true);
       return;
     }
@@ -16656,6 +17337,7 @@ function communityFeedListHtml() {
     + '<div class="plan-actions"><button type="button" class="btn btn-secondary" id="community-more" data-community-action="more"' + (communityFeed.done ? ' hidden' : '') + '>' + esc(t('community.loadMore')) + '</button></div>';
 }
 function communityFeedItemsHtml() {
+  if (communityFeed.grid) return communityGridHtml();
   if (!communityFeed.items.length) {
     const key = !communitySocial ? 'community.feedEmpty'
       : communityFeed.scope === 'following' ? 'community.followingEmpty'
@@ -16775,17 +17457,25 @@ async function communityLoadFeed(sb, reset) {
 /* Sociálny prehľad (Všetci / Sledovaní / profil): server vráti len to, čo smieš vidieť
    (schválené, bez blokovaných a pozastavených autorov); stránkovanie podľa poslednej položky. */
 async function communityLoadSocialFeed(sb, reset) {
-  if (communityFeed.loading || (communityFeed.done && !reset)) return;
-  communityFeed.loading = true;
-  const last = reset ? null : communityFeed.items[communityFeed.items.length - 1];
+  const feed = communityFeed;   // Späť môže medzitým obnoviť iný zoznam – zapisuje sa len do tohto
+  if (feed.loading || (feed.done && !reset)) return;
+  feed.loading = true;
+  const last = reset ? null : feed.items[feed.items.length - 1];
   let res;
   try {
-    res = await sb.rpc('community_feed', { p_scope: communityFeed.scope || 'everyone', p_user: communityFeed.user || null,
+    res = await sb.rpc('community_feed', { p_scope: feed.scope || 'everyone', p_user: feed.user || null,
       p_before: last ? last.at : null, p_before_id: last ? last.id : null, p_limit: COMMUNITY_PAGE });
   } catch (e) { res = { error: e }; }
-  communityFeed.loading = false;
-  if (res.error) { communitySetMessageText(communityErrText(res.error)); communityRefreshFeed(); return; }
-  const items = (res.data || []).map((r) => ({
+  feed.loading = false;
+  if (res.error) { communitySetMessageText(communityErrText(res.error)); if (feed === communityFeed) communityRefreshFeed(); return; }
+  const items = await communityFeedItemsFromRows(sb, res.data || []);
+  feed.items = reset ? items : feed.items.concat(items);
+  feed.done = items.length < COMMUNITY_PAGE;
+  if (feed === communityFeed) communityRefreshFeed();
+}
+/* Riadky z community_feed → položky (fotky s podpísanými náhľadmi, zdieľaný plán / tréning). */
+async function communityFeedItemsFromRows(sb, rows) {
+  const items = rows.map((r) => ({
     id: r.post_id, user_id: r.author_id, name: r.author_name, avatar: r.author_avatar, mod: !!r.author_moderator,
     caption: r.caption || '', photos: Array.isArray(r.photos) ? r.photos : [], at: r.activity_at, published: r.activity_at,
     reposted_by: r.reposted_by, reposted_by_name: r.reposted_by_name,
@@ -16795,9 +17485,7 @@ async function communityLoadSocialFeed(sb, reset) {
   const urls = await communitySignedUrls(sb, [].concat(...items.map((p) => p.photos.map((ph) => ph.thumb))));
   await communityLoadPostShares(sb, items.map((p) => p.id));
   items.forEach((p) => { p.urls = urls; if (communityPostShares[p.id]) p.share = communityPostShares[p.id]; });
-  communityFeed.items = reset ? items : communityFeed.items.concat(items);
-  communityFeed.done = items.length < COMMUNITY_PAGE;
-  communityRefreshFeed();
+  return items;
 }
 function communityFeedItem(postId) { return communityFeed.items.find((p) => p.id === postId) || null; }
 async function communityToggleLike(postId) {
@@ -16877,26 +17565,25 @@ async function communityUserHtml(sb, uid) {
   const mine = communityProfile && card.id === communityProfile.id;
   if (communityV2()) {
     const friends = card.friend_state === 'friends';
-    return communityTabbar()
-      + communitySubHead(esc(card.username || t('community.unknownUser')))
+    const isMod = communityVersion >= 3 && communityProfile && communityProfile.role === 'moderator';
+    const menu = mine ? [] : [
+      pfMenuItem('data-community-action="block" data-user="' + escAttr(card.id) + '" data-name="' + escAttr(card.username || '') + '"', t('community.block'), true),
+      pfMenuItem('data-community-action="report-user" data-user="' + escAttr(card.id) + '"', t('community.reportUser'), true),
+    ].concat(isMod ? [
+      pfMenuItem('data-community-action="lb-mod" data-user="' + escAttr(card.id) + '" data-on="1"', t('lb.modRemove')),
+      pfMenuItem('data-community-action="lb-mod" data-user="' + escAttr(card.id) + '" data-on="0"', t('lb.modRestore')),
+    ] : []);
+    return communityProfileBarHtml(card.username || t('community.unknownUser'), menu.length > 0)
+      + communityProfileMenuHtml(menu)
       + communityProfileHeadHtml(card, mine)
       + (communityV5() ? profileAchievementsHtml(await profileAchievementsGet(sb, card.id), mine) : '')
-      + communityStatusHtml()
-      + (mine ? '' : '<div class="cprofile-actions">'
+      + (mine ? '' : '<div class="cprofile-actions pf-actions">'
         + '<button type="button" class="btn ' + (card.i_follow ? 'btn-secondary' : 'btn-primary') + ' btn-sm" data-community-action="follow" data-user="' + escAttr(card.id) + '" data-on="' + (card.i_follow ? '0' : '1') + '" aria-pressed="' + (card.i_follow ? 'true' : 'false') + '">'
         + esc(t(card.i_follow ? 'community.followingBtn' : 'community.follow')) + '</button>'
-        + (card.member ? communityFriendButtonHtml(card.id, card.friend_state, card.username, false) : '')
+        + (card.member ? communityFriendButtonHtml(card.id, card.friend_state, card.username, true) : '')
         + (friends ? '<button type="button" class="btn btn-secondary btn-sm" data-community-action="message" data-user="' + escAttr(card.id) + '">' + esc(t('community2.message')) + '</button>' : '')
-        + '<button type="button" class="btn-icon cpost-more" data-community-action="profile-menu" aria-label="' + escAttr(t('community2.menuAria')) + '">' + communityIcon('more') + '</button>'
-        + '</div>'
-        + '<div class="plan-actions cprofile-menu" id="community-profile-menu" hidden>'
-        + '<button type="button" class="btn btn-secondary btn-sm" data-community-action="block" data-user="' + escAttr(card.id) + '" data-name="' + escAttr(card.username || '') + '">' + esc(t('community.block')) + '</button>'
-        + '<button type="button" class="btn btn-secondary btn-sm" data-community-action="report-user" data-user="' + escAttr(card.id) + '">' + esc(t('community.reportUser')) + '</button>'
-        + (communityVersion >= 3 && communityProfile && communityProfile.role === 'moderator'
-          ? '<button type="button" class="btn btn-secondary btn-sm" data-community-action="lb-mod" data-user="' + escAttr(card.id) + '" data-on="1">' + esc(t('lb.modRemove')) + '</button>'
-            + '<button type="button" class="btn btn-secondary btn-sm" data-community-action="lb-mod" data-user="' + escAttr(card.id) + '" data-on="0">' + esc(t('lb.modRestore')) + '</button>'
-          : '')
-        + '</div>');
+        + '</div>')
+      + communityStatusHtml();
   }
   return communityTabbar()
     + '<div class="card community-profile">'
@@ -16924,7 +17611,10 @@ async function communityFollow(uid, on) {
 }
 function communityOpenUser(uid) {
   if (!uid) return;
+  /* v80: vlastný profil je jeden (aj keď ťukneš na svoje meno v príspevku) */
+  if (communityV2() && communityProfile && uid === communityProfile.id) { if (communityView !== 'profile') communityGo('profile'); return; }
   if (communityView === 'user' && communityViewUser === uid) return;
+  if (communityV2()) { communityGo('user', () => { communityViewUser = uid; }); return; }
   if (communityView === 'user' || !communityV2()) { communityViewUser = uid; communityView = 'user'; communitySetMessage(''); renderCommunity(); return; }
   communityGo('user', () => { communityViewUser = uid; });
 }
@@ -16966,18 +17656,12 @@ async function communityProfileHtml(sb, user) {
   if (communityV5()) { await profileAchievementsSend(false); achMe = await profileAchievementsGet(sb, user.id); }
   if (remindersAvailable() && pushState() === 'on') await remindersLoad(sb);
   const masked = t('community.emailHidden');
+  /* v80: pri verzii 2+ je toto „Upraviť profil“ (meno, bio, avatar, súkromie, upozornenia, pripomienky, účet).
+     Hlavička profilu, úspechy a príspevky sú v novom profile (communityOwnProfileHtml). */
   if (communityV2() && card) {
-    return communityTabbar()
-      + communityProfileHeadHtml(card, true)
-      + profileAchievementsHtml(achMe, true)
-      + '<div class="cprofile-actions">'
-      + '<button type="button" class="btn btn-secondary btn-sm" data-community-action="go-friends">' + esc(t('community2.friendsTitle'))
-      + (communityBadges.requests ? ' <span class="cnav-badge cbadge-inline">' + communityBadges.requests + '</span>' : '') + '</button>'
-      + '<button type="button" class="btn btn-secondary btn-sm" data-community-view="myposts">' + esc(t('community.tabMyPosts')) + '</button>'
-      + (p.role === 'moderator' ? '<button type="button" class="btn btn-secondary btn-sm" data-community-view="moderate">' + esc(t('community.tabModerate')) + '</button>' : '')
-      + '</div>'
+    return communitySubHead(esc(t('community2.editProfile')))
       + communityStatusHtml()
-      + '<div class="card"><h3 class="card-title">' + esc(t('community2.editProfile')) + '</h3>'
+      + '<div class="card">'
       + '<label class="modal-label" for="community-username">' + esc(t('community.username')) + '</label>'
       + '<input type="text" class="modal-input" id="community-username" maxlength="30" value="' + escAttr(p.username || '') + '">'
       + '<p class="card-note">' + esc(t('community.renameNote')) + '</p>'
@@ -19445,6 +20129,7 @@ function renderAll() {
   renderCustomTimer();
   // Kalendár sa prekresľuje len keď je otvorený – zbytočne nepočítame iné obrazovky.
   if (activeTab === 'kalendar') renderKalendar();
+  if (activeTab === 'ty') renderTy();   // jazyk, cieľ, príspevky
   // Otvorený detail dňa musí zareagovať na zmenu jazyka aj na zmenu histórie.
   const dayModal = document.getElementById('modal-day');
   if (dayModal && !dayModal.hidden && selectedDayKey) renderDayDetail(selectedDayKey);
@@ -19479,7 +20164,15 @@ function switchTab(tab) {
     document.getElementById('screen-komunita').classList.toggle('msg-mode', communityMode === 'messages');
     renderCommunity();
   }
-  if (tab === 'ty') renderTy();
+  if (tab === 'ty') {
+    const back = tyReturn; tyReturn = null;
+    if (back) {   // návrat z príspevku / listu: rovnaký filter a posunutie, bez nového načítania
+      tyFilter = back.filter;
+      renderTy();
+      requestAnimationFrame(() => window.scrollTo(0, back.y));
+      if (tyFeed && Date.now() - tyLoadedAt > 60000) tyLoadedAt = 0;
+    } else { renderTy(); tyLoad(true); }
+  }
   refreshUpdateBanner();
 }
 
@@ -19842,7 +20535,7 @@ function renderGoalChips(containerId, current) {
     btn.addEventListener('click', () => {
       box.querySelectorAll('.goal-chip').forEach(c => c.classList.remove('active'));
       btn.classList.add('active');
-      if (containerId === 'settings-goal-chips') setGoalReadout(g);
+      if (containerId === 'settings-goal-chips') { setGoalReadout(g); saveSettingsGoal(); }   // v80: platí hneď, bez tlačidla Uložiť
     });
     box.appendChild(btn);
   }
@@ -20188,7 +20881,11 @@ function renderAutoBackupSetting() {
     stateEl.textContent = on ? t('settings.on') : t('backup.coveredBySync');
     stateEl.classList.toggle('setting-state-ok', !on);
   }
+  /* v80: pri synchronizácii s účtom je automatická záloha zbytočná – riadok sa skryje (text ostáva pre čítačky v DOM) */
+  const row = document.getElementById('auto-backup-row');
+  if (row) row.hidden = !on;
   const lastEl = document.getElementById('auto-backup-last');
+  if (lastEl) lastEl.hidden = !on;
   if (lastEl) {
     lastEl.textContent = t('settings.autoBackupLast', {
       when: formatBackupTimestamp(state && state.settings ? state.settings.autoBackupOfferedAt : null),
@@ -20527,6 +21224,8 @@ function renderRestSoundSetting() {
   if (stateEl) stateEl.textContent = on ? t('settings.on') : t('settings.off');
   const box = document.getElementById('sound-length');
   if (box) box.hidden = !on;   // dĺžka sa ukáže len keď je zvuk zapnutý
+  const extra = document.getElementById('rest-sound-extra');
+  if (extra) extra.hidden = !on;   // v80: dĺžka aj test zvuku len pri zapnutom zvuku
   /* Test sound má zmysel len pri zapnutom zvuku – inak je neaktívne s vysvetlením. */
   const testBtn = document.getElementById('btn-test-sound');
   if (testBtn) testBtn.disabled = !on;
@@ -23118,6 +23817,7 @@ function setupEvents() {
       if (tab.dataset.tab === 'spravy') { openMessagesTab(); window.scrollTo(0, 0); return; }
       if (tab.dataset.tab === 'komunita' && communityMode === 'messages') { communityMode = 'community'; communityBack = []; communityView = 'feed'; }
       if (tab.dataset.tab === 'pokrok') pokrokView = 'stats';
+      pokrokReturnTab = null;
       switchTab(tab.dataset.tab); window.scrollTo(0, 0);
     });
   });
@@ -23178,14 +23878,14 @@ function setupEvents() {
     if (e.target && (e.target.id === 'act-distance' || e.target.id === 'act-note')) { syncActivityInputs(); saveState(); }
   }, 'change');
 
-  on('btn-excuse', () => {
-    const key = currentWeekKey();
-    const idx = state.excusedWeeks.indexOf(key);
-    if (idx >= 0) state.excusedWeeks.splice(idx, 1);
-    else state.excusedWeeks.push(key);
-    saveState();
-    renderAll();
+  on('btn-excuse', openExcuseSheet);
+  on('btn-excuse-done', closeExcuseSheet);
+  on('modal-excuse', (e) => {
+    if (e.target === e.currentTarget) { closeExcuseSheet(); return; }   // ťuknutie mimo listu
+    const sw = e.target.closest ? e.target.closest('[data-excuse-week]') : null;
+    if (sw && !sw.disabled) setWeekExcused(sw.dataset.excuseWeek, sw.getAttribute('aria-checked') !== 'true');
   });
+  on('modal-excuse', (e) => { if (e.key === 'Escape') { e.preventDefault(); closeExcuseSheet(); } }, 'keydown');
 
   on('btn-finish-workout', finishWorkout);
   on('btn-confirm-cancel', () => { document.getElementById('modal-confirm').hidden = true; refreshUpdateBanner(); });
@@ -23281,11 +23981,7 @@ function setupEvents() {
   on('btn-preset-save', savePresetForm);
 
   on('btn-setup-ok', confirmSetup);
-  // viditeľné Uložiť aj pôvodné Zavrieť – obe uložia, aby sa zmena nikdy nestratila
-  on('btn-settings-save', () => {
-    if (saveSettingsGoal()) document.getElementById('modal-settings').hidden = true;
-    refreshUpdateBanner();
-  });
+  // v80: cieľ sa uloží hneď po ťuknutí; Zavrieť ho pre istotu uloží ešte raz (zmena sa nikdy nestratí)
   on('btn-settings-close', () => {
     saveSettingsGoal();
     document.getElementById('modal-settings').hidden = true;
@@ -23471,7 +24167,11 @@ function setupEvents() {
     else if (act === 'back') communityGoBack();
     else if (act === 'scope') { communityScope = ['following', 'friends'].indexOf(a.dataset.scope) >= 0 ? a.dataset.scope : 'everyone'; communitySetView('feed'); }
     else if (act === 'post-menu') communityTogglePostMenu(a);
-    else if (act === 'profile-menu') { const m = document.getElementById('community-profile-menu'); if (m) m.hidden = !m.hidden; }
+    else if (act === 'profile-menu') { const m = document.getElementById('community-profile-menu'); if (m) { m.hidden = !m.hidden; a.setAttribute('aria-expanded', m.hidden ? 'false' : 'true'); if (!m.hidden) { const f = m.querySelector('button'); if (f) f.focus(); } } }
+    else if (act === 'open-post') communityOpenComments(a.dataset.post);
+    else if (act === 'edit-profile') communityGo('editprofile');
+    else if (act === 'go-myposts') communityGo('myposts');
+    else if (act === 'go-moderate') communityGo('moderate');
     else if (act === 'comments') communityOpenComments(a.dataset.post);
     else if (act === 'comment-send') communitySendComment();
     else if (act === 'comment-delete') communityDeleteComment(a.dataset.comment);
@@ -23663,9 +24363,45 @@ function setupEvents() {
   on('edit-back', () => document.getElementById('btn-edit-cancel').click());
   on('tr-sess-plan', () => { trainShowPlans = !trainShowPlans; bentoTrainMode(); });
   on('back-calendar', () => switchTab(calendarReturnTab === 'kalendar' ? 'dnes' : calendarReturnTab));
-  for (const v of ['progress', 'body', 'food', 'photos', 'motivation']) on('back-' + v, () => { setPokrokView('stats'); window.scrollTo(0, 0); });
+  for (const v of ['progress', 'body', 'food', 'photos', 'motivation']) on('back-' + v, () => {
+    const back = pokrokReturnTab; pokrokReturnTab = null;
+    setPokrokView('stats'); window.scrollTo(0, 0);
+    if (back) switchTab(back);
+  });
   on('stats-grid', (e) => { const b = e.target.closest ? e.target.closest('[data-go]') : null; if (b) bentoGo(b.dataset.go); else { const w = e.target.closest ? e.target.closest('[data-day]') : null; if (w) openDay(w.dataset.day); } });
-  on('screen-ty', (e) => { const b = e.target.closest ? e.target.closest('[data-go]') : null; if (b) bentoGo(b.dataset.go); });
+  on('screen-ty', (e) => {
+    const el = (sel) => (e.target.closest ? e.target.closest(sel) : null);
+    const more = el('#ty-more');
+    if (more) { tyMenu(document.getElementById('ty-menu').hidden); return; }
+    const fil = el('[data-ty-filter]');
+    if (fil) { tySetFilter(fil.dataset.tyFilter); return; }
+    const post = el('[data-ty-post]');
+    if (post) { tyOpenPost(post.dataset.tyPost); return; }
+    const day = el('[data-ty-day]');
+    if (day) { openDay(day.dataset.tyDay); return; }
+    const stat = el('[data-ty-stat]');
+    if (stat) {
+      const k = stat.dataset.tyStat;
+      if (k === 'posts') { tySetFilter('all'); const s = document.getElementById('ty-seg'); if (s && s.scrollIntoView) s.scrollIntoView({ block: 'start' }); }
+      else tyAction(k);
+      return;
+    }
+    const act = el('[data-ty-action]');
+    if (act) { tyMenu(false); tyAction(act.dataset.tyAction); return; }
+    const b = el('[data-go]'); if (b) { tyMenu(false); bentoGo(b.dataset.go); }
+  });
+  /* Ty: filtre ako prepínač (šípky vľavo/vpravo), Escape zavrie menu */
+  on('screen-ty', (e) => {
+    if (e.key === 'Escape' && !document.getElementById('ty-menu').hidden) { tyMenu(false); document.getElementById('ty-more').focus(); return; }
+    const cur = e.target.closest ? e.target.closest('[data-ty-filter]') : null;
+    if (!cur || (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight')) return;
+    const list = [...document.querySelectorAll('#ty-seg [data-ty-filter]')];
+    let i = list.indexOf(cur) + ((e.key === 'ArrowRight') !== (document.documentElement.dir === 'rtl') ? 1 : -1);
+    i = (i + list.length) % list.length;
+    tySetFilter(list[i].dataset.tyFilter);
+    const n = document.querySelector('#ty-seg [data-ty-filter="' + tyFilter + '"]'); if (n) n.focus();
+    e.preventDefault();
+  }, 'keydown');
   on('btn-library-close', closeLibrary);
   on('btn-exercise-close', closeExerciseSheet);
 
