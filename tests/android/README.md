@@ -1,0 +1,30 @@
+# GymQuest Android tests
+
+| Test | Needs | Covers |
+|---|---|---|
+| `bash tests/android/run-all.sh` | Chrome only | everything below marked "headless" |
+| `build-www.js` | — | what goes into the app (`www/`): app files, MP4 + images, no WebM / service worker / tests; < 40 MB; web files untouched |
+| `native-core.js` (headless) | Chrome | native mode on/off, no service worker or update UI in the app, MP4-only video, splash hidden |
+| `native-back.js` (headless) | Chrome | hardware Back for every sheet (table complete), stacked sheets, sub-views, tabs, Today → background, running workout kept |
+| `native-theme.js` (headless) | Chrome | status bar follows light / dark / system, live system switch |
+| `native-share.js` (headless) | Chrome | export, auto backup and progress photo go through Filesystem + share sheet |
+| `native-reminders.js` (headless) | Chrome | on-phone reminder schedule (water / meals / workout days), apply / cancel / permission |
+| `native-push.js` (headless) | Chrome | FCM registration, token refresh, sign-out, tap → chat, server without 0016 |
+| `native-health.js` (headless) | Chrome | Health Connect switch, write + read on finish, refresh, retry, undo / delete, never in Community |
+| `release-check.js` | JDK 21, SDK, upload key | signed release AAB ≤ 40 MB, not debuggable, version, privacy page, nothing secret in git |
+| `emulator-smoke.js` | one phone / emulator in `adb devices` + debug APK | real start-up, tabs, airplane-mode workout + video, real Back key, share sheet, a reminder firing, Health Connect, size, screenshots |
+| `../social/push-fcm.js` | local Supabase stack | migration 0016 (FCM tokens), rollback, leaves the stack as found |
+| `../social/push-fcm-ef.js` | — | FCM sender of the `push` function against a mock Google server |
+
+The "headless" tests run the real app in headless Chrome with a fake `window.Capacitor`
+(`lib-native.js`): every plugin call is recorded, return values are set per test, and native events
+(Back button, FCM token, notification tap, resume) are fired by the test.
+
+## Results
+
+- 2026-10-25, branch `worktree-android-app`: run-all 8 suites green (build-www 29, back 45, core 13,
+  health 27, push 25, reminders 21, share 17, theme 9); release-check 17/17 (AAB 37.8 MB);
+  push-fcm 34/34; push-fcm-ef 25/25; web push 52/52 and reminders 41/41 with 0016 applied.
+- `emulator-smoke.js`: **not run yet** — the emulator crashes on this laptop (headless qemu
+  segfaults; with a hidden window adb stays offline). Run it with a phone over USB debugging or an
+  emulator started from Android Studio's Device Manager.
