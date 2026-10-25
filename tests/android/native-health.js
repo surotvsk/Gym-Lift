@@ -95,6 +95,23 @@ const entryOf = (p, id) => p.eval(`JSON.parse(JSON.stringify(state.history.find(
     check('day detail shows heart rate', await p.eval(`(openDay(todayISO()), document.getElementById('day-body').textContent.includes(t('health.hr', { avg: 128, max: 161 })))`));
     await p.eval(`(document.getElementById('modal-day').hidden = true, true)`);
 
+    /* nastavenie patrí telefónu (povolenie je v telefóne), nie účtu / zálohe */
+    check('healthConnect is a device-only setting (not synced)', await p.eval(`DEVICE_SETTING_KEYS.includes('healthConnect')`));
+    /* povolenie odobraté v Health Connect → pri otvorení Nastavení sa prepínač vypne s poznámkou */
+    await p.eval(`(window.__nativeReturns['GymHealth.checkPermissions'] = { granted: [] }, openSettings(), true)`);
+    await wait(300);
+    check('permission revoked: switch turns off with the note', await p.eval(`!state.settings.healthConnect && !document.getElementById('health-switch').checked
+      && document.getElementById('health-status').textContent === t('health.denied')`));
+    await p.eval(`(window.__nativeReturns['GymHealth.checkPermissions'] = { granted: ['READ_HEART_RATE', 'WRITE_EXERCISE'] }, state.settings.healthConnect = true, saveState(), true)`);
+    await fireNative(p, 'App', 'resume', {});
+    await wait(300);
+    check('permission still granted: stays on after resume', await p.eval(`state.settings.healthConnect === true`));
+    await p.eval(`(window.__nativeReturns['GymHealth.checkPermissions'] = { granted: [] }, true)`);
+    await fireNative(p, 'App', 'resume', {});
+    await wait(300);
+    check('permission revoked while away: off after resume', await p.eval(`state.settings.healthConnect === false`));
+    await p.eval(`(window.__nativeReturns['GymHealth.checkPermissions'] = { granted: ['READ_HEART_RATE', 'READ_ACTIVE_CALORIES_BURNED', 'WRITE_EXERCISE'] }, state.settings.healthConnect = true, saveState(), document.getElementById('modal-settings').hidden = true, true)`);
+
     /* Community nikdy */
     check('share payload has no heart rate', await p.eval(`!JSON.stringify(shareFromWorkout(state.history.find((x) => x.id === ${JSON.stringify(id)}))).match(/hr|kcal|health/i)`));
 
@@ -125,6 +142,17 @@ const entryOf = (p, id) => p.eval(`JSON.parse(JSON.stringify(state.history.find(
     await fireNative(p, 'App', 'resume', {});
     await wait(500);
     check('resume fills recent workout without data', (await entryOf(p, id3)).health.hrAvg === 99);
+
+    /* rýchle "Vrátiť späť" počas pomalého zápisu → zmazanie až po zápise (žiadne duchovia v Health Connect) */
+    await p.eval(`(window.__nativeReturns['GymHealth.writeWorkout'] = { __delay: 800, value: { ok: true } }, true)`);
+    await clearNativeCalls(p);
+    const idq = await p.eval(FINISH);
+    await p.eval(`(requestUndoWorkout(), document.getElementById('btn-generic-ok').click(), true)`);
+    await wait(1500);
+    const wq = (await nativeCalls(p, 'GymHealth', 'writeWorkout'))[0];
+    const dq = (await nativeCalls(p, 'GymHealth', 'deleteWorkout'))[0];
+    check('quick undo: delete is sent only after the write finished', !!wq && !!dq && dq.args[0].id === idq && dq.at >= wq.at + 750, { w: wq && wq.at, d: dq && dq.at });
+    await p.eval(`(window.__nativeReturns['GymHealth.writeWorkout'] = { ok: true }, document.getElementById('modal-result').hidden = true, true)`);
 
     /* späť / zmazanie → zmazané aj z Health Connect */
     await clearNativeCalls(p);

@@ -21,6 +21,16 @@
   <meta name="apple-mobile-web-app-title" content="GymQuest">
   <title>GymQuest</title>
   <link rel="manifest" href="manifest.json">
+  <script>
+    /* Android appka: spúšťacia obrazovka sa skryje aj vtedy, keď sa appka nespustí (chyba v skripte),
+       inak by zostala navždy. Pri bežnom štarte ju skryje nativeInit() oveľa skôr. */
+    setTimeout(function () {
+      try {
+        if (window.Capacitor && Capacitor.isNativePlatform && Capacitor.isNativePlatform()
+            && (typeof nativeStarted === 'undefined' || !nativeStarted)) Capacitor.Plugins.SplashScreen.hide();
+      } catch (e) {}
+    }, 4000);
+  </script>
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <link rel="stylesheet" href="style.css?v=85">
 </head>

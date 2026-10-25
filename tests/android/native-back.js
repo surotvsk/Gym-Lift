@@ -85,6 +85,15 @@ const check = t.check;
     await back();
     check('Community → Today', await p.eval(`activeTab === 'dnes'`));
 
+    /* fotka z Community na celú obrazovku (nie je .modal-backdrop) */
+    await p.eval(`(() => { const b = document.createElement('div'); b.id = 'community-lightbox'; b.className = 'community-lightbox';
+      b.setAttribute('role', 'dialog'); b.innerHTML = '<img alt="">'; document.body.appendChild(b); switchTab('komunita'); communityView = 'feed'; return true; })()`);
+    await clearNativeCalls(p);
+    await back();
+    check('Back closes the Community photo viewer first (tab unchanged)', await p.eval(`document.getElementById('community-lightbox').hidden && activeTab === 'komunita'`));
+    await back();
+    check('then Community → Today', await p.eval(`activeTab === 'dnes'`));
+
     await clearNativeCalls(p);
     await back();
     check('Today: Back minimizes the app', (await nativeCalls(p, 'App', 'minimizeApp')).length === 1);

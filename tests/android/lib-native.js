@@ -23,7 +23,7 @@ function fakeSource(opts) {
       cache[name] = new Proxy({}, { get(_, m) {
         if (m === 'then' || typeof m === 'symbol') return undefined;
         return (...args) => {
-          window.__nativeCalls.push({ plugin: name, method: m, args: clean(args.filter((a) => typeof a !== 'function')) });
+          window.__nativeCalls.push({ plugin: name, method: m, at: Date.now(), args: clean(args.filter((a) => typeof a !== 'function')) });
           if (m === 'addListener') {
             const key = name + '.' + args[0];
             (window.__nativeListeners[key] = window.__nativeListeners[key] || []).push(args[1]);
@@ -37,6 +37,7 @@ function fakeSource(opts) {
           }
           const r = window.__nativeReturns[name + '.' + m];
           if (r && r.__reject) return Promise.reject(new Error(r.__reject));
+          if (r && r.__delay) return new Promise((ok) => setTimeout(() => ok(clean(r.value || {})), r.__delay));   // pomalé natívne volanie
           return Promise.resolve(r !== undefined ? clean(r) : {});
         };
       } });

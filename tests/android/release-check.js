@@ -72,6 +72,7 @@ const run = (cmd, args, opts) => execFileSync(cmd, args, Object.assign({ encodin
     check('privacy: notifications / Firebase', /Firebase/i.test(en) && /notification/i.test(en));
     check('privacy: account deletion steps (real button label)', /Delete my community account/.test(en) && /surotvsk\.github\.io\/Gymquest/.test(en));
     check('privacy: contact section', /Contact/.test(en));
+    check('privacy: mentions Android\'s own backup to Google Drive', /Android backup|Android.s backup/i.test(en) && /Google Drive/.test(en));
     await p.eval(`(document.querySelector('[data-lang="sk"]') && document.querySelector('[data-lang="sk"]').click(), true)`);
     const sk = await p.eval(`document.body.innerText`);
     check('privacy: Slovak version', /Zásady ochrany súkromia/.test(sk) && /Health Connect/.test(sk));

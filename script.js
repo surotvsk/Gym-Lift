@@ -20013,6 +20013,7 @@ function themeChipsKey(e) {
 function openSettings() {
   renderThemeChips();
   renderHealthSetting();
+  healthRecheck();
   renderGoalChips('settings-goal-chips', weeklyGoal());
   setGoalReadout(weeklyGoal());
   renderLangSetting();
@@ -21848,7 +21849,7 @@ const SYNC_POLL_MS = 5 * 60 * 1000;
 const SYNC_TRIGGER_THROTTLE_MS = 10000;
 const CLOUD_MEDIA_MAX_BYTES = 50 * 1024 * 1024;   // Supabase Free per-file limit
 const BACKUP_SCHEMA_VERSION = 3;                  // zhoduje sa s state.version
-const DEVICE_SETTING_KEYS = ['lang', 'restSound', 'restSoundLength', 'customRestMinutes', 'customRestSeconds',
+const DEVICE_SETTING_KEYS = ['healthConnect', 'lang', 'restSound', 'restSoundLength', 'customRestMinutes', 'customRestSeconds',
   'autoBackup', 'autoBackupOfferedAt', 'autoBackupWorkoutCount', 'communityOptIn', 'cloudBackup'];
 const DEVICE_STATE_KEYS = ['activeSession', 'activeActivity'];
 
@@ -24033,6 +24034,8 @@ const NATIVE_BACK_CLOSE = [
    → appka do pozadia (ako na Androide 12+, nič sa neukončí – bežiaci tréning pokračuje).
    Vracia 'closed' | 'view' | 'home' | 'background' | 'blocked'. */
 function nativeBack() {
+  const lightbox = document.getElementById('community-lightbox');   // fotka z Community (nad všetkým, nie je .modal-backdrop)
+  if (lightbox && !lightbox.hidden) { lightbox.hidden = true; lightbox.innerHTML = ''; return 'closed'; }
   const open = Array.from(document.querySelectorAll('.modal-backdrop')).filter((m) => !m.hidden);
   const top = open[open.length - 1];
   if (top) {
@@ -24115,18 +24118,35 @@ function nativeReminderSchedule(d) {
 /* Zruší naše naplánované pripomienky a naplánuje aktuálne – len ak sú upozornenia v tomto
    telefóne zapnuté pre prihlásený účet. Volania idú za sebou (nikdy dve naraz). */
 let nativeRemChain = Promise.resolve();
+const NATIVE_REM_LAST_KEY = 'gymquest_reminders_last';   // { uid, data } – posledné známe nastavenia (štart bez siete)
 function nativeRemindersApply() {
   const run = async () => {
     const ln = nativePlugin('LocalNotifications');
     if (!ln) return;
+    /* "vypnuté" len keď to naozaj vieme: zariadenie bez záznamu (odhlásené / vypnuté), bez povolenia
+       alebo prihlásený iný účet. Nenačítaný profil či nastavenia (bez siete) nie sú "vypnuté" –
+       vtedy sa použijú posledné známe nastavenia tohto účtu. */
+    await nativeRefreshPerm();
+    const dev = pushDeviceRead();
+    const me = communityProfile && communityProfile.id;
+    const off = !dev || nativeNotifPerm !== 'granted' || (!!me && dev.uid !== me);
+    let data = null;
+    if (!off) {
+      if (me && remindersData) {
+        data = remindersData;
+        try { localStorage.setItem(NATIVE_REM_LAST_KEY, JSON.stringify({ uid: me, data })); } catch (e) {}
+      } else {
+        try { const last = JSON.parse(localStorage.getItem(NATIVE_REM_LAST_KEY) || 'null'); if (last && last.uid === dev.uid) data = last.data; } catch (e) {}
+      }
+    }
+    if (!off && !data) return;   // nastavenia ešte nepoznáme (štart bez siete) – naplánované pripomienky zostanú
     try {
       const pend = await ln.getPending();
       const ours = ((pend && pend.notifications) || []).filter((n) => n.id >= 1000 && n.id < 4000).map((n) => ({ id: n.id }));
       if (ours.length) await ln.cancel({ notifications: ours });
     } catch (e) {}
-    await nativeRefreshPerm();
-    if (nativePushState() !== 'on') return;
-    const list = nativeReminderSchedule(remindersData);
+    if (off) return;
+    const list = nativeReminderSchedule(data);
     if (list.length) { try { await ln.schedule({ notifications: list }); } catch (e) {} }
   };
   nativeRemChain = nativeRemChain.then(run, run);
@@ -24193,6 +24213,7 @@ async function nativePushEnable() {
 async function nativePushDisable(sb, rpc) {
   const dev = pushDeviceRead();
   pushDeviceWrite(null);
+  try { localStorage.removeItem(NATIVE_REM_LAST_KEY); } catch (e) {}
   if (rpc && dev && dev.fcm) { try { await sb.rpc('push_fcm_unregister', { p_token: dev.fcm }); } catch (e) {} }
   const pn = nativePlugin('PushNotifications');
   if (pn) { try { await pn.unregister(); } catch (e) {} }
@@ -24201,7 +24222,16 @@ async function nativePushDisable(sb, rpc) {
 /* Po prihlásení a pri zmene jazyka: zapnutý telefón sa obnoví na serveri (token, jazyk). */
 async function nativePushRefresh(sb, uid) {
   const dev = pushDeviceRead();
-  if (!dev || !uid || dev.uid !== uid || !sb || !pushAvailable()) return;
+  if (dev && uid && dev.uid !== uid) {
+    /* Telefón zostal prihlásený k inému účtu (relácia sa stratila bez odhlásenia): token FCM sa zmaže,
+       server ho pri ďalšej správe vyradí (UNREGISTERED) – upozornenia cudzieho účtu sem už neprídu. */
+    pushDeviceWrite(null);
+    const pn = nativePlugin('PushNotifications');
+    if (pn) { try { await pn.unregister(); } catch (e) {} }
+    nativeRemindersApply();
+    return;
+  }
+  if (!dev || !uid || !sb || !pushAvailable()) return;
   if ((await nativeRefreshPerm()) !== 'granted') { if (nativeNotifPerm === 'denied') pushDeviceWrite(null); return; }
   try { await nativeFcmSave(sb, uid, await nativeFcmToken()); } catch (e) { /* bez siete: skúsi sa pri ďalšom spustení */ }
   await remindersEnsureDefaults(sb);
@@ -24237,6 +24267,7 @@ async function nativeClearChat(cid) {
    a v detaile dňa je "Obnoviť tep". Plugin GymHealth je v appke (Kotlin). */
 const HEALTH_RETRY_MS = 2 * 3600 * 1000;
 let healthStatusKey = '';
+const healthWrites = {};   // id tréningu → prebiehajúci zápis do Health Connect
 function healthOn() { return isNativeApp() && !!(state && state.settings && state.settings.healthConnect) && !!nativePlugin('GymHealth'); }
 function renderHealthSetting() {
   const block = document.getElementById('health-setting');
@@ -24262,6 +24293,19 @@ async function healthToggle(on) {
   healthStatusKey = '';
   saveState();
   renderHealthSetting();
+}
+/* Povolenie mohlo byť medzitým odobraté v Health Connect → prepínač sa vypne s poznámkou. */
+async function healthRecheck() {
+  const hc = nativePlugin('GymHealth');
+  if (!hc || !isNativeApp() || !state.settings.healthConnect) return;
+  let g = null;
+  try { g = await hc.checkPermissions(); } catch (e) { return; }
+  if (g && Array.isArray(g.granted) && !g.granted.length) {
+    state.settings.healthConnect = false;
+    healthStatusKey = 'health.denied';
+    saveState();
+    renderHealthSetting();
+  }
 }
 function healthStatsFrom(r) {
   const out = {};
@@ -24292,7 +24336,10 @@ async function healthReadInto(id) {
 async function nativeHealthAfterFinish(entry) {
   if (!entry || !entry.health || !healthOn()) return;
   const hc = nativePlugin('GymHealth');
-  try { await hc.writeWorkout({ id: entry.id, start: entry.health.start, end: entry.health.end, title: historyPlanName(entry) }); } catch (e) {}
+  const write = hc.writeWorkout({ id: entry.id, start: entry.health.start, end: entry.health.end, title: historyPlanName(entry) }).catch(() => {});
+  healthWrites[entry.id] = write;   // rýchle "Vrátiť späť" počká na zápis, inak by v Health Connect zostal duch
+  await write;
+  if (healthWrites[entry.id] === write) delete healthWrites[entry.id];
   await healthReadInto(entry.id);
 }
 function healthRetryRecent() {
@@ -24305,7 +24352,7 @@ function healthRetryRecent() {
 function healthDeleteSession(entry) {
   if (!entry || !entry.health) return;
   const hc = nativePlugin('GymHealth');
-  if (hc) hc.deleteWorkout({ id: entry.id }).catch(() => {});
+  if (hc) Promise.resolve(healthWrites[entry.id]).then(() => hc.deleteWorkout({ id: entry.id })).catch(() => {});
 }
 function healthLineText(w) {
   const h = w && w.health;
@@ -24343,7 +24390,7 @@ function nativeInit() {
   const app = nativePlugin('App');
   if (app) {
     app.addListener('backButton', () => { nativeBack(); });
-    app.addListener('resume', () => { nativeRemindersApply(); healthRetryRecent(); });   // povolenia/čas v systéme, tep z hodiniek
+    app.addListener('resume', () => { nativeRemindersApply(); healthRecheck().then(healthRetryRecent); });   // povolenia/čas v systéme, tep z hodiniek
   }
   const ln = nativePlugin('LocalNotifications');
   if (ln) ln.createChannel({ id: 'reminders', name: t('rem.title'), importance: 3 }).catch(() => {});

@@ -28,6 +28,7 @@ import java.time.ZoneId
 /**
  * GymQuest ↔ Health Connect. Called from script.js as Capacitor.Plugins.GymHealth:
  *  isAvailable()              → { available }
+ *  checkPermissions()         → { granted: [...] }  (no prompt)
  *  requestPermissions()       → { granted: ["READ_HEART_RATE", "READ_ACTIVE_CALORIES_BURNED", "WRITE_EXERCISE"] }
  *  readStats({start, end})    → { hrAvg?, hrMax?, hrCount, kcal? }   (ISO-8601 instants, the workout's window)
  *  writeWorkout({id, start, end, title}) → { ok }  weightlifting session, clientRecordId = workout id (upsert)
@@ -57,6 +58,19 @@ class GymHealthPlugin : Plugin() {
     @PluginMethod
     fun isAvailable(call: PluginCall) {
         call.resolve(JSObject().put("available", client() != null))
+    }
+
+    /** Currently granted permissions, without asking (they can be revoked in Health Connect at any time). */
+    @PluginMethod
+    override fun checkPermissions(call: PluginCall) {
+        val c = client() ?: return call.resolve(grantedResult(emptySet()))
+        scope.launch {
+            try {
+                call.resolve(grantedResult(c.permissionController.getGrantedPermissions()))
+            } catch (e: Exception) {
+                call.resolve(grantedResult(emptySet()))
+            }
+        }
     }
 
     @PluginMethod

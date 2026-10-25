@@ -53,6 +53,19 @@ async function videoSources(p) {
     check('android: splash hidden exactly once', hides.length === 1, hides);
     check('android: no console errors', an.errors.length === 0, an.errors);
     an.b.killHard(true);
+
+    /* appka sa nespustí (chyba v skripte) → spúšťacia obrazovka sa aj tak skryje, nezostane navždy */
+    const { Browser } = require('../sync/lib');
+    const { installFakeCapacitor } = require('./lib-native');
+    const bb = new Browser('ncore-broken-' + Date.now().toString(36), 9946, require('path').join(require('os').tmpdir(), 'gq-android', 'profiles'));
+    const pb = await bb.launch();
+    await installFakeCapacitor(pb, {});
+    await pb.c.send('Network.setBlockedURLs', { urls: ['*script.js*'] });
+    await pb.navigate('http://localhost:8124/', { noReady: true });
+    await wait(5000);
+    const bh = await pb.eval(`(window.__nativeCalls || []).filter((c) => c.plugin === 'SplashScreen' && c.method === 'hide').length`);
+    check('android: splash hidden even when the app script fails', bh >= 1, bh);
+    bb.killHard(true);
   } catch (e) {
     check('no exception in test', false, String(e && e.stack || e));
   } finally {

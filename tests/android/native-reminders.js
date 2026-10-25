@@ -88,10 +88,28 @@ const DATA = { water_on: true, water_every: 60, water_from: '08:00', water_to: '
       && (await nativeCalls(p, 'LocalNotifications', 'cancel')).length === 1);
     await p.eval(`(window.__nativeReturns['LocalNotifications.checkPermissions'] = { display: 'granted' }, true)`);
 
-    /* iné zariadenie / odhlásený → zruší */
+    /* štart bez siete: profil ani nastavenia pripomienok ešte nie sú načítané → pripomienky zostanú
+       (naplánujú sa z posledných známych nastavení), nič sa len tak nezruší */
+    await p.eval(`(remindersData = ${JSON.stringify(DATA)}, true)`);
+    await p.eval(`nativeRemindersApply()`);   // úspešné naplánovanie uloží posledné nastavenia
+    await p.eval(`(communityProfile = null, remindersData = null, true)`);
     await clearNativeCalls(p);
-    await p.eval(`(communityProfile = null, nativeRemindersApply())`);
-    check('signed out: cancel only', (await nativeCalls(p, 'LocalNotifications', 'schedule')).length === 0
+    await fireNative(p, 'App', 'resume', {});
+    await wait(300);
+    const off1 = await nativeCalls(p, 'LocalNotifications', 'schedule');
+    check('offline start (profile + settings not loaded): reminders rescheduled from the last known settings',
+      off1.length === 1 && off1[0].args[0].notifications.length === 19, off1.length && off1[0].args[0].notifications.length);
+    await p.eval(`(() => { try { localStorage.removeItem('gymquest_reminders_last'); } catch (e) {} return true; })()`);
+    await clearNativeCalls(p);
+    await p.eval(`nativeRemindersApply()`);
+    check('nothing known yet: existing reminders are left alone (no cancel)', (await nativeCalls(p, 'LocalNotifications', 'cancel')).length === 0
+      && (await nativeCalls(p, 'LocalNotifications', 'schedule')).length === 0);
+
+    /* odhlásený (záznam zariadenia zrušený) / iný účet → zruší */
+    await p.eval(`(communityProfile = { id: ${JSON.stringify(ME)} }, remindersData = ${JSON.stringify(DATA)}, true)`);
+    await clearNativeCalls(p);
+    await p.eval(`(communityProfile = { id: 'aaaaaaaa-0000-0000-0000-000000000000' }, nativeRemindersApply())`);
+    check('another account signed in: cancel only', (await nativeCalls(p, 'LocalNotifications', 'schedule')).length === 0
       && (await nativeCalls(p, 'LocalNotifications', 'cancel')).length === 1);
     await p.eval(`(communityProfile = { id: ${JSON.stringify(ME)} }, true)`);
     await clearNativeCalls(p);

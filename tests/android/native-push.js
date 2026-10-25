@@ -47,6 +47,7 @@ const rpcs = (p, fn) => p.eval(`window.__rpc.filter((r) => r.fn === ${JSON.strin
     check('state off before enabling', await p.eval(`pushState() === 'off'`));
 
     /* zapnutie */
+    await p.eval(`(remindersData = { water_on: true, water_every: 120, water_from: '08:00', water_to: '20:00', meals_on: false, meal_times: [], workout_on: false, workout_days: [], workout_time: '17:00', saved: true }, true)`);
     await clearNativeCalls(p);
     await p.eval(`(window.__en = pushEnable(), true)`);
     await wait(200);
@@ -59,7 +60,7 @@ const rpcs = (p, fn) => p.eval(`window.__rpc.filter((r) => r.fn === ${JSON.strin
     check('device record {uid, fcm}', await p.eval(`JSON.stringify(pushDeviceRead()) === JSON.stringify({ uid: ${JSON.stringify(ME)}, fcm: ${JSON.stringify(TOK)} })`));
     check('state on', await p.eval(`pushState() === 'on'`));
     check('no Web Push used', (await rpcs(p, 'push_subscribe')).length === 0);
-    check('reminders applied after enabling', (await nativeCalls(p, 'LocalNotifications', 'getPending')).length >= 1);
+    check('reminders scheduled after enabling', (await nativeCalls(p, 'LocalNotifications', 'schedule')).length >= 1);
 
     /* nový token od FCM */
     await p.eval(`(window.__rpc = [], true)`);
@@ -76,6 +77,14 @@ const rpcs = (p, fn) => p.eval(`window.__rpc.filter((r) => r.fn === ${JSON.strin
     await fireNative(p, 'PushNotifications', 'registration', { value: TOK2 });
     await p.eval(`window.__rf`);
     check('pushRefresh re-registers the token', (await rpcs(p, 'push_fcm_register')).length >= 1);
+
+    /* relácia iného účtu sa stratila bez odhlásenia → nový účet: starý token sa zruší */
+    await p.eval(`(pushDeviceWrite({ uid: 'aaaaaaaa-0000-0000-0000-000000000000', fcm: ${JSON.stringify(TOK)} }), true)`);
+    await clearNativeCalls(p);
+    await p.eval(`pushRefresh(window.__fakeSb, ${JSON.stringify(ME)})`);
+    check('device left registered for another account: FCM token deleted, record cleared',
+      (await nativeCalls(p, 'PushNotifications', 'unregister')).length === 1 && await p.eval(`pushDeviceRead() === null`));
+    await p.eval(`(pushDeviceWrite({ uid: ${JSON.stringify(ME)}, fcm: ${JSON.stringify(TOK2)} }), true)`);
 
     /* ťuknutie na upozornenie */
     await fireNative(p, 'PushNotifications', 'pushNotificationActionPerformed', { actionId: 'tap', notification: { data: { type: 'chat', conv: CONV } } });
@@ -99,7 +108,7 @@ const rpcs = (p, fn) => p.eval(`window.__rpc.filter((r) => r.fn === ${JSON.strin
     await clearNativeCalls(p);
     await p.eval(`pushEnable()`);
     check('denied: no register, no server call', (await nativeCalls(p, 'PushNotifications', 'register')).length === 0 && (await rpcs(p, 'push_fcm_register')).length === 0);
-    check('denied: state denied, note shown in the card', await p.eval(`pushState() === 'denied' && pushCardHtml().indexOf(${JSON.stringify('')}) >= 0 && pushCardHtml().includes(t('push.denied'))`));
+    check('denied: state denied, note shown in the card', await p.eval(`pushState() === 'denied' && pushCardHtml().includes(t('push.denied'))`));
     await p.eval(`(window.__nativeReturns['PushNotifications.requestPermissions'] = { receive: 'granted' }, nativeNotifPerm = 'prompt', true)`);
 
     /* server bez 0016 */

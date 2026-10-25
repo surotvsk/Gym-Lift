@@ -144,6 +144,7 @@ const STACK = [
   { n: 14, up: '0014_train_together.sql', down: '0014_down.sql', present: "to_regclass('public.train_sessions') is not null" },
   { n: 16, up: '0016_push_fcm.sql', down: '0016_down.sql', present: "to_regclass('public.push_fcm_tokens') is not null" },
 ];
+let lastRollback = null;   // posledný rollbackFrom: čo sa vrátilo a aká bola verzia predtým
 function rollbackFrom(n) {
   const done = [];
   done.versionBefore = sqlVal('select public.community_social_version()');   // reapply() must restore exactly this
@@ -152,15 +153,21 @@ function rollbackFrom(n) {
     if (sqlVal('select ' + m.present) === 't') { sqlFile(path.join(MIG, 'rollback', m.down)); done.unshift(m); }
   }
   sql(`notify pgrst, 'reload schema';`);
+  lastRollback = done;
   return done;
 }
 function reapply(list) {
   for (const m of list) sqlFile(path.join(MIG, 'migrations', m.up));
   /* Novšia migrácia, ktorú STACK nepozná (napr. 0015 na lokálnom stacku z inej vetvy), sa nevracia,
-     jej objekty zostanú – vráti sa len číslo verzie, ktoré prepísalo opätovné spustenie starších. */
-  const before = Number(list.versionBefore);
-  if (before && Number(sqlVal('select public.community_social_version()')) < before) {
-    sql(`create or replace function public.community_social_version() returns integer language sql immutable as $$ select ${before} $$;`);
+     jej objekty zostanú – keď je všetko z posledného rollbackFrom znova nasadené, vráti sa aj číslo
+     verzie, ktoré prepísalo opätovné spustenie starších (aj pri opätovnom nasadení po častiach). */
+  const last = lastRollback;
+  if (last && last.every((m) => sqlVal('select ' + m.present) === 't')) {
+    const before = Number(last.versionBefore);
+    if (before && Number(sqlVal('select public.community_social_version()')) < before) {
+      sql(`create or replace function public.community_social_version() returns integer language sql immutable as $$ select ${before} $$;`);
+    }
+    lastRollback = null;
   }
   sql(`notify pgrst, 'reload schema';`);
 }
