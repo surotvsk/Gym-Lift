@@ -150,6 +150,11 @@ Until step 5 the job runs but sends nothing. **Rollback:** [`rollback/0012_down.
    custom SMTP. Without it, verification emails will not reach most users.
 3. **Authentication → URL configuration**: set **Site URL** to your deployed app
    (`https://surotvsk.github.io/Gymquest/`) and add it under **Redirect URLs**.
+4. **Authentication → Email Templates → Reset Password**: make the link
+   `{{ .RedirectTo }}?token_hash={{ .TokenHash }}&type=recovery` (instead of `{{ .ConfirmationURL }}`).
+   Opening that link only shows GymQuest's set-password form; the one-time token is used when the
+   person presses **Set password**, so email scanners that open links first (Outlook Safe Links,
+   antivirus, company gateways) can no longer use it up. Links in the old format keep working.
 
 ## 4. Deploy the privileged delete-account function
 ```bash

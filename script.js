@@ -17798,7 +17798,7 @@ function authHashParams() {
 function authStripUrl() {
   try {
     const url = new URL(location.href);
-    ['code', 'error', 'error_code', 'error_description', 'type', 'access_token', 'refresh_token',
+    ['code', 'token_hash', 'error', 'error_code', 'error_description', 'type', 'access_token', 'refresh_token',
       'expires_in', 'expires_at', 'token_type', 'provider_token', 'provider_refresh_token']
       .forEach((k) => url.searchParams.delete(k));
     const q = url.searchParams.toString();
@@ -17904,6 +17904,25 @@ async function authSetNewPasswordNow() {
   if (v1 !== v2) { authCallbackState.message = t('auth.passwordMismatch'); renderAuthModal(); return; }
   const sb = communitySb();
   if (!sb) { authCallbackState.message = t('auth.errorGeneric'); renderAuthModal(); return; }
+  /* token_hash odkaz: jednorazový token sa použije až teraz, keď človek naozaj potvrdí nové heslo
+     (e-mailové skenery, ktoré odkaz otvoria skôr, ho tak neminú). */
+  if (authRecoveryTokenHash) {
+    let vr;
+    await syncQuiesce();
+    try { vr = await sb.auth.verifyOtp({ token_hash: authRecoveryTokenHash, type: 'recovery' }); }
+    catch (e) { vr = { error: e }; }
+    syncResume();
+    const verr = vr.error || (vr.data && vr.data.session ? null : { status: 403 });
+    if (verr) {
+      const st = Number(verr.status);
+      if (st === 401 || st === 403 || verr.code === 'otp_expired') { authRecoveryTokenHash = ''; authCallbackState = { view: 'expired', message: '', email: '' }; }
+      else authCallbackState.message = authErrorText(verr, 'auth.errorGeneric');
+      renderAuthModal();
+      return;
+    }
+    authRecoveryTokenHash = '';
+    authRecoveryBindPending = true;
+  }
   let res;
   try { res = await sb.auth.updateUser({ password: v1 }); }
   catch (e) { res = { error: e }; }
@@ -17920,12 +17939,24 @@ async function authSetNewPasswordNow() {
   }
   authCallbackState = { view: 'updated', message: '', email: '' };
   renderAuthModal();
+  /* Prihlásenie vzniklo až teraz (nie pri štarte) → priraď účet k jeho priestoru ako pri bežnom prihlásení. */
+  if (authRecoveryBindPending) { authRecoveryBindPending = false; await wsBindSession(true); }
 }
 /* Štart: citlivé parametre zmiznú z adresného riadka hneď po prečítaní. */
+let authRecoveryTokenHash = '';
+let authRecoveryBindPending = false;
 async function initAuthCallback() {
   const p = authHashParams();
-  if (!p.h.has('access_token') && !p.q.has('code') && !p.get('error') && !p.get('error_code')) return;
+  if (!p.h.has('access_token') && !p.q.has('code') && !p.q.has('token_hash') && !p.get('error') && !p.get('error_code')) return;
   const type = p.get('type');
+  /* Obnova hesla cez token_hash: zatiaľ nič neoveruj, iba ukáž formulár (token sa minie pri „Nastaviť heslo“). */
+  if (p.q.get('token_hash') && type === 'recovery' && !p.get('error_code') && !p.get('error')) {
+    authRecoveryTokenHash = p.q.get('token_hash');
+    authStripUrl();
+    authCallbackState = { view: 'recovery', message: '', email: '', signedIn: false };
+    authOpen();
+    return;
+  }
   const errorCode = p.get('error_code') || p.get('error');
   const accessToken = p.h.get('access_token');
   const refreshToken = p.h.get('refresh_token');

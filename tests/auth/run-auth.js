@@ -103,10 +103,10 @@ function genlinkExec(cmd, args, opts) {
     ? execFileSync(process.execPath, [cmd].concat(args), opts)
     : execFileSync('powershell', ['-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', cmd].concat(args), opts);
 }
-function genLink(type, email, out) {
+function genLink(type, email, out, format) {
   const cmd = process.env.GQ_GENLINK;
   if (!cmd) throw new Error('GQ_GENLINK not set');
-  genlinkExec(cmd, ['-Type', type, '-Email', email, '-Redirect', BASE, '-Out', out], { stdio: 'ignore' });
+  genlinkExec(cmd, ['-Type', type, '-Email', email, '-Redirect', BASE, '-Out', out].concat(format ? ['-Format', format] : []), { stdio: 'ignore' });
   const link = fs.readFileSync(out, 'utf8').trim();
   fs.unlinkSync(out);
   return link;
@@ -250,6 +250,47 @@ scenario('H/I/J: reset link opens the GymQuest reset flow; new password works; r
   await waitFor(() => d4.p.eval(`authCallbackState.view !== 'idle'`).catch(() => false), 30000, 'tampered link view');
   check('J: tampered link shows the invalid/expired page', (await d4.p.eval(`authCallbackState.view`)) === 'expired');
   check('J: password still the one set via the valid link', await new Observer(ctx.cfg, ctx.A).login().then(() => true).catch(() => false));
+});
+
+/* Email scanners (Outlook Safe Links, antivirus, corporate gateways) open links before the person does.
+   With the token_hash template the link only shows the form; the one-time token is used on "Set password". */
+scenario('R: token_hash reset link survives a scanner opening it first; used only on Set password; reuse fails cleanly', async (ctx) => {
+  const tmp = path.join(WORK, 'r' + Date.now().toString(36));
+  const link = genLink('recovery', ctx.A.email, tmp, 'hash');
+  const before = ctx.A.password;
+  await fetch(link).then((r) => r.text()).catch(() => '');           // plain HTTP prefetch
+  const scan = await device('r-scan');                                // scanner that runs JavaScript
+  await openLink(scan.p, link);
+  await waitFor(() => scan.p.eval(`!!document.getElementById('auth-newpass')`).catch(() => false), 30000, 'scanner form');
+  check('R: scanner visit shows the form but signs nobody in', (await scan.p.eval(`syncSessionUser().then((u) => u === null)`)));
+  const { p } = await device('r');
+  await openLink(p, link);
+  await waitFor(() => p.eval(`!!document.getElementById('auth-newpass')`).catch(() => false), 30000, 'recovery form');
+  check('R: link (already opened by the scanner) still shows the set-new-password form', await p.eval(`authCallbackState.view === 'recovery'`));
+  check('R: token removed from the address bar', !(await p.eval(`/token_hash|type=recovery/.test(location.href)`)));
+  await p.eval(`(() => { document.getElementById('auth-newpass').value = '123'; document.getElementById('auth-newpass2').value = '123'; return true; })()`);
+  await clickAuth(p, 'set-password'); await settle(p);
+  check('R: too-short password refused without using the link', (await authMsg(p)).length > 0 && (await p.eval(`authCallbackState.view === 'recovery'`)));
+  const newPw = 'Gq-' + Math.random().toString(36).slice(2, 12) + '-T1';
+  await p.eval(`(() => { document.getElementById('auth-newpass').value = ${JSON.stringify(newPw)}; document.getElementById('auth-newpass2').value = ${JSON.stringify(newPw)}; return true; })()`);
+  await p.eval(`(window.__setpw = authSetNewPassword().then(() => true), true)`);
+  try { await p.eval('window.__setpw'); } catch (e) { /* workspace switch reload */ }
+  await p.ready();
+  check('R: password updated (message kept across the workspace switch)', await p.eval(`authCallbackState.view === 'updated' && !document.getElementById('modal-auth').hidden`), await p.eval('authCallbackState'));
+  check('R: signed in as the account and bound to its workspace', (await p.eval(`syncSessionUser().then((u) => u && u.id)`)) === ctx.A.id && (await p.eval('wsSlot.owner')) === ctx.A.id);
+  ctx.A.password = newPw;
+  ctx.saveCreds('a', ctx.A);
+  const oldWorks = await new Observer(ctx.cfg, Object.assign({}, ctx.A, { password: before })).login().then(() => true).catch(() => false);
+  const newWorks = await new Observer(ctx.cfg, ctx.A).login().then(() => true).catch(() => false);
+  check('R: new password signs in, old one no longer does', newWorks && !oldWorks, { newWorks, oldWorks });
+  const d2 = await device('r2');
+  await openLink(d2.p, link);
+  await waitFor(() => d2.p.eval(`!!document.getElementById('auth-newpass')`).catch(() => false), 30000, 'reuse form');
+  await d2.p.eval(`(() => { document.getElementById('auth-newpass').value = 'Other-pass-77'; document.getElementById('auth-newpass2').value = 'Other-pass-77'; return true; })()`);
+  await d2.p.eval(`(window.__setpw = authSetNewPassword().then(() => true), true)`);
+  await d2.p.eval('window.__setpw');
+  check('R: reused link ends on the invalid/expired page, nobody signed in', (await d2.p.eval(`authCallbackState.view`)) === 'expired' && (await d2.p.eval(`syncSessionUser().then((u) => u === null)`)), await d2.p.eval('authCallbackState.view'));
+  check('R: password still the one set via the first use', await new Observer(ctx.cfg, ctx.A).login().then(() => true).catch(() => false));
 });
 
 scenario('C (partial): an email sign-in link returns to GymQuest and signs in the intended account', async (ctx) => {
