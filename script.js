@@ -15486,7 +15486,7 @@ function pushSupported() {
 }
 function pushKey() { return String(communityCfg().vapidPublicKey || ''); }
 /* Server (0010) aj konfigurácia (verejný kľúč) sú pripravené. */
-function pushAvailable() { return communityVersion >= 4 && !!pushKey(); }
+function pushAvailable() { return isNativeApp() ? communityVersion >= 4 : (communityVersion >= 4 && !!pushKey()); }
 function pushDeviceRead() { try { return JSON.parse(localStorage.getItem(PUSH_DEVICE_KEY) || 'null'); } catch (e) { return null; } }
 function pushDeviceWrite(v) {
   try { if (v) localStorage.setItem(PUSH_DEVICE_KEY, JSON.stringify(v)); else localStorage.removeItem(PUSH_DEVICE_KEY); } catch (e) {}
@@ -15500,6 +15500,7 @@ function pushKeyBytes(s) {
 }
 /* 'on' | 'off' | 'denied' | 'homescreen' (iPhone mimo plochy) | 'unsupported' */
 function pushState() {
+  if (isNativeApp()) return nativePushState();
   if (!pushSupported()) return isAppleMobile() && !isStandaloneApp() ? 'homescreen' : 'unsupported';
   if (Notification.permission === 'denied') return 'denied';
   const dev = pushDeviceRead();
@@ -15557,6 +15558,7 @@ async function pushEnable() {
 async function pushDisable(sb) {
   const rpc = !!sb && communityVersion >= 4;   // zistí sa hneď – volajúci môže vzápätí vynulovať stav
   pushDeviceWrite(null);
+  if (isNativeApp()) { await nativeRemindersApply(); return; }   // Android: zruší pripomienky v telefóne
   const reg = await pushRegistration();
   let sub = null;
   try { sub = reg && reg.pushManager ? await reg.pushManager.getSubscription() : null; } catch (e) { sub = null; }
@@ -15657,6 +15659,7 @@ async function remindersLoad(sb) {
   if (!sb || !remindersAvailable()) return;
   try { const r = await sb.rpc('reminders_get'); if (r && !r.error) remindersData = r.data; } catch (e) {}
   await remindersEnsureDefaults(sb);
+  nativeRemindersApply();
 }
 /* Pripomienky sú predvolene zapnuté (migrácia 0013): kto ich nikdy neuložil a má zapnuté upozornenia,
    tomu sa predvolené nastavenie uloží raz – v časovom pásme telefónu –, aby ich server naozaj posielal.
@@ -15673,6 +15676,7 @@ async function remindersEnsureDefaults(sb) {
   const p = { tz, water_on: !!d.water_on, water_every: d.water_every, water_from: d.water_from, water_to: d.water_to,
     meals_on: !!d.meals_on, meal_times: d.meal_times, workout_on: !!d.workout_on, workout_days: d.workout_days, workout_time: d.workout_time };
   try { const r = await sb.rpc('reminders_set', { p }); if (r && !r.error) remindersData = r.data; } catch (e) {}
+  nativeRemindersApply();
 }
 function remindersEveryLabel(min) {
   return min < 60 ? t('rem.everyMin', { n: min }) : t('rem.everyHours', { n: String(min / 60).replace('.', activeLang() === 'en' ? '.' : ',') });
@@ -15718,7 +15722,7 @@ async function remindersSave() {
   try { res = await sb.rpc('reminders_set', { p }); } catch (e) { res = { error: e }; }
   remindersBusy = false;
   if (res.error) { communitySetMessageText(/invalid_(reminders|timezone)/.test(String((res.error && res.error.message) || '')) ? t('rem.errInvalid') : communityErrText(res.error)); }
-  else { remindersData = res.data; communitySetMessage('rem.saved'); }
+  else { remindersData = res.data; communitySetMessage('rem.saved'); nativeRemindersApply(); }
   renderCommunity();
 }
 
@@ -23984,6 +23988,79 @@ function nativeBack() {
   return 'background';
 }
 
+/* Upozornenia v Android appke. Povolenie (Android 13+) je jedno pre pripomienky aj správy;
+   "zapnuté" = povolené A toto zariadenie je priradené prihlásenému účtu (ako na webe). */
+let nativeNotifPerm = 'prompt';   // 'granted' | 'denied' | 'prompt' (posledná známa hodnota)
+async function nativeRefreshPerm() {
+  const ln = nativePlugin('LocalNotifications');
+  if (!ln) return nativeNotifPerm;
+  try { const r = await ln.checkPermissions(); nativeNotifPerm = (r && r.display) || 'prompt'; } catch (e) {}
+  return nativeNotifPerm;
+}
+function nativePushState() {
+  if (nativeNotifPerm === 'denied') return 'denied';
+  const dev = pushDeviceRead();
+  const me = communityProfile && communityProfile.id;
+  return nativeNotifPerm === 'granted' && dev && me && dev.uid === me ? 'on' : 'off';
+}
+
+/* Pripomienky v telefóne: tie isté nastavenia účtu (reminders_get), ale plánuje ich Android
+   (LocalNotifications), takže chodia aj bez siete. Server ich posiela len na webové odbery, preto
+   nevznikajú dvojité. Voda každých N minút od–do vrátane (ako reminders_due), jedlá v ich čase,
+   tréning v zvolené dni (ISO Po=1 → Android Ne=1). ID: voda 1000+, jedlá 2000+, tréning 3000+. */
+const NATIVE_REM_TEXT = {
+  water: { sk: '💧 Čas napiť sa vody', en: '💧 Time to drink some water', es: '💧 Hora de beber agua',
+    'pt-BR': '💧 Hora de beber água', fr: '💧 C’est le moment de boire de l’eau', ar: '💧 حان وقت شرب الماء' },
+  meal: { sk: '🍽️ Čas na jedlo', en: '🍽️ Time to eat', es: '🍽️ Hora de comer',
+    'pt-BR': '🍽️ Hora de comer', fr: '🍽️ C’est l’heure de manger', ar: '🍽️ حان وقت الأكل' },
+  workout: { sk: '🏋️ Dnes je tréningový deň – poď na to!', en: '🏋️ It’s workout time – let’s go!', es: '🏋️ ¡Hora de entrenar, vamos!',
+    'pt-BR': '🏋️ Hora de treinar – bora!', fr: '🏋️ C’est l’heure de l’entraînement – on y va !', ar: '🏋️ حان وقت التمرين – هيا بنا!' },
+};
+function nativeReminderSchedule(d) {
+  const out = [];
+  if (!d) return out;
+  const mins = (v) => { const m = /^(\d{1,2}):(\d{2})/.exec(String(v || '')); return m ? Number(m[1]) * 60 + Number(m[2]) : null; };
+  const note = (id, kind, m, weekday) => {
+    const on = { hour: Math.floor(m / 60), minute: m % 60 };
+    if (weekday) on.weekday = weekday;
+    return { id, title: 'GymQuest', body: NATIVE_REM_TEXT[kind][activeLang()] || NATIVE_REM_TEXT[kind].en,
+      channelId: 'reminders', smallIcon: 'ic_stat_gq', schedule: { on, allowWhileIdle: true } };
+  };
+  if (d.water_on) {
+    const from = mins(d.water_from), to = mins(d.water_to), every = Math.max(30, Number(d.water_every) || 120);
+    if (from !== null && to !== null) for (let m = from, i = 0; m <= to && i < 48; m += every, i++) out.push(note(1000 + i, 'water', m));
+  }
+  if (d.meals_on && Array.isArray(d.meal_times)) {
+    d.meal_times.slice(0, 6).forEach((v, i) => { const m = mins(v); if (m !== null) out.push(note(2000 + i, 'meal', m)); });
+  }
+  if (d.workout_on && Array.isArray(d.workout_days)) {
+    const m = mins(d.workout_time);
+    if (m !== null) Array.from(new Set(d.workout_days.map(Number))).filter((x) => x >= 1 && x <= 7).sort((a, b) => a - b)
+      .forEach((iso) => out.push(note(3000 + iso, 'workout', m, (iso % 7) + 1)));
+  }
+  return out;
+}
+/* Zruší naše naplánované pripomienky a naplánuje aktuálne – len ak sú upozornenia v tomto
+   telefóne zapnuté pre prihlásený účet. Volania idú za sebou (nikdy dve naraz). */
+let nativeRemChain = Promise.resolve();
+function nativeRemindersApply() {
+  const run = async () => {
+    const ln = nativePlugin('LocalNotifications');
+    if (!ln) return;
+    try {
+      const pend = await ln.getPending();
+      const ours = ((pend && pend.notifications) || []).filter((n) => n.id >= 1000 && n.id < 4000).map((n) => ({ id: n.id }));
+      if (ours.length) await ln.cancel({ notifications: ours });
+    } catch (e) {}
+    await nativeRefreshPerm();
+    if (nativePushState() !== 'on') return;
+    const list = nativeReminderSchedule(remindersData);
+    if (list.length) { try { await ln.schedule({ notifications: list }); } catch (e) {} }
+  };
+  nativeRemChain = nativeRemChain.then(run, run);
+  return nativeRemChain;
+}
+
 let nativeStarted = false;
 /* Raz po prvom vykreslení: skryje spúšťaciu obrazovku a zapojí natívne udalosti. */
 function nativeInit() {
@@ -23993,7 +24070,13 @@ function nativeInit() {
   if (splash) splash.hide().catch(() => {});
   nativeThemeBars(themeResolved());   // tému pri štarte nastavuje skript v <head>, lišta sa zladí tu
   const app = nativePlugin('App');
-  if (app) app.addListener('backButton', () => { nativeBack(); });
+  if (app) {
+    app.addListener('backButton', () => { nativeBack(); });
+    app.addListener('resume', () => { nativeRemindersApply(); });   // zmena povolenia či času v systéme
+  }
+  const ln = nativePlugin('LocalNotifications');
+  if (ln) ln.createChannel({ id: 'reminders', name: t('rem.title'), importance: 3 }).catch(() => {});
+  nativeRefreshPerm();
 }
 
 function registerServiceWorker() {
