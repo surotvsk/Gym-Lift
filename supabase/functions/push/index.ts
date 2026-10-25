@@ -15,16 +15,20 @@
 // encrypted for each device (RFC 8291) and signed with VAPID (RFC 8292).
 // Only the well-known browser push services are contacted.
 //
+// Android app (migration 0016): push_targets() also returns FCM tokens ("fcm"); they get the same
+// notification through Firebase Cloud Messaging (fcm.ts), when FCM_SERVICE_ACCOUNT is set.
 // Secrets (set once by the project owner, never in the repo):
 //   VAPID_PUBLIC_KEY, VAPID_PRIVATE_KEY   base64url P-256 key pair; the public key is
 //                                         also in community-config.js (vapidPublicKey)
 //   VAPID_SUBJECT                         contact URL, e.g. https://surotvsk.github.io/Gymquest/
+//   FCM_SERVICE_ACCOUNT                   Firebase service-account JSON (optional; without it no FCM)
 // Deploy: supabase functions deploy push   (verify_jwt stays on)
 // SUPABASE_URL, SUPABASE_ANON_KEY and SUPABASE_SERVICE_ROLE_KEY are provided by Supabase.
 // ============================================================================
 
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 import { sendPush, type Vapid } from './webpush.ts';
+import { deliverFcm, fcmConfig } from './fcm.ts';
 
 const cors = {
   'Access-Control-Allow-Origin': '*',
@@ -102,6 +106,12 @@ Deno.serve(async (req: Request) => {
       else failed++;
     } catch (_e) { failed++; }
   }));
+  // Android app (0016): the same notification through FCM; off without FCM_SERVICE_ACCOUNT.
+  const fcm = fcmConfig((k) => Deno.env.get(k), supabaseUrl);
+  if (fcm && Array.isArray(data.fcm) && data.fcm.length) {
+    const r = await deliverFcm(data.fcm, name, conv, fcm, (token) => admin.rpc('push_fcm_gone', { p_token: token }));
+    sent += r.sent; gone += r.gone; failed += r.failed;
+  }
   return json({ sent, gone, failed, skipped });
 });
 
