@@ -4635,14 +4635,21 @@ html[data-theme="dark"] .ty-hist-date { color: #F4F3EF; }
 /* ===== Community = feed (v83): kompaktná prilepená hlavička, príspevky v jednom stĺpci ako na X, vzhľad Bento ===== */
 #screen-komunita > .chd { position: sticky; top: 0; z-index: 6; display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
   margin: -8px -16px 8px; padding: max(8px, env(safe-area-inset-top, 0px)) 16px 8px; background: var(--b-bg, var(--k-bg)); }
-#screen-komunita > .chd .screen-title { flex: 1; min-width: 0; margin: 0; }
-.chd-actions { display: flex; align-items: center; gap: 4px; }
+/* Nadpis sa nikdy nezalomí uprostred slova („Communit / y“ na 360–375 px alebo pri väčšom písme v systéme):
+   keď sa nezmestí vedľa tlačidiel, tlačidlá prejdú do druhého riadku vpravo. */
+#screen-komunita > .chd .screen-title { flex: 1; min-width: min-content; margin: 0; overflow-wrap: normal; }
+.chd-actions { display: flex; align-items: center; gap: 4px; margin-inline-start: auto; }
 .chd-actions [hidden] { display: none !important; }
 .chd-more { position: relative; }
 .chd-dot { position: absolute; top: 8px; inset-inline-end: 8px; width: 9px; height: 9px; border-radius: 50%; background: var(--b-lime); box-shadow: 0 0 0 2px var(--b-bg, var(--k-bg)); }
 .chd-new { display: inline-flex; align-items: center; gap: 6px; min-height: 40px; padding: 8px 14px 8px 11px; border: 0; border-radius: 999px;
   background: var(--b-lime); color: #121212; font: 700 14px 'Space Grotesk', system-ui, sans-serif; cursor: pointer; white-space: nowrap; }
 .chd-new .kico { width: 18px; height: 18px; }
+/* Úzky telefón: Nový príspevok je okrúhle tlačidlo + (text zostáva pre čítačky obrazovky), hlavička ostane v jednom riadku. */
+@media (max-width: 389px) {
+  .chd-new { position: relative; justify-content: center; width: 40px; min-width: 40px; padding: 0; }
+  .chd-new > span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+}
 .chd-new:focus-visible, .chd-actions .hd-icon:focus-visible { outline: 2px solid var(--b-fg); outline-offset: 2px; }
 .cmenu { position: absolute; top: 100%; inset-inline-end: 16px; margin: 0; z-index: 7; }
 .cmenu-sub { opacity: .6; font-weight: 600; margin-inline-start: 4px; }
