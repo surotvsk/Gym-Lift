@@ -22,8 +22,8 @@ The "headless" tests run the real app in headless Chrome with a fake `window.Cap
 
 ## Results
 
-- 2026-10-25, branch `worktree-android-app`: run-all 8 suites green (build-www 29, back 45, core 13,
-  health 27, push 25, reminders 21, share 17, theme 9); release-check 17/17 (AAB 37.8 MB);
+- 2026-10-25, branch `worktree-android-app` (after the final-review fixes): run-all 8 suites green
+  (build-www 29, back 47, core 14, health 32, push 26, reminders 23, share 17, theme 9); release-check 18/18 (AAB 37.8 MB);
   push-fcm 34/34; push-fcm-ef 25/25; web push 52/52 and reminders 41/41 with 0016 applied.
 - `emulator-smoke.js`: **not run yet** — the emulator crashes on this laptop (headless qemu
   segfaults; with a hidden window adb stays offline). Run it with a phone over USB debugging or an
