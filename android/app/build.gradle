@@ -1,6 +1,18 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 
+/* GymQuest: versionCode z tools/android/version.txt (zvýšiť pri každom nahratí do Google Play),
+   versionName nesie verziu webu (CACHE_VERSION zo sw.js), z ktorej je appka postavená.
+   Podpis vydania: súbor mimo repa (GQ_SIGNING alebo claude-code/android-keys/signing.properties);
+   bez neho sa release nepodpíše (debug build funguje vždy). */
+def gqRoot = rootProject.projectDir.parentFile
+def gqVersionCode = new File(gqRoot, 'tools/android/version.txt').text.trim().toInteger()
+def gqCacheMatch = (new File(gqRoot, 'sw.js').text =~ /CACHE_VERSION\s*=\s*'(v\d+)'/)
+def gqCacheVersion = gqCacheMatch.find() ? gqCacheMatch.group(1) : 'web'
+def gqSigningFile = new File(System.getenv('GQ_SIGNING') ?: (System.getProperty('user.home') + '/Documents/gymquest-backup-2026-10-10/claude-code/android-keys/signing.properties'))
+def gqSigning = new Properties()
+if (gqSigningFile.exists()) gqSigningFile.withInputStream { gqSigning.load(it) }
+
 android {
     namespace = "surotvsk.gymapp"
     compileSdk = rootProject.ext.compileSdkVersion
@@ -8,8 +20,8 @@ android {
         applicationId "surotvsk.gymapp"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode gqVersionCode
+        versionName "1.0.0 (" + gqCacheVersion + ")"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
@@ -17,8 +29,19 @@ android {
             ignoreAssetsPattern = '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
         }
     }
+    signingConfigs {
+        if (gqSigningFile.exists()) {
+            release {
+                storeFile file(gqSigning.getProperty('storeFile'))
+                storePassword gqSigning.getProperty('storePassword')
+                keyAlias gqSigning.getProperty('keyAlias')
+                keyPassword gqSigning.getProperty('keyPassword')
+            }
+        }
+    }
     buildTypes {
         release {
+            if (gqSigningFile.exists()) signingConfig signingConfigs.release
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }

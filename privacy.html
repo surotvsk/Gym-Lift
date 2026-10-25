@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GymQuest – Privacy Policy</title>
+<meta name="robots" content="index">
+<style>
+  :root { color-scheme: light dark; --bg: #E9E8E4; --card: #F4F3EF; --ink: #121212; --muted: #55534d; --line: #d6d4cd; --accent: #c43f1f; }
+  @media (prefers-color-scheme: dark) { :root { --bg: #0E0E0F; --card: #17191F; --ink: #ECEBE7; --muted: #a6a39b; --line: #2a2c33; --accent: #FF5A36; } }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 760px; margin: 0 auto; padding: 24px 18px 64px; }
+  h1 { font-size: 1.8rem; margin: 0 0 4px; }
+  h2 { font-size: 1.15rem; margin: 28px 0 6px; }
+  p, li { color: var(--ink); }
+  .meta { color: var(--muted); margin: 0 0 18px; }
+  .langs { display: flex; gap: 8px; margin: 12px 0 8px; }
+  .langs button { font: inherit; padding: 6px 14px; border-radius: 999px; border: 1px solid var(--line); background: var(--card); color: var(--ink); cursor: pointer; }
+  .langs button[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); font-weight: 600; }
+  section.card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 4px 18px 14px; margin-top: 14px; }
+  a { color: var(--accent); }
+  .todo { background: #ffd54f; color: #000; padding: 0 4px; border-radius: 4px; }
+</style>
+</head>
+<body>
+<main>
+  <div class="langs" role="group" aria-label="Language">
+    <button type="button" data-lang="en" aria-pressed="true">English</button>
+    <button type="button" data-lang="sk" aria-pressed="false">Slovensky</button>
+  </div>
+
+  <article lang="en" data-doc="en">
+    <h1>GymQuest Privacy Policy</h1>
+    <p class="meta">Applies to the GymQuest website (surotvsk.github.io/Gymquest) and the GymQuest Android app. Last updated: 25 October 2026.</p>
+
+    <section class="card">
+      <h2>In short</h2>
+      <ul>
+        <li>Your workouts, plans, measurements, food log and progress photos stay on your device unless you turn on an account.</li>
+        <li>No ads, no analytics, no tracking, and no data is ever sold.</li>
+        <li>Heart rate from Health Connect is optional, stays private and is never shared in Community.</li>
+      </ul>
+    </section>
+
+    <h2>Who is responsible</h2>
+    <p>GymQuest is made by an individual developer (GitHub: surotvsk). Contact: see <a href="#contact-en">Contact</a> below.</p>
+
+    <h2>Data stored on your device</h2>
+    <p>Workouts, plans, personal records, body measurements, the food log, settings, progress photos and your own exercise media are stored only in the app's storage on your device. Uninstalling the app (or clearing the website's data) removes them. You can export a backup file at any time.</p>
+
+    <h2>Optional account and cloud sync</h2>
+    <p>If you create an account, we store your e-mail address and a private backup of your app data so it can sync between your devices. Only you can read your backup. The account and backup are hosted by Supabase (our database and server provider).</p>
+
+    <h2>Optional Community</h2>
+    <p>Community is off by default and only for people aged 16 or older. If you join, your username, profile, posts and photos (after moderation), likes, follows, friends, chat messages and leaderboard entries are stored on our server and are visible to other members as shown in the app. Photos are stripped of location and camera data before upload.</p>
+
+    <h2>Notifications</h2>
+    <p>If you turn on notifications, we store a technical address for your device: a Web Push subscription in browsers, or a Firebase Cloud Messaging (FCM) token in the Android app. Google Firebase delivers the Android notifications. A message notification contains only the sender's username and the chat – never the message text. Water, meal and workout reminders in the Android app are scheduled on your phone; on the web they are sent by our server at the times you choose.</p>
+
+    <h2>Health Connect (Android app, optional)</h2>
+    <p>If you connect GymQuest to Health Connect in Settings, the app:</p>
+    <ul>
+      <li><strong>reads</strong> heart rate and active calories burned, only for the time of each workout you finish in GymQuest, to show your average and maximum heart rate on that workout;</li>
+      <li><strong>writes</strong> each finished workout to Health Connect as an exercise session (weightlifting), so it appears in your other fitness apps, and removes it again if you undo or delete the workout.</li>
+    </ul>
+    <p>The heart-rate summary is stored with the workout on your device and, if you use cloud sync, in your private backup. It is never shown in Community, posts, chats or leaderboards, never shared with anyone, never sold and never used for advertising. You can turn the connection off in Settings and revoke the permissions in Health Connect at any time. The use of information received from Health Connect adheres to the Health Connect Permissions policy, including the Limited Use requirements.</p>
+
+    <h2>Who processes data for us</h2>
+    <ul>
+      <li>Supabase – account, private backup and Community data.</li>
+      <li>Google Firebase Cloud Messaging – delivery of Android notifications.</li>
+      <li>GitHub Pages – hosting of the website.</li>
+    </ul>
+    <p>We do not share personal data with anyone else, except where required by law.</p>
+
+    <h2 id="delete">Deleting your data</h2>
+    <ul>
+      <li>In the app: Settings → Community → <strong>Delete my community account</strong>. This permanently deletes your account, your Community profile, posts, photos, chats and your private cloud backup.</li>
+      <li>Without the app: open <a href="https://surotvsk.github.io/Gymquest/">https://surotvsk.github.io/Gymquest/</a>, sign in and use the same option.</li>
+      <li>Data that exists only on your device is removed by uninstalling the app or clearing the website's data.</li>
+    </ul>
+
+    <h2>Children</h2>
+    <p>The account and Community features are only for people aged 16 or older. The app can be used without an account at any age.</p>
+
+    <h2 id="contact-en">Contact</h2>
+    <p>Questions or requests about your data: <span class="todo">contact e-mail to be added before release</span>.</p>
+
+    <h2>Changes</h2>
+    <p>If this policy changes, the new version is published on this page with a new date.</p>
+  </article>
+
+  <article lang="sk" data-doc="sk" hidden>
+    <h1>Zásady ochrany súkromia GymQuest</h1>
+    <p class="meta">Platia pre web GymQuest (surotvsk.github.io/Gymquest) a Android appku GymQuest. Posledná zmena: 25. októbra 2026.</p>
+
+    <section class="card">
+      <h2>Stručne</h2>
+      <ul>
+        <li>Tréningy, plány, miery, jedálniček a fotky progresu zostávajú v tvojom zariadení, kým si nezapneš účet.</li>
+        <li>Žiadne reklamy, analytika ani sledovanie a údaje nikdy nepredávame.</li>
+        <li>Tep z Health Connect je voliteľný, zostáva súkromný a nikdy sa nezdieľa v Community.</li>
+      </ul>
+    </section>
+
+    <h2>Kto zodpovedá</h2>
+    <p>GymQuest vytvára jeden vývojár (GitHub: surotvsk). Kontakt nájdeš nižšie v časti <a href="#contact-sk">Kontakt</a>.</p>
+
+    <h2>Údaje v tvojom zariadení</h2>
+    <p>Tréningy, plány, osobné rekordy, miery, jedálniček, nastavenia, fotky progresu a vlastné médiá cvikov sú uložené len v úložisku appky v tvojom zariadení. Odinštalovanie appky (alebo vymazanie údajov webu) ich odstráni. Zálohu do súboru si môžeš kedykoľvek exportovať.</p>
+
+    <h2>Voliteľný účet a synchronizácia</h2>
+    <p>Ak si vytvoríš účet, uložíme tvoj e-mail a súkromnú zálohu údajov appky, aby sa mohli synchronizovať medzi tvojimi zariadeniami. Zálohu vidíš len ty. Účet a zálohu prevádzkuje Supabase (poskytovateľ našej databázy a servera).</p>
+
+    <h2>Voliteľná Community</h2>
+    <p>Community je predvolene vypnutá a je len pre ľudí od 16 rokov. Ak sa pridáš, tvoje používateľské meno, profil, príspevky a fotky (po schválení), lajky, sledovania, priatelia, správy a výsledky v rebríčkoch sa ukladajú na našom serveri a ostatní členovia ich vidia tak, ako ukazuje appka. Z fotiek sa pred nahratím odstraňuje poloha a údaje o fotoaparáte.</p>
+
+    <h2>Upozornenia</h2>
+    <p>Ak zapneš upozornenia, uložíme technickú adresu tvojho zariadenia: odber Web Push v prehliadači alebo token Firebase Cloud Messaging (FCM) v Android appke. Upozornenia v Androide doručuje Google Firebase. Upozornenie na správu obsahuje len meno odosielateľa a chat – nikdy text správy. Pripomienky vody, jedla a tréningu si Android appka plánuje priamo v telefóne; na webe ich posiela náš server v časoch, ktoré si zvolíš.</p>
+
+    <h2>Health Connect (Android appka, voliteľné)</h2>
+    <p>Ak v Nastaveniach prepojíš GymQuest s Health Connect, appka:</p>
+    <ul>
+      <li><strong>číta</strong> tep a aktívne spálené kalórie, len za čas každého tréningu, ktorý v GymQueste dokončíš, aby pri ňom ukázala priemerný a maximálny tep;</li>
+      <li><strong>zapisuje</strong> každý dokončený tréning do Health Connect ako cvičenie (posilňovanie), aby sa zobrazil aj v tvojich iných fitness appkách, a odstráni ho, ak tréning vrátiš späť alebo zmažeš.</li>
+    </ul>
+    <p>Súhrn tepu sa ukladá k tréningu v tvojom zariadení a pri synchronizácii aj do tvojej súkromnej zálohy. Nikdy sa nezobrazuje v Community, príspevkoch, správach ani rebríčkoch, s nikým sa nezdieľa, nepredáva a nepoužíva na reklamu. Prepojenie môžeš kedykoľvek vypnúť v Nastaveniach a povolenia zrušiť v Health Connect. Používanie údajov z Health Connect dodržiava pravidlá povolení Health Connect vrátane požiadaviek na obmedzené používanie (Limited Use).</p>
+
+    <h2>Kto pre nás spracúva údaje</h2>
+    <ul>
+      <li>Supabase – účet, súkromná záloha a údaje Community.</li>
+      <li>Google Firebase Cloud Messaging – doručovanie upozornení v Androide.</li>
+      <li>GitHub Pages – prevádzka webu.</li>
+    </ul>
+    <p>Osobné údaje s nikým iným nezdieľame, okrem prípadov, keď to vyžaduje zákon.</p>
+
+    <h2 id="delete-sk">Vymazanie údajov</h2>
+    <ul>
+      <li>V appke: Nastavenia → Community → <strong>Vymazať môj účet v Community</strong>. Natrvalo vymaže tvoj účet, profil v Community, príspevky, fotky, správy aj súkromnú zálohu v cloude.</li>
+      <li>Bez appky: otvor <a href="https://surotvsk.github.io/Gymquest/">https://surotvsk.github.io/Gymquest/</a>, prihlás sa a použi tú istú možnosť.</li>
+      <li>Údaje, ktoré sú len v tvojom zariadení, odstráni odinštalovanie appky alebo vymazanie údajov webu.</li>
+    </ul>
+
+    <h2>Deti</h2>
+    <p>Účet a Community sú len pre ľudí od 16 rokov. Bez účtu môže appku používať ktokoľvek.</p>
+
+    <h2 id="contact-sk">Kontakt</h2>
+    <p>Otázky alebo žiadosti o tvoje údaje: <span class="todo">kontaktný e-mail sa doplní pred vydaním</span>.</p>
+
+    <h2>Zmeny</h2>
+    <p>Ak sa tieto zásady zmenia, nová verzia sa zverejní na tejto stránke s novým dátumom.</p>
+  </article>
+</main>
+<script>
+  (function () {
+    function show(lang) {
+      document.querySelectorAll('[data-doc]').forEach(function (a) { a.hidden = a.getAttribute('data-doc') !== lang; });
+      document.querySelectorAll('[data-lang]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-lang') === lang)); });
+      document.documentElement.lang = lang;
+    }
+    document.querySelectorAll('[data-lang]').forEach(function (b) {
+      b.addEventListener('click', function () { show(b.getAttribute('data-lang')); });
+    });
+    var want = (location.hash === '#sk' || /^sk\b/i.test(navigator.language || '')) ? 'sk' : 'en';
+    show(want);
+  })();
+</script>
+</body>
+</html>
