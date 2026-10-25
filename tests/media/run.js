@@ -12,7 +12,7 @@ const { startServer, Browser, waitFor } = require('../sync/lib');
 const REPO = path.resolve(__dirname, '..', '..');
 const WORK = process.env.GQ_WORK || path.join(os.tmpdir(), 'gq-media-work');
 const PROFILES = path.join(WORK, 'profiles');
-const PORT = 8126;
+const PORT = Number(process.env.GQ_MEDIA_PORT) || 8126;   // 8126 = predvolený; GQ_MEDIA_PORT, ak beží lokálny náhľad
 const BASE = 'http://localhost:' + PORT + '/';
 const GONE = path.join(WORK, 'no-such-dir');
 const filter = process.argv[2] ? new RegExp(process.argv[2]) : null;

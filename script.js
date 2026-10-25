@@ -13410,7 +13410,9 @@ function mountMediaGallery() {
       video.addEventListener('error', fail);
       /* WebM pre väčšinu prehliadačov, MP4 pre staršie iPhony. Chyba <source> nespustí
          'error' na <video>, preto sa sleduje posledný zdroj. */
-      const sources = [[it.src, 'video/webm'], [it.mp4, 'video/mp4']].filter((src) => src[0]);
+      /* Android appka má v sebe len MP4 kópie (WebM by appku zbytočne zväčšili). */
+      const sources = (isNativeApp() && it.mp4 ? [[it.mp4, 'video/mp4']]
+        : [[it.src, 'video/webm'], [it.mp4, 'video/mp4']]).filter((src) => src[0]);
       sources.forEach((src, i) => {
         const el = document.createElement('source');
         el.src = src[0];
@@ -23755,7 +23757,7 @@ function reloadForUpdate() {
 function refreshUpdateBanner() {
   const banner = document.getElementById('update-banner');
   if (!banner) return;
-  const show = swUpdateReady && !isBusy();
+  const show = swUpdateReady && !isBusy() && !isNativeApp();
   banner.hidden = !show;
   document.body.classList.toggle('has-update-banner', show);
   if (pendingUpdateReload && !isBusy()) {
@@ -23783,7 +23785,7 @@ function applyUpdate() {
 let appUpdateCheck = '';   // '' | 'checking' | 'downloading' | 'latest' | 'offline' | 'failed'
 
 function swSupported() {
-  return typeof navigator !== 'undefined' && 'serviceWorker' in navigator
+  return !isNativeApp() && typeof navigator !== 'undefined' && 'serviceWorker' in navigator
     && (location.protocol === 'http:' || location.protocol === 'https:');
 }
 
@@ -23860,7 +23862,31 @@ function applyUpdateFromSettings() {
   applyUpdate();
 }
 
+/* ---------- Android appka (Capacitor) ----------
+   Tá istá appka zabalená pre Google Play. Súbory sú priamo v appke a aktualizuje ju obchod,
+   preto sa v nej neregistruje service worker ani neponúka "Aktualizovať". Natívne funkcie
+   (tlačidlo Späť, lišty, zdieľanie, upozornenia, Health Connect) idú cez Capacitor.Plugins.
+   Na webe a v iPhone je isNativeApp() false a nič z tejto časti sa nespustí. */
+function isNativeApp() {
+  try {
+    return !!(window.Capacitor && typeof Capacitor.isNativePlatform === 'function' && Capacitor.isNativePlatform());
+  } catch (e) { return false; }
+}
+function nativePlugin(name) {
+  if (!isNativeApp()) return null;
+  try { return (Capacitor.Plugins && Capacitor.Plugins[name]) || null; } catch (e) { return null; }
+}
+let nativeStarted = false;
+/* Raz po prvom vykreslení: skryje spúšťaciu obrazovku a zapojí natívne udalosti. */
+function nativeInit() {
+  if (!isNativeApp() || nativeStarted) return;
+  nativeStarted = true;
+  const splash = nativePlugin('SplashScreen');
+  if (splash) splash.hide().catch(() => {});
+}
+
 function registerServiceWorker() {
+  if (isNativeApp()) return;   // Android appka: súbory sú v appke, aktualizácie cez obchod
   if (!('serviceWorker' in navigator)) return;
   // file:// nemá service workery – lokálne otvorenie súboru funguje ďalej bez zmeny
   if (location.protocol !== 'http:' && location.protocol !== 'https:') return;
@@ -24019,6 +24045,7 @@ function appStart() {
   refreshBackupOffer();        // a vyhodnotí, či od minule "dozrela" záloha
   scheduleCommunityInvite();   // kto Community nepoužíva, občas dostane pozvánku
   registerServiceWorker();
+  nativeInit();                // Android appka: spúšťacia obrazovka, natívne udalosti
   if (state.history.length === 0 && !localStorage.getItem(STORAGE_KEY + '_seeded')) {
     openSetup();
   }
