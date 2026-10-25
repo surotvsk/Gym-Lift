@@ -25,9 +25,16 @@ The "headless" tests run the real app in headless Chrome with a fake `window.Cap
 - 2026-10-25, branch `worktree-android-app` (after the final-review fixes): run-all 8 suites green
   (build-www 29, back 47, core 14, health 32, push 26, reminders 23, share 17, theme 9); release-check 18/18 (AAB 37.8 MB);
   push-fcm 34/34; push-fcm-ef 25/25; web push 52/52 and reminders 41/41 with 0016 applied.
-- `emulator-smoke.js`: **not run yet** — the emulator crashes on this laptop (headless qemu
-  segfaults; with a hidden window adb stays offline). Run it with a phone over USB debugging or an
-  emulator started from Android Studio's Device Manager.
+- `emulator-smoke.js` on a real phone, Samsung Galaxy A21s (SM-A217F, Android 12), debug build:
+  **15/15, twice in a row**. Cold start 2.9 s (Android to first frame) + 0.6 s (page) on this low-end
+  phone; installed APK 40.5 MB (debug); offline workout + bundled video OK; real Back key OK;
+  share sheet OK; a reminder fires; Health Connect not installed on that phone (reported correctly).
+  Found and fixed on the device: reminders scheduled as "exact" made the reminders plugin open
+  Settings → Alarms & reminders on Android 12+ every time it scheduled them (now `isExactNotification: false`).
+  The emulator still crashes on this laptop (headless qemu segfaults), so use a phone over USB debugging.
+- Still to check on a phone: Health Connect with a watch (install Health Connect first); a chat
+  alert while the app is open; status bar on Android 15+ (A21s is Android 12: bars correct in both themes);
+  system navigation bar stays black in light mode (cosmetic).
 
 ## Device checklist (with emulator-smoke.js, from the final review)
 

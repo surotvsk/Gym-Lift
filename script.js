@@ -24099,7 +24099,8 @@ function nativeReminderSchedule(d) {
     const on = { hour: Math.floor(m / 60), minute: m % 60 };
     if (weekday) on.weekday = weekday;
     return { id, title: 'GymQuest', body: NATIVE_REM_TEXT[kind][activeLang()] || NATIVE_REM_TEXT[kind].en,
-      channelId: 'reminders', smallIcon: 'ic_stat_gq', schedule: { on, allowWhileIdle: true } };
+      channelId: 'reminders', smallIcon: 'ic_stat_gq', schedule: { on, allowWhileIdle: true },
+      isExactNotification: false };   // presné budíky appka nemá (Play) – inak by plugin pri plánovaní otváral nastavenia
   };
   if (d.water_on) {
     const from = mins(d.water_from), to = mins(d.water_to), every = Math.max(30, Number(d.water_every) || 120);

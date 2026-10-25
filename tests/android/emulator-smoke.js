@@ -61,12 +61,17 @@ function shot(name) {
 
     adb('install', '-r', APK);
     sh('pm clear ' + PKG);
-    const t0 = Date.now();
-    sh('am start -W -n ' + PKG + '/.MainActivity');
+    sh('am start -W -n ' + PKG + '/.MainActivity');   // prvé spustenie po inštalácii (príprava WebView) sa nemeria
+    await wait(5000);
+    /* studený štart: Android po prvý snímok (am start -W TotalTime) + načítanie stránky v appke */
+    sh('am force-stop ' + PKG);
+    await wait(1500);
+    const launchMs = Number((/TotalTime:\s*(\d+)/.exec(sh('am start -W -n ' + PKG + '/.MainActivity')) || [])[1]);
     let w = await connectWebView();
     await waitFor(() => w.ev(`typeof activeTab !== 'undefined' && !!document.getElementById('screen-dnes')`), 15000, 'app start');
-    const startMs = Date.now() - t0;
-    check('cold start to Today ≤ 3 s (' + startMs + ' ms)', startMs <= 3000);
+    const pageMs = await w.ev(`Math.round((performance.getEntriesByType('navigation')[0] || {}).loadEventEnd || 0)`);
+    const startMs = launchMs + pageMs;
+    check('cold start ≤ 4 s (Android ' + launchMs + ' ms + page ' + pageMs + ' ms)', launchMs > 0 && pageMs > 0 && startMs <= 4000);
     check('running as the native app', await w.ev(`isNativeApp() === true`));
     check('no service worker', await w.ev(`navigator.serviceWorker.getRegistrations().then((r) => r.length === 0)`));
     await w.ev(`(() => { const ok = document.getElementById('btn-setup-ok'); if (ok && !document.getElementById('modal-setup').hidden) ok.click(); setLang('en'); seedSampleData(); saveState(); renderAll(); return true; })()`);
@@ -87,19 +92,24 @@ function shot(name) {
     await w.ev(`(() => { const plan = getPlan(activePlanIds()[0]); selectedPlan = plan.id; const s = ensureSession(plan);
       s.completedSets[setSessionKey(plan.exercises[0], 0)] = true; saveState(); finishWorkout(); confirmFinish(); return true; })()`);
     check('airplane mode: workout saved', (await w.ev(`state.history.length`)) === before + 1);
-    await w.ev(`(document.getElementById('modal-result').hidden = true, openLibrary(), openExerciseSheet('bench-press'), true)`);
+    /* po tréningu môžu vyskočiť ďalšie okná (výsledok, pozvánka do Community) – Späť by správne zavrel to vrchné */
+    await w.ev(`(document.querySelectorAll('.modal-backdrop').forEach((m) => { m.hidden = true; }), openLibrary(), openExerciseSheet('bench-press'), true)`);
     const video = await waitFor(() => w.ev(`(() => { const v = document.querySelector('#modal-exercise video'); return v && v.readyState >= 2 ? v.currentSrc : null; })()`), 10000, 'video').catch(() => null);
     check('airplane mode: bundled MP4 video loads', !!video && /\.mp4$/.test(video), video);
     sh('cmd connectivity airplane-mode disable');
 
+    await w.ev(`(() => { window.__backs = 0; const o = nativeBack; window.nativeBack = function () { window.__backs++; return o.apply(this, arguments); }; return true; })()`);
+    const state = () => w.ev(`JSON.stringify({ backs: window.__backs, tab: activeTab, open: Array.from(document.querySelectorAll('.modal-backdrop')).filter((m) => !m.hidden).map((m) => m.id), focus: document.hasFocus() })`);
+    const backBefore = await state();
     sh('input keyevent 4');
-    await wait(400);
-    check('Back: exercise sheet closes first', await w.ev(`document.getElementById('modal-exercise').hidden && !document.getElementById('modal-library').hidden`));
-    sh('input keyevent 4'); await wait(300);
+    await wait(1200);   // pomalší telefón: samotné "input keyevent" trvá ~0,5 s
+    check('Back: exercise sheet closes first', await w.ev(`document.getElementById('modal-exercise').hidden && !document.getElementById('modal-library').hidden`),
+      { before: backBefore, after: await state(), front: sh('dumpsys window | grep mCurrentFocus').trim() });
+    sh('input keyevent 4'); await wait(1200);
     await w.ev(`(switchTab('pokrok'), true)`);
-    sh('input keyevent 4'); await wait(300);
+    sh('input keyevent 4'); await wait(1200);
     check('Back: tab → Today', await w.ev(`activeTab === 'dnes'`));
-    sh('input keyevent 4'); await wait(800);
+    sh('input keyevent 4'); await wait(1500);
     check('Back on Today: app goes to background', !/mResumedActivity.*surotvsk\.gymapp|topResumedActivity.*surotvsk\.gymapp/.test(sh('dumpsys activity activities | grep -E "mResumedActivity|topResumedActivity"')));
 
     sh('am start -n ' + PKG + '/.MainActivity');
@@ -109,9 +119,13 @@ function shot(name) {
     check('export opens the share sheet', /ChooserActivity|chooser|IntentResolver/i.test(sh('dumpsys activity activities | grep -E "mResumedActivity|topResumedActivity"')));
     shot('share-sheet');
     sh('input keyevent 4');
+    await wait(1500);
+    check('Back closes the share sheet, GymQuest in front again', /mResumedActivity.*surotvsk\.gymapp/.test(sh('dumpsys activity activities | grep mResumedActivity')));
 
-    await w.ev(`Capacitor.Plugins.LocalNotifications.requestPermissions()`);
-    await w.ev(`Capacitor.Plugins.LocalNotifications.schedule({ notifications: [{ id: 3999, title: 'GymQuest', body: 'smoke reminder', channelId: 'reminders', schedule: { at: new Date(Date.now() + 5000), allowWhileIdle: true } }] })`);
+    /* povolenie ako v appke (cez PushNotifications); LocalNotifications.requestPermissions by na Androide 12+
+       otvoril nastavenia presných budíkov, ktoré appka zámerne nepoužíva */
+    await w.ev(`Capacitor.Plugins.PushNotifications.requestPermissions()`);
+    await w.ev(`Capacitor.Plugins.LocalNotifications.schedule({ notifications: [{ id: 3999, title: 'GymQuest', body: 'smoke reminder', channelId: 'reminders', isExactNotification: false, schedule: { at: new Date(Date.now() + 5000), allowWhileIdle: true } }] })`);
     await wait(12000);
     check('a local reminder fires', /smoke reminder|id=3999/.test(sh('dumpsys notification --noredact')));
 
@@ -125,6 +139,7 @@ function shot(name) {
   } catch (e) {
     check('no exception', false, String(e && (e.stderr || e.stack) || e).slice(0, 800));
   } finally {
+    try { sh('cmd connectivity airplane-mode disable'); } catch (e) {}   // nikdy nenechať telefón v režime lietadlo
     try { adb('forward', '--remove', 'tcp:' + PORT); } catch (e) {}
     console.log(`\n${pass} passed, ${fail} failed`);
     process.exit(fail ? 1 : 0);

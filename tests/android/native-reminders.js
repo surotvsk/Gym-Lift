@@ -40,6 +40,9 @@ const DATA = { water_on: true, water_every: 60, water_from: '08:00', water_to: '
     check('unique ids', new Set(l.map((n) => n.id)).size === l.length);
     check('english texts', water[0].body === '💧 Time to drink some water' && meals[0].body === '🍽️ Time to eat' && /workout time/.test(wk[0].body), [water[0].body, meals[0].body, wk[0].body]);
     check('channel reminders, allowWhileIdle', l.every((n) => n.channelId === 'reminders' && n.schedule.allowWhileIdle === true));
+    /* Android 12+: "presná" notifikácia (predvolené v plugine) bez povolenia presných budíkov otvorí
+       pri každom plánovaní nastavenia "Budíky a pripomienky" – pripomienky preto nie sú presné. */
+    check('not exact (no Alarms & reminders settings page on Android 12+)', l.every((n) => n.isExactNotification === false));
     await p.eval(`(setLang('sk'), true)`);
     check('slovak texts', (await sched(DATA))[0].body === '💧 Čas napiť sa vody');
     await p.eval(`(setLang('en'), true)`);
