@@ -7325,6 +7325,59 @@ const SYNC_I18N = {
   },
 };
 for (const lang of Object.keys(SYNC_I18N)) Object.assign(I18N[lang] || (I18N[lang] = {}), SYNC_I18N[lang]);
+
+/* Health Connect (len Android appka): prepínač v Nastaveniach a tep pri dokončenom tréningu. */
+const HEALTH_I18N = {
+  sk: {
+    'health.title': 'Health Connect', 'health.switch': 'Prepojiť s Health Connect',
+    'health.note': 'Pri dokončenom tréningu ukáže tep z hodiniek a uloží tréning do Health Connect. Tep zostáva súkromný a nikdy sa nezdieľa v Community.',
+    'health.denied': 'Povolenie nebolo udelené. Môžeš ho povoliť v nastaveniach Health Connect.',
+    'health.unavailable': 'Health Connect v tomto telefóne nie je dostupný. Nainštaluj ho z Google Play.',
+    'health.hr': '♥ priemer {avg} · max {max} úderov/min', 'health.kcal': '{kcal} kcal',
+    'health.refresh': 'Obnoviť tep', 'health.none': 'Z hodiniek zatiaľ nie je tep.',
+  },
+  en: {
+    'health.title': 'Health Connect', 'health.switch': 'Connect to Health Connect',
+    'health.note': 'Shows your watch’s heart rate on finished workouts and saves workouts to Health Connect. Heart rate stays private and is never shared in Community.',
+    'health.denied': 'Permission not granted. You can allow it in Health Connect settings.',
+    'health.unavailable': 'Health Connect is not available on this phone. Install it from Google Play.',
+    'health.hr': '♥ avg {avg} · max {max} bpm', 'health.kcal': '{kcal} kcal',
+    'health.refresh': 'Refresh heart rate', 'health.none': 'No heart rate from your watch yet.',
+  },
+  es: {
+    'health.title': 'Health Connect', 'health.switch': 'Conectar con Health Connect',
+    'health.note': 'Muestra el pulso de tu reloj en los entrenamientos terminados y guarda los entrenamientos en Health Connect. El pulso es privado y nunca se comparte en la Comunidad.',
+    'health.denied': 'Permiso no concedido. Puedes permitirlo en los ajustes de Health Connect.',
+    'health.unavailable': 'Health Connect no está disponible en este teléfono. Instálalo desde Google Play.',
+    'health.hr': '♥ media {avg} · máx {max} ppm', 'health.kcal': '{kcal} kcal',
+    'health.refresh': 'Actualizar pulso', 'health.none': 'Aún no hay pulso de tu reloj.',
+  },
+  'pt-BR': {
+    'health.title': 'Health Connect', 'health.switch': 'Conectar ao Health Connect',
+    'health.note': 'Mostra a frequência cardíaca do seu relógio nos treinos concluídos e salva os treinos no Health Connect. A frequência cardíaca é privada e nunca é compartilhada na Comunidade.',
+    'health.denied': 'Permissão não concedida. Você pode permitir nas configurações do Health Connect.',
+    'health.unavailable': 'O Health Connect não está disponível neste telefone. Instale-o pelo Google Play.',
+    'health.hr': '♥ média {avg} · máx {max} bpm', 'health.kcal': '{kcal} kcal',
+    'health.refresh': 'Atualizar frequência cardíaca', 'health.none': 'Ainda não há frequência cardíaca do seu relógio.',
+  },
+  fr: {
+    'health.title': 'Health Connect', 'health.switch': 'Connecter à Health Connect',
+    'health.note': 'Affiche la fréquence cardiaque de ta montre sur les entraînements terminés et enregistre les entraînements dans Health Connect. Elle reste privée et n’est jamais partagée dans la Communauté.',
+    'health.denied': 'Autorisation refusée. Tu peux l’accorder dans les réglages de Health Connect.',
+    'health.unavailable': 'Health Connect n’est pas disponible sur ce téléphone. Installe-le depuis Google Play.',
+    'health.hr': '♥ moy. {avg} · max {max} bpm', 'health.kcal': '{kcal} kcal',
+    'health.refresh': 'Actualiser la fréquence cardiaque', 'health.none': 'Pas encore de fréquence cardiaque de ta montre.',
+  },
+  ar: {
+    'health.title': 'Health Connect', 'health.switch': 'الربط مع Health Connect',
+    'health.note': 'يعرض نبض ساعتك في التمارين المكتملة ويحفظ التمارين في Health Connect. يبقى النبض خاصًا ولا تتم مشاركته أبدًا في المجتمع.',
+    'health.denied': 'لم يتم منح الإذن. يمكنك السماح به من إعدادات Health Connect.',
+    'health.unavailable': 'Health Connect غير متوفر على هذا الهاتف. ثبّته من Google Play.',
+    'health.hr': '♥ المتوسط {avg} · الأقصى {max} نبضة/د', 'health.kcal': '{kcal} سعرة',
+    'health.refresh': 'تحديث النبض', 'health.none': 'لا يوجد نبض من ساعتك بعد.',
+  },
+};
+for (const lang of Object.keys(HEALTH_I18N)) Object.assign(I18N[lang] || (I18N[lang] = {}), HEALTH_I18N[lang]);
 /* Preklady e-mailov účtu (potvrdenie, opätovné poslanie, obnova hesla) – všetkých 6 jazykov. */
 const AUTH_MAIL_I18N = {
   sk: {
@@ -19274,6 +19327,7 @@ function workoutBlock(w) {
     <div class="day-workout-date">${esc(formatDate(w.date))}</div>
     ${w.trainedWith ? `<div class="day-ex-meta train-with">👥 ${esc(t('train.trainedWith', { name: w.trainedWith }))}</div>` : ''}
     ${historyDurationLine(w)}
+    ${healthDayHtml(w)}
     ${rows}
     ${w.note ? `<div class="modal-note">“${esc(w.note)}”</div>` : ''}`;
   if (dayShareAvailable()) div.appendChild(dayShareBlock(w));
@@ -19618,6 +19672,11 @@ function confirmFinish() {
   };
   /* Trvanie sa zapíše len ak naozaj existuje rozbehnutá session – nikdy nevymýšľame nulu. */
   if (sess) entry.durationSeconds = sessionElapsedSeconds(sess);
+  /* Health Connect (Android): skutočný čas tréningu – podľa neho sa číta tep a zapíše cvičenie. */
+  if (sess && healthOn()) {
+    const end = Date.now();
+    entry.health = { start: new Date(end - entry.durationSeconds * 1000).toISOString(), end: new Date(end).toISOString() };
+  }
   trainOnWorkoutFinished(entry, trainData);   // "trénoval s …" + priateľ uvidí hotovo
 
   state.history.push(entry);
@@ -19642,6 +19701,7 @@ function confirmFinish() {
 
   showResultModal();
   renderAll();
+  nativeHealthAfterFinish(entry);
 }
 
 function showResultModal() {
@@ -19689,6 +19749,7 @@ function showResultModal() {
   } else {
     durEl.hidden = true;
   }
+  renderResultHealth(entry);
 
   document.getElementById('modal-result').hidden = false;
 }
@@ -19699,6 +19760,7 @@ function requestUndoWorkout() {
   const entry = state.history.find(w => w.id === lastWorkoutId);
   if (!entry) return;
   showGeneric(t('trening.undoConfirmTitle'), t('trening.undo'), () => {
+    healthDeleteSession(entry);
     state.history = state.history.filter(w => w.id !== lastWorkoutId);
     lastWorkoutId = null;
     lastUnlocked = [];
@@ -19716,6 +19778,7 @@ function requestDeleteWorkout(id) {
   const entry = state.history.find(w => w.id === id);
   if (!entry) return;
   showGeneric(t('history.deleteTitle'), t('common.delete'), () => {
+    healthDeleteSession(entry);
     state.history = state.history.filter(w => w.id !== id);
     if (lastWorkoutId === id) lastWorkoutId = null;
     recalculateAll();
@@ -19949,6 +20012,7 @@ function themeChipsKey(e) {
 
 function openSettings() {
   renderThemeChips();
+  renderHealthSetting();
   renderGoalChips('settings-goal-chips', weeklyGoal());
   setGoalReadout(weeklyGoal());
   renderLangSetting();
@@ -23406,6 +23470,11 @@ function setupEvents() {
   on('btn-cal-next', () => shiftMonth(1));
   on('btn-cal-today', goToCurrentMonth);
   on('btn-day-close', closeDay);
+  on('day-body', (e) => {   // Health Connect: "Obnoviť tep" pri tréningu v detaile dňa
+    const b = e.target.closest ? e.target.closest('[data-health-refresh]') : null;
+    if (b) { b.disabled = true; healthReadInto(b.dataset.healthRefresh); }
+  });
+  on('health-switch', (e) => { healthToggle(!!e.target.checked); }, 'change');
   // jediný delegovaný listener na mriežku – nevzniká 42 listenerov pri každom prekreslení
   on('calendar-grid', (e) => {
     const btn = e.target.closest ? e.target.closest('[data-day]') : null;
@@ -24158,6 +24227,111 @@ async function nativeClearChat(cid) {
   } catch (e) {}
 }
 
+/* ---------- Health Connect (Android) ----------
+   Voliteľné (Nastavenia). Po tréningu sa do Health Connect zapíše cvičenie (id = id tréningu,
+   skutočný začiatok a koniec) a z neho sa prečíta tep a aktívne kalórie z hodiniek za ten čas.
+   V histórii: entry.health = { start, end, hrAvg?, hrMax?, kcal?, readAt? } – len hodnoty, ktoré
+   naozaj existujú (nikdy nuly). Synchronizuje sa so súkromnou zálohou ako zvyšok tréningu, ale do
+   Community (príspevky, zdieľanie, chaty, rebríček) sa nikdy nedostane – tie berú len vybrané polia.
+   Hodinky sa niekedy synchronizujú neskôr: návrat do appky skúsi tréningy z posledných 2 hodín
+   a v detaile dňa je "Obnoviť tep". Plugin GymHealth je v appke (Kotlin). */
+const HEALTH_RETRY_MS = 2 * 3600 * 1000;
+let healthStatusKey = '';
+function healthOn() { return isNativeApp() && !!(state && state.settings && state.settings.healthConnect) && !!nativePlugin('GymHealth'); }
+function renderHealthSetting() {
+  const block = document.getElementById('health-setting');
+  if (!block) return;
+  block.hidden = !isNativeApp() || !nativePlugin('GymHealth');
+  if (block.hidden) return;
+  document.getElementById('health-switch').checked = !!state.settings.healthConnect;
+  const st = document.getElementById('health-status');
+  st.textContent = healthStatusKey ? t(healthStatusKey) : '';
+  st.hidden = !healthStatusKey;
+}
+async function healthToggle(on) {
+  const hc = nativePlugin('GymHealth');
+  const off = (key) => { state.settings.healthConnect = false; healthStatusKey = key || ''; saveState(); renderHealthSetting(); };
+  if (!on || !hc) { off(''); return; }
+  try {
+    const a = await hc.isAvailable();
+    if (!a || !a.available) { off('health.unavailable'); return; }
+    const g = await hc.requestPermissions();
+    if (!g || !Array.isArray(g.granted) || !g.granted.length) { off('health.denied'); return; }
+  } catch (e) { off('health.unavailable'); return; }
+  state.settings.healthConnect = true;
+  healthStatusKey = '';
+  saveState();
+  renderHealthSetting();
+}
+function healthStatsFrom(r) {
+  const out = {};
+  if (r && Number(r.hrCount) > 0 && Number.isFinite(Number(r.hrAvg)) && Number(r.hrAvg) > 0) {
+    out.hrAvg = Math.round(Number(r.hrAvg));
+    if (Number.isFinite(Number(r.hrMax)) && Number(r.hrMax) > 0) out.hrMax = Math.round(Number(r.hrMax));
+  }
+  if (r && Number.isFinite(Number(r.kcal)) && Number(r.kcal) > 0) out.kcal = Math.round(Number(r.kcal));
+  return out;
+}
+/* Prečíta tep za čas tréningu a uloží ho k tréningu. Nové hodnoty prepíšu staré; keď nič nepríde,
+   staré zostanú. */
+async function healthReadInto(id) {
+  const hc = nativePlugin('GymHealth');
+  const w = state.history.find((x) => x.id === id);
+  if (!hc || !w || !w.health) return false;
+  let r;
+  try { r = await hc.readStats({ start: w.health.start, end: w.health.end }); } catch (e) { return false; }
+  const cur = state.history.find((x) => x.id === id);   // medzitým mohol byť zmazaný
+  if (!cur || !cur.health) return false;
+  cur.health = Object.assign({}, cur.health, healthStatsFrom(r), { readAt: new Date().toISOString() });
+  saveState();
+  if (lastWorkoutId === id && !document.getElementById('modal-result').hidden) renderResultHealth(cur);
+  const dayModal = document.getElementById('modal-day');
+  if (dayModal && !dayModal.hidden && selectedDayKey) renderDayDetail(selectedDayKey);
+  return true;
+}
+async function nativeHealthAfterFinish(entry) {
+  if (!entry || !entry.health || !healthOn()) return;
+  const hc = nativePlugin('GymHealth');
+  try { await hc.writeWorkout({ id: entry.id, start: entry.health.start, end: entry.health.end, title: historyPlanName(entry) }); } catch (e) {}
+  await healthReadInto(entry.id);
+}
+function healthRetryRecent() {
+  if (!healthOn()) return;
+  const now = Date.now();
+  state.history.filter((w) => w.health && !('hrAvg' in w.health) && now - Date.parse(w.health.end) < HEALTH_RETRY_MS)
+    .forEach((w) => { healthReadInto(w.id); });
+}
+/* Vrátený alebo zmazaný tréning zmizne aj z Health Connect. */
+function healthDeleteSession(entry) {
+  if (!entry || !entry.health) return;
+  const hc = nativePlugin('GymHealth');
+  if (hc) hc.deleteWorkout({ id: entry.id }).catch(() => {});
+}
+function healthLineText(w) {
+  const h = w && w.health;
+  if (!h) return '';
+  const parts = [];
+  if (h.hrAvg) parts.push(t('health.hr', { avg: h.hrAvg, max: h.hrMax || h.hrAvg }));
+  if (h.kcal) parts.push(t('health.kcal', { kcal: h.kcal }));
+  return parts.join(' · ');
+}
+function renderResultHealth(entry) {
+  const el = document.getElementById('result-health');
+  if (!el) return;
+  const txt = isNativeApp() ? healthLineText(entry) : '';
+  el.textContent = txt;
+  el.hidden = !txt;
+}
+/* Detail dňa: tep tréningu; bez dát (alebo prečítané krátko po tréningu) tlačidlo "Obnoviť tep". */
+function healthDayHtml(w) {
+  if (!isNativeApp() || !w || !w.health) return '';
+  const txt = healthLineText(w);
+  const readAt = Date.parse(w.health.readAt || '') || 0;
+  const canRefresh = !!nativePlugin('GymHealth') && (!w.health.hrAvg || readAt < Date.parse(w.health.end) + 24 * 3600 * 1000);
+  return `<div class="day-ex-meta health-line">${esc(txt || t('health.none'))}</div>`
+    + (canRefresh ? `<button type="button" class="btn btn-secondary btn-sm health-refresh" data-health-refresh="${escAttr(w.id)}">${esc(t('health.refresh'))}</button>` : '');
+}
+
 let nativeStarted = false;
 /* Raz po prvom vykreslení: skryje spúšťaciu obrazovku a zapojí natívne udalosti. */
 function nativeInit() {
@@ -24169,7 +24343,7 @@ function nativeInit() {
   const app = nativePlugin('App');
   if (app) {
     app.addListener('backButton', () => { nativeBack(); });
-    app.addListener('resume', () => { nativeRemindersApply(); });   // zmena povolenia či času v systéme
+    app.addListener('resume', () => { nativeRemindersApply(); healthRetryRecent(); });   // povolenia/čas v systéme, tep z hodiniek
   }
   const ln = nativePlugin('LocalNotifications');
   if (ln) ln.createChannel({ id: 'reminders', name: t('rem.title'), importance: 3 }).catch(() => {});

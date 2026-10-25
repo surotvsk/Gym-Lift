@@ -559,6 +559,7 @@
       <h3 data-i18n="trening.doneTitle">🏆 Tréning dokončený!</h3>
       <p class="modal-xp" id="result-xp"></p>
       <p class="modal-duration" id="result-duration" hidden></p>
+      <p class="modal-duration result-health" id="result-health" hidden></p>
       <p class="modal-msg" id="result-msg"></p>
       <p class="modal-achievements" id="result-achievements" hidden></p>
       <p class="modal-note" id="result-note" hidden></p>
@@ -603,6 +604,14 @@
           <button type="button" class="goal-chip theme-chip" role="radio" data-theme-choice="dark" data-i18n="theme.dark">Tmavý</button>
           <button type="button" class="goal-chip theme-chip" role="radio" data-theme-choice="auto" data-i18n="theme.auto">Podľa telefónu</button>
         </div>
+      </div>
+
+      <!-- Health Connect: len v Android appke (tep z hodiniek pri tréningu, tréningy do Health Connect) -->
+      <div class="setting-block" id="health-setting" hidden>
+        <span class="card-title" data-i18n="health.title">Health Connect</span>
+        <span class="card-sub" data-i18n="health.note">Pri dokončenom tréningu ukáže tep z hodiniek a uloží tréning do Health Connect. Tep zostáva súkromný a nikdy sa nezdieľa v Community.</span>
+        <label class="community-check" for="health-switch"><input type="checkbox" id="health-switch"><span data-i18n="health.switch">Prepojiť s Health Connect</span></label>
+        <p class="card-note" id="health-status" role="status" hidden></p>
       </div>
 
       <div class="setting-block">
