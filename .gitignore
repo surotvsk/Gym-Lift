@@ -38,3 +38,13 @@ supabase/.branches/
 # --- Local-only redesign prototypes (round 2) and their test; kept on this PC, not published ---
 design-concepts/r2/
 tests/concepts/
+
+# --- Android (Capacitor): the web copy is built; keys and Firebase config never committed ---
+www/
+android/app/google-services.json
+*.jks
+*.keystore
+android/**/build/
+android/.gradle/
+android/local.properties
+.superpowers/

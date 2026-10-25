@@ -1,5 +1,22 @@
 {
+  "scripts": {
+    "android:www": "bash tools/android/build-www.sh",
+    "android:sync": "bash tools/android/build-www.sh && npx cap sync android",
+    "android:open": "flatpak run com.google.AndroidStudio android"
+  },
   "devDependencies": {
+    "@capacitor/cli": "8.5.3",
     "supabase": "^2.119.0"
+  },
+  "dependencies": {
+    "@capacitor/android": "8.5.3",
+    "@capacitor/app": "8.1.2",
+    "@capacitor/core": "8.5.3",
+    "@capacitor/filesystem": "8.1.5",
+    "@capacitor/local-notifications": "8.3.1",
+    "@capacitor/push-notifications": "8.1.3",
+    "@capacitor/share": "8.0.3",
+    "@capacitor/splash-screen": "8.0.2",
+    "@capacitor/status-bar": "8.0.4"
   }
 }
