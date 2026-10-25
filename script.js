@@ -14462,6 +14462,11 @@ async function saveProgressPhotoToDevice(id) {
   try {
     const rec = await idbGetProgress(id);
     if (!rec || !rec.blob) { showPhotoStatus('photos.errStorage'); return; }
+    if (isNativeApp()) {
+      const name = 'gymquest-photo-' + m.date + (rec.blob.type === 'image/png' ? '.png' : '.jpg');
+      if (!(await nativeSaveAndShare(name, rec.blob.type || 'image/jpeg', rec.blob))) showPhotoStatus('photos.errStorage');
+      return;
+    }
     const url = URL.createObjectURL(rec.blob);
     const a = document.createElement('a');
     a.href = url;
@@ -19872,6 +19877,32 @@ function nativeThemeBars(t) {
   bar.setStyle({ style: t === 'dark' ? 'DARK' : 'LIGHT' }).catch(() => {});
   bar.setBackgroundColor({ color: THEME_COLORS[t] }).catch(() => {});
 }
+
+/* Android appka: WebView ignoruje <a download>, preto sa súbor zapíše do cache appky a ponúkne
+   cez systémové zdieľanie (Uložiť do Súborov, Disk Google, e-mail…). data = text alebo Blob.
+   true = zdieľanie sa otvorilo, NIE "súbor je uložený"; zrušenie nie je chyba. */
+function nativeBlobBase64(blob) {
+  return new Promise((resolve, reject) => {
+    const r = new FileReader();
+    r.onload = () => resolve(String(r.result).replace(/^data:[^,]*,/, ''));
+    r.onerror = () => reject(r.error);
+    r.readAsDataURL(blob);
+  });
+}
+async function nativeSaveAndShare(fileName, mime, data) {
+  const fsys = nativePlugin('Filesystem');
+  const share = nativePlugin('Share');
+  if (!fsys || !share) return false;
+  let written;
+  try {
+    const opts = { path: fileName, directory: 'CACHE', recursive: true };
+    if (typeof data === 'string') { opts.data = data; opts.encoding = 'utf8'; }
+    else opts.data = await nativeBlobBase64(data);
+    written = await fsys.writeFile(opts);
+  } catch (e) { return false; }
+  try { await share.share({ title: 'GymQuest', files: [written.uri] }); } catch (e) { /* zrušené */ }
+  return true;
+}
 function setThemePref(v) {
   try {
     if (v === 'light' || v === 'dark') localStorage.setItem(THEME_KEY, v);
@@ -20031,7 +20062,10 @@ function saveBackupNow() {
   const filename = backupFileName();
   let usedShare = false;
   markBackupOffered();
-  if (isAppleMobile() && canShareFiles()) {
+  if (isNativeApp()) {
+    nativeSaveAndShare(filename, 'application/json', text);
+    usedShare = true;
+  } else if (isAppleMobile() && canShareFiles()) {
     try {
       const file = new File([new Blob([text], { type: 'application/json' })], filename, { type: 'application/json' });
       const shared = navigator.share({ files: [file], title: 'GymQuest' });
@@ -20182,6 +20216,7 @@ function exportData() {
   const snapshot = Object.assign({}, state);
   delete snapshot.activeSession;
   delete snapshot.activeActivity;   // rozbehnutá aktivita patrí len tomuto zariadeniu
+  if (isNativeApp()) { nativeSaveAndShare(`gymquest-backup-${todayISO()}.json`, 'application/json', JSON.stringify(snapshot, null, 2)); return; }
   const blob = new Blob([JSON.stringify(snapshot, null, 2)], { type: 'application/json' });
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
