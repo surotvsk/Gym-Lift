@@ -217,7 +217,7 @@ async function shot(p, name) { const r = await p.c.send('Page.captureScreenshot'
     await pA.eval(`(() => { const el = document.getElementById('community-compose-text'); el.value = 'FEED-NEW-POST-FROM-UI'; el.dispatchEvent(new Event('input', { bubbles: true })); return true; })()`);
     await pA.eval(`(document.querySelector('[data-community-action="compose-publish"]').click(), true)`);
     const posted = await waitFor(() => pA.eval(`communityView === 'myposts' && document.getElementById('community-body').innerText.indexOf('FEED-NEW-POST-FROM-UI') >= 0`), 20000, 'submitted').then(() => true, () => false);
-    check('publishing shows it in My posts as submitted for review', posted && sqlVal(`select status from public.posts where caption = 'FEED-NEW-POST-FROM-UI'`) === 'pending');
+    check('publishing shows it in My posts as submitted for review', posted && sqlVal(`select status from public.posts where caption = 'FEED-NEW-POST-FROM-UI' and user_id = ${lit(A.id)} order by created_at desc limit 1`) === 'pending');
 
     section('moderator, Messages tab, other states');
     const pM = await device('M');
@@ -258,6 +258,31 @@ async function shot(p, name) { const r = await p.c.send('Page.captureScreenshot'
       check(w + ' px ' + theme + ': no overflow, header controls do not overlap', !r.over && !r.overlap, J(r));
       await shot(pA, 'feed-' + theme + '-' + w);
     }
+    /* Úzky telefón (360–375 px) alebo väčšie písmo v systéme – nadpis sa nesmie zalomiť uprostred slova
+       ("Communit / y"). Android (WebView aj Chrome) násobí veľkosť písma podľa systému; tu sa to napodobní
+       vynásobením font-size v hlavičke. Na úzkom telefóne je Nový príspevok okrúhle +, pri veľkom písme
+       idú tlačidlá do druhého riadku. */
+    await pA.eval(`(communityMode = 'community', communityBack = [], communityView = 'feed', switchTab('komunita'), true)`);
+    await feedShown(pA);
+    check('header title is "Community" in the feed', (await pA.eval(`document.querySelector('#community-head .screen-title').textContent.trim()`)) === 'Community');
+    for (const scale of [1, 1.1, 1.3]) for (const w of [320, 360, 375, 390, 415]) {
+      await pA.c.send('Emulation.setDeviceMetricsOverride', { width: w, height: 800, deviceScaleFactor: 2, mobile: true });
+      await pA.eval(`(setThemePref('light'), window.scrollTo(0, 0), true)`); await wait(250);
+      const r = await pA.eval(`(() => { const hd = document.getElementById('community-head'); const els = [hd, ...hd.querySelectorAll('*')];
+        const fs = els.map((e) => parseFloat(getComputedStyle(e).fontSize)); els.forEach((e, i) => { e.style.fontSize = (fs[i] * ${scale}) + 'px'; });
+        const h = hd.querySelector('.screen-title'); const lh = parseFloat(getComputedStyle(h).lineHeight);
+        const a = [...hd.querySelectorAll('.screen-title, #btn-csearch, #btn-cmore, #btn-cnew')].map((x) => x.getBoundingClientRect());
+        const out = { lines: Math.round(h.getBoundingClientRect().height / lh), clipped: h.scrollWidth > h.clientWidth + 1, over: document.documentElement.scrollWidth > innerWidth + 1,
+          overlap: a.some((x, i) => a.some((y, j) => j > i && x.left < y.right - 1 && y.left < x.right - 1 && x.top < y.bottom - 1 && y.top < x.bottom - 1)),
+          newName: document.getElementById('btn-cnew').innerText.trim() || document.getElementById('btn-cnew').textContent.trim() };
+        els.forEach((e) => { e.style.fontSize = ''; }); return out; })()`);
+      check(w + ' px, text ' + Math.round(scale * 100) + ' %: "Community" on one line, controls do not overlap, New post keeps its name',
+        r.lines === 1 && !r.clipped && !r.over && !r.overlap && r.newName === 'New post', J(r));
+    }
+    await pA.c.send('Emulation.setDeviceMetricsOverride', { width: 360, height: 800, deviceScaleFactor: 2, mobile: true }); await wait(250);
+    check('360 px: one header row, New post is the round + button', await pA.eval(`(() => { const t = document.querySelector('#community-head .screen-title').getBoundingClientRect(), n = document.getElementById('btn-cnew').getBoundingClientRect();
+      return Math.abs((t.top + t.bottom) / 2 - (n.top + n.bottom) / 2) < 8 && Math.round(n.width) === 40; })()`));
+    await shot(pA, 'feed-head-360');
     await pA.c.send('Emulation.setDeviceMetricsOverride', { width: 390, height: 844, deviceScaleFactor: 2, mobile: true });
     await pA.eval(`(setThemePref('light'), window.scrollTo(0, document.documentElement.scrollHeight), true)`); await wait(500);
     check('the end of the feed clears the bottom menu', await pA.eval(`(() => { const f = document.getElementById('community-foot').getBoundingClientRect(), n = document.querySelector('.tab-bar').getBoundingClientRect(); return f.bottom <= n.top + 1 || document.documentElement.scrollHeight - innerHeight - scrollY > 2; })()`));

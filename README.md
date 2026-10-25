@@ -145,8 +145,9 @@ in the prototype.
   Messenger. Needs server version 8 (migration 0015); on an older server no label is shown.
 - **Community** (v83) opens straight into the feed, like X/Twitter in Bento shapes and colours: a compact header
   that stays on top while you scroll (*Community*, **New post**, search and **⋯** with Friends — and pending
-  requests —, Top 20 with your rank, your profile, My posts and Moderation for moderators), the
-  *Everyone / Following / Friends* filter, and the posts in one column. Each post is one rounded card: avatar on
+  requests —, Top 20 with your rank, your profile, My posts and Moderation for moderators; on phones narrower
+  than 390 px **New post** is a round **+** button, and with large system text the buttons move to a second row
+  instead of splitting the word *Community* (v84)), the *Everyone / Following / Friends* filter, and the posts in one column. Each post is one rounded card: avatar on
   the left, then name · time · ⋯ (your own: delete; others: block, report; moderators: remove), the full text,
   the photos (several photos swipe, a tap opens the viewer), a shared workout or plan, and comments · shares ·
   likes. Older posts load by themselves as you scroll (same pages and order as before, never twice, nothing above
