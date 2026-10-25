@@ -23876,6 +23876,70 @@ function nativePlugin(name) {
   if (!isNativeApp()) return null;
   try { return (Capacitor.Plugins && Capacitor.Plugins[name]) || null; } catch (e) { return null; }
 }
+/* Tlačidlo Späť: každý list/dialóg (.modal-backdrop) a čím sa zatvára – ten istý prvok, ktorý
+   by stlačil používateľ, takže sa vykoná aj jeho logika (uloženie cieľa, zastavenie videa…).
+   null = Späť ho nezatvára (úvodné nastavenie sa musí dokončiť). Test overuje, že tu nechýba
+   žiadny dialóg z index.html. Všetky majú rovnaký z-index, navrchu je posledný v DOM. */
+const NATIVE_BACK_CLOSE = [
+  ['modal-rest', '#btn-rest-close'],
+  ['modal-confirm', '#btn-confirm-cancel'],
+  ['modal-result', '#btn-result-close'],
+  ['modal-setup', null],
+  ['modal-settings', '#btn-settings-close'],
+  ['modal-lang', '#btn-lang-cancel'],
+  ['modal-measure', '#btn-measure-cancel'],
+  ['modal-food', '#btn-food-cancel'],
+  ['modal-library', '#btn-library-close'],
+  ['modal-exercise', '#btn-exercise-close'],
+  ['modal-sync', '#modal-sync [data-sync-action="later"]'],
+  ['modal-generic', '#btn-generic-cancel'],
+  ['modal-history-edit', '#btn-he-cancel'],
+  ['modal-day', '#btn-day-close'],
+  ['modal-planchoice', '#btn-choice-cancel'],
+  ['modal-fullbody', '#btn-fb-cancel'],
+  ['modal-mode', '#btn-mode-cancel'],
+  ['modal-excuse', '#btn-excuse-done'],
+  ['modal-location', '#btn-location-close'],
+  ['modal-activity', '#btn-activity-close'],
+  ['modal-photo-add', '#btn-photo-add-cancel'],
+  ['modal-photo', '#btn-photo-viewer-close'],
+  ['modal-photo-compare', '#btn-photo-compare-close'],
+  ['modal-community-caption', '#btn-community-caption-cancel'],
+  ['modal-community-invite', '#btn-community-invite-close'],
+  ['modal-auth', '#modal-auth [data-auth-action="close"]'],
+];
+
+/* Jeden krok späť. Poradie: najvrchnejší dialóg → vnorený panel → podpohľad karty → karta Dnes
+   → appka do pozadia (ako na Androide 12+, nič sa neukončí – bežiaci tréning pokračuje).
+   Vracia 'closed' | 'view' | 'home' | 'background' | 'blocked'. */
+function nativeBack() {
+  const open = Array.from(document.querySelectorAll('.modal-backdrop')).filter((m) => !m.hidden);
+  const top = open[open.length - 1];
+  if (top) {
+    const ctPanel = document.getElementById('custom-timer');
+    if (top.id === 'modal-rest' && ctPanel && !ctPanel.hidden) { hideCustomTimer(); return 'view'; }
+    if (top.id === 'modal-rest' && presetManageMode) { setPresetManageMode(false); return 'view'; }
+    const entry = NATIVE_BACK_CLOSE.find((e) => e[0] === top.id);
+    if (entry && entry[1] === null) return 'blocked';
+    const btn = entry ? document.querySelector(entry[1]) : null;
+    if (btn && !btn.disabled) btn.click();
+    else { top.hidden = true; refreshUpdateBanner(); }   // dialóg bez tlačidla (napr. prázdny) – len zavrieť
+    return 'closed';
+  }
+  if (editingPlan !== null) { document.getElementById('btn-edit-cancel').click(); return 'view'; }
+  if (activeTab === 'komunita' && (communityBack.length || communityReturnTab
+      || (communityMode === 'messages' ? communityView !== 'chats' : communityView !== 'feed'))) {
+    communityGoBack();
+    return 'view';
+  }
+  if (activeTab === 'pokrok' && pokrokView !== 'stats') { setPokrokView('stats'); window.scrollTo(0, 0); return 'view'; }
+  if (activeTab === 'kalendar') { document.getElementById('back-calendar').click(); return 'view'; }
+  if (activeTab !== 'dnes') { switchTab('dnes'); window.scrollTo(0, 0); return 'home'; }
+  const app = nativePlugin('App');
+  if (app) app.minimizeApp().catch(() => {});
+  return 'background';
+}
+
 let nativeStarted = false;
 /* Raz po prvom vykreslení: skryje spúšťaciu obrazovku a zapojí natívne udalosti. */
 function nativeInit() {
@@ -23883,6 +23947,8 @@ function nativeInit() {
   nativeStarted = true;
   const splash = nativePlugin('SplashScreen');
   if (splash) splash.hide().catch(() => {});
+  const app = nativePlugin('App');
+  if (app) app.addListener('backButton', () => { nativeBack(); });
 }
 
 function registerServiceWorker() {
