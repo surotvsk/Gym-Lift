@@ -15486,7 +15486,7 @@ function pushSupported() {
 }
 function pushKey() { return String(communityCfg().vapidPublicKey || ''); }
 /* Server (0010) aj konfigurácia (verejný kľúč) sú pripravené. */
-function pushAvailable() { return isNativeApp() ? communityVersion >= 4 : (communityVersion >= 4 && !!pushKey()); }
+function pushAvailable() { return isNativeApp() ? communityVersion >= 4 && !nativeFcmMissing : (communityVersion >= 4 && !!pushKey()); }
 function pushDeviceRead() { try { return JSON.parse(localStorage.getItem(PUSH_DEVICE_KEY) || 'null'); } catch (e) { return null; } }
 function pushDeviceWrite(v) {
   try { if (v) localStorage.setItem(PUSH_DEVICE_KEY, JSON.stringify(v)); else localStorage.removeItem(PUSH_DEVICE_KEY); } catch (e) {}
@@ -15528,6 +15528,7 @@ function pushSave(sb, sub) {
 }
 /* Zapnutie – volá sa priamo z ťuknutia: o povolenie sa žiada ako prvé (iOS to vyžaduje). */
 async function pushEnable() {
+  if (isNativeApp()) return nativePushEnable();
   const sb = communityClient();
   const me = communityProfile && communityProfile.id;
   if (pushBusy || !sb || !me || !pushSupported() || !pushAvailable()) return;
@@ -15557,8 +15558,8 @@ async function pushEnable() {
    odregistruje, ak sa dá; lokálne zrušený odber server aj tak zmaže pri ďalšej správe (410). */
 async function pushDisable(sb) {
   const rpc = !!sb && communityVersion >= 4;   // zistí sa hneď – volajúci môže vzápätí vynulovať stav
+  if (isNativeApp()) { await nativePushDisable(sb, rpc); return; }
   pushDeviceWrite(null);
-  if (isNativeApp()) { await nativeRemindersApply(); return; }   // Android: zruší pripomienky v telefóne
   const reg = await pushRegistration();
   let sub = null;
   try { sub = reg && reg.pushManager ? await reg.pushManager.getSubscription() : null; } catch (e) { sub = null; }
@@ -15575,6 +15576,7 @@ async function pushSwitchOff() {
 }
 /* Po prihlásení a pri zmene jazyka: zapnuté zariadenie sa obnoví na serveri (kľúče, jazyk). */
 async function pushRefresh(sb, uid) {
+  if (isNativeApp()) return nativePushRefresh(sb, uid);
   const dev = pushDeviceRead();
   if (!dev || !uid || dev.uid !== uid || !pushSupported() || !pushAvailable() || !sb) return;
   if (Notification.permission !== 'granted') { if (Notification.permission === 'denied') pushDeviceWrite(null); return; }
@@ -15595,6 +15597,7 @@ function pushNotifyMessage(sb, messageId) {
 }
 /* Otvorený chat: jeho upozornenia v zozname systému sa zatvoria. */
 async function pushClearChat(cid) {
+  if (cid && isNativeApp()) { nativeClearChat(cid); return; }
   if (!cid || !pushSupported()) return;
   try {
     const reg = await pushRegistration();
@@ -24061,6 +24064,100 @@ function nativeRemindersApply() {
   return nativeRemChain;
 }
 
+/* Správy cez Firebase Cloud Messaging (migrácia 0016). Web Push vo WebView nefunguje, preto sa
+   token FCM uloží cez push_fcm_register; funkcia `push` ho použije popri webových odberoch.
+   Server bez 0016 (funkcia chýba) → prepínač sa skryje (nativeFcmMissing). */
+let nativeFcmMissing = false;
+let nativeFcmWaiters = [];
+function nativeFcmToken() {
+  const pn = nativePlugin('PushNotifications');
+  if (!pn) return Promise.reject(new Error('no_plugin'));
+  return new Promise((resolve, reject) => {
+    const w = {};
+    const timer = setTimeout(() => w.reject(new Error('fcm_timeout')), 20000);
+    w.resolve = (v) => { clearTimeout(timer); nativeFcmWaiters = nativeFcmWaiters.filter((x) => x !== w); resolve(v); };
+    w.reject = (e) => { clearTimeout(timer); nativeFcmWaiters = nativeFcmWaiters.filter((x) => x !== w); reject(e); };
+    nativeFcmWaiters.push(w);
+    pn.register().catch((e) => w.reject(e));
+  });
+}
+function nativeFcmMissingError(err) {
+  const txt = String((err && (err.code + ' ' + err.message)) || '');
+  return /PGRST202|could not find the function|function .* does not exist/i.test(txt);
+}
+async function nativeFcmSave(sb, uid, token) {
+  let r;
+  try { r = await sb.rpc('push_fcm_register', { p_token: token, p_lang: activeLang() }); } catch (e) { r = { error: e }; }
+  if (r && r.error) { if (nativeFcmMissingError(r.error)) nativeFcmMissing = true; return false; }
+  pushDeviceWrite({ uid, fcm: token });
+  return true;
+}
+function nativePermFrom(receive) { return receive === 'granted' ? 'granted' : (receive === 'denied' ? 'denied' : 'prompt'); }
+async function nativePushEnable() {
+  const sb = communityClient();
+  const me = communityProfile && communityProfile.id;
+  const pn = nativePlugin('PushNotifications');
+  if (pushBusy || !sb || !me || !pn || !pushAvailable()) return;
+  pushBusy = true;
+  let msg = 'push.on';
+  try {
+    const perm = await pn.requestPermissions();
+    nativeNotifPerm = nativePermFrom(perm && perm.receive);
+    if (nativeNotifPerm !== 'granted') { msg = nativeNotifPerm === 'denied' ? 'push.denied' : 'push.notAllowed'; return; }
+    const token = await nativeFcmToken();
+    if (!(await nativeFcmSave(sb, me, token))) {
+      msg = 'push.errFailed';
+      if (nativeFcmMissing) { try { await pn.unregister(); } catch (e) {} }
+      return;
+    }
+    await remindersEnsureDefaults(sb);   // pripomienky sú predvolene zapnuté (ako na webe)
+    nativeRemindersApply();
+  } catch (e) {
+    msg = 'push.errFailed';
+  } finally {
+    pushBusy = false;
+    communitySetMessage(msg);
+    renderCommunity();
+  }
+}
+/* Odhlásenie, vypnutie, opustenie Community: token preč zo servera aj z FCM, pripomienky zrušené. */
+async function nativePushDisable(sb, rpc) {
+  const dev = pushDeviceRead();
+  pushDeviceWrite(null);
+  if (rpc && dev && dev.fcm) { try { await sb.rpc('push_fcm_unregister', { p_token: dev.fcm }); } catch (e) {} }
+  const pn = nativePlugin('PushNotifications');
+  if (pn) { try { await pn.unregister(); } catch (e) {} }
+  await nativeRemindersApply();
+}
+/* Po prihlásení a pri zmene jazyka: zapnutý telefón sa obnoví na serveri (token, jazyk). */
+async function nativePushRefresh(sb, uid) {
+  const dev = pushDeviceRead();
+  if (!dev || !uid || dev.uid !== uid || !sb || !pushAvailable()) return;
+  if ((await nativeRefreshPerm()) !== 'granted') { if (nativeNotifPerm === 'denied') pushDeviceWrite(null); return; }
+  try { await nativeFcmSave(sb, uid, await nativeFcmToken()); } catch (e) { /* bez siete: skúsi sa pri ďalšom spustení */ }
+  await remindersEnsureDefaults(sb);
+  nativeRemindersApply();
+}
+/* FCM vydal nový token mimo zapínania (obnova) → uloží sa, ak sú upozornenia zapnuté. */
+function nativeOnFcmToken(ev) {
+  const token = ev && ev.value;
+  if (!token) return;
+  if (nativeFcmWaiters.length) { nativeFcmWaiters.slice().forEach((w) => w.resolve(token)); return; }
+  const dev = pushDeviceRead();
+  const sb = communityClient();
+  if (sb && dev && dev.fcm !== token && nativePushState() === 'on') nativeFcmSave(sb, dev.uid, token);
+}
+/* Otvorený chat: jeho upozornenia v lište sa zatvoria. */
+async function nativeClearChat(cid) {
+  const pn = nativePlugin('PushNotifications');
+  if (!pn) return;
+  try {
+    const d = await pn.getDeliveredNotifications();
+    const mine = ((d && d.notifications) || []).filter((n) => n && (n.tag === 'gq-chat-' + cid || (n.data && n.data.conv === cid)));
+    if (mine.length) await pn.removeDeliveredNotifications({ notifications: mine });
+  } catch (e) {}
+}
+
 let nativeStarted = false;
 /* Raz po prvom vykreslení: skryje spúšťaciu obrazovku a zapojí natívne udalosti. */
 function nativeInit() {
@@ -24076,6 +24173,16 @@ function nativeInit() {
   }
   const ln = nativePlugin('LocalNotifications');
   if (ln) ln.createChannel({ id: 'reminders', name: t('rem.title'), importance: 3 }).catch(() => {});
+  const pn = nativePlugin('PushNotifications');
+  if (pn) {
+    pn.createChannel({ id: 'messages', name: t('push.title'), importance: 4 }).catch(() => {});
+    pn.addListener('registration', nativeOnFcmToken);
+    pn.addListener('registrationError', (e) => { nativeFcmWaiters.slice().forEach((w) => w.reject(new Error((e && e.error) || 'fcm_error'))); });
+    pn.addListener('pushNotificationActionPerformed', (a) => {
+      const d = a && a.notification && a.notification.data;
+      if (d && d.type === 'chat' && d.conv) pushOpenChat(d.conv);   // ťuknutie na upozornenie → ten chat
+    });
+  }
   nativeRefreshPerm();
 }
 
