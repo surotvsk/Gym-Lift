@@ -142,6 +142,7 @@ const STACK = [
   { n: 13, up: '0013_reminders_default_on.sql', down: '0013_down.sql',
     present: "coalesce((select column_default from information_schema.columns where table_schema = 'public' and table_name = 'push_reminders' and column_name = 'water_on'), '') = 'true'" },
   { n: 14, up: '0014_train_together.sql', down: '0014_down.sql', present: "to_regclass('public.train_sessions') is not null" },
+  { n: 16, up: '0016_push_fcm.sql', down: '0016_down.sql', present: "to_regclass('public.push_fcm_tokens') is not null" },
 ];
 function rollbackFrom(n) {
   const done = [];
@@ -155,6 +156,12 @@ function rollbackFrom(n) {
 }
 function reapply(list) {
   for (const m of list) sqlFile(path.join(MIG, 'migrations', m.up));
+  /* Novšia migrácia, ktorú STACK nepozná (napr. 0015 na lokálnom stacku z inej vetvy), sa nevracia,
+     jej objekty zostanú – vráti sa len číslo verzie, ktoré prepísalo opätovné spustenie starších. */
+  const before = Number(list.versionBefore);
+  if (before && Number(sqlVal('select public.community_social_version()')) < before) {
+    sql(`create or replace function public.community_social_version() returns integer language sql immutable as $$ select ${before} $$;`);
+  }
   sql(`notify pgrst, 'reload schema';`);
 }
 
