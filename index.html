@@ -32,7 +32,7 @@
     }, 4000);
   </script>
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
-  <link rel="stylesheet" href="style.css?v=85">
+  <link rel="stylesheet" href="style.css?v=89">
 </head>
 <body data-tab="dnes">
 
@@ -413,7 +413,16 @@
 
     <!-- ============ COMMUNITY (karta v spodnom paneli) ============ -->
     <section class="screen screen-komunita" id="screen-komunita" hidden>
-      <div class="hd chd"><h2 class="screen-title" data-i18n="community.title">Community</h2><button type="button" class="hd-icon" id="btn-csearch" data-community-view="search" data-i18n-aria="community2.navSearch" aria-label="Hľadať"><svg class="kico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20.5 20.5-4.5-4.5"/></svg></button></div>
+      <!-- v83: Community = feed hneď pod kompaktnou (prilepenou) hlavičkou; Nový príspevok, hľadanie a ⋯ (Priatelia,
+           Top 20, môj profil, moje príspevky, moderovanie). Skratka na Správy tu nie je – Správy majú vlastnú kartu. -->
+      <div class="hd chd" id="community-head"><h2 class="screen-title" data-i18n="community.title">Community</h2>
+        <div class="chd-actions">
+          <button type="button" class="hd-icon" id="btn-csearch" data-community-view="search" data-i18n-aria="community2.navSearch" aria-label="Hľadať"><svg class="kico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20.5 20.5-4.5-4.5"/></svg></button>
+          <button type="button" class="hd-icon chd-more" id="btn-cmore" aria-haspopup="true" aria-expanded="false" aria-controls="community-menu" data-i18n-aria="community2.menuAria" aria-label="Ďalšie možnosti" hidden><svg class="kico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1.3"/><circle cx="12" cy="12" r="1.3"/><circle cx="19" cy="12" r="1.3"/></svg><span class="chd-dot" id="cmore-dot" hidden></span></button>
+          <button type="button" class="chd-new" id="btn-cnew" hidden><svg class="kico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg><span data-i18n="community.newPost">Nový príspevok</span></button>
+        </div>
+        <div class="pf-menu cmenu" id="community-menu" hidden></div>
+      </div>
       <div class="community-screen" id="community-body"></div>
     </section>
 
@@ -447,17 +456,39 @@
 
 
     <!-- ============ TY (profil, cieľ, nastavenia) ============ -->
+    <!-- v80: Ty = môj profil (usporiadanie ako na Instagrame, vzhľad Bento): hlavička, akcie, moje príspevky pod ňou.
+         Súkromná história tréningov je len pre majiteľa a nikdy nie je príspevkom. -->
     <section class="screen" id="screen-ty" hidden>
-      <div class="hd"><h2 class="screen-title" data-i18n="tab.ty">Ty</h2></div>
-      <div class="bento-grid">
-        <div class="bt bt-lav w4 h2 ty-card" id="ty-card">
-          <div class="ty-top"><span class="ty-av" id="ty-av" aria-hidden="true">G</span><div class="ty-who"><b id="ty-name"></b><span class="bt-line" id="ty-handle"></span></div></div>
-          <p class="bt-line bt-bottom motivation-text" id="motivation-text"></p>
+      <div class="ty-bar">
+        <h2 class="screen-title ty-title" id="ty-title" data-i18n="tab.ty">Ty</h2>
+        <div class="ty-bar-actions">
+          <button type="button" class="ty-icon" id="ty-compose" data-go="compose" data-i18n-aria="community.newPost" aria-label="Nový príspevok" hidden><svg class="kico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><path d="M12 8v8M8 12h8"/></svg></button>
+          <button type="button" class="ty-icon" id="ty-more" aria-haspopup="true" aria-expanded="false" aria-controls="ty-menu" data-i18n-aria="community2.menuAria" aria-label="Ďalšie možnosti" hidden><svg class="kico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1.3"/><circle cx="12" cy="12" r="1.3"/><circle cx="19" cy="12" r="1.3"/></svg></button>
+          <button type="button" class="ty-icon" id="ty-settings" data-go="settings" data-i18n-aria="settings.title" aria-label="Nastavenia"><svg class="kico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2.5v3M12 18.5v3M21.5 12h-3M5.5 12h-3M18.7 5.3l-2.1 2.1M7.4 16.6l-2.1 2.1M18.7 18.7l-2.1-2.1M7.4 7.4 5.3 5.3"/></svg></button>
         </div>
-        <button type="button" class="bt w2" data-go="profile" id="ty-profile"><svg class="kico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg><span class="bt-line bt-bottom" data-i18n="bento.communityProfile">Community profil</span></button>
-        <button type="button" class="bt bt-lime w2" data-go="goal" id="ty-goal"><svg class="kico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r=".8"/></svg><span class="bt-line bt-bottom" id="ty-goal-line"></span></button>
-        <button type="button" class="bt bt-dark w4" data-go="settings" id="ty-settings"><svg class="kico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2.5v3M12 18.5v3M21.5 12h-3M5.5 12h-3M18.7 5.3l-2.1 2.1M7.4 16.6l-2.1 2.1M18.7 18.7l-2.1-2.1M7.4 7.4 5.3 5.3"/></svg><span class="bt-line bt-bottom" data-i18n="bento.settingsLine">Nastavenia · jazyk, jednotky, zvuk, záloha</span></button>
       </div>
+      <div class="pf-menu ty-menu" id="ty-menu" hidden></div>
+      <div class="ty-head" id="ty-card">
+        <div class="ty-top">
+          <span class="ty-av" id="ty-av" aria-hidden="true">G</span>
+          <div class="ty-stats" id="ty-stats"></div>
+        </div>
+        <div class="ty-id"><b id="ty-name"></b><span class="ty-handle" id="ty-handle"></span></div>
+        <p class="ty-bio motivation-text" id="motivation-text"></p>
+        <div class="ty-pills">
+          <button type="button" class="ty-pill ty-pill-lav" id="ty-level" data-go="motivation"><svg class="kico" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 3 5 13.5h6L10 21l8-10.5h-6L13 3Z"/></svg><span id="ty-level-line"></span></button>
+          <button type="button" class="ty-pill ty-pill-lime" id="ty-goal" data-go="goal"><svg class="kico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1"/></svg><span id="ty-goal-line"></span></button>
+          <button type="button" class="ty-pill ty-pill-sky" id="ty-photos" data-go="photos"><svg class="kico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7.5h3.2L9 5h6l1.8 2.5H20a1.5 1.5 0 0 1 1.5 1.5v9.5A1.5 1.5 0 0 1 20 20H4a1.5 1.5 0 0 1-1.5-1.5V9A1.5 1.5 0 0 1 4 7.5Z"/><circle cx="12" cy="13.5" r="3.6"/></svg><span data-i18n="photos.subtab">Fotky progresu</span></button>
+        </div>
+        <div class="ty-actions">
+          <button type="button" class="btn btn-secondary btn-sm" id="ty-profile"></button>
+          <button type="button" class="btn btn-secondary btn-sm" id="ty-friends" hidden></button>
+        </div>
+      </div>
+      <div class="ty-filters" id="ty-seg" role="tablist" data-i18n-aria="ty.contentAria" aria-label="Obsah"></div>
+      <p class="ty-private" id="ty-private" hidden></p>
+      <div class="ty-posts" id="ty-posts"></div>
+      <div class="ty-sentinel" id="ty-sentinel" aria-hidden="true"></div>
     </section>
 
   </main>
@@ -596,132 +627,145 @@
 
   <!-- ============ MODAL: nastavenia ============ -->
   <div class="modal-backdrop" id="modal-settings" hidden>
-    <div class="modal">
+    <div class="modal settings-sheet">
       <h3 data-i18n="settings.title">Nastavenia</h3>
 
-      <div class="setting-block">
-        <span class="card-title" data-i18n="settings.language">Jazyk</span>
-        <span class="card-sub" id="lang-setting-value">Slovenčina</span>
-        <button type="button" class="btn btn-secondary btn-block" id="btn-change-lang" data-i18n="settings.changeLanguage">Zmeniť jazyk</button>
-      </div>
-
-      <!-- Vzhľad: Bento svetlý / tmavý / podľa telefónu (voľba tohto zariadenia) -->
-      <div class="setting-block" id="theme-setting">
-        <span class="card-title" data-i18n="theme.title">Vzhľad</span>
-        <span class="card-sub" data-i18n="theme.hint">Svetlý alebo tmavý režim. Platí na tomto zariadení, tvoje dáta sa nemenia.</span>
-        <div class="goal-chips theme-chips" id="theme-chips" role="radiogroup" data-i18n-aria="theme.title">
-          <button type="button" class="goal-chip theme-chip" role="radio" data-theme-choice="light" data-i18n="theme.light">Svetlý</button>
-          <button type="button" class="goal-chip theme-chip" role="radio" data-theme-choice="dark" data-i18n="theme.dark">Tmavý</button>
-          <button type="button" class="goal-chip theme-chip" role="radio" data-theme-choice="auto" data-i18n="theme.auto">Podľa telefónu</button>
+      <!-- v80: nastavenia v skupinách; zriedkavé dátové nástroje sú v „Ďalšie možnosti“ (nič neodstránené) -->
+      <section class="set-group" aria-labelledby="set-general-t">
+        <h4 class="set-label" id="set-general-t" data-i18n="set.general">Všeobecné</h4>
+        <div class="setting-block">
+          <span class="card-title" data-i18n="settings.language">Jazyk</span>
+          <span class="card-sub" id="lang-setting-value">Slovenčina</span>
+          <button type="button" class="btn btn-secondary btn-block" id="btn-change-lang" data-i18n="settings.changeLanguage">Zmeniť jazyk</button>
         </div>
-      </div>
+        <!-- Vzhľad: Bento svetlý / tmavý / podľa telefónu (voľba tohto zariadenia) -->
+        <div class="setting-block" id="theme-setting">
+          <span class="card-title" data-i18n="theme.title">Vzhľad</span>
+          <span class="card-sub" data-i18n="theme.hint">Svetlý alebo tmavý režim. Platí na tomto zariadení, tvoje dáta sa nemenia.</span>
+          <div class="goal-chips theme-chips" id="theme-chips" role="radiogroup" data-i18n-aria="theme.title">
+            <button type="button" class="goal-chip theme-chip" role="radio" data-theme-choice="light" data-i18n="theme.light">Svetlý</button>
+            <button type="button" class="goal-chip theme-chip" role="radio" data-theme-choice="dark" data-i18n="theme.dark">Tmavý</button>
+            <button type="button" class="goal-chip theme-chip" role="radio" data-theme-choice="auto" data-i18n="theme.auto">Podľa telefónu</button>
+          </div>
+        </div>
+        <div class="setting-block set-goal">
+          <div class="goal-head">
+            <span class="card-title" data-i18n="settings.goalLabel">Týždenný cieľ tréningov</span>
+            <span class="card-value" id="settings-goal-value">3</span>
+          </div>
+          <p class="card-sub" data-i18n="settings.goalHint">Vyber si 1 až 7 tréningov týždenne.</p>
+          <div class="goal-chips" id="settings-goal-chips"></div>
+          <p class="card-note goal-error" id="settings-goal-error" hidden></p>
+        </div>
+      </section>
+
+      <section class="set-group" aria-labelledby="set-timer-t">
+        <h4 class="set-label" id="set-timer-t" data-i18n="set.timer">Časovač oddychu</h4>
+        <div class="setting-row">
+          <div class="setting-main">
+            <span class="card-title" data-i18n="settings.restSound">Zvuk po skončení pauzy</span>
+            <span class="card-sub" data-i18n="settings.restSoundHint">Prehrať krátky gong, keď časovač oddychu dosiahne nulu.</span>
+          </div>
+          <div class="setting-control">
+            <span class="setting-state" id="rest-sound-state">Vypnuté</span>
+            <button type="button" class="switch" id="btn-rest-sound" role="switch" aria-checked="false"
+                    data-i18n-title="settings.restSound" data-i18n-aria="settings.restSound">
+              <span class="switch-knob" aria-hidden="true"></span>
+            </button>
+          </div>
+        </div>
+        <div class="set-sub" id="rest-sound-extra">
+          <div class="sound-length" id="sound-length" hidden>
+            <span class="sound-length-label" data-i18n="settings.restSoundLength">Dĺžka zvuku po skončení pauzy</span>
+            <div class="sound-length-chips" id="sound-length-chips" role="group" data-i18n-aria="settings.restSoundLength">
+              <button type="button" class="len-chip" data-len="short" aria-pressed="false" data-i18n="settings.lenShort">Krátky</button>
+              <button type="button" class="len-chip" data-len="standard" aria-pressed="true" data-i18n="settings.lenStandard">Štandardný</button>
+              <button type="button" class="len-chip" data-len="long" aria-pressed="false" data-i18n="settings.lenLong">Dlhý</button>
+            </div>
+          </div>
+          <button class="btn btn-secondary btn-block" id="btn-test-sound" data-i18n="settings.testSound">Otestovať zvuk</button>
+          <p class="card-note test-sound-hint" id="test-sound-hint" hidden data-i18n="settings.testSoundDisabledHint">Ak chceš zvuk otestovať, zapni zvuk po skončení pauzy.</p>
+          <p class="card-note test-sound-error" id="test-sound-error" hidden></p>
+        </div>
+      </section>
 
       <!-- Health Connect: len v Android appke (tep z hodiniek pri tréningu, tréningy do Health Connect) -->
-      <div class="setting-block" id="health-setting" hidden>
-        <span class="card-title" data-i18n="health.title">Health Connect</span>
-        <span class="card-sub" data-i18n="health.note">Pri dokončenom tréningu ukáže tep z hodiniek a uloží tréning do Health Connect. Tep zostáva súkromný a nikdy sa nezdieľa v Community.</span>
-        <label class="community-check" for="health-switch"><input type="checkbox" id="health-switch"><span data-i18n="health.switch">Prepojiť s Health Connect</span></label>
-        <p class="card-note" id="health-status" role="status" hidden></p>
-      </div>
-
-      <div class="setting-block">
-        <span class="card-title" data-i18n="community.title">Community</span>
-        <span class="card-sub" data-i18n="community.settingsHint">Voliteľná online komunita. Predvolene vypnutá a nič neposiela, kým ju nezapneš.</span>
-        <button type="button" class="btn btn-secondary btn-block" id="btn-community-settings" data-i18n="community.open">Community</button>
-      </div>
-
-      <div class="goal-head">
-        <span class="card-title" data-i18n="settings.goalLabel">Týždenný cieľ tréningov</span>
-        <span class="card-value" id="settings-goal-value">3</span>
-      </div>
-      <p class="card-sub" data-i18n="settings.goalHint">Vyber si 1 až 7 tréningov týždenne.</p>
-      <div class="goal-chips" id="settings-goal-chips"></div>
-      <p class="card-note goal-error" id="settings-goal-error" hidden></p>
-
-      <div class="setting-row">
-        <div class="setting-main">
-          <span class="card-title" data-i18n="settings.restSound">Zvuk po skončení pauzy</span>
-          <span class="card-sub" data-i18n="settings.restSoundHint">Prehrať krátky gong, keď časovač oddychu dosiahne nulu.</span>
+      <section class="set-group" id="health-setting" aria-labelledby="set-health-t" hidden>
+        <h4 class="set-label" id="set-health-t" data-i18n="health.title">Health Connect</h4>
+        <div class="setting-block">
+          <span class="card-sub" data-i18n="health.note">Pri dokončenom tréningu ukáže tep z hodiniek a uloží tréning do Health Connect. Tep zostáva súkromný a nikdy sa nezdieľa v Community.</span>
+          <label class="community-check" for="health-switch"><input type="checkbox" id="health-switch"><span data-i18n="health.switch">Prepojiť s Health Connect</span></label>
+          <p class="card-note" id="health-status" role="status" hidden></p>
         </div>
-        <div class="setting-control">
-          <span class="setting-state" id="rest-sound-state">Vypnuté</span>
-          <button type="button" class="switch" id="btn-rest-sound" role="switch" aria-checked="false"
-                  data-i18n-title="settings.restSound" data-i18n-aria="settings.restSound">
-            <span class="switch-knob" aria-hidden="true"></span>
-          </button>
-        </div>
-      </div>
-      <button class="btn btn-secondary btn-block" id="btn-test-sound" data-i18n="settings.testSound">Otestovať zvuk</button>
-      <p class="card-note test-sound-hint" id="test-sound-hint" hidden data-i18n="settings.testSoundDisabledHint">Ak chceš zvuk otestovať, zapni zvuk po skončení pauzy.</p>
-      <p class="card-note test-sound-error" id="test-sound-error" hidden></p>
+      </section>
 
-      <div class="sound-length" id="sound-length" hidden>
-        <span class="sound-length-label" data-i18n="settings.restSoundLength">Dĺžka zvuku po skončení pauzy</span>
-        <div class="sound-length-chips" id="sound-length-chips" role="group" data-i18n-aria="settings.restSoundLength">
-          <button type="button" class="len-chip" data-len="short" aria-pressed="false" data-i18n="settings.lenShort">Krátky</button>
-          <button type="button" class="len-chip" data-len="standard" aria-pressed="true" data-i18n="settings.lenStandard">Štandardný</button>
-          <button type="button" class="len-chip" data-len="long" aria-pressed="false" data-i18n="settings.lenLong">Dlhý</button>
+      <section class="set-group" aria-labelledby="set-backup-t">
+        <h4 class="set-label" id="set-backup-t" data-i18n="set.backup">Záloha a synchronizácia</h4>
+        <!-- Účet a synchronizácia: lokálne uloženie je vždy oddelené od synchronizácie -->
+        <div class="setting-row">
+          <div class="setting-main">
+            <span class="card-title" data-i18n="sync.title">Synchronizácia účtu</span>
+            <span class="card-sub" id="sync-account-line"></span>
+          </div>
+          <div class="setting-control">
+            <span class="setting-state" id="cloud-state">Vypnuté</span>
+            <button type="button" class="switch" id="btn-cloud-backup" role="switch" aria-checked="false"
+                    data-i18n-title="sync.toggle" data-i18n-aria="sync.toggle">
+              <span class="switch-knob" aria-hidden="true"></span>
+            </button>
+          </div>
         </div>
-      </div>
+        <p class="card-note" id="sync-local-line"></p>
+        <p class="card-note" id="sync-cloud-line" role="status"></p>
+        <p class="card-note" id="cloud-status" role="status" hidden></p>
+        <p class="card-note" data-i18n="sync.privacyNote">Synchronizácia je súkromná — dáta vidíš len ty vo svojom účte.</p>
+        <div class="modal-actions">
+          <button class="btn btn-secondary" id="btn-cloud-backup-now" data-i18n="sync.now">Synchronizovať teraz</button>
+          <button class="btn btn-primary" id="btn-sync-resolve" data-i18n="sync.resolve" hidden>Vyriešiť konflikt…</button>
+          <button class="btn btn-primary" id="btn-sync-link" data-i18n="sync.linkOpen" hidden>Dáta zariadenia…</button>
+        </div>
+        <div class="setting-row" id="auto-backup-row">
+          <div class="setting-main">
+            <span class="card-title" data-i18n="settings.autoBackup">Automatické zálohovanie</span>
+            <span class="card-sub" data-i18n="settings.autoBackupHint">Je vždy zapnuté, keď toto zariadenie nesynchronizuje údaje s účtom.</span>
+          </div>
+          <div class="setting-control">
+            <span class="setting-state" id="auto-backup-state" role="status">Zapnuté</span>
+          </div>
+        </div>
+        <p class="card-note" id="auto-backup-last"></p>
+        <button class="btn btn-secondary btn-block" id="btn-backup-now" data-i18n="backup.saveNow">Uložiť zálohu teraz</button>
+      </section>
 
-      <div class="setting-row">
-        <div class="setting-main">
-          <span class="card-title" data-i18n="settings.autoBackup">Automatické zálohovanie</span>
-          <span class="card-sub" data-i18n="settings.autoBackupHint">Je vždy zapnuté, keď toto zariadenie nesynchronizuje údaje s účtom.</span>
+      <section class="set-group" aria-labelledby="set-comm-t">
+        <h4 class="set-label" id="set-comm-t" data-i18n="community.title">Community</h4>
+        <div class="setting-block">
+                    <span class="card-sub" data-i18n="community.settingsHint">Voliteľná online komunita. Predvolene vypnutá a nič neposiela, kým ju nezapneš.</span>
+          <button type="button" class="btn btn-secondary btn-block" id="btn-community-settings" data-i18n="community.open">Community</button>
         </div>
-        <div class="setting-control">
-          <span class="setting-state" id="auto-backup-state" role="status">Zapnuté</span>
-        </div>
-      </div>
-      <p class="card-note" id="auto-backup-last"></p>
-      <button class="btn btn-secondary btn-block" id="btn-backup-now" data-i18n="backup.saveNow">Uložiť zálohu teraz</button>
+      </section>
 
-      <!-- Účet a synchronizácia: lokálne uloženie je vždy oddelené od synchronizácie -->
-      <div class="setting-row">
-        <div class="setting-main">
-          <span class="card-title" data-i18n="sync.title">Synchronizácia účtu</span>
-          <span class="card-sub" id="sync-account-line"></span>
+      <details class="set-group set-more" id="settings-more">
+        <summary class="set-more-sum"><span class="set-label" data-i18n="set.more">Ďalšie možnosti</span><span class="card-sub" data-i18n="set.moreHint">Export, import, obnova, ukážkové dáta, reset</span></summary>
+        <div class="modal-actions">
+          <button class="btn btn-secondary" id="btn-export" data-i18n="settings.export">Exportovať dáta</button>
+          <button class="btn btn-secondary" id="btn-import" data-i18n="settings.import">Importovať dáta</button>
         </div>
-        <div class="setting-control">
-          <span class="setting-state" id="cloud-state">Vypnuté</span>
-          <button type="button" class="switch" id="btn-cloud-backup" role="switch" aria-checked="false"
-                  data-i18n-title="sync.toggle" data-i18n-aria="sync.toggle">
-            <span class="switch-knob" aria-hidden="true"></span>
-          </button>
+        <div class="modal-actions">
+          <button class="btn btn-secondary" id="btn-cloud-restore" data-i18n="sync.loadOpen">Načítať z účtu…</button>
+          <button class="btn btn-secondary" id="btn-sync-recovery" data-i18n="sync.recoveryOpen">Kópie na obnovu…</button>
         </div>
-      </div>
-      <p class="card-note" id="sync-local-line"></p>
-      <p class="card-note" id="sync-cloud-line" role="status"></p>
-      <p class="card-note" id="cloud-status" role="status" hidden></p>
-      <p class="card-note" data-i18n="sync.privacyNote">Synchronizácia je súkromná — dáta vidíš len ty vo svojom účte.</p>
-      <div class="modal-actions">
-        <button class="btn btn-secondary" id="btn-cloud-backup-now" data-i18n="sync.now">Synchronizovať teraz</button>
-        <button class="btn btn-primary" id="btn-sync-resolve" data-i18n="sync.resolve" hidden>Vyriešiť konflikt…</button>
-        <button class="btn btn-primary" id="btn-sync-link" data-i18n="sync.linkOpen" hidden>Dáta zariadenia…</button>
-      </div>
-      <div class="modal-actions">
-        <button class="btn btn-secondary" id="btn-cloud-restore" data-i18n="sync.loadOpen">Načítať z účtu…</button>
-        <button class="btn btn-secondary" id="btn-sync-recovery" data-i18n="sync.recoveryOpen">Kópie na obnovu…</button>
-      </div>
-      <div class="modal-actions">
-        <button class="btn btn-secondary" id="btn-cloud-delete" data-i18n="cloud.delete">Zmazať cloudovú zálohu</button>
-      </div>
-
-      <div class="modal-actions">
-        <button class="btn btn-secondary" id="btn-export" data-i18n="settings.export">Exportovať dáta</button>
-        <button class="btn btn-secondary" id="btn-import" data-i18n="settings.import">Importovať dáta</button>
-      </div>
-      <div class="modal-actions">
-        <button class="btn btn-secondary" id="btn-load-demo" data-i18n="settings.loadDemo">Načítať ukážkové dáta</button>
-        <button class="btn btn-secondary" id="btn-remove-demo" data-i18n="settings.removeDemo" hidden>Odstrániť ukážkové dáta</button>
-      </div>
-      <div class="modal-actions">
-        <button class="btn btn-secondary" id="btn-reset-data" data-i18n="settings.reset">Resetovať dáta</button>
-        <button class="btn btn-secondary" id="btn-settings-close" data-i18n="common.close">Zavrieť</button>
-      </div>
-      <div class="modal-actions">
-        <button class="btn btn-primary" id="btn-settings-save" data-i18n="settings.save">Uložiť</button>
-      </div>
+        <div class="modal-actions">
+          <button class="btn btn-secondary" id="btn-cloud-delete" data-i18n="cloud.delete">Zmazať cloudovú zálohu</button>
+        </div>
+        <div class="modal-actions">
+          <button class="btn btn-secondary" id="btn-load-demo" data-i18n="settings.loadDemo">Načítať ukážkové dáta</button>
+          <button class="btn btn-secondary" id="btn-remove-demo" data-i18n="settings.removeDemo" hidden>Odstrániť ukážkové dáta</button>
+        </div>
+        <div class="modal-actions">
+          <button class="btn btn-secondary" id="btn-reset-data" data-i18n="settings.reset">Resetovať dáta</button>
+        </div>
+      </details>
 
       <!-- Aktualizácie aplikácie: ručná kontrola a inštalácia (ten istý postup ako lišta "Aktualizovať") -->
       <div class="setting-block" id="app-update-block" hidden>
@@ -731,10 +775,12 @@
         <button type="button" class="btn btn-secondary btn-block" id="btn-check-update" data-i18n="update.check">Skontrolovať aktualizácie</button>
         <button type="button" class="btn btn-primary btn-block" id="btn-settings-update" data-i18n="update.now" hidden>Aktualizovať</button>
       </div>
-
       <div class="setting-block about-app">
         <span class="card-title" data-i18n="about.title">O aplikácii</span>
         <span class="card-sub" data-i18n="about.credits">Aplikáciu vytvorili Martin Šuriak a Vera Magdy Fakhry.</span>
+      </div>
+      <div class="modal-actions set-foot">
+        <button class="btn btn-primary btn-block" id="btn-settings-close" data-i18n="common.close">Zavrieť</button>
       </div>
       <input type="file" id="file-import" accept="application/json,.json" hidden>
     </div>
@@ -919,6 +965,19 @@
     </div>
   </div>
 
+  <!-- ============ MODAL: ospravedlnenie týždňa (Bento list) ============ -->
+  <div class="modal-backdrop" id="modal-excuse" hidden>
+    <div class="modal modal-form modal-excuse" role="dialog" aria-modal="true" aria-labelledby="excuse-title">
+      <h3 id="excuse-title" data-i18n="bento.busyWeek">Rušný týždeň?</h3>
+      <p class="card-note" data-i18n="excuse.intro">Ospravedlnený týždeň udrží sériu. Nepripočíta sa do nej a tréningy, ktoré spravíš, sa rátajú ďalej.</p>
+      <div class="excuse-weeks" id="excuse-weeks"></div>
+      <p class="card-note excuse-past" id="excuse-past" hidden></p>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-primary" id="btn-excuse-done" data-i18n="common.close">Zavrieť</button>
+      </div>
+    </div>
+  </div>
+
   <!-- ============ MODAL: domáci / vonkajší tréning ============ -->
   <div class="modal-backdrop" id="modal-location" hidden>
     <div class="modal">
@@ -1048,8 +1107,8 @@
     </div>
   </div>
 
-  <script src="community-config.js?v=85"></script>
-  <script src="vendor/supabase-js.js?v=85"></script>
-  <script src="script.js?v=85"></script>
+  <script src="community-config.js?v=89"></script>
+  <script src="vendor/supabase-js.js?v=89"></script>
+  <script src="script.js?v=89"></script>
 </body>
 </html>

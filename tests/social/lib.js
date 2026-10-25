@@ -142,6 +142,8 @@ const STACK = [
   { n: 13, up: '0013_reminders_default_on.sql', down: '0013_down.sql',
     present: "coalesce((select column_default from information_schema.columns where table_schema = 'public' and table_name = 'push_reminders' and column_name = 'water_on'), '') = 'true'" },
   { n: 14, up: '0014_train_together.sql', down: '0014_down.sql', present: "to_regclass('public.train_sessions') is not null" },
+  { n: 15, up: '0015_chat_seen.sql', down: '0015_down.sql',
+    present: "exists (select 1 from pg_policies where schemaname = 'public' and tablename = 'chat_reads' and policyname = 'chat_reads_select_participants')" },
   { n: 16, up: '0016_push_fcm.sql', down: '0016_down.sql', present: "to_regclass('public.push_fcm_tokens') is not null" },
 ];
 let lastRollback = null;   // posledný rollbackFrom: čo sa vrátilo a aká bola verzia predtým

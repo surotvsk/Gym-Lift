@@ -146,7 +146,7 @@ async function member(tag, name) {
     /* appka po zapnutí ešte nastaví predvolené pripomienky a až potom prekreslí – čaká sa na to */
     const offerGone = await waitFor(() => pB.eval(`!document.querySelector('[data-community-action="push-on"]')`), 15000, 'offer gone').then(() => true, () => false);
     check('the offer disappears once on', offerGone);
-    await view(pB, 'profile');
+    await view(pB, 'editprofile');
     check('Profile: switch is on', await pB.eval(`!!document.getElementById('community-push') && document.getElementById('community-push').checked`));
     await shot(pB, 'profile-on-en', '#community-push-card');
 
@@ -163,7 +163,7 @@ async function member(tag, name) {
       await pB.reload(); await pB.eval(HELPERS);
       await pB.eval(`(switchTab('komunita'), true)`);
       await waitFor(() => pB.eval(`!!communityProfile`), 30000, 'profile after reload');
-      await view(pB, 'profile');
+      await view(pB, 'editprofile');
       await waitFor(() => pB.eval(`!!document.getElementById('rem-meals-on')`), 20000, 'reminders after restart');
       check('switching meals off stays off after a restart (defaults never re-applied)', sqlVal(`select meals_on from public.push_reminders where user_id = ${lit(B.id)}`) === 'f'
         && await pB.eval(`!document.getElementById('rem-meals-on').checked`));
@@ -184,7 +184,7 @@ async function member(tag, name) {
       const row = sqlVal(`select tz || '|' || water_every || '|' || to_char(water_from, 'HH24:MI') || '|' || to_char(water_to, 'HH24:MI') || '|' || meals_on || '|' || array_to_string(meal_times, ',') || '|' || workout_on || '|' || array_to_string(array(select x from unnest(workout_days) x order by x), ',') || '|' || to_char(workout_time, 'HH24:MI') from public.push_reminders where user_id = ${lit(B.id)}`);
       check('saved on the server with the phone time zone', row === (await pB.eval('Intl.DateTimeFormat().resolvedOptions().timeZone')) + '|60|07:30|20:00|true|08:15:00,13:00:00|true|2,3,5|18:30', row);
       check('confirmation shown', (await bodyText(pB)).includes(await pB.eval(`t('rem.saved')`)));
-      await view(pB, 'feed'); await view(pB, 'profile');
+      await view(pB, 'feed'); await view(pB, 'editprofile');
       await waitFor(() => pB.eval(`!!document.getElementById('rem-water-every')`), 20000, 'reminders reopened');
       check('saved values come back after reopening', await pB.eval(`document.getElementById('rem-water-every').value === '60' && document.getElementById('rem-meal-0').value === '08:15'
         && document.getElementById('rem-workout-time').value === '18:30' && document.querySelector('.crem-day[data-day="2"]').classList.contains('active') && !document.querySelector('.crem-day[data-day="1"]').classList.contains('active')`));
@@ -192,7 +192,7 @@ async function member(tag, name) {
       await click(pB, '[data-community-action="rem-save"]');
       check('"from" after "to" is refused with a clear message', (await bodyText(pB)).includes(await pB.eval(`t('rem.errInvalid')`))
         && sqlVal(`select to_char(water_from, 'HH24:MI') from public.push_reminders where user_id = ${lit(B.id)}`) === '07:30');
-      await view(pB, 'profile');
+      await view(pB, 'editprofile');
       await shot(pB, 'reminders-en', '#community-reminders');
       for (const lang of ['sk', 'es', 'pt-BR', 'fr', 'ar']) {
         await pB.eval(`(setLang(${J(lang)}), renderCommunity(), true)`);
@@ -251,7 +251,7 @@ async function member(tag, name) {
     check('Back goes to the chat list', (await pB.eval('communityView')) === 'chats');
 
     section('languages');
-    await view(pB, 'profile');
+    await view(pB, 'editprofile');
     for (const lang of ['sk', 'en', 'es', 'pt-BR', 'fr', 'ar']) {
       await pB.eval(`(setLang(${J(lang)}), renderCommunity(), true)`);
       await rendered(pB);
@@ -261,7 +261,7 @@ async function member(tag, name) {
     await pB.eval(`(setLang('en'), true)`);
 
     section('turn off, on again, sign out');
-    await view(pB, 'profile');
+    await view(pB, 'editprofile');
     await click(pB, '#community-push');
     await waitFor(() => subsFor(B) === 0, 15000, 'unsubscribed');
     check('switch off: removed from the server', subsFor(B) === 0);
@@ -278,7 +278,7 @@ async function member(tag, name) {
     section('blocked, unsupported, iPhone without Home Screen');
     const pC = await browser('C', { dev: devC, permission: 'denied' });
     await signIn(pC, C);
-    await view(pC, 'profile');
+    await view(pC, 'editprofile');
     check('blocked: Profile explains how to allow, no switch', await pC.eval(`!document.getElementById('community-push') && document.getElementById('community-push-card').innerText.includes(t('push.denied'))`));
     await view(pC, 'chats');
     check('blocked: no offer in Chats', await pC.eval(`!document.querySelector('[data-community-action="push-on"]')`));
@@ -286,12 +286,12 @@ async function member(tag, name) {
     await signIn(pD, C);
     await view(pD, 'chats');
     check('iPhone in Safari: Chats explains Add to Home Screen', (await bodyText(pD)).includes(await pD.eval(`t('push.homeScreen')`)));
-    await view(pD, 'profile');
+    await view(pD, 'editprofile');
     await shot(pD, 'profile-iphone-safari-en', '#community-push-card');
     check('iPhone in Safari: Profile explains Add to Home Screen, no switch', await pD.eval(`!document.getElementById('community-push') && document.getElementById('community-push-card').innerText.includes(t('push.homeScreen'))`));
     const pE = await browser('E', { dev: devC, mode: 'none' });
     await signIn(pE, C);
-    await view(pE, 'profile');
+    await view(pE, 'editprofile');
     check('desktop browser without Push: "not supported" note', await pE.eval(`document.getElementById('community-push-card').innerText.includes(t('push.unsupported'))`));
 
     section('fallback when 0010 is rolled back');
@@ -303,7 +303,7 @@ async function member(tag, name) {
     await pA.eval(HELPERS);
     await pA.eval(`(switchTab('komunita'), true)`);
     await waitFor(() => pA.eval(`!!communityProfile && communityVersion === 3`), 30000, 'version 3');
-    await view(pA, 'profile');
+    await view(pA, 'editprofile');
     check('no notification card without 0010', await pA.eval(`!document.getElementById('community-push-card')`));
     await view(pA, 'chats');
     check('no offer in Chats without 0010', await pA.eval(`!document.querySelector('[data-community-action="push-on"]')`));

@@ -101,7 +101,9 @@ const ENTRY = [
 ];
 const SETTINGS = ['#btn-change-lang', '#theme-chips [data-theme-choice="light"]', '#theme-chips [data-theme-choice="dark"]', '#theme-chips [data-theme-choice="auto"]',
   '#btn-community-settings', '#settings-goal-chips .goal-chip', '#btn-rest-sound', '#btn-test-sound', '#btn-backup-now',
-  '#btn-export', '#btn-import', '#btn-load-demo', '#btn-reset-data', '#btn-check-update', '#btn-settings-close', '#btn-settings-save'];
+  '#btn-export', '#btn-import', '#btn-load-demo', '#btn-reset-data', '#btn-check-update', '#btn-settings-close',
+  /* v80: zriedkavé nástroje sú v zbalenom „Ďalšie možnosti“, test zvuku len pri zapnutom zvuku */
+  '#settings-more > summary'];
 
 const REACH_JS = (sel) => `(() => {
   const el = document.querySelector(${J(sel)});
@@ -135,7 +137,10 @@ const REACH_JS = (sel) => `(() => {
   /* Zámerne odstránené na žiadosť majiteľa (2026-10-24): Ukážky dizajnov v Nastaveniach a ich okná; dlaždica
      „Trénovať s priateľom“ na Dnes (bt-train) sa presunula do Tréningu ako #btn-train-tile. */
   const REMOVED = new Set(['bt-train', 'btn-design-previews', 'modal-designs', 'design-grid', 'btn-designs-close', 'design-view', 'design-view-title', 'btn-design-view-close', 'design-view-frame']);
-  const missing = [...oldIds].filter((x) => !newIds.has(x) && !REMOVED.has(x));
+  /* Zámerne odstránené na žiadosť majiteľa (2026-10-25, upratanie Nastavení): samostatné „Uložiť“ pre týždenný
+     cieľ – cieľ sa teraz uloží hneď po ťuknutí a „Zavrieť“ ho pre istotu uloží ešte raz. */
+  const REMOVED_V80 = new Set(['btn-settings-save']);
+  const missing = [...oldIds].filter((x) => !newIds.has(x) && !REMOVED.has(x) && !REMOVED_V80.has(x));
   check('all ' + oldIds.size + ' element ids of the previous release are present, except the removed Design previews (' + newIds.size + ' now)', missing.length === 0, missing);
   check('Design previews are gone from the app (no entry point, no dialog)', [...REMOVED].every((x) => !newIds.has(x)) && !/designs\.open|design-concepts\/app/.test(newHtml));
 
@@ -163,11 +168,12 @@ const REACH_JS = (sel) => `(() => {
           if (!r.ok) bad.push(name + ' (' + sel + '): ' + r.why);
         }
         await p.eval(reset);
-        await p.eval(`(openSettings(), true)`); await wait(80);
+        await p.eval(`(openSettings(), window.__snd = state.settings.restSound, state.settings.restSound = true, renderRestSoundSetting(), document.getElementById('settings-more').open = true, true)`); await wait(80);
         for (const sel of SETTINGS) {
           const r = await p.eval(REACH_JS(sel));
           if (!r.ok) bad.push('Settings ' + sel + ': ' + r.why);
         }
+        await p.eval(`(state.settings.restSound = window.__snd, renderRestSoundSetting(), document.getElementById('settings-more').open = false, true)`);
         check(w + ' px ' + mode + ': all ' + (ENTRY.length + SETTINGS.length) + ' entry points shown, ≥ 24 px, focusable and not covered', bad.length === 0, bad);
       }
     }

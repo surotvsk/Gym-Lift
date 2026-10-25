@@ -70,8 +70,8 @@ scenario('reports XP after a workout', async () => {
 });
 
 async function openBoard(p) {
-  /* Bento: Top 20 je dlaždica na hlavnej stránke Community – z iného listu sa najprv ide Späť */
-  await waitFor(() => p.eval(`(() => { const b = document.querySelector('.cnav [data-community-view="leaderboard"]'); if (b) { b.click(); return true; }
+  /* v83: Top 20 je v menu ⋯ v hlavičke Community (feed) – z iného listu sa najprv ide Späť */
+  await waitFor(() => p.eval(`(() => { const b = document.querySelector('#community-menu [data-cgo="leaderboard"]'); if (b && !document.getElementById('btn-cmore').hidden && !document.getElementById('screen-komunita').classList.contains('sheet-open')) { b.click(); return true; }
     const back = document.querySelector('#community-tabs [data-community-view="feed"], #community-body [data-community-action="back"]'); if (back) back.click(); return false; })()`), 20000, 'Top 20 tab');
   await waitFor(() => p.eval(`!!document.querySelector('#community-body .lb-table, #community-body .lb-state')`), 20000, 'board');
   await wait(300);
@@ -105,7 +105,7 @@ scenario('hidden state and the privacy switch', async () => {
   const me = await member('h-me');
   const p = await device('hidden');
   await signIn(p, me);
-  await p.eval(`(communitySetView('profile'), true)`);
+  await p.eval(`(communitySetView('editprofile'), true)`);   // v80: prepínač je v Upraviť profil
   await waitFor(() => p.eval(`!!document.getElementById('community-leaderboard')`), 15000, 'privacy switch');
   check('switch is on by default', await p.eval(`document.getElementById('community-leaderboard').checked === true`));
   await p.eval(`(() => { const c = document.getElementById('community-leaderboard'); c.checked = false; c.dispatchEvent(new Event('change', { bubbles: true })); return true; })()`);
