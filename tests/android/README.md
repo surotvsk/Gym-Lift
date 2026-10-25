@@ -28,3 +28,10 @@ The "headless" tests run the real app in headless Chrome with a fake `window.Cap
 - `emulator-smoke.js`: **not run yet** — the emulator crashes on this laptop (headless qemu
   segfaults; with a hidden window adb stays offline). Run it with a phone over USB debugging or an
   emulator started from Android Studio's Device Manager.
+
+## Device checklist (with emulator-smoke.js, from the final review)
+
+- Status bar: app theme dark on a phone in light mode (and the reverse) — icons readable? On Android 15+ `StatusBar.setBackgroundColor` has no effect (edge-to-edge); if unreadable, set the window background per theme.
+- A chat message arriving while the app is open on Today: does a system notification appear? If not, set `PushNotifications.presentationOptions` in `capacitor.config.json`.
+- Health Connect on a real phone: permission screen, heart rate after a workout with a watch, the GymQuest session visible in Health Connect, undo removes it.
+- Reminders: one fires at its time with the phone locked (inexact alarm, may be a few minutes late).
