@@ -19861,7 +19861,16 @@ function applyTheme() {
   document.documentElement.setAttribute('data-theme', t);
   const m = document.querySelector('meta[name="theme-color"]');
   if (m) m.setAttribute('content', THEME_COLORS[t]);
+  nativeThemeBars(t);
   renderThemeChips();
+}
+/* Android appka: stavová lišta má farbu pozadia appky a ikony čitateľné na nej
+   (DARK = svetlé ikony na tmavom pozadí, LIGHT = tmavé ikony na svetlom). */
+function nativeThemeBars(t) {
+  const bar = nativePlugin('StatusBar');
+  if (!bar) return;
+  bar.setStyle({ style: t === 'dark' ? 'DARK' : 'LIGHT' }).catch(() => {});
+  bar.setBackgroundColor({ color: THEME_COLORS[t] }).catch(() => {});
 }
 function setThemePref(v) {
   try {
@@ -23947,6 +23956,7 @@ function nativeInit() {
   nativeStarted = true;
   const splash = nativePlugin('SplashScreen');
   if (splash) splash.hide().catch(() => {});
+  nativeThemeBars(themeResolved());   // tému pri štarte nastavuje skript v <head>, lišta sa zladí tu
   const app = nativePlugin('App');
   if (app) app.addListener('backButton', () => { nativeBack(); });
 }
