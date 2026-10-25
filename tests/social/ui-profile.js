@@ -86,7 +86,7 @@ async function post(u, text, nPhotos, opts) {
 /* Sleduje obsah #community-body pri každej zmene: či sa niekedy ukázali dlaždice Community a čo bolo v lište. */
 const WATCH = `(() => { window.__frames = []; const b = document.getElementById('community-body');
   if (window.__mo) window.__mo.disconnect();
-  window.__mo = new MutationObserver(() => window.__frames.push({ tiles: !!b.querySelector('.cnav.cbento, .cscope, #community-feed .cpost'), bar: (b.querySelector('.csub-head .csub-title') || {}).textContent || '', skel: !!b.querySelector('.pf-skel') }));
+  window.__mo = new MutationObserver(() => window.__frames.push({ tiles: !!b.querySelector('.cnav.cbento, .cscope, #community-feed .cpost, #community-feed .cpost-skel'), bar: (b.querySelector('.csub-head .csub-title') || {}).textContent || '', skel: !!b.querySelector('.pf-skel') }));
   window.__mo.observe(b, { childList: true }); return true; })()`;
 const frames = (p) => p.eval(`window.__frames`);
 const profileShown = (p, name) => waitFor(() => p.eval(`!!document.querySelector('#community-body .cprofile:not(.pf-skel)') && (document.querySelector('#community-body .csub-head .csub-title') || {}).textContent === ${J(name)}`), 30000, 'profile ' + name);
@@ -240,7 +240,7 @@ async function clickSel(p, sel) {
     check('Back → Ben’s profile (not Cyd’s)', await pA.eval(`communityViewUser === ${J(B.id)}`));
     await pA.eval(`(document.querySelector('#community-body [data-community-action="back"]').click(), true)`);
     await wait(200);
-    check('Back → the feed, at the same scroll position, with its tiles', await pA.eval(`communityView === 'feed' && !!document.querySelector('.cnav.cbento') && Math.abs(window.scrollY - ${feedY}) <= 2`), J({ feedY, now: await pA.eval(`Math.round(window.scrollY)`) }));
+    check('Back → the feed, at the same scroll position, with its header', await pA.eval(`communityView === 'feed' && !document.getElementById('btn-cnew').hidden && Math.abs(window.scrollY - ${feedY}) <= 2`), J({ feedY, now: await pA.eval(`Math.round(window.scrollY)`) }));
 
     section('other entry points');
     await pA.eval(`(openMessagesTab(), true)`);

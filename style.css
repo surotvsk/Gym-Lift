@@ -4630,3 +4630,59 @@ html[data-theme="dark"] .ty-hist-date { color: #F4F3EF; }
 .ty-mosaic[data-n="2"] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .ty-mosaic[data-n="2"] .ty-photo { border-radius: 20px; }
 @media (min-width: 700px) { .ty-mosaic[data-n="3"] { grid-template-columns: repeat(3, minmax(0, 1fr)); } .ty-mosaic[data-n="1"] .ty-photo { aspect-ratio: 5 / 2; } .ty-mosaic[data-n="2"] .ty-photo { aspect-ratio: 4 / 3; } }
+
+/* ===== Community = feed (v83): kompaktná prilepená hlavička, príspevky v jednom stĺpci ako na X, vzhľad Bento ===== */
+#screen-komunita > .chd { position: sticky; top: 0; z-index: 6; display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  margin: -8px -16px 8px; padding: max(8px, env(safe-area-inset-top, 0px)) 16px 8px; background: var(--b-bg, var(--k-bg)); }
+#screen-komunita > .chd .screen-title { flex: 1; min-width: 0; margin: 0; }
+.chd-actions { display: flex; align-items: center; gap: 4px; }
+.chd-actions [hidden] { display: none !important; }
+.chd-more { position: relative; }
+.chd-dot { position: absolute; top: 8px; inset-inline-end: 8px; width: 9px; height: 9px; border-radius: 50%; background: var(--b-lime); box-shadow: 0 0 0 2px var(--b-bg, var(--k-bg)); }
+.chd-new { display: inline-flex; align-items: center; gap: 6px; min-height: 40px; padding: 8px 14px 8px 11px; border: 0; border-radius: 999px;
+  background: var(--b-lime); color: #121212; font: 700 14px 'Space Grotesk', system-ui, sans-serif; cursor: pointer; white-space: nowrap; }
+.chd-new .kico { width: 18px; height: 18px; }
+.chd-new:focus-visible, .chd-actions .hd-icon:focus-visible { outline: 2px solid var(--b-fg); outline-offset: 2px; }
+.cmenu { position: absolute; top: 100%; inset-inline-end: 16px; margin: 0; z-index: 7; }
+.cmenu-sub { opacity: .6; font-weight: 600; margin-inline-start: 4px; }
+#screen-komunita:not(.sheet-open) .cscope { margin: 0 0 10px; }
+/* príspevok: avatar vľavo, obsah vpravo – jeden celok (zaoblená karta Bento) */
+#community-feed .xpost, #community-body .xpost { padding: 12px 14px 8px; }
+.xp-row { display: flex; gap: 10px; align-items: flex-start; }
+.xp-row > .cpost-avatar { margin-top: 2px; }
+.xp-row > .cpost-avatar .community-avatar { width: 42px; height: 42px; }
+.xp-main { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 6px; }
+.xpost .cpost-head.xp-head { padding: 0; gap: 6px; align-items: flex-start; }
+.xpost .cpost-who { flex-direction: row; flex-wrap: wrap; align-items: baseline; column-gap: 6px; row-gap: 0; }
+.xpost .cpost-who .community-name-btn { font-weight: 700; font-size: 15px; padding: 0; }
+.xpost .cpost-meta { font-size: 13px; }
+.xpost .cpost-more { margin: -6px -6px 0 auto; width: 36px; height: 36px; }
+.xpost .cpost-text { padding: 0; font-size: 15.5px; line-height: 1.45; }
+.xpost .community-photos { border-radius: 18px; overflow-x: auto; margin-top: 2px; }
+.xpost .community-photo { max-height: 520px; object-fit: cover; }
+.xpost .cshare-card { margin: 2px 0 0; }
+.xpost .cpost-actions { padding: 2px 0 0; gap: 0; justify-content: space-between; max-width: 340px; margin-inline-start: -8px; }
+.xpost .cpost-act { min-height: 40px; padding: 6px 8px; display: inline-flex; align-items: center; gap: 6px; font-size: 13px; border-radius: 999px; }
+.xpost .cpost-act svg { width: 20px; height: 20px; }
+.xpost .cpost-act:not(:disabled):not(.community-count-static):hover { background: var(--k-card); }
+.xpost .cpost-shared { padding: 0 0 6px 52px; font-size: 12.5px; opacity: .7; }
+.xpost > :last-child { margin-bottom: 0; }
+.xpost .cpost-menu { padding: 0; }
+#community-feed.cfeed { gap: 8px; }
+/* kostra, stav, koniec zoznamu */
+.cpost-skel { display: flex; gap: 10px; padding: 14px; }
+.cskel-av { width: 42px; height: 42px; border-radius: 50%; background: var(--k-card); flex: none; }
+.cskel-lines { flex: 1; display: flex; flex-direction: column; gap: 8px; padding-top: 4px; }
+.cskel-lines i { display: block; height: 11px; border-radius: 999px; background: var(--k-card); }
+.cskel-lines i:nth-child(1) { width: 40%; } .cskel-lines i:nth-child(2) { width: 92%; } .cskel-lines i:nth-child(3) { width: 70%; }
+@media (prefers-reduced-motion: no-preference) { .cskel-av, .cskel-lines i { animation: cskel 1.2s ease-in-out infinite alternate; } }
+@keyframes cskel { from { opacity: .55; } to { opacity: 1; } }
+.cfeed-state { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 28px 16px; background: var(--b-tile); border-radius: 22px; text-align: center; }
+.cfeed-foot { display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap; padding: 14px 0 6px; font-size: 13px; opacity: .85; }
+.cfeed-end { opacity: .6; }
+.cfeed-spin { width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--k-line); border-top-color: var(--b-fg); }
+@media (prefers-reduced-motion: no-preference) { .cfeed-spin { animation: cspin .8s linear infinite; } }
+@keyframes cspin { to { transform: rotate(360deg); } }
+@media (min-width: 700px) { #screen-komunita > .chd { margin-inline: 0; padding-inline: 0; } .cmenu { inset-inline-end: 0; } }
+.chd-new { background: #D6F35A; color: #121212; }
+@media (min-width: 900px) { #screen-komunita:not(.msg-mode) { max-width: 680px; margin-inline: auto; } }

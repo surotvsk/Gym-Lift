@@ -22,7 +22,7 @@
   <title>GymQuest</title>
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
-  <link rel="stylesheet" href="style.css?v=88">
+  <link rel="stylesheet" href="style.css?v=89">
 </head>
 <body data-tab="dnes">
 
@@ -403,7 +403,16 @@
 
     <!-- ============ COMMUNITY (karta v spodnom paneli) ============ -->
     <section class="screen screen-komunita" id="screen-komunita" hidden>
-      <div class="hd chd"><h2 class="screen-title" data-i18n="community.title">Community</h2><button type="button" class="hd-icon" id="btn-csearch" data-community-view="search" data-i18n-aria="community2.navSearch" aria-label="Hľadať"><svg class="kico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20.5 20.5-4.5-4.5"/></svg></button></div>
+      <!-- v83: Community = feed hneď pod kompaktnou (prilepenou) hlavičkou; Nový príspevok, hľadanie a ⋯ (Priatelia,
+           Top 20, môj profil, moje príspevky, moderovanie). Skratka na Správy tu nie je – Správy majú vlastnú kartu. -->
+      <div class="hd chd" id="community-head"><h2 class="screen-title" data-i18n="community.title">Community</h2>
+        <div class="chd-actions">
+          <button type="button" class="hd-icon" id="btn-csearch" data-community-view="search" data-i18n-aria="community2.navSearch" aria-label="Hľadať"><svg class="kico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20.5 20.5-4.5-4.5"/></svg></button>
+          <button type="button" class="hd-icon chd-more" id="btn-cmore" aria-haspopup="true" aria-expanded="false" aria-controls="community-menu" data-i18n-aria="community2.menuAria" aria-label="Ďalšie možnosti" hidden><svg class="kico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1.3"/><circle cx="12" cy="12" r="1.3"/><circle cx="19" cy="12" r="1.3"/></svg><span class="chd-dot" id="cmore-dot" hidden></span></button>
+          <button type="button" class="chd-new" id="btn-cnew" hidden><svg class="kico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg><span data-i18n="community.newPost">Nový príspevok</span></button>
+        </div>
+        <div class="pf-menu cmenu" id="community-menu" hidden></div>
+      </div>
       <div class="community-screen" id="community-body"></div>
     </section>
 
@@ -1077,8 +1086,8 @@
     </div>
   </div>
 
-  <script src="community-config.js?v=88"></script>
-  <script src="vendor/supabase-js.js?v=88"></script>
-  <script src="script.js?v=88"></script>
+  <script src="community-config.js?v=89"></script>
+  <script src="vendor/supabase-js.js?v=89"></script>
+  <script src="script.js?v=89"></script>
 </body>
 </html>

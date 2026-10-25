@@ -143,9 +143,17 @@ in the prototype.
   sent together instead of one after another. Under your last message you see **Sent**, which turns into
   **Seen** (live) once your friend has opened the chat — only when your message is the last one, like in
   Messenger. Needs server version 8 (migration 0015); on an older server no label is shown.
-- **Community** — Top 20 (with your rank this week), New post, Messages and Friends tiles above the feed;
-  search is the magnifier at the top. Messages, chats, friends, Top 20, profiles, the composer and the
-  moderator queue open as sheets.
+- **Community** (v83) opens straight into the feed, like X/Twitter in Bento shapes and colours: a compact header
+  that stays on top while you scroll (*Community*, **New post**, search and **⋯** with Friends — and pending
+  requests —, Top 20 with your rank, your profile, My posts and Moderation for moderators), the
+  *Everyone / Following / Friends* filter, and the posts in one column. Each post is one rounded card: avatar on
+  the left, then name · time · ⋯ (your own: delete; others: block, report; moderators: remove), the full text,
+  the photos (several photos swipe, a tap opens the viewer), a shared workout or plan, and comments · shares ·
+  likes. Older posts load by themselves as you scroll (same pages and order as before, never twice, nothing above
+  is redrawn); at the end there is a loading row, *Try again* after an error and *You're all caught up*. A post,
+  a profile, the composer or the menu targets open as sheets and **Back** returns to the same place and filter.
+  There is no Messages shortcut here — Messages is its own tab. Without Community, signed out or offline the
+  screen shows the usual short Enable / sign-in / offline note with *Try again*; nothing is switched on by itself.
 - **Profiles** (v81) are organised like Instagram, in Bento colours and shapes: a compact top bar (**Back**,
   the username, **⋯**), the avatar with *posts · followers · following* (and *friends* on your own), the name,
   bio and top achievements (small chips), the actions, and the posts right below as a grid of rounded squares

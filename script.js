@@ -8667,42 +8667,48 @@ const BENTO_REF_I18N = {
 for (const lang of Object.keys(BENTO_REF_I18N)) Object.assign(I18N[lang] || (I18N[lang] = {}), BENTO_REF_I18N[lang]);
 /* v80: karta Ty (príspevky, fotky), ospravedlnenie týždňa, nastavenia */
 const V80_I18N = {
-  sk: { 'ty.all': 'Všetko', 'ty.text': 'Text', 'ty.workouts': 'Tréningy', 'ty.history': 'História', 'ty.historyPrivate': 'Len pre teba – tvoje tréningy z tohto zariadenia. Nie sú to príspevky a nikto iný ich nevidí.', 'ty.historyEmpty': 'Zatiaľ žiadny dokončený tréning.', 'ty.streak': 'týž. séria', 'ty.achievements': 'úspechy', 'ty.offLine': 'Community je vypnutá. Tvoje príspevky by sa ukázali tu – zapneš ju len ty.', 'ty.signedOutLine': 'Prihlás sa do Community a uvidíš tu svoje príspevky.', 'ty.unavailableLine': 'Príspevky tu nie sú k dispozícii. História tréningov funguje ďalej.', 'ty.offlineLine': 'Si offline – príspevky sa načítajú, keď budeš znova online.', 'ty.errorLine': 'Príspevky sa nepodarilo načítať. Skús to neskôr.', 'ty.noPosts': 'Zatiaľ nemáš žiadne príspevky.', 'ty.noneOfKind': 'Tu zatiaľ nič nie je.', 'ty.repostOf': 'Zdieľané od {name}', 'ty.onlyYou': 'vidíš len ty', 'ty.contentAria': 'Moje príspevky',
+  sk: { 'cfeed.retry': 'Skúsiť znova', 'cfeed.end': 'Toto sú všetky príspevky.', 'cfeed.error': 'Príspevky sa nepodarilo načítať.', 'cfeed.offline': 'Si offline – príspevky sa načítajú, keď budeš online.', 'cfeed.errorMore': 'Staršie príspevky sa nepodarilo načítať.', 'cfeed.offlineMore': 'Si offline.',
+    'ty.all': 'Všetko', 'ty.text': 'Text', 'ty.workouts': 'Tréningy', 'ty.history': 'História', 'ty.historyPrivate': 'Len pre teba – tvoje tréningy z tohto zariadenia. Nie sú to príspevky a nikto iný ich nevidí.', 'ty.historyEmpty': 'Zatiaľ žiadny dokončený tréning.', 'ty.streak': 'týž. séria', 'ty.achievements': 'úspechy', 'ty.offLine': 'Community je vypnutá. Tvoje príspevky by sa ukázali tu – zapneš ju len ty.', 'ty.signedOutLine': 'Prihlás sa do Community a uvidíš tu svoje príspevky.', 'ty.unavailableLine': 'Príspevky tu nie sú k dispozícii. História tréningov funguje ďalej.', 'ty.offlineLine': 'Si offline – príspevky sa načítajú, keď budeš znova online.', 'ty.errorLine': 'Príspevky sa nepodarilo načítať. Skús to neskôr.', 'ty.noPosts': 'Zatiaľ nemáš žiadne príspevky.', 'ty.noneOfKind': 'Tu zatiaľ nič nie je.', 'ty.repostOf': 'Zdieľané od {name}', 'ty.onlyYou': 'vidíš len ty', 'ty.contentAria': 'Moje príspevky',
     'pf.settings': 'Nastavenia a súkromie',
     'set.general': 'Všeobecné', 'set.timer': 'Časovač oddychu', 'set.backup': 'Záloha a synchronizácia', 'set.more': 'Ďalšie možnosti', 'set.moreHint': 'Export, import, obnova, ukážkové dáta, reset',
     'excuse.intro': 'Ospravedlnený týždeň udrží sériu. Nepripočíta sa do nej a tréningy, ktoré spravíš, sa rátajú ďalej.', 'excuse.thisWeek': 'Tento týždeň', 'excuse.nextWeek': 'Budúci týždeň',
     'excuse.goalMet': 'Cieľ je splnený – netreba ospravedlňovať.', 'excuse.kept': 'Séria je v bezpečí.', 'excuse.tileThis': 'Tento týždeň · ťukni na zmenu', 'excuse.tileNext': 'Budúci týždeň ospravedlnený ✓',
     'excuse.past': 'Predtým ospravedlnené týždne: {n}', 'ty.yourPosts': 'Tvoje príspevky', 'ty.posts': 'Príspevky', 'ty.pics': 'Fotky', 'ty.noPics': 'V príspevkoch zatiaľ nemáš žiadne fotky.',
     'ty.openPhoto': 'Zväčšiť fotku', 'ty.photoOnly': 'Fotka', 'ty.joinLine': 'Pridaj sa do Community a tu uvidíš svoje príspevky a fotky.' },
-  en: { 'ty.all': 'All', 'ty.text': 'Text', 'ty.workouts': 'Workouts', 'ty.history': 'History', 'ty.historyPrivate': 'Only you – your workouts on this device. They are not posts and nobody else sees them.', 'ty.historyEmpty': 'No finished workout yet.', 'ty.streak': 'week streak', 'ty.achievements': 'achievements', 'ty.offLine': 'Community is off. Your posts would appear here – only you can turn it on.', 'ty.signedOutLine': 'Sign in to Community to see your posts here.', 'ty.unavailableLine': 'Posts are not available here. Your workout history still works.', 'ty.offlineLine': 'You are offline – your posts load when you are back online.', 'ty.errorLine': 'Your posts could not be loaded. Try again later.', 'ty.noPosts': 'You have no posts yet.', 'ty.noneOfKind': 'Nothing here yet.', 'ty.repostOf': 'Reposted from {name}', 'ty.onlyYou': 'only you see this', 'ty.contentAria': 'My posts',
+  en: { 'cfeed.retry': 'Try again', 'cfeed.end': 'You’re all caught up.', 'cfeed.error': 'Posts could not be loaded.', 'cfeed.offline': 'You’re offline – posts load when you’re back online.', 'cfeed.errorMore': 'Older posts could not be loaded.', 'cfeed.offlineMore': 'You’re offline.',
+    'ty.all': 'All', 'ty.text': 'Text', 'ty.workouts': 'Workouts', 'ty.history': 'History', 'ty.historyPrivate': 'Only you – your workouts on this device. They are not posts and nobody else sees them.', 'ty.historyEmpty': 'No finished workout yet.', 'ty.streak': 'week streak', 'ty.achievements': 'achievements', 'ty.offLine': 'Community is off. Your posts would appear here – only you can turn it on.', 'ty.signedOutLine': 'Sign in to Community to see your posts here.', 'ty.unavailableLine': 'Posts are not available here. Your workout history still works.', 'ty.offlineLine': 'You are offline – your posts load when you are back online.', 'ty.errorLine': 'Your posts could not be loaded. Try again later.', 'ty.noPosts': 'You have no posts yet.', 'ty.noneOfKind': 'Nothing here yet.', 'ty.repostOf': 'Reposted from {name}', 'ty.onlyYou': 'only you see this', 'ty.contentAria': 'My posts',
     'pf.settings': 'Settings and privacy',
     'set.general': 'General', 'set.timer': 'Rest timer', 'set.backup': 'Backup & sync', 'set.more': 'More options', 'set.moreHint': 'Export, import, recovery, demo data, reset',
     'excuse.intro': 'An excused week keeps your streak alive. It doesn’t add to it, and any workouts you do still count.', 'excuse.thisWeek': 'This week', 'excuse.nextWeek': 'Next week',
     'excuse.goalMet': 'Goal reached – nothing to excuse.', 'excuse.kept': 'Your streak is safe.', 'excuse.tileThis': 'This week · tap to change', 'excuse.tileNext': 'Next week excused ✓',
     'excuse.past': 'Weeks excused before: {n}', 'ty.yourPosts': 'Your posts', 'ty.posts': 'Posts', 'ty.pics': 'Pics', 'ty.noPics': 'None of your posts has a photo yet.',
     'ty.openPhoto': 'Open photo', 'ty.photoOnly': 'Photo', 'ty.joinLine': 'Join Community to see your posts and pics here.' },
-  es: { 'ty.all': 'Todo', 'ty.text': 'Texto', 'ty.workouts': 'Entrenamientos', 'ty.history': 'Historial', 'ty.historyPrivate': 'Solo tú: tus entrenamientos de este dispositivo. No son publicaciones y nadie más los ve.', 'ty.historyEmpty': 'Aún no hay entrenamientos terminados.', 'ty.streak': 'semanas seguidas', 'ty.achievements': 'logros', 'ty.offLine': 'Community está desactivada. Tus publicaciones aparecerían aquí; solo tú puedes activarla.', 'ty.signedOutLine': 'Inicia sesión en Community para ver aquí tus publicaciones.', 'ty.unavailableLine': 'Las publicaciones no están disponibles aquí. Tu historial sigue funcionando.', 'ty.offlineLine': 'Estás sin conexión: tus publicaciones se cargarán al volver.', 'ty.errorLine': 'No se pudieron cargar tus publicaciones. Inténtalo más tarde.', 'ty.noPosts': 'Aún no tienes publicaciones.', 'ty.noneOfKind': 'Aún no hay nada aquí.', 'ty.repostOf': 'Compartido de {name}', 'ty.onlyYou': 'solo tú lo ves', 'ty.contentAria': 'Mis publicaciones',
+  es: { 'cfeed.retry': 'Reintentar', 'cfeed.end': 'Ya lo has visto todo.', 'cfeed.error': 'No se pudieron cargar las publicaciones.', 'cfeed.offline': 'Sin conexión: las publicaciones se cargarán al volver.', 'cfeed.errorMore': 'No se pudieron cargar publicaciones anteriores.', 'cfeed.offlineMore': 'Sin conexión.',
+    'ty.all': 'Todo', 'ty.text': 'Texto', 'ty.workouts': 'Entrenamientos', 'ty.history': 'Historial', 'ty.historyPrivate': 'Solo tú: tus entrenamientos de este dispositivo. No son publicaciones y nadie más los ve.', 'ty.historyEmpty': 'Aún no hay entrenamientos terminados.', 'ty.streak': 'semanas seguidas', 'ty.achievements': 'logros', 'ty.offLine': 'Community está desactivada. Tus publicaciones aparecerían aquí; solo tú puedes activarla.', 'ty.signedOutLine': 'Inicia sesión en Community para ver aquí tus publicaciones.', 'ty.unavailableLine': 'Las publicaciones no están disponibles aquí. Tu historial sigue funcionando.', 'ty.offlineLine': 'Estás sin conexión: tus publicaciones se cargarán al volver.', 'ty.errorLine': 'No se pudieron cargar tus publicaciones. Inténtalo más tarde.', 'ty.noPosts': 'Aún no tienes publicaciones.', 'ty.noneOfKind': 'Aún no hay nada aquí.', 'ty.repostOf': 'Compartido de {name}', 'ty.onlyYou': 'solo tú lo ves', 'ty.contentAria': 'Mis publicaciones',
     'pf.settings': 'Ajustes y privacidad',
     'set.general': 'General', 'set.timer': 'Temporizador de descanso', 'set.backup': 'Copia y sincronización', 'set.more': 'Más opciones', 'set.moreHint': 'Exportar, importar, recuperar, datos de ejemplo, restablecer',
     'excuse.intro': 'Una semana justificada mantiene tu racha. No suma a ella y los entrenamientos que hagas siguen contando.', 'excuse.thisWeek': 'Esta semana', 'excuse.nextWeek': 'La próxima semana',
     'excuse.goalMet': 'Objetivo cumplido: no hace falta justificar.', 'excuse.kept': 'Tu racha está a salvo.', 'excuse.tileThis': 'Esta semana · toca para cambiar', 'excuse.tileNext': 'Próxima semana justificada ✓',
     'excuse.past': 'Semanas justificadas antes: {n}', 'ty.yourPosts': 'Tus publicaciones', 'ty.posts': 'Publicaciones', 'ty.pics': 'Fotos', 'ty.noPics': 'Ninguna de tus publicaciones tiene fotos todavía.',
     'ty.openPhoto': 'Abrir foto', 'ty.photoOnly': 'Foto', 'ty.joinLine': 'Únete a Community para ver aquí tus publicaciones y fotos.' },
-  'pt-BR': { 'ty.all': 'Tudo', 'ty.text': 'Texto', 'ty.workouts': 'Treinos', 'ty.history': 'Histórico', 'ty.historyPrivate': 'Só você – seus treinos deste aparelho. Não são posts e ninguém mais os vê.', 'ty.historyEmpty': 'Nenhum treino concluído ainda.', 'ty.streak': 'semanas seguidas', 'ty.achievements': 'conquistas', 'ty.offLine': 'A Community está desligada. Seus posts apareceriam aqui – só você pode ligá-la.', 'ty.signedOutLine': 'Entre na Community para ver seus posts aqui.', 'ty.unavailableLine': 'Os posts não estão disponíveis aqui. Seu histórico continua funcionando.', 'ty.offlineLine': 'Você está offline – seus posts carregam quando voltar a conexão.', 'ty.errorLine': 'Não foi possível carregar seus posts. Tente mais tarde.', 'ty.noPosts': 'Você ainda não tem posts.', 'ty.noneOfKind': 'Nada aqui ainda.', 'ty.repostOf': 'Compartilhado de {name}', 'ty.onlyYou': 'só você vê', 'ty.contentAria': 'Meus posts',
+  'pt-BR': { 'cfeed.retry': 'Tentar de novo', 'cfeed.end': 'Você viu tudo.', 'cfeed.error': 'Não foi possível carregar os posts.', 'cfeed.offline': 'Você está offline – os posts carregam quando voltar a conexão.', 'cfeed.errorMore': 'Não foi possível carregar posts mais antigos.', 'cfeed.offlineMore': 'Você está offline.',
+    'ty.all': 'Tudo', 'ty.text': 'Texto', 'ty.workouts': 'Treinos', 'ty.history': 'Histórico', 'ty.historyPrivate': 'Só você – seus treinos deste aparelho. Não são posts e ninguém mais os vê.', 'ty.historyEmpty': 'Nenhum treino concluído ainda.', 'ty.streak': 'semanas seguidas', 'ty.achievements': 'conquistas', 'ty.offLine': 'A Community está desligada. Seus posts apareceriam aqui – só você pode ligá-la.', 'ty.signedOutLine': 'Entre na Community para ver seus posts aqui.', 'ty.unavailableLine': 'Os posts não estão disponíveis aqui. Seu histórico continua funcionando.', 'ty.offlineLine': 'Você está offline – seus posts carregam quando voltar a conexão.', 'ty.errorLine': 'Não foi possível carregar seus posts. Tente mais tarde.', 'ty.noPosts': 'Você ainda não tem posts.', 'ty.noneOfKind': 'Nada aqui ainda.', 'ty.repostOf': 'Compartilhado de {name}', 'ty.onlyYou': 'só você vê', 'ty.contentAria': 'Meus posts',
     'pf.settings': 'Configurações e privacidade',
     'set.general': 'Geral', 'set.timer': 'Timer de descanso', 'set.backup': 'Backup e sincronização', 'set.more': 'Mais opções', 'set.moreHint': 'Exportar, importar, recuperar, dados de exemplo, redefinir',
     'excuse.intro': 'Uma semana justificada mantém sua sequência. Ela não soma à sequência e os treinos que você fizer continuam contando.', 'excuse.thisWeek': 'Esta semana', 'excuse.nextWeek': 'Próxima semana',
     'excuse.goalMet': 'Meta cumprida – não precisa justificar.', 'excuse.kept': 'Sua sequência está segura.', 'excuse.tileThis': 'Esta semana · toque para mudar', 'excuse.tileNext': 'Próxima semana justificada ✓',
     'excuse.past': 'Semanas justificadas antes: {n}', 'ty.yourPosts': 'Seus posts', 'ty.posts': 'Posts', 'ty.pics': 'Fotos', 'ty.noPics': 'Nenhum dos seus posts tem foto ainda.',
     'ty.openPhoto': 'Abrir foto', 'ty.photoOnly': 'Foto', 'ty.joinLine': 'Entre na Community para ver aqui seus posts e fotos.' },
-  fr: { 'ty.all': 'Tout', 'ty.text': 'Texte', 'ty.workouts': 'Séances', 'ty.history': 'Historique', 'ty.historyPrivate': 'Toi seul – tes séances sur cet appareil. Ce ne sont pas des publications, personne d’autre ne les voit.', 'ty.historyEmpty': 'Aucune séance terminée pour l’instant.', 'ty.streak': 'semaines d’affilée', 'ty.achievements': 'succès', 'ty.offLine': 'Community est désactivée. Tes publications apparaîtraient ici – toi seul peux l’activer.', 'ty.signedOutLine': 'Connecte-toi à Community pour voir ici tes publications.', 'ty.unavailableLine': 'Les publications ne sont pas disponibles ici. Ton historique fonctionne toujours.', 'ty.offlineLine': 'Tu es hors ligne – tes publications se chargeront au retour du réseau.', 'ty.errorLine': 'Impossible de charger tes publications. Réessaie plus tard.', 'ty.noPosts': 'Tu n’as encore aucune publication.', 'ty.noneOfKind': 'Rien ici pour l’instant.', 'ty.repostOf': 'Partagé de {name}', 'ty.onlyYou': 'visible par toi seul', 'ty.contentAria': 'Mes publications',
+  fr: { 'cfeed.retry': 'Réessayer', 'cfeed.end': 'Tu as tout vu.', 'cfeed.error': 'Impossible de charger les publications.', 'cfeed.offline': 'Tu es hors ligne – les publications se chargeront au retour du réseau.', 'cfeed.errorMore': 'Impossible de charger les publications plus anciennes.', 'cfeed.offlineMore': 'Tu es hors ligne.',
+    'ty.all': 'Tout', 'ty.text': 'Texte', 'ty.workouts': 'Séances', 'ty.history': 'Historique', 'ty.historyPrivate': 'Toi seul – tes séances sur cet appareil. Ce ne sont pas des publications, personne d’autre ne les voit.', 'ty.historyEmpty': 'Aucune séance terminée pour l’instant.', 'ty.streak': 'semaines d’affilée', 'ty.achievements': 'succès', 'ty.offLine': 'Community est désactivée. Tes publications apparaîtraient ici – toi seul peux l’activer.', 'ty.signedOutLine': 'Connecte-toi à Community pour voir ici tes publications.', 'ty.unavailableLine': 'Les publications ne sont pas disponibles ici. Ton historique fonctionne toujours.', 'ty.offlineLine': 'Tu es hors ligne – tes publications se chargeront au retour du réseau.', 'ty.errorLine': 'Impossible de charger tes publications. Réessaie plus tard.', 'ty.noPosts': 'Tu n’as encore aucune publication.', 'ty.noneOfKind': 'Rien ici pour l’instant.', 'ty.repostOf': 'Partagé de {name}', 'ty.onlyYou': 'visible par toi seul', 'ty.contentAria': 'Mes publications',
     'pf.settings': 'Paramètres et confidentialité',
     'set.general': 'Général', 'set.timer': 'Minuteur de repos', 'set.backup': 'Sauvegarde et synchro', 'set.more': 'Plus d’options', 'set.moreHint': 'Exporter, importer, récupérer, données d’exemple, réinitialiser',
     'excuse.intro': 'Une semaine excusée garde ta série. Elle ne s’y ajoute pas, et les entraînements que tu fais comptent toujours.', 'excuse.thisWeek': 'Cette semaine', 'excuse.nextWeek': 'La semaine prochaine',
     'excuse.goalMet': 'Objectif atteint – rien à excuser.', 'excuse.kept': 'Ta série est à l’abri.', 'excuse.tileThis': 'Cette semaine · touche pour changer', 'excuse.tileNext': 'Semaine prochaine excusée ✓',
     'excuse.past': 'Semaines excusées avant : {n}', 'ty.yourPosts': 'Tes publications', 'ty.posts': 'Publications', 'ty.pics': 'Photos', 'ty.noPics': 'Aucune de tes publications n’a encore de photo.',
     'ty.openPhoto': 'Ouvrir la photo', 'ty.photoOnly': 'Photo', 'ty.joinLine': 'Rejoins Community pour voir ici tes publications et tes photos.' },
-  ar: { 'ty.all': 'الكل', 'ty.text': 'نص', 'ty.workouts': 'التمارين', 'ty.history': 'سجل التمارين', 'ty.historyPrivate': 'لك وحدك – تمارينك على هذا الجهاز. ليست منشورات ولا يراها أحد غيرك.', 'ty.historyEmpty': 'لا يوجد تمرين مكتمل بعد.', 'ty.streak': 'أسابيع متتالية', 'ty.achievements': 'إنجازات', 'ty.offLine': 'Community متوقفة. ستظهر منشوراتك هنا – أنت فقط من يمكنه تشغيلها.', 'ty.signedOutLine': 'سجّل الدخول إلى Community لترى منشوراتك هنا.', 'ty.unavailableLine': 'المنشورات غير متاحة هنا. سجل تمارينك يعمل كالمعتاد.', 'ty.offlineLine': 'أنت غير متصل – ستُحمَّل منشوراتك عند عودة الاتصال.', 'ty.errorLine': 'تعذّر تحميل منشوراتك. حاول لاحقًا.', 'ty.noPosts': 'ليس لديك منشورات بعد.', 'ty.noneOfKind': 'لا شيء هنا بعد.', 'ty.repostOf': 'مُشارك من {name}', 'ty.onlyYou': 'تراه أنت فقط', 'ty.contentAria': 'منشوراتي',
+  ar: { 'cfeed.retry': 'أعد المحاولة', 'cfeed.end': 'لقد شاهدت كل شيء.', 'cfeed.error': 'تعذّر تحميل المنشورات.', 'cfeed.offline': 'أنت غير متصل – ستُحمَّل المنشورات عند عودة الاتصال.', 'cfeed.errorMore': 'تعذّر تحميل المنشورات الأقدم.', 'cfeed.offlineMore': 'أنت غير متصل.',
+    'ty.all': 'الكل', 'ty.text': 'نص', 'ty.workouts': 'التمارين', 'ty.history': 'سجل التمارين', 'ty.historyPrivate': 'لك وحدك – تمارينك على هذا الجهاز. ليست منشورات ولا يراها أحد غيرك.', 'ty.historyEmpty': 'لا يوجد تمرين مكتمل بعد.', 'ty.streak': 'أسابيع متتالية', 'ty.achievements': 'إنجازات', 'ty.offLine': 'Community متوقفة. ستظهر منشوراتك هنا – أنت فقط من يمكنه تشغيلها.', 'ty.signedOutLine': 'سجّل الدخول إلى Community لترى منشوراتك هنا.', 'ty.unavailableLine': 'المنشورات غير متاحة هنا. سجل تمارينك يعمل كالمعتاد.', 'ty.offlineLine': 'أنت غير متصل – ستُحمَّل منشوراتك عند عودة الاتصال.', 'ty.errorLine': 'تعذّر تحميل منشوراتك. حاول لاحقًا.', 'ty.noPosts': 'ليس لديك منشورات بعد.', 'ty.noneOfKind': 'لا شيء هنا بعد.', 'ty.repostOf': 'مُشارك من {name}', 'ty.onlyYou': 'تراه أنت فقط', 'ty.contentAria': 'منشوراتي',
     'pf.settings': 'الإعدادات والخصوصية',
     'set.general': 'عام', 'set.timer': 'مؤقت الراحة', 'set.backup': 'النسخ الاحتياطي والمزامنة', 'set.more': 'خيارات أخرى', 'set.moreHint': 'تصدير، استيراد، استعادة، بيانات تجريبية، إعادة ضبط',
     'excuse.intro': 'الأسبوع المعذور يحافظ على سلسلتك. لا يُضاف إليها، والتمارين التي تقوم بها تُحتسب كالمعتاد.', 'excuse.thisWeek': 'هذا الأسبوع', 'excuse.nextWeek': 'الأسبوع القادم',
@@ -15336,7 +15342,7 @@ function communityNavHtml() {
   if (v === 'chats' && communityMode === 'messages') return '';
   /* Bento: na hlavnej stránke Community sú dlaždice z návrhu (Top 20, Nový príspevok, Správy, Priatelia);
      ostatné pohľady sú celostránkové listy s tlačidlom Späť (ako v návrhu). */
-  if (v === 'feed' || v === 'following') return communityBentoTilesHtml();
+  if (v === 'feed' || v === 'following') return '';   // v83: feed hneď pod hlavičkou (bez dlaždíc; Správy majú vlastnú kartu)
   if (['leaderboard', 'comments', 'friends', 'chats', 'chat', 'user', 'list', 'profile', 'editprofile'].indexOf(v) >= 0) return '';   // majú vlastnú hlavičku
   const titles = { search: 'community2.navSearch', compose: 'community.newPost', profile: 'community2.navProfile', myposts: 'community.tabMyPosts', moderate: 'bento.moderate' };
   return '<div class="k-head" id="community-tabs"><button type="button" class="k-x" data-community-action="back" aria-label="' + escAttr(t('community2.back')) + '">' + bentoIcon('back') + '</button>'
@@ -15409,7 +15415,7 @@ function communityRefreshLbRank(sb) {
     const rows = r && !r.error && Array.isArray(r.data) ? r.data : [];
     const me = rows.find((x) => x.is_me);
     const rank = me && Number(me.xp) > 0 ? Number(me.pos) || null : null;
-    if (rank !== communityLbRank) { communityLbRank = rank; if (activeTab === 'komunita' && (communityView === 'feed' || communityView === 'following')) renderCommunity(); }
+    if (rank !== communityLbRank) { communityLbRank = rank; renderCommunityHead(); }   // len menu, feed sa neprekresľuje
   }).catch(() => {});
 }
 /* Hlavička podpohľadu: Späť + názov (+ voliteľné tlačidlá vpravo). */
@@ -15574,8 +15580,7 @@ function communityShowBadges() {
   const ch = communityBadges.chats;
   if (mb) { mb.hidden = !ch; mb.textContent = ch > 99 ? '99+' : String(ch); }
   bentoShowChatsBadge();
-  const nav = document.getElementById('community-tabs');
-  if (nav && communityV2() && nav.classList.contains('cnav')) nav.outerHTML = communityNavHtml();
+  renderCommunityHead();
 }
 /* Pri štarte aplikácie (ak je Community zapnutá a účet prihlásený): odznaky a živé správy. */
 async function communityBackgroundStart() {
@@ -17164,6 +17169,7 @@ async function renderCommunity() {
   if (!body) return;
   /* Novšie vykreslenie vždy vyhrá: pomalšia staršia odpoveď už nič neprepíše. */
   const seq = ++communityRenderSeq;
+  renderCommunityHead();
   /* v80: prekreslenie tej istej obrazovky (napr. po Sledovať) nechá posunutie tam, kde bolo */
   const viewKey = communityViewKey(communityView, communityViewUser, communityPostId, communityChatId);
   const keep = communityShownKey === viewKey && communityView !== 'chat' ? communityScrollPos() : null;
@@ -17240,10 +17246,11 @@ async function renderCommunity() {
       if (put(head + communityFeedListHtml())) await communityLoadFeed(sb, true);
       return;
     }
+    renderCommunityHead();
     if (communityV2() && communityConsent) communityRefreshLbRank(sb);
     const scope = communityV2() ? communityScope : (communityView === 'following' ? 'following' : 'everyone');
     communityFeed = { items: [], offset: 0, done: false, loading: false, scope, user: null };
-    if (put(communityFeedShellHtml())) await communityLoadFeed(sb, true);
+    if (put(communityFeedShellHtml())) { communityWatchFeedEnd(); await communityLoadFeed(sb, true); }
   } catch (e) {
     put(communityNote('community.errNetwork'));
   }
@@ -17313,13 +17320,70 @@ function communityAuthHtml() {
     + '<p class="card-note">' + esc(t('community.offlineNote')) + '</p>'
     + '<div class="plan-actions"><button type="button" class="btn btn-secondary" data-community-action="close">' + esc(t('common.close')) + '</button></div></div>';
 }
+/* ---------- Community = feed (v83, usporiadanie ako X/Twitter, vzhľad Bento) ----------
+   Hlavička: Community · Nový príspevok · hľadanie · ⋯ (Priatelia, Top 20, môj profil, moje príspevky, moderovanie).
+   Pod ňou rovno príspevky v jednom stĺpci; staršie sa načítajú samé pri posúvaní (rovnaké stránky community_feed),
+   na konci načítavanie / skúsiť znova / koniec. Skratka na Správy tu nie je (Správy = vlastná karta v menu). */
+function communityFeedReady() { return communityV2() && !!communityProfile && communityConsent !== false; }
+function renderCommunityHead() {
+  const ready = communityFeedReady();
+  const nw = document.getElementById('btn-cnew'), more = document.getElementById('btn-cmore'), menu = document.getElementById('community-menu');
+  if (!nw || !more || !menu) return;
+  nw.hidden = !ready; more.hidden = !ready;
+  /* hľadanie ostáva vždy viditeľné (ako predtým) */
+  if (!ready) { menu.hidden = true; more.setAttribute('aria-expanded', 'false'); return; }
+  const reqs = communityBadges.requests;
+  const dot = document.getElementById('cmore-dot'); if (dot) dot.hidden = !reqs;
+  const mod = communityProfile && communityProfile.role === 'moderator';
+  const item = (view, label, extra) => '<button type="button" class="pf-menu-item" data-cgo="' + view + '">' + esc(label) + (extra || '') + '</button>';
+  menu.innerHTML = item('friends', t('community2.friendsTitle'), reqs ? ' <span class="cnav-badge cbadge-inline">' + (reqs > 99 ? '99+' : reqs) + '</span>' : '')
+    + (communityVersion >= 3 ? item('leaderboard', t('lb.nav'), communityLbRank ? ' <span class="cmenu-sub">#' + communityLbRank + '</span>' : '') : '')
+    + item('profile', t('community2.navProfile'))
+    + item('myposts', t('community.tabMyPosts'))
+    + (mod ? item('moderate', t('community.tabModerate')) : '');
+}
+function communityMenuOpen(open) {
+  const m = document.getElementById('community-menu'), b = document.getElementById('btn-cmore');
+  if (!m || !b) return;
+  m.hidden = !open; b.setAttribute('aria-expanded', open ? 'true' : 'false');
+  if (open) { const f = m.querySelector('button'); if (f) f.focus(); }
+}
+/* Otvorenie podpohľadu z hlavičky: Späť vráti na feed na rovnaké miesto (communityGo uloží obrazovku). */
+function communityHeadGo(view) {
+  communityMenuOpen(false);
+  if (communityMode === 'messages') { communityMode = 'community'; communityBack = []; communityView = 'feed'; }
+  if (view === 'compose' && !communityFeedReady()) return;
+  communityGo(view);
+}
+/* Koniec zoznamu: načítava sa / chyba so Skúsiť znova / koniec / (inak neviditeľná značka na auto-načítanie). */
+function communityFeedFootHtml() {
+  const f = communityFeed;
+  if (f.loading && f.items.length) return '<div class="cfeed-foot" id="community-foot"><span class="cfeed-spin" aria-hidden="true"></span>' + esc(t('community.loading')) + '</div>';
+  if (f.error && f.items.length) return '<div class="cfeed-foot" id="community-foot"><span>' + esc(t(navigator.onLine === false ? 'cfeed.offlineMore' : 'cfeed.errorMore')) + '</span>'
+    + '<button type="button" class="btn btn-secondary btn-sm" id="community-more" data-community-action="more">' + esc(t('cfeed.retry')) + '</button></div>';
+  if (f.done) return f.items.length ? '<div class="cfeed-foot cfeed-end" id="community-foot">' + esc(t('cfeed.end')) + '</div>' : '<div id="community-foot"></div>';
+  return '<div class="cfeed-foot" id="community-foot"><button type="button" class="btn btn-secondary btn-sm" id="community-more" data-community-action="more">' + esc(t('community.loadMore')) + '</button></div>';
+}
+let communityFeedObserver = null;
+function communityWatchFeedEnd() {
+  const foot = document.getElementById('community-foot');
+  if (!foot || typeof IntersectionObserver !== 'function') return;
+  if (communityFeedObserver) communityFeedObserver.disconnect();
+  communityFeedObserver = new IntersectionObserver((entries) => {
+    const f = communityFeed;
+    if (!entries.some((e) => e.isIntersecting) || f.loading || f.done || f.error || !f.items.length || f.grid) return;
+    if (activeTab !== 'komunita' || (communityView !== 'feed' && communityView !== 'user')) return;
+    const sb = communityClient(); if (sb) communityLoadFeed(sb, false);
+  }, { rootMargin: '800px 0px' });
+  communityFeedObserver.observe(foot);
+}
 function communityFeedShellHtml() {
   if (communityV2()) {
     return communityTabbar()
       + communityScopeChipsHtml()
       + '<p class="media-status" id="community-status" role="status" ' + (communityMessage ? '' : 'hidden') + '>' + esc(communityMessage) + '</p>'
       + '<div id="community-feed" class="cfeed">' + communityFeedItemsHtml() + '</div>'
-      + '<div class="plan-actions"><button type="button" class="btn btn-secondary" id="community-more" data-community-action="more"' + (communityFeed.done ? ' hidden' : '') + '>' + esc(t('community.loadMore')) + '</button></div>';
+      + communityFeedFootHtml();
   }
   return communityTabbar()
     + (communitySocial ? '<div class="plan-actions"><button type="button" class="btn btn-primary" data-community-view="compose">' + esc(t('community.newPost')) + '</button></div>' : '')
@@ -17338,6 +17402,13 @@ function communityFeedListHtml() {
 }
 function communityFeedItemsHtml() {
   if (communityFeed.grid) return communityGridHtml();
+  if (communityV2() && !communityFeed.items.length && communityFeed.loading) {   // prvé načítanie: kostra príspevkov
+    return [0, 1, 2].map(() => '<div class="community-card cpost cpost-skel" aria-hidden="true"><span class="cskel-av"></span><span class="cskel-lines"><i></i><i></i><i></i></span></div>').join('');
+  }
+  if (communityV2() && !communityFeed.items.length && communityFeed.error) {
+    return '<div class="cfeed-state"><p>' + esc(t(navigator.onLine === false ? 'cfeed.offline' : 'cfeed.error')) + '</p>'
+      + '<button type="button" class="btn btn-secondary btn-sm" data-community-action="feed-retry">' + esc(t('cfeed.retry')) + '</button></div>';
+  }
   if (!communityFeed.items.length) {
     const key = !communitySocial ? 'community.feedEmpty'
       : communityFeed.scope === 'following' ? 'community.followingEmpty'
@@ -17345,13 +17416,16 @@ function communityFeedItemsHtml() {
       : communityFeed.scope === 'user' ? 'community.userPostsEmpty' : 'community.feedEmpty';
     return communityFeed.loading ? '' : '<p class="empty-state">' + esc(t(key)) + '</p>';
   }
-  return communityFeed.items.map(communitySocial ? communitySocialCardHtml : communityCardHtml).join('');
+  /* nie .map(fn): index položky by sa stal parametrom „inComments“ a vypol by komentáre */
+  return communityFeed.items.map((p) => (communitySocial ? communitySocialCardHtml(p) : communityCardHtml(p))).join('');
 }
 function communityRefreshFeed() {
   const feed = document.getElementById('community-feed');
   if (feed) feed.innerHTML = communityFeedItemsHtml();
+  const foot = document.getElementById('community-foot');
+  if (foot && communityV2()) { foot.outerHTML = communityFeedFootHtml(); communityWatchFeedEnd(); }
   const more = document.getElementById('community-more');
-  if (more) more.hidden = communityFeed.done;
+  if (more && !communityV2()) more.hidden = communityFeed.done;
   const st = document.getElementById('community-status');
   if (st) { st.textContent = communityMessage; st.hidden = !communityMessage; }
 }
@@ -17386,30 +17460,30 @@ function communitySocialCardHtml(p, inComments) {
       : '<button type="button" class="btn btn-secondary" data-community-action="block" data-user="' + escAttr(p.user_id) + '" data-name="' + escAttr(p.name || '') + '">' + esc(t('community.block')) + '</button>'
         + '<button type="button" class="btn btn-secondary" data-community-action="report-post" data-post="' + escAttr(p.id) + '">' + esc(t('community.report')) + '</button>')
     + (mod && !mine ? '<button type="button" class="btn btn-secondary" data-community-action="mod-remove" data-post="' + escAttr(p.id) + '">' + esc(t('community.removePost')) + '</button>' : '');
-  return '<article class="community-card cpost" data-post="' + escAttr(p.id) + '">'
+  /* v83: ako príspevok na X – avatar vľavo, vpravo meno · čas · ⋯, text, fotky, tréning, akcie (jeden celok) */
+  return '<article class="community-card cpost xpost" data-post="' + escAttr(p.id) + '">'
     + (p.reposted_by ? '<p class="community-shared cpost-shared">' + communityIcon('share') + ' ' + esc(t('community.sharedBy', { name: p.reposted_by_name || t('community.unknownUser') })) + '</p>' : '')
-    + '<header class="cpost-head">'
+    + '<div class="xp-row">'
     + '<button type="button" class="cpost-avatar" data-community-action="open-user" data-user="' + escAttr(p.user_id) + '" aria-label="' + escAttr(p.name || t('community.unknownUser')) + '">' + communityAvatarHtml(p.avatar) + '</button>'
-    + '<div class="cpost-who">' + communityNameButton(p.user_id, p.name, p.mod)
+    + '<div class="xp-main">'
+    + '<header class="cpost-head xp-head"><div class="cpost-who">' + communityNameButton(p.user_id, p.name, p.mod)
     + '<span class="cpost-meta">' + esc(when) + (friendsOnly ? ' · <span class="cpost-friends">' + communityIcon('friends') + esc(t('community2.friendsOnly')) + '</span>' : '') + '</span></div>'
     + '<button type="button" class="btn-icon cpost-more" data-community-action="post-menu" data-post="' + escAttr(p.id) + '" aria-label="' + escAttr(t('community2.menuAria')) + '" aria-expanded="false">' + communityIcon('more') + '</button>'
     + '</header>'
+    + (p.caption ? '<p class="community-caption cpost-text">' + esc(p.caption) + '</p>' : '')
     + communityPhotosHtml(p.photos, p.urls || {})
-    + (!p.photos.length && p.caption ? '<p class="community-caption cpost-text">' + esc(p.caption) + '</p>' : '')
     + (p.share ? shareCardHtml(p.share, 'post', p.id) : '')
     + '<div class="community-social-row cpost-actions">'
-    + '<button type="button" class="cpost-act community-like' + (p.liked ? ' on' : '') + '" data-community-action="like" data-post="' + escAttr(p.id) + '" aria-pressed="' + (p.liked ? 'true' : 'false') + '"'
-    + ' aria-label="' + escAttr(t(p.liked ? 'community.unlikeAria' : 'community.likeAria', { n: p.likes })) + '">' + communityIcon('heart') + '<span>' + p.likes + '</span></button>'
     + (v2 ? '<button type="button" class="cpost-act" data-community-action="comments" data-post="' + escAttr(p.id) + '" aria-label="' + escAttr(t('community2.commentsAria', { n: p.comments || 0 })) + '"' + (inComments ? ' disabled' : '') + '>'
       + communityIcon('chat') + '<span>' + (p.comments || 0) + '</span></button>' : '')
     + (shareable ? '<button type="button" class="cpost-act community-share' + (p.reposted ? ' on' : '') + '" data-community-action="share" data-post="' + escAttr(p.id) + '" aria-pressed="' + (p.reposted ? 'true' : 'false') + '"'
         + ' aria-label="' + escAttr(t(p.reposted ? 'community.unshareAria' : 'community.shareAria', { n: p.reposts })) + '">' + communityIcon('share') + '<span>' + p.reposts + '</span></button>'
       : '<span class="cpost-act community-count-static" aria-label="' + escAttr(t('community.sharesAria', { n: p.reposts })) + '">' + communityIcon('share') + '<span>' + p.reposts + '</span></span>')
+    + '<button type="button" class="cpost-act community-like' + (p.liked ? ' on' : '') + '" data-community-action="like" data-post="' + escAttr(p.id) + '" aria-pressed="' + (p.liked ? 'true' : 'false') + '"'
+    + ' aria-label="' + escAttr(t(p.liked ? 'community.unlikeAria' : 'community.likeAria', { n: p.likes })) + '">' + communityIcon('heart') + '<span>' + p.likes + '</span></button>'
     + '</div>'
-    + (p.caption && p.photos.length ? '<p class="community-caption cpost-caption"><span class="cpost-caption-name">' + esc(p.name || '') + '</span> ' + esc(p.caption) + '</p>' : '')
-    + (v2 && !inComments ? '<button type="button" class="cpost-comments-link" data-community-action="comments" data-post="' + escAttr(p.id) + '">'
-      + esc(p.comments ? t('community2.viewComments', { n: p.comments }) : t('community2.addComment')) + '</button>' : '')
     + '<div class="plan-actions cpost-menu" hidden>' + menu + '</div>'
+    + '</div></div>'
     + '</article>';
 }
 function communityCardHtml(p) {
@@ -17460,6 +17534,12 @@ async function communityLoadSocialFeed(sb, reset) {
   const feed = communityFeed;   // Späť môže medzitým obnoviť iný zoznam – zapisuje sa len do tohto
   if (feed.loading || (feed.done && !reset)) return;
   feed.loading = true;
+  feed.error = false;
+  if (feed === communityFeed && communityV2()) {   // ukáž načítavanie (prvá strana: kostra, ďalšie: riadok na konci)
+    const foot = document.getElementById('community-foot');
+    if (foot && feed.items.length) foot.outerHTML = communityFeedFootHtml();
+    else if (!feed.items.length) { const box = document.getElementById('community-feed'); if (box && !feed.grid) box.innerHTML = communityFeedItemsHtml(); }
+  }
   const last = reset ? null : feed.items[feed.items.length - 1];
   let res;
   try {
@@ -17467,11 +17547,27 @@ async function communityLoadSocialFeed(sb, reset) {
       p_before: last ? last.at : null, p_before_id: last ? last.id : null, p_limit: COMMUNITY_PAGE });
   } catch (e) { res = { error: e }; }
   feed.loading = false;
-  if (res.error) { communitySetMessageText(communityErrText(res.error)); if (feed === communityFeed) communityRefreshFeed(); return; }
+  if (res.error) {
+    feed.error = true;
+    if (!communityV2()) communitySetMessageText(communityErrText(res.error));
+    if (feed === communityFeed) communityRefreshFeed();
+    return;
+  }
   const items = await communityFeedItemsFromRows(sb, res.data || []);
-  feed.items = reset ? items : feed.items.concat(items);
+  const prevCount = reset ? 0 : feed.items.length;
+  if (reset) feed.items = items;
+  else {   // ďalšia strana: nič dvakrát (zdieľanie = iný kľúč) a nič sa neprekresľuje od začiatku
+    const seen = new Set(feed.items.map((x) => x.id + '|' + (x.reposted_by || '')));
+    items.forEach((x) => { const k = x.id + '|' + (x.reposted_by || ''); if (!seen.has(k)) { seen.add(k); feed.items.push(x); } });
+  }
   feed.done = items.length < COMMUNITY_PAGE;
-  if (feed === communityFeed) communityRefreshFeed();
+  if (feed !== communityFeed) return;
+  const box = document.getElementById('community-feed');
+  if (box && !reset && !feed.grid && communitySocial && prevCount > 0 && box.querySelector('.cpost')) {
+    box.insertAdjacentHTML('beforeend', feed.items.slice(prevCount).map((p) => communitySocialCardHtml(p)).join(''));
+    const foot = document.getElementById('community-foot');
+    if (foot) { foot.outerHTML = communityFeedFootHtml(); communityWatchFeedEnd(); }
+  } else communityRefreshFeed();
 }
 /* Riadky z community_feed → položky (fotky s podpísanými náhľadmi, zdieľaný plán / tréning). */
 async function communityFeedItemsFromRows(sb, rows) {
@@ -24117,6 +24213,14 @@ function setupEvents() {
   on('btn-community-settings', communityOpen);
   on('btn-photo-viewer-share', () => { const id = currentViewerPhotoId(); if (id) communityAskShare(id); });
   on('screen-komunita', (e) => {
+    /* v83: hlavička Community (Nový príspevok, hľadanie, ⋯ menu) – Späť sa vráti na feed na rovnaké miesto */
+    const hd = e.target.closest ? e.target.closest('#btn-cnew, #btn-cmore, #btn-csearch, [data-cgo]') : null;
+    if (hd) {
+      if (hd.id === 'btn-cmore') communityMenuOpen(document.getElementById('community-menu').hidden);
+      else communityHeadGo(hd.id === 'btn-cnew' ? 'compose' : hd.id === 'btn-csearch' ? 'search' : hd.dataset.cgo);
+      return;
+    }
+    if (!(e.target.closest && e.target.closest('#community-menu'))) communityMenuOpen(false);
     const tab = e.target.closest ? e.target.closest('[data-community-view]') : null;
     if (tab && tab.dataset.communityView === 'chats' && communityMode !== 'messages') { openMessagesTab(); return; }
     if (tab && tab.dataset.communityView) { communitySetView(tab.dataset.communityView); return; }
@@ -24133,7 +24237,8 @@ function setupEvents() {
     else if (act === 'rem-save') remindersSave();
     else if (act === 'rem-day') { const on = !a.classList.contains('active'); a.classList.toggle('active', on); a.setAttribute('aria-pressed', on ? 'true' : 'false'); }
     else if (act === 'save-profile') communitySaveProfile();
-    else if (act === 'more') { const sb = communityClient(); if (sb) communityLoadFeed(sb, false); }
+    else if (act === 'more') { const sb = communityClient(); if (sb) { communityFeed.error = false; communityLoadFeed(sb, false); } }
+    else if (act === 'feed-retry') { const sb = communityClient(); if (sb) { communityFeed.error = false; communityLoadFeed(sb, true); } }
     else if (act === 'edit-caption') communityEditCaption(a.dataset.post);
     else if (act === 'delete-post') communityDeletePost(a.dataset.post);
     else if (act === 'block') communityBlock(a.dataset.user, a.dataset.name);
