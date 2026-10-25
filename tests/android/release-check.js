@@ -13,7 +13,7 @@ const fs = require('fs');
 const os = require('os');
 const path = require('path');
 const { execFileSync } = require('child_process');
-const { counter, startServerOnce, closeAll } = require('./lib-native');
+const { counter, startServerOnce, closeAll, BASE } = require('./lib-native');
 const { Browser } = require('../sync/lib');
 
 const REPO = path.resolve(__dirname, '..', '..');
@@ -66,7 +66,7 @@ const run = (cmd, args, opts) => execFileSync(cmd, args, Object.assign({ encodin
     p.c.on('Runtime.exceptionThrown', (e) => errs.push(String(e.exceptionDetails.text)));
     await p.c.send('Log.enable');
     p.c.on('Log.entryAdded', (e) => { if (e.entry.level === 'error' && !/favicon/.test(e.entry.url || '')) errs.push(e.entry.text); });
-    await p.navigate('http://localhost:8124/privacy.html', { noReady: true });
+    await p.navigate(BASE + 'privacy.html', { noReady: true });
     const en = await p.eval(`document.body.innerText`);
     check('privacy: Health Connect section (heart rate, never shared)', /Health Connect/.test(en) && /heart rate/i.test(en) && /never/i.test(en));
     check('privacy: notifications / Firebase', /Firebase/i.test(en) && /notification/i.test(en));

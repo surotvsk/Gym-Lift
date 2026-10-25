@@ -19940,12 +19940,18 @@ function applyTheme() {
   renderThemeChips();
 }
 /* Android appka: stavová lišta má farbu pozadia appky a ikony čitateľné na nej
-   (DARK = svetlé ikony na tmavom pozadí, LIGHT = tmavé ikony na svetlom). */
+   (DARK = svetlé ikony na tmavom pozadí, LIGHT = tmavé ikony na svetlom).
+   GymBars (vlastný plugin v appke) zafarbí okno pod OBOMA systémovými lištami – Capacitor 8 dáva
+   WebView medzi lišty, takže inak tam presvitá systémové pozadie podľa režimu telefónu
+   (sivé/čierne lišty vo svetlej téme, keď je telefón v tmavom režime). */
 function nativeThemeBars(t) {
   const bar = nativePlugin('StatusBar');
-  if (!bar) return;
-  bar.setStyle({ style: t === 'dark' ? 'DARK' : 'LIGHT' }).catch(() => {});
-  bar.setBackgroundColor({ color: THEME_COLORS[t] }).catch(() => {});
+  if (bar) {
+    bar.setStyle({ style: t === 'dark' ? 'DARK' : 'LIGHT' }).catch(() => {});
+    bar.setBackgroundColor({ color: THEME_COLORS[t] }).catch(() => {});
+  }
+  const bars = nativePlugin('GymBars');
+  if (bars) bars.setColors({ color: THEME_COLORS[t], dark: t === 'dark' }).catch(() => {});
 }
 
 /* Android appka: WebView ignoruje <a download>, preto sa súbor zapíše do cache appky a ponúkne

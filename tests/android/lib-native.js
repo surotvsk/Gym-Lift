@@ -72,7 +72,7 @@ async function nativeCalls(page, pluginName, method) {
 
 async function clearNativeCalls(page) { return page.eval('(window.__nativeCalls = [], true)'); }
 
-/* Spoločný štart testu: server na 8124 (prázdna Community konfigurácia, ak nie je cfgPath),
+/* Spoločný štart testu: server na 8124 alebo GQ_TEST_PORT (prázdna Community konfigurácia, ak nie je cfgPath),
    headless Chrome s telefónnym rozmerom, voliteľne falošný Capacitor, appka po úvodnom nastavení.
    Vracia { p, b, server, errors, check, done }. */
 const fs = require('fs');
@@ -80,6 +80,8 @@ const os = require('os');
 const path = require('path');
 const { startServer, Browser } = require('../sync/lib');
 const REPO = path.resolve(__dirname, '..', '..');
+const PORT = Number(process.env.GQ_TEST_PORT) || 8124;   // iný port, keď 8124 drží iný beh testov
+const BASE = 'http://localhost:' + PORT + '/';
 
 function counter() {
   const s = { pass: 0, fail: 0 };
@@ -96,7 +98,7 @@ async function startServerOnce(work, cfgPath) {
     fs.writeFileSync(cfgPath, "window.GYMQUEST_COMMUNITY = { supabaseUrl: '', supabaseAnonKey: '' };\n");
   }
   process.env.GQ_COMMUNITY_CONFIG = cfgPath;
-  return startServer(8124, { new: REPO });
+  return startServer(PORT, { new: REPO });
 }
 
 const OPEN = [];
@@ -116,9 +118,9 @@ async function openApp({ name, debugPort, native, returns, work, lang }) {
   p.c.on('Runtime.exceptionThrown', (e) => errors.push(String(e.exceptionDetails.exception && e.exceptionDetails.exception.description || e.exceptionDetails.text)));
   await p.c.send('Emulation.setDeviceMetricsOverride', { width: 390, height: 844, deviceScaleFactor: 1, mobile: true });
   if (native) await installFakeCapacitor(p, { returns });
-  await p.navigate('http://localhost:8124/');
+  await p.navigate(BASE);
   await p.eval(`(() => { const ok = document.getElementById('btn-setup-ok'); if (ok && !document.getElementById('modal-setup').hidden) ok.click(); setLang(${JSON.stringify(lang || 'en')}); return true; })()`);
   return { p, b, errors };
 }
 
-module.exports = { installFakeCapacitor, fireNative, nativeCalls, clearNativeCalls, counter, startServerOnce, openApp, closeAll, REPO };
+module.exports = { installFakeCapacitor, fireNative, nativeCalls, clearNativeCalls, counter, startServerOnce, openApp, closeAll, REPO, BASE };

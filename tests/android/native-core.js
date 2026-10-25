@@ -7,7 +7,7 @@
    unchanged. Android (fake Capacitor): isNativeApp() true, no service worker, no update banner or
    update setting, exercise videos use only the bundled MP4, the splash screen is hidden once after
    the first render; no console errors in either mode. */
-const { counter, startServerOnce, openApp, closeAll, nativeCalls } = require('./lib-native');
+const { counter, startServerOnce, openApp, closeAll, nativeCalls, BASE } = require('./lib-native');
 const wait = (ms) => new Promise((r) => setTimeout(r, ms));
 const t = counter();
 const check = t.check;
@@ -61,7 +61,7 @@ async function videoSources(p) {
     const pb = await bb.launch();
     await installFakeCapacitor(pb, {});
     await pb.c.send('Network.setBlockedURLs', { urls: ['*script.js*'] });
-    await pb.navigate('http://localhost:8124/', { noReady: true });
+    await pb.navigate(BASE, { noReady: true });
     await wait(5000);
     const bh = await pb.eval(`(window.__nativeCalls || []).filter((c) => c.plugin === 'SplashScreen' && c.method === 'hide').length`);
     check('android: splash hidden even when the app script fails', bh >= 1, bh);
