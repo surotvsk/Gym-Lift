@@ -29,8 +29,8 @@ The upload key signs every Android release. It lives **outside the repo**:
    - Project settings → Service accounts → *Generate new private key* → keep that JSON file next to
      the upload key (`claude-code/android-keys/`), never in the repo. It becomes the Supabase
      function secret `FCM_SERVICE_ACCOUNT` in step 3.
-3. **Contact e-mail**: decide which address to show to users. Fill it into `privacy.html`
-   (both languages, the yellow placeholder) and into the Play Console.
+3. **Contact e-mail**: martinsuriak2005@gmail.com (owner's choice, 2026-10-27). It is in `privacy.html`
+   (both languages); use the same address in the Play Console.
 
 ## 2. Website (needs approval)
 

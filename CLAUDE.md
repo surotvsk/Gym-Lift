@@ -104,7 +104,8 @@ the app shows an "update available" notice and never reloads during an active wo
   Function also sends FCM when the secret `FCM_SERVICE_ACCOUNT` is set. Keys and `google-services.json` are never committed.
 - **`design-concepts/`** holds standalone redesign prototypes (shared `data.js`, `frame.css`, `icons.js`,
   and an `index.html` gallery). It is not part of the app, is not precached, and `sw.js` skips every request
-  under `/design-concepts/`.
+  under `/design-concepts/` (and `privacy.html`, the privacy policy linked from Google Play and Health Connect;
+  `tests/app/sw-pages.js` checks both).
   `design-concepts/app/` holds copies of the owner's chosen round 2–7 designs; the in-app Design previews were removed
   (2026-10-24), so nothing in the app links there any more. `app/r2/03-bento.html` (dark `app/r7/02-classic-dark.html`)
   stays as the reference the app's design follows.

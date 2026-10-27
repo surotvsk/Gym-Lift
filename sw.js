@@ -6,7 +6,7 @@
    so no update would ever be offered.
    Bump it and the new worker installs, re-fetches everything and deletes the old cache. */
 
-const CACHE_VERSION = 'v85';
+const CACHE_VERSION = 'v86';
 const CACHE_PREFIX = 'gymquest-';
 const CACHE_NAME = CACHE_PREFIX + CACHE_VERSION;
 
@@ -23,10 +23,10 @@ const mediaKey = (url) => url.origin + url.pathname;
    Cache kľúč je celá URL, takže "style.css" a "style.css?v=27" sú dve rôzne položky. */
 const PRECACHE = [
   'index.html',
-  'style.css?v=91',
-  'script.js?v=91',
-  'community-config.js?v=91',
-  'vendor/supabase-js.js?v=91',
+  'style.css?v=92',
+  'script.js?v=92',
+  'community-config.js?v=92',
+  'vendor/supabase-js.js?v=92',
   'manifest.json',
   'apple-touch-icon.png',
   'icon-192.png',
@@ -134,6 +134,8 @@ self.addEventListener('fetch', (event) => {
 
   // Návrhy dizajnu (design-concepts/) sú samostatné stránky, nie appka: idú priamo na sieť.
   if (url.pathname.includes('/design-concepts/')) return;
+  // Zásady ochrany súkromia sú samostatná stránka (odkaz z Google Play a z Health Connect), nie appka.
+  if (url.pathname.endsWith('/privacy.html')) return;
 
   // Navigácia (otvorenie appky, obnovenie stránky): z cache, aby fungovala aj offline.
   if (request.mode === 'navigate') {
