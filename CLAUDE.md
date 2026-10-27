@@ -83,7 +83,7 @@ the app shows an "update available" notice and never reloads during an active wo
   production. The test harness installs `window.__GQ_TEST__` to turn the hooks into deterministic
   barriers and failure injections.
 - **Single tab:** Web Locks allow only one active tab per device. Other tabs show "Use here".
-- **Supabase backend** (`supabase/`): migrations `0001`–`0015` (there is no `0007`) and rollbacks in
+- **Supabase backend** (`supabase/`): migrations `0001`–`0016` (there is no `0007`; `0016` = phone tokens for the Android app's message alerts, it does not change the version) and rollbacks in
   `supabase/rollback/`; never put rollbacks in `migrations/`. Production has no CLI migration history
   and "auto-expose new tables" is off. Apply each new migration once, as one transaction, never with
   `supabase db push`. Grants are explicit (see `0002` and `0006`). The app detects which schema
@@ -97,6 +97,11 @@ the app shows an "update available" notice and never reloads during an active wo
   with VAPID; `webpush.ts` is dependency-free WebCrypto and is imported directly by Node tests) and
   `reminders` (called only by the `pg_cron` job through `pg_net`, JWT verification off, shared secret).
   Tests that roll back a migration use `L.rollbackFrom(n)` / `L.reapply()` (newest first, then in order).
+- **Android app** (`android/`, `capacitor.config.json`, `tools/android/`, `docs/android/`, `tests/android/`): Capacitor wraps a
+  copy of the web files (`www/`, built by `tools/android/build-www.sh`, gitignored). `script.js` has native branches behind
+  `isNativeApp()` / `nativePlugin(name)` (no service worker, FCM alerts via `push_fcm_register`, on-phone reminders, Health
+  Connect via the Kotlin plugin `GymHealth`, system bar colours via `GymBars`); in a browser they do nothing. The `push` Edge
+  Function also sends FCM when the secret `FCM_SERVICE_ACCOUNT` is set. Keys and `google-services.json` are never committed.
 - **`design-concepts/`** holds standalone redesign prototypes (shared `data.js`, `frame.css`, `icons.js`,
   and an `index.html` gallery). It is not part of the app, is not precached, and `sw.js` skips every request
   under `/design-concepts/`.

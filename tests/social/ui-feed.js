@@ -168,8 +168,9 @@ async function shot(p, name) { const r = await p.c.send('Page.captureScreenshot'
     await pA.c.send('Network.emulateNetworkConditions', { offline: false, latency: 0, downloadThroughput: -1, uploadThroughput: -1 });
     const nBefore = await pA.eval(`communityFeed.items.length`);
     await pA.eval(`(document.querySelector('#community-foot [data-community-action="more"]').click(), true)`);
-    await waitFor(() => pA.eval(`!communityFeed.loading && !communityFeed.error`), 20000, 'retry');
-    check('Try again loads the next page', (await pA.eval(`communityFeed.items.length`)) > nBefore || await pA.eval(`communityFeed.done`));
+    /* loading = false príde ešte pred pridaním položiek (podpisujú sa náhľady) – čaká sa na samotné položky */
+    const more = await waitFor(() => pA.eval(`!communityFeed.error && (communityFeed.items.length > ${nBefore} || communityFeed.done)`), 20000, 'retry').then(() => true, () => false);
+    check('Try again loads the next page', more);
 
     section('Back restores the feed position and the filter');
     await pA.eval(`(window.scrollTo(0, 0), true)`);

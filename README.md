@@ -87,6 +87,10 @@ everything on your own device.
 
 **Online:** open https://surotvsk.github.io/Gymquest/
 
+**Android app:** in preparation for Google Play (closed testing first). It is the same app with native
+message alerts, reminders scheduled on the phone and optional Health Connect (heart rate from a watch
+after a workout; workouts saved to Health Connect). The website does not change for it.
+
 **Locally:** no installation, no build step and no dependencies. Just open `index.html` in a
 browser — double-click the file or drag it into a browser window. The app works completely offline.
 
@@ -106,6 +110,8 @@ browser — double-click the file or drag it into a browser window. The app work
 | `apple-touch-icon.png`, `icon-192.png`, `icon-512.png` | Home screen and app icons |
 | `media/` | Licensed exercise photographs and their credits (`media/CREDITS.md`) |
 | `design-concepts/` | 32 clickable redesign prototypes (mockups with sample data, not part of the app). The gallery is `design-concepts/index.html`. The service worker leaves these pages alone, so they always load from the network. `design-concepts/app/` holds copies of the chosen designs; `app/r2/03-bento.html` is the reference the app follows |
+| `privacy.html` | Privacy policy (English and Slovak), linked from the Android app's Health Connect screen and the Play Store listing |
+| `android/`, `capacitor.config.json`, `tools/android/`, `docs/android/` | The Android app: the same web app wrapped by Capacitor, with native notifications, on-phone reminders and Health Connect. In preparation for Google Play, not used by the website. Build and release steps: `docs/android/README.md` |
 | `README.md` | This documentation |
 
 ---
