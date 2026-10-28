@@ -136,6 +136,9 @@ async function typeMsg(p, text) {
     check('B sees the finished workout card', await pB.eval(`!!document.querySelector('#community-chat-msgs .cshare-card[data-kind="workout"]')`));
     const before = await pB.eval('Object.keys(state.plans).length');
     await click(pB, '#community-chat-msgs .cshare-card[data-kind="plan"] [data-community-action="save-shared"]');
+    check('Save to my plans asks first, nothing saved yet', await pB.eval(`!document.getElementById('modal-generic').hidden`)
+      && (await pB.eval('Object.keys(state.plans).length')) === before);
+    await click(pB, '#btn-generic-ok');
     const saved = await pB.eval(`Object.values(state.plans).find((p) => p.customName === 'Push day')`);
     check('Save to my plans: B gets a copy of the plan', (await pB.eval('Object.keys(state.plans).length')) === before + 1 && saved && saved.exercises.length === 2
       && saved.exercises[0].id === 'bench-press' && saved.exercises[0].weight === 60 && saved.exercises[1].name === 'Cable flyes', saved);
@@ -280,6 +283,9 @@ async function typeMsg(p, text) {
     await shot(pB, 'feed-post-with-plan', `.cpost[data-post="${postId}"]`);
     const n2 = await pB.eval('Object.keys(state.plans).length');
     await click(pB, `.cpost[data-post="${postId}"] [data-community-action="save-shared"]`);
+    check('Save to my plans asks first, nothing saved yet', await pB.eval(`!document.getElementById('modal-generic').hidden`)
+      && (await pB.eval('Object.keys(state.plans).length')) === n2);
+    await click(pB, '#btn-generic-ok');
     check('saving from the feed adds a plan (name made unique: "Push day (2)")', (await pB.eval('Object.keys(state.plans).length')) === n2 + 1
       && await pB.eval(`Object.values(state.plans).some((p) => p.customName === 'Push day (2)')`));
 

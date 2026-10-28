@@ -154,6 +154,9 @@ async function typeMsg(p, text) {
     await shot(pB, 'friend-card', '#community-chat-msgs .cshare-card');
     const before = await pB.eval('Object.keys(state.plans).length');
     await click(pB, '#community-chat-msgs .cshare-card[data-kind="workout"] [data-community-action="save-shared"]');
+    check('Save to my plans asks first, nothing saved yet', await pB.eval(`!document.getElementById('modal-generic').hidden`)
+      && (await pB.eval('Object.keys(state.plans).length')) === before);
+    await click(pB, '#btn-generic-ok');
     const saved = await pB.eval(`Object.values(state.plans).find((p) => p.customName === 'Arms day')`);
     check('ben saves it to his plans: the curl stays "one side at a time", 2 sets per side', (await pB.eval('Object.keys(state.plans).length')) === before + 1 && saved
       && saved.exercises[0].unilateral === true && saved.exercises[0].sets === 2 && !saved.exercises[1].unilateral, saved);

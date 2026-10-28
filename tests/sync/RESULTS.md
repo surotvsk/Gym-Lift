@@ -372,3 +372,24 @@ Storage objects on the account (`Observer.reset()` verifies that nothing is left
   PASS no page exceptions on either device
 ==== checks: 38 passed, 0 failed ====
 ```
+
+## 2026-10-28 — v87 release check (Fedora Linux, local Supabase stack, disposable local accounts)
+
+v87 changes no sync, storage, migration or account code (iPhone input zoom, double-tap zoom, "Save to my plans"
+confirmation + provenance). Results on the v87 working tree:
+
+- `run.js` (all scenarios): 141 passed. Account isolation, in-flight account switches, two tabs, session expiry,
+  RLS (B cannot read A's backup row or media), empty-data guard, offline: all pass.
+- `bento-upgrade.js` (installed v86 → v87 through the service worker, data unchanged, rollback): 67 passed, 0 failed.
+- `live-verify.js`: 38 passed, 0 failed.
+- Migration scenarios need `GQ_OLD_ROOT` = `git archive 962ae02` (v42). With it: M2/M3, M4 and the v42 release update
+  path pass; one check still names the v43 cache literally (`gymquest-v43`) although the new cache (`gymquest-v87`)
+  is correctly active and the v42 cache removed (stale assertion); M1 stops inside the old v42 app
+  (`communitySb()` returns null with the local config) before the new build is involved (harness issue).
+- **Known, pre-existing — not caused by v87:** "crash during restore" fails 2 of 6 checks identically on unchanged
+  v86 (`git archive HEAD` at ea90b00/1240028) and on v87. Crash point 1 expects a rollback to empty but finds the
+  restore fully applied (both workouts and all media present); crash point 2 finds the data fully applied but the
+  apply-journal entry still present right after the restart. In both runs the data is complete and consistent and
+  nothing is lost or mixed between accounts; the mismatch is where the simulated process kill lands relative to
+  Chrome's delayed localStorage flush on this machine (the scenario passed on Windows on 2026-10-10). Follow-up:
+  re-check the barrier timing and whether the retained journal entry is resolved on the following start.

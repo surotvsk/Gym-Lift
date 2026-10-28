@@ -876,7 +876,13 @@ date, duration, XP and each set's weight and reps). An exercise done one side at
 reviewed by a moderator as usual and the card follows the post's visibility (everyone / friends).
 After finishing a workout, **Share to Community** opens a new post with that workout already
 attached. Anyone who sees a card can tap **Save to my plans** to get their own copy as a new plan
-(the original is never changed).
+(the original is never changed). The app asks first ("Save “…” to your plans?"), because the copy
+includes the exercises and weights shown on the card; Cancel changes nothing. The new plan remembers
+where it came from (the post, chat message or train-together session), so its origin can always be
+traced.
+
+On iPhone, the page no longer zooms in when you tap into a plan's exercise fields or tap a tile twice
+quickly; pinching with two fingers to zoom still works.
 
 **Train together with a friend.** On **Workout**, tap **👥 Train with a friend** and pick one of your
 friends; you can also send your current plan so you both do the same workout. Your friend gets a chat

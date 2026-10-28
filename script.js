@@ -1879,7 +1879,7 @@ const I18N = {
     'share.exercisesOne': '{n} cvik', 'share.exercisesFew': '{n} cviky',
     'share.exercisesOther': '{n} cvikov', 'share.setsDone': '{d}/{s} sérií',
     'share.kindPlan': 'Tréningový plán', 'share.kindWorkout': 'Dokončený tréning',
-    'share.saveAsPlan': 'Uložiť do mojich plánov', 'share.saved': 'Uložené medzi tvoje plány ako „{name}“.',
+    'share.saveAsPlan': 'Uložiť do mojich plánov', 'share.saved': 'Uložené medzi tvoje plány ako „{name}“.', 'share.saveConfirmTitle': 'Uložiť „{name}“ do tvojich plánov?', 'share.saveConfirmText': 'Pridá sa kópia s {n} cvikmi a s váhami z karty. Tvoje ostatné plány sa nezmenia.',
     'share.pickPlan': 'Tvoje tréningové plány', 'share.pickWorkout': 'Posledné tréningy',
     'share.noPlans': 'Zatiaľ nemáš plán s cvikmi.', 'share.noWorkouts': 'Zatiaľ nemáš dokončený tréning.',
     'share.openChat': 'Zdieľať plán alebo tréning', 'share.remove': 'Odstrániť',
@@ -2788,7 +2788,7 @@ const I18N = {
     'share.exercisesOne': '{n} exercise', 'share.exercisesFew': '{n} exercises',
     'share.exercisesOther': '{n} exercises', 'share.setsDone': '{d}/{s} sets',
     'share.kindPlan': 'Workout plan', 'share.kindWorkout': 'Finished workout',
-    'share.saveAsPlan': 'Save to my plans', 'share.saved': 'Saved to your plans as “{name}”.',
+    'share.saveAsPlan': 'Save to my plans', 'share.saved': 'Saved to your plans as “{name}”.', 'share.saveConfirmTitle': 'Save “{name}” to your plans?', 'share.saveConfirmText': 'Adds a copy with {n} exercises and the weights shown on the card. Your other plans stay the same.',
     'share.pickPlan': 'Your workout plans', 'share.pickWorkout': 'Recent workouts',
     'share.noPlans': 'You have no plan with exercises yet.', 'share.noWorkouts': 'You have no finished workout yet.',
     'share.openChat': 'Share a plan or workout', 'share.remove': 'Remove',
@@ -3703,7 +3703,7 @@ const I18N = {
     'share.exercisesOne': '{n} ejercicio', 'share.exercisesFew': '{n} ejercicios',
     'share.exercisesOther': '{n} ejercicios', 'share.setsDone': '{d}/{s} series',
     'share.kindPlan': 'Plan de entrenamiento', 'share.kindWorkout': 'Entrenamiento terminado',
-    'share.saveAsPlan': 'Guardar en mis planes', 'share.saved': 'Guardado en tus planes como «{name}».',
+    'share.saveAsPlan': 'Guardar en mis planes', 'share.saved': 'Guardado en tus planes como «{name}».', 'share.saveConfirmTitle': '¿Guardar «{name}» en tus planes?', 'share.saveConfirmText': 'Se añade una copia con {n} ejercicios y los pesos de la tarjeta. Tus otros planes no cambian.',
     'share.pickPlan': 'Tus planes de entrenamiento', 'share.pickWorkout': 'Entrenamientos recientes',
     'share.noPlans': 'Aún no tienes un plan con ejercicios.', 'share.noWorkouts': 'Aún no has terminado ningún entrenamiento.',
     'share.openChat': 'Compartir un plan o entrenamiento', 'share.remove': 'Quitar',
@@ -4610,7 +4610,7 @@ const I18N = {
     'share.exercisesOne': '{n} exercício', 'share.exercisesFew': '{n} exercícios',
     'share.exercisesOther': '{n} exercícios', 'share.setsDone': '{d}/{s} séries',
     'share.kindPlan': 'Plano de treino', 'share.kindWorkout': 'Treino concluído',
-    'share.saveAsPlan': 'Salvar nos meus planos', 'share.saved': 'Salvo nos seus planos como “{name}”.',
+    'share.saveAsPlan': 'Salvar nos meus planos', 'share.saved': 'Salvo nos seus planos como “{name}”.', 'share.saveConfirmTitle': 'Salvar “{name}” nos seus planos?', 'share.saveConfirmText': 'Adiciona uma cópia com {n} exercícios e os pesos do cartão. Seus outros planos não mudam.',
     'share.pickPlan': 'Seus planos de treino', 'share.pickWorkout': 'Treinos recentes',
     'share.noPlans': 'Você ainda não tem um plano com exercícios.', 'share.noWorkouts': 'Você ainda não concluiu nenhum treino.',
     'share.openChat': 'Compartilhar um plano ou treino', 'share.remove': 'Remover',
@@ -5517,7 +5517,7 @@ const I18N = {
     'share.exercisesOne': '{n} exercice', 'share.exercisesFew': '{n} exercices',
     'share.exercisesOther': '{n} exercices', 'share.setsDone': '{d}/{s} séries',
     'share.kindPlan': 'Programme d’entraînement', 'share.kindWorkout': 'Séance terminée',
-    'share.saveAsPlan': 'Enregistrer dans mes programmes', 'share.saved': 'Enregistré dans tes programmes sous « {name} ».',
+    'share.saveAsPlan': 'Enregistrer dans mes programmes', 'share.saved': 'Enregistré dans tes programmes sous « {name} ».', 'share.saveConfirmTitle': 'Enregistrer « {name} » dans tes programmes ?', 'share.saveConfirmText': 'Ajoute une copie avec {n} exercices et les charges de la carte. Tes autres programmes ne changent pas.',
     'share.pickPlan': 'Tes programmes', 'share.pickWorkout': 'Séances récentes',
     'share.noPlans': 'Tu n’as pas encore de programme avec des exercices.', 'share.noWorkouts': 'Tu n’as pas encore terminé de séance.',
     'share.openChat': 'Partager un programme ou une séance', 'share.remove': 'Retirer',
@@ -6445,7 +6445,7 @@ const I18N = {
     'share.exercisesMany': '{n} تمرينًا', 'share.exercisesOther': '{n} تمرين',
     'share.setsDone': '{d}/{s} مجموعات', 'share.kindPlan': 'خطة تمرين',
     'share.kindWorkout': 'تمرين مكتمل', 'share.saveAsPlan': 'حفظ في خططي',
-    'share.saved': 'تم الحفظ في خططك باسم «{name}».', 'share.pickPlan': 'خطط تمرينك',
+    'share.saved': 'تم الحفظ في خططك باسم «{name}».', 'share.saveConfirmTitle': 'حفظ «{name}» في خططك؟', 'share.saveConfirmText': 'تُضاف نسخة فيها {n} تمارين والأوزان الظاهرة في البطاقة. خططك الأخرى لا تتغير.', 'share.pickPlan': 'خطط تمرينك',
     'share.pickWorkout': 'التمارين الأخيرة', 'share.noPlans': 'ليست لديك بعد خطة تحتوي على تمارين.',
     'share.noWorkouts': 'لم تُكمل أي تمرين بعد.', 'share.openChat': 'مشاركة خطة أو تمرين',
     'share.remove': 'إزالة', 'share.attachCurrentPlan': 'إرفاق خطتي الحالية',
@@ -16555,7 +16555,7 @@ async function trainRespond(accept) {
   trainNote = '';
   /* Plán priateľa: uloží sa ako kópia a vyberie – ale nikdy uprostred rozbehnutého tréningu. */
   if (accept && trainUsePlan && st.plan && !getSession()) {
-    const name = shareSaveAsPlan(st.plan);
+    const name = shareSaveAsPlan(st.plan, { kind: 'train', ref: st.id });
     const id = name && Object.keys(state.plans).find((k) => state.plans[k].customName === name);
     if (id) { selectedPlan = id; saveState(); trainNote = t('train.planSaved', { name }); }
   }
@@ -16796,7 +16796,7 @@ function shareCardHtml(a, src, ref, noSave) {
       + esc(t('share.saveAsPlan')) + '</button>') + '</div>';
 }
 /* Uloženie zdieľaného plánu / tréningu ako nového vlastného plánu (pôvodný sa nikdy nemení). */
-function shareSaveAsPlan(a) {
+function shareSaveAsPlan(a, source) {
   if (!a || !Array.isArray(a.exercises) || !a.exercises.length) return false;
   const exercises = a.exercises.slice(0, SHARE_MAX_EXERCISES).map((e) => {
     const id = e.id && BUILTIN_EXERCISE_IDS.has(e.id) ? e.id : null;
@@ -16811,6 +16811,8 @@ function shareSaveAsPlan(a) {
   for (let i = 2; names.has(name) && i < 100; i++) name = String(a.name || t('plan.newName')).slice(0, 55) + ' (' + i + ')';
   const id = 'p-' + uid();
   state.plans[id] = { id, builtin: false, customName: name, exercises };
+  /* Pôvod kópie (príspevok / správa / spoločný tréning, len id a čas) – aby sa dalo vždy dohľadať, odkiaľ plán prišiel. */
+  if (source && source.kind) state.plans[id].source = { kind: String(source.kind), ref: String(source.ref || ''), at: new Date().toISOString() };
   if (!Array.isArray(state.planOrder)) state.planOrder = [];
   state.planOrder.push(id);
   saveState();
@@ -16830,9 +16832,18 @@ function communitySaveShared(src, ref) {
   let a = null;
   if (src === 'msg') { const m = communityChatMsgs.find((x) => String(x.id) === String(ref)); a = m && m.attachment; }
   else if (src === 'post') a = (communityFeedItem(ref) || {}).share || communityPostShares[ref] || null;
-  const name = shareSaveAsPlan(a);
-  communitySetMessageText(name ? t('share.saved', { name }) : t('community.errNetwork'));
-  communityShowStatus();
+  if (!a || !Array.isArray(a.exercises) || !a.exercises.length) {
+    communitySetMessageText(t('community.errNetwork'));
+    communityShowStatus();
+    return;
+  }
+  /* Kópia plánu iného človeka (aj s jeho váhami) vznikne len po výslovnom potvrdení, nikdy jedným ťuknutím. */
+  const n = Math.min(a.exercises.length, SHARE_MAX_EXERCISES);
+  showGeneric(t('share.saveConfirmTitle', { name: String(a.name || t('plan.newName')).slice(0, 60) }), t('share.saveAsPlan'), () => {
+    const name = shareSaveAsPlan(a, { kind: src, ref });
+    communitySetMessageText(name ? t('share.saved', { name }) : t('community.errNetwork'));
+    communityShowStatus();
+  }, esc(t('share.saveConfirmText', { n })));
 }
 
 /* ---------- Odpovede a reakcie v chate ---------- */

@@ -1707,7 +1707,8 @@ textarea.modal-input { resize: vertical; }
   border-radius: var(--r-sm);
   color: var(--text);
   font-family: inherit;
-  font-size: var(--fs-sm);
+  /* 16 px: iPhone (Safari aj appka z plochy) inak pri ťuknutí do poľa priblíži celú stránku a späť ju neoddiali. */
+  font-size: 16px;
   padding: 8px 10px;
   min-height: 40px;
 }
@@ -4317,6 +4318,10 @@ html[data-theme="dark"] .cal-cell.cal-miss { color: #121212; }
 .empty-state { color: var(--k-mute); text-align: center; padding: 18px 8px; margin: 0; }
 
 /* ---- prístupnosť ---- */
+/* Dvojité ťuknutie (napr. dva rýchle ťuky na dlaždicu plánu) na iPhone nepriblíži stránku;
+   priblíženie dvoma prstami ostáva zachované (manipulation = posúvanie + pinch-zoom).
+   :where() má nulovú špecificitu, takže prvky s vlastným touch-action (ťahanie cvikov) ho prebijú. */
+:where(html, body, body *) { touch-action: manipulation; }
 :where(button, a, input, select, textarea, [tabindex]):focus-visible { outline: 3px solid var(--focus, #3550C8); outline-offset: 2px; }
 :root, html[data-theme="light"] { --focus: #3550C8; } html[data-theme="dark"] { --focus: #D6F35A; }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .001ms !important; transition-duration: .001ms !important; scroll-behavior: auto !important; } }
