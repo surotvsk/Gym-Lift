@@ -9862,6 +9862,7 @@ function loadState() {
     if (!raw) {
       state = defaultState();
       deviceSettingsApply(state);
+      syncForgetBaselineAfterLocalLoss();
       persistState();
       return;
     }
@@ -9884,6 +9885,7 @@ function loadState() {
     state = defaultState();
     deviceSettingsApply(state);
     unreadableStateRaw = raw;   // pred prvým zápisom sa odloží bokom (pozri persistState)
+    syncForgetBaselineAfterLocalLoss();
   }
 }
 let unreadableStateRaw = null;
@@ -22948,6 +22950,17 @@ function syncMetaWrite(m, slot) {
   catch (e) { return false; }
 }
 function syncMetaUpdate(fn) { const m = syncMetaRead(); fn(m); syncMetaWrite(m); return m; }
+/* Dáta priestoru účtu chýbajú alebo sú nečitateľné, hoci už bol synchronizovaný: predvolený stav (a úpravy
+   urobené po ňom) sa nesmú automaticky nahrať cez účet ako „nová verzia“. Zabudne sa posledná zhoda s účtom,
+   takže ďalšia synchronizácia účet načíta, alebo sa – ak sa medzitým niečo zmenilo – výslovne opýta. */
+function syncForgetBaselineAfterLocalLoss() {
+  try {
+    if (!wsSlot || !wsSlot.owner) return;
+    const meta = syncMetaRead();
+    if (meta.rev === null && !meta.hash) return;
+    syncMetaUpdate((m) => { m.rev = null; m.hash = null; m.localHash = null; });
+  } catch (e) { /* bez metadát nie je čo zabudnúť */ }
+}
 function syncIsDirty(m) { return (m.seq || 0) > (m.syncedSeq || 0) || (m.mediaFailed || []).length > 0; }
 
 /* ---------- IndexedDB priestoru: kópie na obnovu + žurnál aplikovania ---------- */
@@ -24697,6 +24710,38 @@ function setupEvents() {
      skutočného pokynu používateľa – iOS ho inak po pozastavení sám neobnoví a gong
      by sa prehral inou výstupnou cestou (alebo vôbec). */
   document.addEventListener('pointerdown', () => { resumeAudioIfNeeded(true); }, { passive: true });
+  installDoubleTapGuard();
+}
+
+/* iPhone (aj appka z plochy): druhé rýchle ťuknutie na to isté miesto stránku priblíži („smart zoom“),
+   aj keď je nastavené touch-action: manipulation – dlaždice plánov sa ťukajú dvakrát rýchlo za sebou.
+   Druhé rýchle ťuknutie jedným prstom bez pohybu sa preto vybaví ako obyčajné ťuknutie (klik) a iOS ho
+   nepriblíži. Priblíženie dvoma prstami, posúvanie a polia formulárov (klávesnica) zostávajú nedotknuté. */
+const DOUBLE_TAP_MS = 350;
+let tapGuardStart = null;
+let tapGuardLast = { at: 0, x: 0, y: 0 };
+function installDoubleTapGuard() {
+  document.addEventListener('touchstart', (e) => {
+    if (e.touches.length !== 1) { tapGuardStart = null; tapGuardLast.at = 0; return; }   // viac prstov = gesto
+    const t = e.touches[0];
+    tapGuardStart = { x: t.clientX, y: t.clientY, at: Date.now() };
+  }, { passive: true });
+  document.addEventListener('touchend', (e) => {
+    const start = tapGuardStart;
+    tapGuardStart = null;
+    if (!start || e.touches.length || e.changedTouches.length !== 1) return;
+    const t = e.changedTouches[0];
+    const now = Date.now();
+    const moved = Math.abs(t.clientX - start.x) > 10 || Math.abs(t.clientY - start.y) > 10;
+    if (moved || now - start.at > 500) { tapGuardLast.at = 0; return; }   // posúvanie / podržanie nie je ťuknutie
+    const quick = now - tapGuardLast.at < DOUBLE_TAP_MS && Math.abs(t.clientX - tapGuardLast.x) < 40 && Math.abs(t.clientY - tapGuardLast.y) < 40;
+    tapGuardLast = { at: now, x: t.clientX, y: t.clientY };
+    if (!quick) return;
+    const target = e.target && e.target.closest ? e.target : null;
+    if (!target || target.closest('input, textarea, select, [contenteditable="true"], video, audio')) return;
+    e.preventDefault();   // iOS potom nespustí dvojité priblíženie (ani vlastný klik)…
+    target.click();       // …takže klik sa vybaví tu – druhé ťuknutie funguje ako každé iné
+  }, { passive: false });
 }
 
 /* ---------- Denný strážca (dátum, ISO týždeň, týždenný progres) ---------- */

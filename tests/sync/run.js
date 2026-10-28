@@ -21,6 +21,8 @@ const REMOTE = !!process.env.GQ_BASE;
 const WORK = process.env.GQ_WORK || path.join(require('os').tmpdir(), 'gq-sync-work');
 const PROFILES = path.join(WORK, 'profiles');
 let nextPort = 9520;
+/* Adresy servera, ktoré „blockSupabase“ zablokuje: hostovaný projekt aj lokálny stack (doplní sa z konfigurácie). */
+const SB_BLOCK = ['*supabase.co*'];
 
 const results = [];
 let current = null;
@@ -55,7 +57,7 @@ async function relaunch(d, graceful, opts) {
   d.p = await d.b.restart(graceful);
   if (opts.offline) await d.p.offline(true);
   if (opts.bypassSW) await d.p.c.send('Network.setBypassServiceWorker', { bypass: true });
-  if (opts.blockSupabase) await d.p.c.send('Network.setBlockedURLs', { urls: ['*supabase.co*'] });
+  if (opts.blockSupabase) await d.p.c.send('Network.setBlockedURLs', { urls: SB_BLOCK });
   if (opts.noWait) { const before = d.p.loads; await d.p.c.send('Page.navigate', { url: BASE }); await waitFor(() => d.p.loads > before, 60000, 'load'); return d.p; }
   await d.p.navigate(BASE); await d.p.eval(HELPERS); return d.p;
 }
@@ -806,12 +808,103 @@ scenario('migration M4: storage failures during migration leave the original dat
   check('next start: snapshot moved after verified copy', !fl.gymquest_restore_snapshot && f.recovery.some((r) => r.kind === 'legacy-snapshot'), f.recovery);
 });
 
+/* ------------- whole-record replacement paths (2026-10-28 incident: plans + XP kept, no workouts) -------------
+   Each scenario starts from an account with workouts AND an activity and asks: can the account end up with plans
+   and achievements but no workouts/activities without the user explicitly choosing that? */
+const ACT = (id, date) => `(state.activities.push({ id: '${id}', kind: 'run', date: '${date}', startedAt: 1700000000000, endedAt: 1700000600000, activeSeconds: 600, distanceKm: 2, note: '', xp: 15 }), saveState(), true)`;
+const cloudActs = (row) => ((row && row.payload && row.payload.activities) || []).length;
+async function seedFull(ctx, name) {
+  const { d } = await seedA(ctx, name);
+  await d.p.eval(ACT('a1', '2026-09-02'));
+  const s = await syncNow(d.p);
+  const row = await ctx.obsA.row();
+  check('seed: account has 2 workouts, 1 activity, a custom plan', cloudHist(row).join() === 'w1,w2' && cloudActs(row) === 1 && s.plans.indexOf('tp1') >= 0, { h: cloudHist(row), a: cloudActs(row) });
+  return { d, s, row };
+}
+async function accountIntact(ctx, label) {
+  const row = await ctx.obsA.row();
+  return check(label, cloudHist(row).join() === 'w1,w2' && cloudActs(row) === 1, { h: cloudHist(row), a: cloudActs(row), rev: row && row.revision });
+}
+
+scenario('overwrite O1: unreadable local data + a plan edit never silently replaces the account', async (ctx) => {
+  const { d } = await seedFull(ctx, 'o1');
+  const key = await d.p.eval('STORAGE_KEY');
+  await d.p.eval(`(localStorage.setItem(${JSON.stringify(key)}, '{"broken'), true)`);
+  await relaunch(d, true, { blockSupabase: true });            // reopened without a connection: starts from defaults
+  const a = await snap(d.p);
+  check('device shows no workouts now (started from defaults)', a.hist.length === 0, a.hist);
+  await d.p.eval(`__gq.addCustomPlan('tp-after')`);           // the user edits a plan before reconnecting
+  const ls = await d.p.eval('__gq.lsKeys()');
+  check('unreadable data is kept aside unchanged (at the first save)', !!ls[key + '_unreadable'] && (await d.p.eval(`localStorage.getItem(${JSON.stringify(key + '_unreadable')})`)) === '{"broken', Object.keys(ls).filter((k) => k.indexOf('gymquest') === 0));
+  await d.p.c.send('Network.setBlockedURLs', { urls: [] });
+  const b = await syncNow(d.p);
+  await accountIntact(ctx, 'account keeps its workouts and activity');
+  check('device reloads the account or asks explicitly (never uploads a smaller record)', b.hist.join() === 'w1,w2' || !!b.meta.conflict, { hist: b.hist, conflict: b.meta.conflict });
+});
+
+scenario('overwrite O2: missing local data (state key gone, sync bookkeeping kept) + a plan edit', async (ctx) => {
+  const { d } = await seedFull(ctx, 'o2');
+  const key = await d.p.eval('STORAGE_KEY');
+  await d.p.eval(`(localStorage.removeItem(${JSON.stringify(key)}), true)`);
+  await relaunch(d, true, { blockSupabase: true });
+  const a = await snap(d.p);
+  check('still the account workspace, no workouts loaded', a.owner === ctx.A.id && a.hist.length === 0, { owner: a.owner, hist: a.hist });
+  await d.p.eval(`__gq.addCustomPlan('tp-after')`);
+  await d.p.c.send('Network.setBlockedURLs', { urls: [] });
+  const b = await syncNow(d.p);
+  await accountIntact(ctx, 'account keeps its workouts and activity');
+  check('device reloads the account or asks explicitly', b.hist.join() === 'w1,w2' || !!b.meta.conflict, { hist: b.hist, conflict: b.meta.conflict });
+});
+
+scenario('overwrite O3: plan edited on a new device before the first download after sign-in finishes', async (ctx) => {
+  await seedFull(ctx, 'o3-seed');
+  const d = await device('o3');
+  await preArm(d.p, ['sync:start']);
+  const before = d.p.loads;
+  await signInRaw(d, ctx.A);
+  await waitFor(() => d.p.loads > before, 60000, 'reload');
+  await waitReached(d.p, 'sync:start');
+  await d.p.eval(HELPERS);
+  await d.p.eval(`__gq.addCustomPlan('tp-early')`);           // edit while the first sync is held
+  await release(d.p, 'sync:start');
+  const b = await syncNow(d.p);
+  await accountIntact(ctx, 'account keeps its workouts and activity');
+  check('device gets the account data or an explicit choice', b.hist.join() === 'w1,w2' || !!b.meta.conflict, { hist: b.hist, conflict: b.meta.conflict });
+});
+
+scenario('overwrite O4: explicit "keep this device" with a plans-only device; recovery copy; version retention', async (ctx) => {
+  await seedFull(ctx, 'o4-seed');
+  const v0 = await ctx.obsA.versions();
+  const d = await device('o4');
+  await d.p.eval(`(__gq.addCustomPlan('tp-dev'), true)`);   // guest device: plans only, no workouts
+  await signIn(d, ctx.A);
+  let a = await snap(d.p);
+  if (a.link) { try { await d.p.eval(`__gq.click('link-yes')`); } catch (e) {} await R(d.p); }
+  a = await syncNow(d.p);
+  check('a plans-only device and a populated account: explicit choice first, nothing uploaded', !!a.meta.conflict, a.meta.conflict);
+  await accountIntact(ctx, 'account untouched while undecided');
+  await d.p.eval(`(__gq.click('keep-device') || (syncResolveConflict('device'), true))`);
+  const b = await syncNow(d.p);
+  const row = await ctx.obsA.row();
+  check('after the explicit choice the account has the device data (no workouts) — by design', cloudHist(row).length === 0, cloudHist(row));
+  check('the device kept a recovery copy of the account (2 workouts)', b.recovery.some((r) => r.kind === 'cloud-copy' && r.hist === 2), b.recovery);
+  const v1 = await ctx.obsA.versions();
+  check('the server still keeps the previous version with the workouts', v1.some((v) => v.hist === 2 && v.acts === 1), v1);
+  for (let i = 0; i < 5; i++) { await d.p.eval(`__gq.addMeasurement('mx${i}', ${80 + i})`); await syncNow(d.p); }
+  const v2 = await ctx.obsA.versions();
+  console.log('    versions kept after 5 more saves: ' + JSON.stringify(v2) + ' (before: ' + JSON.stringify(v0) + ')');
+  check('retention: only the newest 5 versions are kept (the version with workouts is gone after 5 saves)', v2.length <= 5 && !v2.some((v) => v.hist === 2), v2);
+  const c = await snap(d.p);
+  check('the on-device recovery copy is still there after those saves', c.recovery.some((r) => r.kind === 'cloud-copy' && r.hist === 2), c.recovery);
+});
+
 /* ---------------------------- runner ---------------------------- */
 (async () => {
   fs.mkdirSync(PROFILES, { recursive: true });
   const roots = { new: REPO, old: process.env.GQ_OLD_ROOT || REPO };
   const server = await startServer(PORT, roots);
   const cfg = readPublicConfig(REPO);
+  if (!/supabase\.co/.test(cfg.url)) SB_BLOCK.push('*' + new URL(cfg.url).host + '*');
   const A = loadCreds('a'), B = loadCreds('b');
   const obsA = await new Observer(cfg, A).login();
   const obsB = await new Observer(cfg, B).login();

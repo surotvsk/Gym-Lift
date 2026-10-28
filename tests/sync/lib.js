@@ -298,6 +298,12 @@ class Observer {
     const j = await r.json();
     return Array.isArray(j) && j.length ? j[0] : null;
   }
+  /* Uchované verzie zálohy (server drží najnovších 5): revízia + počet tréningov / aktivít. */
+  async versions(uid) {
+    const r = await fetch(this.cfg.url + '/rest/v1/backup_versions?select=revision,payload&order=revision.desc&user_id=eq.' + (uid || this.creds.id), { headers: this.h() });
+    const j = await r.json();
+    return (Array.isArray(j) ? j : []).map((v) => ({ rev: Number(v.revision), hist: ((v.payload || {}).history || []).length, acts: ((v.payload || {}).activities || []).length }));
+  }
   async listAll(prefix) {
     const out = [];
     const walk = async (p, depth) => {

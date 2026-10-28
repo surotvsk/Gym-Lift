@@ -1269,6 +1269,9 @@ no tracking**.
   (*Keep this device* / *Keep account* / *Decide later*). Before applying a choice, a recovery copy of
   **both** versions is kept (⚙️ Settings → *Recovery copies*). An empty device never overwrites a
   populated account, and *Reset data* re-loads the account instead of uploading empty data.
+  If this device's saved data for an account is missing or unreadable, the app starts again from the
+  account: it loads the account, or (if something was changed in the meantime) asks which version to keep;
+  it never uploads the smaller device data on its own.
 - **Separate workspaces.** Each account has its own storage on the device; signed out you use a
   separate guest workspace. Signing out or switching accounts never shows or uploads one account's
   data as another's, and pending changes stay with their account until it signs in again.

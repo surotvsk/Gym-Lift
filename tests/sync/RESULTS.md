@@ -393,3 +393,20 @@ confirmation + provenance). Results on the v87 working tree:
   nothing is lost or mixed between accounts; the mismatch is where the simulated process kill lands relative to
   Chrome's delayed localStorage flush on this machine (the scenario passed on Windows on 2026-10-10). Follow-up:
   re-check the barrier timing and whether the retained journal entry is resolved on the following start.
+
+## 2026-10-28 — v88 release check (Fedora Linux, local Supabase stack, disposable local accounts)
+
+- **Correction to the v87 note above:** the two "crash during restore" mismatches were a harness problem, not app
+  behaviour. `blockSupabase` only blocked `*supabase.co*`, so against the local stack (`127.0.0.1:54321`) the
+  "offline" restart was never offline and the restore completed. `run.js` now also blocks the configured host;
+  the scenario passes 6/6.
+- **New scenarios "overwrite O1–O4"** (whole-record replacement). O1/O2 reproduced a real bug in v87 and earlier:
+  when an account workspace's local data is unreadable or missing while its sync bookkeeping remains, an edit made
+  afterwards was uploaded automatically and replaced the account (workouts and activities gone, no question asked).
+  v88 forgets the last match with the account in that case, so the next sync loads the account or asks. O1–O4 pass.
+  O4 confirms the server keeps only the newest 5 backup versions.
+- `run.js` all scenarios (v42 build as `GQ_OLD_ROOT`): 180 passed; the remaining failure (`gymquest-v43` named in a
+  check) and M1 (`communitySb()` null inside the old v42 app) are harness issues unrelated to the app.
+- `bento-upgrade.js`: from the old UI v77 (`GQ_OLD_REF=811de6e`) 67/67; from v87 to v88 67/67. `live-verify.js` 38/38.
+- `tests/app/ios-zoom.js` 23/23 (real touch events: a quick second tap on a plan tile is handled by the app, pinch,
+  scrolling and text fields stay native, two quick taps mark two sets); fails on v87.

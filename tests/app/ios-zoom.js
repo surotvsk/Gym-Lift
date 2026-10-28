@@ -102,7 +102,62 @@ const TOUCH = (sel) => `(() => { const e = document.querySelector(${J(sel)}); re
     const othersSame = await p.eval(`(() => { const b = JSON.parse(window.__plansBefore); return Object.keys(b).every((k) => JSON.stringify(b[k]) === JSON.stringify(state.plans[k])); })()`);
     check('…and leaves every other plan exactly as it was', othersSame);
 
-    /* 5. Nové (prázdne) zariadenie nemá žiadny cudzí plán. */
+    /* 5. Dvojité ťuknutie (skutočné dotyky): druhé rýchle ťuknutie sa vybaví ako klik, iOS ho nepriblíži.
+       Chrome nepriblíži nikdy – overuje sa, že druhý touchend je zrušený (defaultPrevented) a klik sa nestratí. */
+    await p.c.send('Emulation.setTouchEmulationEnabled', { enabled: true, maxTouchPoints: 5 });
+    await p.eval(`(() => { window.__taps = []; document.addEventListener('click', (e) => window.__taps.push('click:' + (e.target.closest('[data-plan],button,input,.set-btn') || e.target).className), true);
+      window.addEventListener('touchend', (e) => window.__taps.push('end:' + (e.defaultPrevented ? 'prevented' : 'native')), false); return 1; })()`);
+    const tap = async (x, y, gap) => {
+      await p.c.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x, y }] });
+      await p.c.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
+      if (gap) await wait(gap);
+    };
+    const center = (sel) => p.eval(`(() => { const e = document.querySelector(${J(sel)}); e.scrollIntoView({ block: 'center' }); const r = e.getBoundingClientRect(); return { x: Math.round(r.left + r.width / 2), y: Math.round(r.top + r.height / 2) }; })()`);
+    await p.eval(`(switchTab('trening'), renderAll(), 1)`);
+    await wait(300);
+    const tileSel = '#plan-chips .chip-wrap[data-plan-id="legs"] .chip';
+    if (await p.eval(`!!document.querySelector(${J(tileSel)})`)) {
+      const c1 = await center(tileSel);
+      await wait(400);
+      await p.eval('(window.__taps = [], 1)');
+      await tap(c1.x, c1.y, 120); await tap(c1.x, c1.y, 400);
+      const log = await p.eval('window.__taps');
+      check('double tap on a plan tile: second touch is handled by the app (iOS gets no double-tap)', log.filter((x) => x === 'end:prevented').length === 1, log);
+      check('…and both taps still act as taps (2 clicks, none lost or doubled)', log.filter((x) => x.startsWith('click:')).length === 2, log);
+    } else check('plan tile found', false, tileSel);
+    await p.eval('(window.__taps = [], 1)');
+    const c2 = { x: 200, y: 400 };
+    await p.c.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x: 150, y: 400 }, { x: 250, y: 400 }] });
+    await p.c.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x: 120, y: 400 }, { x: 280, y: 400 }] });
+    await p.c.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
+    await tap(c2.x, c2.y, 400);
+    check('two-finger gesture (pinch) is never blocked', !(await p.eval('window.__taps')).includes('end:prevented'), await p.eval('window.__taps'));
+    await p.eval('(window.__taps = [], 1)');
+    await p.c.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x: 200, y: 600 }] });
+    await p.c.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x: 200, y: 500 }] });
+    await p.c.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
+    await tap(200, 500, 400);
+    check('a tap right after scrolling is a normal tap (not blocked)', !(await p.eval('window.__taps')).includes('end:prevented'), await p.eval('window.__taps'));
+    /* Rýchle odškrtnutie dvoch sérií v tréningu: obe sa označia. */
+    await p.eval(`(() => { state.activeSession = null; selectedPlan = 'push'; startWorkoutNow(); return 1; })()`);
+    await wait(500);
+    const sq = await p.eval(`(() => { const b = [...document.querySelectorAll('#screen-trening .set-btn.sq')].filter((x) => x.offsetParent); b[0].scrollIntoView({ block: 'center' }); return b.slice(0, 2).map((x) => { const r = x.getBoundingClientRect(); return { x: Math.round(r.left + r.width / 2), y: Math.round(r.top + r.height / 2) }; }); })()`);
+    await wait(400);
+    await tap(sq[0].x, sq[0].y, 150); await tap(sq[1].x, sq[1].y, 500);
+    const done = await p.eval(`Object.keys((state.activeSession || {}).completedSets || {}).length`);
+    check('two quick taps on two set squares mark both sets', done === 2, done);
+    await p.eval(`(() => { const m = document.getElementById('modal-rest'); if (m && !m.hidden) closeRestSheet(); state.activeSession = null; saveState(); renderAll(); return 1; })()`);
+    /* Pole formulára: rýchle ťuknutie do poľa zostáva natívne (klávesnica / kurzor). */
+    await p.eval(`(startEditPlan('push'), 1)`);
+    await wait(400);
+    const f = await center('#edit-rows .edit-name');
+    await p.eval('(window.__taps = [], 1)');
+    await tap(f.x, f.y, 120); await tap(f.x, f.y, 400);
+    check('quick taps in a text field stay native and focus it', !(await p.eval('window.__taps')).includes('end:prevented') && (await p.eval(`document.activeElement && document.activeElement.classList.contains('edit-name')`)), await p.eval('window.__taps'));
+    await p.eval(`(cancelEditPlan(), 1)`);
+    await p.c.send('Emulation.setTouchEmulationEnabled', { enabled: false });
+
+    /* 6. Nové (prázdne) zariadenie nemá žiadny cudzí plán. */
     const names = await p.eval(`Object.values(state.plans).map((x) => planDisplayName(x))`);
     check('defaults contain no personal plan (only built-in / own ones)', !names.some((n) => /cecky/i.test(n)), names);
     check('no page errors', p.errors.length === 0, p.errors.slice(0, 3));
