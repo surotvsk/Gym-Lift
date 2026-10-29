@@ -1,6 +1,6 @@
 {
-  "name": "GymQuest",
-  "short_name": "GymQuest",
+  "name": "Gym-Lift",
+  "short_name": "Gym-Lift",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
