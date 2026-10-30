@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""GymQuest — Android ikony a splash z icon-512.png (Pillow, bez ďalších nástrojov).
+"""GymQuest / Gym-Lift — Android ikony a splash z icon-512.png (Pillow, bez ďalších nástrojov).
 
     python3 tools/android/make-icons.py
 
@@ -13,7 +13,7 @@ from PIL import Image, ImageDraw
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 RES = os.path.join(ROOT, 'android', 'app', 'src', 'main', 'res')
 SRC = Image.open(os.path.join(ROOT, 'icon-512.png')).convert('RGBA')
-BG = SRC.getpixel((5, 5))[:3]                       # tmavé pozadie ikony
+BG = SRC.getpixel((5, 5))[:3]                       # pozadie ikony (farba v rohu)
 DENS = {'mdpi': 1, 'hdpi': 1.5, 'xhdpi': 2, 'xxhdpi': 3, 'xxxhdpi': 4}
 
 
@@ -59,17 +59,19 @@ def rounded(img, radius_frac):
 
 
 for name, k in DENS.items():
-    # adaptívna ikona: 108dp, bezpečná zóna 66dp → glyf na ~56 % šírky
-    save(centered(round(108 * k), 0.56), 'mipmap-' + name, 'ic_launcher_foreground.png')
-    legacy = centered(round(48 * k), 0.70, BG)
-    save(rounded(legacy, 0.18), 'mipmap-' + name, 'ic_launcher.png')
-    circ = Image.new('L', legacy.size, 0)
-    ImageDraw.Draw(circ).ellipse((0, 0, legacy.width - 1, legacy.height - 1), fill=255)
-    rnd = centered(round(48 * k), 0.62, BG)
+    # adaptívna ikona: 108dp, viditeľných ~72dp; glyf (nápis) na 34 % = rovnaký pomer ako v návrhu
+    # (nápis ≈ 51 % ikony) a aj rohy textu ostanú vnútri kruhovej masky (polomer 33dp)
+    save(centered(round(108 * k), 0.34), 'mipmap-' + name, 'ic_launcher_foreground.png')
+    # stará ikona (Android < 8) = presne návrh, len zaoblený / kruhový
+    full = SRC.resize((round(48 * k), round(48 * k)), Image.LANCZOS)
+    save(rounded(full, 0.18), 'mipmap-' + name, 'ic_launcher.png')
+    circ = Image.new('L', full.size, 0)
+    ImageDraw.Draw(circ).ellipse((0, 0, full.width - 1, full.height - 1), fill=255)
+    rnd = full.copy()
     rnd.putalpha(circ)
     save(rnd, 'mipmap-' + name, 'ic_launcher_round.png')
-    # Android 12+ splash ikona (240dp plátno, ikona v kruhu 160dp)
-    save(centered(round(240 * k), 0.50), 'drawable-' + name, 'ic_splash_icon.png')
+    # Android 12+ splash ikona (240dp plátno, ikona v kruhu 160dp → nápis na 42 %, rohy vnútri kruhu)
+    save(centered(round(240 * k), 0.42), 'drawable-' + name, 'ic_splash_icon.png')
     # notifikácia: biela silueta 24dp
     white = Image.new('RGBA', GLYPH.size, (255, 255, 255, 255))
     white.putalpha(GLYPH.getchannel('A'))

@@ -1,6 +1,6 @@
 {
   "appId": "surotvsk.gymapp",
-  "appName": "GymQuest",
+  "appName": "Gym-Lift",
   "webDir": "www",
   "android": {
     "allowMixedContent": false

@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">GymQuest</string>
-    <string name="title_activity_main">GymQuest</string>
+    <string name="app_name">Gym-Lift</string>
+    <string name="title_activity_main">Gym-Lift</string>
     <string name="package_name">surotvsk.gymapp</string>
     <string name="custom_url_scheme">surotvsk.gymapp</string>
 </resources>
