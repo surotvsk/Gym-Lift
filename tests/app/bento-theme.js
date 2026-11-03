@@ -167,7 +167,7 @@ const CONTRAST_JS = `(() => {
             const r = await p.eval(`(document.documentElement.style.zoom = ${J(zoom)}, setLang(${J(lang)}), switchTab('dnes'), window.scrollTo(0, 0), ${DATE_JS})`);
             const tag = [mode, w, zoom, lang].join('/');
             if (!r.text || !/\d/.test(r.text)) dateBad.push(['empty', tag, r.text]);
-            if (r.top < 4) dateBad.push(['top', tag, Math.round(r.top)]);
+            if (r.top < 14) dateBad.push(['top', tag, Math.round(r.top)]);
             if (r.left < 0 || r.right > r.vw + 1 || r.clip) dateBad.push(['clipped', tag, r.text, Math.round(r.left), Math.round(r.right), Math.round(r.vw), r.clip]);
             if (r.overlap) dateBad.push(['overlaps greeting', tag]);
             if (r.fs < 13) dateBad.push(['font', tag, r.fs]);
@@ -177,7 +177,7 @@ const CONTRAST_JS = `(() => {
       }
     }
     await p.eval(`(document.documentElement.style.zoom = '', setLang('en'), localStorage.removeItem('gymquest_theme'), applyTheme(), true)`);
-    check('Today date + week: visible ≥ 4 px from the top, not clipped, no overlap with the greeting, ≥ 13 px, contrast ≥ 4.5 (6 languages × 320/360/393/430 × 100/130 % × light/dark)', dateBad.length === 0, dateBad.slice(0, 6));
+    check('Today date + week: visible ≥ 14 px from the top (clear of the iOS edge blur), not clipped, no overlap with the greeting, ≥ 13 px, contrast ≥ 4.5 (6 languages × 320/360/393/430 × 100/130 % × light/dark)', dateBad.length === 0, dateBad.slice(0, 6));
 
     console.log('== layout: top spacing, Settings spacing, Stats tiles, Stats month count (v91)');
     const LAYOUT_JS = `(() => {
@@ -212,10 +212,10 @@ const CONTRAST_JS = `(() => {
         for (const lang of ['en', 'sk', 'ar']) {
           await p.eval(`(setLang(${J(lang)}), true)`);
           const tag = [mode, w, lang].join('/');
-          /* horný okraj: kompaktná hlavička – prvý nadpis 4–28 px od vrchu okna (okno začína pod stavovým riadkom) */
+          /* horný okraj: kompaktná hlavička – prvý nadpis 14–36 px od vrchu (mimo rozmazania iOS) okna (okno začína pod stavovým riadkom) */
           for (const [tab, sel] of [['dnes', '.bh-head'], ['trening', '#screen-trening .screen-title'], ['pokrok', '#screen-pokrok .screen-title'], ['ty', '#ty-title']]) {
             const top = await p.eval(`(switchTab(${J(tab)}), window.scrollTo(0, 0), (() => { const e = [document.querySelector(${J(sel)}), ...document.querySelectorAll('#screen-' + ${J(tab)} + ' h1, #screen-' + ${J(tab)} + ' h2, #screen-' + ${J(tab)} + ' h3'), ...document.querySelectorAll('#screen-' + ${J(tab)} + ' > *')].find((x) => x && x.getClientRects().length && x.getBoundingClientRect().height > 0); return e ? e.getBoundingClientRect().top : -1; })())`);
-            if (!(top >= 4 && top <= 28)) lay.push(['top', tag, tab, top]);
+            if (!(top >= 14 && top <= 36)) lay.push(['top', tag, tab, top]);
           }
           /* Stats: nič nepretečie z dlaždice (okrem zámerného „…“ v rekordoch) */
           const ov = await p.eval(`(switchTab('pokrok'), [...document.querySelectorAll('#stats-grid .bt *')].filter((e) => e.offsetParent && !e.closest('svg') && !e.matches('.st-rec span') && e.getBoundingClientRect().width && e.scrollWidth > e.clientWidth + 1 && getComputedStyle(e).display !== 'inline').map((e) => e.className || e.tagName).slice(0, 3))`);
@@ -233,7 +233,7 @@ const CONTRAST_JS = `(() => {
         }
       }
     }
-    check('first heading of every main screen sits 4–28 px from the top (compact), Settings groups ≥ 12 px apart without overlapping or touching rows, 44 px controls, Stats tiles do not overflow (en/sk/ar × 360/393 × light/dark)', lay.length === 0, lay.slice(0, 6));
+    check('first heading of every main screen sits 14–36 px from the top (compact), Settings groups ≥ 12 px apart without overlapping or touching rows, 44 px controls, Stats tiles do not overflow (en/sk/ar × 360/393 × light/dark)', lay.length === 0, lay.slice(0, 6));
     await p.c.send('Emulation.setDeviceMetricsOverride', { width: 390, height: 844, deviceScaleFactor: 2, mobile: true });
     await p.eval(`(setLang('en'), switchTab('dnes'), true)`);
     /* Stats „mesiac“: počet = záznamy histórie s miestnym dňom v aktuálnom mesiaci (hranice: 1. 00:00 a posledný deň 23:59) */
