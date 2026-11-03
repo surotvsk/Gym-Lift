@@ -4708,6 +4708,9 @@ html[data-theme="dark"] .ty-hist-date { color: #F4F3EF; }
 :root, html[data-theme="light"] { --b-date: #45433E; }
 html[data-theme="dark"] { --b-date: #CFCDC6; }
 .app-main { padding-top: max(16px, calc(env(safe-area-inset-top, 0px) + 16px)); }
+/* iOS 26 kreslí pod stavový riadok vlastné stmavenie (~30 pt): na iPhone/iPad začína obsah až pod ním
+   (namerané z fotky majiteľa 2026-11-03: pri 16 px mal dátum 70–85 % jasu, pozdrav nižšie 100 %). Android to nemá. */
+html.ios .app-main { padding-top: max(34px, calc(env(safe-area-inset-top, 0px) + 34px)); }
 .bh-head { padding-bottom: 12px; }
 .bh-head > div { display: flex; flex-direction: column; gap: 4px; }
 .hd .today-date { font-size: 14px; font-weight: 600; line-height: 1.3; letter-spacing: 0; color: var(--b-date);

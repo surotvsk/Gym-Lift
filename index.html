@@ -11,6 +11,9 @@
       try { pref = localStorage.getItem('gymquest_theme') || 'auto'; } catch (e) {}
       var dark = pref === 'dark' || (pref !== 'light' && window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches);
       document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+      /* iPhone / iPad: iOS 26 stlmí a rozmaže pás pod stavovým riadkom – hlavička potrebuje viac miesta (style.css „html.ios“) */
+      var ua = navigator.userAgent || '';
+      if (/iPad|iPhone|iPod/.test(ua) || (/Macintosh/.test(ua) && Number(navigator.maxTouchPoints) > 1)) document.documentElement.classList.add('ios');
       var m = document.querySelector('meta[name="theme-color"]');
       if (m) m.setAttribute('content', dark ? '#0E0E0F' : '#E9E8E4');
     })();
@@ -32,7 +35,7 @@
     }, 4000);
   </script>
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
-  <link rel="stylesheet" href="style.css?v=101">
+  <link rel="stylesheet" href="style.css?v=102">
 </head>
 <body data-tab="dnes">
 
@@ -1093,8 +1096,8 @@
     </div>
   </div>
 
-  <script src="community-config.js?v=101"></script>
-  <script src="vendor/supabase-js.js?v=101"></script>
-  <script src="script.js?v=101"></script>
+  <script src="community-config.js?v=102"></script>
+  <script src="vendor/supabase-js.js?v=102"></script>
+  <script src="script.js?v=102"></script>
 </body>
 </html>

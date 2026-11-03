@@ -177,6 +177,15 @@ const CONTRAST_JS = `(() => {
       }
     }
     await p.eval(`(document.documentElement.style.zoom = '', setLang('en'), localStorage.removeItem('gymquest_theme'), applyTheme(), true)`);
+    /* iPhone/iPad (trieda html.ios z hlavičky): dátum mimo stmaveného pásu iOS 26 pod stavovým riadkom (≥ 32 px), stále kompaktne (≤ 52 px) */
+    const iosTop = [];
+    for (const w of [320, 393, 430]) {
+      await p.c.send('Emulation.setDeviceMetricsOverride', { width: w, height: 800, deviceScaleFactor: 1, mobile: true });
+      const r = await p.eval(`(document.documentElement.classList.add('ios'), switchTab('dnes'), window.scrollTo(0, 0), (() => { const a = document.getElementById('today-date').closest('.today-date').getBoundingClientRect(), b = document.getElementById('bh-hello').getBoundingClientRect(); document.documentElement.classList.remove('ios'); return { top: a.top, overlap: a.bottom > b.top + 0.5 }; })())`);
+      if (!(r.top >= 32 && r.top <= 52) || r.overlap) iosTop.push([w, Math.round(r.top), r.overlap]);
+    }
+    const uaIos = await p.eval(`(() => { const ua = navigator.userAgent; return /iPad|iPhone|iPod/.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1); })() === document.documentElement.classList.contains('ios')`);
+    check('iPhone/iPad: date sits below the iOS status-bar fade (32–52 px), no overlap; the ios class matches the browser', iosTop.length === 0 && uaIos === true, iosTop);
     check('Today date + week: visible ≥ 14 px from the top (clear of the iOS edge blur), not clipped, no overlap with the greeting, ≥ 13 px, contrast ≥ 4.5 (6 languages × 320/360/393/430 × 100/130 % × light/dark)', dateBad.length === 0, dateBad.slice(0, 6));
 
     console.log('== layout: top spacing, Settings spacing, Stats tiles, Stats month count (v91)');
