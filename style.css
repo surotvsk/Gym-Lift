@@ -4701,8 +4701,17 @@ html[data-theme="dark"] .ty-hist-date { color: #F4F3EF; }
 @media (min-width: 900px) { #screen-komunita:not(.msg-mode) { max-width: 680px; margin-inline: auto; } }
 
 /* v91: rozostupy – horný okraj, Nastavenia, Stats (hodnoty z rozstupov --sp-*, bez záporných okrajov) */
-/* horný okraj hlavných obrazoviek ostáva max(50px, bezpečná zóna + 16px) z referencie: niektoré zariadenia (výrez / Dynamic Island,
-   okno bez safe-area) by inak prekryli dátum a týždeň (hlásenie majiteľa 2026-11-03) */
+/* Hlavička hlavných obrazoviek (hlásenie majiteľa 2026-11-03: dátum a týždeň pri výreze / Dynamic Island).
+   Skutočné okno začína pod stavovým riadkom (iOS „black“, Android SystemBars odsadí WebView), preto stačí bezpečná
+   zóna + 12 px; keby systém kreslil obsah pod lištu (viewport-fit=cover, edge-to-edge), env() ju pripočíta.
+   Žiadny „falošný“ 50 px stavový riadok – hlavička ostáva kompaktná. */
+:root, html[data-theme="light"] { --b-date: #45433E; }
+html[data-theme="dark"] { --b-date: #CFCDC6; }
+.app-main { padding-top: max(20px, calc(env(safe-area-inset-top, 0px) + 12px)); }
+.bh-head { padding-bottom: 12px; }
+.bh-head > div { display: flex; flex-direction: column; gap: 4px; }
+.hd .today-date { font-size: 14px; font-weight: 600; line-height: 1.3; letter-spacing: 0; color: var(--b-date);
+  white-space: normal; overflow-wrap: anywhere; }
 /* Stats: séria na vlastnom riadku (týždeň / mesiac / spolu majú rovnaké zarovnanie) */
 .bt-v .bt-v-sets { display: block; margin-top: 6px; line-height: 1.25; }
 /* Nastavenia: skupiny s dostatočným odstupom, dotykové ciele 44 px, riadky tlačidiel v „Ďalšie možnosti“ sa nedotýkajú */

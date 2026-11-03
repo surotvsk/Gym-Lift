@@ -145,6 +145,40 @@ const CONTRAST_JS = `(() => {
     check('no tab is wider than the screen and the menu fits, in every language, size and mode', bad.length === 0, bad.slice(0, 5));
     await p.eval(`(setLang('en'), localStorage.removeItem('gymquest_theme'), applyTheme(), true)`);
 
+    console.log('== Today: date and week are fully readable (v92)');
+    const DATE_JS = `(() => {
+      const d = document.getElementById('today-date').closest('.today-date'), h = document.getElementById('bh-hello');
+      const z = parseFloat(document.documentElement.style.zoom || '1');
+      const a = d.getBoundingClientRect(), b = h.getBoundingClientRect();
+      const rgb = (c) => (c.match(/[\\d.]+/g) || []).slice(0, 3).map(Number);
+      const lum = (c) => { const v = rgb(c).map((x) => { x /= 255; return x <= 0.03928 ? x / 12.92 : Math.pow((x + 0.055) / 1.055, 2.4); }); return 0.2126 * v[0] + 0.7152 * v[1] + 0.0722 * v[2]; };
+      let bg = 'rgba(0, 0, 0, 0)'; for (let e = d; e && /rgba\\(0, 0, 0, 0\\)|transparent/.test(bg); e = e.parentElement) bg = getComputedStyle(e).backgroundColor;
+      if (/rgba\\(0, 0, 0, 0\\)|transparent/.test(bg)) bg = getComputedStyle(document.body).backgroundColor;
+      const L1 = lum(getComputedStyle(d).color), L2 = lum(bg);
+      return { text: d.textContent.trim(), top: a.top, left: a.left, right: a.right, vw: innerWidth, clip: d.scrollWidth > d.clientWidth + 1,
+        overlap: a.bottom > b.top + 0.5, fs: parseFloat(getComputedStyle(d).fontSize), contrast: (Math.max(L1, L2) + 0.05) / (Math.min(L1, L2) + 0.05) }; })()`;
+    const dateBad = [];
+    for (const mode of ['light', 'dark']) {
+      await p.eval(`(localStorage.setItem('gymquest_theme', ${J(mode)}), applyTheme(), true)`);
+      for (const w of [320, 360, 393, 430]) {
+        await p.c.send('Emulation.setDeviceMetricsOverride', { width: w, height: 800, deviceScaleFactor: 1, mobile: true });
+        for (const zoom of ['1', '1.3']) {
+          for (const lang of ['sk', 'en', 'es', 'pt-BR', 'fr', 'ar']) {
+            const r = await p.eval(`(document.documentElement.style.zoom = ${J(zoom)}, setLang(${J(lang)}), switchTab('dnes'), window.scrollTo(0, 0), ${DATE_JS})`);
+            const tag = [mode, w, zoom, lang].join('/');
+            if (!r.text || !/\d/.test(r.text)) dateBad.push(['empty', tag, r.text]);
+            if (r.top < 12) dateBad.push(['top', tag, Math.round(r.top)]);
+            if (r.left < 0 || r.right > r.vw + 1 || r.clip) dateBad.push(['clipped', tag, r.text, Math.round(r.left), Math.round(r.right), Math.round(r.vw), r.clip]);
+            if (r.overlap) dateBad.push(['overlaps greeting', tag]);
+            if (r.fs < 13) dateBad.push(['font', tag, r.fs]);
+            if (r.contrast < 4.5) dateBad.push(['contrast', tag, r.contrast.toFixed(2)]);
+          }
+        }
+      }
+    }
+    await p.eval(`(document.documentElement.style.zoom = '', setLang('en'), localStorage.removeItem('gymquest_theme'), applyTheme(), true)`);
+    check('Today date + week: visible ≥ 12 px from the top, not clipped, no overlap with the greeting, ≥ 13 px, contrast ≥ 4.5 (6 languages × 320/360/393/430 × 100/130 % × light/dark)', dateBad.length === 0, dateBad.slice(0, 6));
+
     console.log('== layout: top spacing, Settings spacing, Stats tiles, Stats month count (v91)');
     const LAYOUT_JS = `(() => {
       const vis = (e) => e.offsetParent !== null || getComputedStyle(e).position === 'fixed';
@@ -178,10 +212,10 @@ const CONTRAST_JS = `(() => {
         for (const lang of ['en', 'sk', 'ar']) {
           await p.eval(`(setLang(${J(lang)}), true)`);
           const tag = [mode, w, lang].join('/');
-          /* horný okraj: prvý nadpis hlavnej obrazovky musí obísť výrez displeja (44–72 px od vrchu) */
+          /* horný okraj: kompaktná hlavička – prvý nadpis 12–40 px od vrchu okna (okno začína pod stavovým riadkom) */
           for (const [tab, sel] of [['dnes', '.bh-head'], ['trening', '#screen-trening .screen-title'], ['pokrok', '#screen-pokrok .screen-title'], ['ty', '#ty-title']]) {
             const top = await p.eval(`(switchTab(${J(tab)}), window.scrollTo(0, 0), (() => { const e = [document.querySelector(${J(sel)}), ...document.querySelectorAll('#screen-' + ${J(tab)} + ' h1, #screen-' + ${J(tab)} + ' h2, #screen-' + ${J(tab)} + ' h3'), ...document.querySelectorAll('#screen-' + ${J(tab)} + ' > *')].find((x) => x && x.getClientRects().length && x.getBoundingClientRect().height > 0); return e ? e.getBoundingClientRect().top : -1; })())`);
-            if (!(top >= 44 && top <= 72)) lay.push(['top', tag, tab, top]);
+            if (!(top >= 12 && top <= 40)) lay.push(['top', tag, tab, top]);
           }
           /* Stats: nič nepretečie z dlaždice (okrem zámerného „…“ v rekordoch) */
           const ov = await p.eval(`(switchTab('pokrok'), [...document.querySelectorAll('#stats-grid .bt *')].filter((e) => e.offsetParent && !e.closest('svg') && !e.matches('.st-rec span') && e.getBoundingClientRect().width && e.scrollWidth > e.clientWidth + 1 && getComputedStyle(e).display !== 'inline').map((e) => e.className || e.tagName).slice(0, 3))`);
@@ -199,7 +233,7 @@ const CONTRAST_JS = `(() => {
         }
       }
     }
-    check('first heading of every main screen clears a notch (44–72 px from the top), Settings groups ≥ 12 px apart without overlapping or touching rows, 44 px controls, Stats tiles do not overflow (en/sk/ar × 360/393 × light/dark)', lay.length === 0, lay.slice(0, 6));
+    check('first heading of every main screen sits 12–40 px from the top (compact), Settings groups ≥ 12 px apart without overlapping or touching rows, 44 px controls, Stats tiles do not overflow (en/sk/ar × 360/393 × light/dark)', lay.length === 0, lay.slice(0, 6));
     await p.c.send('Emulation.setDeviceMetricsOverride', { width: 390, height: 844, deviceScaleFactor: 2, mobile: true });
     await p.eval(`(setLang('en'), switchTab('dnes'), true)`);
     /* Stats „mesiac“: počet = záznamy histórie s miestnym dňom v aktuálnom mesiaci (hranice: 1. 00:00 a posledný deň 23:59) */
