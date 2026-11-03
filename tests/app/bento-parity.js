@@ -34,7 +34,6 @@ const ENTRY = [
   ['Today: start / continue workout', `switchTab('dnes')`, '#btn-start-workout'],
   ['Today: week → calendar', `switchTab('dnes')`, '#bt-week'],
   ['Today: streak', `switchTab('dnes')`, '#bt-streak'],
-  ['Today: excuse week', `switchTab('dnes')`, '#btn-excuse'],
   ['Today: level', `switchTab('dnes')`, '#bt-level'],
   ['Today: body', `switchTab('dnes')`, '#bt-body'],
   ['Today: best lift', `switchTab('dnes')`, '#bt-lift'],
@@ -140,8 +139,11 @@ const REACH_JS = (sel) => `(() => {
   /* Zámerne odstránené na žiadosť majiteľa (2026-10-25, upratanie Nastavení): samostatné „Uložiť“ pre týždenný
      cieľ – cieľ sa teraz uloží hneď po ťuknutí a „Zavrieť“ ho pre istotu uloží ešte raz. */
   const REMOVED_V80 = new Set(['btn-settings-save']);
-  const missing = [...oldIds].filter((x) => !newIds.has(x) && !REMOVED.has(x) && !REMOVED_V80.has(x));
+  /* Odstránené rozhodnutím majiteľa D8 (2026-10-30): ospravedlnenie týždňa (dlaždica, list a jeho prvky). */
+  const REMOVED_D8 = new Set(['btn-excuse', 'bt-excuse-l', 'bt-excuse-line', 'excuse-note', 'modal-excuse', 'excuse-title', 'excuse-weeks', 'excuse-past', 'btn-excuse-done']);
+  const missing = [...oldIds].filter((x) => !newIds.has(x) && !REMOVED.has(x) && !REMOVED_V80.has(x) && !REMOVED_D8.has(x));
   check('all ' + oldIds.size + ' element ids of the previous release are present, except the removed Design previews (' + newIds.size + ' now)', missing.length === 0, missing);
+  check('week excuses are gone from the app, removed by owner decision D8 (2026-10-30)', [...REMOVED_D8].every((x) => !newIds.has(x)));
   check('Design previews are gone from the app (no entry point, no dialog)', [...REMOVED].every((x) => !newIds.has(x)) && !/designs\.open|design-concepts\/app/.test(newHtml));
 
   const emptyCfg = path.join(WORK, 'community-config.empty.js');

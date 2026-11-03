@@ -148,7 +148,10 @@ in the prototype.
   the first time it appears instantly and refreshes in the background; the requests that run before it are
   sent together instead of one after another. Under your last message you see **Sent**, which turns into
   **Seen** (live) once your friend has opened the chat — only when your message is the last one, like in
-  Messenger. Needs server version 8 (migration 0015); on an older server no label is shown.
+  Messenger. Needs server version 8 (migration 0015); on an older server no label is shown. Messages are
+  marked seen only while the chat is actually visible (not while the app is in the background). Back from a
+  friend's profile returns to the same chat at the same scroll position, and the avatar or name in the chat
+  header opens that profile.
 - **Community** (v83) opens straight into the feed, like X/Twitter in Bento shapes and colours: a compact header
   that stays on top while you scroll (*Community*, **New post**, search and **⋯** with Friends — and pending
   requests —, Top 20 with your rank, your profile, My posts and Moderation for moderators; on phones narrower
@@ -203,7 +206,9 @@ with the arrow keys, and with *reduce motion* switched on in the system the shee
 
 **⚙️ Settings** (v81) is grouped into Bento cards: **General** (language, appearance, weekly goal),
 **Rest timer** (the sound switch; its length and *Test sound* appear only when the sound is on),
-**Backup & sync** (account sync, *Sync now*, automatic backup, *Save backup now*), **Community**, and a
+**Backup & sync** (account sync, *Sync now*, automatic backup, *Save backup now*, and *Sign out* when you are
+signed in — with unsynced changes a sheet offers *Sync and sign out*, *Sign out and keep changes on this device*
+(uploaded at your next sign-in) or *Cancel*; signing out from Community or You asks the same), **Community**, and a
 collapsed **More options** with the rarely used tools: export, import, load from account, recovery copies,
 delete cloud backup, demo data and reset. Then updates, about and **Close**. Nothing was removed except the
 separate *Save goal* button — the goal is saved as soon as you tap it (and Close saves it once more).
@@ -229,7 +234,6 @@ grid. Every tile shows live numbers from your own data and opens the feature it 
 | **Next up ✦** (dark, with an exercise photo) | the recommended plan, its exercises and sets; during a workout **In progress** with the time and sets done | **Start** begins it, **Continue** returns to it |
 | **This week** (lime) | workouts done / weekly goal, and seven day squares (filled = trained, outlined = today) | Calendar |
 | **Streak** | weeks in a row | Achievements |
-| **Busy week?** | excuse a week and keep the streak; *Excused ✓ · This week · tap to change* or *Next week excused ✓* | the **Busy week?** sheet: switches for **This week** and **Next week** (with their dates) |
 | **Level** (lavender) | level, total XP, a bar and the XP to the next level | Achievements |
 | **Body** (sky) | your latest body weight | Body |
 | **Best lift** | your heaviest record and its exercise | Records |
@@ -334,12 +338,8 @@ badges earned for personal records.
 - **Weekly goal** — set on first launch and changeable any time in ⚙️ Settings. Tap a number from
   1 to 7; it applies right away (there is no separate Save button).
 - **Streak** — counted in weeks: hitting your weekly goal extends the streak by one week.
-- **Excused weeks** — the **Busy week?** tile on the Today screen opens a sheet with two switches: **This week**
-  and **Next week** (so a holiday or exam week can be excused in advance). An excused week keeps the streak
-  alive but never adds to it; workouts done in it still count. A week whose goal is already reached has
-  nothing to excuse (its switch is off and disabled). Past weeks cannot be changed, so a broken streak cannot
-  be repaired afterwards. A tap on the tile never changes anything by itself. The stored format is the same
-  list of ISO weeks as before (`excusedWeeks`).
+- **Excused weeks** — weeks can no longer be excused (the **Busy week?** tile was removed). Weeks excused
+  in earlier versions still keep the streak alive without adding to it; the stored list (`excusedWeeks`) is kept.
 - **XP and levels** — every workout gives **20 XP** plus **2 XP** for each completed set. You need
   100 XP to reach the next level.
 - **Achievements** — unlocked automatically and stored with the date they were earned. Each exercise
@@ -424,7 +424,9 @@ English users keep the language they already had.
   achievements, Settings, every dialog and every accessibility label.
 - **Built-in plans and exercises** are app content and are translated, so the Slovak plan *Nohy*
   appears as *Legs* in English, *Piernas* in Spanish, *Pernas* in Portuguese, *Jambes* in French and
-  *الأرجل* in Arabic.
+  *الأرجل* in Arabic. The untouched built-in Push and Pull plans are shown as *Chest, Shoulders & Triceps*
+  and *Back & Biceps* (in all six languages); edited or renamed plans keep their names, and history keeps the
+  names recorded at the time.
 - **Custom exercises** you create or rename are never translated — they appear exactly as you typed
   them.
 - A **renamed plan** becomes a custom name and is never translated. Rename *Nohy* to *Nohy + Core*
@@ -837,7 +839,8 @@ account; your XP in the app never changes because of it.
 
 **Message notifications (optional).** Turn on **Community → Profile → Notifications** (or **Turn on**
 above the chat list) to get a notification on this device when a friend sends you a chat message,
-even when GymQuest is closed. Tapping it opens that chat. The notification shows only the friend's
+even when GymQuest is closed. Tapping it opens that chat. On the web (except iPhone, iPad and Mac Safari) no
+notification is shown for the chat you are currently reading. The notification shows only the friend's
 username (*New message from anna*), never the message text, in your app language. Several quick
 messages from the same chat give one notification (at most one every 20 seconds per chat). It is
 off by default, works per device, and asks for the system permission first. Signing out, leaving

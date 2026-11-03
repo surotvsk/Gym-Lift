@@ -6,7 +6,7 @@
    so no update would ever be offered.
    Bump it and the new worker installs, re-fetches everything and deletes the old cache. */
 
-const CACHE_VERSION = 'v90';
+const CACHE_VERSION = 'v91';
 const CACHE_PREFIX = 'gymquest-';
 const CACHE_NAME = CACHE_PREFIX + CACHE_VERSION;
 
@@ -23,10 +23,10 @@ const mediaKey = (url) => url.origin + url.pathname;
    Cache kľúč je celá URL, takže "style.css" a "style.css?v=27" sú dve rôzne položky. */
 const PRECACHE = [
   'index.html',
-  'style.css?v=96',
-  'script.js?v=96',
-  'community-config.js?v=96',
-  'vendor/supabase-js.js?v=96',
+  'style.css?v=97',
+  'script.js?v=97',
+  'community-config.js?v=97',
+  'vendor/supabase-js.js?v=97',
   'manifest.json',
   'apple-touch-icon.png',
   'icon-192.png',
@@ -91,21 +91,47 @@ self.addEventListener('message', (event) => {
   if (data.type === 'GET_VERSION' && event.ports && event.ports[0]) event.ports[0].postMessage({ version: CACHE_VERSION });
 });
 
+/* Má sa upozornenie zobraziť? Nie, keď je práve pred očami ten istý chat (okno v popredí, viditeľné,
+   adresa #chat=<id>) – správu už človek vidí. Výnimka iOS/iPadOS: Safari vyžaduje, aby každý push
+   zobrazil upozornenie, inak odber zruší, preto sa tam zobrazí vždy. Service worker nemá dotyk
+   (iPadOS v režime „desktop“ sa hlási ako Macintosh), preto sa každé „Macintosh“ + Safari bez Chrome
+   berie ako možný iPad a upozornenie sa zobrazí vždy (na Macu navyše – bezpečnejšia chyba).
+   clientInfos = [{ url, focused, visibilityState }]. */
+function shouldShowPush(clientInfos, data, ua) {
+  const u = String(ua || '');
+  const apple = /iPhone|iPad|iPod/.test(u) || (/Macintosh/.test(u) && /Safari/.test(u) && !/Chrome|Chromium|Edg|Firefox/.test(u));
+  if (apple) return true;
+  const conv = data && data.conv ? String(data.conv) : '';
+  if (!conv) return true;
+  return !(clientInfos || []).some((c) => {
+    if (!c || !c.focused || c.visibilityState !== 'visible') return false;
+    try { return new URL(c.url).hash === '#chat=' + conv; } catch (e) { return false; }
+  });
+}
+
 /* Upozornenie na novú správu (Web Push, migrácia 0010). Obsah je šifrovaný pre toto zariadenie
-   a nesie len meno odosielateľa a id chatu. Upozornenie sa zobrazí vždy (iOS to vyžaduje);
+   a nesie len meno odosielateľa a id chatu. Upozornenie sa zobrazí vždy, okrem chatu, ktorý je práve otvorený (shouldShowPush; iOS vždy);
    ďalšie správy z toho istého chatu nahradia predchádzajúce (rovnaký tag). */
 self.addEventListener('push', (event) => {
   let d = {};
   try { d = event.data ? event.data.json() : {}; } catch (e) { d = {}; }
   const icon = new URL('icon-192.png', self.registration.scope).href;
-  event.waitUntil(self.registration.showNotification(String(d.title || 'GymQuest'), {
-    body: String(d.body || ''),
-    tag: d.tag ? String(d.tag) : 'gq',
-    renotify: !!d.tag,
-    icon,
-    badge: icon,
-    data: { conv: d.conv ? String(d.conv) : null },
-  }));
+  event.waitUntil((async () => {
+    let infos = [];
+    try {
+      const wins = await self.clients.matchAll({ type: 'window', includeUncontrolled: true });
+      infos = wins.map((c) => ({ url: c.url, focused: !!c.focused, visibilityState: c.visibilityState }));
+    } catch (e) { infos = []; }
+    if (!shouldShowPush(infos, d, self.navigator && self.navigator.userAgent)) return;
+    await self.registration.showNotification(String(d.title || 'GymQuest'), {
+      body: String(d.body || ''),
+      tag: d.tag ? String(d.tag) : 'gq',
+      renotify: !!d.tag,
+      icon,
+      badge: icon,
+      data: { conv: d.conv ? String(d.conv) : null },
+    });
+  })());
 });
 
 /* Ťuknutie na upozornenie: otvorená appka sa vytiahne dopredu a otvorí chat, inak sa spustí s ?chat=. */

@@ -8,12 +8,12 @@
   "plugins": {
     "SplashScreen": {
       "launchAutoHide": false,
-      "backgroundColor": "#17191f",
+      "backgroundColor": "#D6F35A",
       "showSpinner": false
     },
     "LocalNotifications": {
       "smallIcon": "ic_stat_gq",
-      "iconColor": "#ff5a36"
+      "iconColor": "#121212"
     }
   }
 }

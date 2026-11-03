@@ -114,6 +114,16 @@ function check(name, ok, info) {
     check('a later dialog without its own label shows "Cancel" again', d.cancel === 'Cancel' && d.ok === 'OK', d);
     await p.eval(`(closeGeneric(), true)`);
 
+    console.log('== Esc closes the topmost modal first (generic over sync)');
+    await p.eval(`(openSyncModal('Copies', '<p>x</p><button data-sync-action="later">Close</button>'), showGeneric('Restore copy?', 'Restore', () => {}), true)`);
+    const escKey = () => p.eval(`(document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true })), true)`);
+    const openState = () => p.eval(`({ g: !document.getElementById('modal-generic').hidden, s: !document.getElementById('modal-sync').hidden })`);
+    check('both modals are open', J(await openState()) === J({ g: true, s: true }));
+    await escKey();
+    check('first Esc closes only the confirm (modal-generic)', J(await openState()) === J({ g: false, s: true }), await openState());
+    await escKey();
+    check('second Esc closes the list (modal-sync)', J(await openState()) === J({ g: false, s: false }), await openState());
+
     console.log('== languages');
     for (const lang of ['sk', 'en', 'es', 'pt-BR', 'fr', 'ar']) {
       await p.eval(`(setLang(${J(lang)}), switchTab('trening'), selectedPlan = 'ctest', renderTrening(), true)`);

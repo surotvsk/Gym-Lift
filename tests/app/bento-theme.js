@@ -6,7 +6,8 @@
    Checks: System follows the phone (and switches live); Light / Dark from Settings apply at once and
    survive a reload; the choice is device-only (not in the app state, export or sync); the Bento font
    loads, also offline from the cache; Arabic keeps an Arabic font; key text has enough contrast in both
-   modes; no horizontal overflow on any tab in 6 languages at 320 and 390 px in both modes; no errors. */
+   modes; no horizontal overflow on any tab in 6 languages at 320 and 390 px in both modes; layout (v91): top gap,
+   Settings spacing, Stats tiles, Stats month count; no errors. */
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
@@ -102,7 +103,7 @@ const CONTRAST_JS = `(() => {
     console.log('== contrast (WCAG)');
     await p.eval(CONTRAST_JS);
     const pairs = [['dnes', '#bh-hello', 4.5], ['dnes', '#week-count', 3], ['dnes', '#bt-streak-v', 3], ['dnes', '#bt-level-v', 3], ['dnes', '#bt-body-v', 3], ['dnes', '#bt-food-v', 3],
-      ['dnes', '#bt-lift-line', 4.5], ['dnes', '#bt-excuse-line', 4.5], ['trening', '#tr-detail .tr-row', 4.5], ['dnes', '#bt-settings .bt-line', 4.5], ['dnes', '#bt-week .bt-l', 4.5], ['ty', '.motivation-text', 4.5], ['ty', '#ty-name', 4.5], ['ty', '#ty-level-line', 4.5], ['ty', '#ty-goal-line', 4.5], ['ty', '#ty-seg .ty-filter.on', 4.5], ['ty', '#ty-private', 4.5], ['dnes', '#btn-start-workout', 4.5],
+      ['dnes', '#bt-lift-line', 4.5], ['trening', '#tr-detail .tr-row', 4.5], ['dnes', '#bt-settings .bt-line', 4.5], ['dnes', '#bt-week .bt-l', 4.5], ['ty', '.motivation-text', 4.5], ['ty', '#ty-name', 4.5], ['ty', '#ty-level-line', 4.5], ['ty', '#ty-goal-line', 4.5], ['ty', '#ty-seg .ty-filter.on', 4.5], ['ty', '#ty-private', 4.5], ['dnes', '#btn-start-workout', 4.5],
       ['dnes', '.today-date', 4.5], ['dnes', '.tab.active', 4.5], ['dnes', '.tab:not(.active)', 4.5], ['trening', '.plan-chips .chip.active', 4.5], ['trening', '.plan-chips .chip-wrap:nth-child(2) .chip', 4.5],
       ['trening', '.exercise-name', 4.5], ['trening', '.set-btn', 4.5], ['pokrok', '#stats-grid .bt-v', 3], ['pokrok', '#stats-grid .bt-l', 4.5], ['pokrok', '#stats-grid .st-rec span', 4.5], ['pokrok', '#stats-grid .k-chart-t', 4.5], ['kalendar', '#calendar-title', 3], ['kalendar', '.cal-cell', 3],
       ['kalendar', '.cal-cell.cal-done', 4.5], ['kalendar', '.cal-cell.cal-miss', 4.5], ['trening', '.plan-chips .chip.active .chip-name', 4.5], ['trening', '.plan-chips .chip-wrap:nth-child(3) .chip-name', 4.5],
@@ -142,6 +143,90 @@ const CONTRAST_JS = `(() => {
       }
     }
     check('no tab is wider than the screen and the menu fits, in every language, size and mode', bad.length === 0, bad.slice(0, 5));
+    await p.eval(`(setLang('en'), localStorage.removeItem('gymquest_theme'), applyTheme(), true)`);
+
+    console.log('== layout: top spacing, Settings spacing, Stats tiles, Stats month count (v91)');
+    const LAYOUT_JS = `(() => {
+      const vis = (e) => e.offsetParent !== null || getComputedStyle(e).position === 'fixed';
+      const root = document.querySelector('#modal-settings .modal');
+      const out = { gaps: [], overlap: [], touch: [], small: [] };
+      const leaves = [...root.querySelectorAll('*')].filter((e) => vis(e) && !e.closest('svg') && !e.closest('.sr-only') && e.id !== 'btn-settings-close' && e.getBoundingClientRect().width > 0
+        && (e.matches('button,input,select,textarea,summary,label') || [...e.childNodes].some((n) => n.nodeType === 3 && n.textContent.trim())));
+      const rs = leaves.map((e) => [e, e.getBoundingClientRect()]);
+      for (let i = 0; i < rs.length; i++) for (let j = i + 1; j < rs.length; j++) {
+        const [a, A] = rs[i], [c, B] = rs[j];
+        if (a.contains(c) || c.contains(a)) continue;
+        const ox = Math.min(A.right, B.right) - Math.max(A.left, B.left), gy = Math.max(B.top - A.bottom, A.top - B.bottom);
+        if (ox > 2 && gy < -2) out.overlap.push((a.id || a.className) + ' x ' + (c.id || c.className));
+        if (ox > 8 && gy >= -1 && gy < 4 && a.matches('button,.btn') && c.matches('button,.btn')) out.touch.push((a.id || a.className) + ' | ' + (c.id || c.className));
+      }
+      const gs = [...root.querySelectorAll('.set-group')].filter(vis);
+      for (let i = 0; i + 1 < gs.length; i++) out.gaps.push(Math.round(gs[i + 1].getBoundingClientRect().top - gs[i].getBoundingClientRect().bottom));
+      /* medzery vnútri skupiny: medzi po sebe idúcimi blokmi max 32 px; hodnota cieľa na jednej osi s nadpisom; čipy cieľa bez osamoteného čipu */
+      for (const g of gs) { const kids = [...g.children].filter(vis); for (let i = 0; i + 1 < kids.length; i++) { const d = kids[i + 1].getBoundingClientRect().top - kids[i].getBoundingClientRect().bottom; if (d > 32) out.bigGap = (out.bigGap || []).concat([[kids[i].id || kids[i].className, Math.round(d)]]); } }
+      { const ti = root.querySelector('.goal-head .card-title'), va = document.getElementById('settings-goal-value');
+        if (ti && va) { const a = ti.getBoundingClientRect(), c = va.getBoundingClientRect(); out.goalOff = Math.round(Math.abs((a.top + a.bottom) / 2 - (c.top + c.bottom) / 2)); }
+        const rows = {}; root.querySelectorAll('#settings-goal-chips .goal-chip').forEach((e) => { const k = Math.round(e.getBoundingClientRect().top); rows[k] = (rows[k] || 0) + 1; });
+        out.chipRows = Object.values(rows); }
+      out.small = [...root.querySelectorAll('button,.btn,.goal-chip')].filter((e) => vis(e) && e.id !== 'btn-settings-close' && e.getBoundingClientRect().height < 43.5).map((e) => e.id || e.className);
+      return out; })()`;
+    const lay = [];
+    for (const mode of ['light', 'dark']) {
+      await p.eval(`(localStorage.setItem('gymquest_theme', ${J(mode)}), applyTheme(), true)`);
+      for (const w of [360, 393]) {
+        await p.c.send('Emulation.setDeviceMetricsOverride', { width: w, height: 800, deviceScaleFactor: 1, mobile: true });
+        for (const lang of ['en', 'sk', 'ar']) {
+          await p.eval(`(setLang(${J(lang)}), true)`);
+          const tag = [mode, w, lang].join('/');
+          /* horný okraj: prvý nadpis hlavnej obrazovky musí obísť výrez displeja (44–72 px od vrchu) */
+          for (const [tab, sel] of [['dnes', '.bh-head'], ['trening', '#screen-trening .screen-title'], ['pokrok', '#screen-pokrok .screen-title'], ['ty', '#ty-title']]) {
+            const top = await p.eval(`(switchTab(${J(tab)}), window.scrollTo(0, 0), (() => { const e = [document.querySelector(${J(sel)}), ...document.querySelectorAll('#screen-' + ${J(tab)} + ' h1, #screen-' + ${J(tab)} + ' h2, #screen-' + ${J(tab)} + ' h3'), ...document.querySelectorAll('#screen-' + ${J(tab)} + ' > *')].find((x) => x && x.getClientRects().length && x.getBoundingClientRect().height > 0); return e ? e.getBoundingClientRect().top : -1; })())`);
+            if (!(top >= 44 && top <= 72)) lay.push(['top', tag, tab, top]);
+          }
+          /* Stats: nič nepretečie z dlaždice (okrem zámerného „…“ v rekordoch) */
+          const ov = await p.eval(`(switchTab('pokrok'), [...document.querySelectorAll('#stats-grid .bt *')].filter((e) => e.offsetParent && !e.closest('svg') && !e.matches('.st-rec span') && e.getBoundingClientRect().width && e.scrollWidth > e.clientWidth + 1 && getComputedStyle(e).display !== 'inline').map((e) => e.className || e.tagName).slice(0, 3))`);
+          if (ov.length) lay.push(['stats-overflow', tag, ov]);
+          /* Nastavenia vrátane „Ďalšie možnosti“ a riadku odhlásenia */
+          const st = await p.eval(`(openSettings(), document.getElementById('signout-row').hidden = false, document.getElementById('settings-more').open = true, document.querySelectorAll('.modal, .modal-backdrop').forEach((e) => { e.scrollTop = 0; }), ${LAYOUT_JS})`);
+          if (st.gaps.some((g) => g < 12)) lay.push(['set-gap', tag, st.gaps]);
+          if (st.overlap.length) lay.push(['set-overlap', tag, st.overlap.slice(0, 2)]);
+          if (st.touch.length) lay.push(['set-touch', tag, st.touch.slice(0, 2)]);
+          if (st.bigGap) lay.push(['set-biggap', tag, st.bigGap.slice(0, 3)]);
+          if (st.goalOff > 4) lay.push(['goal-align', tag, st.goalOff]);
+          if (st.chipRows.some((n) => n === 1) && st.chipRows.length > 1) lay.push(['goal-orphan', tag, st.chipRows]);
+          if (st.small.length) lay.push(['set-small', tag, st.small.slice(0, 3)]);
+          await p.eval(`(document.getElementById('modal-settings').hidden = true, document.getElementById('settings-more').open = false, document.getElementById('signout-row').hidden = true, switchTab('dnes'), true)`);
+        }
+      }
+    }
+    check('first heading of every main screen clears a notch (44–72 px from the top), Settings groups ≥ 12 px apart without overlapping or touching rows, 44 px controls, Stats tiles do not overflow (en/sk/ar × 360/393 × light/dark)', lay.length === 0, lay.slice(0, 6));
+    await p.c.send('Emulation.setDeviceMetricsOverride', { width: 390, height: 844, deviceScaleFactor: 2, mobile: true });
+    await p.eval(`(setLang('en'), switchTab('dnes'), true)`);
+    /* Stats „mesiac“: počet = záznamy histórie s miestnym dňom v aktuálnom mesiaci (hranice: 1. 00:00 a posledný deň 23:59) */
+    const monthCases = [['2026-10-01T00:00:00', '2026-10'], ['2026-10-31T23:59:00', '2026-10'], ['2026-11-01T00:00:00', '2026-11'], ['2028-02-29T23:59:00', '2028-02'], ['2026-12-31T23:59:00', '2026-12']];
+    const monthBad = [];
+    const histBackup = await p.eval(`JSON.stringify(state.history)`);
+    for (const [now, ym] of monthCases) {
+      const [yy, mm] = ym.split('-').map(Number);
+      const last = new Date(yy, mm, 0).getDate();
+      const pad = (n) => String(n).padStart(2, '0');
+      const prevYm = mm === 1 ? (yy - 1) + '-12' : yy + '-' + pad(mm - 1), nextYm = mm === 12 ? (yy + 1) + '-01' : yy + '-' + pad(mm + 1);
+      const dates = [ym + '-01', ym + '-' + pad(last), ym + '-15', prevYm + '-28', nextYm + '-01'];
+      const got = await p.eval(`(() => {
+        const RD = Date; const iso = ${J(now)};
+        class FD extends RD { constructor(...a) { if (a.length === 0) super(iso); else super(...a); } static now() { return new RD(iso).getTime(); } }
+        window.Date = FD;
+        try {
+          state.history = ${J(dates)}.map((d, i) => ({ id: 'mb' + i, date: d, planId: 'x', planName: 'x', exercises: [], xp: 1, durationSeconds: 60 }));
+          renderStatsGrid();
+          const tile = document.querySelector('#stats-grid .bt:nth-child(2) .bt-v');
+          return parseInt(tile.firstChild.textContent, 10);
+        } finally { window.Date = RD; }
+      })()`);
+      if (got !== 3) monthBad.push([now, got]);
+    }
+    await p.eval(`(state.history = JSON.parse(${J(histBackup)}), renderAll(), true)`);
+    check('Stats "this month" counts exactly the workouts dated in the current local month (1st 00:00, last day 23:59, leap day, year end)', monthBad.length === 0, monthBad);
     await p.eval(`(setLang('en'), localStorage.removeItem('gymquest_theme'), applyTheme(), true)`);
 
     check('no exceptions', p.errors.length === 0, p.errors);

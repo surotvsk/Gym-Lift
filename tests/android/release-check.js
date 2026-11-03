@@ -32,6 +32,12 @@ const run = (cmd, args, opts) => execFileSync(cmd, args, Object.assign({ encodin
       run('npx', ['cap', 'sync', 'android'], { cwd: REPO });
       run('./gradlew', ['bundleRelease', '--console=plain', '-q'], { cwd: path.join(REPO, 'android'), env: Object.assign({}, process.env, { JAVA_HOME }) });
     }
+    /* splash a farba ikony oznámení sledujú logo Gym-Lift (nezávisí od zostaveného AAB) */
+    const cfg = JSON.parse(fs.readFileSync(path.join(REPO, 'capacitor.config.json'), 'utf8'));
+    const logoBg = (/<color name="ic_launcher_background">(#[0-9A-Fa-f]{6})<\/color>/.exec(fs.readFileSync(path.join(REPO, 'android/app/src/main/res/values/ic_launcher_background.xml'), 'utf8')) || [])[1] || '';
+    const plug = cfg.plugins || {};
+    check('splash backgroundColor = launcher background (' + logoBg + ')', !!logoBg && String((plug.SplashScreen || {}).backgroundColor).toLowerCase() === logoBg.toLowerCase(), (plug.SplashScreen || {}).backgroundColor);
+    check('notification iconColor = logo ink #121212', String((plug.LocalNotifications || {}).iconColor).toLowerCase() === '#121212', (plug.LocalNotifications || {}).iconColor);
     check('release AAB built', fs.existsSync(AAB));
     const mb = fs.statSync(AAB).size / 1048576;
     check('AAB ≤ 40 MB (' + mb.toFixed(1) + ' MB)', mb <= 40);

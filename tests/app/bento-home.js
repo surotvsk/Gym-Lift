@@ -6,8 +6,7 @@
    Checks: every tile shows the right value from the app's own data (week, streak, level, body weight,
    best lift, food, calendar), and every tile opens the existing feature it stands for (workout, rest
    timer, activity, calendar, progress views, exercises, settings, Community friends / messages / Top 20);
-   Start begins the recommended workout and the tile then shows Continue; the excuse tile toggles the
-   excused week; the rest tile mirrors the running timer; the messages tile shows the unread badge;
+   Start begins the recommended workout and the tile then shows Continue; the rest tile mirrors the running timer; the messages tile shows the unread badge;
    showing Today never writes to the saved data; all tiles are translated in 6 languages; no errors. */
 const fs = require('fs');
 const os = require('os');
@@ -105,7 +104,7 @@ function check(name, ok, info) {
     await home();
     check('Train with a friend is not on Today, and its Workout tile stays hidden without Community', !(await p.eval(`!!document.getElementById('bt-train')`)) && await p.eval(`document.getElementById('btn-train-tile').hidden`));
 
-    console.log('== Start, Continue, excuse');
+    console.log('== Start, Continue');
     await click('#btn-start-workout'); await wait(200);
     check('Start begins the recommended workout on the Workout tab', await p.eval(`activeTab === 'trening' && !!getSession() && getSession().planId === selectedPlan`));
     await home(); await wait(100);
@@ -114,25 +113,8 @@ function check(name, ok, info) {
     check('Continue goes back to the same workout', await p.eval(`activeTab === 'trening' && !!getSession()`));
     await p.eval(`(clearSession(), saveState(), switchTab('dnes'), true)`);
     check('after the workout ends the tile says Start again', (await txt('bt-start-text')) === 'Start');
-    const wk = await p.eval(`currentWeekKey()`);
-    /* v80: dlaždica otvorí list (tento / budúci týždeň), už nič neprepína jedným ťuknutím */
-    const nwk = await p.eval(`nextWeekKey(currentWeekKey())`);
-    await click('#btn-excuse'); await wait(100);
-    check('excuse tile opens the sheet and changes nothing by itself', await p.eval(`!document.getElementById('modal-excuse').hidden && !state.excusedWeeks.includes(${J(wk)})`)
-      && await p.eval(`document.querySelectorAll('#excuse-weeks [data-excuse-week]').length === 2`));
-    await click('#excuse-weeks [data-excuse-week="' + wk + '"]'); await wait(100);
-    check('the This week switch excuses this week', await p.eval(`state.excusedWeeks.includes(${J(wk)})`) && await p.eval(`document.querySelector('#excuse-weeks [data-excuse-week="${wk}"]').getAttribute('aria-checked') === 'true'`));
-    await click('#excuse-weeks [data-excuse-week="' + nwk + '"]'); await wait(100);
-    check('next week can be excused in advance', await p.eval(`state.excusedWeeks.includes(${J(nwk)})`));
-    await click('#btn-excuse-done'); await wait(100);
-    check('tile says excused, sheet closed', (await txt('bt-excuse-l')).startsWith('Excused') && (await txt('bt-excuse-line')) === 'This week · tap to change' && await p.eval(`document.getElementById('modal-excuse').hidden`));
-    await click('#btn-excuse'); await wait(100);
-    await click('#excuse-weeks [data-excuse-week="' + wk + '"]'); await wait(100);
-    await click('#btn-excuse-done'); await wait(100);
-    check('turning it off undoes this week; the tile still shows next week', !(await p.eval(`state.excusedWeeks.includes(${J(wk)})`)) && (await txt('bt-excuse-l')) === 'Busy week?' && (await txt('bt-excuse-line')) === 'Next week excused ✓');
-    check('past weeks cannot be changed from the app', await p.eval(`(() => { const old = prevWeekKey(currentWeekKey()); setWeekExcused(old, true); return !state.excusedWeeks.includes(old); })()`));
-    await p.eval(`(setWeekExcused(${J(nwk)}, false), true)`);
-    check('with nothing excused the tile reads as before', (await txt('bt-excuse-l')) === 'Busy week?' && (await txt('bt-excuse-line')) === 'Excuse it, keep the streak');
+    /* D8 (2026-10-30): ospravedlnenie týždňa sa zrušilo; dlaždica ani list už neexistujú (pozri no-excuse.js) */
+    check('no excuse tile on Today (removed by owner decision D8)', await p.eval(`!document.getElementById('btn-excuse') && !document.getElementById('modal-excuse')`));
 
     console.log('== rest timer and messages badge');
     await p.eval(`(startTimer(90), switchTab('dnes'), true)`); await wait(1200);

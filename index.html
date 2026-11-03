@@ -32,7 +32,7 @@
     }, 4000);
   </script>
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
-  <link rel="stylesheet" href="style.css?v=96">
+  <link rel="stylesheet" href="style.css?v=97">
 </head>
 <body data-tab="dnes">
 
@@ -91,15 +91,10 @@
           <span class="sr-only" id="week-sub"></span>
           <span class="progress" hidden><span class="progress-fill" id="week-progress"></span></span>
         </button>
-        <button type="button" class="bt w2" data-go="motivation" id="bt-streak">
+        <button type="button" class="bt w2 h2" data-go="motivation" id="bt-streak">
           <span class="bt-l" data-i18n="bento.streak">Séria</span>
           <span class="bt-v" id="bt-streak-v"></span>
           <span class="sr-only"><span id="streak-value"></span> <span id="streak-sub"></span></span>
-        </button>
-        <button type="button" class="bt w2" id="btn-excuse">
-          <span class="bt-l" id="bt-excuse-l"></span>
-          <span class="bt-line bt-bottom" id="bt-excuse-line"></span>
-          <span class="sr-only" id="excuse-note" hidden></span>
         </button>
         <button type="button" class="bt bt-lav w2 h2" data-go="motivation" id="bt-level">
           <span class="bt-l" id="bt-level-l"></span>
@@ -735,6 +730,10 @@
         </div>
         <p class="card-note" id="auto-backup-last"></p>
         <button class="btn btn-secondary btn-block" id="btn-backup-now" data-i18n="backup.saveNow">Uložiť zálohu teraz</button>
+        <div class="setting-block" id="signout-row" hidden>
+          <span class="card-sub" data-i18n="signout.hint">Prepne toto zariadenie do hosťovského režimu. Dáta účtu zostanú zachované.</span>
+          <button type="button" class="btn btn-secondary btn-block" id="btn-settings-signout" data-i18n="community.signOut">Odhlásiť sa</button>
+        </div>
       </section>
 
       <section class="set-group" aria-labelledby="set-comm-t">
@@ -965,19 +964,6 @@
     </div>
   </div>
 
-  <!-- ============ MODAL: ospravedlnenie týždňa (Bento list) ============ -->
-  <div class="modal-backdrop" id="modal-excuse" hidden>
-    <div class="modal modal-form modal-excuse" role="dialog" aria-modal="true" aria-labelledby="excuse-title">
-      <h3 id="excuse-title" data-i18n="bento.busyWeek">Rušný týždeň?</h3>
-      <p class="card-note" data-i18n="excuse.intro">Ospravedlnený týždeň udrží sériu. Nepripočíta sa do nej a tréningy, ktoré spravíš, sa rátajú ďalej.</p>
-      <div class="excuse-weeks" id="excuse-weeks"></div>
-      <p class="card-note excuse-past" id="excuse-past" hidden></p>
-      <div class="modal-actions">
-        <button type="button" class="btn btn-primary" id="btn-excuse-done" data-i18n="common.close">Zavrieť</button>
-      </div>
-    </div>
-  </div>
-
   <!-- ============ MODAL: domáci / vonkajší tréning ============ -->
   <div class="modal-backdrop" id="modal-location" hidden>
     <div class="modal">
@@ -1107,8 +1093,8 @@
     </div>
   </div>
 
-  <script src="community-config.js?v=96"></script>
-  <script src="vendor/supabase-js.js?v=96"></script>
-  <script src="script.js?v=96"></script>
+  <script src="community-config.js?v=97"></script>
+  <script src="vendor/supabase-js.js?v=97"></script>
+  <script src="script.js?v=97"></script>
 </body>
 </html>

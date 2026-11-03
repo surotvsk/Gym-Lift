@@ -4699,3 +4699,31 @@ html[data-theme="dark"] .ty-hist-date { color: #F4F3EF; }
 @media (min-width: 700px) { #screen-komunita > .chd { margin-inline: 0; padding-inline: 0; } .cmenu { inset-inline-end: 0; } }
 .chd-new { background: #D6F35A; color: #121212; }
 @media (min-width: 900px) { #screen-komunita:not(.msg-mode) { max-width: 680px; margin-inline: auto; } }
+
+/* v91: rozostupy – horný okraj, Nastavenia, Stats (hodnoty z rozstupov --sp-*, bez záporných okrajov) */
+/* horný okraj hlavných obrazoviek ostáva max(50px, bezpečná zóna + 16px) z referencie: niektoré zariadenia (výrez / Dynamic Island,
+   okno bez safe-area) by inak prekryli dátum a týždeň (hlásenie majiteľa 2026-11-03) */
+/* Stats: séria na vlastnom riadku (týždeň / mesiac / spolu majú rovnaké zarovnanie) */
+.bt-v .bt-v-sets { display: block; margin-top: 6px; line-height: 1.25; }
+/* Nastavenia: skupiny s dostatočným odstupom, dotykové ciele 44 px, riadky tlačidiel v „Ďalšie možnosti“ sa nedotýkajú */
+.settings-sheet .set-group { margin-bottom: var(--sp-4); gap: var(--sp-3); }
+.settings-sheet .set-group .goal-chip { min-height: 44px; }
+.settings-sheet .set-group.set-more > :not(summary) + :not(summary) { margin-top: var(--sp-3); }
+.settings-sheet .set-group.set-more > .modal-actions + .modal-actions { margin-top: var(--sp-3); }
+.settings-sheet .set-more[open] > summary { margin-bottom: var(--sp-3); }
+.settings-sheet .set-group .modal-actions .btn { min-width: 0; }
+/* späť a ikonové tlačidlá v listoch: dotykový cieľ 44 px */
+.k-x { min-width: 44px; min-height: 44px; }
+#screen-pokrok.sheet-open > .subview .btn-icon-sm { min-width: 44px; min-height: 44px; }
+/* prepínač: vzhľad 48 × 28 ostáva, dotyková plocha je 44 px vysoká */
+.switch { height: 44px; }
+.switch::before { top: 8px; }
+.switch-knob { top: 11px; }
+.bt-start, #bt-next #btn-start-workout { min-height: 44px; }
+/* riadok tlačidiel, v ktorom sú všetky tlačidlá skryté, nemá robiť prázdnu medzeru */
+.settings-sheet .set-group.set-more > .modal-actions:not(:has(> :not([hidden]))) { display: none; }
+/* Nastavenia: týždenný cieľ – nadpis a hodnota v jednom riadku, čipy 1–7 v mriežke 4 + 3 (žiadny osamotený čip), bez zbytočnej medzery */
+.settings-sheet .goal-head { align-items: center; margin-top: 0; }
+.settings-sheet .goal-head .card-value { line-height: 1; margin: 0; }
+.settings-sheet #settings-goal-chips { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--sp-2); justify-content: stretch; margin: var(--sp-2) 0 0; }
+.settings-sheet #settings-goal-chips .goal-chip { width: 100%; }

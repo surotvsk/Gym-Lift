@@ -120,7 +120,7 @@ the app shows an "update available" notice and never reloads during an active wo
   `fonts/space-grotesk-*.woff2` (precached). Use tokens, not literal colours, in new CSS, and check new
   UI in both modes (`tests/app/bento-theme.js` has contrast and overflow checks). Today is a Bento tile grid
   (`#bento-grid`, filled by `renderBento()`; `data-go` tiles open existing features through `bentoGo()`; ids such as
-  `week-count`, `btn-start-workout`, `btn-excuse`, `btn-choose-mode` are kept for tests). `tests/app/bento-home.js` checks every tile.
+  `week-count`, `btn-start-workout`, `btn-choose-mode` are kept for tests; the week-excuse tile and sheet were removed by owner decision D8, weeks excused earlier still count in `computeStreak()`). `tests/app/bento-home.js` checks every tile.
   The whole app follows the Bento reference (`design-concepts/app/r2/03-bento.html`; dark `r7/02-classic-dark.html`;
   CSS section "Bento podľa referencie" at the end of `style.css` uses its exact sizes). Menu: `dnes`, `trening`,
   `pokrok` (Stats tiles `renderStatsGrid()`, sub-views are full sheets via `.sheet-open`, default `pokrokView = 'stats'`),

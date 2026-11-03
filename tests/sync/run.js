@@ -292,6 +292,70 @@ scenario('D5: account isolation on sign-out/switch; pending edits kept per accou
   check('B cloud still has no A data', cloudHist(await ctx.obsB.row()).join() === 'w-B1');
 });
 
+scenario('sign out: unsynced changes are never lost or misreported', async (ctx) => {
+  const { d } = await seedA(ctx, 'so1');
+  const rev0 = (await ctx.obsA.row()).revision;
+  const sheetText = () => d.p.eval(`(document.getElementById('modal-sync').hidden ? '' : document.getElementById('modal-sync').innerText)`);
+  const sheetOpen = () => d.p.eval(`!document.getElementById('modal-sync').hidden`);
+  const click = (sel) => d.p.eval(`(document.querySelector(${JSON.stringify(sel)}).click(), true)`);
+  /* odhlásenie spustené kliknutím v UI: počkaj na reload do hosťovského priestoru */
+  const awaitGuest = async () => { await waitFor(async () => { try { return (await d.p.eval(`wsSlot && !wsSlot.owner`)) === true; } catch (e) { return false; } }, 120000, 'guest workspace'); await R(d.p); };
+  /* 1) čakajúca zmena → viditeľné tlačidlo v Nastaveniach, ponuka s tromi voľbami */
+  await d.p.eval(`__GQ_TEST__.fail('upload:beforeRpc'), true`);
+  await d.p.eval(`__gq.addWorkout('w-p', '2026-09-20')`);
+  const a = await snap(d.p);
+  check('A has an unsynced edit', a.dirty && a.hist.indexOf('w-p') >= 0, a.status);
+  await d.p.eval(`(openSettings(), true)`);
+  const vis = await d.p.eval(`(() => { const b = document.getElementById('btn-settings-signout'); return !!b && b.offsetParent !== null && b.getBoundingClientRect().height >= 44; })()`);
+  check('Settings shows a visible Sign out button when signed in', vis);
+  await click('#btn-settings-signout');
+  check('unsynced sheet opens', await sheetOpen());
+  const txt = await sheetText();
+  check('sheet offers sync+sign out, keep-on-device and cancel', !!(await d.p.eval(`['signout-sync','signout-keep','later'].every((x) => !!document.querySelector('#modal-sync [data-sync-action="'+x+'"]'))`)), txt);
+  check('copy never says backed up / synced while dirty', !/backed up|up to date|all synced|saved to your account/i.test(txt + ' ' + (await d.p.eval(`document.getElementById('sync-cloud-line').textContent`))), txt);
+  check('Cancel has default focus', await d.p.eval(`document.activeElement && document.activeElement.dataset.syncAction === 'later'`));
+  await d.p.eval(`(document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true })), true)`);
+  check('Esc closes the sheet and stays signed in', !(await sheetOpen()) && (await snap(d.p)).owner === ctx.A.id);
+  /* 1b) pri konflikte sa „Sync and sign out“ neponúka, ostáva „keep on device“ a Cancel */
+  await d.p.eval(`(window.__metaBak = JSON.stringify(syncMetaRead()), syncMetaUpdate((m) => { m.conflict = { at: Date.now() }; }), requestSignOut(), true)`);
+  check('conflict: sync+sign out is absent, keep and cancel remain', await d.p.eval(`!document.querySelector('#modal-sync [data-sync-action="signout-sync"]') && !!document.querySelector('#modal-sync [data-sync-action="signout-keep"]') && !!document.querySelector('#modal-sync [data-sync-action="later"]')`));
+  await d.p.eval(`(closeSyncModal(), syncMetaWrite(JSON.parse(window.__metaBak)), true)`);
+  /* 2) „Sync and sign out“ pri zlyhaní: zostane prihlásený, ukáže chybu, nič nestratí */
+  await click('#btn-settings-signout');
+  await click('#modal-sync [data-sync-action="signout-sync"]');
+  await waitFor(() => d.p.eval(`(() => { const m = document.getElementById('signout-msg'); return !!m && !m.hidden && /^(?!.*Syncing)/.test(m.textContent) && m.textContent.length > 0 && !document.querySelector('#modal-sync [data-sync-action=signout-sync]').disabled; })()`), 60000, 'sync failure message');
+  const f = await snap(d.p);
+  check('failed sync: still signed in as A, edit kept, cloud unchanged', f.owner === ctx.A.id && f.hist.indexOf('w-p') >= 0 && (await ctx.obsA.row()).revision === rev0, f.status);
+  check('failed sync: sheet says so and does not claim success', /still signed in/i.test(await sheetText()));
+  /* 3) „Sign out — keep changes on this device“ */
+  await click('#modal-sync [data-sync-action="signout-keep"]');
+  await awaitGuest();
+  const g = await snap(d.p);
+  check('keep on device: guest workspace, no A data visible', g.owner === null && g.hist.length === 0, g.slot);
+  check('keep on device: cloud revision unchanged', (await ctx.obsA.row()).revision === rev0);
+  await signIn(d, ctx.A);
+  const b = await snap(d.p);
+  check('sign in again: w-p still present locally', b.owner === ctx.A.id && b.hist.indexOf('w-p') >= 0, b.hist);
+  await syncNow(d.p);
+  check('w-p uploaded after the next sign-in', cloudHist(await ctx.obsA.row()).indexOf('w-p') >= 0);
+  /* 4) „Sync and sign out“ úspešne: v cloude je zmena ešte pred prepnutím */
+  await d.p.eval(`__gq.addWorkout('w-q', '2026-09-21')`);
+  check('w-q unsynced', (await snap(d.p)).dirty);
+  await d.p.eval(`(openSettings(), true)`);
+  await click('#btn-settings-signout');
+  await click('#modal-sync [data-sync-action="signout-sync"]');
+  await awaitGuest();
+  const g2 = await snap(d.p);
+  check('sync+sign out: now in guest workspace', g2.owner === null && g2.hist.length === 0, g2.slot);
+  check('sync+sign out: cloud contains w-q', cloudHist(await ctx.obsA.row()).indexOf('w-q') >= 0);
+  /* 5) čistý stav → obyčajné potvrdenie */
+  await signIn(d, ctx.A);
+  await syncNow(d.p);
+  await d.p.eval(`(openSettings(), true)`);
+  await click('#btn-settings-signout');
+  check('clean state: plain confirm (generic), not the unsynced sheet', await d.p.eval(`!document.getElementById('modal-generic').hidden && document.getElementById('modal-sync').hidden`));
+});
+
 scenario('safety #2a: account switch while an upload is in flight (before RPC, during media upload)', async (ctx) => {
   const { d: d1 } = await seedA(ctx, 'd1');
   for (const point of ['upload:beforeRpc', 'upload:object']) {

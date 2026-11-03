@@ -118,8 +118,10 @@ const BUILTIN_PLAN_NAMES = { push: 'Push', pull: 'Pull', legs: 'Nohy', 'home-sta
 // akékoľvek názvy, ktoré patria zabudovanému plánu (všetky jazyky) –
 // rozlíši premenovanie od pôvodného názvu, nech ho používateľ napíše v ktoromkoľvek jazyku
 const BUILTIN_PLAN_LABELS = {
-  push: ['Push', 'Poussée', 'Empuje', 'Empurrar', 'دفع'],
-  pull: ['Pull', 'Tirage', 'Tirón', 'Puxar', 'سحب'],
+  push: ['Push', 'Poussée', 'Empuje', 'Empurrar', 'دفع',
+    'Hrudník, ramená a triceps', 'Chest, Shoulders & Triceps', 'Pecho, hombros y tríceps', 'Peito, ombros e tríceps', 'Pectoraux, épaules et triceps', 'الصدر والكتفان والترايسبس'],
+  pull: ['Pull', 'Tirage', 'Tirón', 'Puxar', 'سحب',
+    'Chrbát a biceps', 'Back & Biceps', 'Espalda y bíceps', 'Costas e bíceps', 'Dos et biceps', 'الظهر والبايسبس'],
   legs: ['Nohy', 'Legs', 'Jambes', 'Piernas', 'Pernas', 'الأرجل'],
   'home-starter': ['Domáci štart', 'Home starter', 'Inicio en casa', 'Início em casa', 'Départ maison', 'بداية منزلية'],
   'outdoor-starter': ['Vonkajší štart', 'Outdoor starter', 'Inicio al aire libre', 'Início ao ar livre', 'Départ extérieur', 'بداية خارجية'],
@@ -1383,7 +1385,19 @@ function activePlanIds() {
 /* Názov plánu: ručne zmenený názov sa nikdy neprekladá, nedotknutý zabudovaný plán áno. */
 function planDisplayName(plan) {
   if (!plan) return t('pokrok.workoutFallback');
-  return plan.customName ? plan.customName : t('plan.' + plan.id);
+  if (plan.customName) return plan.customName;
+  /* nedotknutý Push/Pull ukazuje svalové skupiny (D5); upravený plán zostáva pri krátkom názve */
+  if ((plan.id === 'push' || plan.id === 'pull') && builtinPlanUntouched(plan)) return t('plan.' + plan.id + 'Muscles');
+  return t('plan.' + plan.id);
+}
+
+/* Zabudovaný plán bez vlastného názvu, s cvikmi (id v poradí) ako v predvolenom pláne:
+   série, opakovania a váhy sa ignorujú. */
+function builtinPlanUntouched(plan) {
+  if (!plan || !plan.builtin || plan.customName || !DEFAULT_PLANS[plan.id]) return false;
+  const def = DEFAULT_PLANS[plan.id].exercises;
+  const cur = Array.isArray(plan.exercises) ? plan.exercises : [];
+  return cur.length === def.length && cur.every((ex, i) => ex && ex.id === def[i].id);
 }
 
 function planNameOf(id) {
@@ -1445,7 +1459,7 @@ const I18N = {
     'kalendar.ariaWorkoutCountOne': '{n} tréning v tento deň',
     'kalendar.ariaWorkoutCountFew': '{n} tréningy v tento deň',
     'kalendar.ariaWorkoutCountOther': '{n} tréningov v tento deň',
-    'plan.push': 'Push', 'plan.pull': 'Pull', 'plan.legs': 'Nohy',
+    'plan.pushMuscles': 'Hrudník, ramená a triceps', 'plan.pullMuscles': 'Chrbát a biceps', 'plan.push': 'Push', 'plan.pull': 'Pull', 'plan.legs': 'Nohy',
     'plan.newName': 'Nový plán',
     'planChoice.title': 'Vytvoriť tréningový plán',
     'planChoice.blank': 'Prázdny tréningový plán',
@@ -2354,7 +2368,7 @@ const I18N = {
     'kalendar.ariaWorkoutCountOne': '{n} workout on this day',
     'kalendar.ariaWorkoutCountFew': '{n} workouts on this day',
     'kalendar.ariaWorkoutCountOther': '{n} workouts on this day',
-    'plan.push': 'Push', 'plan.pull': 'Pull', 'plan.legs': 'Legs',
+    'plan.pushMuscles': 'Chest, Shoulders & Triceps', 'plan.pullMuscles': 'Back & Biceps', 'plan.push': 'Push', 'plan.pull': 'Pull', 'plan.legs': 'Legs',
     'plan.newName': 'New workout plan',
     'planChoice.title': 'Create workout plan',
     'planChoice.blank': 'Blank workout plan',
@@ -3269,7 +3283,7 @@ const I18N = {
     'kalendar.ariaWorkoutCountOne': '{n} entrenamiento este día',
     'kalendar.ariaWorkoutCountFew': '{n} entrenamientos este día',
     'kalendar.ariaWorkoutCountOther': '{n} entrenamientos este día',
-    'plan.push': 'Empuje', 'plan.pull': 'Tirón', 'plan.legs': 'Piernas',
+    'plan.pushMuscles': 'Pecho, hombros y tríceps', 'plan.pullMuscles': 'Espalda y bíceps', 'plan.push': 'Empuje', 'plan.pull': 'Tirón', 'plan.legs': 'Piernas',
     'plan.newName': 'Nuevo plan de entrenamiento',
     'planChoice.title': 'Crear plan de entrenamiento',
     'planChoice.blank': 'Plan de entrenamiento vacío',
@@ -4176,7 +4190,7 @@ const I18N = {
     'kalendar.ariaWorkoutCountOne': '{n} treino neste dia',
     'kalendar.ariaWorkoutCountFew': '{n} treinos neste dia',
     'kalendar.ariaWorkoutCountOther': '{n} treinos neste dia',
-    'plan.push': 'Empurrar', 'plan.pull': 'Puxar', 'plan.legs': 'Pernas',
+    'plan.pushMuscles': 'Peito, ombros e tríceps', 'plan.pullMuscles': 'Costas e bíceps', 'plan.push': 'Empurrar', 'plan.pull': 'Puxar', 'plan.legs': 'Pernas',
     'plan.newName': 'Novo plano de treino',
     'planChoice.title': 'Criar plano de treino',
     'planChoice.blank': 'Plano de treino vazio',
@@ -5083,7 +5097,7 @@ const I18N = {
     'kalendar.ariaWorkoutCountOne': '{n} entraînement ce jour-là',
     'kalendar.ariaWorkoutCountFew': '{n} entraînements ce jour-là',
     'kalendar.ariaWorkoutCountOther': '{n} entraînements ce jour-là',
-    'plan.push': 'Poussée', 'plan.pull': 'Tirage', 'plan.legs': 'Jambes',
+    'plan.pushMuscles': 'Pectoraux, épaules et triceps', 'plan.pullMuscles': 'Dos et biceps', 'plan.push': 'Poussée', 'plan.pull': 'Tirage', 'plan.legs': 'Jambes',
     'plan.newName': 'Nouveau plan d’entraînement',
     'planChoice.title': 'Créer un plan d’entraînement',
     'planChoice.blank': 'Plan d’entraînement vide',
@@ -5993,7 +6007,7 @@ const I18N = {
     'kalendar.ariaWorkoutCountFew': '{n} تمارين في هذا اليوم',
     'kalendar.ariaWorkoutCountMany': '{n} تمرينًا في هذا اليوم',
     'kalendar.ariaWorkoutCountOther': '{n} تمرين في هذا اليوم',
-    'plan.push': 'دفع', 'plan.pull': 'سحب', 'plan.legs': 'الأرجل',
+    'plan.pushMuscles': 'الصدر والكتفان والترايسبس', 'plan.pullMuscles': 'الظهر والبايسبس', 'plan.push': 'دفع', 'plan.pull': 'سحب', 'plan.legs': 'الأرجل',
     'plan.newName': 'خطة تمرين جديدة',
     'planChoice.title': 'إنشاء خطة تمرين',
     'planChoice.blank': 'خطة تمرين فارغة',
@@ -6915,6 +6929,17 @@ const SYNC_I18N = {
     'sync.privacyNote': 'Synchronizácia je súkromná — dáta vo svojom účte vidíš len ty. Moderátori Community k nim nemajú prístup. Všetko sa najprv uloží na tomto zariadení, takže aplikácia funguje aj offline.',
     'sync.now': 'Synchronizovať teraz',
     'sync.resolve': 'Vyriešiť konflikt…',
+    'signout.title': 'Odhlásiť sa?',
+    'signout.cleanBody': 'Toto zariadenie sa prepne do hosťovského režimu. Dáta účtu zostávajú zachované a vrátia sa, keď sa znova prihlásiš.',
+    'signout.dirtyTitle': 'Nesynchronizované zmeny',
+    'signout.dirtyBody': 'Niektoré zmeny na tomto zariadení sa ešte nedostali do tvojho účtu.',
+    'signout.conflictBody': 'Zariadenie a účet majú rozdielne zmeny, preto je synchronizácia pozastavená. Najprv vyrieš konflikt, alebo zmeny ponechaj na tomto zariadení.',
+    'signout.syncOut': 'Synchronizovať a odhlásiť',
+    'signout.keep': 'Odhlásiť — zmeny ponechať na tomto zariadení',
+    'signout.keepHint': 'Zmeny zostanú na tomto zariadení a nahrajú sa po ďalšom prihlásení.',
+    'signout.syncing': 'Synchronizujem…',
+    'signout.failed': 'Zmeny sa nepodarilo synchronizovať, takže zostávaš prihlásený/á.',
+    'signout.hint': 'Prepne toto zariadenie do hosťovského režimu. Dáta účtu zostanú zachované.',
     'sync.linkOpen': 'Dáta tohto zariadenia…',
     'sync.loadOpen': 'Načítať z účtu…',
     'sync.recoveryOpen': 'Kópie na obnovu…',
@@ -6984,6 +7009,17 @@ const SYNC_I18N = {
     'sync.privacyNote': 'Sync is private — only you can see your data in your account. Community moderators cannot access it. Everything is saved on this device first, so the app also works offline.',
     'sync.now': 'Sync now',
     'sync.resolve': 'Resolve conflict…',
+    'signout.title': 'Sign out?',
+    'signout.cleanBody': 'This device switches to guest mode. Your account data is kept and returns when you sign in again.',
+    'signout.dirtyTitle': 'Unsynced changes',
+    'signout.dirtyBody': 'Some changes on this device have not reached your account yet.',
+    'signout.conflictBody': 'This device and your account have different changes, so syncing is paused. Resolve the conflict first, or keep the changes on this device.',
+    'signout.syncOut': 'Sync and sign out',
+    'signout.keep': 'Sign out — keep changes on this device',
+    'signout.keepHint': 'The changes stay on this device and upload after you sign in again.',
+    'signout.syncing': 'Syncing…',
+    'signout.failed': 'Couldn’t sync the changes, so you are still signed in.',
+    'signout.hint': 'Switches this device to guest mode. Your account data is kept.',
     'sync.linkOpen': 'This device’s data…',
     'sync.loadOpen': 'Load from account…',
     'sync.recoveryOpen': 'Recovery copies…',
@@ -7053,6 +7089,17 @@ const SYNC_I18N = {
     'sync.privacyNote': 'La sincronización es privada: solo tú puedes ver tus datos en tu cuenta. Los moderadores de la Comunidad no tienen acceso. Todo se guarda primero en este dispositivo, así que la app también funciona sin conexión.',
     'sync.now': 'Sincronizar ahora',
     'sync.resolve': 'Resolver conflicto…',
+    'signout.title': '¿Cerrar sesión?',
+    'signout.cleanBody': 'Este dispositivo pasa al modo invitado. Los datos de tu cuenta se conservan y vuelven cuando inicies sesión de nuevo.',
+    'signout.dirtyTitle': 'Cambios sin sincronizar',
+    'signout.dirtyBody': 'Algunos cambios de este dispositivo aún no han llegado a tu cuenta.',
+    'signout.conflictBody': 'Este dispositivo y tu cuenta tienen cambios distintos, por eso la sincronización está en pausa. Resuelve primero el conflicto, o deja los cambios en este dispositivo.',
+    'signout.syncOut': 'Sincronizar y cerrar sesión',
+    'signout.keep': 'Cerrar sesión — dejar los cambios en este dispositivo',
+    'signout.keepHint': 'Los cambios se quedan en este dispositivo y se suben cuando inicies sesión de nuevo.',
+    'signout.syncing': 'Sincronizando…',
+    'signout.failed': 'No se pudieron sincronizar los cambios, así que sigues con la sesión iniciada.',
+    'signout.hint': 'Pasa este dispositivo al modo invitado. Los datos de tu cuenta se conservan.',
     'sync.linkOpen': 'Datos de este dispositivo…',
     'sync.loadOpen': 'Cargar desde la cuenta…',
     'sync.recoveryOpen': 'Copias de recuperación…',
@@ -7122,6 +7169,17 @@ const SYNC_I18N = {
     'sync.privacyNote': 'A sincronização é privada: só você vê seus dados na sua conta. Os moderadores da Comunidade não têm acesso. Tudo é salvo primeiro neste dispositivo, então o app também funciona offline.',
     'sync.now': 'Sincronizar agora',
     'sync.resolve': 'Resolver conflito…',
+    'signout.title': 'Sair da conta?',
+    'signout.cleanBody': 'Este dispositivo passa para o modo convidado. Os dados da sua conta são mantidos e voltam quando você entrar de novo.',
+    'signout.dirtyTitle': 'Alterações não sincronizadas',
+    'signout.dirtyBody': 'Algumas alterações deste dispositivo ainda não chegaram à sua conta.',
+    'signout.conflictBody': 'Este dispositivo e sua conta têm alterações diferentes, por isso a sincronização está em pausa. Resolva o conflito primeiro, ou mantenha as alterações neste dispositivo.',
+    'signout.syncOut': 'Sincronizar e sair',
+    'signout.keep': 'Sair — manter as alterações neste dispositivo',
+    'signout.keepHint': 'As alterações ficam neste dispositivo e são enviadas quando você entrar de novo.',
+    'signout.syncing': 'Sincronizando…',
+    'signout.failed': 'Não foi possível sincronizar as alterações, então você continua conectado.',
+    'signout.hint': 'Passa este dispositivo para o modo convidado. Os dados da sua conta são mantidos.',
     'sync.linkOpen': 'Dados deste dispositivo…',
     'sync.loadOpen': 'Carregar da conta…',
     'sync.recoveryOpen': 'Cópias de recuperação…',
@@ -7191,6 +7249,17 @@ const SYNC_I18N = {
     'sync.privacyNote': 'La synchronisation est privée : toi seul vois tes données dans ton compte. Les modérateurs de la Communauté n’y ont pas accès. Tout est d’abord enregistré sur cet appareil, donc l’app fonctionne aussi hors ligne.',
     'sync.now': 'Synchroniser maintenant',
     'sync.resolve': 'Résoudre le conflit…',
+    'signout.title': 'Se déconnecter ?',
+    'signout.cleanBody': 'Cet appareil passe en mode invité. Les données de ton compte sont conservées et reviennent quand tu te reconnectes.',
+    'signout.dirtyTitle': 'Modifications non synchronisées',
+    'signout.dirtyBody': 'Certaines modifications de cet appareil ne sont pas encore arrivées dans ton compte.',
+    'signout.conflictBody': 'Cet appareil et ton compte ont des modifications différentes, la synchronisation est donc en pause. Résous d’abord le conflit, ou garde les modifications sur cet appareil.',
+    'signout.syncOut': 'Synchroniser et se déconnecter',
+    'signout.keep': 'Se déconnecter — garder les modifications sur cet appareil',
+    'signout.keepHint': 'Les modifications restent sur cet appareil et sont envoyées à ta prochaine connexion.',
+    'signout.syncing': 'Synchronisation…',
+    'signout.failed': 'Les modifications n’ont pas pu être synchronisées, tu restes donc connecté(e).',
+    'signout.hint': 'Passe cet appareil en mode invité. Les données de ton compte sont conservées.',
     'sync.linkOpen': 'Données de cet appareil…',
     'sync.loadOpen': 'Charger depuis le compte…',
     'sync.recoveryOpen': 'Copies de récupération…',
@@ -7260,6 +7329,17 @@ const SYNC_I18N = {
     'sync.privacyNote': 'المزامنة خاصة — لا يرى بياناتك في حسابك أحد غيرك. لا يمكن لمشرفي المجتمع الوصول إليها. يُحفظ كل شيء أولًا على هذا الجهاز، لذلك يعمل التطبيق أيضًا دون اتصال.',
     'sync.now': 'زامن الآن',
     'sync.resolve': 'حل التعارض…',
+    'signout.title': 'تسجيل الخروج؟',
+    'signout.cleanBody': 'سيتحول هذا الجهاز إلى وضع الضيف. تبقى بيانات حسابك محفوظة وتعود عند تسجيل الدخول مجددًا.',
+    'signout.dirtyTitle': 'تغييرات غير مزامنة',
+    'signout.dirtyBody': 'بعض التغييرات على هذا الجهاز لم تصل إلى حسابك بعد.',
+    'signout.conflictBody': 'لدى هذا الجهاز وحسابك تغييرات مختلفة، لذلك المزامنة متوقفة. حلّ التعارض أولًا، أو أبقِ التغييرات على هذا الجهاز.',
+    'signout.syncOut': 'زامن ثم سجّل الخروج',
+    'signout.keep': 'تسجيل الخروج — إبقاء التغييرات على هذا الجهاز',
+    'signout.keepHint': 'تبقى التغييرات على هذا الجهاز وتُرفع بعد تسجيل الدخول مجددًا.',
+    'signout.syncing': 'جارٍ المزامنة…',
+    'signout.failed': 'تعذّرت مزامنة التغييرات، لذلك ما زلت مسجّل الدخول.',
+    'signout.hint': 'يحوّل هذا الجهاز إلى وضع الضيف. تبقى بيانات حسابك محفوظة.',
     'sync.linkOpen': 'بيانات هذا الجهاز…',
     'sync.loadOpen': 'تحميل من الحساب…',
     'sync.recoveryOpen': 'نسخ الاسترداد…',
@@ -9847,10 +9927,17 @@ function migrateV2toV3(parsed) {
       }))
       : [],
   }));
+  /* Neznáme polia najvyššej úrovne (napr. z novšej verzie appky) sa zachovajú; staršia
+     verzia by ich pri uložení zahodila a novšie dáta by sa stratili. media a _applyId
+     majú vlastné spracovanie a `name` je starý zámerne zahodený kľúč, preto sa tu nekopírujú. */
+  for (const k of Object.keys(base)) {
+    if (!Object.prototype.hasOwnProperty.call(out, k) && LEGACY_STATE_KEYS.indexOf(k) < 0) out[k] = base[k];
+  }
   state = out;
   backfillState();
   return out;
 }
+const LEGACY_STATE_KEYS = ['media', '_applyId', 'name'];
 
 /* Načítanie a normalizácia NIE sú zmeny používateľa: zapisujú sa cez persistState,
    takže sa nič neoznačí ako čakajúce na synchronizáciu. Poškodené alebo neznáme
@@ -9954,68 +10041,8 @@ function isWeekExcused(key) {
   return state.excusedWeeks.includes(key);
 }
 
-/* ---------- Ospravedlnenie týždňa (list) ----------
-   Predtým jedno ťuknutie na dlaždicu hneď prepínalo – ľahko sa to stalo omylom a nedalo sa
-   ospravedlniť dopredu. Teraz dlaždica otvorí list: tento týždeň a nasledujúci (dovolenka, skúšky).
-   Minulé týždne sa nemenia – séria sa nedá spätne opraviť. Formát dát ostáva rovnaký:
-   state.excusedWeeks = ['2026-W43', …] (staršie verzie appky mu rozumejú). */
-function weekThursday(key) {
-  const [y, w] = String(key).split('-W').map(Number);
-  const d = new Date(y, 0, 4);
-  d.setDate(d.getDate() - ((d.getDay() + 6) % 7) + 3 + (w - 1) * 7);
-  return d;
-}
-function nextWeekKey(key) { return weekKey(addDays(weekThursday(key), 7)); }
-function weekRangeText(key) {
-  const th = weekThursday(key);
-  const pat = localeData().datePattern.replace(/[\s,.]*\{y\}/, '');
-  return fillDatePattern(pat, addDays(th, -3), '') + ' – ' + fillDatePattern(pat, addDays(th, 3), '');
-}
-function excuseWeekOptions() {
-  const cur = currentWeekKey();
-  return [{ key: cur, label: 'excuse.thisWeek' }, { key: nextWeekKey(cur), label: 'excuse.nextWeek' }];
-}
-function setWeekExcused(key, on) {
-  if (!excuseWeekOptions().some((o) => o.key === key)) return;   // len tento a budúci týždeň
-  const i = state.excusedWeeks.indexOf(key);
-  if (on && i < 0) state.excusedWeeks.push(key);
-  else if (!on && i >= 0) state.excusedWeeks.splice(i, 1);
-  else return;
-  saveState();
-  renderAll();
-  renderExcuseSheet();
-}
-function renderExcuseSheet() {
-  const box = document.getElementById('excuse-weeks');
-  if (!box) return;
-  box.innerHTML = excuseWeekOptions().map((o) => {
-    const on = isWeekExcused(o.key);
-    const met = sessionsInWeek(o.key) >= goalForWeek(o.key);
-    const locked = met && !on;   // cieľ splnený – niet čo ospravedlňovať
-    const range = weekRangeText(o.key);
-    const hint = locked ? t('excuse.goalMet') : on ? t('excuse.kept') : '';
-    return '<div class="excuse-row' + (on ? ' on' : '') + '">'
-      + '<div class="excuse-text"><b>' + esc(t(o.label)) + '</b><span>' + esc(range) + '</span>'
-      + (hint ? '<span class="excuse-hint">' + esc(hint) + '</span>' : '') + '</div>'
-      + '<button type="button" class="switch" role="switch" data-excuse-week="' + escAttr(o.key) + '" aria-checked="' + (on ? 'true' : 'false') + '"'
-      + ' aria-label="' + escAttr(t(o.label) + ', ' + range) + '"' + (locked ? ' disabled' : '') + '><span class="switch-knob" aria-hidden="true"></span></button></div>';
-  }).join('');
-  const cur = currentWeekKey();
-  const past = state.excusedWeeks.filter((k) => typeof k === 'string' && k < cur).length;
-  const pastEl = document.getElementById('excuse-past');
-  if (pastEl) { pastEl.hidden = !past; pastEl.textContent = past ? t('excuse.past', { n: past }) : ''; }
-}
-function openExcuseSheet() {
-  renderExcuseSheet();
-  document.getElementById('modal-excuse').hidden = false;
-  const first = document.querySelector('#excuse-weeks .switch:not([disabled])') || document.getElementById('btn-excuse-done');
-  if (first) first.focus();
-}
-function closeExcuseSheet() {
-  document.getElementById('modal-excuse').hidden = true;
-  refreshUpdateBanner();
-  const tile = document.getElementById('btn-excuse'); if (tile && activeTab === 'dnes') tile.focus();
-}
+/* Ospravedlnenie týždňa sa už nedá nastaviť (rozhodnutie majiteľa D8, 2026-10-30). Skôr ospravedlnené
+   týždne v state.excusedWeeks = ['2026-W43', …] sa ďalej rátajú v computeStreak(); nič ich nezapisuje ani nemaže. */
 
 /* Zapíše cieľ pre práve bežiaci týždeň. Minulé týždne nikdy neprepisuje. */
 function syncGoalSnapshot() {
@@ -10711,7 +10738,6 @@ function renderDnes() {
   const goal = weeklyGoal();
   const weekCount = sessionsInWeek(currentWeekKey());
   const streak = computeStreak();
-  const excused = state.excusedWeeks.includes(currentWeekKey());
 
   const dateEl = document.getElementById('today-date');
   dateEl.textContent = todayLabel();
@@ -10737,13 +10763,9 @@ function renderDnes() {
       ? t('dnes.streakGoing')
       : tPlural('dnes.streakContinue', goal).replace('{g}', String(goal)));
 
-  const note = document.getElementById('excuse-note');
-  note.hidden = !excused;
-  note.textContent = t('dnes.excuseNote');
-
   document.getElementById('motivation-text').textContent = motivationText();
 
-  renderBento({ goal, weekCount, streak, excused });
+  renderBento({ goal, weekCount, streak });
 }
 
 /* ---------- Bento: dlaždice obrazovky Dnes ----------
@@ -10863,13 +10885,8 @@ function renderBento(info) {
   const weekTile = document.getElementById('bt-week');
   if (weekTile) weekTile.setAttribute('aria-label', t('bento.week') + ': ' + t('dnes.weekDone', { n: info.weekCount, g: info.goal }));
 
-  /* Séria a ospravedlnený týždeň */
+  /* Séria */
   bentoSetValue('bt-streak-v', info.streak, tPluralWord('bento.weeksWord', info.streak));
-  const nextExcused = isWeekExcused(nextWeekKey(currentWeekKey()));
-  bentoSetText('bt-excuse-l', info.excused ? t('bento.excusedTitle') : t('bento.busyWeek'));
-  bentoSetText('bt-excuse-line', info.excused ? t('excuse.tileThis') : nextExcused ? t('excuse.tileNext') : t('bento.excuseLine'));
-  const ex = document.getElementById('btn-excuse');
-  if (ex) { ex.removeAttribute('aria-pressed'); ex.setAttribute('aria-haspopup', 'dialog'); ex.classList.toggle('bt-excused', !!info.excused); }
 
   /* Level */
   const lv = levelInfo();
@@ -11298,7 +11315,7 @@ function tyAction(act) {
   else if (act === 'friends') tyOpenSheet('friends');
   else if (act === 'myposts') openOwnPostsSheet('ty');
   else if (act === 'moderate') tyOpenSheet('moderate');
-  else if (act === 'signout') { tyMenu(false); communitySignOut(); }
+  else if (act === 'signout') { tyMenu(false); requestSignOut(); }
   else if (act === 'community') { communityMode = 'community'; communityBack = []; communityReturnTab = null; communityView = 'feed'; switchTab('komunita'); }
   else if (act === 'more') tyLoadMore();
   else if (act === 'history-more') { tyHistoryShown += 20; renderTyPosts(); }
@@ -15262,6 +15279,7 @@ const COMMUNITY_COMMENT_MAX = 1000;
 const COMMUNITY_MESSAGE_MAX = 2000;
 let communityVersion = 0;               // 0 = nezistené, 1 = 0005, 2 = 0008, 3 = 0009 (rebríček)
 let communityScope = 'everyone';        // Domov: everyone | following | friends
+let communityChatRestore = null;        // { chat, atEnd, pos } – miesto v chate pri návrate cez Späť (použije sa raz)
 let communityBack = [];                 // predchádzajúce pohľady (tlačidlo Späť)
 let communityPostId = null;             // pohľad 'comments'
 let communityChatId = null;             // pohľad 'chat'
@@ -15493,7 +15511,8 @@ function communityGo(view, apply) {
   const body = document.getElementById('community-body');
   communityBack.push({ view: communityView, user: communityViewUser, post: communityPostId, chat: communityChatId,
     html: body ? body.innerHTML : '', scroll: communityScrollPos(), feed: communityFeed,
-    search: (document.getElementById('community-search') || {}).value || '' });
+    search: (document.getElementById('community-search') || {}).value || '',
+    chatScroll: communityView === 'chat' && view !== 'chat' ? { atEnd: communityChatAtEnd(), pos: communityScrollPos() } : null });
   if (communityBack.length > 30) communityBack.shift();
   if (apply) apply();
   communityView = view;
@@ -15542,6 +15561,8 @@ function communityGoBack() {
   if (!prev) { communityView = 'feed'; renderCommunity(); return; }
   communityViewUser = prev.user; communityPostId = prev.post; communityChatId = prev.chat;
   communityView = prev.view;
+  /* návrat do chatu (napr. z profilu priateľa): obnoví sa miesto, kde sa čítalo, nie koniec chatu */
+  communityChatRestore = prev.view === 'chat' && prev.chatScroll ? { chat: prev.chat, atEnd: prev.chatScroll.atEnd, pos: prev.chatScroll.pos } : null;
   if (communityRestore(prev)) return;
   renderCommunity();
 }
@@ -15984,20 +16005,59 @@ function communityChatScrollToEnd() {
   const el = document.scrollingElement || document.documentElement;
   window.scrollTo(0, el.scrollHeight);
 }
+/* Chat je „videný“ len keď je naozaj na očiach: karta Community, pohľad chat a viditeľná stránka. */
+function communityChatVisible() {
+  return activeTab === 'komunita' && communityView === 'chat' && !!communityChatId && document.visibilityState === 'visible';
+}
+/* Adresa nesie #chat=<id> počas čítania chatu (service worker podľa nej pozná otvorený chat);
+   replaceState, aby história Späť ostala čistá. Cudzí hash sa nikdy nemaže. */
+function communityChatHashSync() {
+  try {
+    const want = communityChatVisible() ? '#chat=' + communityChatId : '';
+    if (want ? location.hash === want : !/^#chat=/.test(location.hash)) return;
+    history.replaceState(null, '', location.pathname + location.search + want);
+  } catch (e) {}
+}
 function communityAfterChatRender(sb) {
-  communityChatScrollToEnd();
-  /* ešte raz po vykreslení (písma, emoji) – stále len ak používateľ medzitým neodscrolloval hore */
-  requestAnimationFrame(() => { if (communityChatAtEnd()) communityChatScrollToEnd(); });
+  const rest = communityChatRestore && communityChatRestore.chat === communityChatId ? communityChatRestore : null;
+  communityChatRestore = null;
+  const restore = () => {
+    const sc = communitySheetScroller();
+    if (sc) sc.scrollTop = rest.pos.y; else window.scrollTo(0, rest.pos.y);
+  };
+  if (rest && !rest.atEnd) {
+    restore();
+    requestAnimationFrame(() => { if (communityChatOpen()) restore(); });
+  } else {
+    communityChatScrollToEnd();
+    /* ešte raz po vykreslení (písma, emoji) – stále len ak používateľ medzitým neodscrolloval hore */
+    requestAnimationFrame(() => { if (communityChatAtEnd()) communityChatScrollToEnd(); });
+  }
+  communityChatHashSync();
   communityMarkChatRead(sb);
   pushClearChat(communityChatId);
   if (communityV5()) { communityLoadReactions(sb); communityStartReactionPoll(); }
 }
 async function communityMarkChatRead(sb) {
   sb = sb || communityClient();
-  if (!sb || !communityChatId) return;
+  if (!sb || !communityChatId || !communityChatVisible()) return;   // skryté okno = správy ešte nikto nevidel
   const last = communityChatMsgs.length ? communityChatMsgs[communityChatMsgs.length - 1].id : null;
   try { await sb.rpc('mark_read', { p_conversation: communityChatId, p_last_id: last }); } catch (e) {}
   communityRefreshBadges(sb);
+}
+/* Návrat do viditeľného okna s otvoreným chatom: doťahajú sa správy, ktoré prišli na pozadí, a označia sa ako videné. */
+async function communityChatResume() {
+  communityChatHashSync();
+  if (!communityChatVisible() || !communityChatMeta) return;
+  const sb = communityClient(), cid = communityChatId;
+  if (!sb || !communityProfile) return;
+  try {
+    const [, msgs] = await communityFetchChat(sb, cid, communityProfile.id);
+    if (cid !== communityChatId || !communityChatVisible()) return;
+    ((msgs && msgs.data) || []).slice().reverse().forEach((m) => communityAddChatMsg(m));
+  } catch (e) {}
+  communityMarkChatRead(sb);
+  pushClearChat(cid);
 }
 /* Nová správa: vlastná (`mine`) vždy posunie chat na koniec; cudzia len vtedy, keď bol používateľ
    na konci – kto číta staršie správy, toho appka nikam neodtiahne. */
@@ -16045,7 +16105,7 @@ function communityOnChatRead(r) {
 /* Živá správa: v otvorenom chate sa hneď pridá (a označí ako prečítaná), inak len odznak. */
 function communityOnMessage(m) {
   if (!m) return;
-  const inChat = activeTab === 'komunita' && communityView === 'chat' && m.conversation_id === communityChatId && !document.hidden;
+  const inChat = activeTab === 'komunita' && communityView === 'chat' && m.conversation_id === communityChatId && communityChatVisible();
   if (inChat) {
     communityAddChatMsg(m);
     if (communityProfile && m.sender_id !== communityProfile.id) communityMarkChatRead();
@@ -17249,6 +17309,7 @@ async function renderCommunity() {
   if (!body) return;
   /* Novšie vykreslenie vždy vyhrá: pomalšia staršia odpoveď už nič neprepíše. */
   const seq = ++communityRenderSeq;
+  communityChatHashSync();
   renderCommunityHead();
   /* v80: prekreslenie tej istej obrazovky (napr. po Sledovať) nechá posunutie tam, kde bolo */
   const viewKey = communityViewKey(communityView, communityViewUser, communityPostId, communityChatId);
@@ -18415,6 +18476,46 @@ async function communitySignOut() {
   syncRender();
   renderCommunity();
 }
+/* Žiadosť o odhlásenie: pri nesynchronizovaných zmenách, konflikte alebo zlyhaných médiách sa používateľ
+   rozhodne (synchronizovať a odhlásiť / odhlásiť a ponechať zmeny na zariadení); inak stačí potvrdenie.
+   Text nikdy netvrdí, že je niečo zálohované/synchronizované, kým sú v priestore čakajúce zmeny. */
+function requestSignOut() {
+  if (!wsSlot || !wsSlot.owner) { communitySignOut(); return; }
+  const m = syncMetaRead();
+  if (!m.conflict && !syncIsDirty(m)) {
+    showGeneric(t('signout.title'), t('community.signOut'), communitySignOut, esc(t('signout.cleanBody')));
+    return;
+  }
+  const body = '<p class="card-note">' + esc(t(m.conflict ? 'signout.conflictBody' : 'signout.dirtyBody')) + '</p>'
+    + '<p class="card-note">' + esc(t('signout.keepHint')) + '</p>'
+    + '<p class="card-note" id="signout-msg" role="alert" hidden></p>'
+    + (m.conflict ? '' : '<div class="modal-actions">' + syncBtn('signout-sync', 'signout.syncOut', true) + '</div>')
+    + '<div class="modal-actions">' + syncBtn('signout-keep', 'signout.keep', false) + '</div>'
+    + '<div class="modal-actions">' + syncBtn('later', 'common.cancel', false) + '</div>';
+  openSyncModal(t('signout.dirtyTitle'), body);
+  const cancel = document.querySelector('#modal-sync [data-sync-action="later"]');
+  if (cancel) cancel.focus();
+}
+/* „Synchronizovať a odhlásiť“: odhlási sa až keď je priestor naozaj čistý; inak zostane prihlásený a ukáže dôvod. */
+async function signOutAfterSync() {
+  const box = document.getElementById('modal-sync');
+  const btns = box ? Array.from(box.querySelectorAll('button')) : [];
+  const msg = document.getElementById('signout-msg');
+  const setMsg = (text) => { if (msg) { msg.textContent = text; msg.hidden = !text; } };
+  btns.forEach((b) => { b.disabled = true; });
+  setMsg(t('signout.syncing'));
+  syncRetryDelay = 5000; syncLastError = null; syncNotice = '';
+  let m = syncMetaRead();
+  for (let i = 0; i < 3 && !m.conflict && !syncLastError && syncIsDirty(m); i++) {
+    await syncKick('signout');
+    m = syncMetaRead();
+  }
+  if (!m.conflict && !syncIsDirty(m) && !syncLastError && wsSlot && wsSlot.owner) { closeSyncModal(); await communitySignOut(); return; }
+  const n = (m.mediaSkipped || []).length + (m.mediaFailed || []).length + (m.missingInCloud || []).length;
+  const why = m.conflict ? t('sync.st.conflict') : syncLastError ? t(syncStatusKey(), { n, when: '' }) : '';
+  setMsg(t('signout.failed') + (why ? ' ' + why : ''));
+  btns.forEach((b) => { b.disabled = false; });
+}
 async function communitySaveProfile() {
   const sb = communityClient(); if (!sb || !communityProfile) return;
   const u = document.getElementById('community-username');
@@ -18875,8 +18976,9 @@ function historySets(w) {
   return (w.exercises || []).reduce((a, e) => a + (Number(e.setsDone) || 0), 0);
 }
 function bentoStatValue(n, sets) {
-  return '<span class="bt-v">' + n + '<small> ' + esc(tPluralWord('bento.workoutsWord', n)) + ' · '
-    + esc(tPlural('bento.setCount', sets).replace('{n}', String(sets))) + '</small></span>';
+  /* sériu dáme na vlastný riadok: oddeľovač „·“ sa pri zalomení nesmie osamotiť na začiatku riadku */
+  return '<span class="bt-v">' + n + '<small> ' + esc(tPluralWord('bento.workoutsWord', n)) + '</small>'
+    + '<small class="bt-v-sets">' + esc(tPlural('bento.setCount', sets).replace('{n}', String(sets))) + '</small></span>';
 }
 function bentoBars(vals, labels, aria) {
   const W = 320, H = 110, gap = 6, lh = 14;
@@ -20323,6 +20425,7 @@ function switchTab(tab) {
   if (tab === 'spravy') { openMessagesTab(); return; }   // Bento: karta Správy = Community obrazovka v režime rozhovorov
   activeTab = tab;
   document.body.dataset.tab = tab;
+  communityChatHashSync();
   for (const s of ['dnes', 'trening', 'pokrok', 'kalendar', 'komunita', 'ty']) {
     document.getElementById(`screen-${s}`).hidden = s !== tab;
   }
@@ -23965,6 +24068,8 @@ function syncModalAction(e) {
   if (!b) return;
   const a = b.dataset.syncAction;
   if (a === 'later') { closeSyncModal(); syncRender(); return; }
+  if (a === 'signout-sync') { signOutAfterSync(); return; }
+  if (a === 'signout-keep') { closeSyncModal(); communitySignOut(); return; }
   if (a === 'keep-cloud') { syncResolveConflict('cloud'); return; }
   if (a === 'keep-device') { syncResolveConflict('device'); return; }
   if (a === 'link-yes') { closeSyncModal(); wsResolveLink('link'); return; }
@@ -24021,6 +24126,7 @@ function syncRender() {
   show('btn-cloud-backup-now', signedSlot && !m.disabled);
   show('btn-cloud-restore', signedSlot);
   show('btn-cloud-delete', signedSlot);
+  show('signout-row', signedSlot);
 }
 /* Spätná kompatibilita názvu: volá sa z applyStaticI18n a openSettings. */
 function renderCloudBackupSetting() { syncRender(); }
@@ -24122,14 +24228,6 @@ function setupEvents() {
     if (e.target && (e.target.id === 'act-distance' || e.target.id === 'act-note')) { syncActivityInputs(); saveState(); }
   }, 'change');
 
-  on('btn-excuse', openExcuseSheet);
-  on('btn-excuse-done', closeExcuseSheet);
-  on('modal-excuse', (e) => {
-    if (e.target === e.currentTarget) { closeExcuseSheet(); return; }   // ťuknutie mimo listu
-    const sw = e.target.closest ? e.target.closest('[data-excuse-week]') : null;
-    if (sw && !sw.disabled) setWeekExcused(sw.dataset.excuseWeek, sw.getAttribute('aria-checked') !== 'true');
-  });
-  on('modal-excuse', (e) => { if (e.key === 'Escape') { e.preventDefault(); closeExcuseSheet(); } }, 'keydown');
 
   on('btn-finish-workout', finishWorkout);
   on('btn-confirm-cancel', () => { document.getElementById('modal-confirm').hidden = true; refreshUpdateBanner(); });
@@ -24251,6 +24349,7 @@ function setupEvents() {
     showGeneric(t('sync.loadTitle'), t('sync.loadConfirm'), syncLoadFromAccount, esc(t('sync.loadBody')));
   });
   on('btn-cloud-delete', cloudDeleteBackup);
+  on('btn-settings-signout', requestSignOut);
   on('btn-sync-resolve', () => { syncConflictShown = false; syncOpenConflictDialog(true); });
   on('btn-sync-link', syncOpenLinkDialog);
   on('btn-sync-recovery', syncOpenRecoveryList);
@@ -24355,6 +24454,11 @@ function setupEvents() {
     if (presetManageMode) { setPresetManageMode(false); return; }
     const restSheet = document.getElementById('modal-rest');
     if (restSheet && !restSheet.hidden) { closeRestSheet(); return; }
+    /* v DOM je modal-generic nad modal-sync (napr. potvrdenie obnovy kópie nad zoznamom kópií) – najprv ten vrchný */
+    const genModal = document.getElementById('modal-generic');
+    if (genModal && !genModal.hidden) { closeGeneric(); return; }
+    const syncModal = document.getElementById('modal-sync');
+    if (syncModal && !syncModal.hidden) { const later = syncModal.querySelector('[data-sync-action="later"]'); if (later && !later.disabled) later.click(); return; }
     const modal = document.getElementById('modal-day');
     if (modal && !modal.hidden) { closeDay(); return; }
     /* Bento listy (kalendár, podpohľady štatistík) sa zatvárajú ako list: Esc = späť */
@@ -24385,7 +24489,7 @@ function setupEvents() {
     else if (act === 'disable') communityDisable();
     else if (act === 'signin') communitySignIn();
     else if (act === 'signup') communitySignUp();
-    else if (act === 'signout') communitySignOut();
+    else if (act === 'signout') requestSignOut();
     else if (act === 'push-on') pushEnable();
     else if (act === 'rem-save') remindersSave();
     else if (act === 'rem-day') { const on = !a.classList.contains('active'); a.classList.toggle('active', on); a.setAttribute('aria-pressed', on ? 'true' : 'false'); }
@@ -24497,7 +24601,7 @@ function setupEvents() {
     else if (e.target.id === 'community-comment-text') communitySendComment();
   }, 'keydown');
   /* Po návrate do aplikácie: odznaky neprečítaných správ a žiadostí. */
-  document.addEventListener('visibilitychange', () => { if (!document.hidden) communityRefreshBadges(); });
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) communityRefreshBadges(); communityChatResume(); });
   on('btn-community-caption-cancel', () => { communityCaptionPostId = null; document.getElementById('modal-community-caption').hidden = true; });
   on('btn-community-caption-save', communitySaveCaption);
 
@@ -24953,7 +25057,6 @@ const NATIVE_BACK_CLOSE = [
   ['modal-planchoice', '#btn-choice-cancel'],
   ['modal-fullbody', '#btn-fb-cancel'],
   ['modal-mode', '#btn-mode-cancel'],
-  ['modal-excuse', '#btn-excuse-done'],
   ['modal-location', '#btn-location-close'],
   ['modal-activity', '#btn-activity-close'],
   ['modal-photo-add', '#btn-photo-add-cancel'],
