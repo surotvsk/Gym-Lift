@@ -4703,11 +4703,11 @@ html[data-theme="dark"] .ty-hist-date { color: #F4F3EF; }
 /* v91: rozostupy – horný okraj, Nastavenia, Stats (hodnoty z rozstupov --sp-*, bez záporných okrajov) */
 /* Hlavička hlavných obrazoviek (hlásenie majiteľa 2026-11-03: dátum a týždeň pri výreze / Dynamic Island).
    Skutočné okno začína pod stavovým riadkom (iOS „black“, Android SystemBars odsadí WebView), preto stačí bezpečná
-   zóna + 12 px; keby systém kreslil obsah pod lištu (viewport-fit=cover, edge-to-edge), env() ju pripočíta.
+   zóna + 6 px (majiteľ 2026-11-03: menšia medzera pod stavovým riadkom); keby systém kreslil obsah pod lištu (viewport-fit=cover, edge-to-edge), env() ju pripočíta.
    Žiadny „falošný“ 50 px stavový riadok – hlavička ostáva kompaktná. */
 :root, html[data-theme="light"] { --b-date: #45433E; }
 html[data-theme="dark"] { --b-date: #CFCDC6; }
-.app-main { padding-top: max(20px, calc(env(safe-area-inset-top, 0px) + 12px)); }
+.app-main { padding-top: max(6px, calc(env(safe-area-inset-top, 0px) + 6px)); }
 .bh-head { padding-bottom: 12px; }
 .bh-head > div { display: flex; flex-direction: column; gap: 4px; }
 .hd .today-date { font-size: 14px; font-weight: 600; line-height: 1.3; letter-spacing: 0; color: var(--b-date);
