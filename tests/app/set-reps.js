@@ -52,34 +52,26 @@ function check(name, ok, info) {
       if (!state.planOrder.includes('rtest')) state.planOrder.push('rtest');
       selectedPlan = 'rtest'; saveState(); switchTab('trening'); renderTrening(); return true; })()`);
     await wait(300);
-    const reps = (i) => p.eval(`Array.from(document.querySelectorAll('#exercise-list .exercise')[${i}].querySelectorAll('.set-reps')).map((b) => b.textContent + (b.classList.contains('changed') ? '*' : ''))`);
-    const clickReps = (ex, i) => p.eval(`(document.querySelectorAll('#exercise-list .exercise')[${ex}].querySelectorAll('.set-reps')[${i}].click(), true)`);
+    const reps = (i) => p.eval(`Array.from(document.querySelectorAll('#exercise-list .exercise')[${i}].querySelectorAll('input.set-reps')).map((b) => b.value + '×' + (b.classList.contains('changed') ? '*' : ''))`);
+    /* Napíše do poľa opakovaní (ex = cvik, i = riadok) a vyvolá 'change' ako pri opustení poľa. */
+    const typeReps = (ex, i, v) => p.eval(`(() => { const inp = document.querySelectorAll('#exercise-list .exercise')[${ex}].querySelectorAll('input.set-reps')[${i}]; inp.focus(); inp.value = ${J(String(v))}; inp.dispatchEvent(new Event('input', { bubbles: true })); inp.dispatchEvent(new Event('change', { bubbles: true })); inp.blur(); return true; })()`);
 
     console.log('== per-set reps in the workout');
     check('every set shows the planned reps', J(await reps(0)) === J(['10×', '10×', '10×']), await reps(0));
-    check('every set still has its weight button', (await p.eval(`document.querySelectorAll('#exercise-list .exercise')[0].querySelectorAll('.set-weight').length`)) === 3);
+    check('every set still has its weight input', (await p.eval(`document.querySelectorAll('#exercise-list .exercise')[0].querySelectorAll('input.set-weight').length`)) === 3);
     check('per-side exercise: reps for each side of each set', J(await reps(1)) === J(['12×', '12×', '12×', '12×']), await reps(1));
-    await clickReps(0, 1);
-    check('tapping the reps opens the editor with the current reps', await p.eval(`!!document.querySelector('.set-reps-editor') && document.querySelector('.set-reps-input').value === '10'`));
-    await p.eval(`(document.querySelector('.set-reps-editor .btn:nth-of-type(1)').click(), document.querySelector('.set-reps-editor .btn:nth-of-type(1)').click(), true)`);
-    check('−1 twice → 8', (await p.eval(`document.querySelector('.set-reps-input').value`)) === '8');
-    await p.eval(`(document.querySelector('.set-reps-ok').click(), true)`);
+    check('reps inputs: inputmode numeric, aria-label "Reps, set 2", visible word "Reps"', await p.eval(`(() => { const r = document.querySelectorAll('#exercise-list .exercise')[0].querySelectorAll('.set-item')[1]; const i = r.querySelector('input.set-reps'); return i.inputMode === 'numeric' && i.getAttribute('aria-label') === 'Reps, set 2' && /Reps/.test(r.closest('.exercise').querySelector('.set-heads').innerText) && i.value === '10'; })()`));
+    await typeReps(0, 1, 8);
     await wait(200);
     check('set 2 and the later sets use 8, set 1 stays 10', J(await reps(0)) === J(['10×', '8×*', '8×*']), await reps(0));
     check('changing reps starts the workout', !!(await p.eval('getSession()')));
     check('the plan keeps 10 reps', (await p.eval(`state.plans['rtest'].exercises[0].reps`)) === 10);
     for (const bad of ['', '0', 'abc', '2.5', '1000']) {
-      await clickReps(0, 0);
-      await p.eval(`(() => { const i = document.querySelector('.set-reps-input'); i.value = ${J(bad)}; document.querySelector('.set-reps-ok').click(); return true; })()`);
-      check('invalid value ' + J(bad) + ' is refused (editor stays open, nothing saved)', (await p.eval(`!!document.querySelector('.set-reps-editor')`)) && J(await reps(0)) === J(['10×', '8×*', '8×*']), await reps(0));
-      await p.eval(`(closeSetWeightEditor(), true)`);
+      await typeReps(0, 0, bad);
+      check('invalid value ' + J(bad) + ' is refused and reverts (nothing saved)', J(await reps(0)) === J(['10×', '8×*', '8×*']), await reps(0));
     }
-    await clickReps(0, 0);
-    await p.eval(`(() => { const i = document.querySelector('.set-reps-input'); i.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true })); return true; })()`);
-    check('Esc closes the editor without a change', (await p.eval(`!document.querySelector('.set-reps-editor')`)) && J(await reps(0)) === J(['10×', '8×*', '8×*']));
     /* Jednostranný cvik: séria 2 (ľavá) → 10 opakovaní, platí pre obe strany série 2. */
-    await clickReps(1, 2);
-    await p.eval(`(() => { const i = document.querySelector('.set-reps-input'); i.value = '10'; i.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true })); return true; })()`);
+    await typeReps(1, 2, 10);
     await wait(200);
     check('per-side: set 2 → 10 reps on both sides, set 1 stays 12', J(await reps(1)) === J(['12×', '12×', '10×*', '10×*']), await reps(1));
     /* Hotové: Bench všetky 3, Curl obe strany oboch sérií, Row 1. */
@@ -95,13 +87,6 @@ function check(name, ok, info) {
     check('390 px: set rows fit (no horizontal overflow)', await p.eval(`document.documentElement.scrollWidth <= innerWidth + 1`));
     let s = await p.c.send('Page.captureScreenshot', { format: 'png' });
     fs.writeFileSync(path.join(WORK, 'shots', 'workout-390.png'), Buffer.from(s.data, 'base64'));
-    await clickReps(0, 1);
-    await p.eval(`(document.querySelector('.set-reps-editor').scrollIntoView({ block: 'center' }), true)`);
-    await wait(200);
-    check('390 px: no horizontal overflow with the reps editor open', await p.eval(`document.documentElement.scrollWidth <= innerWidth + 1`));
-    s = await p.c.send('Page.captureScreenshot', { format: 'png' });
-    fs.writeFileSync(path.join(WORK, 'shots', 'workout-390-reps-editor.png'), Buffer.from(s.data, 'base64'));
-    await p.eval(`(closeSetWeightEditor(), true)`);
     await p.c.send('Emulation.clearDeviceMetricsOverride');
 
     console.log('== saved history');
@@ -153,11 +138,8 @@ function check(name, ok, info) {
     await p.eval(`(() => { switchTab('trening'); selectedPlan = 'rtest'; renderTrening(); return true; })()`);
     for (const lang of ['sk', 'en', 'es', 'pt-BR', 'fr', 'ar']) {
       await p.eval(`(setLang(${J(lang)}), switchTab('trening'), renderTrening(), true)`);
-      await clickReps(0, 1);
-      const r = await p.eval(`({ note: document.querySelector('.set-weight-note').textContent, aria: document.querySelector('.set-reps').getAttribute('aria-label'), title: document.querySelector('.set-reps').title,
-        ed: document.querySelector('.set-reps-editor').getAttribute('aria-label') + document.querySelector('.set-reps-input').getAttribute('aria-label') + Array.from(document.querySelectorAll('.set-reps-editor .btn')).map((x) => x.getAttribute('aria-label') || '').join(''),
-        unit: document.querySelector('.set-reps-editor .set-weight-unit').textContent, key: t('units.reps'), dir: document.documentElement.dir })`);
-      check(lang + ': reps button and editor translated', r.unit === r.key && !/setReps\.|setWeight\./.test(r.note + r.aria + r.title + r.ed), r);
+      const r = await p.eval(`({ capR: document.querySelectorAll('.set-heads')[0].querySelectorAll('.set-cap')[1].textContent, key: t('session.reps'), aria: document.querySelector('input.set-reps').getAttribute('aria-label'), dir: document.documentElement.dir })`);
+      check(lang + ': reps label translated', r.capR === r.key && !/session\./.test(r.capR + r.aria), r);
       const per = await p.eval(`(() => { const d = document.createElement('div'); d.innerHTML = shareCardHtml(${J(old)}, 'msg', 1); return d.innerText.includes(tPlural('unilateral.setsPerSide', 2)) && !/unilateral\./.test(d.innerText); })()`);
       check(lang + ': per-side card text translated', per);
       if (lang === 'ar') {
@@ -165,7 +147,6 @@ function check(name, ok, info) {
         const s2 = await p.c.send('Page.captureScreenshot', { format: 'png' });
         fs.writeFileSync(path.join(WORK, 'shots', 'workout-ar.png'), Buffer.from(s2.data, 'base64'));
       }
-      await p.eval(`(closeSetWeightEditor(), true)`);
     }
     await p.eval(`(setLang('en'), true)`);
 
@@ -176,11 +157,10 @@ function check(name, ok, info) {
       if (!state.planOrder.includes('utest')) state.planOrder.push('utest');
       selectedPlan = 'utest'; saveState(); switchTab('trening'); renderTrening(); return true; })()`);
     await wait(300);
-    const rowsU = () => p.eval(`Array.from(document.querySelectorAll('#exercise-list .exercise')[0].querySelectorAll('.set-item')).map((r) => r.querySelector('.set-side-label').textContent + '|' + r.querySelector('.set-reps').textContent + '|' + r.querySelector('.set-weight').textContent + '|' + (r.querySelector('.set-btn').classList.contains('done') ? 'done' : '-'))`);
+    const rowsU = () => p.eval(`Array.from(document.querySelectorAll('#exercise-list .exercise')[0].querySelectorAll('.set-item')).map((r) => r.querySelector('.set-label').title + '|' + r.querySelector('input.set-reps').value + '×|' + r.querySelector('input.set-weight').value + '|' + (r.querySelector('.set-btn').classList.contains('done') ? 'done' : '-'))`);
     const rowU = (i) => `document.querySelectorAll('#exercise-list .exercise')[0].querySelectorAll('.set-item')[${i}]`;
     const editU = async (i, kind, val) => {
-      await p.eval(`(${rowU(i)}.querySelector('.set-${kind}').click(), true)`);
-      await p.eval(`(() => { const inp = document.querySelector('.set-${kind}-input'); inp.value = ${J(String(val))}; inp.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true })); return true; })()`);
+      await p.eval(`(() => { const inp = ${rowU(i)}.querySelector('input.set-${kind}'); inp.focus(); inp.value = ${J(String(val))}; inp.dispatchEvent(new Event('change', { bubbles: true })); inp.blur(); return true; })()`);
       await wait(150);
     };
     check('rows: Set 1 Left, Set 1 Right, Set 2 Left, Set 2 Right — all 12 reps, 8 kg', J(await rowsU()) === J(['Set 1 — Left|12×|8|-', 'Set 1 — Right|12×|8|-', 'Set 2 — Left|12×|8|-', 'Set 2 — Right|12×|8|-']), await rowsU());

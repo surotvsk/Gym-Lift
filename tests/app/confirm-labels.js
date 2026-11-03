@@ -4,8 +4,8 @@
 
      node tests/app/confirm-labels.js
 
-   Before v71 these dialogs showed "Cancel" on BOTH buttons. Checks: Reset workout? →
-   "Reset workout" / "Back to workout"; Undo workout? → "Undo this workout" / "Keep workout";
+   Before v71 these dialogs showed "Cancel" on BOTH buttons. Checks: Discard this workout? (v97, two steps) →
+   "Discard" / "Keep training", then "Discard for good" / "Keep training"; Undo workout? → "Undo this workout" / "Keep workout";
    Delete workout? → "Delete" / "Keep workout"; the two buttons always differ; the second button
    keeps everything, the first one does the action; other dialogs still say "Cancel";
    6 languages; RTL; 390 px. */
@@ -50,12 +50,12 @@ function check(name, ok, info) {
       selectedPlan = 'ctest'; saveState(); switchTab('trening'); renderTrening(); return true; })()`);
     await wait(300);
 
-    console.log('== Reset workout?');
+    console.log('== Discard this workout? (two steps)');
     await markSet();
     await p.eval(`(document.getElementById('btn-reset-session').click(), true)`);
     let d = await dialog();
-    check('the dialog opens with title "Reset workout?"', d.open && d.title === 'Reset workout?', d);
-    check('orange button: "Reset workout"; other button: "Back to workout" (not "Cancel" twice)', d.ok === 'Reset workout' && d.cancel === 'Back to workout' && d.ok !== d.cancel, d);
+    check('the dialog opens with title "Discard this workout?"', d.open && d.title === 'Discard this workout?', d);
+    check('step 1 buttons: "Discard" / "Keep training" (not "Cancel" twice)', d.ok === 'Discard' && d.cancel === 'Keep training' && d.ok !== d.cancel, d);
     await p.c.send('Emulation.setDeviceMetricsOverride', { width: 390, height: 844, deviceScaleFactor: 2, mobile: true });
     await wait(300);
     let s = await p.c.send('Page.captureScreenshot', { format: 'png' });
@@ -64,12 +64,17 @@ function check(name, ok, info) {
     await p.c.send('Emulation.clearDeviceMetricsOverride');
     await p.eval(`(document.getElementById('btn-generic-cancel').click(), true)`);
     await wait(200);
-    check('"Back to workout" closes the dialog and keeps the workout (marked set still there)', !(await dialog()).open && (await p.eval(`!!getSession() && totalSetsDone() === 1`)));
+    check('"Keep training" closes the dialog and keeps the workout (marked set still there)', !(await dialog()).open && (await p.eval(`!!getSession() && totalSetsDone() === 1`)));
     await p.eval(`(document.getElementById('btn-reset-session').click(), true)`);
     await p.eval(`(document.getElementById('btn-generic-ok').click(), true)`);
     await wait(200);
-    check('"Reset workout" clears the workout (no session, no marked sets)', !(await dialog()).open && (await p.eval(`getSession() === null && totalSetsDone() === 0`)));
-    check('resetting writes nothing to history', (await p.eval(`state.history.filter((w) => w.planId === 'ctest').length`)) === 0);
+    d = await dialog();
+    check('step 2 "Discard for good" / "Keep training", workout still there', d.open && d.ok === 'Discard for good' && d.cancel === 'Keep training' && (await p.eval(`!!getSession()`)), d);
+    await new Promise((r) => setTimeout(r, 500));   // krok 2 zahodenia je ~400 ms zablokovaný proti dvojkliku
+    await p.eval(`(document.getElementById('btn-generic-ok').click(), true)`);
+    await wait(200);
+    check('"Discard for good" clears the workout (no session, no marked sets)', !(await dialog()).open && (await p.eval(`getSession() === null && totalSetsDone() === 0`)));
+    check('discarding writes nothing to history', (await p.eval(`state.history.filter((w) => w.planId === 'ctest').length`)) === 0);
 
     console.log('== Undo workout? (after finishing)');
     await markSet();
@@ -130,14 +135,14 @@ function check(name, ok, info) {
       await markSet();
       await p.eval(`(document.getElementById('btn-reset-session').click(), true)`);
       const r1 = await dialog();
-      const keys = await p.eval(`({ ok: t('trening.resetSession'), cancel: t('trening.backToWorkout'), keep: t('history.keepWorkout'), undo: t('trening.undo'), del: t('common.delete'), dir: document.documentElement.dir })`);
-      check(lang + ': reset dialog buttons translated and different', r1.ok === keys.ok && r1.cancel === keys.cancel && r1.ok !== r1.cancel && !/\./.test(r1.ok + r1.cancel), { r1, keys });
+      const keys = await p.eval(`({ ok: t('discard.confirm'), cancel: t('finish.keep'), keep: t('history.keepWorkout'), undo: t('trening.undo'), del: t('common.delete'), dir: document.documentElement.dir })`);
+      check(lang + ': discard dialog buttons translated and different', r1.ok === keys.ok && r1.cancel === keys.cancel && r1.ok !== r1.cancel && !/\./.test(r1.ok + r1.cancel), { r1, keys });
       if (lang === 'ar') {
         check('ar: right-to-left', keys.dir === 'rtl');
         const s2 = await p.c.send('Page.captureScreenshot', { format: 'png' });
         fs.writeFileSync(path.join(WORK, 'shots', 'reset-ar.png'), Buffer.from(s2.data, 'base64'));
       }
-      await p.eval(`(document.getElementById('btn-generic-ok').click(), true)`);
+      await p.eval(`(document.getElementById('btn-generic-ok').click(), document.getElementById('btn-generic-ok').click(), true)`);
       check(lang + ': undo/delete labels translated', keys.keep !== 'history.keepWorkout' && keys.undo !== keys.keep && keys.del !== keys.keep);
     }
     await p.eval(`(setLang('en'), true)`);

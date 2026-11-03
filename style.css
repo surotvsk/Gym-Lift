@@ -4073,7 +4073,7 @@ html[data-theme="dark"] .bt-dark .bt-line, html[data-theme="dark"] :is(.bt-lime,
 .bt-badge { position: absolute !important; top: 12px; inset-inline-end: 12px; min-width: 20px; height: 20px; padding: 0 6px; border-radius: 999px; background: #121212; color: #D6F35A; font: 700 12px/20px 'Space Grotesk', system-ui, sans-serif; text-align: center; }
 html[data-theme="dark"] .bt-badge { background: #D6F35A; color: #121212; }
 #bt-rest.bt-running { background: #D6F35A; color: #121212; }
-#bt-rest.bt-running .bt-line { font: 700 18px 'Space Grotesk', sans-serif; opacity: 1; color: #121212; font-variant-numeric: tabular-nums; }
+#bt-rest.bt-running .bt-line { white-space: pre-line; font: 700 18px 'Space Grotesk', sans-serif; opacity: 1; color: #121212; font-variant-numeric: tabular-nums; }
 
 /* ---- menu: tmavá pilulka, 52 × 44, aktívna karta limetková ---- */
 .tab-bar {
@@ -4094,17 +4094,33 @@ html[data-theme="dark"] .bt-badge { background: #D6F35A; color: #121212; }
 .tab-badge { position: absolute; top: -6px; inset-inline-end: -10px; min-width: 16px; height: 16px; padding: 0 4px; border-radius: 999px; background: #D6F35A; color: #121212 !important; font: 700 10px/16px 'Space Grotesk', sans-serif; }
 .tab.active .tab-badge { background: #121212; color: #D6F35A !important; }
 
-/* ---- časovač oddychu: limetková pilulka (restpill) ---- */
+/* ---- časovač oddychu: veľká limetková karta nad lištou Dokončiť / tab barom ---- */
+:root { --bar-bottom: 92px; --rest-lift: 0px; }   /* spodok lepivých líšt nad tab barom; --rest-lift nastavuje updateStickyBottom */
 .timer-bar {
-  position: fixed; left: 12px; right: 12px; bottom: calc(92px + env(safe-area-inset-bottom, 0px)); z-index: 9; margin: 0 auto; max-width: 576px;
-  display: flex; align-items: center; gap: 10px; background: #D6F35A; color: #121212; border: 0; border-radius: 22px; padding: 12px 14px; box-shadow: 0 10px 24px rgba(0,0,0,.18);
+  position: fixed; left: 12px; right: 12px; bottom: calc(env(safe-area-inset-bottom, 0px) + var(--bar-bottom) + var(--rest-lift)); z-index: 9; margin: 0 auto; max-width: 576px;
+  display: block; box-sizing: border-box; background: var(--lime); color: var(--on-lime); border: 0; border-radius: 22px; padding: 6px 10px; box-shadow: 0 10px 24px rgba(0,0,0,.18);
 }
 .timer-bar[hidden] { display: none; }
-.timer-bar .timer-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); }
-.timer-bar .timer-time { flex: 1; font: 700 26px 'Space Grotesk', sans-serif; color: #121212; font-variant-numeric: tabular-nums; letter-spacing: 0; }
-.timer-bar #timer-stop { border: 0; background: #121212; color: #fff; border-radius: 999px; padding: 8px 12px; width: auto; height: auto; min-height: 0; font: 600 13px 'Space Grotesk', sans-serif; box-shadow: none; }
-html[data-theme="dark"] .timer-bar #timer-stop { background: #000; color: #F4F3EF; }
-.timer-bar.done { background: #D6F35A; }
+.timer-top { display: flex; align-items: center; gap: 10px; min-height: 44px; }
+.timer-bar .timer-time { font: 700 36px/1 'Space Grotesk', sans-serif; color: var(--on-lime); font-variant-numeric: tabular-nums; letter-spacing: 0; }
+.timer-meta { display: flex; flex-direction: column; flex: 1 1 0; align-items: flex-end; min-width: 0; text-align: end; }
+.timer-bar .timer-label { font: 700 12px/1.2 'Space Grotesk', sans-serif; letter-spacing: .06em; text-transform: uppercase; color: var(--on-lime); }
+.timer-preset-name { font: 600 12px/1.2 'Space Grotesk', sans-serif; opacity: .75; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.timer-note { font: 700 12px/1.15 'Space Grotesk', sans-serif; max-height: 2.3em; overflow: hidden; }
+.timer-note[hidden] { display: none; }
+.timer-bar.has-note .timer-label, .timer-bar.has-note .timer-preset-name { display: none; }   /* hláška "Nahradené …" na 4 s nahradí popis */
+.timer-progress { height: 4px; border-radius: 999px; background: color-mix(in srgb, var(--on-lime) 18%, transparent); overflow: hidden; margin: 3px 0 4px; }
+.timer-progress > span { display: block; height: 100%; width: 0; background: var(--on-lime); border-radius: 999px; }
+.timer-bar.paused .timer-progress > span { opacity: .55; }
+.timer-actions { display: flex; gap: 6px; }
+.timer-actions [hidden] { display: none; }
+.timer-bar .timer-btn {
+  flex: 1 1 auto; min-height: 44px; min-width: 0; width: auto; height: auto; padding: 0 6px; border: 0; border-radius: 999px; box-shadow: none; cursor: pointer; text-transform: none; letter-spacing: 0;
+  background: color-mix(in srgb, var(--on-lime) 14%, transparent); color: var(--on-lime); font: 700 13px 'Space Grotesk', system-ui, sans-serif;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.timer-bar .timer-btn.timer-btn-stop { flex: none; width: 44px; height: 44px; padding: 0; background: var(--on-lime); color: var(--lime); font-size: 18px; }
+.timer-bar .timer-btn:focus-visible { outline: 2px solid var(--on-lime); outline-offset: 2px; }
 
 /* ---- Tréning ---- */
 .plan-chips { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin: 0 0 8px; }
@@ -4739,3 +4755,74 @@ html.ios .app-main { padding-top: max(34px, calc(env(safe-area-inset-top, 0px) +
 .settings-sheet .goal-head .card-value { line-height: 1; margin: 0; }
 .settings-sheet #settings-goal-chips { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--sp-2); justify-content: stretch; margin: var(--sp-2) 0 0; }
 .settings-sheet #settings-goal-chips .goal-chip { width: 100%; }
+/* + Pridať sériu / Odstrániť poslednú sériu pod sériami cviku v tréningu */
+.set-count-row { margin-top: var(--sp-2, 8px); }
+.set-count-row > .set-count-btn {
+  border: 0; background: var(--b-mini); border-radius: 999px; padding: 6px 14px; font: 600 13px 'Space Grotesk', system-ui, sans-serif; cursor: pointer; color: inherit;
+  display: inline-flex; align-items: center; min-height: 44px; width: auto; box-shadow: none; text-transform: none; letter-spacing: 0;
+}
+.set-count-row > button:disabled { opacity: .45; cursor: default; }
+/* Riadok série v tréningu: číslo, polia Váha / Opakovania, 🔥, ✓ – jeden kompaktný riadok (Phase 2) */
+:root { --sticky-bottom: 0px; }   /* výška lepivých líšt nad tab barom (nastavujú ich vlastné bloky) */
+.exercise .sets { flex-direction: column; flex-wrap: nowrap; gap: 4px; }
+.exercise .sets::after { display: none; }
+.exercise .set-heads, .exercise .set-item:not(.drop-item) {
+  display: grid; grid-template-columns: 34px minmax(0, 1fr) minmax(0, 1fr) 44px 44px; column-gap: 6px; align-items: center; width: 100%; box-sizing: border-box;
+}
+.exercise .set-heads { padding: 0 6px; margin-bottom: -2px; }
+.exercise .set-heads .set-cap { font-size: 11px; font-weight: 600; opacity: .7; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding-inline-start: 4px; }
+.exercise .set-item:not(.drop-item) { padding: 4px 6px; border-radius: 16px; border: 1px solid transparent; }
+.exercise .set-item:not(.drop-item).set-done { background: color-mix(in srgb, var(--b-sq-on-bg) 22%, transparent); border-color: var(--b-sq-on-bg); }
+.exercise .set-item.side-row { flex: none; }
+.exercise .set-label { font-size: 13px; font-weight: 700; opacity: .85; min-width: 0; text-align: center; white-space: nowrap; display: flex; flex-direction: column; align-items: center; line-height: 1.1; }
+.exercise .set-label small { font-size: 10px; font-weight: 600; opacity: .85; max-width: 100%; overflow: hidden; text-overflow: ellipsis; }
+.exercise .set-field { display: flex; min-width: 0; }
+.exercise .set-inputbox { position: relative; display: flex; align-items: center; min-width: 0; width: 100%; }
+.exercise input.set-weight, .exercise input.set-reps {
+  width: 100%; min-width: 0; box-sizing: border-box; min-height: 44px; height: 44px; margin: 0;
+  padding-block: 0; padding-inline: 8px 24px; text-align: start; font: 700 16px 'Space Grotesk', system-ui, sans-serif; color: inherit;
+  background: var(--b-sq-bg); border: 2px solid var(--b-sq-bd); border-radius: 12px; box-shadow: none; cursor: text;
+  font-variant-numeric: tabular-nums; scroll-margin-bottom: calc(var(--sticky-bottom) + 16px);
+}
+.exercise input.set-weight::placeholder { color: inherit; opacity: .55; }
+.exercise input.set-weight:focus, .exercise input.set-reps:focus { outline: 2px solid var(--b-sq-on-bg); outline-offset: 1px; }
+.exercise input.set-weight:disabled, .exercise input.set-reps:disabled { opacity: .6; cursor: default; }
+.exercise input.set-weight.changed, .exercise input.set-reps.changed { text-decoration: underline; text-underline-offset: 3px; }
+.exercise .set-unit { position: absolute; inset-inline-end: 6px; font-size: 11px; font-weight: 600; opacity: .7; pointer-events: none; }
+.exercise .set-item:not(.drop-item) .set-fail { width: 44px; height: 44px; min-width: 44px; min-height: 44px; padding: 0; background: none; border: 2px solid var(--b-sq-bd); border-radius: 12px; opacity: .55; }
+.exercise .set-item:not(.drop-item) .set-fail.active { opacity: 1; border-color: var(--b-sq-on-bg); }
+.exercise .set-item:not(.drop-item) .set-fail.planned { opacity: .8; }
+.exercise .set-item:not(.drop-item) .set-btn.sq { order: 0; flex: none; width: 44px; height: 44px; min-height: 44px; border-radius: 12px; font-size: 18px; }
+/* Dokončiť: lepivá lišta nad tab barom + ⋯ menu s Zahodiť (Phase 2) */
+.finish-bar {
+  position: fixed; left: 50%; transform: translateX(-50%); z-index: 9; box-sizing: border-box;
+  bottom: calc(env(safe-area-inset-bottom, 0px) + var(--bar-bottom)); width: min(100% - 24px, 576px); padding: 0;
+  background: var(--bg); border-radius: 999px;   /* lepivá lišta je vždy nepriehľadná */
+}
+.finish-bar[hidden] { display: none; }
+.finish-bar .finish-btn {
+  display: flex; align-items: center; justify-content: center; gap: 6px; width: 100%; min-height: 52px; border: 0; border-radius: 999px;
+  background: var(--lime); color: var(--on-lime); font: 700 16px 'Space Grotesk', system-ui, sans-serif; cursor: pointer;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+}
+.finish-bar .finish-btn:disabled { background: color-mix(in srgb, var(--text) 14%, var(--bg)); color: color-mix(in srgb, var(--text) 62%, var(--bg)); box-shadow: none; cursor: default; }   /* tlmená, ale plná farba (nie opacity) */
+#screen-trening.in-session { padding-bottom: 72px; }
+#btn-finish-workout-end { margin-top: 12px; min-height: 52px; border-radius: 999px; }
+#btn-finish-workout-end[hidden] { display: none; }
+.bt-session { position: relative; }
+.bt-session .mini > .sess-more { min-width: 44px; min-height: 44px; justify-content: center; }
+.sess-menu {
+  position: absolute !important; inset-inline-end: 12px; bottom: 64px; z-index: 5; min-width: 200px;
+  background: var(--surface); color: var(--text); border: 1px solid var(--border); border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35); overflow: hidden;
+}
+.sess-menu[hidden] { display: none; }
+.sess-menu-item {
+  display: block; width: 100%; border: 0; background: none; color: var(--danger); text-align: start; cursor: pointer;
+  font: 600 15px 'Space Grotesk', system-ui, sans-serif; padding: 14px 16px; min-height: 48px;
+}
+.sess-menu-item:hover, .sess-menu-item:focus-visible { background: var(--danger-soft); outline: none; }
+.btn-danger-solid { background: var(--danger); color: var(--on-accent); border-color: var(--danger); }
+/* Pridať cvik do tréningu + tlačidlá rýchleho tréningu v liste cviku */
+#btn-session-add-exercise { margin-top: var(--sp-3, 12px); min-height: 48px; }
+.quick-action { margin: 0 0 var(--sp-2, 8px); min-height: 48px; }

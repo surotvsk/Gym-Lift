@@ -47,30 +47,34 @@ function check(name, ok, info) {
       if (!state.planOrder.includes('wtest')) state.planOrder.push('wtest');
       selectedPlan = 'wtest'; saveState(); switchTab('trening'); renderTrening(); return true; })()`);
     await wait(300);
-    const weights = () => p.eval(`Array.from(document.querySelectorAll('#exercise-list .exercise')[0].querySelectorAll('.set-weight')).map((b) => b.textContent + (b.classList.contains('changed') ? '*' : ''))`);
+    const weights = () => p.eval(`Array.from(document.querySelectorAll('#exercise-list .exercise')[0].querySelectorAll('input.set-weight')).map((b) => b.value + (b.classList.contains('changed') ? '*' : ''))`);
+    /* Napíše do poľa váhy série (i je index riadka) a vyvolá 'change' ako pri opustení poľa. */
+    const typeW = (i, v) => p.eval(`(() => { const inp = document.querySelectorAll('#exercise-list .exercise')[0].querySelectorAll('input.set-weight')[${i}]; inp.focus(); inp.value = ${J(v)}; inp.dispatchEvent(new Event('input', { bubbles: true })); inp.dispatchEvent(new Event('change', { bubbles: true })); inp.blur(); return true; })()`);
 
     console.log('== per-set weight in the workout');
     check('every set shows the planned weight', J(await weights()) === J(['60', '60', '60', '60']), await weights());
     check('no workout running yet', (await p.eval('getSession()')) === null);
-    await p.eval(`(document.querySelectorAll('#exercise-list .exercise')[0].querySelectorAll('.set-weight')[1].click(), true)`);
-    check('tapping a weight opens the editor with the current weight', await p.eval(`!!document.querySelector('.set-weight-editor') && document.querySelector('.set-weight-input').value === '60'`));
-    await p.eval(`(document.querySelector('.set-weight-editor .btn:nth-of-type(2)').click(), document.querySelector('.set-weight-editor .btn:nth-of-type(2)').click(), true)`);
-    check('+2.5 twice → 65', (await p.eval(`document.querySelector('.set-weight-input').value`)) === '65');
-    await p.eval(`(document.querySelector('.set-weight-ok').click(), true)`);
+    check('weight inputs: inputmode decimal, aria-label "Weight, set 2", visible word "Weight"', await p.eval(`(() => { const r = document.querySelectorAll('#exercise-list .exercise')[0].querySelectorAll('.set-item')[1]; const i = r.querySelector('input.set-weight'); return i.inputMode === 'decimal' && i.getAttribute('aria-label') === 'Weight, set 2' && /Weight/.test(r.closest('.exercise').querySelector('.set-heads').innerText) && document.querySelectorAll('#exercise-list .exercise')[0].querySelectorAll('.set-heads').length === 1; })()`));
+    await typeW(1, '65');
     await wait(200);
-    check('set 2 and the later sets use 65, set 1 stays 60', J(await weights()) === J(['60', '65*', '65*', '65*']), await weights());
+    check('set 2 typed as 65: it and the later sets use 65, set 1 stays 60', J(await weights()) === J(['60', '65*', '65*', '65*']), await weights());
+    await typeW(1, '65');
+    await wait(200);
     check('changing a weight starts the workout', !!(await p.eval('getSession()')));
     check('the plan keeps 60 kg', (await p.eval(`state.plans['wtest'].exercises[0].weight`)) === 60);
-    /* Séria 4 späť na 62,5 cez pole a Enter. */
-    await p.eval(`(document.querySelectorAll('#exercise-list .exercise')[0].querySelectorAll('.set-weight')[3].click(), true)`);
-    await p.eval(`(() => { const i = document.querySelector('.set-weight-input'); i.value = '62,5'; i.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true })); return true; })()`);
+    await typeW(3, '62,5');
     await wait(200);
     check('set 4 typed as 62,5 (comma) → 62.5', J(await weights()) === J(['60', '65*', '65*', '62.5*']), await weights());
-    await p.eval(`(document.querySelectorAll('#exercise-list .exercise')[0].querySelectorAll('.set-weight')[0].click(), true)`);
-    await p.eval(`(() => { const i = document.querySelector('.set-weight-input'); i.value = ''; document.querySelector('.set-weight-ok').click(); return true; })()`);
-    check('an empty value is refused (editor stays open, nothing saved as 0)', (await p.eval(`!!document.querySelector('.set-weight-editor')`)) && J(await weights()) === J(['60', '65*', '65*', '62.5*']), await weights());
-    await p.eval(`(() => { const i = document.querySelector('.set-weight-input'); i.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true })); return true; })()`);
-    check('Esc closes the editor without a change', (await p.eval(`!document.querySelector('.set-weight-editor')`)) && J(await weights()) === J(['60', '65*', '65*', '62.5*']));
+    await typeW(0, 'abc');
+    check('an invalid value is refused and reverts (nothing saved)', J(await weights()) === J(['60', '65*', '65*', '62.5*']), await weights());
+    await typeW(0, '');
+    check('clearing the weight field reverts to the previous value (empty is never saved as 0)', J(await weights()) === J(['60', '65*', '65*', '62.5*']) && (await p.eval(`getSession().setWeights['cx-w1:0']`)) === undefined, await weights());
+    await typeW(0, '-5');
+    check('a negative value is refused and reverts', J(await weights()) === J(['60', '65*', '65*', '62.5*']), await weights());
+    check('Enter in the field commits it (blur)', await p.eval(`(() => { const inp = document.querySelectorAll('#exercise-list .exercise')[0].querySelectorAll('input.set-weight')[0]; inp.focus(); inp.value = '61'; inp.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true })); return document.activeElement !== inp; })()`));
+    await typeW(0, '60');
+    await wait(100);
+    check('retyping 60 restores set 1', J(await weights()) === J(['60', '65*', '65*', '62.5*']), await weights());
     /* Hotové série 1–3 (séria 4 nie). */
     for (const i of [0, 1, 2]) await p.eval(`(document.querySelectorAll('#exercise-list .exercise')[0].querySelectorAll('.set-btn')[${i}].click(), true)`);
     await p.eval(`(document.querySelectorAll('#exercise-list .exercise')[1].querySelectorAll('.set-btn')[0].click(), true)`);
@@ -114,21 +118,19 @@ function check(name, ok, info) {
     await p.eval(`(() => { switchTab('trening'); selectedPlan = 'wtest'; renderTrening(); return true; })()`);
     for (const lang of ['sk', 'en', 'es', 'pt-BR', 'fr', 'ar']) {
       await p.eval(`(setLang(${J(lang)}), switchTab('trening'), renderTrening(), true)`);
-      await p.eval(`(document.querySelectorAll('#exercise-list .exercise')[0].querySelectorAll('.set-weight')[1].click(), true)`);
-      const r = await p.eval(`({ note: document.querySelector('.set-weight-note').textContent, aria: document.querySelector('.set-weight').getAttribute('aria-label'), key: t('setWeight.note'), dir: document.documentElement.dir })`);
-      check(lang + ': editor and labels translated', r.note === r.key && !/setWeight\./.test(r.note + r.aria), r);
+      const r = await p.eval(`({ cap: document.querySelector('.set-heads .set-cap').textContent, key: t('session.weight'), aria: document.querySelector('input.set-weight').getAttribute('aria-label'), dir: document.documentElement.dir })`);
+      check(lang + ': labels translated', r.cap === r.key && !/session\./.test(r.cap + r.aria), r);
       if (lang === 'ar') {
         check('ar: right-to-left', r.dir === 'rtl');
         const s2 = await p.c.send('Page.captureScreenshot', { format: 'png' });
         fs.writeFileSync(path.join(WORK, 'shots', 'workout-ar.png'), Buffer.from(s2.data, 'base64'));
       }
-      await p.eval(`(closeSetWeightEditor(), true)`);
     }
     await p.eval(`(setLang('en'), true)`);
     await p.c.send('Emulation.setDeviceMetricsOverride', { width: 390, height: 844, deviceScaleFactor: 2, mobile: true });
-    await p.eval(`(() => { switchTab('trening'); renderTrening(); document.querySelectorAll('#exercise-list .exercise')[0].querySelectorAll('.set-weight')[1].click(); document.querySelector('.set-weight-editor').scrollIntoView({ block: 'center' }); return true; })()`);
+    await p.eval(`(() => { switchTab('trening'); renderTrening(); return true; })()`);
     await wait(300);
-    check('390 px: no horizontal overflow with the editor open', await p.eval(`document.documentElement.scrollWidth <= innerWidth + 1`));
+    check('390 px: no horizontal overflow', await p.eval(`document.documentElement.scrollWidth <= innerWidth + 1`));
     const s3 = await p.c.send('Page.captureScreenshot', { format: 'png' });
     fs.writeFileSync(path.join(WORK, 'shots', 'workout-390-editor.png'), Buffer.from(s3.data, 'base64'));
 

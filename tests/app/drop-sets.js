@@ -74,7 +74,7 @@ function check(name, ok, info) {
     await p.eval(`(() => { const i = document.querySelector('.set-reps-input'); i.value = '0'; document.querySelector('.set-reps-ok').click(); return true; })()`);
     check('an invalid value is refused (editor stays open)', (await p.eval(`!!document.querySelector('.drop-editor')`)) && J(await drops()) === J(['⬇ Drop set 1|8×|55|-', '⬇ Drop set 2|6×|42.5|-']));
     await p.eval(`(closeSetWeightEditor(), true)`);
-    check('the normal sets did not change', J(await p.eval(`Array.from(${ex0}.querySelectorAll('.set-item:not(.drop-item) .set-weight')).map((x) => x.textContent)`)) === J(['62.5', '62.5', '70']));
+    check('the normal sets did not change', J(await p.eval(`Array.from(${ex0}.querySelectorAll('.set-item:not(.drop-item) input.set-weight')).map((x) => x.value)`)) === J(['62.5', '62.5', '70']));
     for (let k = 0; k < 3; k++) await clickIn('.btn-add-drop');
     check('at most 5 drop sets; then the button disappears', (await p.eval(`${ex0}.querySelectorAll('.drop-item').length`)) === 5 && !(await p.eval(`!!${ex0}.querySelector('.btn-add-drop')`)));
     for (let k = 0; k < 3; k++) await clickIn('.drop-remove', 4 - k);

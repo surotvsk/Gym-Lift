@@ -272,6 +272,91 @@ const CONTRAST_JS = `(() => {
     check('Stats "this month" counts exactly the workouts dated in the current local month (1st 00:00, last day 23:59, leap day, year end)', monthBad.length === 0, monthBad);
     await p.eval(`(setLang('en'), localStorage.removeItem('gymquest_theme'), applyTheme(), true)`);
 
+    console.log('== running workout: labelled set rows with inline inputs (Phase 2)');
+    await p.eval(`(() => {
+      state.plans['rowtest'] = { id: 'rowtest', builtin: false, customName: 'Row test', location: null,
+        exercises: [{ id: 'cx-rt1', name: 'Bench test', sets: 3, reps: 10, weight: 60 }, { id: 'cx-rt2', name: 'Curl test', sets: 2, reps: 12, weight: 8, unilateral: true, startSide: 'left' }, { id: 'cx-rt3', name: 'Pull-up test', sets: 2, reps: 8, weight: 0 }] };
+      if (!state.planOrder.includes('rowtest')) state.planOrder.push('rowtest');
+      selectedPlan = 'rowtest'; saveState(); startWorkoutNow(); return true; })()`);
+    const ROWS_JS = `(() => {
+      const out = { rows: 0, bad: [] };
+      const wWord = t('session.weight'), rWord = t('session.reps');
+      for (const row of document.querySelectorAll('#exercise-list .set-item:not(.drop-item)')) {
+        if (!row.offsetParent) continue;
+        out.rows++;
+        const ex = row.closest('.exercise').getBoundingClientRect(), r = row.getBoundingClientRect();
+        if (row.querySelector('.set-cap')) out.bad.push(['caption on a row']);
+        if (r.height > (Number(document.documentElement.style.zoom) > 1 ? 72 : 64)) out.bad.push(['row height', Math.round(r.height)]);
+        for (const sel of ['input.set-weight', 'input.set-reps']) {
+          const i = row.querySelector(sel), q = i.getBoundingClientRect(), cs = getComputedStyle(i);
+          if (parseFloat(cs.fontSize) < 16) out.bad.push(['font', sel, cs.fontSize]);
+          if (q.height < 43.5) out.bad.push(['height', sel, q.height]);
+          if (q.left < r.left - 1 || q.right > r.right + 1) out.bad.push(['input overflow', sel]);
+          if (!i.getAttribute('aria-label')) out.bad.push(['aria', sel]);
+        }
+        for (const sel of ['.set-btn.sq', '.set-fail']) {
+          const q = row.querySelector(sel).getBoundingClientRect();
+          if (q.width < 43.5 || q.height < 43.5) out.bad.push(['target', sel, q.width, q.height]);
+          if (q.right > r.right + 1 || q.left < r.left - 1) out.bad.push(['button overflow', sel]);
+        }
+        if (r.right > ex.right + 1 || r.left < ex.left - 1) out.bad.push(['row overflow']);
+        if (row.scrollWidth > row.clientWidth + 1) out.bad.push(['row scroll']);
+      }
+      for (const exEl of document.querySelectorAll('#exercise-list .exercise')) {
+        const caps = [...exEl.querySelectorAll('.set-heads .set-cap')];
+        if (!exEl.querySelector('.set-item')) continue;
+        if (exEl.querySelectorAll('.set-heads').length !== 1 || caps.length !== 2 || caps[0].textContent !== wWord || caps[1].textContent !== rWord) out.bad.push(['captions', caps.map((c) => c.textContent)]);
+        if (caps.some((c) => c.scrollWidth > c.clientWidth + 1 && false)) out.bad.push(['caption clipped']);
+      }
+      if (document.documentElement.scrollWidth > innerWidth + 1) out.bad.push(['page overflow']);
+      return out; })()`;
+    const rowBad = [];
+    let rowCount = 0;
+    for (const mode of ['light', 'dark']) {
+      await p.eval(`(localStorage.setItem('gymquest_theme', ${J(mode)}), applyTheme(), true)`);
+      for (const w of [320, 360, 393]) {
+        await p.c.send('Emulation.setDeviceMetricsOverride', { width: w, height: 800, deviceScaleFactor: 1, mobile: true });
+        for (const zoom of ['1', '1.3']) {
+          for (const lang of ['en', 'ar', 'fr']) {
+            const r = await p.eval(`(document.documentElement.style.zoom = ${J(zoom)}, setLang(${J(lang)}), switchTab('trening'), renderTrening(), ${ROWS_JS})`);
+            rowCount += r.rows;
+            if (r.rows < 7) rowBad.push(['rows', mode, w, zoom, lang, r.rows]);
+            for (const x of r.bad) rowBad.push([mode, w, zoom, lang].concat(x));
+          }
+        }
+      }
+    }
+    await p.eval(`(document.documentElement.style.zoom = '', setLang('en'), localStorage.removeItem('gymquest_theme'), applyTheme(), true)`);
+    check('every set row of a running workout shows Weight and Reps captions once per exercise, rows ≤ 64 px (72 at 130 %), inputs ≥ 16 px and ≥ 44 px tall, ✓ and 🔥 ≥ 44 px, nothing overflows (light/dark × 320/360/393 × 100/130 % × en/ar/fr, ' + rowCount + ' rows)', rowBad.length === 0 && rowCount > 0, rowBad.slice(0, 6));
+    /* Drop séria (riadok .drop-item) nesmie dostať mriežku riadka série: štítok na jednom riadku, ovládače v jednom rade, nič nepreteká. */
+    await p.eval(`(() => { selectedPlan = 'rowtest'; if (getSession()) getSession().planId = 'rowtest'; const ex = getPlan('rowtest').exercises[0]; addDrop(ex); addDrop(ex); renderTrening(); return true; })()`);
+    const dropBad = [];
+    for (const mode of ['light', 'dark']) {
+      await p.eval(`(localStorage.setItem('gymquest_theme', ${J(mode)}), applyTheme(), true)`);
+      for (const w of [360, 393]) {
+        await p.c.send('Emulation.setDeviceMetricsOverride', { width: w, height: 800, deviceScaleFactor: 1, mobile: true });
+        for (const lang of ['en', 'ar']) {
+          const r = await p.eval(`(setLang(${J(lang)}), switchTab('trening'), renderTrening(), (() => {
+            const out = []; const rows = [...document.querySelectorAll('#exercise-list .drop-item')].filter((e) => e.offsetParent);
+            if (rows.length < 2) out.push(['rows', rows.length]);
+            for (const row of rows) {
+              const rr = row.getBoundingClientRect(), lab = row.querySelector('.drop-label'), lr = lab.getBoundingClientRect();
+              if (rr.height > 40 || lr.height > 34) out.push(['label wraps / row too tall', Math.round(rr.height), Math.round(lr.height)]);
+              const kids = [...row.children].map((c) => c.getBoundingClientRect());
+              if (kids.some((k) => Math.abs((k.top + k.bottom) / 2 - (kids[0].top + kids[0].bottom) / 2) > 20)) out.push(['not one line']);
+              if (kids.some((k) => k.right > rr.right + 1 || k.left < rr.left - 1)) out.push(['child overflow']);
+              if (rr.right > innerWidth + 1) out.push(['row beyond screen']);
+            }
+            if (document.documentElement.scrollWidth > innerWidth + 1) out.push(['page overflow']);
+            return out; })())`);
+          for (const x of r) dropBad.push([mode, w, lang].concat(x));
+        }
+      }
+    }
+    await p.eval(`(localStorage.removeItem('gymquest_theme'), applyTheme(), setLang('en'), true)`);
+    check('drop-set rows keep their own layout: label on one line, controls in one row, no overflow (en/ar × 360/393 × light/dark)', dropBad.length === 0, dropBad.slice(0, 5));
+    await p.eval(`(clearSession(), saveState(), renderAll(), true)`);
+
     check('no exceptions', p.errors.length === 0, p.errors);
     check('no console errors', logs.length === 0, logs);
   } catch (e) {

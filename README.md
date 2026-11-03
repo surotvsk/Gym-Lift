@@ -282,20 +282,43 @@ Editing a plan lets you rename it, delete it with 🗑️, reorder **and** add i
 one — sets, reps, target weight in kilograms, planned failure sets, and whether it is trained one side
 at a time.
 
-Mark each set as done while you train, then press **Finish workout**. You can also run a rest timer
-or reset the current workout without touching your history.
+Mark each set as done while you train. You can also run a rest timer or discard the current workout
+without touching your history.
 
-**Different weights per set.** Every set shows its weight next to the ✓ button. Tap it to change the
-weight of that set (−2.5 / +2.5 kg buttons or type it; a comma works too). The new weight also applies
-to the following sets until you change one of them, so "set 1 at 60 kg, then 65 kg" is two taps. Your
-plan is never changed. The history keeps every set's weight (shown as *60 · 65 · 65 · 65 kg*), and
-records, achievements and the "last time" comparison use the heaviest set you actually completed.
-Editing that weight later in the history replaces the per-set weights with the single new weight.
+**Compact set rows.** Every set is one row: number · **Weight kg** · **Reps ×** · 🔥 (failure) · ✓. You
+type the weight and reps right in the row (a decimal comma works). If you empty the weight field, it
+goes back to the previous value; **0** means bodyweight.
 
-**Different reps per set.** Next to the weight, every set shows its reps (for example *10×*). Tap it to
-change that set's reps (−1 / +1 or type a whole number from 1 to 999). It works like the weight: doing
-10 reps in set 1 and 8 in set 2 is one change on set 2, and the later sets follow until you change one
-of them. Your plan keeps its reps; the history and the Calendar show every set (*3 × 10/8/8*), and a
+**Add set / Remove last set.** Under the sets of every exercise, **+ Add set** adds one more set and
+**Remove last set** takes the last one away (it asks first when that set already has data). Your plan
+is not changed.
+
+**Finishing and discarding.** **Finish workout** is a sticky bar above the menu and also a button at
+the end of the exercise list. It opens a **Save workout?** sheet with **Save workout** and **Keep
+training**; a double tap saves only once. **Discard workout** is in the **⋯** menu and needs two
+confirmations; nothing is added to your history.
+
+**Rest timer card.** The timer shows a big countdown with **Pause / Resume**, **+15 s**, **Restart** and
+**✕ Stop**. The preset you chose is highlighted, and picking another one says for example *Replaced 60 s
+with 90 s*. A paused timer survives a reload, and the Today **Rest** tile shows the running timer.
+
+**Quick workout.** **Start workout** on an exercise starts a **Quick workout** with just that
+exercise. It is saved in the history as *Quick workout* and your plans are untouched. In a running
+workout, **+ Add exercise** adds more exercises, and from an exercise page **Add to current workout** /
+**Go to current workout** appear while a workout is running.
+
+**Different weights per set.** Every set has its own weight box next to the ✓ button. Type the weight
+straight into it (a comma works too, e.g. *62,5*); an empty box goes back to the previous value, and
+**0** means bodyweight. The new weight also applies to the following sets until you change one of them,
+so "set 1 at 60 kg, then 65 kg" is one edit. Your plan is never changed. The history keeps every set's
+weight (shown as *60 · 65 · 65 · 65 kg*), and records, achievements and the "last time" comparison use
+the heaviest set you actually completed. Editing that weight later in the history replaces the per-set
+weights with the single new weight.
+
+**Different reps per set.** Next to the weight, every set has a reps box (for example *10*). Type a whole
+number from 1 to 999; an empty box goes back to the previous value. It works like the weight: doing 10
+reps in set 1 and 8 in set 2 is one change on set 2, and the later sets follow until you change one of
+them. Your plan keeps its reps; the history and the Calendar show every set (*3 × 10/8/8*), and a
 shared workout shows them too. Editing the reps later in the history replaces the per-set reps with the
 single new number.
 

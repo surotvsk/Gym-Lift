@@ -141,7 +141,7 @@ const TOUCH = (sel) => `(() => { const e = document.querySelector(${J(sel)}); re
     /* Rýchle odškrtnutie dvoch sérií v tréningu: obe sa označia. */
     await p.eval(`(() => { state.activeSession = null; selectedPlan = 'push'; startWorkoutNow(); return 1; })()`);
     await wait(500);
-    const sq = await p.eval(`(() => { const b = [...document.querySelectorAll('#screen-trening .set-btn.sq')].filter((x) => x.offsetParent); b[0].scrollIntoView({ block: 'center' }); return b.slice(0, 2).map((x) => { const r = x.getBoundingClientRect(); return { x: Math.round(r.left + r.width / 2), y: Math.round(r.top + r.height / 2) }; }); })()`);
+    const sq = await p.eval(`(() => { const b = [...document.querySelectorAll('#screen-trening .set-btn.sq')].filter((x) => x.offsetParent); b[0].scrollIntoView({ block: 'center' }); return b.slice(0, 2).map((x) => { const r = x.getBoundingClientRect(); return { x: Math.round(r.left + r.width / 2 - visualViewport.offsetLeft), y: Math.round(r.top + r.height / 2 - visualViewport.offsetTop) }; }); })()`);   /* po predošlom geste „štipnutia“ je vizuálny výrez posunutý – dotyk sa počíta od jeho okraja */
     await wait(400);
     await tap(sq[0].x, sq[0].y, 150); await tap(sq[1].x, sq[1].y, 500);
     const done = await p.eval(`Object.keys((state.activeSession || {}).completedSets || {}).length`);

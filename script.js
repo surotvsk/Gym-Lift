@@ -1373,6 +1373,12 @@ function exerciseMediaList(entry) {
 /* ---------- Plány: prístup, poradie a zobrazované názvy ---------- */
 
 function getPlan(id) {
+  /* Rýchly tréning: plán 'quick' je len syntetický pohľad na session, nikdy sa neukladá do state.plans. */
+  if (id === 'quick') {
+    const s = state && state.activeSession;
+    if (!s || s.planId !== 'quick' || !s.quick || !Array.isArray(s.quick.exercises)) return null;
+    return { id: 'quick', name: t('quick.name'), exercises: s.quick.exercises, builtin: false, quick: true };
+  }
   return (id && state && state.plans && state.plans[id]) || null;
 }
 
@@ -1385,6 +1391,7 @@ function activePlanIds() {
 /* Názov plánu: ručne zmenený názov sa nikdy neprekladá, nedotknutý zabudovaný plán áno. */
 function planDisplayName(plan) {
   if (!plan) return t('pokrok.workoutFallback');
+  if (plan.quick) return t('quick.name');
   if (plan.customName) return plan.customName;
   /* nedotknutý Push/Pull ukazuje svalové skupiny (D5); upravený plán zostáva pri krátkom názve */
   if ((plan.id === 'push' || plan.id === 'pull') && builtinPlanUntouched(plan)) return t('plan.' + plan.id + 'Muscles');
@@ -1407,12 +1414,14 @@ function planNameOf(id) {
 /* Názov zapísaný do histórie v čase tréningu – nemenný záznam pre prípad zmazania plánu. */
 function recordedPlanName(plan) {
   if (!plan) return '';
+  if (plan.quick) return t('quick.name');
   if (plan.customName) return plan.customName;
   return BUILTIN_PLAN_NAMES[plan.id] || t('plan.' + plan.id);
 }
 
 /* Názov plánu v histórii: existujúci plán sa prekladá, zmazaný sa berie zo záznamu. */
 function historyPlanName(w) {
+  if (w.planId === 'quick') return t('quick.name');   // rýchly tréning nemá plán – názov sa prekladá
   const plan = getPlan(w.planId);
   if (plan) return planDisplayName(plan);
   if (w.planName) return w.planName;
@@ -1986,6 +1995,13 @@ const I18N = {
     'rest.none': 'Zatiaľ žiadne predvoľby. Vlastný časovač funguje ďalej.',
     'rest.secondsLabel': '{n} s',
     'rest.startPreset': 'Spustiť {name}',
+    'rest.pause': 'Pozastaviť',
+    'rest.resume': 'Pokračovať',
+    'rest.plus15': '+15 s',
+    'rest.restart': 'Znova',
+    'rest.stop': 'Zastaviť',
+    'rest.replaced': 'Nahradené {old} za {new}',
+    'rest.paused': 'Pozastavené',
     'rest.presetSaved': 'Predvoľba „{name}“ je uložená.',
     'rest.offerConvert': 'Uložený vlastný čas {time} ešte nie je predvoľba.',
     'rest.convert': 'Uložiť ako predvoľbu',
@@ -2901,6 +2917,13 @@ const I18N = {
     'rest.none': 'No presets yet. The custom timer still works.',
     'rest.secondsLabel': '{n} s',
     'rest.startPreset': 'Start {name}',
+    'rest.pause': 'Pause',
+    'rest.resume': 'Resume',
+    'rest.plus15': '+15 s',
+    'rest.restart': 'Restart',
+    'rest.stop': 'Stop',
+    'rest.replaced': 'Replaced {old} with {new}',
+    'rest.paused': 'Paused',
     'rest.presetSaved': 'Saved “{name}” as a preset.',
     'rest.offerConvert': 'Your saved custom time {time} is not a preset yet.',
     'rest.convert': 'Save as preset',
@@ -3810,6 +3833,13 @@ const I18N = {
     'rest.none': 'Todavía no hay ajustes. El temporizador personalizado sigue funcionando.',
     'rest.secondsLabel': '{n} s',
     'rest.startPreset': 'Iniciar {name}',
+    'rest.pause': 'Pausar',
+    'rest.resume': 'Reanudar',
+    'rest.plus15': '+15 s',
+    'rest.restart': 'Reiniciar',
+    'rest.stop': 'Parar',
+    'rest.replaced': 'Se reemplazó {old} por {new}',
+    'rest.paused': 'En pausa',
     'rest.presetSaved': '«{name}» guardado como ajuste.',
     'rest.offerConvert': 'Tu tiempo personalizado guardado {time} aún no es un ajuste.',
     'rest.convert': 'Guardar como ajuste',
@@ -4717,6 +4747,13 @@ const I18N = {
     'rest.none': 'Ainda não há predefinições. O cronômetro personalizado continua funcionando.',
     'rest.secondsLabel': '{n} s',
     'rest.startPreset': 'Iniciar {name}',
+    'rest.pause': 'Pausar',
+    'rest.resume': 'Retomar',
+    'rest.plus15': '+15 s',
+    'rest.restart': 'Reiniciar',
+    'rest.stop': 'Parar',
+    'rest.replaced': '{old} substituído por {new}',
+    'rest.paused': 'Pausado',
     'rest.presetSaved': '“{name}” salvo como predefinição.',
     'rest.offerConvert': 'Seu tempo personalizado salvo {time} ainda não é uma predefinição.',
     'rest.convert': 'Salvar como predefinição',
@@ -5624,6 +5661,13 @@ const I18N = {
     'rest.none': 'Aucun préréglage pour l’instant. Le minuteur personnalisé fonctionne toujours.',
     'rest.secondsLabel': '{n} s',
     'rest.startPreset': 'Lancer {name}',
+    'rest.pause': 'Pause',
+    'rest.resume': 'Reprendre',
+    'rest.plus15': '+15 s',
+    'rest.restart': 'Relancer',
+    'rest.stop': 'Arrêter',
+    'rest.replaced': '{old} remplacé par {new}',
+    'rest.paused': 'En pause',
     'rest.presetSaved': '« {name} » enregistré comme préréglage.',
     'rest.offerConvert': 'Ton temps personnalisé enregistré {time} n’est pas encore un préréglage.',
     'rest.convert': 'Enregistrer comme préréglage',
@@ -6552,6 +6596,13 @@ const I18N = {
     'rest.none': 'لا توجد إعدادات مسبقة بعد. المؤقت المخصّص ما زال يعمل.',
     'rest.secondsLabel': '{n} ث',
     'rest.startPreset': 'تشغيل {name}',
+    'rest.pause': 'إيقاف مؤقت',
+    'rest.resume': 'استئناف',
+    'rest.plus15': '+15 ث',
+    'rest.restart': 'إعادة',
+    'rest.stop': 'إيقاف',
+    'rest.replaced': 'تم استبدال {old} بـ {new}',
+    'rest.paused': 'متوقف مؤقتًا',
     'rest.presetSaved': 'تم حفظ «{name}» كإعداد مسبق.',
     'rest.offerConvert': 'الوقت المخصّص المحفوظ {time} ليس إعدادًا مسبقًا بعد.',
     'rest.convert': 'حفظ كإعداد مسبق',
@@ -8392,6 +8443,11 @@ const DROP_JUMP_I18N = {
     'drop.remove': 'Odstrániť drop sériu {n}', 'drop.editorNote': 'Mení sa iba táto drop séria. Plán sa nemení.',
     'drop.repsEditor': 'Opakovania drop série {n}', 'drop.weightEditor': 'Váha drop série {n} v kg',
     'drop.history': 'Drop série: {list}',
+    'session.addSet': '+ Pridať sériu', 'session.removeSet': 'Odstrániť poslednú sériu',
+    'quick.name': 'Rýchly tréning', 'quick.start': 'Začať tréning s týmto cvikom', 'quick.addToCurrent': 'Pridať do prebiehajúceho tréningu', 'quick.goToCurrent': 'Prejsť na prebiehajúci tréning', 'quick.addExercise': '+ Pridať cvik', 'quick.addHint': 'Vyber cvik, ktorý sa pridá do tohto tréningu. Plán sa nezmení.',
+    'finish.title': "Uložiť tréning?", 'finish.save': "Uložiť tréning", 'finish.keep': "Pokračovať v tréningu", 'discard.title': "Zahodiť tento tréning?", 'discard.body': "Série, ktoré si označil, sa neuložia.", 'discard.confirm': "Zahodiť", 'discard.final': "Zahodiť natrvalo", 'discard.menu': "Zahodiť tréning", 'session.moreAria': "Ďalšie možnosti tréningu",
+    'session.removeSetConfirm': 'Odstrániť sériu {n}? Zmaže sa jej váha, opakovania aj ✓.',
+    'trening.setN': 'Séria {n}', 'session.weight': 'Váha', 'session.reps': 'Opakovania', 'session.weightAria': 'Váha, séria {n}', 'session.repsAria': 'Opakovania, séria {n}',
     'chat.seen': 'Videné', 'chat.sent': 'Odoslané', 'chat.gotoOriginal': 'Zobraziť pôvodnú správu', 'chat.originalGone': 'Pôvodná správa už v tomto chate nie je.',
   },
   en: {
@@ -8401,6 +8457,11 @@ const DROP_JUMP_I18N = {
     'drop.remove': 'Remove drop set {n}', 'drop.editorNote': 'Only this drop set changes. Your plan stays the same.',
     'drop.repsEditor': 'Reps of drop set {n}', 'drop.weightEditor': 'Weight of drop set {n} in kg',
     'drop.history': 'Drop sets: {list}',
+    'session.addSet': '+ Add set', 'session.removeSet': 'Remove last set',
+    'quick.name': 'Quick workout', 'quick.start': 'Start workout with this exercise', 'quick.addToCurrent': 'Add to current workout', 'quick.goToCurrent': 'Go to current workout', 'quick.addExercise': '+ Add exercise', 'quick.addHint': 'Pick an exercise to add to this workout. Your plan stays the same.',
+    'finish.title': "Save workout?", 'finish.save': "Save workout", 'finish.keep': "Keep training", 'discard.title': "Discard this workout?", 'discard.body': "Sets you marked won't be saved.", 'discard.confirm': "Discard", 'discard.final': "Discard for good", 'discard.menu': "Discard workout", 'session.moreAria': "More workout options",
+    'trening.setN': 'Set {n}', 'session.weight': 'Weight', 'session.reps': 'Reps', 'session.weightAria': 'Weight, set {n}', 'session.repsAria': 'Reps, set {n}',
+    'session.removeSetConfirm': 'Remove set {n}? Its weight, reps and ✓ are cleared.',
     'chat.seen': 'Seen', 'chat.sent': 'Sent', 'chat.gotoOriginal': 'Show the original message', 'chat.originalGone': 'The original message is no longer in this chat.',
   },
   es: {
@@ -8410,6 +8471,11 @@ const DROP_JUMP_I18N = {
     'drop.remove': 'Quitar la serie descendente {n}', 'drop.editorNote': 'Solo cambia esta serie descendente. Tu plan no cambia.',
     'drop.repsEditor': 'Repeticiones de la serie descendente {n}', 'drop.weightEditor': 'Peso de la serie descendente {n} en kg',
     'drop.history': 'Series descendentes: {list}',
+    'trening.setN': 'Serie {n}', 'session.weight': 'Peso', 'session.reps': 'Repeticiones', 'session.weightAria': 'Peso, serie {n}', 'session.repsAria': 'Repeticiones, serie {n}',
+    'session.addSet': '+ Añadir serie', 'session.removeSet': 'Quitar la última serie',
+    'quick.name': 'Entrenamiento rápido', 'quick.start': 'Empezar entrenamiento con este ejercicio', 'quick.addToCurrent': 'Añadir al entrenamiento actual', 'quick.goToCurrent': 'Ir al entrenamiento actual', 'quick.addExercise': '+ Añadir ejercicio', 'quick.addHint': 'Elige un ejercicio para añadirlo a este entrenamiento. Tu plan no cambia.',
+    'finish.title': "¿Guardar entrenamiento?", 'finish.save': "Guardar entrenamiento", 'finish.keep': "Seguir entrenando", 'discard.title': "¿Descartar este entrenamiento?", 'discard.body': "Las series que marcaste no se guardarán.", 'discard.confirm': "Descartar", 'discard.final': "Descartar definitivamente", 'discard.menu': "Descartar entrenamiento", 'session.moreAria': "Más opciones del entrenamiento",
+    'session.removeSetConfirm': '¿Quitar la serie {n}? Se borran su peso, repeticiones y ✓.',
     'chat.seen': 'Visto', 'chat.sent': 'Enviado', 'chat.gotoOriginal': 'Ver el mensaje original', 'chat.originalGone': 'El mensaje original ya no está en este chat.',
   },
   'pt-BR': {
@@ -8418,7 +8484,12 @@ const DROP_JUMP_I18N = {
     'drop.repsAria': 'Drop set {n}: {reps} repetições. Toque para alterar as repetições.', 'drop.weightAria': 'Drop set {n}: {kg} kg. Toque para alterar o peso.',
     'drop.remove': 'Remover o drop set {n}', 'drop.editorNote': 'Só este drop set muda. Seu plano não muda.',
     'drop.repsEditor': 'Repetições do drop set {n}', 'drop.weightEditor': 'Peso do drop set {n} em kg',
+    'trening.setN': 'Série {n}', 'session.weight': 'Peso', 'session.reps': 'Repetições', 'session.weightAria': 'Peso, série {n}', 'session.repsAria': 'Repetições, série {n}',
     'drop.history': 'Drop sets: {list}',
+    'session.addSet': '+ Adicionar série', 'session.removeSet': 'Remover a última série',
+    'quick.name': 'Treino rápido', 'quick.start': 'Iniciar treino com este exercício', 'quick.addToCurrent': 'Adicionar ao treino atual', 'quick.goToCurrent': 'Ir para o treino atual', 'quick.addExercise': '+ Adicionar exercício', 'quick.addHint': 'Escolha um exercício para adicionar a este treino. Seu plano não muda.',
+    'finish.title': "Salvar treino?", 'finish.save': "Salvar treino", 'finish.keep': "Continuar treinando", 'discard.title': "Descartar este treino?", 'discard.body': "As séries que você marcou não serão salvas.", 'discard.confirm': "Descartar", 'discard.final': "Descartar para sempre", 'discard.menu': "Descartar treino", 'session.moreAria': "Mais opções do treino",
+    'session.removeSetConfirm': 'Remover a série {n}? Peso, repetições e ✓ serão apagados.',
     'chat.seen': 'Visto', 'chat.sent': 'Enviado', 'chat.gotoOriginal': 'Ver a mensagem original', 'chat.originalGone': 'A mensagem original não está mais neste chat.',
   },
   fr: {
@@ -8426,17 +8497,27 @@ const DROP_JUMP_I18N = {
     'drop.label': 'Série dégressive {n}', 'drop.doneAria': 'Série dégressive {n} faite',
     'drop.repsAria': 'Série dégressive {n} : {reps} répétitions. Touche pour modifier les répétitions.', 'drop.weightAria': 'Série dégressive {n} : {kg} kg. Touche pour modifier la charge.',
     'drop.remove': 'Retirer la série dégressive {n}', 'drop.editorNote': 'Seule cette série dégressive change. Ton plan ne change pas.',
+    'trening.setN': 'Série {n}', 'session.weight': 'Charge', 'session.reps': 'Répétitions', 'session.weightAria': 'Charge, série {n}', 'session.repsAria': 'Répétitions, série {n}',
     'drop.repsEditor': 'Répétitions de la série dégressive {n}', 'drop.weightEditor': 'Charge de la série dégressive {n} en kg',
     'drop.history': 'Séries dégressives : {list}',
+    'session.addSet': '+ Ajouter une série', 'session.removeSet': 'Supprimer la dernière série',
+    'quick.name': 'Séance rapide', 'quick.start': 'Commencer une séance avec cet exercice', 'quick.addToCurrent': 'Ajouter à la séance en cours', 'quick.goToCurrent': 'Aller à la séance en cours', 'quick.addExercise': '+ Ajouter un exercice', 'quick.addHint': 'Choisis un exercice à ajouter à cette séance. Ton plan ne change pas.',
+    'finish.title': "Enregistrer la séance ?", 'finish.save': "Enregistrer la séance", 'finish.keep': "Continuer l'entraînement", 'discard.title': "Abandonner cette séance ?", 'discard.body': "Les séries cochées ne seront pas enregistrées.", 'discard.confirm': "Abandonner", 'discard.final': "Abandonner définitivement", 'discard.menu': "Abandonner la séance", 'session.moreAria': "Plus d'options de la séance",
+    'session.removeSetConfirm': 'Supprimer la série {n} ? Sa charge, ses répétitions et son ✓ sont effacés.',
     'chat.seen': 'Vu', 'chat.sent': 'Envoyé', 'chat.gotoOriginal': 'Voir le message d’origine', 'chat.originalGone': 'Le message d’origine n’est plus dans ce chat.',
   },
   ar: {
     'drop.add': '+ مجموعة تنازلية', 'drop.addTitle': 'بعد مجموعتك الأخيرة، خفّف الوزن واستمر دون راحة.',
     'drop.label': 'مجموعة تنازلية {n}', 'drop.doneAria': 'تمت المجموعة التنازلية {n}',
     'drop.repsAria': 'المجموعة التنازلية {n}: {reps} تكرار. اضغط لتغيير التكرارات.', 'drop.weightAria': 'المجموعة التنازلية {n}: {kg} كغ. اضغط لتغيير الوزن.',
+    'trening.setN': 'السلسلة {n}', 'session.weight': 'الوزن', 'session.reps': 'التكرار', 'session.weightAria': 'الوزن، السلسلة {n}', 'session.repsAria': 'التكرار، السلسلة {n}',
     'drop.remove': 'إزالة المجموعة التنازلية {n}', 'drop.editorNote': 'تتغير هذه المجموعة التنازلية فقط. خطتك لا تتغيّر.',
     'drop.repsEditor': 'تكرارات المجموعة التنازلية {n}', 'drop.weightEditor': 'وزن المجموعة التنازلية {n} بالكغ',
     'drop.history': 'مجموعات تنازلية: {list}',
+    'session.addSet': '+ إضافة مجموعة', 'session.removeSet': 'حذف آخر مجموعة',
+    'quick.name': 'تمرين سريع', 'quick.start': 'ابدأ تمرينًا بهذا التمرين', 'quick.addToCurrent': 'أضف إلى التمرين الحالي', 'quick.goToCurrent': 'انتقل إلى التمرين الحالي', 'quick.addExercise': '+ إضافة تمرين', 'quick.addHint': 'اختر تمرينًا لإضافته إلى هذا التمرين. خطتك لا تتغير.',
+    'finish.title': "حفظ التمرين؟", 'finish.save': "حفظ التمرين", 'finish.keep': "متابعة التمرين", 'discard.title': "تجاهل هذا التمرين؟", 'discard.body': "المجموعات التي حددتها لن تُحفظ.", 'discard.confirm': "تجاهل", 'discard.final': "تجاهل نهائيًا", 'discard.menu': "تجاهل التمرين", 'session.moreAria': "خيارات أخرى للتمرين",
+    'session.removeSetConfirm': 'حذف المجموعة {n}؟ سيتم مسح وزنها وتكراراتها وعلامة ✓.',
     'chat.seen': 'تمت المشاهدة', 'chat.sent': 'أُرسلت', 'chat.gotoOriginal': 'عرض الرسالة الأصلية', 'chat.originalGone': 'الرسالة الأصلية لم تعد في هذه المحادثة.',
   },
 };
@@ -9063,6 +9144,10 @@ let timerEnd = 0;
 let timerSessionId = 0;
 let timerCompletedId = 0;      // id odpočtu, ktorého dokončenie už bolo spracované
 let timerHiddenAt = 0;         // kedy sa stránka skryla (0 = je viditeľná)
+let timerPausedLeft = null;    // zostávajúce ms pozastaveného odpočtu (null = beží)
+let timerTotalMs = 0;          // celý čas spusteného odpočtu (pre Znova a ukazovateľ)
+let timerPresetId = null;      // predvoľba, z ktorej odpočet beží (null = vlastný čas)
+let restNoteTimer = null;      // skrytie hlášky "Nahradené …"
 let dayWatchInterval = null;   // jediný interval pre zmenu dňa (nikdy sa neduplikuje)
 let lastRenderedDay = null;    // naposledy vykreslený lokálny deň "YYYY-MM-DD"
 /* Stav kalendára – len v pamäti, zámerne sa neukladá (kalendár sa vždy otvára na aktuálnom mesiaci). */
@@ -9595,6 +9680,8 @@ function normalizeSubstituteExercise(raw) {
   return out;
 }
 
+const QUICK_MAX_EXERCISES = 40;
+
 /* Rozbehnutá session: buď platný objekt, alebo null. Poškodené/neúplné dáta sa zahodia. */
 function normalizeActiveSession(raw) {
   if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return null;
@@ -9680,6 +9767,24 @@ function normalizeActiveSession(raw) {
     }
   }
   if (Object.keys(drops).length) out.drops = drops;
+  /* Zmena počtu sérií cviku (+ Pridať sériu): celé nenulové čísla; chýbajúce pole = bez zmeny. */
+  const setDelta = {};
+  if (raw.setDelta && typeof raw.setDelta === 'object' && !Array.isArray(raw.setDelta)) {
+    for (const [key, val] of Object.entries(raw.setDelta)) {
+      if (key && Number.isInteger(val) && val !== 0 && val >= -98 && val <= 98) setDelta[key] = val;
+    }
+  }
+  if (Object.keys(setDelta).length) out.setDelta = setDelta;
+  /* Cviky pridané počas tréningu a cviky rýchleho tréningu: rovnaká prísna kontrola ako pri náhrade. */
+  const cleanExercises = (list) => (Array.isArray(list) ? list : []).slice(0, QUICK_MAX_EXERCISES)
+    .map(normalizeSubstituteExercise).filter(Boolean);
+  const extras = cleanExercises(raw.extraExercises);
+  if (extras.length) out.extraExercises = extras;
+  if (planId === 'quick') {
+    const quick = cleanExercises(raw.quick && raw.quick.exercises);
+    if (!quick.length) return null;   // rýchly tréning bez cvikov nemá čo zobraziť
+    out.quick = { exercises: quick };
+  }
   return out;
 }
 
@@ -10171,7 +10276,9 @@ function recommendedPlan() {
   const ids = activePlanIds();
   if (!ids.length) return null;
   if (!state.history.length) return ids[0];
-  const last = state.history[state.history.length - 1];
+  /* Rýchly tréning nepatrí do rotácie plánov – berie sa posledný tréning podľa plánu. */
+  const last = [...state.history].reverse().find(w => w.planId !== 'quick');
+  if (!last) return ids[0];
   const idx = ids.indexOf(last.planId);
   if (idx === -1) return ids[0];   // posledný tréning patril zmazanému plánu – začni odznova
   return ids[(idx + 1) % ids.length];
@@ -10310,14 +10417,14 @@ function distinctCustomExerciseCount() {
    takže premenovanie ani zmazanie plánu tento údaj nezmení. */
 function distinctPlanIdsInHistory() {
   const seen = {};
-  for (const w of state.history) if (w.planId) seen[w.planId] = true;
+  for (const w of state.history) if (w.planId && w.planId !== 'quick') seen[w.planId] = true;
   return Object.keys(seen).length;
 }
 
 function nthDistinctPlanDate(n) {
   const seen = {};
   for (const w of sortedHistory()) {
-    if (!w.planId) continue;
+    if (!w.planId || w.planId === 'quick') continue;
     if (!seen[w.planId]) {
       seen[w.planId] = true;
       if (Object.keys(seen).length === n) return w.date;
@@ -11359,6 +11466,19 @@ function openCalendarPage() {
    Priebeh tréningu NIKDY nežije len v prekreslenom DOM. Žije v state.activeSession, ktorý
    prežije prekreslenie, zmenu jazyka, prepnutie karty, úpravu plánu aj obnovenie stránky. */
 
+/* Plán rozbehnutého tréningu: pri rozbehnutej session je to vždy jej plán (aj rýchly tréning),
+   inak vybraný plán. Nič iné nesmie počas tréningu prepísať, ktorý plán sa zobrazuje a ukladá. */
+function currentPlan() {
+  const sess = getSession();
+  return (sess && getPlan(sess.planId)) || getPlan(selectedPlan);
+}
+/* Rozbehnutá session drží výber plánu (nikdy ho neprepíše odporúčaný ani iný plán). */
+function keepSessionPlan() {
+  const sess = getSession();
+  if (sess && getPlan(sess.planId)) { selectedPlan = sess.planId; return true; }
+  return false;
+}
+
 function getSession() {
   return (state && state.activeSession) || null;
 }
@@ -11392,16 +11512,41 @@ function exerciseSlotCount(ex) {
   return ex.sets * (exerciseSideOrder(ex) ? 2 : 1);
 }
 
+/* Počet sérií cviku v rozbehnutom tréningu = plánované série + zmena v session
+   (sess.setDelta[kľúč cviku], môže byť záporná; výsledok je aspoň 1, najviac 99).
+   Chýbajúce pole (staršia session) = 0. Plán sa nikdy nemení. Bez session platí plán. */
+function sessionSetCount(ex) {
+  const planned = Math.max(0, Math.round(Number(ex && ex.sets)) || 0);
+  const sess = getSession();
+  const d = sess && sess.setDelta && typeof sess.setDelta === 'object' ? Number(sess.setDelta[exerciseSessionKey(ex)]) : 0;
+  return Math.min(99, Math.max(1, planned + (Number.isInteger(d) ? d : 0)));
+}
+
+/* Ako exerciseSlotCount, ale s počtom sérií z tréningu (použiť len pri cvikoch aktuálnej session,
+   nie pri záznamoch z histórie). */
+function sessionSlotCount(ex) {
+  return sessionSetCount(ex) * (exerciseSideOrder(ex) ? 2 : 1);
+}
+
 /* ---------- Výmena cviku počas tréningu (session, NIE plán) ----------
    Výmena nikdy nezmení plán používateľa – zajtra ho čaká pôvodný cvik.
    Žije v state.activeSession.substituted, takže prežije prekreslenie, zmenu
    jazyka aj obnovenie stránky rovnako ako ostatné značky. */
 
+/* Cviky tréningu = cviky plánu + cviky pridané počas tréningu (sess.extraExercises).
+   Plán sa nikdy nemení; rýchly tréning nesie svoje cviky priamo v plánovom pohľade. */
+function sessionExercises(plan) {
+  const base = plan && Array.isArray(plan.exercises) ? plan.exercises : [];
+  const sess = getSession();
+  const extra = sess && Array.isArray(sess.extraExercises) ? sess.extraExercises : [];
+  return extra.length ? base.concat(extra) : base;
+}
+
 /* Slot = jeden cvik v pláne vrátane poradia duplicity (rovnaký cvik dvakrát v pláne). */
 function exerciseSlots(plan) {
   const seen = {};
   const out = [];
-  for (const ex of plan.exercises) {
+  for (const ex of sessionExercises(plan)) {
     const base = exerciseSessionKey(ex);
     const occ = seen[base] || 0;
     seen[base] = occ + 1;
@@ -11437,7 +11582,7 @@ function countDoneSets(ex) {
   if (!sess || !ex) return 0;
   const sides = exerciseSideOrder(ex);
   let n = 0;
-  for (let i = 0; i < ex.sets; i++) {
+  for (let i = 0; i < sessionSetCount(ex); i++) {
     if (sides) {
       for (const side of sides) if (sess.completedSets[setSessionKey(ex, i, side)]) n++;
     } else if (sess.completedSets[setSessionKey(ex, i)]) n++;
@@ -11497,6 +11642,7 @@ function ensureSession(plan) {
 
 function clearSession() {
   if (state) state.activeSession = null;
+  if (selectedPlan === 'quick') selectedPlan = recommendedPlan() || activePlanIds()[0] || null;
   setSessionNote(null, 0);
 }
 
@@ -11531,7 +11677,7 @@ const SET_VALUE_FIELDS = { weight: 'setWeights', reps: 'setReps' };
 const SET_VALUE_LOCKS = { weight: 'setWeightLocks', reps: 'setRepsLocks' };
 function setWeightKey(ex, index, side) { return setSessionKey(ex, index, side); }
 function setValueRows(ex) {
-  const sets = Math.max(0, Math.round(Number(ex.sets)) || 0);
+  const sets = sessionSetCount(ex);
   const sides = exerciseSideOrder(ex) || [null];
   const rows = [];
   for (let i = 0; i < sets; i++) for (const side of sides) rows.push({ index: i, side });
@@ -11598,7 +11744,7 @@ function setSetValue(kind, ex, index, side, v) {
    null, ak sa nič nelíši od plánu (záznam vyzerá presne ako doteraz). `list` je pri stranách vyššia
    hodnota série – staršie verzie appky (synchronizácia) tak ukážu aspoň rozumné číslo. */
 function sessionSetValues(kind, ex) {
-  const sets = Math.max(0, Math.round(Number(ex.sets)) || 0);
+  const sets = sessionSetCount(ex);
   const planned = setValuePlanned(kind, ex);
   const per = (side) => Array.from({ length: sets }, (_, i) => effectiveSetValue(kind, ex, i, side));
   const sides = exerciseSideOrder(ex);
@@ -11679,6 +11825,75 @@ function historyRepsValue(ex) {
   return list ? list.join('/') : String(ex.reps);
 }
 
+/* ---------- Počet sérií v tréningu (+ Pridať sériu / Odstrániť poslednú) ----------
+   Zmena počtu žije len v sess.setDelta[kľúč cviku]; plán sa nemení a do histórie ide výsledný počet.
+   Drop série zostávajú pripojené za POSLEDNOU sériou (addDrop berie sessionSetCount). */
+function sessionSetSides(ex) { return exerciseSideOrder(ex) || [null]; }
+function writeSetDelta(sess, ex, count) {
+  const planned = Math.max(0, Math.round(Number(ex.sets)) || 0);
+  const key = exerciseSessionKey(ex);
+  if (!sess.setDelta || typeof sess.setDelta !== 'object') sess.setDelta = {};
+  if (count - planned === 0) delete sess.setDelta[key]; else sess.setDelta[key] = count - planned;
+  if (!Object.keys(sess.setDelta).length) delete sess.setDelta;
+}
+/* Pridá sériu na koniec. Nová séria dostane váhu a opakovania poslednej série (pri jednostrannom
+   cviku po stranách) – do výnimiek ide len to, čo by inak zdedila iná hodnota. */
+function addSessionSet(ex) {
+  const count = sessionSetCount(ex);
+  if (count >= 99) return false;
+  const sess = ensureSession();
+  if (!sess) return false;
+  const prev = [];
+  for (const side of sessionSetSides(ex)) {
+    prev.push([side, effectiveSetValue('weight', ex, count - 1, side), effectiveSetValue('reps', ex, count - 1, side)]);
+  }
+  writeSetDelta(sess, ex, count + 1);
+  for (const [side, w, r] of prev) {
+    if (effectiveSetValue('weight', ex, count, side) !== w) setSetValue('weight', ex, count, side, w);
+    if (r >= 1 && effectiveSetValue('reps', ex, count, side) !== r) setSetValue('reps', ex, count, side, r);
+  }
+  saveState();
+  return true;
+}
+/* Kľúče poslednej série (obe strany + starý kľúč bez strany), ktoré nesú značky alebo výnimky. */
+function lastSetKeys(ex) {
+  const idx = sessionSetCount(ex) - 1;
+  const keys = [setSessionKey(ex, idx)];
+  for (const side of sessionSetSides(ex)) if (side) keys.push(setSessionKey(ex, idx, side));
+  return keys;
+}
+const SESSION_SET_MAPS = ['completedSets', 'actualFailureSets', 'setWeights', 'setReps', 'setWeightLocks', 'setRepsLocks'];
+/* Má posledná séria hotovú / zlyhanie značku alebo vlastnú váhu či opakovania? */
+function lastSetTouched(ex) {
+  const sess = getSession();
+  if (!sess) return false;
+  const keys = lastSetKeys(ex);
+  return SESSION_SET_MAPS.some((f) => sess[f] && keys.some((k) => sess[f][k] !== undefined));
+}
+/* Odstráni poslednú sériu a zmaže presne jej značky a výnimky (nikdy pod 1 sériu). */
+function removeLastSessionSet(ex) {
+  const count = sessionSetCount(ex);
+  const sess = getSession();
+  if (!sess || count <= 1) return false;
+  const keys = lastSetKeys(ex);
+  for (const f of SESSION_SET_MAPS) {
+    if (!sess[f]) continue;
+    for (const k of keys) delete sess[f][k];
+    if (!Object.keys(sess[f]).length && f !== 'completedSets' && f !== 'actualFailureSets') delete sess[f];
+  }
+  writeSetDelta(sess, ex, count - 1);
+  saveState();
+  return true;
+}
+/* UI: neotvorená / nezmenená séria sa odstráni hneď, hotová alebo upravená až po potvrdení. */
+function requestRemoveLastSet(ex) {
+  const count = sessionSetCount(ex);
+  if (count <= 1) return;
+  const doRemove = () => { if (removeLastSessionSet(ex)) { setSessionNote(null, 0); renderTrening(); } };
+  if (!lastSetTouched(ex)) { doRemove(); return; }
+  showGeneric(t('session.removeSet'), t('session.removeSet'), doRemove, esc(t('session.removeSetConfirm', { n: count })));
+}
+
 /* ---------- Drop séria (po poslednej sérii znížiš váhu a pokračuješ bez pauzy) ----------
    Drop série žijú v session pri cviku (sess.drops[kľúč cviku] = [{ w, r, done }]), plán sa
    nemení. Do histórie idú len dokončené drop série ({ weight, reps }). Nepočítajú sa do
@@ -11699,7 +11914,7 @@ function addDrop(ex) {
   if (list.length >= DROP_MAX) return false;
   const sess = ensureSession();
   if (!sess) return false;
-  const last = Math.max(0, (Math.round(Number(ex.sets)) || 1) - 1);
+  const last = sessionSetCount(ex) - 1;
   const prevW = list.length ? list[list.length - 1].w : effectiveSetWeight(ex, last);
   const prevR = list.length ? list[list.length - 1].r : effectiveSetReps(ex, last);
   /* Predvolene o ~20 % ľahšie (zaokrúhlené na 2,5 kg), opakovania ako posledná séria. */
@@ -11744,7 +11959,7 @@ function historyDropsText(ex) {
 function planExerciseCount(plan) {
   let n = 0;
   for (const info of exerciseSlots(plan)) {
-    for (const seg of exerciseSegments(info)) n += exerciseSlotCount(seg.ex);
+    for (const seg of exerciseSegments(info)) n += sessionSlotCount(seg.ex);
   }
   return n;
 }
@@ -11755,7 +11970,7 @@ function planExerciseCount(plan) {
    ZOSTÁVAJÚ pod jeho menom a série náhrady sú navyše. Nikdy nie dvakrát. */
 function totalSetsDone() {
   const sess = getSession();
-  const plan = getPlan(selectedPlan);
+  const plan = currentPlan();
   if (!sess || !plan) return 0;
   let n = 0;
   for (const info of exerciseSlots(plan)) {
@@ -11898,6 +12113,7 @@ function setPlanManageMode(on) {
 
 function renderTrening() {
   trainRender();
+  if (getSession() && getSession().quick) keepSessionPlan();   // rýchly tréning sa nikdy nezobrazí ako iný plán
   if (!getPlan(selectedPlan)) selectedPlan = activePlanIds()[0] || null;
 
   const chips = document.getElementById('plan-chips');
@@ -11932,6 +12148,7 @@ function renderTrening() {
       + '<span class="chip-meta">' + esc(bentoCountsText(stats.exercises, stats.sets)) + '</span>';
     btn.setAttribute('aria-pressed', id === selectedPlan ? 'true' : 'false');
     btn.addEventListener('click', () => {
+      if (getSession() && getSession().quick) return;   // rýchly tréning sa na plán nikdy nepreväzuje (nezahodí sa)
       // výber iného plánu vždy zatvorí editor, aby meno v poli nepatrilo inému plánu
       if (editingPlan !== null && editingPlan !== id && closeEditor()) saveState();
       selectedPlan = id;
@@ -11959,7 +12176,7 @@ function renderTrening() {
     renderEditPanel();
   }
 
-  const plan = getPlan(selectedPlan);
+  const plan = getSession() ? currentPlan() : getPlan(selectedPlan);   // session ukazuje vždy svoj plán (aj keď sa upravuje iný)
   document.getElementById('plan-title').textContent = plan ? planDisplayName(plan) : t('pokrok.workoutFallback');
   renderTrainDetail(plan);
   const list = document.getElementById('exercise-list');
@@ -11970,7 +12187,7 @@ function renderTrening() {
   renderSessionNote();
   if (!plan) {
     document.getElementById('summary-bar').innerHTML = '';
-    document.getElementById('btn-finish-workout').disabled = true;
+    setFinishDisabled(true);
     bentoTrainMode();
     return;
   }
@@ -12000,13 +12217,86 @@ function bentoTrainMode() {
   document.getElementById('tr-detail').hidden = !!sess;
   document.querySelector('#tr-pick .tr-tiles').hidden = !!sess;
   document.getElementById('tr-session').hidden = !sess;
+  const fbar = document.getElementById('finish-bar');
+  if (fbar) fbar.hidden = !sess;
+  if (!sess) closeSessionMenu();
+  updateStickyBottom();
   const label = document.getElementById('tr-sess-plan');
   if (label) {
-    const plan = getPlan(selectedPlan);
-    label.innerHTML = esc(plan ? planDisplayName(plan) : (sess && sess.planName) || '') + ' <span aria-hidden="true">' + (trainShowPlans ? '▴' : '▾') + '</span>';
+    const plan = sess ? currentPlan() : getPlan(selectedPlan);
+    label.innerHTML = esc(plan ? planDisplayName(plan) : (sess && sess.planName) || '') + (sess && sess.quick ? '' : ' <span aria-hidden="true">' + (trainShowPlans ? '▴' : '▾') + '</span>');
     label.setAttribute('aria-expanded', trainShowPlans ? 'true' : 'false');
   }
 }
+/* Obe tlačidlá Dokončiť (lepivá lišta aj to pod cvikmi) sú povolené rovnako: aspoň 1 hotová séria. */
+function setFinishDisabled(off) {
+  for (const id of ['btn-finish-workout', 'btn-finish-workout-end']) {
+    const b = document.getElementById(id);
+    if (b) b.disabled = off;
+  }
+}
+
+/* Lepivé lišty nad tab barom: karta časovača oddychu sa kladie NAD lištu Dokončiť
+   (--rest-lift = jej výška + medzera). --sticky-bottom = vzdialenosť od spodku okna po horný okraj
+   vyššej z nich, aby zaostrené pole série nebolo pod nimi (scroll-margin-bottom v CSS). */
+function updateStickyBottom() {
+  const root = document.documentElement;
+  const bar = document.getElementById('finish-bar');
+  const card = document.getElementById('timer-bar');
+  const showing = (el) => el && !el.hidden && el.getClientRects().length;
+  let lift = 0;
+  if (showing(bar)) lift = Math.ceil(bar.getBoundingClientRect().height) + 8;
+  root.style.setProperty('--rest-lift', lift + 'px');
+  let px = 0;
+  for (const el of [bar, card]) {
+    if (showing(el)) px = Math.max(px, Math.ceil(window.innerHeight - el.getBoundingClientRect().top));
+  }
+  root.style.setProperty('--sticky-bottom', Math.max(0, px) + 'px');
+}
+
+/* ⋯ menu tréningu (Zahodiť je schované tu, nie na očiach) */
+function sessionMenuOpen() { const m = document.getElementById('session-menu'); return !!m && !m.hidden; }
+function closeSessionMenu() {
+  const m = document.getElementById('session-menu');
+  if (m) m.hidden = true;
+  const b = document.getElementById('btn-session-more');
+  if (b) b.setAttribute('aria-expanded', 'false');
+}
+function toggleSessionMenu() {
+  const m = document.getElementById('session-menu');
+  if (!m) return;
+  const show = m.hidden;
+  m.hidden = !show;
+  document.getElementById('btn-session-more').setAttribute('aria-expanded', show ? 'true' : 'false');
+}
+
+/* Zahodenie tréningu: dva kroky, nič sa nezapisuje do histórie ani XP. */
+function requestDiscardSession() {
+  closeSessionMenu();
+  showGeneric(t('discard.title'), t('discard.confirm'), () => {
+    showGeneric(t('discard.title'), t('discard.final'), () => {
+      clearSession();
+      stopTimer();
+      saveState();
+      renderTrening();
+    }, t('discard.body'), t('finish.keep'));
+    /* Druhý krok sa objaví na mieste tlačidla z prvého kroku – ~400 ms ho nejde potvrdiť (dvojklik) */
+    const ok = document.getElementById('btn-generic-ok');
+    ok.classList.add('btn-danger-solid');
+    ok.setAttribute('aria-disabled', 'true');
+    ok.style.opacity = '0.5';
+    setTimeout(() => { ok.removeAttribute('aria-disabled'); ok.style.opacity = ''; }, 400);
+  }, t('discard.body'), t('finish.keep'));
+}
+
+/* Dokončiť z tlačidla: otvorí potvrdenie "Uložiť tréning?". Druhé ťuknutie, keď je okno
+   už otvorené (alebo sa práve ukladá), sa ignoruje – história sa zapíše najviac raz. */
+function requestFinishWorkout() {
+  const m = document.getElementById('modal-confirm');
+  if (!m || !m.hidden || totalSetsDone() === 0 || !getSession()) return;
+  finishWorkout();
+}
+
 function renderTrainDetail(plan) {
   const box = document.getElementById('tr-detail-rows');
   if (!box) return;
@@ -12061,7 +12351,7 @@ function buildExerciseBlock(seg, info, plan) {
   }
   const meta = document.createElement('span');
   meta.className = 'exercise-meta';
-  meta.innerHTML = `${ex.sets} × ${ex.reps} &nbsp;·&nbsp; <b>${ex.weight} ${t('units.kg')}</b>`;
+  meta.innerHTML = `${sessionSetCount(ex)} × ${ex.reps} &nbsp;·&nbsp; <b>${ex.weight} ${t('units.kg')}</b>`;
   head.appendChild(meta);
   div.appendChild(head);
 
@@ -12069,7 +12359,7 @@ function buildExerciseBlock(seg, info, plan) {
   if (sides) {
     const sideNote = document.createElement('p');
     sideNote.className = 'exercise-side-note';
-    sideNote.textContent = tPlural('unilateral.setsPerSide', ex.sets);
+    sideNote.textContent = tPlural('unilateral.setsPerSide', sessionSetCount(ex));
     div.appendChild(sideNote);
   }
 
@@ -12091,7 +12381,12 @@ function buildExerciseBlock(seg, info, plan) {
   const sets = document.createElement('div');
   sets.className = 'sets';
   const plannedFailure = cleanFailureSets(ex.plannedFailureSets, ex.sets);
-  for (let i = 0; i < ex.sets; i++) {
+  /* Názvy stĺpcov (Váha / Opakovania) raz nad prvou sériou cviku, nie na každom riadku. */
+  const heads = document.createElement('div');
+  heads.className = 'set-heads';
+  heads.innerHTML = '<span></span><span class="set-cap">' + esc(t('session.weight')) + '</span><span class="set-cap">' + esc(t('session.reps')) + '</span>';
+  sets.appendChild(heads);
+  for (let i = 0; i < sessionSetCount(ex); i++) {
     if (sides) {
       for (const side of sides) sets.appendChild(buildSetItem(ex, i, plannedFailure, side, seg.readOnly));
     } else {
@@ -12099,6 +12394,9 @@ function buildExerciseBlock(seg, info, plan) {
     }
   }
   div.appendChild(sets);
+
+  /* + Pridať sériu / Odstrániť poslednú sériu – len v rozbehnutom tréningu a pri aktívnom cviku. */
+  if (seg.active && getSession()) div.appendChild(buildSetCountRow(ex));
 
   const mini = document.createElement('div');
   mini.className = 'mini ex-mini';
@@ -12122,7 +12420,7 @@ function buildExerciseBlock(seg, info, plan) {
     infoBtn.innerHTML = bentoIcon('info');
     infoBtn.title = exerciseDisplayName(ex);
     infoBtn.setAttribute('aria-label', t('bento.exerciseInfo', { name: exerciseDisplayName(ex) }));
-    infoBtn.addEventListener('click', () => openExerciseSheet(ex.id, 'browse'));
+    infoBtn.addEventListener('click', () => openExerciseSheet(ex.id, 'info'));
     mini.appendChild(infoBtn);
   }
   div.appendChild(mini);
@@ -12160,24 +12458,38 @@ function buildSetItem(ex, index, plannedFailure, side, readOnly) {
   item.className = 'set-item' + (side ? ' side-row' : '') + (readOnly ? ' set-locked' : '');
 
   const sideLabel = side ? t('unilateral.setSide', { n: index + 1, side: sideName(side) }) : '';
+  const ariaPre = side ? sideLabel + ' — ' : '';
 
-  /* Bento: štvorec série ukazuje opakovania a váhu (ako návrh); ťuknutie = hotová séria */
+  /* Označenie série: číslo ("1"; jednostranný cvik "1Ľ" / "1P"); plný text je v title a v aria-label polí. */
+  const label = document.createElement('span');
+  label.className = 'set-label';
+  label.textContent = String(index + 1);
+  if (side) {   // strana pod číslom (malým písmom), aby sa dlhé slovo (napr. arabské) nezrážalo s poľom
+    const sd = document.createElement('small');
+    sd.textContent = t(side === 'right' ? 'bento.sideR' : 'bento.sideL');
+    label.appendChild(sd);
+  }
+  label.title = side ? sideLabel : t('trening.setN', { n: index + 1 });
+
+  /* ✓ štvorec série; ťuknutie = hotová séria. Celý riadok sa pri hotovej sérii podfarbí. */
   const setBtn = document.createElement('button');
   setBtn.type = 'button';
   setBtn.className = 'set-btn sq';
-  const sqReps = effectiveSetReps(ex, index, side);
-  const sqKg = effectiveSetWeight(ex, index, side);
-  setBtn.innerHTML = (side ? '<i>' + esc(t(side === 'right' ? 'bento.sideR' : 'bento.sideL')) + '</i>' : '')
-    + '<b>' + sqReps + '</b><small>' + (sqKg > 0 ? sqKg : esc(t('bento.bw'))) + (setMark('failure', ex, index, side) ? ' F' : '') + '</small>';
-  setBtn.classList.toggle('done', setMark('done', ex, index, side));
-  setBtn.setAttribute('aria-label', (side ? sideLabel + ' — ' : '') + t('trening.setDoneAria', { n: index + 1 }));
+  setBtn.textContent = '✓';
+  const syncDone = () => {
+    const on = setMark('done', ex, index, side);
+    setBtn.classList.toggle('done', on);
+    item.classList.toggle('set-done', on);
+    setBtn.setAttribute('aria-pressed', on ? 'true' : 'false');
+  };
+  syncDone();
+  setBtn.setAttribute('aria-label', ariaPre + t('trening.setDoneAria', { n: index + 1 }));
   if (readOnly) {
     setBtn.disabled = true;
   } else {
     setBtn.addEventListener('click', () => {
-      const on = !setMark('done', ex, index, side);
-      toggleSetMark('done', ex, index, on, side);
-      setBtn.classList.toggle('done', on);
+      toggleSetMark('done', ex, index, !setMark('done', ex, index, side), side);
+      syncDone();
       setSessionNote(null, 0);
       updateSummary();
     });
@@ -12194,7 +12506,7 @@ function buildSetItem(ex, index, plannedFailure, side, readOnly) {
     const on = setMark('failure', ex, index, side);
     failBtn.classList.toggle('active', on);
     failBtn.setAttribute('aria-pressed', on ? 'true' : 'false');
-    failBtn.setAttribute('aria-label', (side ? sideLabel + ' — ' : '') + (on ? t('failure.removeMarker') : t('failure.markSet')));
+    failBtn.setAttribute('aria-label', ariaPre + (on ? t('failure.removeMarker') : t('failure.markSet')));
     failBtn.title = on ? t('failure.failure') : (wasPlanned ? t('failure.planned') : t('failure.markSet'));
   };
   syncFail();
@@ -12205,42 +12517,86 @@ function buildSetItem(ex, index, plannedFailure, side, readOnly) {
       toggleSetMark('failure', ex, index, !setMark('failure', ex, index, side), side);
       setSessionNote(null, 0);
       syncFail();
-      const sm = setBtn.querySelector('small');
-      if (sm) sm.textContent = (effectiveSetWeight(ex, index, side) > 0 ? effectiveSetWeight(ex, index, side) : t('bento.bw')) + (setMark('failure', ex, index, side) ? ' F' : '');
     });
   }
 
-  /* Váha tejto série: ťuknutím sa dá zmeniť (napr. zvýšenie váhy počas tréningu). */
-  const weight = effectiveSetWeight(ex, index, side);
-  const weightBtn = document.createElement('button');
-  weightBtn.type = 'button';
-  weightBtn.className = 'set-weight' + (weight !== (Number(ex.weight) || 0) ? ' changed' : '');
-  weightBtn.textContent = String(weight);
-  weightBtn.title = t('setWeight.title');
-  weightBtn.setAttribute('aria-label', (side ? sideLabel + ' — ' : '') + t('setWeight.aria', { n: index + 1, kg: weight }));
-  if (readOnly) weightBtn.disabled = true;
-  else weightBtn.addEventListener('click', () => openSetWeightEditor(ex, index, item, side));
+  /* Váha a opakovania: priame polia s viditeľným popisom. Zápis ide cez rovnaké nastavovače ako dovtedy
+     (setSetWeight / setSetReps, rovnaká validácia a dedenie na ďalšie série); neplatná hodnota sa vráti späť.
+     Vlastná váha = 0 zadané výslovne (zobrazí sa ako prázdne pole so zástupným textom); prázdne pole sa nikdy neuloží. */
+  const field = (kind) => {
+    const isW = kind === 'weight';
+    const wrap = document.createElement('label');
+    wrap.className = 'set-field';
+    const box = document.createElement('span');
+    box.className = 'set-inputbox';
+    const input = document.createElement('input');
+    /* Text s číselnou klávesnicou: pri váhe čiarka (sk, fr, …) aj bodka fungujú rovnako. */
+    input.type = 'text';
+    input.className = isW ? 'set-weight' : 'set-reps';
+    input.inputMode = isW ? 'decimal' : 'numeric';
+    input.autocomplete = 'off';
+    input.enterKeyHint = 'done';
+    input.setAttribute('aria-label', ariaPre + t(isW ? 'session.weightAria' : 'session.repsAria', { n: index + 1 }));
+    if (isW) input.placeholder = t('bento.bw');
+    const unit = document.createElement('span');
+    unit.className = 'set-unit';
+    unit.textContent = isW ? t('units.kg') : '×';
+    const current = () => (isW ? effectiveSetWeight(ex, index, side) : effectiveSetReps(ex, index, side));
+    const planned = () => (isW ? (Number(ex.weight) || 0) : (Math.round(Number(ex.reps)) || 0));
+    /* Zobrazí aktuálnu hodnotu; váha 0 = prázdne pole (vlastná váha). */
+    const show = () => {
+      const v = current();
+      input.value = isW && !(v > 0) ? '' : String(v);
+      input.classList.toggle('changed', v !== planned());
+    };
+    show();
+    input._show = show;
+    if (readOnly) {
+      input.disabled = true;
+    } else {
+      input.addEventListener('focus', () => input.select());
+      input.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); input.blur(); } });
+      input.addEventListener('change', () => {
+        const hadSession = !!getSession();
+        const raw = input.value;
+        const ok = raw.trim() !== '' && (isW ? setSetWeight(ex, index, raw, side) : setSetReps(ex, index, raw, side));
+        if (!ok) { show(); return; }   // neplatná hodnota: vráti sa predchádzajúca
+        setSessionNote(null, 0);
+        if (!hadSession) { renderTrening(); return; }   // zápis práve spustil tréning
+        /* Zmena sa dedí na ďalšie série: ich polia sa prepíšu na mieste (bez prekreslenia, aby sa nestratil fokus). */
+        const list = item.parentNode;
+        if (list) list.querySelectorAll('input.set-weight, input.set-reps').forEach((inp) => { if (inp._show && inp !== document.activeElement) inp._show(); });
+        show();
+        updateSummary();
+      });
+    }
+    box.append(input, unit);
+    wrap.append(box);
+    return wrap;
+  };
 
-  /* Opakovania tejto série: ťuknutím sa dajú zmeniť (napr. 10, potom 8). */
-  const reps = effectiveSetReps(ex, index, side);
-  const repsBtn = document.createElement('button');
-  repsBtn.type = 'button';
-  repsBtn.className = 'set-reps' + (reps !== (Math.round(Number(ex.reps)) || 0) ? ' changed' : '');
-  repsBtn.textContent = reps + '×';
-  repsBtn.title = t('setReps.title');
-  repsBtn.setAttribute('aria-label', (side ? sideLabel + ' — ' : '') + t('setReps.aria', { n: index + 1, reps }));
-  if (readOnly) repsBtn.disabled = true;
-  else repsBtn.addEventListener('click', () => openSetRepsEditor(ex, index, item, side));
-
-  weightBtn.dataset.unit = t('units.kg');
-  const pill = document.createElement('span');
-  pill.className = 'set-pill';
-  const label = document.createElement('span');
-  label.className = side ? 'set-side-label' : 'set-n';
-  label.textContent = side ? sideLabel : t('bento.setShort', { n: index + 1 });
-  pill.append(label, repsBtn, weightBtn, failBtn);
-  item.append(setBtn, pill);
+  item.append(label, field('weight'), field('reps'), failBtn, setBtn);
   return item;
+}
+
+/* Tlačidlá pod sériami cviku: pridať sériu navyše / odstrániť poslednú. */
+function buildSetCountRow(ex) {
+  const row = document.createElement('div');
+  row.className = 'mini set-count-row';
+  const add = document.createElement('button');
+  add.type = 'button';
+  add.className = 'set-count-btn set-add';
+  add.textContent = t('session.addSet');
+  add.disabled = sessionSetCount(ex) >= 99;
+  add.addEventListener('click', () => { closeSetWeightEditor(); if (addSessionSet(ex)) { setSessionNote(null, 0); renderTrening(); } });
+  const rem = document.createElement('button');
+  rem.type = 'button';
+  rem.className = 'set-count-btn set-remove';
+  rem.textContent = t('session.removeSet');
+  rem.disabled = sessionSetCount(ex) <= 1;
+  rem.addEventListener('click', () => { closeSetWeightEditor(); requestRemoveLastSet(ex); });
+  row.append(add, rem);
+  return row;
 }
 
 /* Drop série cviku: riadky "Drop séria 1" (✓ / opakovania / váha / ✕) a tlačidlo "+ Drop séria". */
@@ -12362,31 +12718,13 @@ function openSetValueEditor(item, cfg) {
   input.focus();
   input.select();
 }
-function openSetWeightEditor(ex, index, item, side) {
-  openSetValueEditor(item, {
-    editorAria: t('setWeight.editorAria', { n: index + 1 }), inputAria: t('setWeight.inputAria', { n: index + 1 }),
-    lessAria: t('setWeight.less'), moreAria: t('setWeight.more'), minusText: '−2.5', plusText: '+2.5', step: 2.5,
-    unit: t('units.kg'), inputMode: 'decimal', inputClass: 'set-weight-input', okClass: 'set-weight-ok',
-    current: () => effectiveSetWeight(ex, index, side), clean: cleanSetWeightValue, save: (v) => setSetWeight(ex, index, v, side),
-  });
-}
-function openSetRepsEditor(ex, index, item, side) {
-  openSetValueEditor(item, {
-    extraClass: 'set-reps-editor',
-    editorAria: t('setReps.editorAria', { n: index + 1 }), inputAria: t('setReps.inputAria', { n: index + 1 }),
-    lessAria: t('setReps.less'), moreAria: t('setReps.more'), minusText: '−1', plusText: '+1', step: 1,
-    unit: t('units.reps'), inputMode: 'numeric', inputClass: 'set-reps-input', okClass: 'set-reps-ok',
-    current: () => effectiveSetReps(ex, index, side), clean: cleanSetRepsValue, save: (v) => setSetReps(ex, index, v, side),
-  });
-}
-
 function updateSummary() {
-  const plan = getPlan(selectedPlan);
+  const plan = currentPlan();
   const done = totalSetsDone();
   const total = plan ? planExerciseCount(plan) : 0;
   const msg = done === 0 ? t('trening.setsHint') : randomSetMessage();
   document.getElementById('summary-bar').innerHTML = t('trening.setsDone', { done, total, msg });
-  document.getElementById('btn-finish-workout').disabled = done === 0;
+  setFinishDisabled(done === 0);
   const xpEl = document.getElementById('tr-finish-xp');
   if (xpEl) xpEl.textContent = ' · +' + (BASE_XP + done * XP_PER_SET) + ' ' + t('units.xp');
   bentoMarkExercises();
@@ -12419,6 +12757,7 @@ function closeEditor() {
   editDraft = null;
   newPlanId = null;
   if (discard) removePlan(id);
+  keepSessionPlan();   // úprava iného plánu nesmie počas tréningu zmeniť plán session
   return discard;
 }
 
@@ -13391,7 +13730,7 @@ function cancelEditPlan() {
    Otvára sa v troch miestach existujúceho toku a NIKDY nepridáva novú spodnú kartu:
    1) tlačidlo na obrazovke Tréning, 2) ⓘ v editore plánu, 3) ⇄ počas tréningu. */
 
-let libraryMode = 'browse';       // 'browse' | 'replace'
+let libraryMode = 'browse';       // 'browse' | 'replace' | 'add' (pridanie cviku do tréningu)
 let libraryTarget = null;         // { slot, base, ex } – cieľ výmeny počas tréningu
 let libMuscle = null;
 let libLocation = null;
@@ -13533,6 +13872,7 @@ function renderLibrary() {
   if (replaceMode && libraryTarget) {
     h.push('<p class="sheet-note">' + esc(t('exercise.replaceHint')) + '</p>');
   }
+  if (libraryMode === 'add') h.push('<p class="sheet-note">' + esc(t('quick.addHint')) + '</p>');
 
   h.push('<p class="sheet-label">' + esc(t('library.discoverTitle')) + '</p>');
   h.push(chipRow('muscle', [{ v: '', l: t('library.filterAll') }]
@@ -13597,7 +13937,7 @@ function libraryContext() {
 }
 
 function openLibrary(mode, target) {
-  libraryMode = mode === 'replace' ? 'replace' : 'browse';
+  libraryMode = mode === 'replace' || mode === 'add' ? mode : 'browse';
   libraryTarget = target || null;
   libFiltersOpen = false;
   const search = document.getElementById('lib-search');
@@ -13658,6 +13998,19 @@ function metaRow(label, value) {
     + '<span class="meta-value">' + esc(value) + '</span></div>';
 }
 
+/* Tlačidlá v liste cviku podľa toho, či tréning práve beží:
+   bez tréningu "Začať tréning s týmto cvikom", s tréningom "Pridať do prebiehajúceho" a "Prejsť naň".
+   Rozbehnutý tréning sa tu nikdy nenahrádza ani nezahadzuje. */
+function sessionSheetActionsHtml() {
+  const ctx = exerciseSheetCtx;
+  if (ctx === 'replace' || ctx === 'editor' || ctx === 'info') return '';
+  const btn = (act, key, cls) => '<button type="button" class="btn ' + cls + ' btn-block quick-action" data-sheet-action="' + act + '">' + esc(t(key)) + '</button>';
+  if (getSession()) {
+    return btn('quickadd', 'quick.addToCurrent', 'btn-primary') + (ctx === 'add' ? '' : btn('quickgo', 'quick.goToCurrent', 'btn-secondary'));
+  }
+  return ctx === 'add' ? '' : btn('quickstart', 'quick.start', 'btn-primary');
+}
+
 function renderExerciseSheet() {
   const body = document.getElementById('exercise-body');
   const title = document.getElementById('exercise-title');
@@ -13669,6 +14022,7 @@ function renderExerciseSheet() {
   if (!entry && isCustomSheetId(exerciseSheetId)) {
     title.textContent = customNameFromKey(exerciseSheetId);
     const ch = [];
+    ch.push(sessionSheetActionsHtml());   // hneď hore, aby nebolo schované pod médiami
     ch.push(mediaGalleryHtml());
     ch.push('<p class="sheet-note">' + esc(t('exercise.notInLibrary')) + '</p>');
     ch.push('<p class="sheet-note">' + esc(t('exercise.disclaimer')) + '</p>');
@@ -13686,6 +14040,7 @@ function renderExerciseSheet() {
   title.textContent = t('exercise.' + entry.id);
 
   const h = [];
+  h.push(sessionSheetActionsHtml());   // hneď hore, aby nebolo schované pod médiami
   h.push(mediaGalleryHtml());
 
   h.push('<div class="meta-grid">');
@@ -14403,7 +14758,7 @@ function applySubstitution(entryId) {
   const target = libraryTarget;
   const entry = libraryEntry(entryId);
   if (!target || !entry) return;
-  const plan = getPlan(selectedPlan);
+  const plan = currentPlan();
   if (!plan) return;
   const info = exerciseSlots(plan).find((s) => s.slot === target.slot);
   if (!info) return;
@@ -14445,7 +14800,7 @@ function applySubstitution(entryId) {
 
 function confirmSubstitution(entryId) {
   const target = libraryTarget;
-  const plan = getPlan(selectedPlan);
+  const plan = currentPlan();
   const entry = libraryEntry(entryId);
   if (!target || !plan || !entry) return;
   const info = exerciseSlots(plan).find((s) => s.slot === target.slot);
@@ -14460,7 +14815,7 @@ function confirmSubstitution(entryId) {
   const done = countDoneSets(currentEx);
   const oldName = exerciseDisplayName(currentEx);
   const text = done > 0
-    ? t('exercise.replaceSomeDone', { done, total: exerciseSlotCount(currentEx), old: oldName, next: t('exercise.' + entry.id) })
+    ? t('exercise.replaceSomeDone', { done, total: sessionSlotCount(currentEx), old: oldName, next: t('exercise.' + entry.id) })
     : t('exercise.replaceNoneDone', { old: oldName });
   showGeneric(t('exercise.replaceTitle'), t('exercise.replaceConfirm'),
     () => applySubstitution(entryId), esc(text));
@@ -14487,6 +14842,10 @@ function requestUndoSubstitution(slot) {
       if (!sess[field]) continue;
       for (const k of Object.keys(sess[field])) if (k.indexOf(prefix) === 0) delete sess[field][k];
       if (!Object.keys(sess[field]).length) delete sess[field];
+    }
+    if (sess.setDelta) {
+      delete sess.setDelta[String(last.key)];
+      if (!Object.keys(sess.setDelta).length) delete sess.setDelta;
     }
     if (sess.drops) {
       delete sess.drops[String(last.key)];
@@ -16509,7 +16868,7 @@ async function trainRefresh() {
 
 /* Môj prehľad pre priateľa – žiadne iné údaje z tréningu. */
 function trainProgressData() {
-  const plan = getPlan(selectedPlan);
+  const plan = currentPlan();
   if (!plan) return null;
   const sess = getSession();
   const out = { plan: String(planDisplayName(plan)).slice(0, 80), done: Math.min(999, sess ? totalSetsDone() : 0), total: Math.min(999, planExerciseCount(plan)) };
@@ -16518,7 +16877,7 @@ function trainProgressData() {
     for (const seg of exerciseSegments(info)) {
       if (!seg.active && !seg.readOnly) continue;
       const ex = seg.ex;
-      if (!cur && seg.active && countDoneSets(ex) < exerciseSlotCount(ex)) cur = ex;
+      if (!cur && seg.active && countDoneSets(ex) < sessionSlotCount(ex)) cur = ex;
       if (!sess) continue;
       for (const row of setValueRows(ex)) {
         if (setMark('done', ex, row.index, row.side)) last = { r: effectiveSetReps(ex, row.index, row.side), w: effectiveSetWeight(ex, row.index, row.side) };
@@ -16575,7 +16934,7 @@ async function trainOpenPicker() {
 async function trainInvite(friendId, name) {
   const sb = communityClient();
   if (!sb || trainBusy || !friendId) return;
-  const plan = getPlan(selectedPlan);
+  const plan = currentPlan();
   const shared = trainSharePlan && plan ? shareFromPlan(plan) : null;
   trainBusy = true; trainRender();
   let r;
@@ -16664,7 +17023,7 @@ function trainBoxHtml(compact) {
   const toast = trainToast && Date.now() < trainToast.until ? '<p class="train-toast" role="status">' + esc(trainToast.text) + '</p>' : '';
   if (!st) {
     if (compact) return '';
-    const plan = getPlan(selectedPlan);
+    const plan = currentPlan();
     let picker = '';
     if (trainPickerOpen) {
       picker = '<div class="train-picker">'
@@ -20453,13 +20812,14 @@ function switchTab(tab) {
       if (tyFeed && Date.now() - tyLoadedAt > 60000) tyLoadedAt = 0;
     } else { renderTy(); tyLoad(true); }
   }
+  updateStickyBottom();
   refreshUpdateBanner();
 }
 
 /* ---------- Ukončenie tréningu ---------- */
 
 function finishWorkout() {
-  const plan = getPlan(selectedPlan);
+  const plan = currentPlan();
   if (!plan) return;
   const doneCount = totalSetsDone();
   const totalSets = planExerciseCount(plan);
@@ -20480,7 +20840,7 @@ function historyExerciseEntry(ex, sess) {
   const entry = {
     name: ex.name,
     exId: (ex.id && BUILTIN_EXERCISE_IDS.has(ex.id)) ? ex.id : undefined,
-    sets: ex.sets,
+    sets: sessionSetCount(ex),
     reps: ex.reps,
     weight: ex.weight,
     plannedFailureSets: cleanFailureSets(ex.plannedFailureSets, ex.sets),
@@ -20490,14 +20850,14 @@ function historyExerciseEntry(ex, sess) {
        setsDone zostáva SÚČET oboch strán – rovnaký význam ako pri bežnom cviku. */
     const doneSide = { left: [], right: [] };
     const failSide = { left: [], right: [] };
-    for (let i = 0; i < ex.sets; i++) {
+    for (let i = 0; i < sessionSetCount(ex); i++) {
       for (const side of sides) {
         if (sess && sess.completedSets[setSessionKey(ex, i, side)]) doneSide[side].push(i + 1);
         if (sess && sess.actualFailureSets[setSessionKey(ex, i, side)]) failSide[side].push(i + 1);
       }
     }
-    const cleanDone = cleanSideSets(doneSide, ex.sets);
-    const cleanFails = cleanSideSets(failSide, ex.sets);
+    const cleanDone = cleanSideSets(doneSide, sessionSetCount(ex));
+    const cleanFails = cleanSideSets(failSide, sessionSetCount(ex));
     entry.unilateral = true;
     entry.startSide = ex.startSide === 'right' ? 'right' : 'left';
     entry.setsDone = cleanDone.left.length + cleanDone.right.length;
@@ -20512,12 +20872,12 @@ function historyExerciseEntry(ex, sess) {
   } else {
     const done = [];
     const fails = [];
-    for (let i = 0; i < ex.sets; i++) {
+    for (let i = 0; i < sessionSetCount(ex); i++) {
       if (sess && sess.completedSets[setSessionKey(ex, i)]) done.push(i + 1);
       if (sess && sess.actualFailureSets[setSessionKey(ex, i)]) fails.push(i + 1);
     }
     entry.setsDone = done.length;
-    entry.actualFailureSets = cleanFailureSets(fails, ex.sets);
+    entry.actualFailureSets = cleanFailureSets(fails, sessionSetCount(ex));
     historyApplySetWeights(entry, ex, done);
     historyApplySetReps(entry, ex);
     historyApplyDrops(entry, ex);
@@ -20557,7 +20917,9 @@ function historyApplyDrops(entry, ex) {
 }
 
 function confirmFinish() {
-  const plan = getPlan(selectedPlan);
+  /* Ochrana pred dvojitým uložením: potvrdzovacie okno je otvorené práve do prvého uloženia. */
+  if (document.getElementById('modal-confirm').hidden) return;
+  const plan = currentPlan();
   if (!plan) return;
   const sess = getSession();
   const prevRecommended = recommendedPlan();
@@ -21315,6 +21677,9 @@ function showGeneric(title, okLabel, onOk, text, cancelLabel) {
   document.getElementById('generic-text').innerHTML = text || '';
   const okBtn = document.getElementById('btn-generic-ok');
   okBtn.textContent = okLabel || t('common.ok');
+  okBtn.removeAttribute('aria-disabled');
+  okBtn.style.opacity = '';
+  okBtn.classList.remove('btn-danger-solid');   // krok 2 zahodenia tréningu ho pridá znova
   document.getElementById('btn-generic-cancel').textContent = cancelLabel || t('common.cancel');
   genericCallback = onOk || null;
   document.getElementById('modal-generic').hidden = false;
@@ -21327,6 +21692,7 @@ function closeGeneric() {
 }
 
 function confirmGeneric() {
+  if (document.getElementById('btn-generic-ok').getAttribute('aria-disabled') === 'true') return;   // krátka pauza po zobrazení kroku 2 zahodenia
   const cb = genericCallback;
   document.getElementById('modal-generic').hidden = true;
   genericCallback = null;
@@ -21583,10 +21949,15 @@ function renderRestSoundSetting() {
 const REST_TIMER_KEY = 'gymquest_resttimer';
 let wasHidden = document.hidden;
 
-function persistRestTimerEnd(endAt) {
+/* Uložená hodnota: JSON { v: 2, endAt, pausedLeftMs, totalMs, presetId }.
+   Staršia verzia (v96) ukladala len číslo = koniec odpočtu; to sa stále prijme. */
+function persistRestTimer(on) {
   try {
-    if (endAt) localStorage.setItem(REST_TIMER_KEY, String(endAt));
-    else localStorage.removeItem(REST_TIMER_KEY);
+    if (on) {
+      localStorage.setItem(REST_TIMER_KEY, JSON.stringify({
+        v: 2, endAt: timerEnd, pausedLeftMs: timerPausedLeft, totalMs: timerTotalMs, presetId: timerPresetId
+      }));
+    } else localStorage.removeItem(REST_TIMER_KEY);
   } catch (e) {}
 }
 
@@ -21594,8 +21965,21 @@ function restoreRestTimerEnd() {
   try {
     const raw = localStorage.getItem(REST_TIMER_KEY);
     if (!raw) return null;
-    const n = Number(raw);
-    return Number.isFinite(n) && n > 0 ? n : null;
+    let v = null;
+    try { v = JSON.parse(raw); } catch (e) { v = null; }
+    if (typeof v === 'number') v = { endAt: v };          // starý formát: len číslo
+    if (!v || typeof v !== 'object') return null;
+    const endAt = Number(v.endAt);
+    const left = v.pausedLeftMs == null ? null : Number(v.pausedLeftMs);
+    if (left !== null && !(Number.isFinite(left) && left > 0)) return null;
+    if (left === null && !(Number.isFinite(endAt) && endAt > 0)) return null;
+    const total = Number(v.totalMs);
+    return {
+      endAt: Number.isFinite(endAt) ? endAt : 0,
+      pausedLeftMs: left,
+      totalMs: Number.isFinite(total) && total > 0 ? total : 0,
+      presetId: typeof v.presetId === 'string' ? v.presetId : null
+    };
   } catch (e) { return null; }
 }
 
@@ -21614,8 +21998,8 @@ function finishRestTimer(sessionId, withSound) {
   bar.classList.add('done');
   bar.hidden = false;
   bar.setAttribute('aria-label', t('trening.timerComplete'));
-  document.getElementById('timer-label').textContent = t('trening.timerDone');
   document.getElementById('timer-time').textContent = '00:00';
+  renderRestCard();
   if (withSound && restSoundOn()) playChime(restSoundLength());
 }
 
@@ -21629,6 +22013,7 @@ function completionWasLive() {
 }
 
 function restTimerTick() {
+  if (timerPausedLeft !== null) return;          // pozastavený odpočet sa nikdy nedokončí
   if (Date.now() >= timerEnd) {
     finishRestTimer(timerSessionId, completionWasLive());
     return;
@@ -21644,7 +22029,7 @@ function armRestTimer() {
 /* Po návrate z pozadia: ak odpočet už dobehol, dokonči ho POTICHU; inak len obnov zobrazenie. */
 function refreshRestTimerOnVisible() {
   if (timerInterval === null) return;
-  if (Date.now() >= timerEnd) {
+  if (timerPausedLeft === null && Date.now() >= timerEnd) {
     finishRestTimer(timerSessionId, false);
   } else {
     updateTimerDisplay();
@@ -21655,45 +22040,157 @@ function refreshRestTimerOnVisible() {
    Obnovený odpočet je vždy NOVÁ inštancia, takže sa nemôže pomýliť s tou predchádzajúcou.
    Ak medzitým dobehol, zobrazí sa dokončený stav BEZ gongu. */
 function restoreRestTimer() {
-  const endAt = restoreRestTimerEnd();
-  if (!endAt) return;
+  const saved = restoreRestTimerEnd();
+  if (!saved) return;
   timerSessionId++;
-  timerEnd = endAt;
-  if (Date.now() >= endAt) {
+  timerEnd = saved.endAt;
+  timerTotalMs = saved.totalMs;
+  timerPresetId = saved.presetId;
+  timerPausedLeft = saved.pausedLeftMs;
+  if (timerPausedLeft === null && Date.now() >= saved.endAt) {
     finishRestTimer(timerSessionId, false);
     return;
   }
   const bar = document.getElementById('timer-bar');
   bar.classList.remove('done');
   bar.hidden = false;
-  document.getElementById('timer-label').textContent = t('trening.timerLabel');
+  renderRestCard();
   updateTimerDisplay();
   armRestTimer();
 }
 
-function startTimer(seconds) {
+/* Spustí odpočet. Ak práve iný beží, nahradí ho a hlásku "Nahradené X za Y" ukáže na karte.
+   quiet = true pri Znova (rovnaký čas, nie je čo hlásiť). */
+function startTimer(seconds, presetId, quiet) {
+  const wasRunning = timerInterval !== null;
+  const oldSeconds = Math.round(timerTotalMs / 1000);
   stopTimer();
   unlockAudio();               // štart časovača je pokyn používateľa – odblokuje zvuk
   timerSessionId++;            // nový odpočet = nová identita (starý sa už nikdy nedokončí)
   timerEnd = Date.now() + seconds * 1000;
-  persistRestTimerEnd(timerEnd);   // absolútny koniec prežije aj obnovenie stránky
+  timerPausedLeft = null;
+  timerTotalMs = seconds * 1000;
+  timerPresetId = presetId || null;
   const bar = document.getElementById('timer-bar');
   bar.classList.remove('done');
   bar.removeAttribute('aria-label');
   bar.hidden = false;
-  document.getElementById('timer-label').textContent = t('trening.timerLabel');
+  armRestTimer();              // interval beží aj pri pauze; absolútny koniec prežije obnovenie stránky
+  persistRestTimer(true);
+  renderRestCard();
   updateTimerDisplay();
-  armRestTimer();
+  if (wasRunning && !quiet && oldSeconds > 0) {
+    showRestNote(t('rest.replaced', { old: t('rest.secondsLabel', { n: oldSeconds }), new: t('rest.secondsLabel', { n: Math.round(seconds) }) }));
+  }
+}
+
+function showRestNote(text) {
+  const note = document.getElementById('timer-note');
+  if (!note) return;
+  note.textContent = text;
+  note.hidden = false;
+  document.getElementById('timer-bar').classList.add('has-note');
+  clearTimeout(restNoteTimer);
+  restNoteTimer = setTimeout(hideRestNote, 4000);
+  updateStickyBottom();
+}
+function hideRestNote() {
+  clearTimeout(restNoteTimer);
+  restNoteTimer = null;
+  const note = document.getElementById('timer-note');
+  if (note) { note.hidden = true; note.textContent = ''; }
+  const card = document.getElementById('timer-bar');
+  if (card) card.classList.remove('has-note');
+  updateStickyBottom();
+}
+
+/* Zostávajúce ms: pri pauze uložená hodnota, inak vždy koniec − teraz. */
+function restTimerLeftMs() {
+  return timerPausedLeft !== null ? timerPausedLeft : Math.max(0, timerEnd - Date.now());
+}
+
+function pauseRestTimer() {
+  if (timerInterval === null || timerPausedLeft !== null) return;
+  const left = timerEnd - Date.now();
+  if (left <= 0) return;
+  timerPausedLeft = left;
+  persistRestTimer(true);
+  renderRestCard();
+  updateTimerDisplay();
+}
+
+function resumeRestTimer() {
+  if (timerInterval === null || timerPausedLeft === null) return;
+  timerEnd = Date.now() + timerPausedLeft;
+  timerPausedLeft = null;
+  persistRestTimer(true);
+  renderRestCard();
+  updateTimerDisplay();
+}
+
+function addRestTime(sec) {
+  if (timerInterval === null) return;
+  const cap = REST_PRESET_MAX_SECONDS * 1000;
+  if (timerPausedLeft !== null) timerPausedLeft = Math.min(cap, timerPausedLeft + sec * 1000);
+  else timerEnd = Math.min(Date.now() + cap, timerEnd + sec * 1000);
+  persistRestTimer(true);
+  updateTimerDisplay();
+}
+
+/* Znova: celá predvoľba od začiatku (aj z dokončeného stavu). */
+function restartRestTimer() {
+  if (timerTotalMs <= 0) return;
+  startTimer(timerTotalMs / 1000, timerPresetId, true);
+}
+
+/* Karta: texty a tlačidlá podľa stavu (beží / pozastavené / hotovo). */
+function renderRestCard() {
+  const bar = document.getElementById('timer-bar');
+  if (!bar) return;
+  const done = bar.classList.contains('done');
+  const paused = timerPausedLeft !== null && !done;
+  const label = document.getElementById('timer-label');
+  label.textContent = done ? t('trening.timerDone') : (paused ? t('rest.paused') : t('trening.timerLabel'));
+  const pre = timerPresetId ? restPresetById(timerPresetId) : null;
+  const name = document.getElementById('timer-preset');
+  if (name) name.textContent = done || timerTotalMs <= 0 ? '' : (pre ? restPresetLabel(pre) : t('rest.secondsLabel', { n: Math.round(timerTotalMs / 1000) }));
+  bar.classList.toggle('paused', paused);
+  const pbtn = document.getElementById('timer-pause');
+  if (pbtn) {
+    pbtn.textContent = paused ? t('rest.resume') : t('rest.pause');
+    pbtn.hidden = done;
+  }
+  const add = document.getElementById('timer-add');
+  if (add) add.hidden = done;
+  const re = document.getElementById('timer-restart');
+  if (re) re.hidden = timerTotalMs <= 0;
+  markRunningPreset();
+  updateStickyBottom();
+}
+
+/* Predvoľba, z ktorej beží odpočet, je v liste zvýraznená (aria-pressed). */
+function markRunningPreset() {
+  const running = timerInterval !== null && timerPresetId;
+  document.querySelectorAll('#timer-presets .timer-preset').forEach((el) => {
+    const on = !!running && el.dataset.presetId === timerPresetId;
+    el.classList.toggle('active', on);
+    el.setAttribute('aria-pressed', on ? 'true' : 'false');
+  });
 }
 
 function updateTimerDisplay() {
-  const left = Math.max(0, Math.round((timerEnd - Date.now()) / 1000));
+  const left = Math.max(0, Math.round(restTimerLeftMs() / 1000));
   const m = String(Math.floor(left / 60)).padStart(2, '0');
   const s = String(left % 60).padStart(2, '0');
   document.getElementById('timer-time').textContent = `${m}:${s}`;
-  /* Bento: dlaždica Oddych na obrazovke Dnes ukazuje bežiaci časovač. */
+  const fill = document.getElementById('timer-fill');
+  if (fill) {
+    const total = Math.max(timerTotalMs, left * 1000);
+    fill.style.width = (total > 0 ? Math.min(100, Math.round(100 * restTimerLeftMs() / total)) : 0) + '%';
+  }
+  /* Bento: dlaždica Oddych na obrazovke Dnes ukazuje bežiaci časovač (pri pauze aj "Pozastavené"). */
   const rest = document.getElementById('bt-rest-line');
-  if (rest) rest.textContent = `${m}:${s}`;
+  if (rest) rest.textContent = timerPausedLeft !== null ? `${m}:${s}\n${t('rest.paused')}` : `${m}:${s}`;
   const tile = document.getElementById('bt-rest');
   if (tile) tile.classList.add('bt-running');
 }
@@ -21701,13 +22198,17 @@ function updateTimerDisplay() {
 function stopTimer() {
   if (timerInterval) clearInterval(timerInterval);
   timerInterval = null;
-  persistRestTimerEnd(null);
+  timerPausedLeft = null;
+  persistRestTimer(false);
   const bar = document.getElementById('timer-bar');
   if (bar) bar.hidden = true;
+  hideRestNote();
   const rest = document.getElementById('bt-rest-line');
   if (rest) rest.textContent = t('bento.rest');
   const tile = document.getElementById('bt-rest');
   if (tile) tile.classList.remove('bt-running');
+  markRunningPreset();
+  updateStickyBottom();
 }
 
 /* ---------- Časovač oddychu: predvoľby a vlastný čas ----------
@@ -21739,6 +22240,7 @@ function renderTimerPresets() {
     btn.setAttribute('aria-label', t('rest.startPreset', { name: label }));
     box.insertBefore(btn, custom);
   }
+  markRunningPreset();
   renderPresetManage();
   /* Zmena zoznamu mení aj to, či sa má ponúknuť prevod uloženého vlastného času. */
   renderPresetOffer();
@@ -21750,7 +22252,7 @@ function startPreset(id) {
   const preset = restPresetById(id);
   if (!preset) return;
   hideCustomTimer();
-  startTimer(preset.seconds);
+  startTimer(preset.seconds, preset.id);
 }
 
 /* ---------- Vlastný čas pauzy ---------- */
@@ -22127,6 +22629,7 @@ function setLang(code) {
   saveState();
   applyStaticI18n();
   renderAll();
+  if (!document.getElementById('timer-bar').hidden) { renderRestCard(); updateTimerDisplay(); }
   if (communityProfile) pushRefresh(communityClient(), communityProfile.id);   // upozornenia v novom jazyku
 }
 
@@ -22556,6 +23059,70 @@ function chooseActivity(kind) {
   openActivityModal();
 }
 
+/* ---------- Rýchly tréning a pridanie cviku do tréningu ----------
+   Kópia cviku s predvolenými hodnotami (3 série, opakovania z knižnice alebo 10, váha 0)
+   a novým sessionKey, aby jej značky nikdy nezasiahli cvik s rovnakým id z plánu. */
+function quickExerciseCopy(id) {
+  const entry = libraryEntry(id);
+  const base = { sets: 3, reps: 10, weight: 0, plannedFailureSets: [], sessionKey: 'q_' + uid() };
+  if (entry) {
+    return Object.assign({ id: entry.id, name: (I18N.en && I18N.en['exercise.' + entry.id]) || entry.id }, base,
+      { reps: Math.max(1, Math.min(99, Math.round(Number(entry.reps)) || 10)) });
+  }
+  if (isCustomSheetId(id)) {
+    const name = customNameFromKey(id).trim();
+    if (name) return Object.assign({ name }, base);
+  }
+  return null;
+}
+
+function goToCurrentWorkout() {
+  closeExerciseSheet();
+  closeLibrary();
+  switchTab('trening');
+}
+
+/* Tréning z cviku. Rozbehnutý tréning sa nikdy nenahradí – ponúkne sa len prechod naň. */
+function startQuickWorkout(id) {
+  if (getSession()) { goToCurrentWorkout(); return; }
+  const active = getActiveActivity();
+  if (active) {
+    showActivityConflict(active, () => { state.activeActivity = null; saveState(); startQuickWorkout(id); });
+    return;
+  }
+  const ex = quickExerciseCopy(id);
+  if (!ex) return;
+  state.activeSession = {
+    id: uid(),
+    startedAt: Date.now(),
+    planId: 'quick',
+    planName: t('quick.name'),
+    completedSets: {},
+    actualFailureSets: {},
+    quick: { exercises: [ex] },
+  };
+  selectedPlan = 'quick';
+  saveState();
+  goToCurrentWorkout();
+}
+
+/* Pridá cvik do rozbehnutého tréningu: rýchly tréning dostane cvik medzi svoje, ostatné
+   do sess.extraExercises. Plán ani značky ostatných cvikov sa nemenia. */
+function addExerciseToSession(id) {
+  const sess = getSession();
+  if (!sess) return false;
+  const ex = quickExerciseCopy(id);
+  if (!ex) return false;
+  let list;
+  if (sess.quick && Array.isArray(sess.quick.exercises)) list = sess.quick.exercises;
+  else list = sess.extraExercises = Array.isArray(sess.extraExercises) ? sess.extraExercises : [];
+  if (list.length >= QUICK_MAX_EXERCISES) return false;
+  list.push(ex);
+  saveState();
+  goToCurrentWorkout();
+  return true;
+}
+
 function startWorkoutNow() {
   if (getActiveActivity()) {
     showActivityConflict(getActiveActivity(), () => {
@@ -22564,7 +23131,8 @@ function startWorkoutNow() {
     return;
   }
   const rec = recommendedPlan();
-  if (rec) selectedPlan = rec;
+  if (rec && !keepSessionPlan()) selectedPlan = rec;
+  else if (!rec) keepSessionPlan();
   if (ensureSession()) saveState();
   switchTab('trening');
 }
@@ -22623,7 +23191,7 @@ function pickLocationPlan(id) {
     showActivityConflict(getActiveActivity(), () => { state.activeActivity = null; saveState(); pickLocationPlan(id); });
     return;
   }
-  selectedPlan = id;
+  if (!keepSessionPlan()) selectedPlan = id;
   if (ensureSession()) saveState();
   closeLocationSheet();
   switchTab('trening');
@@ -24229,7 +24797,15 @@ function setupEvents() {
   }, 'change');
 
 
-  on('btn-finish-workout', finishWorkout);
+  on('btn-finish-workout', requestFinishWorkout);
+  on('btn-finish-workout-end', requestFinishWorkout);
+  on('btn-session-add-exercise', () => openLibrary('add', null));
+  on('confirm-note', (e) => { if (e.key === 'Enter') { e.preventDefault(); confirmFinish(); } }, 'keydown');
+  on('btn-session-more', toggleSessionMenu);
+  window.addEventListener('resize', updateStickyBottom);
+  document.addEventListener('click', (e) => {   // klik mimo ⋯ menu ho zavrie
+    if (sessionMenuOpen() && !(e.target.closest && e.target.closest('#session-menu, #btn-session-more'))) closeSessionMenu();
+  });
   on('btn-confirm-cancel', () => { document.getElementById('modal-confirm').hidden = true; refreshUpdateBanner(); });
   on('btn-confirm-ok', confirmFinish);
   on('btn-result-close', () => { document.getElementById('modal-result').hidden = true; refreshUpdateBanner(); });
@@ -24275,16 +24851,7 @@ function setupEvents() {
   on('theme-chips', (e) => { const b = e.target.closest ? e.target.closest('[data-theme-choice]') : null; if (b) setThemePref(b.dataset.themeChoice); });
   { const tc = document.getElementById('theme-chips'); if (tc) tc.addEventListener('keydown', themeChipsKey); }
 
-
-  on('btn-reset-session', () => {
-    showGeneric(t('trening.resetSessionTitle'), t('trening.resetSession'), () => {
-      /* Session sa ruší až po potvrdení – nič sa nezapisuje do histórie. */
-      clearSession();
-      stopTimer();
-      saveState();
-      renderTrening();
-    }, t('trening.resetSessionConfirm'), t('trening.backToWorkout'));
-  });
+  on('btn-reset-session', requestDiscardSession);
 
   /* Predvoľby časovača oddychu: jeden delegovaný listener, takže prekreslenie
      ani opakované otvorenie obrazovky nikdy nepridá ďalšie listenery. */
@@ -24293,6 +24860,9 @@ function setupEvents() {
     if (btn && btn.dataset.presetId) startPreset(btn.dataset.presetId);
   });
   on('timer-stop', stopTimer);
+  on('timer-pause', () => (timerPausedLeft !== null ? resumeRestTimer() : pauseRestTimer()));
+  on('timer-add', () => addRestTime(15));
+  on('timer-restart', restartRestTimer);
   on('btn-custom-timer', toggleCustomTimer);
   on('btn-start-custom', startCustomOnce);
   on('btn-save-preset', saveCustomAsPreset);
@@ -24459,6 +25029,9 @@ function setupEvents() {
     if (genModal && !genModal.hidden) { closeGeneric(); return; }
     const syncModal = document.getElementById('modal-sync');
     if (syncModal && !syncModal.hidden) { const later = syncModal.querySelector('[data-sync-action="later"]'); if (later && !later.disabled) later.click(); return; }
+    const confirmModal = document.getElementById('modal-confirm');
+    if (confirmModal && !confirmModal.hidden) { document.getElementById('btn-confirm-cancel').click(); return; }
+    if (sessionMenuOpen()) { closeSessionMenu(); return; }
     const modal = document.getElementById('modal-day');
     if (modal && !modal.hidden) { closeDay(); return; }
     /* Bento listy (kalendár, podpohľady štatistík) sa zatvárajú ako list: Esc = späť */
@@ -24723,7 +25296,7 @@ function setupEvents() {
     if (box && box.scrollIntoView) setTimeout(() => box.scrollIntoView({ block: 'nearest', behavior: 'smooth' }), 50);
   });
   on('edit-back', () => document.getElementById('btn-edit-cancel').click());
-  on('tr-sess-plan', () => { trainShowPlans = !trainShowPlans; bentoTrainMode(); });
+  on('tr-sess-plan', () => { const s = getSession(); if (s && s.quick) return; trainShowPlans = !trainShowPlans; bentoTrainMode(); });
   on('back-calendar', () => switchTab(calendarReturnTab === 'kalendar' ? 'dnes' : calendarReturnTab));
   for (const v of ['progress', 'body', 'food', 'photos', 'motivation']) on('back-' + v, () => {
     const back = pokrokReturnTab; pokrokReturnTab = null;
@@ -24776,7 +25349,7 @@ function setupEvents() {
     if (act) { handleLibraryAction(act.dataset.libAction); return; }
     const row = e.target.closest ? e.target.closest('[data-exercise-id]') : null;
     if (row && row.dataset.exerciseId) {
-      openExerciseSheet(row.dataset.exerciseId, libraryMode === 'replace' ? 'replace' : libraryContext());
+      openExerciseSheet(row.dataset.exerciseId, libraryMode === 'replace' ? 'replace' : libraryMode === 'add' ? 'add' : libraryContext());
     }
   });
 
@@ -24791,6 +25364,9 @@ function setupEvents() {
     if (act) {
       if (act.dataset.sheetAction === 'replace') confirmSubstitution(exerciseSheetId);
       else if (act.dataset.sheetAction === 'add') addLibraryExerciseToDraft(exerciseSheetId);
+      else if (act.dataset.sheetAction === 'quickstart') startQuickWorkout(exerciseSheetId);
+      else if (act.dataset.sheetAction === 'quickadd') addExerciseToSession(exerciseSheetId);
+      else if (act.dataset.sheetAction === 'quickgo') goToCurrentWorkout();
       else if (act.dataset.sheetAction === 'addmedia') triggerMediaPicker(null);
       return;
     }
@@ -25086,6 +25662,7 @@ function nativeBack() {
     else { top.hidden = true; refreshUpdateBanner(); }   // dialóg bez tlačidla (napr. prázdny) – len zavrieť
     return 'closed';
   }
+  if (sessionMenuOpen()) { closeSessionMenu(); return 'closed'; }   // ⋯ menu tréningu
   if (editingPlan !== null) { document.getElementById('btn-edit-cancel').click(); return 'view'; }
   if (activeTab === 'komunita' && (communityBack.length || communityReturnTab
       || (communityMode === 'messages' ? communityView !== 'chats' : communityView !== 'feed'))) {
