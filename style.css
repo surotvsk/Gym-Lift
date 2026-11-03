@@ -4806,9 +4806,9 @@ html.ios .app-main { padding-top: max(34px, calc(env(safe-area-inset-top, 0px) +
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
 }
 .finish-bar .finish-btn:disabled { background: color-mix(in srgb, var(--text) 14%, var(--bg)); color: color-mix(in srgb, var(--text) 62%, var(--bg)); box-shadow: none; cursor: default; }   /* tlmená, ale plná farba (nie opacity) */
-#screen-trening.in-session { padding-bottom: 72px; }
-#btn-finish-workout-end { margin-top: 12px; min-height: 52px; border-radius: 999px; }
-#btn-finish-workout-end[hidden] { display: none; }
+/* Koniec tréningu nad lepivými lištami: rezerva rastie s výškou lišty Dokončiť a karty Oddych
+   (--sticky-bottom), takže posledný obsah sa dá vždy vyrolovať nad ne (.app-main už má 110 px na menu). */
+#screen-trening.in-session { padding-bottom: max(16px, calc(var(--sticky-bottom, 0px) - 94px - env(safe-area-inset-bottom, 0px))); }
 .bt-session { position: relative; }
 .bt-session .mini > .sess-more { min-width: 44px; min-height: 44px; justify-content: center; }
 .sess-menu {

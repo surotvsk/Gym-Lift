@@ -293,8 +293,8 @@ goes back to the previous value; **0** means bodyweight.
 **Remove last set** takes the last one away (it asks first when that set already has data). Your plan
 is not changed.
 
-**Finishing and discarding.** **Finish workout** is a sticky bar above the menu and also a button at
-the end of the exercise list. It opens a **Save workout?** sheet with **Save workout** and **Keep
+**Finishing and discarding.** **Finish · +XP** is the single sticky bar above the menu (it
+shows the XP you will get). It opens a **Save workout?** sheet with **Save workout** and **Keep
 training**; a double tap saves only once. **Discard workout** is in the **⋯** menu and needs two
 confirmations; nothing is added to your history.
 

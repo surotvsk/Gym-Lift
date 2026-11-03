@@ -62,14 +62,15 @@ function check(name, ok, info) {
 
     console.log('== Finish bar and buttons');
     check('sticky bar is visible during a session', await vis('finish-bar'));
-    check('both Finish buttons are disabled with no completed set', await p.eval(`${$('btn-finish-workout')}.disabled && ${$('btn-finish-workout-end')}.disabled`));
+    check('exactly one Finish button (no second one under the exercises)', (await p.eval(`document.querySelectorAll('#btn-finish-workout-end, #tr-session button.btn-primary').length`)) === 0 && (await p.eval(`document.querySelectorAll('#btn-finish-workout').length`)) === 1);
+    check('Finish is disabled with no completed set', await p.eval(`${$('btn-finish-workout')}.disabled`));
     await click('btn-finish-workout');
     check('clicking disabled Finish (no sets) does nothing', !(await confirmOpen()));
     await markSet();
-    check('both Finish buttons enable after one completed set', await p.eval(`!${$('btn-finish-workout')}.disabled && !${$('btn-finish-workout-end')}.disabled`));
+    check('Finish enables after one completed set', await p.eval(`!${$('btn-finish-workout')}.disabled`));
     check('bar button shows XP gain', /\+\d+ XP/.test(await p.eval(`${$('tr-finish-xp')}.textContent`)));
 
-    for (const id of ['btn-finish-workout', 'btn-finish-workout-end']) {
+    for (const id of ['btn-finish-workout']) {
       await click(id);
       check(id + ' opens the "Save workout?" sheet', (await confirmOpen()) && (await p.eval(`${$('modal-confirm')}.querySelector('h3').textContent`)) === 'Save workout?');
       check('sheet buttons: "Save workout" / "Keep training"', (await p.eval(`${$('btn-confirm-ok')}.textContent`)) === 'Save workout' && (await p.eval(`${$('btn-confirm-cancel')}.textContent`)) === 'Keep training');
@@ -91,12 +92,25 @@ function check(name, ok, info) {
     check('focused last-set weight input is above the sticky bar', geo.inBottom <= geo.barTop + 0.5, geo);
     await p.eval(`(document.activeElement.blur(), true)`);
 
+    console.log('== Bottom of the workout: nothing hidden behind the Finish bar, rest card or menu');
+    const bottomGeo = async () => p.eval(`(() => { window.scrollTo(0, document.documentElement.scrollHeight); const sess = document.getElementById('tr-session'); const kids = [...sess.children].filter((e) => e.getClientRects().length); const last = kids[kids.length - 1].getBoundingClientRect(); const bar = ${$('finish-bar')}.getBoundingClientRect(); const card = document.getElementById('timer-bar'); const c = (!card.hidden && card.getClientRects().length) ? card.getBoundingClientRect() : null; const tab = document.querySelector('.tab-bar').getBoundingClientRect(); return { lastBottom: last.bottom, barTop: bar.top, barBottom: bar.bottom, cardTop: c ? c.top : null, cardBottom: c ? c.bottom : null, tabTop: tab.top }; })()`);
+    let g = await bottomGeo();
+    check('scrolled to the end, the last item sits above the Finish bar', g.lastBottom <= g.barTop + 0.5, g);
+    check('Finish bar fully visible above the menu', g.barBottom <= g.tabTop + 0.5, g);
+    await p.eval(`(startPreset(state.settings.restPresets.find((x) => x.seconds === 60).id), true)`); await wait(300);
+    g = await bottomGeo();
+    check('with the rest card running, the last item is above the card and the card does not overlap the Finish bar', g.cardTop !== null && g.lastBottom <= g.cardTop + 0.5 && g.cardBottom <= g.barTop + 0.5, g);
+    await p.eval(`(stopTimer(), renderRestCard && renderRestCard(), true)`); await wait(200);
+    await p.eval(`(window.scrollTo(0, 0), true)`);
+
     console.log('== Save: exactly one history entry under rapid taps');
-    await p.eval(`(() => { ${$('btn-finish-workout')}.click(); ${$('btn-finish-workout')}.click(); ${$('btn-finish-workout-end')}.click(); return true; })()`);
+    const xpBefore = await xp(), xpShown = parseInt((await p.eval(`${$('tr-finish-xp')}.textContent`)).replace(/[^0-9]/g, ''), 10);
+    await p.eval(`(() => { ${$('btn-finish-workout')}.click(); ${$('btn-finish-workout')}.click(); ${$('btn-finish-workout')}.click(); return true; })()`);
     check('3 rapid Finish clicks open one sheet', await confirmOpen());
     await p.eval(`(() => { const n = ${$('confirm-note')}; for (let i = 0; i < 3; i++) n.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, cancelable: true })); ${$('btn-confirm-ok')}.click(); ${$('btn-confirm-ok')}.click(); return true; })()`);
     await wait(300);
     check('exactly one history entry after 3 Enter + 2 Save clicks', (await hist()) === 1, await hist());
+    check('XP is awarded once, exactly the amount shown on the Finish button', JSON.parse(await xp()).reduce((x, y) => x + (Number(y) || 0), 0) - JSON.parse(xpBefore).reduce((x, y) => x + (Number(y) || 0), 0) === xpShown && JSON.parse(await xp()).length - JSON.parse(xpBefore).length === 1, [xpBefore, await xp(), xpShown]);
     check('session is cleared and the result sheet opens', (await p.eval(`getSession() === null && !${$('modal-result')}.hidden`)));
     check('sticky bar hidden after saving', !(await vis('finish-bar')));
     check('--sticky-bottom back to 0px', (await p.eval(`getComputedStyle(document.documentElement).getPropertyValue('--sticky-bottom')`)).trim() === '0px');

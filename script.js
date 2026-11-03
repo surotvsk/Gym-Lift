@@ -12228,12 +12228,10 @@ function bentoTrainMode() {
     label.setAttribute('aria-expanded', trainShowPlans ? 'true' : 'false');
   }
 }
-/* Obe tlačidlá Dokončiť (lepivá lišta aj to pod cvikmi) sú povolené rovnako: aspoň 1 hotová séria. */
+/* Jediné tlačidlo Dokončiť (lepivá lišta nad menu) je povolené od 1 hotovej série. */
 function setFinishDisabled(off) {
-  for (const id of ['btn-finish-workout', 'btn-finish-workout-end']) {
-    const b = document.getElementById(id);
-    if (b) b.disabled = off;
-  }
+  const b = document.getElementById('btn-finish-workout');
+  if (b) b.disabled = off;
 }
 
 /* Lepivé lišty nad tab barom: karta časovača oddychu sa kladie NAD lištu Dokončiť
@@ -24807,7 +24805,6 @@ function setupEvents() {
 
 
   on('btn-finish-workout', requestFinishWorkout);
-  on('btn-finish-workout-end', requestFinishWorkout);
   on('btn-session-add-exercise', () => openLibrary('add', null));
   on('confirm-note', (e) => { if (e.key === 'Enter') { e.preventDefault(); confirmFinish(); } }, 'keydown');
   on('btn-session-more', toggleSessionMenu);
