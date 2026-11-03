@@ -298,7 +298,8 @@ the end of the exercise list. It opens a **Save workout?** sheet with **Save wor
 training**; a double tap saves only once. **Discard workout** is in the **⋯** menu and needs two
 confirmations; nothing is added to your history.
 
-**Rest timer card.** The timer shows a big countdown with **Pause / Resume**, **+15 s**, **Restart** and
+**Rest timer card.** Tapping a time in the Rest sheet (for example 60 s) starts the countdown and closes the
+sheet in one step; a custom time starts and closes the sheet after you confirm it. The timer shows a big countdown with **Pause / Resume**, **+15 s**, **Restart** and
 **✕ Stop**. The preset you chose is highlighted, and picking another one says for example *Replaced 60 s
 with 90 s*. A paused timer survives a reload, and the Today **Rest** tile shows the running timer.
 

@@ -22253,6 +22253,14 @@ function startPreset(id) {
   if (!preset) return;
   hideCustomTimer();
   startTimer(preset.seconds, preset.id);
+  closeRestSheetAfterStart();
+}
+
+/* Výber času = jeden krok: odpočet sa spustí a list Oddych (aj so stmavením) sa hneď zavrie,
+   aby bola na obrazovke tréningu hneď vidieť karta „Oddych" s odpočtom. Starý odpočet nahradí startTimer. */
+function closeRestSheetAfterStart() {
+  const sheet = document.getElementById('modal-rest');
+  if (sheet && !sheet.hidden) closeRestSheet();
 }
 
 /* ---------- Vlastný čas pauzy ---------- */
@@ -22350,6 +22358,7 @@ function startCustomOnce() {
   rememberCustomTime(result.minutes, result.seconds);
   hideCustomTimer();
   startTimer(result.total);
+  closeRestSheetAfterStart();
 }
 
 /* Uloží vlastný čas ako predvoľbu. Zámerne NESPÚŠŤA časovač –

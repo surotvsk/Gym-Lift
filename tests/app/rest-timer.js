@@ -95,6 +95,40 @@ function check(name, ok, info) {
     await click('timer-restart'); await wait(100);
     check('restart = full preset again (2:00), no replaced note', Math.abs((await secs()) - 120) <= 2 && (await ev(`document.getElementById('timer-note').hidden`)), await time());
 
+    console.log('== one tap: preset starts the countdown and closes the sheet (real UI)');
+    await click('timer-stop'); await wait(100);
+    const sheetOpen = () => ev(`!document.getElementById('modal-rest').hidden`);
+    const chip = (sec) => ev(`(() => { const p = state.settings.restPresets.find((x) => x.seconds === ${sec}); document.querySelector('#timer-presets .timer-preset[data-preset-id="' + p.id + '"]').click(); return true; })()`);
+    await click('btn-open-rest'); await wait(150);
+    check('Rest button opens the sheet', await sheetOpen());
+    await chip(60); await wait(150);
+    check('tapping 60 s closes the sheet and its dimmed overlay', !(await sheetOpen()) && (await ev(`getComputedStyle(document.getElementById('modal-rest')).display`)) === 'none');
+    check('countdown card shows "Rest" and mm:ss ~01:00 right away', (await cardVisible()) && /^\d\d:\d\d$/.test(await time()) && Math.abs((await secs()) - 60) <= 2
+      && (await ev(`document.getElementById('timer-note').hidden ? document.getElementById('timer-label').textContent : 'Rest'`)) === 'Rest', await time());
+    check('countdown is running (time decreases)', await (async () => { const a = await secs(); await wait(1300); return (await secs()) < a; })());
+    check('card does not cover the focused set input', await ev(`(() => { const i = document.querySelector('#exercise-list input.set-weight'); i.focus(); i.scrollIntoView({ block: 'center' }); const a = i.getBoundingClientRect(), c = document.getElementById('timer-bar').getBoundingClientRect(); return a.bottom <= c.top || a.top >= c.bottom; })()`));
+    const sid0 = await ev(`timerSessionId`);
+    await click('btn-open-rest'); await wait(150);
+    await chip(120); await wait(150);
+    check('second preset replaces the running timer: one new timer, sheet closed, ~02:00, "Replaced 60 s with 120 s"',
+      (await ev('timerSessionId')) === sid0 + 1 && !(await sheetOpen()) && Math.abs((await secs()) - 120) <= 2
+      && (await ev(`document.getElementById('timer-note').textContent`)) === 'Replaced 60 s with 120 s', [await ev(`timerSessionId`) - sid0, await time()]);
+    check('only one countdown card exists', (await ev(`document.querySelectorAll('#timer-bar, .timer-bar').length`)) === 1);
+    console.log('== Custom: closes after confirming the duration');
+    await click('btn-open-rest'); await wait(150);
+    await click('btn-custom-timer'); await wait(150);
+    check('opening Custom keeps the sheet open (no timer change yet)', (await sheetOpen()) && Math.abs((await secs()) - 120) <= 3);
+    await ev(`(document.getElementById('ct-minutes').value = '1', document.getElementById('ct-seconds').value = '15', document.getElementById('ct-seconds').dispatchEvent(new Event('input')), true)`);
+    await click('btn-start-custom'); await wait(150);
+    check('Start once closes the sheet and runs ~01:15, replacing the old timer', !(await sheetOpen()) && Math.abs((await secs()) - 75) <= 2 && (await ev('timerSessionId')) === sid0 + 2, await time());
+    await click('btn-open-rest'); await wait(150);
+    await click('btn-custom-timer'); await wait(150);
+    await ev(`(document.getElementById('ct-minutes').value = '', document.getElementById('ct-seconds').value = '', true)`);
+    await click('btn-start-custom'); await wait(150);
+    check('an invalid custom time shows the error and keeps the sheet open and the timer unchanged', (await sheetOpen()) && !(await ev(`document.getElementById('ct-error').hidden`)) && (await ev('timerSessionId')) === sid0 + 2);
+    await ev(`(closeRestSheet(), true)`);
+    await ev(`(openRestSheet(), true)`);
+
     console.log('== stop');
     await click('timer-stop'); await wait(100);
     check('stop hides the card, clears storage and chip', !(await cardVisible()) && (await ev(`localStorage.getItem('gymquest_resttimer')`)) === null && (await pressed()).length === 0);
