@@ -4,6 +4,7 @@
 
      npm run android:sync && (cd android && JAVA_HOME=~/.local/share/jdk/jdk-21.0.13+9 ./gradlew assembleDebug)
      node tests/android/emulator-smoke.js
+     ANDROID_SERIAL=emulator-5554 node tests/android/emulator-smoke.js   (phone also connected: test only the emulator)
 
    Checks: install + cold start to Today ≤ 3 s; running as the native app (no service worker); all
    tabs in light and dark; airplane mode: a full workout is saved and an exercise video plays from the
@@ -55,8 +56,9 @@ function shot(name) {
 
 (async () => {
   try {
-    const devs = adb('devices').split('\n').filter((l) => /\tdevice$/.test(l));
-    check('exactly one device connected', devs.length === 1, devs);
+    /* ANDROID_SERIAL (adb ho rešpektuje) vyberie jedno zariadenie, keď je pripojený aj skutočný telefón – test maže dáta appky (pm clear) */
+    const devs = adb('devices').split('\n').filter((l) => /\tdevice$/.test(l) && (!process.env.ANDROID_SERIAL || l.startsWith(process.env.ANDROID_SERIAL + '\t')));
+    check('exactly one device connected (or selected with ANDROID_SERIAL)', devs.length === 1, devs);
     if (devs.length !== 1) throw new Error('connect one phone (USB debugging) or start an emulator');
 
     adb('install', '-r', APK);
@@ -120,10 +122,11 @@ function shot(name) {
     shot('share-sheet');
     sh('input keyevent 4');
     await wait(1500);
-    check('Back closes the share sheet, GymQuest in front again', /mResumedActivity.*surotvsk\.gymapp/.test(sh('dumpsys activity activities | grep mResumedActivity')));
+    check('Back closes the share sheet, GymQuest in front again', /(mResumedActivity|topResumedActivity).*surotvsk\.gymapp/.test(sh('dumpsys activity activities | grep -E "mResumedActivity|topResumedActivity"')));
 
     /* povolenie ako v appke (cez PushNotifications); LocalNotifications.requestPermissions by na Androide 12+
        otvoril nastavenia presných budíkov, ktoré appka zámerne nepoužíva */
+    try { sh('pm grant ' + PKG + ' android.permission.POST_NOTIFICATIONS'); } catch (e) {}   // Android 13+: inak čaká na ťuknutie v dialógu
     await w.ev(`Capacitor.Plugins.PushNotifications.requestPermissions()`);
     await w.ev(`Capacitor.Plugins.LocalNotifications.schedule({ notifications: [{ id: 3999, title: 'GymQuest', body: 'smoke reminder', channelId: 'reminders', isExactNotification: false, schedule: { at: new Date(Date.now() + 5000), allowWhileIdle: true } }] })`);
     await wait(12000);
