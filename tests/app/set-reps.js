@@ -138,7 +138,7 @@ function check(name, ok, info) {
     await p.eval(`(() => { switchTab('trening'); selectedPlan = 'rtest'; renderTrening(); return true; })()`);
     for (const lang of ['sk', 'en', 'es', 'pt-BR', 'fr', 'ar']) {
       await p.eval(`(setLang(${J(lang)}), switchTab('trening'), renderTrening(), true)`);
-      const r = await p.eval(`({ capR: document.querySelectorAll('.set-heads')[0].querySelectorAll('.set-cap')[1].textContent, key: t('session.reps'), aria: document.querySelector('input.set-reps').getAttribute('aria-label'), dir: document.documentElement.dir })`);
+      const r = await p.eval(`({ capR: document.querySelectorAll('.set-heads')[0].querySelectorAll('.set-cap')[1].querySelector('.cap-f').textContent, key: t('session.reps'), aria: document.querySelector('input.set-reps').getAttribute('aria-label'), dir: document.documentElement.dir })`);
       check(lang + ': reps label translated', r.capR === r.key && !/session\./.test(r.capR + r.aria), r);
       const per = await p.eval(`(() => { const d = document.createElement('div'); d.innerHTML = shareCardHtml(${J(old)}, 'msg', 1); return d.innerText.includes(tPlural('unilateral.setsPerSide', 2)) && !/unilateral\./.test(d.innerText); })()`);
       check(lang + ': per-side card text translated', per);

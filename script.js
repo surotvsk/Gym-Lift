@@ -263,6 +263,10 @@ const EXERCISE_LIBRARY = [
     alternatives: [['abductor-machine', 'similarPurpose'], ['bodyweight-squat', 'samePrimaryOtherEquipment'], ['split-squat', 'similarPurpose']] },
   { id: 'abductor-machine', primary: 'glutes', secondary: ['legs'], pattern: 'legIsolation', category: 'strength', difficulty: 'beginner', equipment: ['cableMachine'], locations: ['gym'], diagram: 'legIsolation',
     alternatives: [['adductor-machine', 'similarPurpose'], ['glute-bridge', 'samePrimaryOtherEquipment'], ['hip-thrust', 'similarPurpose']] },
+  { id: 'assisted-dips', assisted: true, primary: 'chest', secondary: ['arms', 'shoulders'], pattern: 'pushV', category: 'strength', difficulty: 'beginner', equipment: ['cableMachine'], locations: ['gym'], diagram: 'pushV',
+    alternatives: [['dips', 'harderVariation'], ['machine-chest-press', 'similarPurpose'], ['push-up', 'noEquipmentVersion']] },
+  { id: 'assisted-pull-ups', assisted: true, primary: 'back', secondary: ['arms'], pattern: 'pullV', category: 'strength', difficulty: 'beginner', equipment: ['cableMachine'], locations: ['gym'], diagram: 'pullV',
+    alternatives: [['pull-ups', 'harderVariation'], ['lat-pulldown', 'similarPurpose'], ['band-pulldown', 'homeVersion']] },
 ];
 
 /* Id zabudovaných cvikov = kľúče knižnice. Cvik označený `retired` zostáva
@@ -1494,6 +1498,7 @@ const I18N = {
     'picker.subtitle': 'Zaškrtni cviky, ktoré chceš pridať do tohto plánu.',
     'picker.apply': 'Pridať do plánu',
     'unilateral.trainBoth': 'Cvičiť každú stranu samostatne',
+    'shared.note': 'Spoločné s ostatnými plánmi',
     'unilateral.startLeft': 'Začať ľavou',
     'unilateral.startRight': 'Začať pravou',
     'unilateral.left': 'Ľavá',
@@ -1582,6 +1587,16 @@ const I18N = {
     'trening.compareSame': 'Rovnako ako minule ({w} kg)',
     'trening.compareWeightUp': '▲ {w} kg oproti minulému',
     'trening.compareWeightDown': '▼ {w} kg oproti minulému',
+    'trening.compareAssistLess': '▲ {w} kg menej pomoci oproti minulému',
+    'trening.compareAssistMore': '▼ {w} kg viac pomoci oproti minulému',
+    'trening.compareAssistLessReps': '▲ {w} kg menej pomoci · +{r} op oproti minulému',
+    'session.assistance': 'Pomoc',
+    'assisted.line': 'Pomoc {w}',
+    'assisted.toggle': 'Asistovaný cvik (číslo = pomoc v kg)',
+    'session.weightShort': 'Kg',
+    'session.repsShort': 'Opak.',
+    'session.assistanceShort': 'Asist.',
+    'trening.compareAssistSame': 'Rovnaká pomoc ako minule ({w} kg)',
     'trening.compareRepsUp': '+{r} op oproti minulému',
     'trening.compareRepsDown': '{r} op oproti minulému',
     'trening.edit': 'Upraviť plán',
@@ -1644,7 +1659,7 @@ const I18N = {
     'trening.failureHintEdit': 'Voliteľné: vyber série, ktoré plánuješ ísť do zlyhania. Skutočný výsledok môžeš zmeniť počas tréningu.',
     'trening.durationLabel': 'Trvanie tréningu',
     'trening.sessionRestored': 'Aktuálny tréning bol obnovený',
-    'trening.planSaved': 'Zmeny plánu boli uložené. Priebeh aktuálneho tréningu zostal zachovaný.',
+    'trening.planSaved': 'Zmeny plánu boli uložené. Rozbehnutý tréning zostáva so štartovacími hodnotami, nové hodnoty platia od ďalšieho tréningu.',
     'trening.durationResult': 'Trvanie tréningu: {duration}',
     'history.duration': 'Trvanie: {duration}',
     'duration.secOne': '{n} sekunda', 'duration.secFew': '{n} sekundy', 'duration.secOther': '{n} sekúnd',
@@ -2228,6 +2243,12 @@ const I18N = {
     'exercise.abductor-machine': 'Stroj na vonkajšiu stranu bokov (abduktory)',
     'exercise.abductor-machine.how': 'Sadni si s vankúšmi na vonkajšej strane stehien. Odťaž nohy od seba, vydrž a potom ich pomaly vráť.',
     'exercise.abductor-machine.mistakes': 'Nakláňanie trupu dopredu alebo dozadu pre páku a pustená váha, ktorá nohy vyhodí k sebe.',
+    'exercise.assisted-dips': 'Dipy s asistenciou (stroj)',
+    'exercise.assisted-dips.how': 'Sadni si na stroj, kolená daj na vankúš a chyť sa bradiel. Spúšťaj sa kým nie sú ramená v úrovni lakťov a vytlač späť. Číslo je pomoc stroja v kg: menej pomoci znamená pokrok.',
+    'exercise.assisted-dips.mistakes': 'Príliš veľa pomoci príliš dlho a odrazenie sa zo spodnej polohy.',
+    'exercise.assisted-pull-ups': 'Zhyby s asistenciou (stroj)',
+    'exercise.assisted-pull-ups.how': 'Postav sa kolenami na vankúš, chyť tyč a ťahaj hruď k tyči, kým brada nie je nad ňou. Pomaly sa spusti. Číslo je pomoc stroja v kg: menej pomoci znamená pokrok.',
+    'exercise.assisted-pull-ups.mistakes': 'Príliš veľa pomoci príliš dlho a hojdanie telom namiesto kontrolovaného ťahu.',
 
     /* --- Telo, kalórie, jedlo a tipy --- */
     'units.kg': 'kg', 'units.lb': 'lb', 'units.cm': 'cm', 'units.in': 'in', 'units.g': 'g', 'units.kcal': 'kcal',
@@ -2410,6 +2431,7 @@ const I18N = {
     'picker.subtitle': 'Tick the exercises you want to add to this plan.',
     'picker.apply': 'Add to plan',
     'unilateral.trainBoth': 'Train both sides separately',
+    'shared.note': 'Shared with your other plans',
     'unilateral.startLeft': 'Start with left',
     'unilateral.startRight': 'Start with right',
     'unilateral.left': 'Left',
@@ -2498,6 +2520,16 @@ const I18N = {
     'trening.compareSame': 'Same as last time ({w} kg)',
     'trening.compareWeightUp': '▲ {w} kg vs last time',
     'trening.compareWeightDown': '▼ {w} kg vs last time',
+    'trening.compareAssistLess': '▲ {w} kg less assistance vs last time',
+    'trening.compareAssistMore': '▼ {w} kg more assistance vs last time',
+    'trening.compareAssistLessReps': '▲ {w} kg less assistance · +{r} reps vs last time',
+    'session.assistance': 'Assistance',
+    'assisted.line': 'Assistance {w}',
+    'assisted.toggle': 'Assisted exercise (the number is assistance in kg)',
+    'session.weightShort': 'Kg',
+    'session.repsShort': 'Reps',
+    'session.assistanceShort': 'Assist',
+    'trening.compareAssistSame': 'Same assistance as last time ({w} kg)',
     'trening.compareRepsUp': '+{r} reps vs last time',
     'trening.compareRepsDown': '{r} reps vs last time',
     'trening.edit': 'Edit plan',
@@ -2560,7 +2592,7 @@ const I18N = {
     'trening.failureHintEdit': 'Optional: choose the sets you plan to take to failure. You can change the actual result during the workout.',
     'trening.durationLabel': 'Workout duration',
     'trening.sessionRestored': 'Active workout restored',
-    'trening.planSaved': 'Plan changes are saved. Your current workout progress is preserved.',
+    'trening.planSaved': 'Plan changes are saved. Your current workout keeps its starting values; the new values apply from your next workout.',
     'trening.durationResult': 'Workout duration: {duration}',
     'history.duration': 'Duration: {duration}',
     'duration.secOne': '{n} second', 'duration.secFew': '{n} seconds', 'duration.secOther': '{n} seconds',
@@ -3152,6 +3184,12 @@ const I18N = {
     'exercise.abductor-machine': 'Abductor (hip) machine',
     'exercise.abductor-machine.how': 'Sit with the pads against the outer thighs. Push the legs apart, pause, then return slowly.',
     'exercise.abductor-machine.mistakes': 'Leaning the torso forward or back to gain leverage, and letting the weight snap the legs together.',
+    'exercise.assisted-dips': 'Assisted dips (machine)',
+    'exercise.assisted-dips.how': 'Kneel on the pad of the machine and grip the bars. Lower until the shoulders are level with the elbows, then press back up. The number is the machine\'s assistance in kg: less assistance is progress.',
+    'exercise.assisted-dips.mistakes': 'Staying on too much assistance for too long, and bouncing out of the bottom.',
+    'exercise.assisted-pull-ups': 'Assisted pull-ups (machine)',
+    'exercise.assisted-pull-ups.how': 'Kneel on the pad, grip the bar and pull the chest towards it until the chin is over the bar. Lower slowly. The number is the machine\'s assistance in kg: less assistance is progress.',
+    'exercise.assisted-pull-ups.mistakes': 'Staying on too much assistance for too long, and swinging the body instead of a controlled pull.',
 
     /* --- Body, calories, food and tips --- */
     'units.kg': 'kg', 'units.lb': 'lb', 'units.cm': 'cm', 'units.in': 'in', 'units.g': 'g', 'units.kcal': 'kcal',
@@ -3332,6 +3370,7 @@ const I18N = {
     'picker.subtitle': 'Marca los ejercicios que quieres añadir a este plan.',
     'picker.apply': 'Añadir al plan',
     'unilateral.trainBoth': 'Entrenar ambos lados por separado',
+    'shared.note': 'Compartido con tus otros planes',
     'unilateral.startLeft': 'Empezar por la izquierda',
     'unilateral.startRight': 'Empezar por la derecha',
     'unilateral.left': 'Izquierda',
@@ -3420,6 +3459,16 @@ const I18N = {
     'trening.compareSame': 'Igual que la última vez ({w} kg)',
     'trening.compareWeightUp': '▲ {w} kg vs la última vez',
     'trening.compareWeightDown': '▼ {w} kg vs la última vez',
+    'trening.compareAssistLess': '▲ {w} kg menos asistencia vs la última vez',
+    'trening.compareAssistMore': '▼ {w} kg más asistencia vs la última vez',
+    'trening.compareAssistLessReps': '▲ {w} kg menos asistencia · +{r} reps vs la última vez',
+    'session.assistance': 'Asistencia',
+    'assisted.line': 'Asistencia {w}',
+    'assisted.toggle': 'Ejercicio asistido (el número es la asistencia en kg)',
+    'session.weightShort': 'Kg',
+    'session.repsShort': 'Reps',
+    'session.assistanceShort': 'Asist.',
+    'trening.compareAssistSame': 'Misma asistencia que la última vez ({w} kg)',
     'trening.compareRepsUp': '+{r} reps vs la última vez',
     'trening.compareRepsDown': '{r} reps vs la última vez',
     'trening.edit': 'Editar plan',
@@ -3482,7 +3531,7 @@ const I18N = {
     'trening.failureHintEdit': 'Opcional: elige las series que planeas llevar al fallo. Puedes cambiar el resultado real durante el entrenamiento.',
     'trening.durationLabel': 'Duración del entrenamiento',
     'trening.sessionRestored': 'Entrenamiento activo restaurado',
-    'trening.planSaved': 'Los cambios del plan se guardan. El progreso de tu entrenamiento actual se conserva.',
+    'trening.planSaved': 'Los cambios del plan se guardan. Tu entrenamiento actual conserva sus valores iniciales; los nuevos valores se aplican desde el próximo entrenamiento.',
     'trening.durationResult': 'Duración del entrenamiento: {duration}',
     'history.duration': 'Duración: {duration}',
     'duration.secOne': '{n} segundo', 'duration.secFew': '{n} segundos', 'duration.secOther': '{n} segundos',
@@ -4066,6 +4115,12 @@ const I18N = {
     'exercise.abductor-machine': 'Máquina de abductores (cadera)',
     'exercise.abductor-machine.how': 'Siéntate con las almohadillas contra la parte externa de los muslos. Separa las piernas, pausa y vuelve despacio.',
     'exercise.abductor-machine.mistakes': 'Inclinar el torso adelante o atrás para hacer palanca y dejar que el peso junte las piernas de golpe.',
+    'exercise.assisted-dips': 'Fondos asistidos (máquina)',
+    'exercise.assisted-dips.how': 'Apoya las rodillas en la almohadilla de la máquina y agarra las barras. Baja hasta que los hombros queden a la altura de los codos y empuja de nuevo. El número es la asistencia de la máquina en kg: menos asistencia es progreso.',
+    'exercise.assisted-dips.mistakes': 'Quedarse demasiado tiempo con demasiada asistencia y rebotar abajo.',
+    'exercise.assisted-pull-ups': 'Dominadas asistidas (máquina)',
+    'exercise.assisted-pull-ups.how': 'Apoya las rodillas en la almohadilla, agarra la barra y sube el pecho hacia ella hasta pasar la barbilla. Baja despacio. El número es la asistencia de la máquina en kg: menos asistencia es progreso.',
+    'exercise.assisted-pull-ups.mistakes': 'Quedarse demasiado tiempo con demasiada asistencia y balancear el cuerpo en lugar de tirar con control.',
 
     /* --- Cuerpo, calorías, comida y consejos --- */
     'units.kg': 'kg', 'units.lb': 'lb', 'units.cm': 'cm', 'units.in': 'in', 'units.g': 'g', 'units.kcal': 'kcal',
@@ -4246,6 +4301,7 @@ const I18N = {
     'picker.subtitle': 'Marque os exercícios que você quer adicionar a este plano.',
     'picker.apply': 'Adicionar ao plano',
     'unilateral.trainBoth': 'Treinar cada lado separadamente',
+    'shared.note': 'Compartilhado com seus outros planos',
     'unilateral.startLeft': 'Começar pelo esquerdo',
     'unilateral.startRight': 'Começar pelo direito',
     'unilateral.left': 'Esquerdo',
@@ -4334,6 +4390,16 @@ const I18N = {
     'trening.compareSame': 'Igual à última vez ({w} kg)',
     'trening.compareWeightUp': '▲ {w} kg vs. última vez',
     'trening.compareWeightDown': '▼ {w} kg vs. última vez',
+    'trening.compareAssistLess': '▲ {w} kg menos assistência vs. última vez',
+    'trening.compareAssistMore': '▼ {w} kg mais assistência vs. última vez',
+    'trening.compareAssistLessReps': '▲ {w} kg menos assistência · +{r} reps vs. última vez',
+    'session.assistance': 'Assistência',
+    'assisted.line': 'Assistência {w}',
+    'assisted.toggle': 'Exercício assistido (o número é a assistência em kg)',
+    'session.weightShort': 'Kg',
+    'session.repsShort': 'Reps',
+    'session.assistanceShort': 'Assist.',
+    'trening.compareAssistSame': 'Mesma assistência da última vez ({w} kg)',
     'trening.compareRepsUp': '+{r} reps vs. última vez',
     'trening.compareRepsDown': '{r} reps vs. última vez',
     'trening.edit': 'Editar plano',
@@ -4396,7 +4462,7 @@ const I18N = {
     'trening.failureHintEdit': 'Opcional: escolha as séries que você planeja levar até a falha. Você pode mudar o resultado real durante o treino.',
     'trening.durationLabel': 'Duração do treino',
     'trening.sessionRestored': 'Treino ativo restaurado',
-    'trening.planSaved': 'As mudanças do plano foram salvas. O progresso do seu treino atual foi preservado.',
+    'trening.planSaved': 'As mudanças do plano foram salvas. Seu treino atual mantém os valores iniciais; os novos valores valem a partir do próximo treino.',
     'trening.durationResult': 'Duração do treino: {duration}',
     'history.duration': 'Duração: {duration}',
     'duration.secOne': '{n} segundo', 'duration.secFew': '{n} segundos', 'duration.secOther': '{n} segundos',
@@ -4980,6 +5046,12 @@ const I18N = {
     'exercise.abductor-machine': 'Máquina abdutora (quadril)',
     'exercise.abductor-machine.how': 'Sente-se com as almofadas na parte externa das coxas. Afaste as pernas, faça uma pausa e volte devagar.',
     'exercise.abductor-machine.mistakes': 'Inclinar o tronco para frente ou para trás para ganhar alavanca e deixar o peso juntar as pernas de uma vez.',
+    'exercise.assisted-dips': 'Paralelas assistidas (máquina)',
+    'exercise.assisted-dips.how': 'Apoie os joelhos na almofada da máquina e segure as barras. Desça até os ombros ficarem na altura dos cotovelos e empurre de volta. O número é a assistência da máquina em kg: menos assistência é progresso.',
+    'exercise.assisted-dips.mistakes': 'Ficar tempo demais com assistência demais e quicar embaixo.',
+    'exercise.assisted-pull-ups': 'Barra fixa assistida (máquina)',
+    'exercise.assisted-pull-ups.how': 'Apoie os joelhos na almofada, segure a barra e puxe o peito em direção a ela até o queixo passar da barra. Desça devagar. O número é a assistência da máquina em kg: menos assistência é progresso.',
+    'exercise.assisted-pull-ups.mistakes': 'Ficar tempo demais com assistência demais e balançar o corpo em vez de puxar com controle.',
 
     /* --- Corpo, calorias, comida e dicas --- */
     'units.kg': 'kg', 'units.lb': 'lb', 'units.cm': 'cm', 'units.in': 'in', 'units.g': 'g', 'units.kcal': 'kcal',
@@ -5160,6 +5232,7 @@ const I18N = {
     'picker.subtitle': 'Coche les exercices que tu veux ajouter à ce plan.',
     'picker.apply': 'Ajouter au plan',
     'unilateral.trainBoth': 'Travailler chaque côté séparément',
+    'shared.note': 'Partagé avec tes autres plans',
     'unilateral.startLeft': 'Commencer à gauche',
     'unilateral.startRight': 'Commencer à droite',
     'unilateral.left': 'Gauche',
@@ -5248,6 +5321,16 @@ const I18N = {
     'trening.compareSame': 'Identique à la dernière fois ({w} kg)',
     'trening.compareWeightUp': '▲ {w} kg vs la dernière fois',
     'trening.compareWeightDown': '▼ {w} kg vs la dernière fois',
+    'trening.compareAssistLess': '▲ {w} kg d’assistance en moins vs la dernière fois',
+    'trening.compareAssistMore': '▼ {w} kg d’assistance en plus vs la dernière fois',
+    'trening.compareAssistLessReps': '▲ {w} kg d’assistance en moins · +{r} reps vs la dernière fois',
+    'session.assistance': 'Assistance',
+    'assisted.line': 'Assistance {w}',
+    'assisted.toggle': 'Exercice assisté (le nombre est l’assistance en kg)',
+    'session.weightShort': 'Kg',
+    'session.repsShort': 'Rép.',
+    'session.assistanceShort': 'Assist.',
+    'trening.compareAssistSame': 'Même assistance que la dernière fois ({w} kg)',
     'trening.compareRepsUp': '+{r} reps vs la dernière fois',
     'trening.compareRepsDown': '{r} reps vs la dernière fois',
     'trening.edit': 'Modifier le plan',
@@ -5310,7 +5393,7 @@ const I18N = {
     'trening.failureHintEdit': 'Facultatif : choisis les séries que tu prévois de pousser jusqu’à l’échec. Tu peux changer le résultat réel pendant l’entraînement.',
     'trening.durationLabel': 'Durée de l’entraînement',
     'trening.sessionRestored': 'Entraînement actif restauré',
-    'trening.planSaved': 'Les modifications du plan sont enregistrées. La progression de ton entraînement en cours est conservée.',
+    'trening.planSaved': 'Les modifications du plan sont enregistrées. Ton entraînement en cours garde ses valeurs de départ ; les nouvelles valeurs s’appliquent dès le prochain entraînement.',
     'trening.durationResult': 'Durée de l’entraînement : {duration}',
     'history.duration': 'Durée : {duration}',
     'duration.secOne': '{n} seconde', 'duration.secFew': '{n} secondes', 'duration.secOther': '{n} secondes',
@@ -5894,6 +5977,12 @@ const I18N = {
     'exercise.abductor-machine': 'Machine abducteurs (hanches)',
     'exercise.abductor-machine.how': 'Assieds-toi, coussins contre l’extérieur des cuisses. Écarte les jambes, marque une pause, puis reviens lentement.',
     'exercise.abductor-machine.mistakes': 'Pencher le tronc en avant ou en arrière pour gagner du levier et laisser la charge refermer les jambes d’un coup.',
+    'exercise.assisted-dips': 'Dips assistés (machine)',
+    'exercise.assisted-dips.how': 'Mets les genoux sur le coussin de la machine et saisis les poignées. Descends jusqu’à ce que les épaules arrivent à hauteur des coudes, puis repousse. Le nombre est l’assistance de la machine en kg : moins d’assistance, c’est du progrès.',
+    'exercise.assisted-dips.mistakes': 'Rester trop longtemps avec trop d’assistance et rebondir en bas.',
+    'exercise.assisted-pull-ups': 'Tractions assistées (machine)',
+    'exercise.assisted-pull-ups.how': 'Mets les genoux sur le coussin, saisis la barre et tire la poitrine vers elle jusqu’à passer le menton au-dessus. Redescends lentement. Le nombre est l’assistance de la machine en kg : moins d’assistance, c’est du progrès.',
+    'exercise.assisted-pull-ups.mistakes': 'Rester trop longtemps avec trop d’assistance et se balancer au lieu de tirer avec contrôle.',
 
     /* --- Corps, calories, alimentation et conseils --- */
     'units.kg': 'kg', 'units.lb': 'lb', 'units.cm': 'cm', 'units.in': 'in', 'units.g': 'g', 'units.kcal': 'kcal',
@@ -6080,6 +6169,7 @@ const I18N = {
     'picker.subtitle': 'حدّد التمارين التي تريد إضافتها إلى هذه الخطة.',
     'picker.apply': 'إضافة إلى الخطة',
     'unilateral.trainBoth': 'تدريب كل جهة على حدة',
+    'shared.note': 'مشترك مع خططك الأخرى',
     'unilateral.startLeft': 'البدء باليسرى',
     'unilateral.startRight': 'البدء باليمنى',
     'unilateral.left': 'اليسرى',
@@ -6181,6 +6271,16 @@ const I18N = {
     'trening.compareSame': 'مثل المرة السابقة ({w} كغ)',
     'trening.compareWeightUp': '▲ {w} كغ مقارنة بالمرة السابقة',
     'trening.compareWeightDown': '▼ {w} كغ مقارنة بالمرة السابقة',
+    'trening.compareAssistLess': '▲ مساعدة أقل بـ {w} كغ مقارنة بالمرة السابقة',
+    'trening.compareAssistMore': '▼ مساعدة أكثر بـ {w} كغ مقارنة بالمرة السابقة',
+    'trening.compareAssistLessReps': '▲ مساعدة أقل بـ {w} كغ · +{r} تكرار مقارنة بالمرة السابقة',
+    'session.assistance': 'المساعدة',
+    'assisted.line': 'المساعدة {w}',
+    'assisted.toggle': 'تمرين بمساعدة (الرقم هو المساعدة بالكغ)',
+    'session.weightShort': 'كغ',
+    'session.repsShort': 'تكرار',
+    'session.assistanceShort': 'مساعدة',
+    'trening.compareAssistSame': 'نفس المساعدة كما في المرة السابقة ({w} كغ)',
     'trening.compareRepsUp': '+{r} تكرار مقارنة بالمرة السابقة',
     'trening.compareRepsDown': '{r} تكرار مقارنة بالمرة السابقة',
     'trening.edit': 'تعديل الخطة',
@@ -6243,7 +6343,7 @@ const I18N = {
     'trening.failureHintEdit': 'اختياري: اختر السلاسل التي تخطّط للوصول فيها إلى الفشل. يمكنك تغيير النتيجة الفعلية أثناء التمرين.',
     'trening.durationLabel': 'مدة التمرين',
     'trening.sessionRestored': 'تم استعادة التمرين النشط',
-    'trening.planSaved': 'تم حفظ تغييرات الخطة. تقدّم تمرينك الحالي محفوظ.',
+    'trening.planSaved': 'تم حفظ تغييرات الخطة. يحتفظ تمرينك الحالي بقيمه الأولى، وتُطبَّق القيم الجديدة من التمرين التالي.',
     'trening.durationResult': 'مدة التمرين: {duration}',
     'history.duration': 'المدة: {duration}',
     'duration.secZero': '{n} ثانية', 'duration.secOne': '{n} ثانية', 'duration.secTwo': '{n} ثانيتان', 'duration.secFew': '{n} ثوانٍ', 'duration.secMany': '{n} ثانية', 'duration.secOther': '{n} ثانية',
@@ -6829,6 +6929,12 @@ const I18N = {
     'exercise.abductor-machine': 'جهاز تبعيد الفخذين (الوركان)',
     'exercise.abductor-machine.how': 'اجلس والوسادتان على الجزء الخارجي من الفخذين. أبعد الساقين إحداهما عن الأخرى وتوقّف لحظة ثم عُد ببطء.',
     'exercise.abductor-machine.mistakes': 'إمالة الجذع للأمام أو للخلف لأخذ عزم وترك الوزن يقرّب الساقين دفعة واحدة.',
+    'exercise.assisted-dips': 'الغطس المساعَد (جهاز)',
+    'exercise.assisted-dips.how': 'اركع بركبتيك على وسادة الجهاز وأمسك المقبضين. انزل حتى يصبح الكتفان بمستوى المرفقين ثم ادفع عائدًا. الرقم هو مساعدة الجهاز بالكغ: مساعدة أقل تعني تقدمًا.',
+    'exercise.assisted-dips.mistakes': 'البقاء طويلًا على مساعدة كبيرة جدًا والارتداد في الأسفل.',
+    'exercise.assisted-pull-ups': 'العقلة المساعَدة (جهاز)',
+    'exercise.assisted-pull-ups.how': 'اركع بركبتيك على الوسادة وأمسك العارضة واسحب صدرك نحوها حتى يعلو الذقن العارضة. انزل ببطء. الرقم هو مساعدة الجهاز بالكغ: مساعدة أقل تعني تقدمًا.',
+    'exercise.assisted-pull-ups.mistakes': 'البقاء طويلًا على مساعدة كبيرة جدًا وتأرجح الجسم بدل السحب المتحكَّم به.',
 
     /* --- الجسم والسعرات والطعام والنصائح --- */
     'units.kg': 'كغ', 'units.lb': 'رطل', 'units.cm': 'سم', 'units.in': 'بوصة', 'units.g': 'غ', 'units.kcal': 'سعرة',
@@ -9705,6 +9811,32 @@ function normalizeActiveSession(raw) {
     completedSets: pickMarks(raw.completedSets),
     actualFailureSets: pickMarks(raw.actualFailureSets),
   };
+  /* Snímka plánovaných hodnôt cvikov z času štartu (v100): zmena plánu zvonka (iné zariadenie,
+     synchronizácia) tak nikdy nezmení váhy rozbehnutého tréningu. Staršia session ju nemá. */
+  const snapshot = {};
+  if (raw.snapshot && typeof raw.snapshot === 'object' && !Array.isArray(raw.snapshot)) {
+    for (const key of Object.keys(raw.snapshot).slice(0, 200)) {
+      const v = raw.snapshot[key];
+      if (!key || !v || typeof v !== 'object' || Array.isArray(v)) continue;
+      const w = Number(v.weight);
+      if (typeof v.weight !== 'number' || !Number.isFinite(w) || w < 0 || w > 999) continue;
+      const e = { weight: w };
+      if (v.unilateral === true) { e.unilateral = true; e.startSide = v.startSide === 'right' ? 'right' : 'left'; }
+      if (v.assisted === true) e.assisted = true;
+      snapshot[key] = e;
+    }
+  }
+  if (Object.keys(snapshot).length) out.snapshot = snapshot;
+  /* Cviky, ktorým používateľ počas tréningu v editore plánu zmenil spoločnú hodnotu: pri Dokončiť sa
+     pamätaná váha z tréningu nezapíše (novšia úprava používateľa vyhráva). */
+  if (Array.isArray(raw.editedIdentities)) {
+    const ids = [];
+    for (const id of raw.editedIdentities) {
+      if (typeof id === 'string' && id && id.length <= 120 && !ids.includes(id)) ids.push(id);
+      if (ids.length >= 200) break;
+    }
+    if (ids.length) out.editedIdentities = ids;
+  }
   /* Výmeny cvikov počas tréningu: platné kroky prežijú obnovenie stránky.
      Keď žiadne nie sú, kľúč sa vôbec nepridá – session bez výmen zostáva bez zmeny. */
   const substituted = {};
@@ -9839,6 +9971,26 @@ function normalizePlans() {
 }
 
 /* Doplní id/flagy cvikov v plánoch a exId/planName v histórii. Zapísané názvy nikdy nemení. */
+/* Presun kľúčov rozbehnutého tréningu zo starého kľúča cviku na nový (iba pri cudzom id,
+   ktoré backfill nahradil). Značky ('kľúč:i[:L|R]'), sloty ('kľúč#n') aj mapy podľa kľúča. */
+function migrateSessionKeys(sess, map) {
+  if (!sess || typeof sess !== 'object' || !Object.keys(map).length) return;
+  const swap = (key) => {
+    for (const old of Object.keys(map)) {
+      if (key === old) return map[old];
+      if (key.indexOf(old + ':') === 0 || key.indexOf(old + '#') === 0) return map[old] + key.slice(old.length);
+    }
+    return key;
+  };
+  for (const field of ['completedSets', 'actualFailureSets', 'setWeights', 'setReps', 'setWeightLocks', 'setRepsLocks', 'drops', 'setDelta', 'substituted']) {
+    const src = sess[field];
+    if (!src || typeof src !== 'object' || Array.isArray(src)) continue;
+    const out = {};
+    for (const key of Object.keys(src)) out[swap(key)] = src[key];
+    sess[field] = out;
+  }
+}
+
 function backfillState() {
   normalizePlans();
   normalizeGoalHistory();
@@ -9862,15 +10014,34 @@ function backfillState() {
     }
     state.settings.startersAdded = true;
   }
+  const renamedKeys = {};   // starý kľúč session (cudzie id) -> nový kľúč
   for (const id of Object.keys(state.plans)) {
     const plan = state.plans[id];
     plan.exercises = plan.exercises.map(ex => {
       let next = ex;
+      /* Asistovaný riadok nazvaný ako neasistovaný zabudovaný cvik (napr. "Dips") nikdy nezíska jeho id:
+         dostane vlastné cx-id z názvu, takže s obyčajným cvikom nič nezdieľa (váha, pamäť). */
+      if (next.id && BUILTIN_EXERCISE_IDS.has(next.id) && next.assisted === true && !libraryAssistedId(next.id) && next.name) {
+        next = Object.assign({}, next, { id: undefined, builtin: false });
+        delete next.id;
+      }
       if (next.id && BUILTIN_EXERCISE_IDS.has(next.id)) {
         next = Object.assign({}, next, { builtin: true });
       } else {
         const mapped = BUILTIN_NAME_TO_ID[next.name];
-        if (mapped) next = Object.assign({}, next, { id: mapped, builtin: true });
+        if (mapped && !(next.assisted === true && !libraryAssistedId(mapped))) next = Object.assign({}, next, { id: mapped, builtin: true });
+      }
+      /* Identita vlastného cviku: riadok bez id alebo s cudzím id (nie knižnica, nie cx-)
+         dostane deterministické cx-id. Existujúce cx-id sa ponechá. Cudzie id sa nahradí,
+         lebo nesie len import/test a nie je zdieľateľné; jeho značky v rozbehnutom
+         tréningu sa presunú na nový kľúč (nižšie). */
+      if (!builtinExerciseId(next)) {
+        const keep = typeof next.id === 'string' && next.id.indexOf('cx-') === 0;
+        const identity = keep ? null : exerciseIdentity(next);
+        if (identity) {
+          if (next.id) renamedKeys[String(next.id)] = exerciseSessionKey(Object.assign({}, next, { id: undefined }));
+          next = Object.assign({}, next, { id: identity });
+        }
       }
       /* Jednostranné cvičenie: idempotentná normalizácia. Cvik bez tohto nastavenia
          zostáva presne taký, aký bol – žiadne nové polia sa mu nepridávajú. */
@@ -9889,6 +10060,8 @@ function backfillState() {
       });
     });
   }
+  dedupeExerciseIdentities();
+  migrateSessionKeys(state.activeSession, renamedKeys);
   if (!Array.isArray(state.history)) return;
   state.history = state.history.map(w => {
     let out = w;
@@ -9907,6 +10080,13 @@ function backfillState() {
       } else if (seconds !== out.durationSeconds) {
         out = Object.assign({}, out, { durationSeconds: seconds });
       }
+    }
+    /* Pamäť váh pred / po Dokončiť (pre Zrušiť tréning): len platné záznamy, najviac 100 cvikov. */
+    for (const field of ['memoryBefore', 'memoryAfter', 'memoryRowBefore']) {
+      if (!Object.prototype.hasOwnProperty.call(out, field)) continue;
+      const clean = cleanMemoryTrail(out[field], field);
+      if (!clean) { out = Object.assign({}, out); delete out[field]; }
+      else if (JSON.stringify(clean) !== JSON.stringify(out[field])) out = Object.assign({}, out, { [field]: clean });
     }
     if (!Array.isArray(out.exercises)) return out;
     const exercises = out.exercises.map(e => {
@@ -9928,6 +10108,34 @@ function backfillState() {
     });
     return Object.assign({}, out, { exercises });
   });
+}
+
+/* Záznam pamäte váh v histórii: {weight 0..999, unilateral?, startSide?, assisted?, at?}; null = záznam neexistoval. */
+function cleanMemoryTrail(raw, field) {
+  if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return null;
+  const out = {};
+  for (const id of Object.keys(raw).slice(0, 100)) {
+    if (!id || id.length > 120) continue;
+    const v = raw[id];
+    if (field === 'memoryRowBefore') {   // plánId -> pôvodná váha prvého riadka cviku v tom pláne
+      if (!v || typeof v !== 'object' || Array.isArray(v)) continue;
+      const rows = {};
+      for (const pid of Object.keys(v).slice(0, 100)) {
+        if (pid && pid.length <= 120 && typeof v[pid] === 'number' && Number.isFinite(v[pid]) && v[pid] >= 0 && v[pid] <= 999) rows[pid] = v[pid];
+      }
+      if (Object.keys(rows).length) out[id] = rows;
+      continue;
+    }
+    if (v === null) { if (field === 'memoryBefore') out[id] = null; continue; }
+    if (!v || typeof v !== 'object' || Array.isArray(v)) continue;
+    if (typeof v.weight !== 'number' || !Number.isFinite(v.weight) || v.weight < 0 || v.weight > 999) continue;
+    const e = { weight: v.weight };
+    if (v.unilateral === true) { e.unilateral = true; e.startSide = v.startSide === 'right' ? 'right' : 'left'; }
+    if (v.assisted === true) e.assisted = true;
+    if (typeof v.at === 'number' && Number.isFinite(v.at) && v.at > 0) e.at = v.at;
+    out[id] = e;
+  }
+  return Object.keys(out).length ? out : null;
 }
 
 /* v1 -> v2: pôvodné dáta sú reálne používateľské dáta, nikdy nie demo. */
@@ -10288,7 +10496,7 @@ function personalRecords() {
   const rec = {};
   for (const w of state.history) {
     for (const ex of w.exercises) {
-      if (ex.weight <= 0) continue;
+      if (ex.weight <= 0 || historyEntryAssisted(ex)) continue;   // asistencia nie je záťaž – nikdy rekord
       const key = ex.name;
       const prev = rec[key];
       if (!prev || ex.weight > prev.weight) {
@@ -10319,8 +10527,9 @@ function previousWorkoutFor(ex, beforeDate, planId) {
     .filter(w => w.date < beforeDate && samePlanAsHistory(w, plan, planId))
     .sort((a, b) => b.date.localeCompare(a.date));
   for (const w of sorted) {
+    const bid = builtinExerciseId(ex);
     const found = w.exercises.find(e =>
-      (ex.id && e.exId === ex.id) || (!ex.id && e.name === ex.name)
+      (bid && e.exId === bid) || (!bid && e.name === ex.name)
     );
     if (found) return found;
   }
@@ -10371,7 +10580,7 @@ function prStats() {
   let improveDate = null;
   for (const w of sortedHistory()) {
     for (const ex of w.exercises) {
-      if (!ex || !(ex.weight > 0)) continue;
+      if (!ex || !(ex.weight > 0) || historyEntryAssisted(ex)) continue;
       const key = ex.exId || ex.name;
       if (best[key] === undefined || ex.weight > best[key]) {
         best[key] = ex.weight;
@@ -10549,7 +10758,7 @@ function evaluateAchievements() {
   const best = {};
   for (const w of sorted) {
     for (const ex of w.exercises) {
-      if (ex.weight <= 0) continue;
+      if (ex.weight <= 0 || historyEntryAssisted(ex)) continue;   // žiadne míľniky z asistencie
       const prev = best[ex.name];
       if (prev === undefined || ex.weight > prev) {
         best[ex.name] = ex.weight;
@@ -10576,7 +10785,7 @@ function achievementDateFor(id, sorted) {
     const best = {};
     for (const w of sorted) {
       for (const ex of w.exercises) {
-        if (ex.weight <= 0) continue;
+        if (ex.weight <= 0 || historyEntryAssisted(ex)) continue;
         const prev = best[ex.name];
         if (!prev || ex.weight > prev.weight) {
           best[ex.name] = ex.weight;
@@ -11491,7 +11700,11 @@ function getSession() {
 function exerciseSessionKey(ex) {
   if (!ex) return '';
   if (ex.sessionKey) return String(ex.sessionKey);
-  return ex.id ? String(ex.id) : 'c:' + String(ex.name == null ? '' : ex.name);
+  /* Vlastný cvik nesie od v100 odvodenú identitu cx-<hash názvu>, no kľúč session zostáva
+     'c:'+názov, aby značky rozbehnutého tréningu prežili aktualizáciu. Ručne daná cx-… hodnota
+     (iná než odvodená) sa ako kľúč používa naďalej. */
+  if (ex.id && (BUILTIN_EXERCISE_IDS.has(ex.id) || (String(ex.id).indexOf('cx-') === 0 && ex.id !== exerciseIdentity(ex)))) return String(ex.id);
+  return 'c:' + String(ex.name == null ? '' : ex.name);
 }
 
 /* Kľúč jednej série. Jednostranný cvik má pre každú stranu vlastný kľúč,
@@ -11533,11 +11746,32 @@ function sessionSlotCount(ex) {
    Žije v state.activeSession.substituted, takže prežije prekreslenie, zmenu
    jazyka aj obnovenie stránky rovnako ako ostatné značky. */
 
+/* Plánový cvik s hodnotami zo snímky session (váha, jednostrannosť, asistencia); bez snímky (staršia
+   session) alebo bez záznamu pre cvik zostáva riadok plánu, ako bol. Sady, opakovania a poradie ostávajú z plánu. */
+function sessionSnapshotExercise(ex, snap) {
+  if (!snap) return ex;
+  const out = Object.assign({}, ex, { weight: snap.weight });
+  delete out.unilateral; delete out.startSide; delete out.assisted;
+  if (snap.unilateral === true) { out.unilateral = true; out.startSide = snap.startSide === 'right' ? 'right' : 'left'; }
+  if (snap.assisted === true) out.assisted = true;
+  return out;
+}
+
 /* Cviky tréningu = cviky plánu + cviky pridané počas tréningu (sess.extraExercises).
    Plán sa nikdy nemení; rýchly tréning nesie svoje cviky priamo v plánovom pohľade. */
 function sessionExercises(plan) {
-  const base = plan && Array.isArray(plan.exercises) ? plan.exercises : [];
+  let base = plan && Array.isArray(plan.exercises) ? plan.exercises : [];
   const sess = getSession();
+  if (sess && sess.snapshot) {
+    /* Snímka je po slotoch (kľúč#poradie), takže zdvojený cvik v pláne (napr. 60 kg a 80 kg) drží každý riadok osobitne. */
+    const seen = {};
+    base = base.map((ex) => {
+      const key = exerciseSessionKey(ex);
+      const occ = seen[key] || 0;
+      seen[key] = occ + 1;
+      return sessionSnapshotExercise(ex, sess.snapshot[key + '#' + occ]);
+    });
+  }
   const extra = sess && Array.isArray(sess.extraExercises) ? sess.extraExercises : [];
   return extra.length ? base.concat(extra) : base;
 }
@@ -11637,6 +11871,19 @@ function ensureSession(plan) {
     completedSets: {},
     actualFailureSets: {},
   };
+  /* Snímka plánovaných hodnôt: rozbehnutý tréning nemenia zmeny plánu zvonka. */
+  const snapshot = {}, seenKeys = {};
+  for (const ex of (p.exercises || [])) {
+    const base = exerciseSessionKey(ex);
+    if (!base) continue;
+    const key = base + '#' + (seenKeys[base] || 0);
+    seenKeys[base] = (seenKeys[base] || 0) + 1;
+    const e = { weight: Number(ex.weight) || 0 };
+    if (ex.unilateral === true) { e.unilateral = true; e.startSide = ex.startSide === 'right' ? 'right' : 'left'; }
+    if (isAssisted(ex)) e.assisted = true;
+    snapshot[key] = e;
+  }
+  state.activeSession.snapshot = snapshot;
   return state.activeSession;
 }
 
@@ -11689,7 +11936,23 @@ function setValueRowPos(rows, index, side) {
   rows.forEach((r, k) => { if (r.index === index && (!side || r.side === side)) pos = k; });
   return pos;
 }
-function setValuePlanned(kind, ex) { return kind === 'reps' ? (Math.round(Number(ex.reps)) || 0) : (Number(ex.weight) || 0); }
+function setValuePlanned(kind, ex) {
+  if (kind === 'reps') return Math.round(Number(ex.reps)) || 0;
+  /* Rozbehnutý tréning čerpá plánovanú váhu zo snímky (výnimky sérií ju stále prebíjajú). */
+  const sess = getSession();
+  let snap = null;
+  if (sess && sess.snapshot) {
+    /* Riadok priamo z plánu: nájde sa jeho slot (kľúč#poradie); kópia zo slotov už nesie hodnoty zo snímky. */
+    const plan = currentPlan();
+    const rows = plan && Array.isArray(plan.exercises) ? plan.exercises : [];
+    if (rows.indexOf(ex) >= 0) {
+      const key = exerciseSessionKey(ex);
+      const occ = rows.slice(0, rows.indexOf(ex)).filter((r) => exerciseSessionKey(r) === key).length;
+      snap = sess.snapshot[key + '#' + occ] || null;
+    }
+  }
+  return snap ? snap.weight : (Number(ex.weight) || 0);
+}
 function setValueValid(kind, v) { return kind === 'reps' ? Number.isInteger(v) : (typeof v === 'number' && Number.isFinite(v)); }
 function setValueOverride(kind, ex, index, side, exactOnly) {
   const sess = getSession();
@@ -11790,10 +12053,10 @@ function cleanHistorySetWeights(ex) {
 /* Text váhy do histórie: "60 kg", pri zmene "60 · 65 · 65 kg", po stranách "Ľavá 60 · 65 | Pravá 60 · 62.5 kg". */
 function historyWeightText(ex) {
   const sides = cleanHistorySideValues(ex, 'sideWeights', 'weight');
-  if (sides) return `${historySidesText(sides, ' · ')} ${t('units.kg')}`;
-  const list = cleanHistorySetWeights(ex);
-  if (!list) return `${ex.weight} ${t('units.kg')}`;
-  return `${list.join(' · ')} ${t('units.kg')}`;
+  const list = sides ? null : cleanHistorySetWeights(ex);
+  const text = `${sides ? historySidesText(sides, ' · ') : list ? list.join(' · ') : ex.weight} ${t('units.kg')}`;
+  /* Asistovaný cvik: "Pomoc 25 kg" (značka je na zázname, takže zostane aj po zmene plánu). */
+  return historyEntryAssisted(ex) ? t('assisted.line', { w: text }) : text;
 }
 
 /* Opakovania: rovnaké API, `side` je voliteľná strana jednostranného cviku. */
@@ -12079,12 +12342,24 @@ function setSessionNote(key, autoHideMs) {
 /* Porovnanie sa robí LEN s tým istým cvikom v tom istom pláne.
    Bez zhody v pláne sa nezobrazí nič – žiadne falošné "-2" z iného tréningu. */
 function comparisonHint(ex, planId) {
-  if (ex.weight <= 0) return '';
+  if (ex.weight <= 0 && !isAssisted(ex)) return '';
   const prev = previousWorkoutFor(ex, todayISO(), planId);
   if (!prev) return t('trening.firstTime');
-  const dw = ex.weight - prev.weight;
-  const dr = ex.reps - prev.reps;
   const w = (n) => n.toFixed(1).replace(/\.0$/, '');
+  const dr = ex.reps - prev.reps;
+  /* Asistovaný cvik: menej pomoci = pokrok. Minulý zápis bez asistencie (iný druh čísla) sa nepočíta. */
+  if (isAssisted(ex)) {
+    if (!historyEntryAssisted(prev)) return t('trening.firstTime');
+    const da = prev.weight - ex.weight;
+    if (da > 0 && dr > 0) return `<span class="up">${t('trening.compareAssistLessReps', { w: w(da), r: dr })}</span>`;
+    if (da > 0) return `<span class="up">${t('trening.compareAssistLess', { w: w(da) })}</span>`;
+    if (da < 0) return `<span class="down">${t('trening.compareAssistMore', { w: w(Math.abs(da)) })}</span>`;
+    if (dr > 0) return `<span class="up">${t('trening.compareRepsUp', { r: dr })}</span>`;
+    if (dr < 0) return `<span class="down">${t('trening.compareRepsDown', { r: dr })}</span>`;
+    return `<span>${t('trening.compareAssistSame', { w: w(prev.weight) })}</span>`;
+  }
+  if (historyEntryAssisted(prev)) return t('trening.firstTime');
+  const dw = ex.weight - prev.weight;
   if (dw > 0 && dr > 0) return `<span class="up">${t('trening.compareUp', { w: w(dw), r: dr })}</span>`;
   if (dw > 0) return `<span class="up">${t('trening.compareWeightUp', { w: w(dw) })}</span>`;
   if (dw < 0) return `<span class="down">${t('trening.compareWeightDown', { w: w(Math.abs(dw)) })}</span>`;
@@ -12301,7 +12576,7 @@ function renderTrainDetail(plan) {
   const list = plan && Array.isArray(plan.exercises) ? plan.exercises : [];
   box.innerHTML = list.map((ex) => {
     const w = Number(ex.weight) || 0;
-    return '<div class="tr-row"><span>' + esc(exerciseDisplayName(ex)) + '</span><b>' + ex.sets + '×' + ex.reps + ' ' + (w > 0 ? w + ' ' + esc(t('units.kg')) : esc(t('bento.bw'))) + '</b></div>';
+    return '<div class="tr-row"><span>' + esc(exerciseDisplayName(ex)) + '</span><b>' + ex.sets + '×' + ex.reps + ' ' + (w > 0 ? esc(exerciseLoadText(ex, w)) : esc(t('bento.bw'))) + '</b></div>';
   }).join('') || '<p class="bt-line">' + esc(t('bento.noExercises')) + '</p>';
 }
 
@@ -12349,7 +12624,7 @@ function buildExerciseBlock(seg, info, plan) {
   }
   const meta = document.createElement('span');
   meta.className = 'exercise-meta';
-  meta.innerHTML = `${sessionSetCount(ex)} × ${ex.reps} &nbsp;·&nbsp; <b>${ex.weight} ${t('units.kg')}</b>`;
+  meta.innerHTML = `${sessionSetCount(ex)} × ${ex.reps} &nbsp;·&nbsp; <b>${esc(exerciseLoadText(ex))}</b>`;
   head.appendChild(meta);
   div.appendChild(head);
 
@@ -12382,7 +12657,9 @@ function buildExerciseBlock(seg, info, plan) {
   /* Názvy stĺpcov (Váha / Opakovania) raz nad prvou sériou cviku, nie na každom riadku. */
   const heads = document.createElement('div');
   heads.className = 'set-heads';
-  heads.innerHTML = '<span></span><span class="set-cap">' + esc(t('session.weight')) + '</span><span class="set-cap">' + esc(t('session.reps')) + '</span>';
+  /* Úzky telefón (≤ 340 px): CSS ukáže krátky popis (.cap-s); plné slovo ostáva v aria-label polí. */
+  const cap = (full, short) => '<span class="set-cap"><span class="cap-f">' + esc(t(full)) + '</span><span class="cap-s">' + esc(t(short)) + '</span></span>';
+  heads.innerHTML = '<span></span>' + cap(isAssisted(ex) ? 'session.assistance' : 'session.weight', isAssisted(ex) ? 'session.assistanceShort' : 'session.weightShort') + cap('session.reps', 'session.repsShort');
   sets.appendChild(heads);
   for (let i = 0; i < sessionSetCount(ex); i++) {
     if (sides) {
@@ -12534,8 +12811,10 @@ function buildSetItem(ex, index, plannedFailure, side, readOnly) {
     input.inputMode = isW ? 'decimal' : 'numeric';
     input.autocomplete = 'off';
     input.enterKeyHint = 'done';
-    input.setAttribute('aria-label', ariaPre + t(isW ? 'session.weightAria' : 'session.repsAria', { n: index + 1 }));
-    if (isW) input.placeholder = t('bento.bw');
+    input.setAttribute('aria-label', ariaPre + (isW && isAssisted(ex)
+      ? t('session.assistance') + ', ' + t('trening.setN', { n: index + 1 })
+      : t(isW ? 'session.weightAria' : 'session.repsAria', { n: index + 1 })));
+    if (isW) input.placeholder = isAssisted(ex) ? '0' : t('bento.bw');
     const unit = document.createElement('span');
     unit.className = 'set-unit';
     unit.textContent = isW ? t('units.kg') : '×';
@@ -12739,6 +13018,10 @@ function startEditPlan(id) {
   editingPlan = id;
   selectedPlan = id;
   editDraft = JSON.parse(JSON.stringify(plan.exercises));
+  /* Východiskové spoločné hodnoty riadku: pri uložení sa ďalej do plánov šíri len to, čo používateľ skutočne zmenil. */
+  editDraft.forEach((d) => {
+    d._base = { identity: exerciseRowIdentity(d), weight: d.weight, unilateral: d.unilateral === true, startSide: d.startSide === 'right' ? 'right' : 'left', assisted: d.assisted === true };
+  });
   /* Knižnica pri editácii plánu rovno filtruje na jeho miesto (doma/vonku). */
   libLocation = plan.location || null;
   document.getElementById('edit-error').hidden = true;
@@ -12787,9 +13070,58 @@ let fbPicked = {};        // "planId:index" -> true (rozpracovaný výber, nikdy
 let fbMode = 'create';
 let editPick = { src: [], own: [] };   // riadky rozpracovaného výberu pri úprave (neukladá sa)
 
-/* Stabilné id zabudovaného cviku; vlastné cviky id nemajú. */
+/* Stabilné id zabudovaného cviku; vlastné cviky ho nemajú (majú iba identitu cx-…). */
 function builtinExerciseId(ex) {
   return (ex && ex.id && BUILTIN_EXERCISE_IDS.has(ex.id)) ? ex.id : null;
+}
+
+/* Deterministický 32-bitový FNV-1a v base36 – žiadna náhodnosť, každé zariadenie spočíta rovnaké id. */
+function stableHash(str) {
+  let h = 0x811c9dc5;
+  for (let i = 0; i < str.length; i++) {
+    h ^= str.charCodeAt(i);
+    h = Math.imul(h, 0x01000193) >>> 0;
+  }
+  return (h >>> 0).toString(36);
+}
+
+/* Identita cviku zdieľaná medzi plánmi aj zariadeniami: id z knižnice pre zabudovaný cvik,
+   inak 'cx-' + hash normalizovaného názvu (orezané, jedna medzera, malé písmená).
+   Prázdny názov = null. Rôzne názvy ("Dipy" vs "Dipy s asistenciou") sú rôzne cviky. */
+function exerciseIdentity(ex) {
+  const builtin = builtinExerciseId(ex);
+  if (builtin) return builtin;
+  const name = exerciseNormName(ex);
+  return name ? 'cx-' + stableHash(name) : null;
+}
+
+/* Normalizovaný názov: NFC (klávesnice iOS/Android skladajú diakritiku rôzne), orezané, jedna medzera, malé písmená. */
+function exerciseNormName(ex) {
+  return String(ex && ex.name != null ? ex.name : '').normalize('NFC').trim().replace(/\s+/g, ' ').toLowerCase();
+}
+
+/* Ochrana pred kolíziou hashu: dva RÔZNE normalizované názvy s rovnakým id → neskorší (poradie plánov,
+   potom riadku) dostane príponu -2, -3… Deterministické, takže každé zariadenie dospeje k rovnakému výsledku. */
+function dedupeExerciseIdentities() {
+  const owner = {};
+  const ids = Array.isArray(state.planOrder) ? state.planOrder.concat(Object.keys(state.plans)) : Object.keys(state.plans);
+  for (const pid of new Set(ids)) {
+    const plan = state.plans[pid];
+    if (!plan || !Array.isArray(plan.exercises)) continue;
+    plan.exercises = plan.exercises.map((ex) => {
+      if (!ex || builtinExerciseId(ex) || typeof ex.id !== 'string' || ex.id.indexOf('cx-') !== 0) return ex;
+      const base = exerciseIdentity(ex);
+      const norm = exerciseNormName(ex);
+      if (!base || !(ex.id === base || (ex.id.indexOf(base + '-') === 0 && /^\d+$/.test(ex.id.slice(base.length + 1))))) {
+        if (!owner[ex.id]) owner[ex.id] = norm;   // ručne daná cx- hodnota: len si ju zapamätáme
+        return ex;
+      }
+      let want = base;
+      for (let n = 2; owner[want] && owner[want] !== norm; n++) want = base + '-' + n;
+      owner[want] = norm;
+      return want === ex.id ? ex : Object.assign({}, ex, { id: want });
+    });
+  }
 }
 
 function openPlanChoice() {
@@ -12846,7 +13178,7 @@ function closeFullBodyBuilder() {
 /* "3 × 10 · 25 kg" / "3 × 10 · Vlastná váha" – rovnaký popis vo Full Body builderi aj vo výbere. */
 function fbRowMeta(ex) {
   return ex.sets + ' × ' + ex.reps + ' · '
-    + (ex.weight > 0 ? ex.weight + ' ' + t('units.kg') : t('fb.bodyweight'));
+    + (ex.weight > 0 ? exerciseLoadText(ex) : t('fb.bodyweight'));
 }
 
 /* Sekcie = všetky aktuálne aktívne plány v poradí aplikácie (zabudované aj vlastné). */
@@ -12888,6 +13220,7 @@ function fbCopyExercise(ex) {
     plannedFailureSets: cleanFailureSets(ex.plannedFailureSets, sets),
   };
   if (builtinExerciseId(ex)) { copy.id = ex.id; copy.builtin = true; }
+  else if (exerciseIdentity(ex)) copy.id = exerciseIdentity(ex);
   if (ex.unilateral === true) {
     copy.unilateral = true;
     copy.startSide = ex.startSide === 'right' ? 'right' : 'left';
@@ -13244,7 +13577,9 @@ function applyExercisePicker() {
       if (seen.has(id)) continue;
       seen.add(id);
     }
-    added.push(fbCopyExercise(ex));
+    const copy = fbCopyExercise(ex);
+    seedDraftRow(copy);
+    added.push(copy);
   }
 
   editDraft = kept.concat(added);
@@ -13454,6 +13789,13 @@ function renderEditPanel() {
       <input type="number" class="edit-num" min="0" max="999" value="${ex.weight}">
       <button class="btn-icon btn-icon-danger" title="${t('trening.deleteExerciseTitle')}">🗑️</button>`;
 
+    /* Poznámka pod váhou: cvik je aj v inom pláne, takže váha a strana sú spoločné. */
+    const sharedNote = document.createElement('div');
+    sharedNote.className = 'edit-shared-note';
+    sharedNote.textContent = t('shared.note');
+    sharedNote.hidden = true;   // zobrazí ju refreshSharedNotes()
+    row.appendChild(sharedNote);
+
     /* Presun cviku – prístupné tlačidlá (ťahanie uchopovadlom je alternatíva). */
     row.querySelectorAll('.edit-move').forEach(btn => {
       btn.addEventListener('click', () => moveDraftExercise(idx, Number(btn.dataset.move)));
@@ -13508,6 +13850,7 @@ function renderEditPanel() {
       b.setAttribute('aria-pressed', currentStart === side ? 'true' : 'false');
       b.addEventListener('click', () => {
         editDraft[idx].startSide = side;
+        markDraftEdited(editDraft[idx], 'startSide');
         sideStart.querySelectorAll('.side-chip').forEach(c => {
           const on = c.dataset.side === side;
           c.classList.toggle('active', on);
@@ -13518,6 +13861,7 @@ function renderEditPanel() {
     }
 
     sideCheck.addEventListener('change', () => {
+      markDraftEdited(editDraft[idx], 'unilateral');
       if (sideCheck.checked) {
         editDraft[idx].unilateral = true;
         if (editDraft[idx].startSide !== 'right') editDraft[idx].startSide = 'left';
@@ -13531,15 +13875,48 @@ function renderEditPanel() {
     sideBox.append(sideToggle, sideStart);
     row.appendChild(sideBox);
 
+    /* Voliteľné "Asistovaný cvik": číslo je pomoc v kg a menej pomoci je pokrok. Asistovaný cvik z knižnice
+       je asistovaný vždy (prepínač zapnutý a neaktívny); vlastný riadok si ho zapína sám. */
+    const assistBox = document.createElement('div');
+    assistBox.className = 'edit-assist';
+    const assistLabel = document.createElement('label');
+    assistLabel.className = 'edit-side-toggle';
+    const assistCheck = document.createElement('input');
+    assistCheck.type = 'checkbox';
+    assistCheck.className = 'edit-assisted';
+    const assistText = document.createElement('span');
+    assistText.textContent = t('assisted.toggle');
+    assistLabel.append(assistCheck, assistText);
+    assistBox.appendChild(assistLabel);
+    const syncAssist = () => {
+      const d = editDraft[idx];
+      const fixed = !!d.id && libraryAssistedId(d.id);
+      assistCheck.checked = fixed || d.assisted === true;
+      assistCheck.disabled = fixed;
+      /* Zabudovaný neasistovaný cvik prepínač nemá (zámena s "Dips" je vylúčená); prepisom názvu sa stane vlastným. */
+      assistBox.hidden = !fixed && !!d.id && BUILTIN_EXERCISE_IDS.has(d.id);
+    };
+    syncAssist();
+    assistCheck.addEventListener('change', () => {
+      markDraftEdited(editDraft[idx], 'assisted');
+      if (assistCheck.checked) editDraft[idx].assisted = true; else delete editDraft[idx].assisted;
+    });
+    row.appendChild(assistBox);
+
     const nameInput = row.querySelector('.edit-name');
     const numInputs = row.querySelectorAll('.edit-num');
     nameInput.addEventListener('input', () => {
       // typing converts a built-in row into a custom exercise (keeps typed text as-is)
       if (ex.id && BUILTIN_EXERCISE_IDS.has(ex.id)) {
+        if (libraryAssistedId(ex.id)) ex.assisted = true;   // premenovaný asistovaný cvik zostane asistovaný
         delete ex.id;
         ex.builtin = false;
+      } else if (ex.id) {
+        delete ex.id;   // vlastný cvik: nové id sa odvodí z nového názvu pri uložení
       }
       editDraft[idx].name = nameInput.value;
+      syncAssist();
+      refreshSharedNotes();
       row.classList.remove('invalid');
     });
     numInputs[0].addEventListener('input', () => {
@@ -13547,8 +13924,24 @@ function renderEditPanel() {
       // zmena počtu sérií hneď prispôsobí chipy a oreže už neplatné voľby
       renderPlanFailureChips(failureBox, idx);
     });
+    /* Spoločné hodnoty sa preberú až po dokončení názvu (change/blur), nie pri každom písmene. */
+    nameInput.addEventListener('change', () => {
+      const d = editDraft[idx];
+      if (exerciseRowIdentity(d) === (d._base && d._base.identity)) return;
+      seedDraftRow(d);
+      numInputs[2].value = d.weight;
+      sideCheck.checked = d.unilateral === true;
+      sideStart.hidden = d.unilateral !== true;
+      sideStart.querySelectorAll('.side-chip').forEach(c => {
+        const on = c.dataset.side === (d.startSide === 'right' ? 'right' : 'left');
+        c.classList.toggle('active', on);
+        c.setAttribute('aria-pressed', on ? 'true' : 'false');
+      });
+      syncAssist();
+      refreshSharedNotes();
+    });
     numInputs[1].addEventListener('input', () => { editDraft[idx].reps = num(numInputs[1].value); });
-    numInputs[2].addEventListener('input', () => { editDraft[idx].weight = num(numInputs[2].value); });
+    numInputs[2].addEventListener('input', () => { editDraft[idx].weight = num(numInputs[2].value); markDraftEdited(editDraft[idx], 'weight'); });
     row.querySelector('.btn-icon-danger').addEventListener('click', () => {
       if (editDraft.length <= 1) {
         showGeneric(t('trening.lastExerciseBlock'), t('common.ok'), null);
@@ -13562,6 +13955,90 @@ function renderEditPanel() {
     });
     renderPlanFailureChips(failureBox, idx);
     rows.appendChild(row);
+  });
+  refreshSharedNotes();
+}
+
+/* Prvý riadok rovnakej identity v inom pláne než v upravovanom (null, ak žiadny). */
+function exerciseOtherPlanRow(identity, planId) {
+  if (!identity) return null;
+  for (const pid of Object.keys(state.plans || {})) {
+    const plan = state.plans[pid];
+    if (pid === planId || !plan || !Array.isArray(plan.exercises)) continue;
+    const row = plan.exercises.find((r) => r && exerciseRowIdentity(r) === identity);
+    if (row) return row;
+  }
+  return null;
+}
+
+/* Spoločné hodnoty cviku pre nový riadok: settings.exerciseMemory, inak prvý riadok v inom pláne, inak null. */
+function exerciseSharedSource(identity, planId) {
+  if (!identity) return null;
+  const other = exerciseOtherPlanRow(identity, planId);
+  const m = exerciseMemoryEntry(identity);
+  if (!m && !other) return null;
+  const from = m || other;
+  const w = Number(m && Number.isFinite(Number(m.weight)) ? m.weight : (other ? other.weight : 0));
+  return {
+    weight: Number.isFinite(w) ? w : 0,
+    unilateral: from.unilateral === true,
+    startSide: from.startSide === 'right' ? 'right' : 'left',
+    assisted: from.assisted === true,
+  };
+}
+
+/* Používateľ v tomto riadku návrhu sám upravil danú hodnotu (váha / jednostranný / strana). */
+function markDraftEdited(row, field) {
+  if (!row._edited) row._edited = {};
+  row._edited[field] = true;
+}
+
+/* Nový (alebo premenovaný) riadok návrhu dostane spoločné hodnoty svojej identity, ale len polia, ktoré
+   používateľ v riadku sám neupravil. Predvyplnené hodnoty sú aj východisko (_base), takže zmena po
+   predvyplnení sa pri uložení šíri ďalej. Bez zdroja riadok ponechá svoje hodnoty a _base sú tie isté
+   (nešíri sa nič, čo používateľ nezmenil); predtým predvyplnené hodnoty z inej identity sa vrátia späť.
+   Vráti true, ak sa predvyplnilo. */
+function seedDraftRow(row) {
+  const edited = row._edited || {};
+  if (row._undo) {
+    for (const f of Object.keys(row._undo)) {
+      if (edited[f]) continue;
+      if (row._undo[f] === undefined) delete row[f]; else row[f] = row._undo[f];
+    }
+    delete row._undo;
+  }
+  const identity = exerciseRowIdentity(row);
+  const src = exerciseSharedSource(identity, editingPlan);
+  if (src) {
+    const undo = {};
+    const put = (f, v) => {
+      if (edited[f]) return;
+      undo[f] = row[f];
+      if (v === undefined) delete row[f]; else row[f] = v;
+    };
+    put('weight', src.weight);
+    put('unilateral', src.unilateral ? true : undefined);
+    if (!edited.unilateral) put('startSide', src.unilateral ? src.startSide : undefined);
+    put('assisted', src.assisted ? true : undefined);
+    row._undo = undo;
+  }
+  row._base = src
+    ? { identity, weight: src.weight, unilateral: src.unilateral, startSide: src.startSide, assisted: src.assisted === true }
+    : { identity, weight: Number(row.weight) || 0, unilateral: row.unilateral === true, startSide: row.startSide === 'right' ? 'right' : 'left', assisted: row.assisted === true };
+  return !!src;
+}
+
+/* Poznámka "Spoločné s ostatnými plánmi" len pri riadku, ktorého zmena sa naozaj rozšíri:
+   prvý riadok svojej identity v návrhu a cvik je aj v inom pláne. */
+function refreshSharedNotes() {
+  if (!Array.isArray(editDraft)) return;
+  const rows = document.querySelectorAll('#edit-rows .edit-row');
+  editDraft.forEach((d, i) => {
+    const note = rows[i] && rows[i].querySelector('.edit-shared-note');
+    if (!note) return;
+    const identity = exerciseRowIdentity(d);
+    const first = !!identity && editDraft.findIndex((r) => exerciseRowIdentity(r) === identity) === i;
+    note.hidden = !(first && exerciseOtherPlanRow(identity, editingPlan));
   });
 }
 
@@ -13698,19 +14175,54 @@ function saveEditPlan() {
     if (ex.id && BUILTIN_EXERCISE_IDS.has(ex.id)) {
       out.id = ex.id;
       out.builtin = true;
+    } else if (typeof ex.id === 'string' && ex.id.indexOf('cx-') === 0) {
+      out.id = ex.id;   // nezmenený názov: existujúce cx- id sa ponechá
+    } else {
+      /* Nový alebo premenovaný vlastný cvik: identita z názvu – rovnaký názov = rovnaké id vo všetkých plánoch. */
+      const identity = exerciseIdentity(out);
+      if (identity) out.id = identity;
     }
     /* Jednostranné cvičenie sa ukladá len keď je zapnuté – ostatné cviky zostávajú bez zmeny. */
     if (ex.unilateral === true) {
       out.unilateral = true;
       out.startSide = ex.startSide === 'right' ? 'right' : 'left';
     }
+    /* Editor značku asistovaného cviku nemení, ale nesmie ju pri uložení stratiť. */
+    if (ex.assisted === true) out.assisted = true;
     return out;
+  });
+  dedupeExerciseIdentities();
+  /* Zmenená váha / strana sa premietne do rovnakého cviku v ostatných plánoch; série a opakovania nikdy.
+     Len PRVÝ riadok danej identity v pláne je zdroj (neskorší duplikát zostáva lokálny). */
+  const shareAt = Date.now();
+  editDraft.forEach((d, i) => {
+    const base = d._base;
+    const row = plan.exercises[i];
+    if (!base || !row) return;
+    const identity = exerciseRowIdentity(row);
+    if (!identity || identity !== base.identity) return;
+    if (plan.exercises.findIndex((r) => r && exerciseRowIdentity(r) === identity) !== i) return;
+    const uni = row.unilateral === true;
+    const values = {};
+    if (row.weight !== Math.round(base.weight * 2) / 2) values.weight = row.weight;
+    if (uni !== base.unilateral) { values.unilateral = uni; values.startSide = uni ? row.startSide : false; }
+    else if (uni && row.startSide !== base.startSide) values.startSide = row.startSide;
+    if ((row.assisted === true) !== (base.assisted === true)) values.assisted = row.assisted === true;
+    if (Object.keys(values).length) {
+      applyExerciseDefaults(identity, values, shareAt);
+      /* Rozbehnutý tréning: novšia úprava používateľa vyhráva nad pamätanou váhou pri Dokončiť. */
+      const sess = getSession();
+      if (sess) {
+        if (!Array.isArray(sess.editedIdentities)) sess.editedIdentities = [];
+        if (!sess.editedIdentities.includes(identity)) sess.editedIdentities.push(identity);
+      }
+    }
   });
   newPlanId = null;
   editingPlan = null;
   editDraft = null;
   /* Priebeh rozbehnutého tréningu zostáva nedotknutý – mení sa len plán, nie session.
-     Uložený plán sa hneď prejaví v aktívnom tréningu (váhy, série), značky zůstanú. */
+     Rozbehnutý tréning si drží štartovacie hodnoty (snímka); nové váhy platia od ďalšieho tréningu. */
   if (getSession()) setSessionNote('trening.planSaved', 8000);
   saveState();
   renderAll();
@@ -13781,9 +14293,11 @@ function customExercisesMatching(q) {
       const name = String(ex.name == null ? '' : ex.name).trim();
       if (!name) continue;
       const key = name.toLowerCase();
-      if (seen.has(key)) continue;
+      /* Rovnaký cvik v rôznych plánoch (rovnaká identita) sa ponúkne raz. */
+      const identity = exerciseIdentity(ex);
+      if (seen.has(identity)) continue;
       if (q && key.indexOf(q) < 0) continue;
-      seen.add(key);
+      seen.add(identity);
       out.push({ name, planId });
     }
   }
@@ -14867,12 +15381,14 @@ function addLibraryExerciseToDraft(entryId) {
   const entry = libraryEntry(entryId);
   if (!entry) return;
   if (editDraft.some((d) => builtinExerciseId(d) === entry.id)) return;
-  editDraft.push({
+  const row = {
     id: entry.id,
     builtin: true,
     name: (I18N.en && I18N.en['exercise.' + entry.id]) || entry.id,
     sets: 3, reps: 10, weight: 0, plannedFailureSets: [],
-  });
+  };
+  seedDraftRow(row);
+  editDraft.push(row);
   renderEditPanel();
   closeExerciseSheet();
 }
@@ -17124,6 +17640,7 @@ function shareFromPlan(plan) {
         s: shareClampInt(ex.sets, 1, 99), r: shareClampInt(ex.reps, 0, 999), w: shareClampKg(ex.weight) };
       if (id) out.id = id;
       if (ex.unilateral === true) out.u = true;
+      if (isAssisted(ex)) out.a = true;
       return out;
     }),
   };
@@ -17141,6 +17658,7 @@ function shareFromWorkout(w) {
         w: shareClampKg(e.weight), d: shareClampInt(e.setsDone, 0, 198) };
       if (e.exId && BUILTIN_EXERCISE_IDS.has(e.exId)) x.id = e.exId;
       if (e.unilateral === true) x.u = true;
+      if (historyEntryAssisted(e)) x.a = true;
       const sw = cleanHistorySetWeights(e);
       if (sw) x.sw = sw.map(shareClampKg);
       const sr = cleanHistorySetReps(e);
@@ -17164,6 +17682,10 @@ function shareFromWorkout(w) {
 function shareSummaryText(a) {
   const n = (a.exercises || []).length;
   return (a.kind === 'workout' ? '🏋️ ' : '📋 ') + t(a.kind === 'workout' ? 'share.textWorkout' : 'share.textPlan', { name: a.name, n });
+}
+function libraryAssistedId(id) {
+  const lib = id ? libraryEntry(id) : null;
+  return !!(lib && lib.assisted === true);
 }
 function shareExerciseName(e) {
   return (e && e.id && BUILTIN_EXERCISE_IDS.has(e.id)) ? t('exercise.' + e.id) : recordedNameToDisplay(String((e && e.n) || ''));
@@ -17200,7 +17722,7 @@ function shareCardHtml(a, src, ref, noSave) {
     }
     const parts = [sets];
     if (workout || perSide) parts.push(reps + ' ' + t('units.reps'));
-    parts.push(sw + ' ' + t('units.kg'));
+    parts.push(e.a === true || libraryAssistedId(e.id) ? t('assisted.line', { w: sw + ' ' + t('units.kg') }) : sw + ' ' + t('units.kg'));
     /* Drop série: [[kg, opakovania], …] – iba platné dvojice, najviac DROP_MAX. */
     const dr = Array.isArray(e.dr) ? e.dr.slice(0, DROP_MAX).filter((d) => Array.isArray(d) && Number.isFinite(Number(d[0])) && Number(d[1]) >= 1) : [];
     const drops = dr.length ? '<span class="cshare-ex-drop">⬇ ' + esc(t('drop.history', { list: dr.map((d) => Number(d[0]) + ' ' + t('units.kg') + ' × ' + Math.round(Number(d[1]))).join(' · ') })) + '</span>' : '';
@@ -17220,9 +17742,10 @@ function shareSaveAsPlan(a, source) {
   const exercises = a.exercises.slice(0, SHARE_MAX_EXERCISES).map((e) => {
     const id = e.id && BUILTIN_EXERCISE_IDS.has(e.id) ? e.id : null;
     const ex = { name: id ? recordedExerciseName({ id }) : String(e.n || '?').slice(0, 80), sets: shareClampInt(e.s, 1, 99),
-      reps: Math.max(1, shareClampInt(e.r, 1, 999)), weight: shareClampKg(Array.isArray(e.sw) && e.sw.length ? Math.max.apply(null, e.sw.map(Number)) : e.w) };
+      reps: Math.max(1, shareClampInt(e.r, 1, 999)), weight: shareClampKg(Array.isArray(e.sw) && e.sw.length ? (e.a === true || libraryAssistedId(e.id) ? Math.min : Math.max).apply(null, e.sw.map(Number)) : e.w) };
     if (id) { ex.id = id; ex.builtin = true; }
     if (e.u === true) { ex.unilateral = true; ex.startSide = 'left'; }
+    if (e.a === true) ex.assisted = true;
     return ex;
   });
   const names = new Set(Object.values(state.plans).map((p) => planDisplayName(p)));
@@ -20830,6 +21353,86 @@ function finishWorkout() {
   document.getElementById('confirm-note').focus();
 }
 
+/* Asistovaný cvik (číslo = pomoc v kg, nie záťaž): značka na riadku alebo asistovaný cvik z knižnice. */
+function isAssisted(ex) {
+  if (!ex) return false;
+  if (ex.assisted === true) return true;
+  const lib = libraryEntry(builtinExerciseId(ex));
+  return !!(lib && lib.assisted === true);
+}
+
+/* Záznam v histórii je asistovaný: značka na zázname (pridaná pri uložení) alebo asistovaný cvik z knižnice (exId). */
+function historyEntryAssisted(e) {
+  if (!e) return false;
+  if (e.assisted === true) return true;
+  const lib = e.exId ? libraryEntry(e.exId) : null;
+  return !!(lib && lib.assisted === true);
+}
+
+/* Text záťaže cviku: "25 kg" / pri asistovanom "Pomoc 25 kg". */
+function exerciseLoadText(ex, weight) {
+  const w = weight === undefined ? ex.weight : weight;
+  return isAssisted(ex) ? t('assisted.line', { w: w + ' ' + t('units.kg') }) : w + ' ' + t('units.kg');
+}
+
+/* Identita riadku plánu: id zabudovaného cviku, cx-id (aj s príponou -N), inak odvodená z názvu. */
+function exerciseRowIdentity(ex) {
+  if (ex && typeof ex.id === 'string' && ex.id.indexOf('cx-') === 0 && !builtinExerciseId(ex)) return ex.id;
+  return exerciseIdentity(ex);
+}
+
+/* Platný záznam settings.exerciseMemory pre identitu (váha 0..999, konečné číslo), inak null. */
+function exerciseMemoryEntry(identity) {
+  const mem = identity && state.settings && state.settings.exerciseMemory;
+  if (!mem || typeof mem !== 'object' || !Object.prototype.hasOwnProperty.call(mem, identity)) return null;
+  const m = mem[identity];
+  if (!m || typeof m !== 'object') return null;
+  const w = Number(m.weight);
+  return typeof m.weight === 'number' && Number.isFinite(w) && w >= 0 && w <= 999 ? m : null;
+}
+
+/* Zapíše spoločné hodnoty cviku do každého riadka plánu s rovnakou identitou a do settings.exerciseMemory.
+   Nič nezapisuje a nevolá saveState; vráti true, ak sa niečo zmenilo (zmena => `at`). */
+function applyExerciseDefaults(identity, values, at) {
+  if (!identity || !values) return false;
+  const fields = ['weight', 'unilateral', 'startSide', 'assisted'].filter((f) => values[f] !== undefined);
+  if (!fields.length) return false;
+  let changed = false;
+  const setField = (obj, f, v) => {
+    if (f === 'weight' ? obj[f] !== v : (v === false ? obj[f] !== undefined : obj[f] !== v)) {
+      if (f !== 'weight' && v === false) delete obj[f]; else obj[f] = v;
+      changed = true;
+    }
+  };
+  for (const plan of Object.values(state.plans || {})) {
+    if (!plan || !Array.isArray(plan.exercises)) continue;
+    /* Zdvojený cvik v jednom pláne (pyramída, rozcvička) je zámer: spoločné hodnoty dostane len PRVÝ riadok. */
+    const ex = plan.exercises.find((r) => r && exerciseRowIdentity(r) === identity);
+    if (ex) for (const f of fields) setField(ex, f, values[f]);
+  }
+  if (!state.settings.exerciseMemory || typeof state.settings.exerciseMemory !== 'object' || Array.isArray(state.settings.exerciseMemory)) {
+    state.settings.exerciseMemory = {};
+  }
+  const mem = state.settings.exerciseMemory;
+  const cur = Object.prototype.hasOwnProperty.call(mem, identity) && mem[identity] && typeof mem[identity] === 'object' ? mem[identity] : null;
+  const next = Object.assign({}, cur);
+  for (const f of fields) {
+    if (f !== 'weight' && values[f] === false) delete next[f]; else next[f] = values[f];
+  }
+  if (changed || !cur || fields.some((f) => (cur[f] === undefined ? (f === 'weight' || values[f] !== false) : cur[f] !== values[f]))) {
+    next.at = at;
+    mem[identity] = next;
+    changed = true;
+  }
+  return changed;
+}
+/* Samostatné volanie (jedno saveState => normálny nárast počítadla zmien, synchronizuje sa). */
+function rememberExerciseDefaults(identity, values, at) {
+  const changed = applyExerciseDefaults(identity, values, at == null ? Date.now() : at);
+  if (changed) saveState();
+  return changed;
+}
+
 /* Jeden cvik do histórie: setsDone aj actualFailureSets sa čítajú zo session cez stabilné
    kľúče cvikov, takže sa nikdy nemôžu pomiešať dva cviky s rovnakým menom ani stratiť
    po úprave plánu. `ex.name` je záznam názvu v čase tréningu – nemenný snapshot. */
@@ -20843,6 +21446,8 @@ function historyExerciseEntry(ex, sess) {
     weight: ex.weight,
     plannedFailureSets: cleanFailureSets(ex.plannedFailureSets, ex.sets),
   };
+  /* Asistovaný cvik: značka na zázname (additívne), aby história ukazovala "Pomoc" aj po zmene plánu. */
+  if (isAssisted(ex)) entry.assisted = true;
   if (sides) {
     /* Jednostranný cvik: každá strana sa zaznamenáva samostatne.
        setsDone zostáva SÚČET oboch strán – rovnaký význam ako pri bežnom cviku. */
@@ -20883,6 +21488,43 @@ function historyExerciseEntry(ex, sess) {
   return entry;
 }
 
+/* Hotové hlavné série jedného cviku z ukončeného tréningu: len značky "hotovo" (drop série sa
+   nezapočítavajú, séria označená zlyhaním je tiež hotová), s váhou, akú zapíše historyExerciseEntry
+   (výnimky aj zámky cez effectiveSetWeight). Jednostranný cvik nesie stranu 'left' / 'right'. */
+function completedMainSets(ex, sess) {
+  const out = [];
+  if (!sess || !sess.completedSets) return out;   // značky sa čítajú z rozbehnutej session ako pri historyExerciseEntry
+  const sides = exerciseSideOrder(ex);
+  for (let i = 0; i < sessionSetCount(ex); i++) {
+    for (const side of (sides || [null])) {
+      if (!setMark('done', ex, i, side || undefined)) continue;
+      const row = { weight: effectiveSetWeight(ex, i, side || undefined) };
+      if (side) row.side = side;
+      out.push(row);
+    }
+  }
+  return out;
+}
+
+/* Pracovná váha na ďalší tréning z hotových hlavných sérií (spec §3.4): váha použitá aspoň v 2 sériách
+   → najvyššia taká (asistované: najnižšia), inak váha poslednej hotovej série; bez sérií null.
+   Jednostranný cvik: po stranách, potom ťažšia strana (asistované: nižšia asistencia). Čistá funkcia. */
+function nextWorkingWeight(sets, opts) {
+  const assisted = !!(opts && opts.assisted);
+  const EPS = 0.001;
+  const pick = (list) => {
+    if (!list.length) return null;
+    const repeated = list.filter((w) => list.filter((x) => Math.abs(x - w) < EPS).length >= 2);
+    if (repeated.length) return assisted ? Math.min.apply(null, repeated) : Math.max.apply(null, repeated);
+    return list[list.length - 1];
+  };
+  const valid = (Array.isArray(sets) ? sets : []).filter((s) => s && typeof s.weight === 'number' && Number.isFinite(s.weight));
+  const per = ['left', 'right', undefined].map((sd) => pick(valid.filter((s) => (s.side || undefined) === sd).map((s) => s.weight)))
+    .filter((v) => v !== null);
+  if (!per.length) return null;
+  return assisted ? Math.min.apply(null, per) : Math.max.apply(null, per);
+}
+
 /* Zmena váhy počas tréningu: záznam dostane váhy všetkých sérií (setWeights), pôvodnú
    plánovanú váhu (plannedWeight) a ako `weight` najťažšiu ODCVIČENÚ sériu – rekordy,
    úspechy aj porovnanie s minulým tréningom tak počítajú so skutočne zdvihnutou váhou. */
@@ -20897,7 +21539,8 @@ function historyApplySetWeights(entry, ex, doneSetNumbers) {
     ? ['left', 'right'].flatMap((sd) => (entry.sidesDone[sd] || []).map((n) => vals.sides[sd][n - 1]))
     : (doneSetNumbers || []).map((n) => vals.list[n - 1]);
   const valid = doneWeights.filter((v) => typeof v === 'number');
-  if (valid.length) entry.weight = Math.max.apply(null, valid);
+  /* Asistovaný cvik: do záznamu ide najnižšia pomoc (najlepší výkon), nie najvyššie číslo. */
+  if (valid.length) entry.weight = isAssisted(ex) ? Math.min.apply(null, valid) : Math.max.apply(null, valid);
 }
 
 /* Zmena opakovaní počas tréningu: záznam dostane opakovania všetkých sérií (setReps);
@@ -20928,11 +21571,22 @@ function confirmFinish() {
      skutočne odcvičené série a náhrada sa zapíše zvlášť. Hotové série sa NIKDY
      neprepisujú na nový cvik. Cvik bez jedinej série sa do histórie nedostane. */
   const exercises = [];
+  const remembered = {};   // identita -> pracovná váha na ďalší tréning (z hotových hlavných sérií)
+  const seenIdentity = {};
+  const noteWeight = (ex) => {
+    const identity = exerciseRowIdentity(ex);
+    if (!identity || seenIdentity[identity]) return;   // váhu určuje PRVÝ slot cviku v tréningu
+    seenIdentity[identity] = true;
+    if (sess && Array.isArray(sess.editedIdentities) && sess.editedIdentities.includes(identity)) return;   // novšia úprava plánu vyhráva
+    const w = identity ? nextWorkingWeight(completedMainSets(ex, sess), { assisted: isAssisted(ex) }) : null;
+    if (w !== null) remembered[identity] = { weight: w };
+  };
   for (const info of exerciseSlots(plan)) {
     const steps = substitutionSteps(info.slot);
     const originalDone = countDoneSets(info.ex);
     if (!steps.length || originalDone > 0) {
       const entry = historyExerciseEntry(info.ex, sess);
+      noteWeight(info.ex);
       if (steps.length) {
         /* Zapíše sa cvik, ktorý pôvodný NAOZAJ vystriedal – pri reťazci teda prvý, nie posledný. */
         entry.replacedBy = exerciseDisplayName(steps[0].ex);
@@ -20942,6 +21596,7 @@ function confirmFinish() {
     }
     for (let i = 0; i < steps.length; i++) {
       const entry = historyExerciseEntry(steps[i].ex, sess);
+      noteWeight(steps[i].ex);
       if (steps[i].oldName) entry.substitutedFor = steps[i].oldName;
       /* Aj náhrada, ktorá bola neskôr vymenená, si nechá svoje série a povie, kým bola nahradená. */
       if (i < steps.length - 1 && countDoneSets(steps[i].ex) > 0) {
@@ -20975,6 +21630,29 @@ function confirmFinish() {
   }
   trainOnWorkoutFinished(entry, trainData);   // "trénoval s …" + priateľ uvidí hotovo
 
+  /* Spoločná pracovná váha: až po zostavení histórie (tá drží skutočné váhy), pred jediným saveState nižšie. */
+  const rememberedAt = Date.now();
+  /* Pre Zrušiť tréning: čo bolo v pamäti pred zápisom (null = záznam neexistoval) a čo sa zapísalo. */
+  const memoryBefore = {}, memoryAfter = {}, memoryRowBefore = {};
+  for (const [identity, values] of Object.entries(remembered)) {
+    const cur = state.settings.exerciseMemory && Object.prototype.hasOwnProperty.call(state.settings.exerciseMemory, identity)
+      && state.settings.exerciseMemory[identity] && typeof state.settings.exerciseMemory[identity] === 'object'
+      ? Object.assign({}, state.settings.exerciseMemory[identity]) : null;
+    const rowsW = {};   // plánId -> váha prvého riadka cviku pred zápisom
+    for (const [pid, p] of Object.entries(state.plans || {})) {
+      const row = p && Array.isArray(p.exercises) ? p.exercises.find((r) => r && exerciseRowIdentity(r) === identity) : null;
+      if (row && typeof row.weight === 'number') rowsW[pid] = row.weight;
+    }
+    if (!applyExerciseDefaults(identity, values, rememberedAt)) continue;
+    memoryBefore[identity] = cur;
+    memoryAfter[identity] = Object.assign({}, values);
+    if (Object.keys(rowsW).length) memoryRowBefore[identity] = rowsW;
+  }
+
+  for (const [field, map] of [['memoryBefore', memoryBefore], ['memoryAfter', memoryAfter], ['memoryRowBefore', memoryRowBefore]]) {
+    const clean = cleanMemoryTrail(map, field);
+    if (clean) entry[field] = clean;
+  }
   state.history.push(entry);
   syncGoalSnapshot();    // tento týždeň je teraz "pozorovaný" so svojím cieľom
   lastWorkoutId = entry.id;
@@ -21052,11 +21730,43 @@ function showResultModal() {
 
 /* ---------- Undo / edit / delete tréningu ---------- */
 
+/* Zrušiť tréning vráti aj váhy, ktoré Dokončiť zapísal: len ak sa pamäť a riadky plánov od vtedy
+   nezmenili (rovnajú sa tomu, čo Dokončiť zapísal) – novšia úprava používateľa ostáva. */
+function restoreRememberedWeights(entry) {
+  const after = entry && entry.memoryAfter;
+  const before = entry && entry.memoryBefore;
+  if (!after || !before || !state.settings) return;
+  const fieldsOf = (v) => Object.keys(v).filter((f) => f !== 'at');
+  for (const identity of Object.keys(after)) {
+    if (!Object.prototype.hasOwnProperty.call(before, identity)) continue;
+    const a = after[identity], b = before[identity];
+    const mem = state.settings.exerciseMemory;
+    const cur = mem && Object.prototype.hasOwnProperty.call(mem, identity) ? mem[identity] : null;
+    const same = (obj) => obj && typeof obj === 'object' && fieldsOf(a).every((f) => obj[f] === a[f]);
+    if (!same(cur)) continue;   // pamäť sa zmenila (úprava plánu, ďalší tréning) – nechá sa
+    const rows = [];
+    for (const [pid, plan] of Object.entries(state.plans || {})) {
+      const row = plan && Array.isArray(plan.exercises) ? plan.exercises.find((r) => r && exerciseRowIdentity(r) === identity) : null;
+      if (row && same(row)) rows.push([pid, row]);
+    }
+    const rowBefore = (entry.memoryRowBefore && entry.memoryRowBefore[identity]) || {};
+    for (const [pid, row] of rows) {
+      for (const f of fieldsOf(a)) {
+        let v = b ? b[f] : undefined;
+        if (f === 'weight' && rowBefore[pid] !== undefined) v = rowBefore[pid];   // každý riadok späť na vlastnú pôvodnú váhu
+        if (v === undefined) { if (f !== 'weight') delete row[f]; } else row[f] = v;
+      }
+    }
+    if (b) mem[identity] = Object.assign({}, b); else delete mem[identity];
+  }
+}
+
 function requestUndoWorkout() {
   const entry = state.history.find(w => w.id === lastWorkoutId);
   if (!entry) return;
   showGeneric(t('trening.undoConfirmTitle'), t('trening.undo'), () => {
     healthDeleteSession(entry);
+    restoreRememberedWeights(entry);
     state.history = state.history.filter(w => w.id !== lastWorkoutId);
     lastWorkoutId = null;
     lastUnlocked = [];
@@ -23072,13 +23782,27 @@ function chooseActivity(kind) {
 function quickExerciseCopy(id) {
   const entry = libraryEntry(id);
   const base = { sets: 3, reps: 10, weight: 0, plannedFailureSets: [], sessionKey: 'q_' + uid() };
+  /* Pamätaná pracovná váha: settings.exerciseMemory, inak prvý riadok plánu s rovnakou identitou, inak 0. */
+  const remembered = (ex) => {
+    const identity = exerciseIdentity(ex);
+    let src = exerciseMemoryEntry(identity);
+    if (!src) {
+      for (const plan of Object.values(state.plans || {})) {
+        const row = plan && Array.isArray(plan.exercises) ? plan.exercises.find((r) => r && exerciseRowIdentity(r) === identity) : null;
+        if (row) { src = row; break; }
+      }
+    }
+    if (src && Number.isFinite(Number(src.weight))) ex.weight = Number(src.weight);
+    if (src && src.assisted === true) ex.assisted = true;
+    return ex;
+  };
   if (entry) {
-    return Object.assign({ id: entry.id, name: (I18N.en && I18N.en['exercise.' + entry.id]) || entry.id }, base,
-      { reps: Math.max(1, Math.min(99, Math.round(Number(entry.reps)) || 10)) });
+    return remembered(Object.assign({ id: entry.id, name: (I18N.en && I18N.en['exercise.' + entry.id]) || entry.id }, base,
+      { reps: Math.max(1, Math.min(99, Math.round(Number(entry.reps)) || 10)) }));
   }
   if (isCustomSheetId(id)) {
     const name = customNameFromKey(id).trim();
-    if (name) return Object.assign({ name }, base);
+    if (name) return remembered(Object.assign({ name }, base));
   }
   return null;
 }
@@ -23852,7 +24576,24 @@ function syncManifestCanon(m, forCompare) {
   return { p: pick(m && m.progress, P), m: pick(m && m.personal, M) };
 }
 /* Hash surového obsahu účtu (zmena v cloude / od poslednej synchronizácie). */
-function syncRawHash(payload) { return syncSha(syncStable({ s: syncScope(payload), m: syncManifestCanon(payload && payload.media, false) })); }
+/* Odvodené id vlastných cvikov (cx-<hash názvu>) sa do hashu nezapočítava: každé zariadenie ich vie spočítať,
+   takže ich doplnenie pri načítaní novej verzie nesmie vyzerať ako zmena obsahu účtu. */
+function syncHashScope(payload) {
+  const sc = syncScope(payload);
+  if (!sc || !sc.plans || typeof sc.plans !== 'object') return sc;
+  const plans = {};
+  for (const [pid, plan] of Object.entries(sc.plans)) {
+    if (!plan || !Array.isArray(plan.exercises)) { plans[pid] = plan; continue; }
+    plans[pid] = Object.assign({}, plan, { exercises: plan.exercises.map((ex) => {
+      if (!ex || typeof ex.id !== 'string' || ex.id.indexOf('cx-') !== 0 || builtinExerciseId(ex)) return ex;
+      const base = exerciseIdentity(ex);
+      if (!base || !(ex.id === base || (ex.id.indexOf(base + '-') === 0 && /^\d+$/.test(ex.id.slice(base.length + 1))))) return ex;
+      const copy = Object.assign({}, ex); delete copy.id; return copy;
+    }) });
+  }
+  return Object.assign({}, sc, { plans });
+}
+function syncRawHash(payload) { return syncSha(syncStable({ s: syncHashScope(payload), m: syncManifestCanon(payload && payload.media, false) })); }
 /* Hash obsahu, ktorý by toto zariadenie práve nahralo (rovnaká konštrukcia ako upload). */
 async function syncLocalPayloadHash() {
   const snap = JSON.parse(JSON.stringify(syncScope(state)));
@@ -24819,7 +25560,9 @@ function setupEvents() {
 
   on('btn-add-exercise', () => {
     if (editingPlan === null) return;
-    editDraft.push({ name: '', sets: 3, reps: 10, weight: 0, plannedFailureSets: [] });
+    const row = { name: '', sets: 3, reps: 10, weight: 0, plannedFailureSets: [] };
+    seedDraftRow(row);
+    editDraft.push(row);
     renderEditPanel();
   });
   on('btn-edit-save', saveEditPlan);

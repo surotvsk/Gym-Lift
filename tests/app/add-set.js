@@ -154,6 +154,7 @@ function check(name, ok, info) {
     check('session cleared', (await p.eval(`getSession()`)) === null);
 
     console.log('== old session shape (v96, no setDelta)');
+    await p.eval(`(state.plans['atest'].exercises[0].weight = 60, saveState(), true)`);   // v100: dokončený tréning vyššie už zapísal pracovnú váhu do plánu
     await p.eval(`(() => { state.activeSession = { id: 'old1', startedAt: Date.now() - 60000, planId: 'atest', planName: 'Add set test',
       completedSets: { 'cx-a1:0': true, 'cx-a1:1': true }, actualFailureSets: { 'cx-a1:1': true }, setWeights: { 'cx-a1:1': 65 } };
       selectedPlan = 'atest'; saveState(); return true; })()`);

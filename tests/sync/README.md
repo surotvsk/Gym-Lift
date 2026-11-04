@@ -93,3 +93,21 @@ account id that is not one of the two disposable test accounts.
 | RLS/privacy | account B cannot read A's backup row or media |
 | release update path | an installed v42 app updates through its service worker and keeps all data |
 | migration M1–M4 | validated owner links automatically; unknown owner asks (keep separate / link); storage failures during migration leave the original data intact; the v42 restore snapshot moves to IndexedDB only after a verified copy |
+
+### `old-version-roundtrip.js` (separate script, local stack only)
+
+| Scenario | What it proves |
+|---|---|
+| old-version round trip (v95 and v90, 19 checks each) | a v100 device saves shared exercise data (custom exercise in two plans, assisted row, one-sided row, `settings.exerciseMemory`, a real Finish) and uploads; an older build (git ref, served on a second port = another "device") loads the same account, changes an unrelated field and uploads without a conflict; v100 syncs again (also after a restart) with every id, assisted flag, weight and memory entry unchanged, and a fresh v100 device gets the same data. Editing a plan with assisted exercises in the old build would drop the mark; this test deliberately edits only an unrelated field. |
+
+Run (account A of the disposable local users; `GQ_OLD_REFS="ref1,ref2"` overrides the default old builds
+`821a538` (v95) and `5b20048` (v90)):
+
+```bash
+source ../claude-code/local-preview/test-env.sh
+C=../claude-code/local-preview/sync-creds
+GQ_CREDS_DIR=$C GQ_TEST_IDS=$(cat $C/ids.txt) GQ_PROTECTED_IDS=f425eb5f-6867-423a-9ca5-6fbd89f597e4 \
+  GQ_WORK=<short path> node tests/sync/old-version-roundtrip.js
+```
+
+It uses ports 8124 (this build) and 8143 (old build).

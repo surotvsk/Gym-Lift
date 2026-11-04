@@ -280,7 +280,8 @@ const CONTRAST_JS = `(() => {
       selectedPlan = 'rowtest'; saveState(); startWorkoutNow(); return true; })()`);
     const ROWS_JS = `(() => {
       const out = { rows: 0, bad: [] };
-      const wWord = t('session.weight'), rWord = t('session.reps');
+      const narrow = innerWidth <= 340;
+      const wWord = t(narrow ? 'session.weightShort' : 'session.weight'), rWord = t(narrow ? 'session.repsShort' : 'session.reps');
       for (const row of document.querySelectorAll('#exercise-list .set-item:not(.drop-item)')) {
         if (!row.offsetParent) continue;
         out.rows++;
@@ -305,8 +306,8 @@ const CONTRAST_JS = `(() => {
       for (const exEl of document.querySelectorAll('#exercise-list .exercise')) {
         const caps = [...exEl.querySelectorAll('.set-heads .set-cap')];
         if (!exEl.querySelector('.set-item')) continue;
-        if (exEl.querySelectorAll('.set-heads').length !== 1 || caps.length !== 2 || caps[0].textContent !== wWord || caps[1].textContent !== rWord) out.bad.push(['captions', caps.map((c) => c.textContent)]);
-        if (caps.some((c) => c.scrollWidth > c.clientWidth + 1 && false)) out.bad.push(['caption clipped']);
+        if (exEl.querySelectorAll('.set-heads').length !== 1 || caps.length !== 2 || caps[0].innerText !== wWord || caps[1].innerText !== rWord) out.bad.push(['captions', caps.map((c) => c.innerText)]);
+        if ((document.documentElement.style.zoom === '1' || !document.documentElement.style.zoom) && caps.some((c) => c.scrollWidth > c.clientWidth + 1)) out.bad.push(['caption clipped', caps.map((c) => c.innerText)]);
       }
       if (document.documentElement.scrollWidth > innerWidth + 1) out.bad.push(['page overflow']);
       return out; })()`;
@@ -317,7 +318,7 @@ const CONTRAST_JS = `(() => {
       for (const w of [320, 360, 393]) {
         await p.c.send('Emulation.setDeviceMetricsOverride', { width: w, height: 800, deviceScaleFactor: 1, mobile: true });
         for (const zoom of ['1', '1.3']) {
-          for (const lang of ['en', 'ar', 'fr']) {
+          for (const lang of ['en', 'ar', 'fr', 'sk', 'es', 'pt-BR']) {
             const r = await p.eval(`(document.documentElement.style.zoom = ${J(zoom)}, setLang(${J(lang)}), switchTab('trening'), renderTrening(), ${ROWS_JS})`);
             rowCount += r.rows;
             if (r.rows < 7) rowBad.push(['rows', mode, w, zoom, lang, r.rows]);
@@ -327,7 +328,7 @@ const CONTRAST_JS = `(() => {
       }
     }
     await p.eval(`(document.documentElement.style.zoom = '', setLang('en'), localStorage.removeItem('gymquest_theme'), applyTheme(), true)`);
-    check('every set row of a running workout shows Weight and Reps captions once per exercise, rows ≤ 64 px (72 at 130 %), inputs ≥ 16 px and ≥ 44 px tall, ✓ and 🔥 ≥ 44 px, nothing overflows (light/dark × 320/360/393 × 100/130 % × en/ar/fr, ' + rowCount + ' rows)', rowBad.length === 0 && rowCount > 0, rowBad.slice(0, 6));
+    check('every set row of a running workout shows Weight and Reps captions once per exercise, rows ≤ 64 px (72 at 130 %), inputs ≥ 16 px and ≥ 44 px tall, ✓ and 🔥 ≥ 44 px, nothing overflows (light/dark × 320/360/393 × 100/130 % × 6 languages, ' + rowCount + ' rows)', rowBad.length === 0 && rowCount > 0, rowBad.slice(0, 6));
     /* Drop séria (riadok .drop-item) nesmie dostať mriežku riadka série: štítok na jednom riadku, ovládače v jednom rade, nič nepreteká. */
     await p.eval(`(() => { selectedPlan = 'rowtest'; if (getSession()) getSession().planId = 'rowtest'; const ex = getPlan('rowtest').exercises[0]; addDrop(ex); addDrop(ex); renderTrening(); return true; })()`);
     const dropBad = [];

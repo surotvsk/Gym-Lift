@@ -58,8 +58,6 @@ function check(name, ok, info) {
     await typeW(1, '65');
     await wait(200);
     check('set 2 typed as 65: it and the later sets use 65, set 1 stays 60', J(await weights()) === J(['60', '65*', '65*', '65*']), await weights());
-    await typeW(1, '65');
-    await wait(200);
     check('changing a weight starts the workout', !!(await p.eval('getSession()')));
     check('the plan keeps 60 kg', (await p.eval(`state.plans['wtest'].exercises[0].weight`)) === 60);
     await typeW(3, '62,5');
@@ -92,7 +90,7 @@ function check(name, ok, info) {
     check('Bench: planned weight 60 kept', h[0].planned === 60, h[0]);
     check('Bench: weight = heaviest COMPLETED set (65, not the undone 62.5 or 60)', h[0].weight === 65, h[0]);
     check('Row (no change): saved exactly as before (no setWeights / plannedWeight)', h[1].weight === 40 && h[1].sw === undefined && h[1].planned === undefined, h[1]);
-    check('the plan still says 60 kg', (await p.eval(`state.plans['wtest'].exercises[0].weight`)) === 60);
+    check('the plan now holds the next working weight 65 kg (v100: Finish remembers it; history keeps 60 / 65 / 65 / 62.5)', (await p.eval(`state.plans['wtest'].exercises[0].weight`)) === 65);
     check('records use the heaviest set (65 kg)', (await p.eval(`personalRecords().some((r) => r.name === 'Bench test' && r.weight === 65)`)), await p.eval(`personalRecords().filter((r) => r.name === 'Bench test')`));
     await p.eval(`(document.getElementById('modal-result').hidden = true, switchTab('pokrok'), setPokrokView('progress'), true)`);
     await wait(300);
@@ -118,7 +116,7 @@ function check(name, ok, info) {
     await p.eval(`(() => { switchTab('trening'); selectedPlan = 'wtest'; renderTrening(); return true; })()`);
     for (const lang of ['sk', 'en', 'es', 'pt-BR', 'fr', 'ar']) {
       await p.eval(`(setLang(${J(lang)}), switchTab('trening'), renderTrening(), true)`);
-      const r = await p.eval(`({ cap: document.querySelector('.set-heads .set-cap').textContent, key: t('session.weight'), aria: document.querySelector('input.set-weight').getAttribute('aria-label'), dir: document.documentElement.dir })`);
+      const r = await p.eval(`({ cap: document.querySelector('.set-heads .set-cap .cap-f').textContent, key: t('session.weight'), aria: document.querySelector('input.set-weight').getAttribute('aria-label'), dir: document.documentElement.dir })`);
       check(lang + ': labels translated', r.cap === r.key && !/session\./.test(r.cap + r.aria), r);
       if (lang === 'ar') {
         check('ar: right-to-left', r.dir === 'rtl');

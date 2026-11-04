@@ -83,6 +83,7 @@ async function waitReached(p, name, ms) {
 }
 async function release(p, name) { return p.eval(`__GQ_TEST__.release('${name}')`); }
 async function counts(p) { return p.eval('Object.assign({}, __GQ_TEST__.counts)'); }
+const J_ = JSON.stringify;
 const cloudHist = (row) => (row && row.payload && row.payload.history ? row.payload.history.map((h) => h.id).sort() : []);
 const cloudMedia = (row) => {
   const m = (row && row.payload && row.payload.media) || {};
@@ -498,6 +499,67 @@ scenario('no false conflict: device-only saves (running workout) do not block pu
   const b = await syncNow(d2.p);
   check('account change pulled without a conflict', b.hist.indexOf('w3') >= 0 && !b.meta.conflict, { hist: b.hist, c: b.meta.conflict });
   check('running workout kept (device-only)', b.activeSession === true);
+});
+
+scenario('identity: two devices, same ids, no conflict', async (ctx) => {
+  /* Zariadenie A má stav „zo starej verzie“: vlastné riadky bez id (uložené bez backfillu), uložené v cloude.
+     Zariadenie B (rovnaký účet) aj A po reštarte načítajú novú verziu: rovnaké id, žiadny konflikt, najviac jedna revízia. */
+  const d1 = await device('d1');
+  await signIn(d1, ctx.A);
+  await d1.p.eval(`(() => { const mk = (id, name) => ({ id, builtin: false, customName: 'Plan ' + id, location: null,
+      exercises: [{ name, sets: 3, reps: 10, weight: 12 }, { name: 'Assisted dips', sets: 3, reps: 8, weight: 20 }] });
+    state.plans.ia = mk('ia', 'My Curl'); state.plans.ib = mk('ib', ' my  curl ');
+    state.planOrder.push('ia', 'ib'); __gq.addWorkout('w1', '2026-09-01'); saveState(); return true; })()`);
+  await syncNow(d1.p);
+  const rev0 = (await ctx.obsA.row()).revision;
+  const ids = (p) => p.eval(`['ia','ib'].map((id) => state.plans[id].exercises.map((e) => e.id || null))`);
+  const d2 = await device('d2');
+  await signIn(d2, ctx.A);
+  const s2 = await syncNow(d2.p);
+  const i2 = await ids(d2.p);
+  check('device B: custom rows got cx- ids, equal for equal normalized names', /^cx-/.test(i2[0][0]) && i2[0][0] === i2[1][0] && i2[0][1] !== i2[0][0], i2);
+  check('device B: no conflict after loading', !s2.meta.conflict && s2.hist.indexOf('w1') >= 0, { c: s2.meta.conflict, h: s2.hist });
+  await relaunch(d1, true);
+  const s1 = await syncNow(d1.p);
+  const i1 = await ids(d1.p);
+  check('device A after restart computes the same ids as B', J_(i1) === J_(i2), { i1, i2 });
+  check('device A: no conflict, in sync', !s1.meta.conflict && s1.status === 'sync.st.synced', { c: s1.meta.conflict, st: s1.status });
+  await syncNow(d2.p);
+  const row = await ctx.obsA.row();
+  const cloudIds = (row.payload.plans && ['ia', 'ib'].map((id) => row.payload.plans[id].exercises.map((e) => e.id || null))) || null;
+  console.log('  info: revision ' + rev0 + ' -> ' + row.revision + '; cloud ids ' + J_(cloudIds));
+  check('at most one new revision for the whole identity upgrade', row.revision <= rev0 + 1, { rev0, rev: row.revision });
+  check('cloud copy carries the same ids (or none if nobody needed to upload)', cloudIds && (J_(cloudIds) === J_(i1) || cloudIds.every((pl) => pl.every((x) => x === null))), cloudIds);
+  check('no conflict on either side at the end', !(await snap(d1.p)).meta.conflict && !(await snap(d2.p)).meta.conflict);
+});
+
+scenario('identity: upgraded device dirty only by a running workout, other device uploads -> no conflict', async (ctx) => {
+  /* Zariadenie A: stav „zo starej verzie“ (vlastné riadky bez id) synchronizovaný do cloudu. Po aktualizácii
+     (reštart) A doplní odvodené id a je „špinavé“ iba kvôli rozbehnutému tréningu (dáta zariadenia).
+     Iné zariadenie nahrá skutočnú zmenu: A ju stiahne bez konfliktu a rozbehnutý tréning zostane. */
+  const d1 = await device('d1');
+  await signIn(d1, ctx.A);
+  await d1.p.eval(`(() => { state.plans.ia = { id: 'ia', builtin: false, customName: 'Plan ia', location: null,
+      exercises: [{ name: 'My Curl', sets: 3, reps: 10, weight: 12, plannedFailureSets: [] }] };
+    state.planOrder.push('ia'); __gq.addWorkout('w1', '2026-09-01'); saveState(); return true; })()`);
+  /* Reštart normalizuje stav ako bežná stará verzia; potom sa odvodené id odstráni (stará verzia ho nepozná). */
+  await relaunch(d1, true);
+  await d1.p.eval(`(() => { delete state.plans.ia.exercises[0].id; saveState(); return true; })()`);
+  await syncNow(d1.p);
+  const d2 = await device('d2');
+  await signIn(d2, ctx.A);
+  await syncNow(d2.p);
+  await relaunch(d1, true);
+  const idA = await d1.p.eval(`state.plans.ia.exercises[0].id || null`);
+  check('A upgraded: custom row has a derived cx- id locally', /^cx-/.test(idA), idA);
+  await d1.p.eval(`(() => { startWorkoutNow(); syncClearTimers(); return !!state.activeSession; })()`);
+  const a = await snap(d1.p);
+  check('A is dirty only through device-only data (running workout)', a.activeSession && a.dirty, { s: a.activeSession, d: a.dirty });
+  await d2.p.eval(`__gq.addWorkout('w-real', '2026-09-21')`); await syncNow(d2.p);
+  const b = await syncNow(d1.p);
+  check('A pulled the real change without a conflict', b.hist.indexOf('w-real') >= 0 && !b.meta.conflict, { h: b.hist, c: b.meta.conflict, st: b.status });
+  check('running workout intact after the pull', b.activeSession === true);
+  check('custom row id unchanged after the pull', (await d1.p.eval(`state.plans.ia.exercises[0].id || null`)) === idA);
 });
 
 scenario('D10: focus/online storm during first load does not restart or duplicate it', async (ctx) => {

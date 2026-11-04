@@ -66,7 +66,7 @@ everything on your own device.
 - **Plain-language explanations** — short, non-judgemental notes on measuring body weight, why daily
   changes are not a trend, what duration / sets / reps / progressive overload mean, and what the
   calorie estimate and your own nutrition numbers can and cannot tell you.
-- **Exercise library** — 48 built-in exercises with primary and secondary muscles, movement pattern,
+- **Exercise library** — 50 built-in exercises with primary and secondary muscles, movement pattern,
   difficulty, equipment, gym/home/outdoor availability, how-to steps, common mistakes, similar exercises
   with the reason each was suggested, and a **demonstration gallery** (a licensed video or photograph
   where one is available, otherwise an original illustration or an honest *unavailable* state) you can swipe through.
@@ -337,6 +337,37 @@ the same reps, and you can change both (only that drop set changes) or remove it
 not changed. Only completed drop sets are saved; they are extra work, so they do not change the
 "sets done" count or the XP. History, the Calendar and shared workouts show them as
 *Drop sets: 50 kg × 8 · 40 kg × 6*.
+
+**Your working weight is remembered (v100).** An exercise is the same exercise wherever it appears: a
+library exercise by its id, and a custom exercise by its name (ignoring capital letters, extra spaces and
+how the accents are typed), so *My curl* in two of your plans is one exercise. When you press **Finish**
+(never Discard), the next working weight for each exercise is the **highest weight you used in at least
+two completed sets**; if no weight was used twice, it is the weight of the last completed set. Drop sets
+are not counted. Examples: *40 / 45 / 45* gives 45, *60 / 60 / 50* gives 60, *60 / 60 / 80* gives 60,
+*50 / 55 / 60* gives 60, and *60 plus a 40 kg drop set* gives 60. For an exercise done one side at a time
+the rule is applied per side and the heavier side wins. The weight is written into the first row of that
+exercise in **every** plan (a second row of the same exercise in one plan, such as a warm-up or pyramid
+set, keeps its own value) and kept in your settings, so it syncs to your other devices. Sets and reps stay
+per plan. **Quick workout** starts from the remembered weight too. A workout in progress uses the values
+it started with, so a change that arrives from another device never alters a running session. If you
+change the weight, one-sided setting or assisted mark of an exercise in the plan editor *during* a workout,
+the running workout keeps its starting values, the new values apply from the next workout, and Finish does
+not overwrite them with the remembered weight (your newer edit wins). **Undo this workout** also puts the
+remembered weights back to what they were before Finish (a mistyped 600 does not stay), unless you have
+changed that weight since.
+
+**Shared settings in the plan editor.** The weight, **Train both sides separately** and the starting side
+of an exercise are shared with your other plans (the editor says *Shared with your other plans*).
+A new row starts from the remembered values when you leave the name field; values you typed
+yourself are never overwritten.
+
+**Assisted exercises.** The library has **Assisted dips (machine)** and **Assisted pull-ups (machine)**, and
+any exercise can be marked with the **Assisted exercise** switch in the editor. For these the number is the
+**Assistance kg** the machine gives you, so less assistance is progress: the "last time" comparison says
+*Same assistance as last time* when it did not change, and the working weight is the lowest assistance used
+in at least two sets. Assistance never creates personal records, milestones or a "best lift". An assisted
+row has its own identity, even when it is named like an ordinary exercise (assisted *Dips* is not *Dips*).
+Syncing with older app versions keeps these values (checked against v90 and v95), but *editing* a plan that has assisted exercises in an older version (for example the Android app before this update) removes the assisted mark.
 
 ### Progress
 Totals for this week, this month and all time, your personal records, and the full history of
@@ -663,11 +694,11 @@ names look the same.
 
 ## The exercise library
 
-GymQuest ships with a built-in catalogue of **48 exercises** — the 13 that have always powered the
-built-in plans, plus 20 added so the app is genuinely useful away from a gym, and 15 further gym
+GymQuest ships with a built-in catalogue of **50 exercises** — the 13 that have always powered the
+built-in plans, plus 20 added so the app is genuinely useful away from a gym, 15 further gym
 exercises (cable curl, machine chest press, pec deck, incline dumbbell press, front raise, wide-grip
 lat pulldown, dumbbell and cable pullover, dumbbell triceps extension, single-arm cable triceps extension, hack
-squat, Romanian deadlift, leg extension, adductor machine and abductor machine). There is
+squat, Romanian deadlift, leg extension, adductor machine and abductor machine) and 2 assisted machine exercises (assisted dips and assisted pull-ups). There is
 **no server, no download and no external service**: the catalogue lives in the app's own code, so it
 works offline from the first launch and adds nothing at all to your stored data.
 

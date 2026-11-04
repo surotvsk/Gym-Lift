@@ -2357,6 +2357,12 @@ textarea.modal-input { resize: vertical; }
 
 .edit-side-start[hidden] { display: none; }
 
+/* Asistovaný cvik: prepínač v editore plánu (neaktívny pri asistovanom cviku z knižnice) */
+.edit-assist { flex: 1 1 100%; }
+.edit-assist[hidden] { display: none; }
+.edit-assist .edit-side-toggle { min-height: 44px; }
+.edit-assist .edit-side-toggle input:disabled { opacity: .6; cursor: default; }
+
 .side-chip {
   flex: 1 1 0;
   min-width: 0;
@@ -4771,6 +4777,12 @@ html.ios .app-main { padding-top: max(34px, calc(env(safe-area-inset-top, 0px) +
 }
 .exercise .set-heads { padding: 0 6px; margin-bottom: -2px; }
 .exercise .set-heads .set-cap { font-size: 11px; font-weight: 600; opacity: .7; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding-inline-start: 4px; }
+/* Úzky telefón (≤ 340 px): stĺpec má ~55 px, takže sa ukáže krátky popis (Kg / Opak. / Asist.) */
+.exercise .set-heads .cap-s { display: none; }
+@media (max-width: 340px) {
+  .exercise .set-heads .cap-f { display: none; }
+  .exercise .set-heads .cap-s { display: inline; }
+}
 .exercise .set-item:not(.drop-item) { padding: 4px 6px; border-radius: 16px; border: 1px solid transparent; }
 .exercise .set-item:not(.drop-item).set-done { background: color-mix(in srgb, var(--b-sq-on-bg) 22%, transparent); border-color: var(--b-sq-on-bg); }
 .exercise .set-item.side-row { flex: none; }
@@ -4826,3 +4838,7 @@ html.ios .app-main { padding-top: max(34px, calc(env(safe-area-inset-top, 0px) +
 /* Pridať cvik do tréningu + tlačidlá rýchleho tréningu v liste cviku */
 #btn-session-add-exercise { margin-top: var(--sp-3, 12px); min-height: 48px; }
 .quick-action { margin: 0 0 var(--sp-2, 8px); min-height: 48px; }
+
+/* Poznámka v editore: cvik je spoločný s inými plánmi */
+.edit-shared-note { flex: 1 1 100%; margin-top: var(--sp-1); font-size: var(--fs-sm); line-height: 1.3; color: var(--text-dim); overflow-wrap: anywhere; }
+.edit-shared-note[hidden] { display: none; }
