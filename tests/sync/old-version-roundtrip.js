@@ -45,8 +45,8 @@ async function R(p) { await p.ready(); await p.eval(HELPERS); }
 const CORE = `(() => {
   const plans = {}; for (const id of Object.keys(state.plans)) { const pl = state.plans[id]; plans[id] = (pl.exercises || []).map((e) => ({ id: e.id || null, name: e.name, weight: e.weight, sets: e.sets, reps: e.reps, assisted: e.assisted === true, unilateral: e.unilateral === true, startSide: e.startSide || null })); }
   const mem = JSON.parse(JSON.stringify(state.settings.exerciseMemory || null));
-  const hist = state.history.map((h) => ({ id: h.id, ex: (h.exercises || []).map((e) => ({ n: e.name, id: e.exId || null, sw: e.setWeights || null, a: e.assisted === true })) }));
-  return JSON.stringify({ plans, mem, hist }); })()`;
+  const hist = state.history.map((h) => ({ id: h.id, xp: h.xp, ex: (h.exercises || []).map((e) => ({ n: e.name, id: e.exId || null, sw: e.setWeights || null, a: e.assisted === true })) }));
+  return JSON.stringify({ plans, mem, hist, ach: JSON.parse(JSON.stringify(state.achievements || {})) }); })()`;
 
 /* Pripraví stav vo v100: identita z názvu (rovnaký názov v dvoch plánoch s inou veľkosťou/medzerami),
    asistovaný riadok, pamätaná váha po skutočnom Dokončiť. */
@@ -129,6 +129,9 @@ async function roundtrip({ ref, oldRoot, newSrv, oldSrv, A, obsA }) {
   check('[' + label + '] v100: exerciseMemory identical (values and "at")', canon(core1.mem) === canon(core0.mem), { a: core0.mem, b: core1.mem });
   check('[' + label + '] v100: workout history (set weights, ids) intact', J(core1.hist.filter((h) => h.id !== 'old-w1')) === J(core0.hist), { a: core0.hist, b: core1.hist });
   check('[' + label + '] v100: custom ids still match identity of the name, assisted row still assisted', await n.p.eval(`exerciseIdentity(state.plans.rt1.exercises[0]) === state.plans.rt1.exercises[0].id && exerciseIdentity(state.plans.rt2.exercises[0]) === state.plans.rt1.exercises[0].id && state.plans.rt1.exercises[1].assisted === true`));
+  /* úspechy (id -> dátum): nič z v101 stavu sa cez starý build nestratí ani nepreddatuje */
+  const achLost = (from, to) => Object.keys(from).filter((k) => to[k] !== from[k]);
+  check('[' + label + '] v101: every achievement from before the old-build round trip is still there with the same date (' + Object.keys(core0.ach).length + ')', achLost(core0.ach, core1.ach).length === 0, { lost: achLost(core0.ach, core1.ach) });
   /* po reštarte (čistý štart z uloženého stavu) a čerstvé zariadenie v100 z účtu */
   n.p = await n.b.restart(true); await n.p.navigate('http://localhost:' + NEW_PORT + '/'); await R(n.p);
   await n.p.eval('__gq.syncNow()');
@@ -139,6 +142,8 @@ async function roundtrip({ ref, oldRoot, newSrv, oldSrv, A, obsA }) {
   await R(f.p);
   await waitFor(async () => (await f.p.eval('__gq.snap()')).hist.includes('old-w1'), 90000, 'fresh v100 device loaded');
   const fresh = JSON.parse(await f.p.eval(CORE));
+  check('[' + label + '] v101 XP is derived: the old-build workout (stored xp 20, 3 sets) counts 36 and stored xp stays 20; fresh device has the same total', (await n.p.eval(`historyEntryXp(state.history.find((h) => h.id === 'old-w1'))`)) === 36 && (await n.p.eval(`state.history.find((h) => h.id === 'old-w1').xp`)) === 20 && (await n.p.eval('totalXP()')) === (await f.p.eval('totalXP()')));
+  check('[' + label + '] a fresh device: earlier achievements present with the same dates, and equal to the restarted v101 device (idempotent)', achLost(core0.ach, fresh.ach).length === 0 && J(Object.keys(fresh.ach).sort()) === J(Object.keys(core1.ach).sort()), { fresh: fresh.ach, core1: core1.ach });
   check('[' + label + '] a fresh v100 device loading the account gets the same plans, memory and history', J(fresh.plans) === J(core1.plans) && canon(fresh.mem) === canon(core1.mem), { a: core1.mem, b: fresh.mem });
   check('[' + label + '] v100 devices: no page errors', n.p.errors.length === 0 && f.p.errors.length === 0, [n.p.errors, f.p.errors]);
   const cEnd = await obsA.row();

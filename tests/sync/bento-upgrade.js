@@ -126,22 +126,31 @@ function deepDiff(a, b, pth, out) {
   else out.push(pth + ': ' + String(J(a)).slice(0, 80) + ' → ' + String(J(b)).slice(0, 80));
   return out;
 }
+/* v101 odvodzuje úspechy z novej tabuľky: pri aktualizácii (aj návrate) pribudnú/ubudnú len kľúče state.achievements
+   (id -> dátum), nikdy sa nič iné nemení. Porovnanie ich preto vynecháva; hodnoty kontrolujú achievements-v2 / xp-recalc. */
+const noAch = (txt) => { try { const o = JSON.parse(txt); if (o && typeof o === 'object') delete o.achievements; return o; } catch (e) { return txt; } };
 function lsDiff(before, after) {
-  const keys = [...new Set([...Object.keys(before.ls), ...Object.keys(after.ls)])].filter((k) => before.ls[k] !== after.ls[k]);
-  return keys.map((k) => { try { return k + deepDiff(JSON.parse(before.ls[k]), JSON.parse(after.ls[k]), '', []).join(' | '); } catch (e) { return k + ' (raw)'; } });
+  const keys = [...new Set([...Object.keys(before.ls), ...Object.keys(after.ls)])].filter((k) => before.ls[k] !== after.ls[k] && J(noAch(before.ls[k])) !== J(noAch(after.ls[k])));
+  return keys.map((k) => { try { return k + deepDiff(noAch(before.ls[k]), noAch(after.ls[k]), '', []).join(' | '); } catch (e) { return k + ' (raw)'; } });
 }
 function fingerprint(s) {
   return { lsKeys: Object.keys(s.ls).length, lsHash: sha(J(Object.keys(s.ls).sort().map((k) => [k, s.ls[k]]))), media: Object.keys(s.media).length,
     mediaHash: sha(J(s.media)), counts: s.counts, dbs: s.dbs };
 }
+/* Úspechy (id -> dátum) zo snímky: tie sú vynechané z bajtového porovnania, preto sa kontrolujú zvlášť */
+function achOf(snap) { try { return JSON.parse(snap.ls[snap.stateKey]).achievements || {}; } catch (e) { return {}; } }
 function compareSnaps(label, before, after, opts) {
   opts = opts || {};
+  const b = achOf(before), a = achOf(after);
+  const lost = Object.keys(b).filter((k) => a[k] !== b[k]);
+  check(label + ': every earlier achievement is still there with the same date (' + Object.keys(b).length + ')', lost.length === 0, lost.map((k) => k + ': ' + b[k] + ' → ' + a[k]));
+  if (opts.sameAch) check(label + ': achievements identical to the first snapshot after the update (idempotent)', J(achOf(opts.sameAch)) === J(a), { first: achOf(opts.sameAch), now: a });
   const d = lsDiff(before, after);
   const allowed = opts.allow ? d.filter((x) => !opts.allow.some((re) => re.test(x))) : d;
   check(label + ': every stored value is byte-identical (' + Object.keys(before.ls).length + ' localStorage keys)', allowed.length === 0, allowed);
   check(label + ': photos and personal media byte-identical (SHA-256 of ' + Object.keys(before.media).length + ' blobs) with the same metadata',
     J(before.media) === J(after.media) && J(before.progMeta) === J(after.progMeta) && J(before.mediaMeta) === J(after.mediaMeta), { b: before.media, a: after.media });
-  check(label + ': counts, ids and the IndexedDB databases are the same', J(before.counts) === J(after.counts) && J(before.dbs) === J(after.dbs) && before.stateKey === after.stateKey, { b: [before.counts, before.dbs], a: [after.counts, after.dbs] });
+  check(label + ': counts, ids and the IndexedDB databases are the same', J(Object.assign({}, before.counts, { achievements: 0 })) === J(Object.assign({}, after.counts, { achievements: 0 })) && J(before.dbs) === J(after.dbs) && before.stateKey === after.stateKey, { b: [before.counts, before.dbs], a: [after.counts, after.dbs] });
   if (before.session !== null || after.session !== null) check(label + ': the active workout (session, set marks) is the same', before.session === after.session, { b: before.session, a: after.session });
   report.push({ scenario: scenarioName, step: label, before: fingerprint(before), after: fingerprint(after), changedKeys: d });
 }
@@ -203,7 +212,8 @@ scenario('guest: local data + active workout → update → restart → offline 
   const keysG = await d.p.eval('caches.keys()');
   check('after closing and reopening the app the redesign (' + builds.newVer + ') runs from its own cache', keysG.indexOf('gymquest-' + builds.newVer) >= 0 && keysG.filter((k) => /^gymquest-v\d+$/.test(k)).length === 1, keysG);
   check('the new build is running', await isBento(d.p));
-  compareSnaps('guest update', before, await d.p.eval(SNAP_JS));
+  const guestUpd = await d.p.eval(SNAP_JS);
+  compareSnaps('guest update', before, guestUpd);
   const ui = await d.p.eval(`(() => { renderAll(); switchTab('dnes'); const next = document.getElementById('bt-next-label').textContent; switchTab('trening');
     const tiles = [...document.querySelectorAll('.plan-chips .chip-name')].map((x) => x.textContent);
     const done = document.querySelectorAll('#exercise-list .set-btn.done').length; switchTab('pokrok'); setPokrokView('progress');
@@ -211,10 +221,10 @@ scenario('guest: local data + active workout → update → restart → offline 
   check('UI shows the data: own plan tile, workout in progress on Today with its 2 done sets, history', ui.tiles.includes('Moje nohy g') && /Prebieha/.test(ui.next) && ui.done === 2 && ui.hist, ui);
 
   d.p = await d.b.restart(true); await d.p.navigate(BASE); await R(d.p);
-  compareSnaps('guest after browser restart', before, await d.p.eval(SNAP_JS));
+  compareSnaps('guest after browser restart', before, await d.p.eval(SNAP_JS), { sameAch: guestUpd });
   d.p = await d.b.restart(true); await d.p.offline(true); await d.p.navigate(BASE); await R(d.p);
   check('opens offline from the cache in the redesign', await isBento(d.p));
-  compareSnaps('guest offline start', before, await d.p.eval(SNAP_JS));
+  compareSnaps('guest offline start', before, await d.p.eval(SNAP_JS), { sameAch: guestUpd });
   await d.p.offline(false);
 
   server.setRoot('back');
@@ -312,7 +322,7 @@ scenario('restore: a cloud backup made by the old app loads completely into the 
   await d.p.eval('__gq.syncNow()');
   await d.p.reload(); await R(d.p); await d.p.eval('__gq.syncNow()');   // stav po bežnom načítaní starej verzie
   const DATA = `(() => { const s = state; return JSON.stringify({ history: s.history, plans: s.plans, planOrder: s.planOrder, measurements: s.measurements, foodLog: s.foodLog,
-    activities: s.activities, excusedWeeks: s.excusedWeeks, achievements: s.achievements, goal: s.settings.weeklyGoal, food: s.settings.foodLogEnabled }); })()`;
+    activities: s.activities, excusedWeeks: s.excusedWeeks, goal: s.settings.weeklyGoal, food: s.settings.foodLogEnabled }); })()`;
   const src = await d.p.eval(DATA);
   const srcMedia = await d.p.eval('__gq.mediaHashes()');
   const c0 = await cloudState(obsA);
@@ -352,7 +362,7 @@ scenario('older formats and export files give identical results in the old and t
       await d.p.reload(); await R(d.p);
       await d.p.eval('(saveState(), true)');   // prvý zápis: nečitateľné dáta sa musia najprv odložiť bokom
       const out = await d.p.eval(`(() => { const o = {}; for (const k of ['gymquest', 'gymquest_unreadable', 'gymquest_real']) o[k] = localStorage.getItem(k); let s = null; try { s = JSON.parse(o.gymquest || 'null'); } catch (e) { s = null; }
-        return { raw: s ? null : o.gymquest, state: s && { version: s.version, plans: s.plans, planOrder: s.planOrder, history: s.history, excusedWeeks: s.excusedWeeks, achievements: s.achievements, goal: s.settings && s.settings.weeklyGoal }, unreadable: o.gymquest_unreadable }; })()`);
+        return { raw: s ? null : o.gymquest, state: s && { version: s.version, plans: s.plans, planOrder: s.planOrder, history: s.history, excusedWeeks: s.excusedWeeks, goal: s.settings && s.settings.weeklyGoal }, unreadable: o.gymquest_unreadable }; })()`);
       results[root + ':' + name] = out;
       d.b.killHard(true);
     }
@@ -369,8 +379,8 @@ scenario('older formats and export files give identical results in the old and t
   const IMPORT = (text) => `(async () => { importFile(new File([${J(text)}], 'backup.json', { type: 'application/json' }));
     for (let i = 0; i < 100 && document.getElementById('modal-generic').hidden; i++) await new Promise((r) => setTimeout(r, 50));
     document.getElementById('btn-generic-ok').click(); await new Promise((r) => setTimeout(r, 300));
-    const s = state; return JSON.stringify({ history: s.history, plans: s.plans, planOrder: s.planOrder, measurements: s.measurements, foodLog: s.foodLog, activities: s.activities, excusedWeeks: s.excusedWeeks, achievements: s.achievements }); })()`;
-  const PICK = (text) => { const s = JSON.parse(text); return J({ history: s.history, plans: s.plans, planOrder: s.planOrder, measurements: s.measurements, foodLog: s.foodLog, activities: s.activities, excusedWeeks: s.excusedWeeks, achievements: s.achievements }); };
+    const s = state; return JSON.stringify({ history: s.history, plans: s.plans, planOrder: s.planOrder, measurements: s.measurements, foodLog: s.foodLog, activities: s.activities, excusedWeeks: s.excusedWeeks }); })()`;
+  const PICK = (text) => { const s = JSON.parse(text); return J({ history: s.history, plans: s.plans, planOrder: s.planOrder, measurements: s.measurements, foodLog: s.foodLog, activities: s.activities, excusedWeeks: s.excusedWeeks }); };
   const files = {};
   for (const from of ['old', 'new']) {
     server.setRoot(from);

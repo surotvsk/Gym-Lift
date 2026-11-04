@@ -158,6 +158,48 @@ scenario('D1+auto-load: fresh device with setup+reload before sign-in loads ever
     && s3.hist.join() === 'w1,w2' && s3.media['p:p1'] === s1.media['p:p1'] && s3.media['m:m1'] === s1.media['m:m1'] && !s3.notice, { k, j: s3.journal, media: s3.media });
 });
 
+scenario('upgraded device: pristine device with a v100 plan-only badge (fourplans) adopts the cloud', async (ctx) => {
+  const { d: d1 } = await seedA(ctx, 'd1');
+  const row = await ctx.obsA.row();
+  const d2 = await device('d2');
+  await d2.p.eval('confirmSetup(), true');
+  await d2.p.reload(); await d2.p.eval(HELPERS);
+  await d2.p.eval(`(() => { state.achievements = { fourplans: '2026-01-01', customplan: '2026-01-01' }; persistState(); return true; })()`);
+  await signIn(d2, ctx.A);
+  const s2 = await snap(d2.p);
+  check('no link prompt / no conflict for a device with only plan-derived old badges', !s2.link && !s2.meta.conflict, { link: s2.link, conflict: s2.meta && s2.meta.conflict });
+  check('cloud data adopted (workouts loaded, nothing uploaded)', s2.hist.join() === 'w1,w2' && (await ctx.obsA.row()).revision === row.revision, s2.hist);
+  const cloudAch = (await ctx.obsA.row()).payload.achievements || {}, ach2 = await d2.p.eval('JSON.parse(JSON.stringify(state.achievements))');
+  const lostAch = Object.keys(cloudAch).filter((k) => ach2[k] !== cloudAch[k]);
+  check('every achievement of the cloud account is on the adopting device with the same date (' + Object.keys(cloudAch).length + ')', lostAch.length === 0, { cloudAch, ach2 });
+  check('no page exceptions', d1.p.errors.length === 0 && d2.p.errors.length === 0, d1.p.errors.concat(d2.p.errors));
+});
+
+scenario('XP recalculation: pre-update account (stored v100 xp) -> every device derives the same total; history and settings unchanged', async (ctx) => {
+  /* Účet z verzie pred v101: uložené xp = 20 + 2/séria. Nový build ho nepoužíva, počíta XP z histórie; nič sa nezapisuje. */
+  const d1 = await device('d1');
+  await signIn(d1, ctx.A);
+  await d1.p.eval(`(() => { __gq.addWorkout('w1', '2026-09-01'); __gq.addWorkout('w2', '2026-09-01'); __gq.addWorkout('w3', '2026-09-01'); state.history[0].xp = 2919; saveState(); return true; })()`);
+  await syncNow(d1.p);
+  const row0 = await ctx.obsA.row();
+  const info = (p) => p.eval(`JSON.stringify({ ach: Object.keys(state.achievements || {}).sort().map((k) => [k, state.achievements[k]]), xp: totalXP(), per: state.history.map((h) => [h.id, h.xp, historyEntryXp(h)]), lv: levelInfo().level })`).then(JSON.parse);
+  const i1 = await info(d1.p);
+  check('derived per entry: stored xp (2919/20/20) ignored, 36 + 36 + 0 (daily limit: 3rd entry of the day)', J_(i1.per) === J_([['w1', 2919, 36], ['w2', 20, 36], ['w3', 20, 0]]), i1.per);
+  const d2 = await device('d2');
+  await signIn(d2, ctx.A);
+  const s2 = await syncNow(d2.p);
+  const i2 = await info(d2.p);
+  check('second device: identical total, per-entry XP, level and achievements (ids + dates); no conflict', J_(i2) === J_(i1) && !s2.meta.conflict && s2.status === 'sync.st.synced', { i1, i2, st: s2.status });
+  await relaunch(d1, true);
+  const s1 = await syncNow(d1.p);
+  check('first device after restart: same numbers, in sync', J_(await info(d1.p)) === J_(i1) && !s1.meta.conflict, s1.status);
+  const row = await ctx.obsA.row();
+  const achCloud = row.payload.achievements || {}, achOn = Object.fromEntries(i1.ach);
+  check('achievements: every id of the first snapshot on the device is in the cloud copy with the same date, and the restart changed none', Object.keys(achCloud).every((k) => achOn[k] === achCloud[k]) && J_((await info(d1.p)).ach) === J_(i1.ach), { achCloud, achOn });
+  check('nothing uploaded by the recalculation: cloud revision unchanged, stored xp fields intact, no xpLegacy / xpV2 key', row.revision === row0.revision && J_(row.payload.history.map((h) => h.xp)) === J_([2919, 20, 20]) && !('xpLegacy' in row.payload.settings) && !('xpV2' in row.payload.settings), { r0: row0.revision, r: row.revision, xp: row.payload.history.map((h) => h.xp) });
+  check('no page exceptions', ![d1, d2].some((d) => d.p.errors.length), [d1, d2].map((d) => d.p.errors));
+});
+
 scenario('D2: failed media upload stays protected (restart, newer cloud) and never publishes a dangling reference', async (ctx) => {
   const { d: d1 } = await seedA(ctx, 'd1');
   await d1.p.eval(`__GQ_TEST__.fail('upload:object', 0, 'p2'), true`);

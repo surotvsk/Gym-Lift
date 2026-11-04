@@ -39,8 +39,8 @@ everything on your own device.
   progress survives editing a plan, switching language or tabs, and even a page reload.
 - **Personal records and milestones** — best weight per exercise plus an automatic 5 kg milestone
   badge for every personal record you set.
-- **XP, levels and achievements** — earn XP for finishing workouts and completing sets, level up,
-  and unlock achievements automatically.
+- **XP, levels and achievements** — earn XP for finishing workouts and completing sets (at most
+  2 rewarded workouts a day), level up on a rising curve, and unlock achievements automatically.
 - **Weekly streaks** — consistency is measured in weeks. Reach your goal and the streak grows.
 - **Rest timer** — 60 / 90 / 120 second presets plus a custom time (minutes + seconds, up to 60
   minutes), with an optional gentle gong when the countdown reaches zero. The sound is **off by
@@ -379,8 +379,8 @@ cramped. *Progress* is the original content described above; *Body* and *Food* a
 additions described under [Body, calories, food and information](#body-calories-food-and-information).
 
 ### Motivation
-Your XP total, your level with a progress bar, and every achievement — including the 5 kg milestone
-badges earned for personal records.
+Your XP total, your level with a progress bar, and every achievement, plus the badges earned under the
+older list (**Earlier badges**).
 
 ---
 
@@ -395,11 +395,21 @@ badges earned for personal records.
 - **Streak** — counted in weeks: hitting your weekly goal extends the streak by one week.
 - **Excused weeks** — weeks can no longer be excused (the **Busy week?** tile was removed). Weeks excused
   in earlier versions still keep the streak alive without adding to it; the stored list (`excusedWeeks`) is kept.
-- **XP and levels** — every workout gives **20 XP** plus **2 XP** for each completed set. You need
-  100 XP to reach the next level.
-- **Achievements** — unlocked automatically and stored with the date they were earned. Each exercise
-  unlocks 5 kg milestones as you set new personal records (for example 50 kg, then 55 kg, then
-  60 kg…).
+- **XP and levels** (v101 rules) — a finished workout gives **30 XP** if it has at least 3 completed
+  sets, **plus 2 XP for each completed set** (counted up to 24 sets), so a workout is
+  worth at most **78 XP**. Only the **first 2 finished workouts of a calendar day** give XP; further ones
+  are saved normally with 0 XP. **Activities** (run/walk/cycle) give 1 XP per 2 active minutes from
+  10 minutes, up to 30 XP, also only for the first 2 per day. The cost of the next level is
+  **80 + 20 × your current level** (L0→1: 80 XP, L1→2: 100 XP, …; level 10 = 1,700 XP, level 29 = 10,440 XP).
+  **Recalculation:** with v101 everyone's XP and level are recalculated with these rules from the saved
+  history (levels earned under the old rules are not carried over; a one-time note says so). XP is derived
+  from the history, so **editing a past workout keeps the XP it had** and never farms more.
+- **Achievements (v2)** — 27 one-time achievements with XP (first workout, getting started, weekly goal
+  ×1/4/12/26, streaks of 4/8/12/26 weeks, 10/25/50/100/250 workouts, personal records, steady progress,
+  back on track, rest timer, your own plan, a Full Body plan, 10 different exercises, body tracking, train
+  together, balanced one-side exercises), at most 5,725 XP in total; they unlock automatically and are
+  stored with the date they were earned. Badges earned under the old list (for example the 5 kg
+  milestones) are kept and shown under **Earlier badges**, but give no XP any more.
 - **Comparison with last time** — the arrow and the "+2 reps" / "−2 reps" line compare an exercise
   only with the **same exercise in the same workout plan**, using the stable plan id and the stable
   exercise id. Renaming a plan never breaks this, because its id does not change. A Bench press in a
@@ -846,7 +856,7 @@ ever what you type**, and **pace** (run/walk) or **average speed** (cycle) is **
 two and shown only when both are valid. There is **no GPS, map, route, live speed or calorie
 estimate**. Every activity appears in **Progress** and the **Calendar** with a clear label, and —
 conservatively — counts toward your weekly goal, streak and XP (each completed activity gives the
-base 20 XP once; editing never re-awards). Silo strength statistics are unchanged.
+XP from its duration once, within the daily limit; editing never re-awards). Silo strength statistics are unchanged.
 
 **Progress photos.** **Progress → Photos** keeps a private timeline of your own photos. Add one or
 more at a time, set the **date** (defaults to today), and optionally a **note** and a **view** (Front
@@ -887,7 +897,8 @@ most XP in two tabs: **All time** (total XP and level, the same numbers as in yo
 week** (XP from workouts and activities since Monday). Your own row is highlighted, and if you are
 outside the top 20 your rank is shown underneath. To keep it fair, the leaderboard counts at most
 300 XP from workouts and activities per day and 1,000 per week, and achievements count with their
-real value. Every Community member appears by default. Turn off **Community → Profile → Show me on
+real value. The board uses the v101 XP rules and level curve (database migration 0017); members on an older
+app version keep their last stored value until they update. Every Community member appears by default. Turn off **Community → Profile → Show me on
 the leaderboard** to hide yourself. The leaderboard shows only your username, avatar, level and XP,
 never your workouts. Moderators can remove a member from it. It needs internet and a Community
 account; your XP in the app never changes because of it.

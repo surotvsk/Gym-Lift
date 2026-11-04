@@ -1574,6 +1574,8 @@ const I18N = {
     'trening.finishTitle': 'Dokončiť tréning?',
     'trening.doneTitle': '🏆 Tréning dokončený!',
     'trening.confirmText': '{plan} · {done} z {total} sérií<br>Získaš <b class="xp-gain">+{xp} XP</b>',
+    'xp.dailyLimit': 'XP za 2 tréningy dnes už máš — tento sa uloží bez XP.',
+    'xp.recalculated': 'Pravidlá XP a úrovní sú nové: najviac sa počíta pravidelný tréning. Tvoja úroveň sa prepočítala z tvojich tréningov.', 'xp.gotIt': 'Rozumiem', 'xp.levelUp': 'Nová úroveň! Dosiahol si úroveň {n}.',
     'trening.noteLabel': 'Poznámka (voliteľná)',
     'trening.super': 'Super!',
     'trening.undo': 'Vrátiť tento tréning späť',
@@ -2507,6 +2509,8 @@ const I18N = {
     'trening.finishTitle': 'Finish workout?',
     'trening.doneTitle': '🏆 Workout complete!',
     'trening.confirmText': '{plan} · {done} of {total} sets<br>You get <b class="xp-gain">+{xp} XP</b>',
+    'xp.dailyLimit': "You've earned XP for 2 workouts today — this one is saved without XP.",
+    'xp.recalculated': 'XP and levels now follow new rules: steady training counts most. Your level was recalculated from your workouts.', 'xp.gotIt': 'Got it', 'xp.levelUp': 'Level up! You reached level {n}.',
     'trening.noteLabel': 'Note (optional)',
     'trening.super': 'Awesome!',
     'trening.undo': 'Undo this workout',
@@ -3446,6 +3450,8 @@ const I18N = {
     'trening.finishTitle': '¿Terminar entrenamiento?',
     'trening.doneTitle': '🏆 ¡Entrenamiento completado!',
     'trening.confirmText': '{plan} · {done} de {total} series<br>Ganas <b class="xp-gain">+{xp} XP</b>',
+    'xp.dailyLimit': 'Hoy ya has ganado XP por 2 entrenamientos: este se guarda sin XP.',
+    'xp.recalculated': 'El XP y los niveles ahora siguen reglas nuevas: lo que más cuenta es entrenar con constancia. Tu nivel se recalculó a partir de tus entrenamientos.', 'xp.gotIt': 'Entendido', 'xp.levelUp': '¡Subes de nivel! Has llegado al nivel {n}.',
     'trening.noteLabel': 'Nota (opcional)',
     'trening.super': '¡Genial!',
     'trening.undo': 'Deshacer este entrenamiento',
@@ -4377,6 +4383,8 @@ const I18N = {
     'trening.finishTitle': 'Finalizar treino?',
     'trening.doneTitle': '🏆 Treino concluído!',
     'trening.confirmText': '{plan} · {done} de {total} séries<br>Você ganha <b class="xp-gain">+{xp} XP</b>',
+    'xp.dailyLimit': 'Você já ganhou XP por 2 treinos hoje — este será salvo sem XP.',
+    'xp.recalculated': 'O XP e os níveis agora seguem novas regras: treinar com constância é o que mais conta. Seu nível foi recalculado a partir dos seus treinos.', 'xp.gotIt': 'Entendi', 'xp.levelUp': 'Subiu de nível! Você chegou ao nível {n}.',
     'trening.noteLabel': 'Observação (opcional)',
     'trening.super': 'Muito bom!',
     'trening.undo': 'Desfazer este treino',
@@ -5308,6 +5316,8 @@ const I18N = {
     'trening.finishTitle': 'Terminer l’entraînement ?',
     'trening.doneTitle': '🏆 Entraînement terminé !',
     'trening.confirmText': '{plan} · {done} sur {total} séries<br>Tu gagnes <b class="xp-gain">+{xp} XP</b>',
+    'xp.dailyLimit': "Tu as déjà gagné de l'XP pour 2 séances aujourd'hui — celle-ci est enregistrée sans XP.",
+    'xp.recalculated': "L'XP et les niveaux suivent de nouvelles règles : s'entraîner régulièrement compte le plus. Ton niveau a été recalculé à partir de tes séances.", 'xp.gotIt': 'Compris', 'xp.levelUp': 'Niveau supérieur ! Tu as atteint le niveau {n}.',
     'trening.noteLabel': 'Note (facultative)',
     'trening.super': 'Génial !',
     'trening.undo': 'Annuler cet entraînement',
@@ -6257,7 +6267,9 @@ const I18N = {
     'trening.finish': 'إنهاء التمرين',
     'trening.finishTitle': 'إنهاء التمرين؟',
     'trening.doneTitle': '🏆 اكتمل التمرين!',
-    'trening.confirmText': '{plan} · {done} من {total} سلسلة<br>ستحصل على <b class="xp-gain">+{xp} XP</b>',
+    'trening.confirmText': '{plan} · {done} من {total} سلسلة<br>ستحصل على <b class="xp-gain"><bdi>+{xp} XP</bdi></b>',
+    'xp.dailyLimit': 'لقد حصلت على XP لتمرينين اليوم — سيتم حفظ هذا التمرين بدون XP.',
+    'xp.recalculated': 'أصبح الـ XP والمستويات يتبعان قواعد جديدة: التمرين المنتظم هو الأهم. أُعيد حساب مستواك من تمارينك.', 'xp.gotIt': 'فهمت', 'xp.levelUp': 'ارتقيت مستوى! وصلت إلى المستوى {n}.',
     'trening.noteLabel': 'ملاحظة (اختيارية)',
     'trening.super': 'رائع!',
     'trening.undo': 'تراجع عن هذا التمرين',
@@ -8777,6 +8789,125 @@ const TRAIN_I18N = {
 };
 for (const lang of Object.keys(TRAIN_I18N)) Object.assign(I18N[lang] || (I18N[lang] = {}), TRAIN_I18N[lang]);
 
+/* Nová tabuľka úspechov (v101, spec §4.3): názvy a popisy; {n} je prah úspechu. */
+const ACH2_I18N = {
+  'sk': {
+    'ach2.first': 'Prvý tréning', 'ach2.firstDesc': 'Dokonči svoj prvý tréning',
+    'ach2.start3': 'Dobrý štart', 'ach2.start3Desc': 'Dokonči 3 tréningy do 14 dní od prvého',
+    'ach2.goal': 'Týždenný cieľ ×{n}', 'ach2.goalDesc': 'Týždne so splneným týždenným cieľom spolu: {n}. Ospravedlnené týždne sa nepočítajú.',
+    'ach2.streak': 'Séria {n} týždňov', 'ach2.streakDesc': 'Udrž sériu {n} týždňov po sebe',
+    'ach2.w': '{n} tréningov', 'ach2.wDesc': 'Dokonči {n} tréningov',
+    'ach2.pr1': 'Prvý rekord', 'ach2.pr1Desc': 'Zdvihni vo cviku viac ako kedykoľvek predtým (prvý tréning cviku je len východisko)',
+    'ach2.pr': '{n} rekordov', 'ach2.prDesc': 'Dosiahni {n} osobných rekordov (ťažšia pracovná váha ako v ktoromkoľvek skoršom tréningu cviku; pri asistovaných menej pomoci)',
+    'ach2.steady5': 'Stály pokrok', 'ach2.steady5Desc': 'Zvýš pracovnú váhu v 5 rôznych cvikoch',
+    'ach2.back': 'Späť v kolajach', 'ach2.backDesc': 'Po aspoň 14 dňoch bez tréningu dokonči 2 tréningy do 7 dní',
+    'ach2.rest5': 'Oddych sa počíta', 'ach2.rest5Desc': 'Použi odpočet pauzy v 5 dokončených tréningoch',
+    'ach2.ownplan': 'Tvoj plán', 'ach2.ownplanDesc': 'Dokonči tréning podľa plánu, ktorý si vytvoril(a)',
+    'ach2.fullbody': 'Celé telo', 'ach2.fullbodyDesc': 'Dokonči tréning podľa plánu Full Body',
+    'ach2.explorer': 'Objaviteľ', 'ach2.explorerDesc': 'Precvič 10 rôznych cvikov',
+    'ach2.body': 'Telesný denník', 'ach2.bodyDesc': 'Zapíš telesnú váhu v 4 rôznych týždňoch',
+    'ach2.together': 'Trénujeme spolu', 'ach2.togetherDesc': 'Dokonči spoločný tréning s priateľom',
+    'ach2.balanced': 'Vyvážene', 'ach2.balancedDesc': 'Dokonči 10 cvikov po jednej strane',
+    'ach2.earlier': 'Predchádzajúce odznaky',
+  },
+  'en': {
+    'ach2.first': 'First workout', 'ach2.firstDesc': 'Finish your first workout',
+    'ach2.start3': 'Getting started', 'ach2.start3Desc': 'Finish 3 workouts within 14 days of your first',
+    'ach2.goal': 'Weekly goal ×{n}', 'ach2.goalDesc': 'Weeks with your weekly goal met, in total: {n}. Excused weeks do not count.',
+    'ach2.streak': 'Streak: {n} weeks', 'ach2.streakDesc': 'Keep a streak of {n} weeks in a row',
+    'ach2.w': '{n} workouts', 'ach2.wDesc': 'Finish {n} workouts',
+    'ach2.pr1': 'First PR', 'ach2.pr1Desc': 'Lift more than ever before in an exercise (the first session of an exercise is only the baseline)',
+    'ach2.pr': '{n} PRs', 'ach2.prDesc': 'Set {n} personal records (a heavier working weight than in any earlier session of that exercise; for assisted exercises, less assistance)',
+    'ach2.steady5': 'Steady progress', 'ach2.steady5Desc': 'Raise your working weight on 5 different exercises',
+    'ach2.back': 'Back on track', 'ach2.backDesc': 'After 14 or more days without training, finish 2 workouts within 7 days',
+    'ach2.rest5': 'Rest counts', 'ach2.rest5Desc': 'Use the rest timer in 5 finished workouts',
+    'ach2.ownplan': 'Your plan', 'ach2.ownplanDesc': 'Finish a workout with a plan you created',
+    'ach2.fullbody': 'Full body', 'ach2.fullbodyDesc': 'Finish a workout with a Full Body plan',
+    'ach2.explorer': 'Explorer', 'ach2.explorerDesc': 'Train 10 different exercises',
+    'ach2.body': 'Body tracker', 'ach2.bodyDesc': 'Log your body weight in 4 different weeks',
+    'ach2.together': 'Train together', 'ach2.togetherDesc': 'Finish a workout together with a friend',
+    'ach2.balanced': 'Balanced', 'ach2.balancedDesc': 'Finish 10 one-side-at-a-time exercises',
+    'ach2.earlier': 'Earlier badges',
+  },
+  'es': {
+    'ach2.first': 'Primer entrenamiento', 'ach2.firstDesc': 'Termina tu primer entrenamiento',
+    'ach2.start3': 'Buen comienzo', 'ach2.start3Desc': 'Termina 3 entrenamientos en los 14 días siguientes al primero',
+    'ach2.goal': 'Objetivo semanal ×{n}', 'ach2.goalDesc': 'Semanas con el objetivo semanal cumplido, en total: {n}. Las semanas justificadas no cuentan.',
+    'ach2.streak': 'Racha de {n} semanas', 'ach2.streakDesc': 'Mantén una racha de {n} semanas seguidas',
+    'ach2.w': '{n} entrenamientos', 'ach2.wDesc': 'Termina {n} entrenamientos',
+    'ach2.pr1': 'Primer récord', 'ach2.pr1Desc': 'Levanta más que nunca en un ejercicio (la primera sesión de un ejercicio es solo la base)',
+    'ach2.pr': '{n} récords', 'ach2.prDesc': 'Consigue {n} récords personales (un peso de trabajo mayor que en cualquier sesión anterior de ese ejercicio; en los asistidos, menos ayuda)',
+    'ach2.steady5': 'Progreso constante', 'ach2.steady5Desc': 'Sube tu peso de trabajo en 5 ejercicios distintos',
+    'ach2.back': 'De vuelta al ritmo', 'ach2.backDesc': 'Tras 14 o más días sin entrenar, termina 2 entrenamientos en 7 días',
+    'ach2.rest5': 'El descanso cuenta', 'ach2.rest5Desc': 'Usa el temporizador de descanso en 5 entrenamientos terminados',
+    'ach2.ownplan': 'Tu plan', 'ach2.ownplanDesc': 'Termina un entrenamiento con un plan que creaste',
+    'ach2.fullbody': 'Cuerpo completo', 'ach2.fullbodyDesc': 'Termina un entrenamiento con un plan Full Body',
+    'ach2.explorer': 'Explorador', 'ach2.explorerDesc': 'Entrena 10 ejercicios distintos',
+    'ach2.body': 'Control corporal', 'ach2.bodyDesc': 'Registra tu peso corporal en 4 semanas distintas',
+    'ach2.together': 'Entrenar juntos', 'ach2.togetherDesc': 'Termina un entrenamiento junto con un amigo',
+    'ach2.balanced': 'Equilibrado', 'ach2.balancedDesc': 'Termina 10 ejercicios de un lado cada vez',
+    'ach2.earlier': 'Insignias anteriores',
+  },
+  'pt-BR': {
+    'ach2.first': 'Primeiro treino', 'ach2.firstDesc': 'Conclua seu primeiro treino',
+    'ach2.start3': 'Bom começo', 'ach2.start3Desc': 'Conclua 3 treinos em até 14 dias após o primeiro',
+    'ach2.goal': 'Meta semanal ×{n}', 'ach2.goalDesc': 'Semanas com a meta semanal cumprida, no total: {n}. Semanas justificadas não contam.',
+    'ach2.streak': 'Sequência de {n} semanas', 'ach2.streakDesc': 'Mantenha uma sequência de {n} semanas seguidas',
+    'ach2.w': '{n} treinos', 'ach2.wDesc': 'Conclua {n} treinos',
+    'ach2.pr1': 'Primeiro recorde', 'ach2.pr1Desc': 'Levante mais do que nunca em um exercício (a primeira sessão de um exercício é só a base)',
+    'ach2.pr': '{n} recordes', 'ach2.prDesc': 'Bata {n} recordes pessoais (uma carga de trabalho maior que em qualquer sessão anterior do exercício; nos assistidos, menos ajuda)',
+    'ach2.steady5': 'Progresso constante', 'ach2.steady5Desc': 'Aumente a carga de trabalho em 5 exercícios diferentes',
+    'ach2.back': 'De volta ao ritmo', 'ach2.backDesc': 'Após 14 ou mais dias sem treinar, conclua 2 treinos em 7 dias',
+    'ach2.rest5': 'O descanso conta', 'ach2.rest5Desc': 'Use o cronômetro de descanso em 5 treinos concluídos',
+    'ach2.ownplan': 'Seu plano', 'ach2.ownplanDesc': 'Conclua um treino com um plano que você criou',
+    'ach2.fullbody': 'Corpo inteiro', 'ach2.fullbodyDesc': 'Conclua um treino com um plano Full Body',
+    'ach2.explorer': 'Explorador', 'ach2.explorerDesc': 'Treine 10 exercícios diferentes',
+    'ach2.body': 'Controle corporal', 'ach2.bodyDesc': 'Registre seu peso corporal em 4 semanas diferentes',
+    'ach2.together': 'Treinar juntos', 'ach2.togetherDesc': 'Conclua um treino junto com um amigo',
+    'ach2.balanced': 'Equilibrado', 'ach2.balancedDesc': 'Conclua 10 exercícios de um lado de cada vez',
+    'ach2.earlier': 'Medalhas anteriores',
+  },
+  'fr': {
+    'ach2.first': 'Premier entraînement', 'ach2.firstDesc': 'Termine ton premier entraînement',
+    'ach2.start3': 'Bon départ', 'ach2.start3Desc': 'Termine 3 entraînements dans les 14 jours suivant le premier',
+    'ach2.goal': 'Objectif hebdo ×{n}', 'ach2.goalDesc': 'Semaines avec l’objectif hebdomadaire atteint, au total : {n}. Les semaines justifiées ne comptent pas.',
+    'ach2.streak': 'Série de {n} semaines', 'ach2.streakDesc': 'Garde une série de {n} semaines d’affilée',
+    'ach2.w': '{n} entraînements', 'ach2.wDesc': 'Termine {n} entraînements',
+    'ach2.pr1': 'Premier record', 'ach2.pr1Desc': 'Soulève plus que jamais sur un exercice (la première séance d’un exercice n’est que la base)',
+    'ach2.pr': '{n} records', 'ach2.prDesc': 'Bats {n} records personnels (une charge de travail supérieure à toute séance antérieure de cet exercice ; pour les exercices assistés, moins d’aide)',
+    'ach2.steady5': 'Progression régulière', 'ach2.steady5Desc': 'Augmente ta charge de travail sur 5 exercices différents',
+    'ach2.back': 'De retour', 'ach2.backDesc': 'Après 14 jours ou plus sans entraînement, termine 2 entraînements en 7 jours',
+    'ach2.rest5': 'Le repos compte', 'ach2.rest5Desc': 'Utilise le minuteur de repos dans 5 entraînements terminés',
+    'ach2.ownplan': 'Ton programme', 'ach2.ownplanDesc': 'Termine un entraînement avec un programme que tu as créé',
+    'ach2.fullbody': 'Corps entier', 'ach2.fullbodyDesc': 'Termine un entraînement avec un programme Full Body',
+    'ach2.explorer': 'Explorateur', 'ach2.explorerDesc': 'Travaille 10 exercices différents',
+    'ach2.body': 'Suivi corporel', 'ach2.bodyDesc': 'Note ton poids de corps pendant 4 semaines différentes',
+    'ach2.together': 'S’entraîner ensemble', 'ach2.togetherDesc': 'Termine un entraînement avec un ami',
+    'ach2.balanced': 'Équilibré', 'ach2.balancedDesc': 'Termine 10 exercices un côté à la fois',
+    'ach2.earlier': 'Badges précédents',
+  },
+  'ar': {
+    'ach2.first': 'أول تمرين', 'ach2.firstDesc': 'أنهِ تمرينك الأول',
+    'ach2.start3': 'بداية جيدة', 'ach2.start3Desc': 'أنهِ 3 تمارين خلال 14 يومًا من أول تمرين',
+    'ach2.goal': 'الهدف الأسبوعي ×{n}', 'ach2.goalDesc': 'عدد الأسابيع التي حققت فيها هدفك الأسبوعي: {n}. الأسابيع المعذورة لا تُحتسب.',
+    'ach2.streak': 'سلسلة {n} أسابيع', 'ach2.streakDesc': 'حافظ على سلسلة من {n} أسابيع متتالية',
+    'ach2.w': '{n} تمرينًا', 'ach2.wDesc': 'أنهِ {n} تمرينًا',
+    'ach2.pr1': 'أول رقم قياسي', 'ach2.pr1Desc': 'ارفع أكثر من أي وقت مضى في تمرين (أول جلسة لتمرين ما هي خط الأساس فقط)',
+    'ach2.pr': '{n} أرقام قياسية', 'ach2.prDesc': 'حقق {n} أرقام قياسية شخصية (وزن عمل أثقل من أي جلسة سابقة لذلك التمرين؛ وفي التمارين المساعَدة مساعدة أقل)',
+    'ach2.steady5': 'تقدّم ثابت', 'ach2.steady5Desc': 'ارفع وزن العمل في 5 تمارين مختلفة',
+    'ach2.back': 'عودة إلى المسار', 'ach2.backDesc': 'بعد 14 يومًا أو أكثر دون تمرين، أنهِ تمرينين خلال 7 أيام',
+    'ach2.rest5': 'الراحة مهمة', 'ach2.rest5Desc': 'استخدم مؤقت الراحة في 5 تمارين منتهية',
+    'ach2.ownplan': 'خطتك', 'ach2.ownplanDesc': 'أنهِ تمرينًا بخطة أنشأتها',
+    'ach2.fullbody': 'الجسم كامل', 'ach2.fullbodyDesc': 'أنهِ تمرينًا بخطة الجسم كامل',
+    'ach2.explorer': 'المستكشف', 'ach2.explorerDesc': 'تدرّب على 10 تمارين مختلفة',
+    'ach2.body': 'متابعة الجسم', 'ach2.bodyDesc': 'سجّل وزن جسمك في 4 أسابيع مختلفة',
+    'ach2.together': 'نتمرّن معًا', 'ach2.togetherDesc': 'أنهِ تمرينًا مع صديق',
+    'ach2.balanced': 'متوازن', 'ach2.balancedDesc': 'أنهِ 10 تمارين تُؤدّى جانبًا واحدًا في كل مرة',
+    'ach2.earlier': 'شارات سابقة',
+  },
+};
+for (const lang of Object.keys(ACH2_I18N)) Object.assign(I18N[lang] || (I18N[lang] = {}), ACH2_I18N[lang]);
+
 /* Vzhľad (Bento svetlý / tmavý). */
 const THEME_I18N = {
   sk: { 'theme.title': 'Vzhľad', 'theme.hint': 'Svetlý, tmavý alebo podľa nastavenia zariadenia. Platí na tomto zariadení, tvoje dáta sa nemenia.', 'theme.light': 'Svetlý', 'theme.dark': 'Tmavý', 'theme.auto': 'Podľa systému' },
@@ -9213,9 +9344,90 @@ const DROP_MAX = 5;   // najviac drop sérií na jeden cvik v tréningu
 /* Kľúč stavu AKTÍVNEHO pracovného priestoru (nastaví wsInit pred loadState):
    pôvodné dáta 'gymquest', priestor účtu 'gymquest@<id>'. */
 let STORAGE_KEY = 'gymquest';
-const BASE_XP = 20;          // XP za tréning
-const XP_PER_SET = 2;        // XP za každú dokončenú sériu
-const XP_PER_LEVEL = 100;    // XP potrebných na ďalšiu úroveň
+
+/* Nová XP krivka (v101, spec §4.1–4.2) — čisté funkcie; denné limity aplikujú volajúci. */
+function cumXpForLevel(L) { return 10 * L * L + 70 * L; }      // celkové XP potrebné na dosiahnutie úrovne L
+function levelCost(L) { return 80 + 20 * L; }                  // XP z úrovne L na L+1
+function levelForXp(xp) {
+  xp = Math.max(0, Number(xp) || 0);
+  let level = Math.max(0, Math.floor((-70 + Math.sqrt(4900 + 40 * xp)) / 20));  // koreň 10L²+70L = xp
+  while (cumXpForLevel(level + 1) <= xp) level++;               // oprava zaokrúhlenia
+  while (level > 0 && cumXpForLevel(level) > xp) level--;
+  return { level, into: xp - cumXpForLevel(level), cost: levelCost(level) };
+}
+function workoutXpFor(doneSets) {                              // tréning pod 3 dokončené série XP nedáva
+  doneSets = Number(doneSets) || 0;
+  return doneSets < 3 ? 0 : 30 + 2 * Math.min(doneSets, 24);
+}
+function activityXpFor(minutes) {                              // aktivita pod 10 min XP nedáva, strop 30
+  minutes = Number(minutes) || 0;
+  return minutes < 10 ? 0 : Math.min(30, Math.floor(minutes / 2));
+}
+/* Denný limit XP: za prvé 2 dokončené tréningy a prvé 2 aktivity v lokálnom kalendárnom dni sa XP udeľuje,
+   ďalšie sa uložia normálne, ale s 0 XP. Počíta sa len záznamy s xp > 0; uložené xp sa nikdy neprepočítava. */
+const XP_DAILY_LIMIT = 2;
+function dailyXpLimitReached(map, dateISO) {
+  let n = 0;
+  for (const [e, xp] of map) if (xp > 0 && e && e.date === dateISO) n++;
+  return n >= XP_DAILY_LIMIT;
+}
+function xpForNewWorkout(doneSets, dateISO) {
+  return dailyXpLimitReached(xpMaps().h, dateISO) ? 0 : workoutXpFor(doneSets);
+}
+function xpForNewActivity(minutes, dateISO) {
+  return dailyXpLimitReached(xpMaps().a, dateISO) ? 0 : activityXpFor(minutes);
+}
+
+/* XP záznamov je DERIVOVANÉ z histórie/aktivít novými pravidlami pre každý záznam (aj starý) – uložené pole `xp`
+   sa nikdy neprepisuje, no do súčtov ani zobrazení už nevstupuje, takže všetky zariadenia majú rovnaké čísla.
+   Denný limit sa uplatní chronologicky: v rámci dňa podľa poradia v poli (záznamy sa pridávajú za sebou),
+   záznam s nulovým základom limit nespotrebúva. Výsledok je v pamäti, kým sa nezmení pole (persistState ho zahodí). */
+function historyDoneSets(w) {
+  return ((w && w.exercises) || []).reduce((n, e) => n + Math.max(0, Math.round(Number(e && e.setsDone) || 0)), 0);
+}
+function derivedXpMap(list, baseFn) {
+  const map = new Map();
+  const perDay = {};
+  const order = list.map((e, i) => i).sort((x, y) => {
+    const dx = String((list[x] && list[x].date) || ''), dy = String((list[y] && list[y].date) || '');
+    return dx < dy ? -1 : dx > dy ? 1 : x - y;
+  });
+  for (const i of order) {
+    const e = list[i];
+    if (!e || typeof e !== 'object') continue;
+    const base = baseFn(e);
+    let xp = 0;
+    if (base > 0) {
+      const used = perDay[e.date] || 0;
+      if (used < XP_DAILY_LIMIT) { xp = base; perDay[e.date] = used + 1; }
+    }
+    map.set(e, xp);
+  }
+  return map;
+}
+const xpCache = { hist: null, hlen: -1, h: null, act: null, alen: -1, a: null };
+function xpCacheClear() { xpCache.hist = null; xpCache.act = null; }
+function xpMaps() {
+  const hist = Array.isArray(state.history) ? state.history : [];
+  const act = Array.isArray(state.activities) ? state.activities : [];
+  if (xpCache.hist !== hist || xpCache.hlen !== hist.length) {
+    xpCache.hist = hist; xpCache.hlen = hist.length;
+    xpCache.h = derivedXpMap(hist, (w) => workoutXpFor(historyDoneSets(w)));
+  }
+  if (xpCache.act !== act || xpCache.alen !== act.length) {
+    xpCache.act = act; xpCache.alen = act.length;
+    xpCache.a = derivedXpMap(act, (a) => activityXpFor(Math.floor((Number(a.activeSeconds) || 0) / 60)));
+  }
+  return xpCache;
+}
+function historyEntryXp(w) {
+  const m = xpMaps().h;
+  return m.has(w) ? m.get(w) : workoutXpFor(historyDoneSets(w));
+}
+function activityEntryXp(a) {
+  const m = xpMaps().a;
+  return m.has(a) ? m.get(a) : activityXpFor(Math.floor((Number(a && a.activeSeconds) || 0) / 60));
+}
 const GOAL_MIN = 1;
 const GOAL_MAX = 7;
 /* Gong smie zaznieť len za dokončenie, ktoré appka naozaj videla naživo.
@@ -9233,6 +9445,7 @@ let sessionNoteKey = null;   // práve zobrazená poznámka k aktívnej session 
 let sessionNoteTimer = null; // skrytie dočasnej poznámky
 let lastXP = 0;
 let lastUnlocked = [];
+let lastLevelUp = 0;          // nová úroveň po poslednom tréningu/aktivite (0 = bez zmeny)
 let lastAchXP = 0;           // XP získané z úspechov po poslednom tréningu
 let lastWorkoutId = null;    // id posledného dokončeného tréningu (pre Undo)
 let editingPlan = null;      // id plánu v editačnom móde
@@ -9366,7 +9579,7 @@ function buildSampleHistory() {
       planId: plan.id,
       planName: recordedPlanName(plan),
       date: dates[i].toISOString().slice(0, 10),
-      xp: BASE_XP + exercises.reduce((sum, e) => sum + e.sets, 0) * XP_PER_SET,
+      xp: workoutXpFor(exercises.reduce((sum, e) => sum + e.sets, 0)),
       note: '',
       exercises: exercises.map(e => Object.assign({}, e, { setsDone: e.sets })),
     });
@@ -9827,6 +10040,8 @@ function normalizeActiveSession(raw) {
     }
   }
   if (Object.keys(snapshot).length) out.snapshot = snapshot;
+  /* Odpočet pauzy bežal počas tréningu (úspech "Oddych sa počíta"); zapíše sa do histórie pri Dokončiť. */
+  if (raw.restUsed === true) out.restUsed = true;
   /* Cviky, ktorým používateľ počas tréningu v editore plánu zmenil spoločnú hodnotu: pri Dokončiť sa
      pamätaná váha z tréningu nezapíše (novšia úprava používateľa vyhráva). */
   if (Array.isArray(raw.editedIdentities)) {
@@ -10081,6 +10296,11 @@ function backfillState() {
         out = Object.assign({}, out, { durationSeconds: seconds });
       }
     }
+    /* Odpočet pauzy použitý v tréningu: len príznak true, inak sa zahodí. */
+    if (Object.prototype.hasOwnProperty.call(out, 'restUsed') && out.restUsed !== true) {
+      out = Object.assign({}, out);
+      delete out.restUsed;
+    }
     /* Pamäť váh pred / po Dokončiť (pre Zrušiť tréning): len platné záznamy, najviac 100 cvikov. */
     for (const field of ['memoryBefore', 'memoryAfter', 'memoryRowBefore']) {
       if (!Object.prototype.hasOwnProperty.call(out, field)) continue;
@@ -10299,6 +10519,7 @@ function showStorageWarning(on) {
 
 /* Trvalý zápis stavu aktívneho priestoru na zariadenie (bez označenia zmeny). */
 function persistState() {
+  xpCacheClear();   // odvodené XP sa po zmene stavu prepočíta
   if (appYielded) return false;   // aplikáciu prevzala iná karta – táto už nezapisuje
   try {
     if (unreadableStateRaw !== null) {
@@ -10381,9 +10602,12 @@ function normalizeGoalHistory() {
   }
 }
 
-/* XP získané tréningmi. Zámerne bez XP za úspechy, aby sa úspechy nepočítali samy zo seba. */
+/* XP získané tréningmi: odvodené z histórie novými pravidlami (viď xpMaps), uložené pole xp sa nepoužíva.
+   Zámerne bez XP za úspechy, aby sa úspechy nepočítali samy zo seba. */
 function workoutXP() {
-  return state.history.reduce((sum, w) => sum + w.xp, 0);
+  let sum = 0;
+  for (const xp of xpMaps().h.values()) sum += xp;
+  return sum;
 }
 
 /* XP za získané úspechy. Odvodené z množiny id (nie akumulované), takže sa nikdy nepripíše dvakrát. */
@@ -10396,10 +10620,11 @@ function achievementXP() {
   return sum;
 }
 
-/* XP získané aktivitami (beh/chôdza/cyklistika). Uložené raz v zázname, takže
-   úprava, obnovenie ani opätovné otvorenie nepridá XP znova. */
+/* XP získané aktivitami (beh/chôdza/cyklistika): odvodené z trvania novými pravidlami (viď xpMaps). */
 function activityXP() {
-  return (state.activities || []).reduce((sum, a) => sum + (Number(a.xp) || 0), 0);
+  let sum = 0;
+  for (const xp of xpMaps().a.values()) sum += xp;
+  return sum;
 }
 
 function totalXP() {
@@ -10470,13 +10695,8 @@ function hasCompletedGoalWeek() {
 
 function levelInfo() {
   const xp = totalXP();
-  let level = 0;
-  let levelXP = xp;
-  while (levelXP >= XP_PER_LEVEL) {
-    levelXP -= XP_PER_LEVEL;
-    level++;
-  }
-  return { level, levelXP, xp, total: XP_PER_LEVEL };
+  const lv = levelForXp(xp);   // nová krivka (v101)
+  return { level: lv.level, levelXP: lv.into, xp, total: lv.cost };
 }
 
 /* Odporúčaný tréning: nasleduje poradie, ktoré si používateľ nastavil (3, 4 alebo viac plánov) */
@@ -10685,53 +10905,81 @@ function firstMissedWeekDate() {
    Úspechy sa nikdy neodoberajú (pozri reconcileAchievements) a ich podmienky nezávisia
    od týždenného cieľa, časového pásma, zariadenia ani prehliadača. */
 
+/* Starý zoznam úspechov (do v100). Už sa nevyhodnocuje ani nedáva XP; slúži len na zobrazenie
+   získaných odznakov v sekcii "Predchádzajúce odznaky" a ako zmrazený zdroj ich XP (ACHIEVEMENTS_V1_XP).
+   Hodnoty zodpovedajú serverovej tabuľke (0009 / 0011 achievement_catalog). */
+const LEGACY_ACHIEVEMENT_DEFS = [
+  { id: 'first', icon: '🎯', category: 'milestones', xp: 25, nameKey: 'achievements.first', descKey: 'achievements.firstDesc' },
+  { id: 'five', icon: '💪', category: 'milestones', xp: 50, nameKey: 'achievements.five', descKey: 'achievements.fiveDesc' },
+  { id: 'ten', icon: '🏅', category: 'milestones', xp: 100, nameKey: 'achievements.ten', descKey: 'achievements.tenDesc' },
+  { id: 'twentyfive', icon: '🚀', category: 'milestones', xp: 200, nameKey: 'achievements.twentyfive', descKey: 'achievements.twentyfiveDesc' },
+  { id: 'fifty', icon: '💎', category: 'milestones', xp: 350, nameKey: 'achievements.fifty', descKey: 'achievements.fiftyDesc' },
+  { id: 'hundred', icon: '👑', category: 'milestones', xp: 750, nameKey: 'achievements.hundred', descKey: 'achievements.hundredDesc' },
+  { id: 'weeklygoal1', icon: '🎯', category: 'consistency', xp: 75, nameKey: 'achievements.weeklygoal1', descKey: 'achievements.weeklygoal1Desc' },
+  { id: 'consistent2', icon: '📅', category: 'consistency', xp: 125, nameKey: 'achievements.consistent2', descKey: 'achievements.consistent2Desc' },
+  { id: 'consistent4', icon: '🔥', category: 'consistency', xp: 300, nameKey: 'achievements.consistent4', descKey: 'achievements.consistent4Desc' },
+  { id: 'consistent8', icon: '⚡', category: 'consistency', xp: 500, nameKey: 'achievements.consistent8', descKey: 'achievements.consistent8Desc' },
+  { id: 'consistent12', icon: '🏆', category: 'consistency', xp: 750, nameKey: 'achievements.consistent12', descKey: 'achievements.consistent12Desc' },
+  { id: 'solid2', icon: '📆', category: 'consistency', xp: 125, nameKey: 'achievements.solid2', descKey: 'achievements.solid2Desc' },
+  { id: 'solid4', icon: '📈', category: 'consistency', xp: 300, nameKey: 'achievements.solid4', descKey: 'achievements.solid4Desc' },
+  { id: 'fullweek', icon: '🗓️', category: 'consistency', xp: 200, nameKey: 'achievements.fullweek', descKey: 'achievements.fullweekDesc' },
+  { id: 'newpr', icon: '💪', category: 'records', xp: 75, nameKey: 'achievements.newpr', descKey: 'achievements.newprDesc' },
+  { id: 'pr5', icon: '🥇', category: 'records', xp: 150, nameKey: 'achievements.pr5', descKey: 'achievements.pr5Desc' },
+  { id: 'pr10', icon: '🎖️', category: 'records', xp: 300, nameKey: 'achievements.pr10', descKey: 'achievements.pr10Desc' },
+  { id: 'improve', icon: '📊', category: 'records', xp: 100, nameKey: 'achievements.improve', descKey: 'achievements.improveDesc' },
+  { id: 'xp200', icon: '⭐', category: 'records', xp: 0, nameKey: 'achievements.xp200', descKey: 'achievements.xp200Desc' },
+  { id: 'customplan', icon: '🧩', category: 'customization', xp: 50, nameKey: 'achievements.customplan', descKey: 'achievements.customplanDesc' },
+  { id: 'fourplans', icon: '🏗️', category: 'customization', xp: 100, nameKey: 'achievements.fourplans', descKey: 'achievements.fourplansDesc' },
+  { id: 'customex5', icon: '📚', category: 'customization', xp: 125, nameKey: 'achievements.customex5', descKey: 'achievements.customex5Desc' },
+  { id: 'variety4', icon: '🔀', category: 'customization', xp: 150, nameKey: 'achievements.variety4', descKey: 'achievements.variety4Desc' },
+  { id: 'comeback', icon: '🔙', category: 'dedication', xp: 100, nameKey: 'achievements.comeback', descKey: 'achievements.comebackDesc' },
+  { id: 'missedweek', icon: '🛡️', category: 'dedication', xp: 150, nameKey: 'achievements.missedweek', descKey: 'achievements.missedweekDesc' },
+];
+const ACHIEVEMENTS_V1_XP = Object.freeze(Object.fromEntries(LEGACY_ACHIEVEMENT_DEFS.map((d) => [d.id, d.xp])));
+
+/* ---------- Definície úspechov (v101, spec §4.3) ----------
+   Každý úspech má stabilné id, ikonu, prekladové kľúče, XP odmenu a prah `n`. Podmienky sú v
+   achievementReach() (jedna chronologická prechádzka históriou, ktorá vráti aj dátum dosiahnutia).
+   Úspechy sa nikdy neodoberajú (pozri reconcileAchievements) a nezávisia od časového pásma ani zariadenia. */
+
 function staticAchievementDefs() {
-  const pr = prStats();
-  const comebackDate = firstComebackDate();
-  const missedWeekDate = firstMissedWeekDate();
-  const weeks3 = isoWeeksWithAtLeast(3);
-  const weeks5 = isoWeeksWithAtLeast(5);
-  const activePlans = activePlanIds().length;
-  const customPlans = customPlanCount();
-  const customExercises = distinctCustomExerciseCount();
-  const distinctPlans = distinctPlanIdsInHistory();
-
+  const d = (id, icon, category, xp, nameKey, descKey, n) => ({ id, icon, category, xp, nameKey, descKey, n });
   return [
-    /* --- Počet tréningov --- */
-    { id: 'first', icon: '🎯', category: 'milestones', xp: 25, nameKey: 'achievements.first', descKey: 'achievements.firstDesc', cond: () => state.history.length >= 1 },
-    { id: 'five', icon: '💪', category: 'milestones', xp: 50, nameKey: 'achievements.five', descKey: 'achievements.fiveDesc', cond: () => state.history.length >= 5 },
-    { id: 'ten', icon: '🏅', category: 'milestones', xp: 100, nameKey: 'achievements.ten', descKey: 'achievements.tenDesc', cond: () => state.history.length >= 10 },
-    { id: 'twentyfive', icon: '🚀', category: 'milestones', xp: 200, nameKey: 'achievements.twentyfive', descKey: 'achievements.twentyfiveDesc', cond: () => state.history.length >= 25 },
-    { id: 'fifty', icon: '💎', category: 'milestones', xp: 350, nameKey: 'achievements.fifty', descKey: 'achievements.fiftyDesc', cond: () => state.history.length >= 50 },
-    { id: 'hundred', icon: '👑', category: 'milestones', xp: 750, nameKey: 'achievements.hundred', descKey: 'achievements.hundredDesc', cond: () => state.history.length >= 100 },
-
-    /* --- Pravidelnosť a týždenné ciele --- */
-    { id: 'weeklygoal1', icon: '🎯', category: 'consistency', xp: 75, nameKey: 'achievements.weeklygoal1', descKey: 'achievements.weeklygoal1Desc', cond: () => historyWeeksWithGoalMet().length >= 1 },
-    { id: 'consistent2', icon: '📅', category: 'consistency', xp: 125, nameKey: 'achievements.consistent2', descKey: 'achievements.consistent2Desc', cond: () => computeStreak() >= 2 },
-    { id: 'consistent4', icon: '🔥', category: 'consistency', xp: 300, nameKey: 'achievements.consistent4', descKey: 'achievements.consistent4Desc', cond: () => computeStreak() >= 4 },
-    { id: 'consistent8', icon: '⚡', category: 'consistency', xp: 500, nameKey: 'achievements.consistent8', descKey: 'achievements.consistent8Desc', cond: () => computeStreak() >= 8 },
-    { id: 'consistent12', icon: '🏆', category: 'consistency', xp: 750, nameKey: 'achievements.consistent12', descKey: 'achievements.consistent12Desc', cond: () => computeStreak() >= 12 },
-    { id: 'solid2', icon: '📆', category: 'consistency', xp: 125, nameKey: 'achievements.solid2', descKey: 'achievements.solid2Desc', cond: () => weeks3 >= 2 },
-    { id: 'solid4', icon: '📈', category: 'consistency', xp: 300, nameKey: 'achievements.solid4', descKey: 'achievements.solid4Desc', cond: () => weeks3 >= 4 },
-    { id: 'fullweek', icon: '🗓️', category: 'consistency', xp: 200, nameKey: 'achievements.fullweek', descKey: 'achievements.fullweekDesc', cond: () => weeks5 >= 1 },
-
-    /* --- Osobné rekordy a pokrok --- */
-    { id: 'newpr', icon: '💪', category: 'records', xp: 75, nameKey: 'achievements.newpr', descKey: 'achievements.newprDesc', cond: () => hasAnyPR() },
-    { id: 'pr5', icon: '🥇', category: 'records', xp: 150, nameKey: 'achievements.pr5', descKey: 'achievements.pr5Desc', cond: () => pr.prEvents >= 5 },
-    { id: 'pr10', icon: '🎖️', category: 'records', xp: 300, nameKey: 'achievements.pr10', descKey: 'achievements.pr10Desc', cond: () => pr.prEvents >= 10 },
-    { id: 'improve', icon: '📊', category: 'records', xp: 100, nameKey: 'achievements.improve', descKey: 'achievements.improveDesc', cond: () => pr.improvements >= 1 },
-    { id: 'xp200', icon: '⭐', category: 'records', xp: 0, nameKey: 'achievements.xp200', descKey: 'achievements.xp200Desc', cond: () => (workoutXP() + activityXP()) >= 200 },
-
-    /* --- Prispôsobenie tréningu --- */
-    { id: 'customplan', icon: '🧩', category: 'customization', xp: 50, nameKey: 'achievements.customplan', descKey: 'achievements.customplanDesc', cond: () => customPlans >= 1 },
-    { id: 'fourplans', icon: '🏗️', category: 'customization', xp: 100, nameKey: 'achievements.fourplans', descKey: 'achievements.fourplansDesc', cond: () => activePlans >= 4 },
-    { id: 'customex5', icon: '📚', category: 'customization', xp: 125, nameKey: 'achievements.customex5', descKey: 'achievements.customex5Desc', cond: () => customExercises >= 5 },
-    { id: 'variety4', icon: '🔀', category: 'customization', xp: 150, nameKey: 'achievements.variety4', descKey: 'achievements.variety4Desc', cond: () => distinctPlans >= 4 },
-
-    /* --- Vytrvalosť --- */
-    { id: 'comeback', icon: '🔙', category: 'dedication', xp: 100, nameKey: 'achievements.comeback', descKey: 'achievements.comebackDesc', cond: () => comebackDate !== null },
-    { id: 'missedweek', icon: '🛡️', category: 'dedication', xp: 150, nameKey: 'achievements.missedweek', descKey: 'achievements.missedweekDesc', cond: () => missedWeekDate !== null },
+    d('first', '🎯', 'milestones', 25, 'ach2.first', 'ach2.firstDesc'),
+    d('start3', '🌱', 'milestones', 50, 'ach2.start3', 'ach2.start3Desc'),
+    d('goal1', '📅', 'consistency', 50, 'ach2.goal', 'ach2.goalDesc', 1),
+    d('goal4', '📅', 'consistency', 100, 'ach2.goal', 'ach2.goalDesc', 4),
+    d('goal12', '📅', 'consistency', 250, 'ach2.goal', 'ach2.goalDesc', 12),
+    d('goal26', '📅', 'consistency', 400, 'ach2.goal', 'ach2.goalDesc', 26),
+    d('streak4', '🔥', 'consistency', 150, 'ach2.streak', 'ach2.streakDesc', 4),
+    d('streak8', '⚡', 'consistency', 300, 'ach2.streak', 'ach2.streakDesc', 8),
+    d('streak12', '🏆', 'consistency', 450, 'ach2.streak', 'ach2.streakDesc', 12),
+    d('streak26', '👑', 'consistency', 800, 'ach2.streak', 'ach2.streakDesc', 26),
+    d('w10', '🏅', 'milestones', 100, 'ach2.w', 'ach2.wDesc', 10),
+    d('w25', '🚀', 'milestones', 200, 'ach2.w', 'ach2.wDesc', 25),
+    d('w50', '💎', 'milestones', 350, 'ach2.w', 'ach2.wDesc', 50),
+    d('w100', '💯', 'milestones', 600, 'ach2.w', 'ach2.wDesc', 100),
+    d('w250', '🌟', 'milestones', 1000, 'ach2.w', 'ach2.wDesc', 250),
+    d('pr1', '💪', 'records', 50, 'ach2.pr1', 'ach2.pr1Desc'),
+    d('pr10', '🥇', 'records', 150, 'ach2.pr', 'ach2.prDesc', 10),
+    d('pr25', '🎖️', 'records', 300, 'ach2.pr', 'ach2.prDesc', 25),
+    d('steady5', '📈', 'records', 100, 'ach2.steady5', 'ach2.steady5Desc'),
+    d('back', '🔙', 'dedication', 50, 'ach2.back', 'ach2.backDesc'),
+    d('rest5', '⏱️', 'dedication', 25, 'ach2.rest5', 'ach2.rest5Desc'),
+    d('ownplan', '🧩', 'customization', 25, 'ach2.ownplan', 'ach2.ownplanDesc'),
+    d('fullbody', '🧍', 'customization', 25, 'ach2.fullbody', 'ach2.fullbodyDesc'),
+    d('explorer10', '🧭', 'customization', 50, 'ach2.explorer', 'ach2.explorerDesc'),
+    d('body4', '⚖️', 'dedication', 50, 'ach2.body', 'ach2.bodyDesc'),
+    d('together', '👥', 'dedication', 50, 'ach2.together', 'ach2.togetherDesc'),
+    d('balanced10', '🤸', 'customization', 25, 'ach2.balanced', 'ach2.balancedDesc'),
   ];
+}
+
+/* Nové aj staré definície: na zobrazenie názvov a posielanie získaných id (rebríček, profil). Nové majú prednosť. */
+function allAchievementDefs() {
+  const defs = staticAchievementDefs();
+  const have = new Set(defs.map((x) => x.id));
+  return defs.concat(LEGACY_ACHIEVEMENT_DEFS.filter((x) => !have.has(x.id)));
 }
 
 function historyWeeksWithGoalMet() {
@@ -10744,13 +10992,153 @@ function hasAnyPR() {
   return personalRecords().length > 0;
 }
 
-/* Vyhodnotí všetky úspechy (statické + míľniky) a vráti mapu id -> dátum */
+/* Kľúč cviku pre úspechy: stabilné exId, inak názov; asistované cviky majú vlastný kľúč (menej pomoci = lepšie). */
+function achExerciseKey(ex) {
+  return (historyEntryAssisted(ex) ? 'a:' : '') + (ex.exId || ex.name);
+}
+
+/* Cvik bol v tréningu naozaj odcvičený (záznam bez sérií nie je výkon). Staré záznamy bez setsDone platia. */
+function achEntryDone(ex) {
+  return !!ex && !(typeof ex.setsDone === 'number' && ex.setsDone <= 0);
+}
+
+/* Dátum `n`-tej udalosti zo zoznamu dátumov (už chronologického), inak null. */
+function achNth(list, n) {
+  return list.length >= n ? list[n - 1] : null;
+}
+
+/* Jedna chronologická prechádzka: mapa id -> dátum, kedy bol úspech (prvýkrát) dosiahnutý.
+   Dátum sa berie z histórie, takže spätné vyhodnotenie nedáva "dnes". */
+function achievementReach(sorted) {
+  const out = {};
+  const n = sorted.length;
+  const put = (id, date) => { if (date && !out[id]) out[id] = date; };
+
+  /* Počty dokončených tréningov. */
+  for (const [id, need] of [['first', 1], ['w10', 10], ['w25', 25], ['w50', 50], ['w100', 100], ['w250', 250]]) {
+    if (n >= need) put(id, sorted[need - 1].date);
+  }
+  /* Začiatok: 3 tréningy do 14 dní od prvého. */
+  if (n >= 3 && gapDaysBetween(sorted[0].date, sorted[2].date) <= 14) put('start3', sorted[2].date);
+
+  /* Týždne so splneným cieľom (ospravedlnený týždeň sa nepočíta) a séria týždňov. */
+  const sessionDates = {};   // týždeň -> dátumy tréningov a aktivít
+  for (const w of sorted) {
+    const k = weekKey(parseDate(w.date));
+    (sessionDates[k] = sessionDates[k] || []).push(w.date);
+  }
+  for (const a of (state.activities || [])) {
+    if (a && a.date) (sessionDates[weekKey(parseDate(a.date))] = sessionDates[weekKey(parseDate(a.date))] || []).push(a.date);
+  }
+  for (const k of Object.keys(sessionDates)) sessionDates[k].sort();
+  const metDate = (k) => {
+    const dates = sessionDates[k] || [];
+    const g = goalForWeek(k);
+    return dates.length >= g ? dates[Math.max(0, g - 1)] : null;
+  };
+  const goalWeeks = [];
+  for (const k of Object.keys(sessionDates).sort()) {
+    const md = metDate(k);   // tréningy + aktivity, rovnako ako týždenný cieľ a séria
+    if (md && !isWeekExcused(k)) goalWeeks.push(md);
+  }
+  for (const need of [1, 4, 12, 26]) put('goal' + need, achNth(goalWeeks, need));
+  const weekKeys = Object.keys(sessionDates).sort();
+  if (weekKeys.length) {
+    const current = currentWeekKey();
+    const weeks = [];
+    let wk = current;
+    for (let guard = 0; guard < 1040 && wk >= weekKeys[0]; guard++) { weeks.unshift(wk); wk = prevWeekKey(wk); }
+    let run = 0;
+    for (const k of weeks) {
+      const md = metDate(k);
+      if (md) {
+        run++;
+        for (const need of [4, 8, 12, 26]) if (run >= need) put('streak' + need, md);
+      } else if (isWeekExcused(k) || k === current) {
+        // ospravedlnený alebo prebiehajúci týždeň sériu nepretrhne ani nepredĺži
+      } else run = 0;
+    }
+  }
+
+  /* Rekordy a pokrok: pracovná váha cviku v tréningu = `weight` záznamu (najťažšia hotová séria;
+     pri asistovaných najnižšia pomoc). Prvý tréning cviku je základ, nie rekord. */
+  const best = {}, last = {}, seenKey = {}, increased = {};
+  const prDates = [];
+  const exploreDates = [];
+  const balancedDates = [];
+  const steadyDates = [];
+  const restDates = [];
+  for (const w of sorted) {
+    const perWorkout = {};
+    for (const ex of (w.exercises || [])) {
+      if (!achEntryDone(ex)) continue;
+      const plainKey = ex.exId || ex.name;
+      if (plainKey && !seenKey[plainKey]) { seenKey[plainKey] = true; exploreDates.push(w.date); }
+      if (ex.unilateral === true) balancedDates.push(w.date);
+      const assisted = historyEntryAssisted(ex);
+      const wt = Number(ex.weight);
+      if (!Number.isFinite(wt) || wt < 0 || (wt === 0 && !assisted) || !plainKey) continue;
+      const key = achExerciseKey(ex);
+      const cur = perWorkout[key];
+      if (cur === undefined || (assisted ? wt < cur.w : wt > cur.w)) perWorkout[key] = { w: wt, assisted };
+    }
+    for (const key of Object.keys(perWorkout)) {
+      const { w: wt, assisted } = perWorkout[key];
+      const better = (than) => (assisted ? wt < than : wt > than);
+      if (best[key] !== undefined && better(best[key])) prDates.push(w.date);
+      if (last[key] !== undefined && better(last[key]) && !increased[key]) {
+        increased[key] = true;
+        steadyDates.push(w.date);
+      }
+      best[key] = best[key] === undefined || better(best[key]) ? wt : best[key];
+      last[key] = wt;
+    }
+    if (w.restUsed === true) restDates.push(w.date);
+  }
+  put('pr1', achNth(prDates, 1)); put('pr10', achNth(prDates, 10)); put('pr25', achNth(prDates, 25));
+  put('steady5', achNth(steadyDates, 5));
+  put('explorer10', achNth(exploreDates, 10));
+  put('balanced10', achNth(balancedDates, 10));
+  put('rest5', achNth(restDates, 5));
+
+  /* Návrat: po aspoň 14 dňoch bez tréningu 2 tréningy do 7 dní (od prvého po pauze). */
+  for (let i = 1; i + 1 < n; i++) {
+    if (gapDaysBetween(sorted[i - 1].date, sorted[i].date) >= 14 && gapDaysBetween(sorted[i].date, sorted[i + 1].date) <= 7) {
+      put('back', sorted[i + 1].date);
+      break;
+    }
+  }
+
+  /* Vlastný plán, Full Body plán, spoločný tréning. */
+  for (const w of sorted) {
+    const plan = w.planId && w.planId !== 'quick' ? state.plans[w.planId] : null;
+    if (plan && plan.builtin === false && !plan.source) put('ownplan', w.date);   // kópie od priateľov (source) nie sú vlastný plán
+    if (plan && plan.fullBody === true) put('fullbody', w.date);
+    if (typeof w.trainedWith === 'string' && w.trainedWith) put('together', w.date);
+  }
+
+  /* Telesná váha zapísaná v 4 rôznych týždňoch. */
+  const bodyWeeks = {};
+  let bodyCount = 0;
+  for (const m of [...(state.measurements || [])].sort((a, b) => a.date.localeCompare(b.date))) {
+    if (!(Number(m.weightKg) > 0)) continue;
+    const k = weekKey(parseDate(m.date));
+    if (!bodyWeeks[k]) {
+      bodyWeeks[k] = true;
+      if (++bodyCount === 4) put('body4', m.date);
+    }
+  }
+  return out;
+}
+
+/* Vyhodnotí všetky úspechy (nové + míľniky) a vráti mapu id -> dátum */
 function evaluateAchievements() {
   const map = {};
   const sorted = sortedHistory();
 
+  const reach = achievementReach(sorted);
   for (const def of staticAchievementDefs()) {
-    if (def.cond()) map[def.id] = achievementDateFor(def.id, sorted);
+    if (reach[def.id]) map[def.id] = reach[def.id];
   }
 
   // 5 kg míľniky (chronologicky). Id zostáva postavené na zaznamenanom názve cviku,
@@ -10772,79 +11160,6 @@ function evaluateAchievements() {
   }
 
   return map;
-}
-
-function achievementDateFor(id, sorted) {
-  const count = sorted.length;
-  const idxMap = {
-    first: 0, five: 4, ten: 9, twentyfive: 24, fifty: 49, hundred: 99,
-  };
-  if (idxMap[id] !== undefined && count > idxMap[id]) return sorted[idxMap[id]].date;
-  if (id === 'newpr') {
-    // najstarší tréning s osobným rekordom
-    const best = {};
-    for (const w of sorted) {
-      for (const ex of w.exercises) {
-        if (ex.weight <= 0 || historyEntryAssisted(ex)) continue;
-        const prev = best[ex.name];
-        if (!prev || ex.weight > prev.weight) {
-          best[ex.name] = ex.weight;
-          return w.date;
-        }
-      }
-    }
-  }
-  if (id === 'xp200') {
-    let acc = 0;
-    for (const w of sorted) {
-      acc += w.xp;
-      if (acc >= 200) return w.date;
-    }
-  }
-  if (id === 'weeklygoal1') {
-    const met = historyWeeksWithGoalMet().sort();
-    if (met.length) {
-      const wk = met[0];
-      const ws = sorted.filter(w => weekKey(parseDate(w.date)) === wk);
-      if (ws.length) return ws[ws.length - 1].date;
-    }
-  }
-  if (id.startsWith('consistent')) {
-    const weeks = historyWeeksWithGoalMet().sort();
-    const need = parseInt(id.replace('consistent', ''), 10);
-    if (weeks.length >= need) return sorted[sorted.length - 1].date;
-  }
-  if (id === 'solid2' || id === 'solid4') {
-    const d = nthQualifyingWeekDate(3, id === 'solid2' ? 2 : 4);
-    if (d) return d;
-  }
-  if (id === 'fullweek') {
-    const d = nthQualifyingWeekDate(5, 1);
-    if (d) return d;
-  }
-  if (id === 'pr5' || id === 'pr10') {
-    const prs = prStats().prDates;
-    const need = id === 'pr5' ? 5 : 10;
-    if (prs.length >= need) return prs[need - 1];
-  }
-  if (id === 'improve') {
-    const d = prStats().improveDate;
-    if (d) return d;
-  }
-  if (id === 'variety4') {
-    const d = nthDistinctPlanDate(4);
-    if (d) return d;
-  }
-  if (id === 'comeback') {
-    const d = firstComebackDate();
-    if (d) return d;
-  }
-  if (id === 'missedweek') {
-    const d = firstMissedWeekDate();
-    if (d) return d;
-  }
-  if (id === 'first' && count >= 1) return sorted[0].date;
-  return todayISO();
 }
 
 /* Zlúčí novo vyhodnotené úspechy s uloženými. Nikdy nič neodoberá – získaný úspech zostáva navždy,
@@ -11448,7 +11763,7 @@ function tyWorkoutCardHtml(p) {
   const meta = [];
   if (workout && a.date) meta.push(formatDate(String(a.date)));
   if (workout && Number(a.duration) > 0) meta.push(formatDurationNatural(Number(a.duration)));
-  if (workout && Number(a.xp) > 0) meta.push('+' + Number(a.xp) + ' ' + t('units.xp'));
+  if (workout && Number(a.xp) > 0) meta.push({ html: '<bdi>+' + Number(a.xp) + ' ' + esc(t('units.xp')) + '</bdi>' });   // bdi: v arabčine sa "+50 XP" nepreskladá
   if (Array.isArray(a.exercises)) meta.push(tPlural('share.exercises', a.exercises.length));
   const ph = p.photos && p.photos[0];
   const url = ph && p.urls ? p.urls[ph.thumb] : '';
@@ -11457,7 +11772,7 @@ function tyWorkoutCardHtml(p) {
     + '<span class="ty-w-icon" aria-hidden="true">' + PF_GLYPHS[workout ? 'check' : 'dumbbell'] + '</span>'
     + '<span class="ty-w-main"><span class="ty-meta">' + esc(t(workout ? 'share.kindWorkout' : 'share.kindPlan')) + ' · ' + esc(tyTimeLabel(p.published)) + '</span>'
     + '<b class="ty-w-name">' + esc(a.name || '') + '</b>'
-    + '<span class="ty-w-sub">' + esc(meta.join(' · ')) + '</span>'
+    + '<span class="ty-w-sub">' + meta.map((m) => (m && m.html) || esc(m)).join(' · ') + '</span>'
     + (ex ? '<span class="ty-w-ex">' + ex + '</span>' : '')
     + (p.caption ? '<span class="ty-body ty-body-sm">' + esc(p.caption) + '</span>' : '') + '</span>'
     + (url ? '<span class="ty-w-thumb"><img loading="lazy" decoding="async" src="' + escAttr(url) + '" alt=""></span>' : '') + '</button>';
@@ -11502,7 +11817,7 @@ function tyHistoryHtml() {
   return '<div class="ty-history">' + shown.map((w) => '<button type="button" class="ty-card ty-hist" data-ty-day="' + escAttr(w.date) + '">'
     + '<span class="ty-hist-date"><b>' + esc(String(parseDate(w.date).getDate())) + '</b><span>' + esc(localeData().monthsShort ? localeData().monthsShort[parseDate(w.date).getMonth()] : '') + '</span></span>'
     + '<span class="ty-w-main"><b class="ty-w-name">' + esc(historyPlanName(w)) + '</b>'
-    + '<span class="ty-w-sub">' + esc(formatDate(w.date)) + ' · ' + esc(tPlural('bento.setCount', historySets(w)).replace('{n}', String(historySets(w)))) + ' · ' + esc(bentoWorkoutLine(w)) + '</span></span></button>').join('')
+    + '<span class="ty-w-sub">' + esc(formatDate(w.date)) + ' · ' + esc(tPlural('bento.setCount', historySets(w)).replace('{n}', String(historySets(w)))) + ' · ' + bentoWorkoutLine(w) + '</span></span></button>').join('')
     + '</div>' + (hist.length > tyHistoryShown ? '<button type="button" class="btn btn-secondary btn-block ty-more-btn" data-ty-action="history-more">' + esc(t('community.loadMore')) + '</button>' : '');
 }
 function renderTyPosts() {
@@ -13003,7 +13318,7 @@ function updateSummary() {
   document.getElementById('summary-bar').innerHTML = t('trening.setsDone', { done, total, msg });
   setFinishDisabled(done === 0);
   const xpEl = document.getElementById('tr-finish-xp');
-  if (xpEl) xpEl.textContent = ' · +' + (BASE_XP + done * XP_PER_SET) + ' ' + t('units.xp');
+  if (xpEl) xpEl.textContent = ' · +' + xpForNewWorkout(done, todayISO()) + ' ' + t('units.xp');
   bentoMarkExercises();
   bentoTrainMode();
   refreshUpdateBanner();   // rozbehnutý tréning skrýva ponuku aktualizácie
@@ -13359,6 +13674,7 @@ function createFullBodyPlan() {
     builtin: false,
     customName: typed || t('fb.defaultName'),
     exercises,
+    fullBody: true,   // pre úspech "Full body"
   };
   if (!Array.isArray(state.planOrder)) state.planOrder = [];
   state.planOrder.push(id);
@@ -16150,7 +16466,7 @@ function communitySetMessage(key) { communityMessage = key ? t(key) : ''; }
    (rovnaké pravidlá ako dotazy: správy vidia iba dvaja účastníci chatu). */
 const COMMUNITY_COMMENT_MAX = 1000;
 const COMMUNITY_MESSAGE_MAX = 2000;
-let communityVersion = 0;               // 0 = nezistené, 1 = 0005, 2 = 0008, 3 = 0009 (rebríček)
+let communityVersion = 0;               // 0 = nezistené, 1 = 0005, 2 = 0008, 3 = 0009 (rebríček), 9 = 0017 (rebríček v2)
 let communityScope = 'everyone';        // Domov: everyone | following | friends
 let communityChatRestore = null;        // { chat, atEnd, pos } – miesto v chate pri návrate cez Späť (použije sa raz)
 let communityBack = [];                 // predchádzajúce pohľady (tlačidlo Späť)
@@ -16183,16 +16499,19 @@ function leaderboardEnabled() { return communitySocial === true && communityVers
 function leaderboardPayload() {
   const wk = weekKey(new Date());
   const inWeek = (d) => { try { return weekKey(parseDate(d)) === wk; } catch (e) { return false; } };
-  const week = state.history.filter((w) => inWeek(w.date)).reduce((s, w) => s + (Number(w.xp) || 0), 0)
-    + (state.activities || []).filter((a) => inWeek(a.date)).reduce((s, a) => s + (Number(a.xp) || 0), 0);
+  const week = state.history.filter((w) => inWeek(w.date)).reduce((s, w) => s + historyEntryXp(w), 0)
+    + (state.activities || []).filter((a) => inWeek(a.date)).reduce((s, a) => s + activityEntryXp(a), 0);
   const earned = state.achievements || {};
-  return {
+  const v2 = communityVersion >= 9;   // 0017: server pozná nové pravidlá XP (p_rules) a nové id úspechov
+  const payload = {
     p_training: workoutXP() + activityXP(),
     p_week_training: week,
     p_week_key: wk,
     p_workouts: state.history.length + (state.activities || []).length,   // séria týždňov počíta aj aktivity
-    p_achievements: staticAchievementDefs().filter((d) => earned[d.id]).map((d) => d.id),
+    p_achievements: (v2 ? staticAchievementDefs() : allAchievementDefs()).filter((d) => earned[d.id]).map((d) => d.id),
   };
+  if (v2) payload.p_rules = 2;   // bez p_rules (staršia appka) server XP z tejto appky ignoruje
+  return payload;
 }
 
 function leaderboardQueue() {
@@ -17652,7 +17971,7 @@ function shareFromWorkout(w) {
     kind: 'workout',
     name: String(historyPlanName(w)).slice(0, 80) || 'Workout',
     date: String(w.date || '').slice(0, 10),
-    xp: shareClampInt(w.xp, 0, 100000),
+    xp: shareClampInt(historyEntryXp(w), 0, 100000),
     exercises: w.exercises.slice(0, SHARE_MAX_EXERCISES).map((e) => {
       const x = { n: String(e.name || '?').slice(0, 80), s: shareClampInt(e.sets, 1, 99), r: shareClampInt(e.reps, 0, 999),
         w: shareClampKg(e.weight), d: shareClampInt(e.setsDone, 0, 198) };
@@ -17697,7 +18016,7 @@ function shareCardHtml(a, src, ref, noSave) {
   const meta = [];
   if (workout && a.date) meta.push(formatDate(String(a.date)));
   if (workout && Number(a.duration) > 0) meta.push(formatDurationNatural(Number(a.duration)));
-  if (workout && Number(a.xp) > 0) meta.push('+' + Number(a.xp) + ' ' + t('units.xp'));
+  if (workout && Number(a.xp) > 0) meta.push({ html: '<bdi>+' + Number(a.xp) + ' ' + esc(t('units.xp')) + '</bdi>' });   // bdi: v arabčine sa "+50 XP" nepreskladá
   meta.push(tPlural('share.exercises', a.exercises.length));
   const rows = a.exercises.slice(0, SHARE_MAX_EXERCISES).map((e) => {
     /* Hodnoty strán od niekoho iného: len polia čísel, inak sa ignorujú. */
@@ -17731,7 +18050,7 @@ function shareCardHtml(a, src, ref, noSave) {
   return '<div class="cshare-card" data-kind="' + (workout ? 'workout' : 'plan') + '">'
     + '<p class="cshare-kind">' + esc(t(workout ? 'share.kindWorkout' : 'share.kindPlan')) + '</p>'
     + '<p class="cshare-name">' + esc(a.name || '') + '</p>'
-    + '<p class="cshare-meta">' + esc(meta.join(' · ')) + '</p>'
+    + '<p class="cshare-meta">' + meta.map((m) => (m && m.html) || esc(m)).join(' · ') + '</p>'
     + '<ul class="cshare-list">' + rows + '</ul>'
     + (noSave ? '' : '<button type="button" class="btn btn-secondary btn-sm cshare-save" data-community-action="save-shared" data-src="' + src + '" data-ref="' + escAttr(String(ref)) + '">'
       + esc(t('share.saveAsPlan')) + '</button>') + '</div>';
@@ -18009,7 +18328,7 @@ async function profileAchievementsSend(force) {
   const sb = communityClient();
   if (!sb) return;
   const earned = state.achievements || {};
-  const payload = { p_ids: staticAchievementDefs().filter((d) => earned[d.id]).map((d) => d.id),
+  const payload = { p_ids: allAchievementDefs().filter((d) => earned[d.id]).map((d) => d.id),
     p_workouts: state.history.length + (state.activities || []).length };
   const sig = JSON.stringify(payload) + ':' + (communityProfile && communityProfile.id);
   if (!force && sig === profileAchSentSig) return;
@@ -18021,11 +18340,11 @@ async function profileAchievementsGet(sb, uid) {
 }
 function profileAchievementsHtml(info, mine) {
   if (!info) return '';
-  const defs = staticAchievementDefs();
+  const defs = allAchievementDefs();
   const top = (Array.isArray(info.top) ? info.top : []).map((id) => defs.find((d) => d.id === id)).filter(Boolean);
   if (!top.length) return mine ? '<p class="card-note cprofile-ach-empty">' + esc(t('profileAch.none')) + '</p>' : '';
   return '<div class="cprofile-ach"><p class="cprofile-ach-title">' + esc(t('profileAch.title')) + '</p><ul class="cprofile-ach-list">'
-    + top.map((d) => '<li class="cprofile-ach-item"><span class="cprofile-ach-icon" aria-hidden="true">' + esc(d.icon) + '</span><span class="cprofile-ach-name">' + esc(t(d.nameKey)) + '</span></li>').join('')
+    + top.map((d) => '<li class="cprofile-ach-item"><span class="cprofile-ach-icon" aria-hidden="true">' + esc(d.icon) + '</span><span class="cprofile-ach-name">' + esc(t(d.nameKey, { n: d.n })) + '</span></li>').join('')
     + '</ul>' + (mine && info.hidden ? '<p class="card-note">' + esc(t('profileAch.hiddenNote')) + '</p>' : '') + '</div>';
 }
 async function communitySetProfileAchHidden(hidden) {
@@ -19900,7 +20219,7 @@ function renderStatsGrid() {
     + tile('w2', 'calendar', bentoIcon('calendar') + '<span class="bt-line bt-bottom">' + esc(t('tab.kalendar')) + '</span>')
     + tile('w2', 'history', bentoIcon('clock') + '<span class="bt-line bt-bottom">' + esc(t('bento.history')) + '</span>')
     + recent.map((w) => '<button type="button" class="bt w2" data-day="' + escAttr(w.date) + '"><span class="bt-l">' + esc(bentoShortDay(w.date)) + '</span><b class="st-plan">'
-      + esc(historyPlanName(w)) + '</b><span class="bt-line">' + esc(bentoWorkoutLine(w)) + '</span></button>').join('')
+      + esc(historyPlanName(w)) + '</b><span class="bt-line">' + bentoWorkoutLine(w) + '</span></button>').join('')
     + tile('bt-sky w2', 'body', bentoIcon('scale') + '<span class="bt-line bt-bottom">' + esc(t('bento.body')) + '</span>')
     + tile('w2', 'photos', bentoIcon('camera') + '<span class="bt-line bt-bottom">' + esc(t('bento.photos')) + '</span>')
     + tile('w2', 'food', bentoIcon('utensils') + '<span class="bt-line bt-bottom">' + esc(t('bento.foodTitle')) + '</span>')
@@ -19908,7 +20227,7 @@ function renderStatsGrid() {
 }
 function bentoWorkoutLine(w) {
   const mins = Math.round((Number(w.durationSeconds) || 0) / 60);
-  return (mins ? t('bento.minutes', { n: mins }) + ' · ' : '') + '+' + (Number(w.xp) || 0) + ' ' + t('units.xp');
+  return esc(mins ? t('bento.minutes', { n: mins }) + ' · ' : '') + '<bdi>+' + historyEntryXp(w) + ' ' + esc(t('units.xp')) + '</bdi>';   // vracia HTML (bdi: arabčina)
 }
 
 /* ---------- Veľkosť uložených dát (len upozornenie, nikdy sa nemaže) ---------- */
@@ -20205,6 +20524,7 @@ function saveMeasure() {
     state.measurements.push(entry);
   }
   measureEditId = null;
+  reconcileAchievements();   // úspech "Telesný denník" (váha v 4 týždňoch)
   saveState();
   document.getElementById('modal-measure').hidden = true;
   renderPokrok();
@@ -20818,7 +21138,7 @@ function renderPokrok() {
           ${w.note ? `<div class="history-note">“${esc(w.note)}”</div>` : ''}
         </div>
         <div class="history-side">
-          <div class="history-xp">+${w.xp} ${t('units.xp')}</div>
+          <div class="history-xp">+${historyEntryXp(w)} ${t('units.xp')}</div>
           <div class="history-actions">
             <button class="btn-icon-sm" data-action="edit" title="${t('history.editTitle')}">✏️</button>
             <button class="btn-icon-sm btn-icon-danger" data-action="delete" title="${t('history.deleteTitle')}">🗑️</button>
@@ -20864,11 +21184,34 @@ function renderMotivacia() {
     div.dataset.achievementId = def.id;
     div.innerHTML = `
       <span class="achievement-icon">${def.icon}</span>
-      <span class="achievement-name">${t(def.nameKey)}</span>
-      <span class="achievement-desc">${t(def.descKey, { g: weeklyGoal() })}</span>
-      ${def.xp ? `<span class="achievement-xp">${t('motivacia.xpReward', { xp: def.xp })}</span>` : ''}
+      <span class="achievement-name">${t(def.nameKey, { n: def.n })}</span>
+      <span class="achievement-desc">${t(def.descKey, { g: weeklyGoal(), n: def.n })}</span>
+      ${def.xp ? `<span class="achievement-xp"><bdi>${t('motivacia.xpReward', { xp: def.xp })}</bdi></span>` : ''}
       ${done ? `<span class="achievement-date">${t('motivacia.unlocked', { date: formatDate(date) })}</span>` : ''}`;
     list.appendChild(div);
+  }
+
+  /* Predchádzajúce odznaky: získané podľa starých pravidiel, ktoré nie sú v novej tabuľke. Zostávajú, bez XP. */
+  const newIds = new Set(defs.map((d) => d.id));
+  const earlier = LEGACY_ACHIEVEMENT_DEFS.filter((d) => !newIds.has(d.id) && state.achievements[d.id]);
+  if (earlier.length) {
+    const head = document.createElement('p');
+    head.className = 'achievements-sub';
+    head.id = 'achievements-earlier';
+    head.textContent = t('ach2.earlier');
+    list.appendChild(head);
+    for (const def of earlier) {
+      const div = document.createElement('div');
+      div.className = 'achievement unlocked earlier';
+      div.dataset.category = def.category;
+      div.dataset.achievementId = def.id;
+      div.innerHTML = `
+        <span class="achievement-icon">${def.icon}</span>
+        <span class="achievement-name">${t(def.nameKey)}</span>
+        <span class="achievement-desc">${t(def.descKey, { g: weeklyGoal() })}</span>
+        <span class="achievement-date">${t('motivacia.unlocked', { date: formatDate(state.achievements[def.id]) })}</span>`;
+      list.appendChild(div);
+    }
   }
 
   for (const [id, date] of milestones) {
@@ -20930,8 +21273,8 @@ function achievementLabel(id) {
     const name = recordedNameToDisplay(parts.slice(1, -1).join('-'));
     return t('motivacia.ach.5kg', { name, kg });
   }
-  const def = staticAchievementDefs().find(d => d.id === id);
-  return def ? `${def.icon} ${t(def.nameKey)}` : id;
+  const def = allAchievementDefs().find(d => d.id === id);
+  return def ? `${def.icon} ${t(def.nameKey, { n: def.n })}` : id;
 }
 
 /* Názov cviku v histórii: podľa stabilného exId, inak podľa zaznamenaného názvu. */
@@ -21128,7 +21471,7 @@ function workoutBlock(w) {
   div.innerHTML = `
     <div class="day-workout-head">
       <span class="day-workout-name">${esc(historyPlanName(w))}</span>
-      <span class="day-workout-xp">+${w.xp} ${t('units.xp')}</span>
+      <span class="day-workout-xp">+${historyEntryXp(w)} ${t('units.xp')}</span>
     </div>
     <div class="day-workout-date">${esc(formatDate(w.date))}</div>
     ${w.trainedWith ? `<div class="day-ex-meta train-with">👥 ${esc(t('train.trainedWith', { name: w.trainedWith }))}</div>` : ''}
@@ -21229,7 +21572,7 @@ function activityBlock(a) {
   div.innerHTML = `
     <div class="day-workout-head">
       <span class="day-workout-name">${esc(activityKindLabel(a.kind))}</span>
-      <span class="day-workout-xp">+${a.xp} ${t('units.xp')}</span>
+      <span class="day-workout-xp">+${activityEntryXp(a)} ${t('units.xp')}</span>
     </div>
     <div class="day-workout-date">${esc(formatDate(a.date))}</div>
     <div class="day-ex-meta">${esc(parts.join(' · '))}</div>
@@ -21278,7 +21621,28 @@ function renderDayDetail(key) {
 
 /* ---------- Celkové vykreslenie ---------- */
 
+/* Jednorazová poznámka o novom výpočte XP (v101): len na tomto zariadení (localStorage, mimo stavu),
+   len pre ľudí, ktorí mali históriu už pred touto verziou. Nový používateľ ju nikdy neuvidí. */
+const XP_NOTE_KEY = 'gymquest_xp_note';
+function renderXpNote() {
+  const el = document.getElementById('xp-note');
+  if (!el) return;
+  let seen = null;
+  try { seen = localStorage.getItem(XP_NOTE_KEY); } catch (e) {}
+  const hasData = ((state.history || []).length || (state.activities || []).length) && !state.demo;
+  if (seen === null && !hasData) {
+    try { localStorage.setItem(XP_NOTE_KEY, 'new'); } catch (e) {}   // čerstvá inštalácia (aj ukážkové dáta): poznámku už nikdy
+  }
+  el.hidden = !(seen === null && hasData);
+}
+function dismissXpNote() {
+  try { localStorage.setItem(XP_NOTE_KEY, '1'); } catch (e) {}
+  const el = document.getElementById('xp-note');
+  if (el) el.hidden = true;
+}
+
 function renderAll() {
+  renderXpNote();
   renderDnes();
   renderTrening();
   renderPokrok();
@@ -21344,10 +21708,12 @@ function finishWorkout() {
   if (!plan) return;
   const doneCount = totalSetsDone();
   const totalSets = planExerciseCount(plan);
-  const xp = BASE_XP + doneCount * XP_PER_SET;
+  const xp = xpForNewWorkout(doneCount, todayISO());
+  const limited = xp === 0 && workoutXpFor(doneCount) > 0;   // 0 XP kvôli dennému limitu
 
   const confirmText = document.getElementById('confirm-text');
-  confirmText.innerHTML = t('trening.confirmText', { plan: esc(planDisplayName(plan)), done: doneCount, total: totalSets, xp });
+  confirmText.innerHTML = t('trening.confirmText', { plan: esc(planDisplayName(plan)), done: doneCount, total: totalSets, xp })
+    + (limited ? '<br>' + esc(t('xp.dailyLimit')) : '');
   document.getElementById('confirm-note').value = '';
   document.getElementById('modal-confirm').hidden = false;
   document.getElementById('confirm-note').focus();
@@ -21566,6 +21932,7 @@ function confirmFinish() {
   const prevRecommended = recommendedPlan();
   const beforeUnlocked = Object.keys(state.achievements);
   const beforeAchXP = achievementXP();
+  const beforeLevel = levelForXp(totalXP()).level;
 
   /* Výmena cviku počas tréningu sa zapisuje POCTIVO: pôvodný cvik si ponechá svoje
      skutočne odcvičené série a náhrada sa zapíše zvlášť. Hotové série sa NIKDY
@@ -21608,7 +21975,7 @@ function confirmFinish() {
   }
 
   const doneCount = totalSetsDone();
-  const xp = BASE_XP + doneCount * XP_PER_SET;
+  const xp = xpForNewWorkout(doneCount, todayISO());
   const note = document.getElementById('confirm-note').value.trim();
   const trainData = trainActive() ? trainProgressData() : null;   // pred zrušením session
 
@@ -21623,6 +21990,7 @@ function confirmFinish() {
   };
   /* Trvanie sa zapíše len ak naozaj existuje rozbehnutá session – nikdy nevymýšľame nulu. */
   if (sess) entry.durationSeconds = sessionElapsedSeconds(sess);
+  if (sess && sess.restUsed === true) entry.restUsed = true;   // aspoň raz bežal odpočet pauzy (úspech rest5)
   /* Health Connect (Android): skutočný čas tréningu – podľa neho sa číta tep a zapíše cvičenie. */
   if (sess && healthOn()) {
     const end = Date.now();
@@ -21663,8 +22031,9 @@ function confirmFinish() {
 
   lastUnlocked = Object.keys(state.achievements).filter(id => !beforeUnlocked.includes(id));
   lastAchXP = achievementXP() - beforeAchXP;
+  lastLevelUp = levelForXp(totalXP()).level > beforeLevel ? levelForXp(totalXP()).level : 0;
 
-  lastXP = xp;
+  lastXP = historyEntryXp(entry);
   selectedPlan = prevRecommended || selectedPlan;
   /* Session sa ruší až po uložení histórie – nikdy predtým. */
   clearSession();
@@ -21680,7 +22049,7 @@ function confirmFinish() {
 
 function showResultModal() {
   const info = levelInfo();
-  document.getElementById('result-xp').textContent = `+${lastXP} ${t('units.xp')}`;
+  document.getElementById('result-xp').innerHTML = `<bdi>+${lastXP} ${esc(t('units.xp'))}</bdi>`;   // bdi: v arabčine sa "+50 XP" nepreskladá
   document.getElementById('result-msg').textContent = randomEncouragement();
 
   const achEl = document.getElementById('result-achievements');
@@ -21691,14 +22060,20 @@ function showResultModal() {
         const kg = parts[parts.length - 1];
         return `${t('motivacia.ach.5kg', { name: recordedNameToDisplay(parts.slice(1, -1).join('-')), kg })}`;
       }
-      const def = staticAchievementDefs().find(d => d.id === id);
-      return def ? `${def.icon} ${t(def.nameKey)}` : id;
+      const def = allAchievementDefs().find(d => d.id === id);
+      return def ? `${def.icon} ${t(def.nameKey, { n: def.n })}` : id;
     }).join(', ');
     achEl.textContent = t('motivacia.newAchievement', { names })
       + (lastAchXP > 0 ? ' · ' + t('motivacia.newAchXp', { xp: lastAchXP }) : '');
     achEl.hidden = false;
   } else {
     achEl.hidden = true;
+  }
+
+  const upEl = document.getElementById('result-levelup');
+  if (upEl) {
+    upEl.textContent = lastLevelUp ? t('xp.levelUp', { n: lastLevelUp }) : '';
+    upEl.hidden = !lastLevelUp;
   }
 
   const note = document.getElementById('result-note');
@@ -21777,7 +22152,7 @@ function requestUndoWorkout() {
     recalculateAll();
     saveState();
     switchTab('trening');
-  }, t('trening.undoConfirm', { xp: entry.xp }), t('history.keepWorkout'));
+  }, t('trening.undoConfirm', { xp: historyEntryXp(entry) }), t('history.keepWorkout'));
 }
 
 function requestDeleteWorkout(id) {
@@ -21790,7 +22165,7 @@ function requestDeleteWorkout(id) {
     recalculateAll();
     saveState();
     renderPokrok();
-  }, t('history.deleteConfirm', { xp: entry.xp }), t('history.keepWorkout'));
+  }, t('history.deleteConfirm', { xp: historyEntryXp(entry) }), t('history.keepWorkout'));
 }
 
 /* ---------- Úprava tréningu z histórie ---------- */
@@ -21859,7 +22234,7 @@ function saveHistoryEdit() {
         .sort((a, b) => a - b);
     }
   });
-  w.xp = BASE_XP + w.exercises.reduce((s, e) => s + e.setsDone, 0) * XP_PER_SET;
+  /* Uložené xp sa pri úprave nemení: staré záznamy majú pôvodné (staré) XP a denný limit by sa spätne prepisoval. */
   document.getElementById('modal-history-edit').hidden = true;
   recalculateAll();
   saveState();
@@ -22771,6 +23146,8 @@ function restoreRestTimer() {
    quiet = true pri Znova (rovnaký čas, nie je čo hlásiť). */
 function startTimer(seconds, presetId, quiet) {
   const wasRunning = timerInterval !== null;
+  const restSess = getSession();
+  if (restSess && restSess.restUsed !== true) { restSess.restUsed = true; saveState(); }   // pre úspech "Oddych sa počíta"
   const oldSeconds = Math.round(timerTotalMs / 1000);
   stopTimer();
   unlockAudio();               // štart časovača je pokyn používateľa – odblokuje zvuk
@@ -23555,10 +23932,12 @@ function finishActivity() {
   const distanceKm = dist.value;
   const before = Object.keys(state.achievements);
   const beforeAchXP = achievementXP();
+  const beforeLevel = levelForXp(totalXP()).level;
   const record = {
     id: uid(), kind: a.kind, date: todayISO(),
     startedAt: a.startedAt, endedAt: Date.now(), activeSeconds, distanceKm,
-    note: String(a.note || '').trim().slice(0, 500), xp: BASE_XP,
+    note: String(a.note || '').trim().slice(0, 500),
+    xp: xpForNewActivity(Math.floor(activeSeconds / 60), todayISO()),
   };
   state.activities.push(record);
   syncGoalSnapshot();
@@ -23568,7 +23947,8 @@ function finishActivity() {
   saveState();
   lastUnlocked = Object.keys(state.achievements).filter(id => !before.includes(id));
   lastAchXP = achievementXP() - beforeAchXP;
-  lastXP = record.xp;
+  lastLevelUp = levelForXp(totalXP()).level > beforeLevel ? levelForXp(totalXP()).level : 0;
+  lastXP = activityEntryXp(record);
   state.activeActivity = null;
   saveState();
   closeActivityModal();
@@ -23699,12 +24079,13 @@ function saveManualActivity() {
   const date = /^\d{4}-\d{2}-\d{2}$/.test(dateVal) ? dateVal : todayISO();
   const before = Object.keys(state.achievements);
   const beforeAchXP = achievementXP();
+  const beforeLevel = levelForXp(totalXP()).level;
   const now = Date.now();
   state.activities.push({
     id: uid(), kind, date, startedAt: now - activeSeconds * 1000, endedAt: now,
     activeSeconds, distanceKm: dist.value,
     note: String((document.getElementById('act-h-note') || {}).value || '').trim().slice(0, 500),
-    xp: BASE_XP,
+    xp: xpForNewActivity(Math.floor(activeSeconds / 60), date),
   });
   syncGoalSnapshot();
   state.demo = false;
@@ -23713,7 +24094,8 @@ function saveManualActivity() {
   saveState();
   lastUnlocked = Object.keys(state.achievements).filter(id => !before.includes(id));
   lastAchXP = achievementXP() - beforeAchXP;
-  lastXP = BASE_XP;
+  lastLevelUp = levelForXp(totalXP()).level > beforeLevel ? levelForXp(totalXP()).level : 0;
+  lastXP = activityEntryXp(state.activities[state.activities.length - 1]);
   closeActivityModal();
   showResultModal();
   renderAll();
@@ -23970,7 +24352,7 @@ function renderActivities() {
         ${a.note ? `<div class="history-note">“${esc(a.note)}”</div>` : ''}
       </div>
       <div class="history-side">
-        <div class="history-xp">+${a.xp} ${t('units.xp')}</div>
+        <div class="history-xp">+${activityEntryXp(a)} ${t('units.xp')}</div>
         <div class="history-actions">
           <button class="btn-icon-sm" data-act-action="edit" title="${t('history.editTitle')}">✏️</button>
           <button class="btn-icon-sm btn-icon-danger" data-act-action="delete" title="${t('history.deleteTitle')}">🗑️</button>
@@ -24640,7 +25022,10 @@ function stateMeaningful(s) {
   const saved = state;
   let derived = {};
   try { state = n; derived = evaluateAchievements(); } finally { state = saved; }
-  return Object.keys(n.achievements || {}).some((k) => !derived[k]);
+  /* Staré úspechy odvodené len z plánov (fourplans, customplan, customex5) sa už nevyhodnocujú – bez histórie
+     a bez zmenených plánov by robili z čistého zariadenia "zmysluplné". Ostatné staré id vyžadujú históriu. */
+  const planOnly = { fourplans: 1, customplan: 1, customex5: 1 };
+  return Object.keys(n.achievements || {}).some((k) => !derived[k] && !planOnly[k]);
 }
 
 /* ---------- Fronta úloh: všetka sieťová a aplikačná práca ide postupne ---------- */
@@ -25556,6 +25941,7 @@ function setupEvents() {
   on('btn-confirm-cancel', () => { document.getElementById('modal-confirm').hidden = true; refreshUpdateBanner(); });
   on('btn-confirm-ok', confirmFinish);
   on('btn-result-close', () => { document.getElementById('modal-result').hidden = true; refreshUpdateBanner(); });
+  on('btn-xp-note', dismissXpNote);
   on('btn-result-undo', requestUndoWorkout);
 
   on('btn-add-exercise', () => {

@@ -51,6 +51,7 @@ async function finishWorkout(p) {
     for (let k = 0; k < 4; k++) for (const id of ['modal-generic', 'modal-levelup', 'modal-achievement']) { const m = document.getElementById(id); if (m && !m.hidden) { const x = m.querySelector('.btn-primary'); if (x) x.click(); await w(200); } }
     return true; })()`);
 }
+const staticIds = new Set(['first', 'start3', 'goal1', 'goal4', 'goal12', 'goal26', 'streak4', 'streak8', 'streak12', 'streak26', 'w10', 'w25', 'w50', 'w100', 'w250', 'pr1', 'pr10', 'pr25', 'steady5', 'back', 'rest5', 'ownplan', 'fullbody', 'explorer10', 'body4', 'together', 'balanced10']);
 const serverRow = (u) => sqlVal(`select training_xp||'|'||achievement_xp||'|'||total_xp||'|'||level from public.leaderboard_entries where user_id = ${lit(u.id)}`);
 
 const scenarios = [];
@@ -61,7 +62,8 @@ scenario('reports XP after a workout', async () => {
   const p = await device('rep');
   await signIn(p, u);
   await finishWorkout(p);
-  const local = await p.eval(`(() => { const x = leaderboardPayload(); const li = levelInfo(); return { training: x.p_training, xp: li.xp, level: li.level }; })()`);
+  const local = await p.eval(`(() => { const x = leaderboardPayload(); const li = levelInfo(); return { training: x.p_training, xp: li.xp, level: li.level, rules: x.p_rules, ids: x.p_achievements }; })()`);
+  check('payload (server v9): p_rules 2 and only new achievement ids', local.rules === 2 && local.ids.every((id) => staticIds.has(id)), J(local));
   await waitFor(() => { const r = serverRow(u); return r && Number(r.split('|')[0]) === local.training; }, 20000, 'server row');
   const [training, ach, total, level] = serverRow(u).split('|').map(Number);
   check('server training XP = app workout+activity XP', training === local.training, J({ training, local }));
@@ -82,7 +84,7 @@ scenario('board: tabs, top 3, own pinned row, profile link', async () => {
   sql('delete from public.leaderboard_entries;');
   const me = await member('b-me');
   const top = [];
-  for (let i = 0; i < 21; i++) { const u = await member('b' + i); await u.c.rpc('leaderboard_submit', { p_training: 1000 + i * 10, p_week_training: 50 + i, p_week_key: sqlVal(`select to_char(now() at time zone 'utc', 'IYYY-"W"IW')`), p_workouts: 5, p_achievements: [] }); top.push(u); }
+  for (let i = 0; i < 21; i++) { const u = await member('b' + i); await u.c.rpc('leaderboard_submit', { p_training: 1000 + i * 10, p_week_training: 50 + i, p_week_key: sqlVal(`select to_char(now() at time zone 'utc', 'IYYY-"W"IW')`), p_workouts: 5, p_achievements: [], p_rules: 2 }); top.push(u); }
   const p = await device('board');
   await signIn(p, me);
   await openBoard(p);
@@ -120,7 +122,7 @@ scenario('hidden state and the privacy switch', async () => {
 scenario('moderator action and removed note', async () => {
   const mod = await member('m-mod'); L.makeModerator(mod);
   const target = await member('m-target');
-  await target.c.rpc('leaderboard_submit', { p_training: 100, p_week_training: 100, p_week_key: sqlVal(`select to_char(now() at time zone 'utc', 'IYYY-"W"IW')`), p_workouts: 1, p_achievements: [] });
+  await target.c.rpc('leaderboard_submit', { p_training: 100, p_week_training: 100, p_week_key: sqlVal(`select to_char(now() at time zone 'utc', 'IYYY-"W"IW')`), p_workouts: 1, p_achievements: [], p_rules: 2 });
   const p = await device('mod');
   await signIn(p, mod);
   await p.eval(`(communityOpenUser(${J(target.id)}), true)`);

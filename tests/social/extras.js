@@ -157,6 +157,22 @@ scenario('profile achievements: real ids only, top 3, hide, block, cleanup', asy
   check('leaving Community removes the showcase', !r.error && sqlVal(`select count(*) from public.profile_achievements where user_id = ${lit(a.id)}`) === '0', errText(r));
 });
 
+scenario('profile achievements: v2 ids (0017) are kept, old ids still work, rollback 0017 restores old behaviour', async () => {
+  const a = await member('av'), b = await member('av2');
+  const ids = () => sqlVal(`select array_to_string(ids, ',') from public.profile_achievements where user_id = ${lit(a.id)}`);
+  let r = await a.c.rpc('profile_achievements_set', { p_ids: ['w10', 'goal1', 'first', 'ten', 'pr10', 'made-up'], p_workouts: 60 });
+  check('v2: set stored', !r.error, errText(r));
+  check('v2 ids kept next to old ones, best first (pr10 = v2 value 150)', ids() === 'pr10,ten,w10,goal1,first', ids());
+  r = await b.c.rpc('profile_achievements_get', { p_user: a.id });
+  check('v2: another member sees the top 3 with a v2 id', !r.error && J(r.data.top) === J(['pr10', 'ten', 'w10']) && r.data.count === 5, J(r.data));
+  const undone = L.rollbackFrom(17);
+  r = await a.c.rpc('profile_achievements_set', { p_ids: ['w10', 'goal1', 'first', 'ten', 'pr10'], p_workouts: 60 });
+  check('after rollback of 0017: v2 ids dropped again, old ids kept (pr10 = old value 300)', !r.error && ids() === 'pr10,ten,first', ids() + ' ' + errText(r));
+  L.reapply(undone);
+  r = await a.c.rpc('profile_achievements_set', { p_ids: ['w10', 'first'], p_workouts: 60 });
+  check('after re-apply: v2 ids kept again', !r.error && ids() === 'w10,first', ids() + ' ' + errText(r));
+});
+
 scenario('older app calls still work', async () => {
   const a = await member('oa'), b = await member('ob');
   const conv = await befriend(a, b);

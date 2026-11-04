@@ -232,7 +232,7 @@ async function typeMsg(p, text) {
     section('no errors');
     for (const [name, p] of pages) {
       check(name + ': no exceptions', p.errors.length === 0, J(p.errors));
-      const errs = p.logs.filter((l) => !/favicon|127\.0\.0\.1:54321\/(auth|rest|functions)\/v1\/.*(400|401|404)/.test(l));
+      const errs = p.logs.filter((l) => !/favicon|127\.0\.0\.1:54321\/(auth|rest|functions)\/v1\/.*(400|401|404)|404 \(Not Found\) http:\/\/127\.0\.0\.1:54321\/rest\/v1\/rpc\/leaderboard_submit/.test(l));   // 0017 sa počas testu vracia späť
       check(name + ': no console errors', errs.length === 0, J(errs));
     }
   } catch (e) {

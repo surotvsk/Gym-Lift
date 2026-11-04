@@ -1,5 +1,5 @@
 'use strict';
-/* GymQuest leaderboard (migration 0009): limits, achievements, privacy, ranking, cleanup.
+/* GymQuest leaderboard (migration 0009 + 0017 v2): limits, achievements, privacy, ranking, cleanup.
    LOCAL test stack only (lib.js refuses anything else); disposable local accounts.
    Usage: node tests/social/leaderboard.js [filter] */
 const L = require('./lib');
@@ -8,9 +8,14 @@ const FILTER = process.argv[2] ? new RegExp(process.argv[2], 'i') : null;
 const J = JSON.stringify;
 const WEEK = sqlVal(`select to_char(now() at time zone 'utc', 'IYYY-"W"IW')`);
 const OLD_WEEK = '2000-W01';
-const ALL25 = ['first', 'five', 'ten', 'twentyfive', 'fifty', 'hundred', 'weeklygoal1', 'consistent2', 'consistent4',
-  'consistent8', 'consistent12', 'solid2', 'solid4', 'fullweek', 'newpr', 'pr5', 'pr10', 'improve', 'xp200',
+/* 0017: nové úspechy (spec 4.3), spolu 5 725 XP; staré id (ten, hundred, …) dávajú 0 */
+const ALL_V2 = ['first', 'start3', 'goal1', 'goal4', 'goal12', 'goal26', 'streak4', 'streak8', 'streak12', 'streak26',
+  'w10', 'w25', 'w50', 'w100', 'w250', 'pr1', 'pr10', 'pr25', 'steady5', 'back', 'rest5', 'ownplan', 'fullbody',
+  'explorer10', 'body4', 'together', 'balanced10'];
+const OLD25 = ['five', 'ten', 'twentyfive', 'fifty', 'hundred', 'weeklygoal1', 'consistent2', 'consistent4',
+  'consistent8', 'consistent12', 'solid2', 'solid4', 'fullweek', 'newpr', 'pr5', 'improve', 'xp200',
   'customplan', 'fourplans', 'customex5', 'variety4', 'comeback', 'missedweek'];
+const levelOf = (total) => Math.floor((Math.sqrt(4900 + 40 * total) - 70) / 20);
 
 async function member(tag) {
   const u = await L.newUser('lb-' + tag);
@@ -18,7 +23,10 @@ async function member(tag) {
   if (j.error) throw new Error('community_join ' + tag + ': ' + errText(j));
   return u;
 }
+/* nová appka (v101) posiela p_rules: 2; submitOld = staršia appka bez p_rules (5 argumentov) */
 const submit = (u, training, week, workouts, ach, weekKey) => u.c.rpc('leaderboard_submit',
+  { p_training: training, p_week_training: week, p_week_key: weekKey || WEEK, p_workouts: workouts || 0, p_achievements: ach || [], p_rules: 2 });
+const submitOld = (u, training, week, workouts, ach, weekKey) => u.c.rpc('leaderboard_submit',
   { p_training: training, p_week_training: week, p_week_key: weekKey || WEEK, p_workouts: workouts || 0, p_achievements: ach || [] });
 const row = (u) => {
   const v = sqlVal(`select training_xp||'|'||achievement_xp||'|'||total_xp||'|'||level||'|'||week_xp from public.leaderboard_entries where user_id = ${lit(u.id)}`);
@@ -34,7 +42,7 @@ const scenarios = [];
 const scenario = (name, fn) => scenarios.push({ name, fn });
 
 scenario('version and access', async () => {
-  check('community_social_version() is 3 or later (4 = 0010)', Number(sqlVal('select public.community_social_version()')) >= 3);
+  check('community_social_version() is 9 or later (9 = 0017)', Number(sqlVal('select public.community_social_version()')) >= 9);
   const a = await member('acc');
   const anon = await L.anon().rpc('leaderboard_top', { p_period: 'all' });
   check('anon cannot read the leaderboard', !!anon.error, J(anon));
@@ -70,12 +78,75 @@ scenario('baseline, daily and weekly limits, decrease, week key mismatch', async
 
 scenario('achievements computed on the server', async () => {
   const a = await member('ach');
-  await submit(a, 0, 0, 10, ['first', 'hundred', 'made-up', 'first']);
-  check('impossible "hundred" dropped, unknown id ignored, duplicate counted once', row(a).achievement === 25, J(row(a)));
-  await submit(a, 0, 0, 100, ['first', 'hundred', 'consistent12']);
-  check('hundred (750) + consistent12 (750) + first (25) with 100 workouts', row(a).achievement === 1525, J(row(a)));
-  await submit(a, 0, 0, 100, ALL25);
-  check('all 25 achievements = 5150, never limited by the daily cap', row(a).achievement === 5150 && row(a).level === 51, J(row(a)));
+  await submit(a, 0, 0, 10, ['first', 'w100', 'made-up', 'first']);
+  check('impossible "w100" dropped, unknown id ignored, duplicate counted once', row(a).achievement === 25, J(row(a)));
+  await submit(a, 0, 0, 100, ['first', 'w100', 'streak12']);
+  check('w100 (600) + streak12 (450) + first (25) with 100 workouts', row(a).achievement === 1075, J(row(a)));
+  await submit(a, 0, 0, 300, ALL_V2);
+  check('all 27 new achievements = 5725, never limited by the daily cap', row(a).achievement === 5725 && row(a).level === levelOf(5725), J(row(a)));
+  await submit(a, 0, 0, 300, OLD25.concat(['first']));
+  check('old achievement ids give 0 XP (only first counts)', row(a).achievement === 25, J(row(a)));
+  await submit(a, 0, 0, 0, ['body4', 'first', 'w10', 'start3']);
+  check('guards: body4 needs no workouts, first/w10/start3 need 1/10/3', row(a).achievement === 50, J(row(a)));
+});
+
+scenario('level formula boundaries (0017)', async () => {
+  const a = await member('lvl');
+  await submit(a, 0, 0, 0);
+  const cases = [[0, 0], [79, 0], [80, 1], [179, 1], [180, 2], [2939, 13], [2940, 14], [10439, 28], [10440, 29]];
+  for (const [total, lvl] of cases) {
+    sql(`update public.leaderboard_entries set training_xp = ${total}, achievement_xp = 0 where user_id = ${lit(a.id)};`);
+    check('total ' + total + ' = level ' + lvl, row(a).level === lvl && lvl === levelOf(total), J(row(a)));
+  }
+  sql(`update public.leaderboard_entries set training_xp = 3000, achievement_xp = 150 where user_id = ${lit(a.id)};`);
+  check('level uses training + achievement XP (3150 = L14, L15 starts at 3300)', row(a).total === 3150 && row(a).level === 14, J(row(a)));
+  let refused = false;
+  try { sql(`update public.leaderboard_entries set achievement_xp = 5726 where user_id = ${lit(a.id)};`); } catch (e) { refused = true; }
+  check('achievement_xp above 5725 is refused by the check', refused && row(a).achievement === 150, J(row(a)));
+});
+
+scenario('older app (no p_rules) cannot overwrite recalculated XP (0017)', async () => {
+  const a = await member('old');
+  await submit(a, 600, 200, 12, ['first']);
+  const before = row(a);
+  sql(`update public.leaderboard_entries set updated_at = now() - interval '1 hour' where user_id = ${lit(a.id)};`);
+  const r = await submitOld(a, 9000, 900, 50, ['first', 'ten', 'hundred']);
+  check('old 5-argument call raises no error and returns the stored row', !r.error && r.data.total_xp === before.total && r.data.level === before.level && r.data.week_xp === before.week, J(r));
+  check('old call changed nothing (training, achievements, week)', J(row(a)) === J(before), J(row(a)) + J(before));
+  check('old call only touched updated_at', sqlVal(`select updated_at > now() - interval '1 minute' from public.leaderboard_entries where user_id = ${lit(a.id)}`) === 't');
+  const r2 = await submitOld(a, 0, 0, 0);
+  check('old call with lower values changes nothing either', !r2.error && J(row(a)) === J(before), J(row(a)));
+  const n = await member('old-new');
+  const r3 = await submitOld(n, 500, 500, 5);
+  check('old call without a row creates none and returns zeros', !r3.error && r3.data.total_xp === 0 && row(n) === null, J(r3) + J(row(n)));
+  const out = await L.newUser('lb-old-out');
+  check('old call by a non-member is still refused', !!(await submitOld(out, 1, 1, 1)).error);
+  const six = await a.c.rpc('leaderboard_submit', { p_training: 700, p_week_training: 300, p_week_key: WEEK, p_workouts: 12, p_achievements: ['first'], p_rules: 2 });
+  check('p_rules = 2 afterwards works normally (+100 above peak, within the 300 limit)', !six.error && row(a).training === 700, J(six) + J(row(a)));
+});
+
+scenario('p_rules = 2: lower recalculated value accepted, gains limited, re-baseline by 0017', async () => {
+  const a = await member('rb2');
+  await submit(a, 9000, 800, 80);
+  resetDay(a);
+  const r = await submit(a, 4000, 300, 80);
+  check('recalculated (lower) value accepted at once', !r.error && row(a).training === 4000 && row(a).week === 300, J(r) + J(row(a)));
+  resetDay(a);
+  await submit(a, 4500, 300, 80);
+  check('gain back up to the old peak stays free (stale phone rule from 0009)', row(a).training === 4500, J(row(a)));
+  /* 0017 re-baselines rows that exist before it: day_key null, peak = training, first p_rules=2 submit = baseline */
+  const undone = L.rollbackFrom(17);
+  const b = await member('rb2-b');
+  await submitOld(b, 9000, 800, 80, ['first']);
+  check('after rollback an old 5-argument call writes the 0009 way', !!row(b) && row(b).training === 9000 && row(b).level === Math.floor(row(b).total / 100), J(row(b)));
+  L.reapply(undone);
+  check('0017 re-baselined the existing row (day_key empty, peak = training)', sqlVal(`select (day_key is null)||'|'||(training_peak = training_xp) from public.leaderboard_entries where user_id = ${lit(b.id)}`) === 'true|true');
+  const r2 = await submit(b, 3000, 300, 80, ['first']);
+  check('first p_rules = 2 submit after 0017 takes the recalculated value (3000 < 9000)', !r2.error && row(b).training === 3000, J(r2) + J(row(b)));
+  check('peak follows the recalculated value', sqlVal(`select training_peak from public.leaderboard_entries where user_id = ${lit(b.id)}`) === '3000');
+  resetDay(b);
+  await submit(b, 5000, 300, 80, ['first']);
+  check('later gains above the recalculated peak are limited again (+300)', row(b).training === 3300, J(row(b)));
 });
 
 scenario('privacy: hidden, suspended, non-member, blocked, moderator removal', async () => {
@@ -122,7 +193,7 @@ scenario('ranking: ties, week tab, own rank outside the top 20', async () => {
   check('tie: the earlier one ranks first', b[0].user_id === t2.id && b[1].user_id === t1.id, J(b.slice(0, 2)));
   const mine = b.find((x) => x.is_me);
   check('own row outside the top 20 is returned with its real rank', !!mine && mine.pos === 22, J(mine));
-  check('level shown = floor(total/100)', b[0].level === 50, J(b[0]));
+  check('level shown = new curve (5000 XP = L19)', b[0].level === levelOf(5000) && b[0].level === 19, J(b[0]));
   sql(`update public.leaderboard_entries set week_key = ${lit(OLD_WEEK)} where user_id = ${lit(t2.id)};`);
   const w = await board(me, 'week');
   check('week tab: last week\'s rows are left out', ids(w).indexOf(t2.id) < 0, J(w.slice(0, 3)));
@@ -165,6 +236,26 @@ scenario('review fixes: stale device, early row, rejoin, RLS', async () => {
   const me = await c.c.rpc('leaderboard_me');
   check('leave and rejoin does not undo a moderator removal', !me.error && me.data.removed === true, J(me));
   check('first submission is bounded (at most 1,000,000 training XP)', row(c).training <= 1000000, J(row(c)));
+});
+
+scenario('rollback 0017_down and re-apply', async () => {
+  const undone = L.rollbackFrom(17);
+  check('0017 rolled back: version 8', sqlVal('select public.community_social_version()') === '8');
+  check('v2 achievement function gone, only the 5-argument submit remains', sqlVal(`select to_regprocedure('public.leaderboard_achievement_value_v2(text[],integer)') is null and to_regprocedure('public.leaderboard_submit(integer,integer,text,integer,text[],integer)') is null and to_regprocedure('public.leaderboard_submit(integer,integer,text,integer,text[])') is not null`) === 't');
+  const a = await member('rb17');
+  const r = await submitOld(a, 9000, 800, 100, ['first', 'ten', 'hundred']);
+  check('old behaviour: old achievement ids count (25+100+750), level = total/100', !r.error && row(a).achievement === 875 && row(a).level === Math.floor(row(a).total / 100) && row(a).level === 98, J(r) + J(row(a)));
+  sql(`update public.leaderboard_entries set achievement_xp = 5100 where user_id = ${lit(a.id)};`);
+  L.reapply(undone);
+  check('re-applied: version 9', sqlVal('select public.community_social_version()') === '9');
+  check('re-applied: level follows the new curve again', row(a).level === levelOf(row(a).total), J(row(a)));
+  const n = await member('rb17-n');
+  await submit(n, 600, 100, 12, ['first', 'w10']);
+  check('re-applied: p_rules = 2 behaves as before (first 25 + w10 100 = 125 achievement XP)', row(n).training === 600 && row(n).achievement === 125, J(row(n)));
+  const o = await submitOld(n, 5, 5, 1);
+  check('re-applied: old call is a no-op again', !o.error && row(n).training === 600, J(o) + J(row(n)));
+  const grants = sqlVal(`select has_function_privilege('anon', 'public.leaderboard_submit(integer,integer,text,integer,text[],integer)', 'execute')||'|'||has_function_privilege('authenticated', 'public.leaderboard_submit(integer,integer,text,integer,text[],integer)', 'execute')||'|'||has_function_privilege('authenticated', 'public.leaderboard_achievement_value_v2(text[],integer)', 'execute')`);
+  check('privileges: anon no, authenticated yes for submit, no for the v2 table function', grants === 'false|true|false', grants);
 });
 
 scenario('rollback 0009_down and re-apply', async () => {

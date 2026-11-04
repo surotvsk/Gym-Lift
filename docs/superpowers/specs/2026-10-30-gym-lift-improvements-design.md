@@ -276,3 +276,5 @@ pagination/visibility (local stack), chat read/viewing, Android device tests. Li
 
 ## 13. Decisions recorded
 D1 A (keep earned XP, legacy bonus, level never lower), D2–D7 approved as written, D8 as above.
+
+**D1 changed by the owner (2026-11-04):** Option B — recalculate everyone with the new rules ("I don't need to stay level 29 … so all users are on same"). No legacy bonus; earlier badges stay visible without XP.

@@ -101,7 +101,7 @@ function check(name, ok, info) {
     console.log('== saved history');
     /* Drop séria 3 pridaná, ale NEDOKONČENÁ → nesmie ísť do histórie. */
     await clickIn('.btn-add-drop');
-    const xpBefore = await p.eval(`BASE_XP + totalSetsDone() * XP_PER_SET`);
+    const xpBefore = await p.eval(`workoutXpFor(totalSetsDone())`);
     await p.eval(`(finishWorkout(), confirmFinish(), true)`);
     await wait(300);
     const h = await p.eval(`state.history[state.history.length - 1]`);

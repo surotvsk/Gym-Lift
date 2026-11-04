@@ -145,6 +145,8 @@ const STACK = [
   { n: 15, up: '0015_chat_seen.sql', down: '0015_down.sql',
     present: "exists (select 1 from pg_policies where schemaname = 'public' and tablename = 'chat_reads' and policyname = 'chat_reads_select_participants')" },
   { n: 16, up: '0016_push_fcm.sql', down: '0016_down.sql', present: "to_regclass('public.push_fcm_tokens') is not null" },
+  { n: 17, up: '0017_leaderboard_v2.sql', down: '0017_down.sql',
+    present: "to_regprocedure('public.leaderboard_achievement_value_v2(text[],integer)') is not null" },
 ];
 let lastRollback = null;   // posledný rollbackFrom: čo sa vrátilo a aká bola verzia predtým
 function rollbackFrom(n) {

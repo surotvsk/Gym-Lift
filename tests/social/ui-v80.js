@@ -182,7 +182,7 @@ async function send(p, text) {
     } finally {
       L.reapply(done);
     }
-    check('0015 re-applied (version 8)', Number(sqlVal('select public.community_social_version()')) === 8);
+    check('0015 re-applied (version ' + done.versionBefore + ')', sqlVal('select public.community_social_version()') === done.versionBefore);
 
     section('no errors');
     for (const [name, p] of pages) {
