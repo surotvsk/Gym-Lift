@@ -12186,6 +12186,7 @@ function ensureSession(plan) {
     completedSets: {},
     actualFailureSets: {},
   };
+  if (tourOpen()) closeTour('yield');   // začal tréning: návod mu nesmie zavadzať
   /* Snímka plánovaných hodnôt: rozbehnutý tréning nemenia zmeny plánu zvonka. */
   const snapshot = {}, seenKeys = {};
   for (const ex of (p.exercises || [])) {
@@ -21639,10 +21640,12 @@ function dismissXpNote() {
   try { localStorage.setItem(XP_NOTE_KEY, '1'); } catch (e) {}
   const el = document.getElementById('xp-note');
   if (el) el.hidden = true;
+  renderTourInvite();   // po odkliknutí poznámky príde na rad pozvánka na návod
 }
 
 function renderAll() {
   renderXpNote();
+  renderTourInvite();   // až po poznámke o XP: obe naraz sa nikdy neukážu
   renderDnes();
   renderTrening();
   renderPokrok();
@@ -22294,6 +22297,7 @@ function confirmSetup() {
   document.getElementById('modal-setup').hidden = true;
   localStorage.setItem(STORAGE_KEY + '_seeded', '1');
   renderAll();
+  tourFirstRun();   // čerstvé zariadenie: krátky návod hneď po nastavení
 }
 
 /* ---------- Vzhľad: Bento svetlý / tmavý / podľa telefónu ----------
@@ -22397,7 +22401,10 @@ function themeChipsKey(e) {
   } catch (e) {}
 })();
 
+let tourHelpOpener = null;   // kto otvoril Nastavenia: tam sa vráti fokus po návode spustenom z Pomoci
 function openSettings() {
+  tourHelpOpener = document.activeElement;
+  renderTourHelp();
   renderThemeChips();
   renderHealthSetting();
   healthRecheck();
@@ -22578,7 +22585,7 @@ function updateBannerVisible() {
    neponúka ANI neodosiela. */
 function backupBlocked() {
   if (backupDismissed) return true;
-  if (isBusy()) return true;
+  if (isBusy() || tourOpen()) return true;
   if (document.querySelector('.modal-backdrop:not([hidden])')) return true;
   if (updateBannerVisible()) return true;   // dve lišty sa nikdy neprekrývajú
   return false;
@@ -23719,6 +23726,7 @@ function setLang(code) {
   if (LANG_CODES.indexOf(code) < 0) return;
   hideLanguagePicker();
   if (code === activeLang()) return;
+  if (tourOpen()) closeTour('yield');   // text kariet by ostal v starom jazyku
   state.settings.lang = code;
   saveState();
   applyStaticI18n();
@@ -25053,7 +25061,7 @@ function syncEnqueue(name, fn) {
     try { await fn(); }
     catch (e) {
       if (!(e instanceof SyncAbort)) { console.warn('GymQuest sync:', name, e); if (!syncLastError) syncLastError = 'network'; syncScheduleRetry(); }
-    } finally { syncRunning = null; syncLoading = false; syncRender(); }
+    } finally { syncRunning = null; syncLoading = false; syncRender(); renderTourInvite(); }
   };
   syncChain = syncChain.then(run, run);
   return syncChain;
@@ -26028,6 +26036,9 @@ function setupEvents() {
   on('btn-preset-save', savePresetForm);
 
   on('btn-setup-ok', confirmSetup);
+  on('btn-tour-start', tourInviteStart);
+  on('btn-tour-later', tourInviteLater);
+  on('btn-tour-help', tourHelpShow);
   // v80: cieľ sa uloží hneď po ťuknutí; Zavrieť ho pre istotu uloží ešte raz (zmena sa nikdy nestratí)
   on('btn-settings-close', () => {
     saveSettingsGoal();
@@ -26141,6 +26152,7 @@ function setupEvents() {
   // jeden dokumentový listener pre Esc (modal nie je fokusovateľný kontajner)
   document.addEventListener('keydown', (e) => {
     if (e.key !== 'Escape') return;
+    if (tourOpen()) { e.preventDefault(); closeTour('skipped'); return; }   // návod je navrchu, Esc zavrie len jeho
     const inviteModal = document.getElementById('modal-community-invite');
     if (inviteModal && !inviteModal.hidden) { closeCommunityInvite(); return; }
     const langModal = document.getElementById('modal-lang');
@@ -26628,6 +26640,7 @@ function refreshUpdateBanner() {
   const banner = document.getElementById('update-banner');
   if (!banner) return;
   const show = swUpdateReady && !isBusy() && !isNativeApp();
+  if (show && tourOpen()) closeTour('yield');   // ponuka aktualizácie má prednosť pred návodom
   banner.hidden = !show;
   document.body.classList.toggle('has-update-banner', show);
   if (pendingUpdateReload && !isBusy()) {
@@ -26732,6 +26745,393 @@ function applyUpdateFromSettings() {
   applyUpdate();
 }
 
+/* ---------- Návod ---------- */
+/* Krátky sprievodca: tmavý prekryv s vyrezaným zvýraznením prvku a kartou s textom kroku. Nikdy nemení
+   dáta appky (state, plány, tréningy, nastavenia): jediné, čo si pamätá, je localStorage TOUR_KEY
+   { v: 1, status: 'done'|'skipped'|'invited-dismissed', at } – len na tomto zariadení, nikdy sa nesynchronizuje.
+   Krok: { id, target: () => Element|null, illus: () => HTMLElement|null, title, body, tab?, illusWithTarget? }.
+   title/body: funkcia, kľúč z I18N, alebo hotový text. Ak je cieľ viditeľný, posunie sa do výhľadu (len ak v ňom
+   ešte nie je) a zvýrazní; inak sa v karte ukáže ilustrácia (neaktívna kópia s odstránenými ID-čkami);
+   illusWithTarget ju ukáže aj popri zvýraznenom cieli. tab: len dnes / trening / pokrok (ostatné karty
+   pri prepnutí načítavajú zo siete alebo menia históriu prehliadača, preto sa v návode ignorujú). */
+const TOUR_KEY = 'gymquest_tutorial';
+const TOUR_I18N = {
+  sk: { 'tour.back': 'Späť', 'tour.next': 'Ďalej', 'tour.done': 'Hotovo', 'tour.skip': 'Preskočiť', 'tour.close': 'Zavrieť návod', 'tour.stepOf': '{n} z {total}' },
+  en: { 'tour.back': 'Back', 'tour.next': 'Next', 'tour.done': 'Done', 'tour.skip': 'Skip', 'tour.close': 'Close tour', 'tour.stepOf': '{n} of {total}' },
+  es: { 'tour.back': 'Atrás', 'tour.next': 'Siguiente', 'tour.done': 'Listo', 'tour.skip': 'Omitir', 'tour.close': 'Cerrar la guía', 'tour.stepOf': '{n} de {total}' },
+  'pt-BR': { 'tour.back': 'Voltar', 'tour.next': 'Próximo', 'tour.done': 'Concluir', 'tour.skip': 'Pular', 'tour.close': 'Fechar o tutorial', 'tour.stepOf': '{n} de {total}' },
+  fr: { 'tour.back': 'Retour', 'tour.next': 'Suivant', 'tour.done': 'Terminé', 'tour.skip': 'Passer', 'tour.close': 'Fermer le guide', 'tour.stepOf': '{n} sur {total}' },
+  ar: { 'tour.back': 'رجوع', 'tour.next': 'التالي', 'tour.done': 'تم', 'tour.skip': 'تخطّي', 'tour.close': 'إغلاق الدليل', 'tour.stepOf': '{n} من {total}' },
+};
+for (const lang of Object.keys(TOUR_I18N)) Object.assign(I18N[lang] || (I18N[lang] = {}), TOUR_I18N[lang]);
+
+const TOUR_TABS = ['dnes', 'trening', 'pokrok'];
+let tourRun = null;   // { steps, i, root, spot, card, opener, startTab, startScroll, tabChanged, raf, animUntil, animT, off } | null
+
+function tourOpen() { return !!tourRun; }
+function tourRead() {
+  try {
+    const v = JSON.parse(localStorage.getItem(TOUR_KEY));
+    return v && v.v === 1 && typeof v.status === 'string' ? v : null;
+  } catch (e) { return null; }
+}
+function tourWrite(status) {
+  try { localStorage.setItem(TOUR_KEY, JSON.stringify({ v: 1, status, at: new Date().toISOString() })); } catch (e) {}
+}
+function tourText(v) {
+  if (typeof v === 'function') return String(v());
+  if (typeof v === 'string' && I18N.en && I18N.en[v] !== undefined) return t(v);
+  return v == null ? '' : String(v);
+}
+/* Cieľ je použiteľný, len ak je naozaj vidieť (nie display:none, nie nulová veľkosť). */
+function tourTargetEl(step) {
+  let el = null;
+  try { el = step.target ? step.target() : null; } catch (e) { el = null; }
+  if (!el || !el.isConnected || !el.getClientRects().length) return null;
+  const r = el.getBoundingClientRect();
+  return r.width > 0 && r.height > 0 ? el : null;
+}
+
+/* opts.from: prvok, na ktorý sa po zatvorení vráti fokus (predvolene aktívny prvok). */
+function startTour(steps, opts) {
+  if (tourRun || !Array.isArray(steps) || !steps.length) return false;
+  const from = opts && opts.from;
+  const root = document.createElement('div');
+  root.id = 'tour';
+  root.className = 'tour';
+  root.setAttribute('role', 'dialog');
+  root.setAttribute('aria-modal', 'true');
+  root.setAttribute('aria-labelledby', 'tour-title');
+  root.setAttribute('aria-describedby', 'tour-body');
+  root.innerHTML =
+    '<div class="tour-spot" aria-hidden="true"></div>' +
+    '<div class="tour-card" id="tour-card">' +
+      '<span class="tour-caret" aria-hidden="true"></span>' +
+      '<button type="button" class="btn-icon tour-x" id="tour-close">✕</button>' +
+      '<div class="tour-illus" aria-hidden="true" hidden></div>' +
+      '<div class="tour-text" aria-live="polite"><h3 class="tour-title" id="tour-title"></h3><p class="tour-body" id="tour-body"></p></div>' +
+      '<div class="tour-foot"><span class="tour-count"></span><div class="tour-btns">' +
+        '<button type="button" class="btn btn-secondary" id="tour-back"></button>' +
+        '<button type="button" class="btn btn-secondary" id="tour-skip"></button>' +
+        '<button type="button" class="btn btn-primary" id="tour-next"></button>' +
+      '</div></div>' +
+    '</div>';
+  document.body.appendChild(root);
+  tourRun = {
+    steps, i: 0, root,
+    spot: root.querySelector('.tour-spot'), card: root.querySelector('.tour-card'),
+    opener: (from && from.nodeType === 1) ? from : document.activeElement,
+    startTab: activeTab, startScroll: window.scrollY || 0, tabChanged: false, raf: 0, animUntil: 0, animT: 0,
+  };
+  const relayout = () => {
+    if (!tourRun || tourRun.raf) return;
+    tourRun.raf = requestAnimationFrame(() => {
+      if (!tourRun) return;
+      tourRun.raf = 0;
+      if (performance.now() > tourRun.animUntil) tourRun.root.classList.remove('tour-anim');   // posun/zmena veľkosti sa nikdy neanimuje
+      tourLayout();
+    });
+  };
+  const keydown = (e) => {
+    if (e.key !== 'Tab' || !tourRun) return;
+    const f = Array.from(root.querySelectorAll('button')).filter((b) => !b.disabled && b.getClientRects().length);
+    if (!f.length) return;
+    const a = document.activeElement;
+    if (e.shiftKey && (a === f[0] || !root.contains(a))) { e.preventDefault(); f[f.length - 1].focus(); }
+    else if (!e.shiftKey && (a === f[f.length - 1] || !root.contains(a))) { e.preventDefault(); f[0].focus(); }
+  };
+  const focusin = (e) => {   // fokus nesmie uniknúť do appky pod prekryvom
+    if (tourRun && !root.contains(e.target)) { const n = document.getElementById('tour-next'); if (n) n.focus(); }
+  };
+  const block = (e) => { if (!(e.target.closest && e.target.closest('.tour-card'))) e.preventDefault(); };   // pozadie sa nescrolluje
+  root.addEventListener('wheel', block, { passive: false });
+  root.addEventListener('touchmove', block, { passive: false });
+  root.addEventListener('keydown', keydown);
+  document.addEventListener('focusin', focusin);
+  window.addEventListener('resize', relayout);
+  window.addEventListener('orientationchange', relayout);
+  window.addEventListener('scroll', relayout, true);
+  if (window.visualViewport) window.visualViewport.addEventListener('resize', relayout);
+  /* dialóg sa otvoril (aktualizácia, konflikt synchronizácie, nastavenia…): návod ustúpi. Sleduje sa len atribút hidden. */
+  const watch = (m) => mo.observe(m, { attributes: true, attributeFilter: ['hidden'] });
+  const mo = new MutationObserver((recs) => {
+    for (const rec of recs) for (const n of rec.addedNodes) if (n.nodeType === 1 && n.classList.contains('modal-backdrop')) watch(n);   // dialóg vytvorený až neskôr (napr. „Použiť tu“)
+    if (tourRun && tourModalOpen()) closeTour('yield');
+  });
+  for (const m of document.querySelectorAll('.modal-backdrop')) watch(m);
+  mo.observe(document.body, { childList: true });   // len priame deti body
+  const lb = document.getElementById('community-lightbox');
+  if (lb) mo.observe(lb, { attributes: true, attributeFilter: ['hidden'] });
+  tourRun.off = () => {
+    mo.disconnect();
+    document.removeEventListener('focusin', focusin);
+    window.removeEventListener('resize', relayout);
+    window.removeEventListener('orientationchange', relayout);
+    window.removeEventListener('scroll', relayout, true);
+    if (window.visualViewport) window.visualViewport.removeEventListener('resize', relayout);
+  };
+  root.addEventListener('click', (e) => {
+    const b = e.target.closest ? e.target.closest('button') : null;
+    if (!b || !tourRun) return;
+    if (b.id === 'tour-next') { if (tourRun.i >= tourRun.steps.length - 1) closeTour('done'); else tourGo(tourRun.i + 1); }
+    else if (b.id === 'tour-back') tourGo(tourRun.i - 1);
+    else if (b.id === 'tour-skip' || b.id === 'tour-close') closeTour('skipped');
+  });
+  tourGo(0);
+  const nx = document.getElementById('tour-next');
+  if (nx) nx.focus();
+  return true;
+}
+
+/* Dočasná prázdna rezerva na konci stránky (zruší sa pri ďalšom kroku aj pri zatvorení). */
+function tourSpacer(r, px) {
+  if (!r.spacer && px <= 0) return;
+  if (!r.spacer) { r.spacer = document.createElement('div'); r.spacer.setAttribute('aria-hidden', 'true'); r.spacer.style.cssText = 'pointer-events:none;flex:none'; document.body.appendChild(r.spacer); }
+  r.spacer.style.height = Math.max(0, px) + 'px';
+}
+
+function tourGo(i) {
+  const r = tourRun;
+  if (!r || i < 0 || i >= r.steps.length) return;
+  r.i = i;
+  const step = r.steps[i];
+  const last = i === r.steps.length - 1;
+  const hadFocus = r.root.contains(document.activeElement) ? document.activeElement : null;
+  if (step.tab && TOUR_TABS.includes(step.tab) && step.tab !== activeTab) { switchTab(step.tab); r.tabChanged = true; }   // len prepnutie karty, nič sa nezapisuje
+  const q = (s) => r.root.querySelector(s);
+  q('#tour-title').textContent = tourText(step.title);
+  q('#tour-body').textContent = tourText(step.body);
+  q('.tour-count').textContent = t('tour.stepOf', { n: i + 1, total: r.steps.length });
+  q('#tour-close').setAttribute('aria-label', t('tour.close')); q('#tour-close').title = t('tour.close');
+  q('#tour-back').textContent = t('tour.back');
+  q('#tour-back').hidden = i === 0;
+  q('#tour-skip').textContent = t('tour.skip');
+  q('#tour-skip').hidden = last;
+  q('#tour-next').textContent = t(last ? 'tour.done' : 'tour.next');
+  tourSpacer(r, 0);
+  const target = tourTargetEl(step);
+  /* Ilustrácia: neaktívna kópia (bez ID-čiek, mimo poradia Tab, skrytá pre čítačky) */
+  const il = q('.tour-illus');
+  il.textContent = '';
+  il.hidden = true;
+  if ((!target || step.illusWithTarget) && step.illus) {
+    let node = null;
+    try { node = step.illus(); } catch (e) { node = null; }
+    if (node && node.nodeType === 1) {
+      const c = node.cloneNode(true);
+      for (const el of [c, ...c.querySelectorAll('*')]) {
+        el.removeAttribute('id');
+        if (el.matches('button, a, input, select, textarea, [tabindex]')) el.setAttribute('tabindex', '-1');
+      }
+      c.setAttribute('inert', '');
+      il.appendChild(c);
+      il.hidden = false;
+    }
+  }
+  if (target) {   // posun len ak cieľ nie je celý v bezpečnej oblasti (zbytočné skákanie stránky by pôsobilo rušivo)
+    const cs = getComputedStyle(r.root), top = parseFloat(cs.paddingTop) || 0, bottom = r.root.clientHeight - (parseFloat(cs.paddingBottom) || 0);
+    let tr = target.getBoundingClientRect();
+    if (tr.top < top || tr.bottom > bottom) {
+      try { target.scrollIntoView({ block: 'center', inline: 'nearest', behavior: 'instant' }); }
+      catch (e) { try { target.scrollIntoView({ block: 'center' }); } catch (e2) {} }
+      tr = target.getBoundingClientRect();
+    }
+    /* vysoká karta (ilustrácia) sa nezmestí nad ani pod cieľ uprostred obrazovky: cieľ posunieme k hornému okraju, karta ide pod neho */
+    const ch = Math.min(r.card.offsetHeight, bottom - top), gap = 12, pad = 6;
+    if (bottom - tr.bottom - pad - gap < ch && tr.top - top - pad - gap < ch && tr.height + 2 * pad + gap + ch <= bottom - top) {
+      const want = tr.top - pad - top, de = document.documentElement;
+      const room = de.scrollHeight - window.innerHeight - window.scrollY;
+      if (want > room) tourSpacer(r, Math.ceil(want - room));   // koniec stránky: dočasná rezerva (len rozloženie), aby sa dalo posunúť
+      window.scrollBy({ top: want, behavior: 'instant' });
+    }
+  }
+  r.root.classList.toggle('tour-dim', !target);   // bez zvýraznenia stmavíme celú obrazovku
+  r.root.dataset.step = step.id || String(i);
+  /* plynulý presun zvýraznenia len medzi krokmi – nie pri prvom rozložení, posune ani zmene veľkosti */
+  const animate = !!r.laidOut && !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  r.laidOut = true;
+  clearTimeout(r.animT);
+  r.root.classList.toggle('tour-anim', animate);
+  if (animate) { r.animUntil = performance.now() + 300; r.animT = setTimeout(() => { if (tourRun === r) r.root.classList.remove('tour-anim'); }, 320); }
+  tourLayout();
+  /* tlačidlo, na ktorom bol fokus, sa mohlo skryť (Späť na kroku 1) – fokus nesmie zostať v prázdne */
+  if (hadFocus && (hadFocus.hidden || !hadFocus.getClientRects().length)) q('#tour-next').focus();
+  /* po prepnutí karty sa obsah prekreslí – prepočítame znova, keď sa usadí */
+  requestAnimationFrame(() => { if (tourRun === r) tourLayout(); });
+}
+
+/* Poloha zvýraznenia a karty: karta nad alebo pod cieľom podľa miesta, vždy v zornom poli (bezpečné okraje). */
+function tourLayout() {
+  const r = tourRun;
+  if (!r) return;
+  const step = r.steps[r.i];
+  const root = r.root, card = r.card, spot = r.spot;
+  const cs = getComputedStyle(root);
+  const H = root.clientHeight, W = root.clientWidth;
+  const padT = parseFloat(cs.paddingTop) || 0, padB = parseFloat(cs.paddingBottom) || 0;
+  const avail = Math.max(120, H - padT - padB);
+  card.style.maxHeight = avail + 'px';
+  const caret = card.querySelector('.tour-caret');
+  caret.hidden = true;   // šípka vyčnieva z karty, do merania posúvania sa nepočíta
+  card.style.overflowY = 'visible';
+  card.style.overflowY = card.scrollHeight > card.clientHeight + 1 ? 'auto' : 'visible';   // inak by orezalo šípku
+  const ch = Math.min(card.offsetHeight, avail);
+  const target = tourTargetEl(step);
+  if (!target) {
+    spot.hidden = true;
+    caret.hidden = true;
+    card.style.top = Math.round(padT + Math.max(0, (avail - ch) / 2)) + 'px';
+    return;
+  }
+  const gap = 12, pad = 6;
+  const tr = target.getBoundingClientRect();
+  /* zvýraznenie sa orezáva na zorné pole (veľký cieľ presahuje obrazovku) */
+  const sx = Math.max(0, tr.left - pad), sy = Math.max(0, tr.top - pad);
+  const ex = Math.min(W, tr.right + pad), ey = Math.min(H, tr.bottom + pad);
+  spot.hidden = false;
+  spot.style.left = sx + 'px'; spot.style.top = sy + 'px';
+  spot.style.width = Math.max(0, ex - sx) + 'px'; spot.style.height = Math.max(0, ey - sy) + 'px';
+  const below = H - padB - ey - gap, above = sy - padT - gap;
+  let top, place;
+  if (below >= ch) { top = ey + gap; place = 'below'; }
+  else if (above >= ch) { top = sy - gap - ch; place = 'above'; }
+  else { place = below >= above ? 'below' : 'above'; top = place === 'below' ? H - padB - ch : padT; }   // obrovský cieľ: karta ho čiastočne zakryje, no zostane čitateľná
+  top = Math.min(Math.max(top, padT), Math.max(padT, H - padB - ch));
+  card.style.top = Math.round(top) + 'px';
+  /* šípka ukazuje na stred cieľa (fyzická poloha, takže funguje rovnako v RTL); ak karta cieľ prekrýva, šípka by klamala */
+  const cr = card.getBoundingClientRect();
+  caret.hidden = top < ey && top + ch > sy;
+  caret.style.left = Math.min(Math.max((sx + ex) / 2 - cr.left, 22), Math.max(22, cr.width - 22)) + 'px';
+  card.dataset.place = place;
+}
+
+/* reason: 'done' | 'skipped' sa zapíše ako stav (hotový návod sa nepreklopí na preskočený); iný dôvod (napr. 'yield') ho len zavrie. */
+function closeTour(reason) {
+  const r = tourRun;
+  if (!r) return false;
+  tourRun = null;
+  if (r.raf) cancelAnimationFrame(r.raf);
+  clearTimeout(r.animT);
+  if (r.spacer) r.spacer.remove();
+  r.off();
+  r.root.remove();
+  if ((reason === 'done' || reason === 'skipped') && !(tourRead() && tourRead().status === 'done')) tourWrite(reason);
+  if (r.tabChanged && activeTab !== r.startTab) switchTab(r.startTab);
+  if (r.opener && r.opener.isConnected && r.opener.focus) { try { r.opener.focus({ preventScroll: true }); } catch (e) {} }
+  try { window.scrollTo({ top: r.startScroll, behavior: 'instant' }); } catch (e) { window.scrollTo(0, r.startScroll); }   // stránka sa vráti tam, kde používateľ bol
+  renderTourInvite();   // po Preskočiť / Hotovo karta s pozvánkou zmizne
+  refreshBackupOffer();   // záloha čakala, kým návod beží
+  return true;
+}
+
+/* Kroky návodu (poradie podľa špecifikácie). Názvy ovládačov v texte sa berú zo živých prekladov (t()), takže
+   vždy sedia s tým, čo je na obrazovke. Cieľ je skutočný prvok; ilustrácia (z živých CSS tried) sa ukáže tam,
+   kde na obrazovke nič také nie je (tréning ešte nebeží), alebo popri cieli (illusWithTarget). */
+const TOUR_STEPS_I18N = {
+  sk: {
+    'tour.plan.title': 'Vyber si plán', 'tour.plan.body': 'Na karte {tab} ťukni na dlaždicu plánu. Začať môžeš aj jedným cvikom cez „{lib}“.',
+    'tour.start.title': 'Ťukni na {start}', 'tour.start.body': '„{start}“ spustí tréning a čas. Nič sa nespustí, kým neťukneš ty.',
+    'tour.sets.title': 'Zapisuj série', 'tour.sets.body': 'Každý riadok je jedna séria: zadaj váhu a opakovania, 🔥 označí sériu do zlyhania a ✓ ju dokončí. „{add}“ pridá ďalšiu.',
+    'tour.rest.title': 'Časovač oddychu', 'tour.rest.body': 'Dlaždica „{rest}“ spustí odpočet pauzy. Na karte ho môžeš pozastaviť, pridať 15 s, spustiť znova alebo zastaviť.',
+    'tour.finish.title': 'Dokonči a pozri výsledky', 'tour.finish.body': '„{finish}“ uloží tréning a pripíše XP, ⋯ → „{discard}“ ho zahodí. Výsledky nájdeš cez {stats}: „{history}“ a „{calendar}“.',
+    'tour.tabs.title': 'Záložky', 'tour.tabs.body': 'Medzi obrazovkami prepínaš tu: {tabs}.',
+  },
+  en: {
+    'tour.plan.title': 'Pick a plan', 'tour.plan.body': 'On the {tab} tab, tap a plan tile to choose it. You can also start from a single exercise via “{lib}”.',
+    'tour.start.title': 'Press {start}', 'tour.start.body': '“{start}” begins your workout and its timer. Nothing starts until you tap it.',
+    'tour.sets.title': 'Log your sets', 'tour.sets.body': 'Each row is one set: enter weight and reps, tap 🔥 for a failure set and ✓ when it’s done. “{add}” adds another.',
+    'tour.rest.title': 'Rest timer', 'tour.rest.body': 'The “{rest}” tile starts a break countdown. On its card you can pause, add 15 s, restart or stop it.',
+    'tour.finish.title': 'Finish and review', 'tour.finish.body': '“{finish}” saves the workout and gives you XP; ⋯ → “{discard}” throws it away. Results show up in {stats}: “{history}” and “{calendar}”.',
+    'tour.tabs.title': 'The tabs', 'tour.tabs.body': 'Switch screens down here: {tabs}.',
+  },
+  es: {
+    'tour.plan.title': 'Elige un plan', 'tour.plan.body': 'En la pestaña {tab}, toca un plan para elegirlo. También puedes empezar con un solo ejercicio desde «{lib}».',
+    'tour.start.title': 'Pulsa {start}', 'tour.start.body': '«{start}» inicia tu entrenamiento y su cronómetro. No empieza nada hasta que lo toques.',
+    'tour.sets.title': 'Anota tus series', 'tour.sets.body': 'Cada fila es una serie: escribe peso y repeticiones, toca 🔥 si fue al fallo y ✓ al terminar. «{add}» suma otra.',
+    'tour.rest.title': 'Temporizador de descanso', 'tour.rest.body': 'El mosaico «{rest}» inicia una cuenta atrás. En su tarjeta puedes pausar, sumar 15 s, reiniciar o parar.',
+    'tour.finish.title': 'Termina y revisa', 'tour.finish.body': '«{finish}» guarda el entrenamiento y suma XP; ⋯ → «{discard}» lo descarta. Los resultados están en {stats}: «{history}» y «{calendar}».',
+    'tour.tabs.title': 'Las pestañas', 'tour.tabs.body': 'Cambia de pantalla aquí abajo: {tabs}.',
+  },
+  'pt-BR': {
+    'tour.plan.title': 'Escolha um plano', 'tour.plan.body': 'Na aba {tab}, toque em um plano para escolhê-lo. Você também pode começar por um único exercício em “{lib}”.',
+    'tour.start.title': 'Toque em {start}', 'tour.start.body': '“{start}” inicia o treino e o cronômetro. Nada começa até você tocar.',
+    'tour.sets.title': 'Registre as séries', 'tour.sets.body': 'Cada linha é uma série: digite peso e repetições, toque em 🔥 se foi até a falha e em ✓ ao terminar. “{add}” cria mais uma.',
+    'tour.rest.title': 'Cronômetro de descanso', 'tour.rest.body': 'O bloco “{rest}” inicia a contagem do descanso. No cartão você pode pausar, somar 15 s, reiniciar ou parar.',
+    'tour.finish.title': 'Conclua e veja os resultados', 'tour.finish.body': '“{finish}” salva o treino e dá XP; ⋯ → “{discard}” o descarta. Os resultados ficam em {stats}: “{history}” e “{calendar}”.',
+    'tour.tabs.title': 'As abas', 'tour.tabs.body': 'Troque de tela aqui embaixo: {tabs}.',
+  },
+  fr: {
+    'tour.plan.title': 'Choisis un plan', 'tour.plan.body': 'Dans l’onglet {tab}, touche un plan pour le choisir. Tu peux aussi partir d’un seul exercice via « {lib} ».',
+    'tour.start.title': 'Appuie sur {start}', 'tour.start.body': '« {start} » lance ta séance et son chronomètre. Rien ne démarre tant que tu n’appuies pas.',
+    'tour.sets.title': 'Note tes séries', 'tour.sets.body': 'Chaque ligne est une série : saisis charge et répétitions, touche 🔥 pour un échec et ✓ quand c’est fait. « {add} » en ajoute une.',
+    'tour.rest.title': 'Minuteur de repos', 'tour.rest.body': 'La tuile « {rest} » lance un compte à rebours. Sur sa carte, tu peux mettre en pause, ajouter 15 s, relancer ou arrêter.',
+    'tour.finish.title': 'Termine et consulte', 'tour.finish.body': '« {finish} » enregistre la séance et rapporte de l’XP ; ⋯ → « {discard} » l’abandonne. Les résultats sont dans {stats} : « {history} » et « {calendar} ».',
+    'tour.tabs.title': 'Les onglets', 'tour.tabs.body': 'Change d’écran ici en bas : {tabs}.',
+  },
+  ar: {
+    'tour.plan.title': 'اختر خطة', 'tour.plan.body': 'في تبويب {tab} اضغط على بطاقة خطة لاختيارها. يمكنك أيضًا البدء بتمرين واحد من «{lib}».',
+    'tour.start.title': 'اضغط {start}', 'tour.start.body': '«{start}» يبدأ تمرينك والمؤقت. لا يبدأ شيء حتى تضغط أنت.',
+    'tour.sets.title': 'سجّل مجموعاتك', 'tour.sets.body': 'كل صف هو مجموعة: اكتب الوزن والتكرارات، واضغط 🔥 لمجموعة حتى الفشل، ثم ✓ عند الانتهاء. «{add}» يضيف مجموعة أخرى.',
+    'tour.rest.title': 'مؤقت الراحة', 'tour.rest.body': 'بطاقة «{rest}» تبدأ العدّ التنازلي للراحة. من بطاقته يمكنك الإيقاف المؤقت أو إضافة 15 ثانية أو الإعادة أو الإيقاف.',
+    'tour.finish.title': 'أنهِ وراجع النتائج', 'tour.finish.body': '«{finish}» يحفظ التمرين ويمنحك XP، و⋯ ← «{discard}» يتجاهله. تجد النتائج في {stats}: «{history}» و«{calendar}».',
+    'tour.tabs.title': 'التبويبات', 'tour.tabs.body': 'تنقّل بين الشاشات من هنا: {tabs}.',
+  },
+};
+for (const lang of Object.keys(TOUR_STEPS_I18N)) Object.assign(I18N[lang] || (I18N[lang] = {}), TOUR_STEPS_I18N[lang]);
+
+/* Názvy ovládačov v texte krokov (zo živých prekladov) */
+function tourVars() {
+  return {
+    tab: t('tab.trening'), stats: t('tab.pokrok'), lib: t('bento.library'), start: t('bento.start'), add: t('session.addSet'),
+    rest: t('bento.rest'), finish: t('bento.finish'), discard: t('discard.menu'), history: t('bento.history'), calendar: t('tab.kalendar'),
+    tabs: ['tab.dnes', 'tab.trening', 'tab.pokrok', 'bento.messages', 'community.title', 'tab.ty'].map((k) => t(k)).join(' · '),
+  };
+}
+const tourStepText = (key) => () => t(key, tourVars());
+/* Ilustrácie: markup so živými triedami appky (vzhľad aj tmavá téma aj RTL sú tie isté), bez ID-čiek */
+function tourIllusSets() {
+  const d = document.createElement('div');
+  d.className = 'exercise tour-ex';
+  const row = (n, w, r, done, fail) => '<div class="set-item' + (done ? ' set-done' : '') + '"><span class="set-label">' + n + '</span>'
+    + '<label class="set-field"><span class="set-inputbox"><input type="text" class="set-weight" value="' + w + '" readonly tabindex="-1"><span class="set-unit">' + esc(t('units.kg')) + '</span></span></label>'
+    + '<label class="set-field"><span class="set-inputbox"><input type="text" class="set-reps" value="' + r + '" readonly tabindex="-1"><span class="set-unit">×</span></span></label>'
+    + '<button type="button" class="set-fail' + (fail ? ' active' : '') + '">🔥</button><button type="button" class="set-btn sq' + (done ? ' done' : '') + '">✓</button></div>';
+  d.innerHTML = row(1, 60, 8, true, false) + row(2, 60, 8, false, false)
+    + '<div class="mini set-count-row"><button type="button" class="set-count-btn set-add">' + esc(t('session.addSet')) + '</button></div>';
+  return d;
+}
+function tourIllusRest() {
+  const d = document.createElement('div');
+  d.className = 'timer-bar';
+  d.innerHTML = '<div class="timer-top"><span class="timer-time">01:30</span><span class="timer-meta"><span class="timer-label">' + esc(t('bento.rest')) + '</span></span>'
+    + '<button type="button" class="timer-btn timer-btn-stop">✕</button></div><div class="timer-progress"><span style="width:60%"></span></div>'
+    + '<div class="timer-actions"><button type="button" class="timer-btn">' + esc(t('rest.pause')) + '</button><button type="button" class="timer-btn">' + esc(t('rest.plus15')) + '</button><button type="button" class="timer-btn">' + esc(t('rest.restart')) + '</button></div>';
+  return d;
+}
+function tourIllusFinish() {
+  const d = document.createElement('div');
+  d.className = 'tour-finish';
+  d.innerHTML = '<div class="finish-bar"><button type="button" class="finish-btn">' + esc(t('bento.finish')) + ' · <bdi>+45 ' + esc(t('units.xp')) + '</bdi></button></div>'
+    + '<div class="tour-menu-row"><button type="button" class="mini-ghost sess-more"><svg class="kico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1.3"/><circle cx="12" cy="12" r="1.3"/><circle cx="19" cy="12" r="1.3"/></svg></button>'
+    + '<div class="sess-menu"><button type="button" class="sess-menu-item">' + esc(t('discard.menu')) + '</button></div></div>';
+  return d;
+}
+const TOUR_STEPS = [
+  { id: 'plan', tab: 'trening', target: () => document.querySelector('#plan-chips > *'), illus: null,
+    title: tourStepText('tour.plan.title'), body: tourStepText('tour.plan.body') },
+  { id: 'start', tab: 'trening', target: () => document.getElementById('tr-start'), illus: null,
+    title: tourStepText('tour.start.title'), body: tourStepText('tour.start.body') },
+  { id: 'sets', tab: 'trening', target: () => null, illus: tourIllusSets,
+    title: tourStepText('tour.sets.title'), body: tourStepText('tour.sets.body') },
+  { id: 'rest', tab: 'dnes', target: () => document.getElementById('bt-rest'), illus: tourIllusRest, illusWithTarget: true,
+    title: tourStepText('tour.rest.title'), body: tourStepText('tour.rest.body') },
+  { id: 'finish', tab: 'pokrok', illusWithTarget: true, illus: tourIllusFinish,
+    target: () => Array.from(document.querySelectorAll('#stats-grid [data-go="history"]')).find((el) => el.textContent.trim() === t('bento.history')) || null,
+    title: tourStepText('tour.finish.title'), body: tourStepText('tour.finish.body') },
+  { id: 'tabs', tab: 'dnes', target: () => document.querySelector('.tab-bar'), illus: null,
+    title: tourStepText('tour.tabs.title'), body: tourStepText('tour.tabs.body') },
+];
+
 /* ---------- Android appka (Capacitor) ----------
    Tá istá appka zabalená pre Google Play. Súbory sú priamo v appke a aktualizuje ju obchod,
    preto sa v nej neregistruje service worker ani neponúka "Aktualizovať". Natívne funkcie
@@ -26746,6 +27146,81 @@ function nativePlugin(name) {
   if (!isNativeApp()) return null;
   try { return (Capacitor.Plugins && Capacitor.Plugins[name]) || null; } catch (e) { return null; }
 }
+/* ---------- Návod: kedy sa ukáže ----------
+   Prvé spustenie: hneď po zatvorení úvodného nastavenia, len ak zariadenie nemá TOUR_KEY a nie je čo stratiť
+   (žiadna história ani aktivity – rovnaké "čerstvý vs. existujúci" ako poznámka o XP). Existujúci používateľ bez
+   kľúča dostane na Dnes kartu s pozvánkou (až po odkliknutí poznámky o XP, nikdy obe naraz). Opakovanie: Nastavenia → Pomoc.
+   Počas tréningu sa návod neukáže a tlačidlo v Pomoci je vypnuté s vysvetlením. Návod sa uzavrie ('yield'),
+   keď sa otvorí akýkoľvek dialóg (sleduje sa len atribút hidden na .modal-backdrop), ponuka aktualizácie alebo začne tréning. */
+const TOUR_WHEN_I18N = {
+  sk: { 'tour.invite': 'Novinka: 1-minútový návod, ako zapisovať tréning.', 'tour.invite.start': 'Spustiť', 'tour.invite.later': 'Teraz nie', 'tour.help': 'Pomoc', 'tour.help.show': 'Zobraziť návod', 'tour.help.busy': 'Najprv dokonči tréning.' },
+  en: { 'tour.invite': 'New: a 1-minute tour of how to log a workout.', 'tour.invite.start': 'Start', 'tour.invite.later': 'Not now', 'tour.help': 'Help', 'tour.help.show': 'Show the tour', 'tour.help.busy': 'Finish your workout first.' },
+  es: { 'tour.invite': 'Novedad: una guía de 1 minuto para registrar un entrenamiento.', 'tour.invite.start': 'Empezar', 'tour.invite.later': 'Ahora no', 'tour.help': 'Ayuda', 'tour.help.show': 'Ver la guía', 'tour.help.busy': 'Termina antes tu entrenamiento.' },
+  'pt-BR': { 'tour.invite': 'Novidade: um tutorial de 1 minuto para registrar um treino.', 'tour.invite.start': 'Começar', 'tour.invite.later': 'Agora não', 'tour.help': 'Ajuda', 'tour.help.show': 'Mostrar o tutorial', 'tour.help.busy': 'Conclua o treino antes.' },
+  fr: { 'tour.invite': 'Nouveau : un guide d’1 minute pour enregistrer une séance.', 'tour.invite.start': 'Démarrer', 'tour.invite.later': 'Pas maintenant', 'tour.help': 'Aide', 'tour.help.show': 'Afficher le guide', 'tour.help.busy': 'Termine d’abord ta séance.' },
+  ar: { 'tour.invite': 'جديد: دليل من دقيقة واحدة لتسجيل التمرين.', 'tour.invite.start': 'ابدأ', 'tour.invite.later': 'ليس الآن', 'tour.help': 'مساعدة', 'tour.help.show': 'عرض الدليل', 'tour.help.busy': 'أنهِ تمرينك أولاً.' },
+};
+for (const lang of Object.keys(TOUR_WHEN_I18N)) Object.assign(I18N[lang] || (I18N[lang] = {}), TOUR_WHEN_I18N[lang]);
+
+/* Má používateľ nejaké dáta? (rovnaké pravidlo ako renderXpNote: ukážkové dáta sa nerátajú) */
+function tourHasData() {
+  return !!(((state.history || []).length || (state.activities || []).length) && !state.demo);
+}
+/* Nič nebeží a nič nie je otvorené: tréning, editor plánu, dialógy, lightbox. */
+function tourCanStart() {
+  if (tourOpen() || getSession() || editingPlan !== null || updateBannerVisible()) return false;
+  if (document.querySelector('.modal-backdrop:not([hidden])')) return false;
+  const lb = document.getElementById('community-lightbox');
+  return !(lb && !lb.hidden);
+}
+function tourModalOpen() {
+  const lb = document.getElementById('community-lightbox');
+  return !!document.querySelector('.modal-backdrop:not([hidden])') || !!(lb && !lb.hidden);
+}
+/* Po zavretí úvodného nastavenia: čerstvé zariadenie bez kľúča dostane návod hneď (a len raz). */
+function tourTestOff() {   // testy (window.__GQ_TEST__) dostanú návod iba na výslovnú žiadosť
+  try { return !!(window.__GQ_TEST__ && sessionStorage.getItem('gq_test_tour') !== '1'); } catch (e) { return true; }
+}
+function tourFirstRun() {
+  if (tourTestOff() || tourRead() || tourHasData() || !tourCanStart()) return;
+  startTour(TOUR_STEPS, {});
+}
+/* Karta s pozvánkou na Dnes: existujúci používateľ bez kľúča; nie pri poznámke o XP, tréningu ani návode. */
+function renderTourInvite() {
+  const el = document.getElementById('tour-invite');
+  if (!el) return;
+  const xp = document.getElementById('xp-note');
+  /* Účet bez dát (novo zaregistrovaný: úvodné nastavenie sa preskakuje) dostane pozvánku, až keď prvé načítanie z účtu skončilo. */
+  let accountReady = false;
+  try { accountReady = !!(wsSlot && wsSlot.owner && !syncLoading && syncMetaRead().rev !== null); } catch (e) {}
+  el.hidden = tourTestOff() || !(!tourRead() && (tourHasData() || accountReady) && !getSession() && !tourOpen() && !(xp && !xp.hidden));
+}
+function tourInviteStart() {
+  if (!tourCanStart()) return;
+  const el = document.getElementById('tour-invite');
+  if (el) el.hidden = true;
+  startTour(TOUR_STEPS, {});
+}
+function tourInviteLater() {
+  tourWrite('invited-dismissed');
+  renderTourInvite();
+}
+/* Nastavenia → Pomoc: počas tréningu je tlačidlo vypnuté a vedľa je dôvod. */
+function renderTourHelp() {
+  const b = document.getElementById('btn-tour-help'), n = document.getElementById('tour-help-busy');
+  if (!b) return;
+  const busy = !!getSession();
+  b.disabled = busy;
+  if (busy) b.setAttribute('aria-describedby', 'tour-help-busy'); else b.removeAttribute('aria-describedby');
+  if (n) n.hidden = !busy;
+}
+function tourHelpShow() {
+  if (getSession()) return;
+  const btn = document.getElementById('btn-settings-close');
+  if (btn) btn.click();   // nastavenia sa zavrú ako obvykle (uloží sa cieľ); návod by inak hneď ustúpil dialógu
+  if (tourCanStart()) startTour(TOUR_STEPS, { from: tourHelpOpener });
+}
+
 /* Tlačidlo Späť: každý list/dialóg (.modal-backdrop) a čím sa zatvára – ten istý prvok, ktorý
    by stlačil používateľ, takže sa vykoná aj jeho logika (uloženie cieľa, zastavenie videa…).
    null = Späť ho nezatvára (úvodné nastavenie sa musí dokončiť). Test overuje, že tu nechýba
@@ -26782,6 +27257,7 @@ const NATIVE_BACK_CLOSE = [
    → appka do pozadia (ako na Androide 12+, nič sa neukončí – bežiaci tréning pokračuje).
    Vracia 'closed' | 'view' | 'home' | 'background' | 'blocked'. */
 function nativeBack() {
+  if (tourOpen()) { closeTour('skipped'); return 'closed'; }   // návod je nad všetkým (nie je .modal-backdrop)
   const lightbox = document.getElementById('community-lightbox');   // fotka z Community (nad všetkým, nie je .modal-backdrop)
   if (lightbox && !lightbox.hidden) { lightbox.hidden = true; lightbox.innerHTML = ''; return 'closed'; }
   const open = Array.from(document.querySelectorAll('.modal-backdrop')).filter((m) => !m.hidden);
