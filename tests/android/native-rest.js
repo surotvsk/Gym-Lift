@@ -1,0 +1,55 @@
+'use strict';
+const { counter, startServerOnce, openApp, nativeCalls, closeAll } = require('./lib-native');
+const fs = require('fs');
+const work = '/tmp/gq-native-rest';
+fs.mkdirSync(work, { recursive: true });
+(async () => {
+  const c = counter(), server = await startServerOnce(work);
+  try {
+    const { p, errors } = await openApp({ name: 'rest', debugPort: 9917, native: true, work,
+      returns: { 'GymRest.schedule': { exact: true, notifications: true } } });
+    const settle = () => p.eval('typeof nativeRestQueue !== "undefined" ? nativeRestQueue : Promise.resolve()');
+    await p.eval('startTimer(90); true'); await settle();
+    let calls = await nativeCalls(p, 'GymRest', 'schedule');
+    c.check('start schedules an absolute native deadline', calls.length === 1 && calls[0].args[0].endAt > Date.now());
+    await p.eval('pauseRestTimer(); true'); await settle();
+    c.check('pause cancels native alarm', (await nativeCalls(p, 'GymRest', 'cancel')).length >= 2);
+    const n = (await nativeCalls(p, 'GymRest', 'schedule')).length;
+    await p.eval('addRestTime(15); true'); await settle();
+    c.check('adding time while paused does not schedule an alarm', (await nativeCalls(p, 'GymRest', 'schedule')).length === n);
+    await p.eval('resumeRestTimer(); true'); await settle();
+    calls = await nativeCalls(p, 'GymRest', 'schedule');
+    c.check('resume schedules the extended deadline', calls.length === n + 1 && calls.at(-1).args[0].endAt > calls[0].args[0].endAt);
+    await p.eval('restartRestTimer(); true'); await settle();
+    c.check('restart schedules a replacement', (await nativeCalls(p, 'GymRest', 'schedule')).length === n + 2);
+    const cancels = (await nativeCalls(p, 'GymRest', 'cancel')).length;
+    await p.eval('finishRestTimer(timerSessionId, false); true'); await settle();
+    c.check('web completion does not cancel the pending native alert', (await nativeCalls(p, 'GymRest', 'cancel')).length === cancels);
+    c.check('visible completion asks native code to deliver the due alert', (await nativeCalls(p, 'GymRest', 'finish')).length === 1);
+    await p.eval('stopTimer(); true'); await settle();
+    c.check('explicit stop cancels native alarm', (await nativeCalls(p, 'GymRest', 'cancel')).length === cancels + 1);
+    await p.eval('startTimer(90); true'); await settle();
+    const beforeClick = (await nativeCalls(p, 'GymRest', 'cancel')).length;
+    await p.eval(`document.getElementById('timer-stop').click(); true`); await settle();
+    c.check('a DOM click event does not suppress native cancellation', (await nativeCalls(p, 'GymRest', 'cancel')).length === beforeClick + 1);
+    await p.eval(`__nativeReturns['GymRest.schedule'] = { __delay: 100, value: { exact: true, notifications: true } }; startTimer(30); pauseRestTimer(); true`); await settle();
+    c.check('pause after a slow schedule is the last native operation', (await nativeCalls(p, 'GymRest')).at(-1).method === 'cancel');
+    await p.eval(`__nativeReturns['GymRest.schedule'] = { exact: false, notifications: false }; localStorage.setItem('gymquest_rest_alarm_asked', '1'); startTimer(60); true`); await settle();
+    c.check('fallback warns about both late alerts and disabled notifications', await p.eval(`document.getElementById('timer-note').textContent.includes(t('nativeRest.late')) && document.getElementById('timer-note').textContent.includes(t('nativeRest.notifications'))`));
+    await p.eval(`window.__restChimes = 0; window.__originalChime = playChime; playChime = () => { window.__restChimes++; }; state.settings.restSound = true; finishRestTimer(timerSessionId, true); true`); await settle();
+    c.check('denied notifications retain the foreground gong', await p.eval('window.__restChimes === 1'));
+    await p.eval(`__nativeReturns['LocalNotifications.checkPermissions'] = { display: 'prompt' }; __nativeReturns['LocalNotifications.requestPermissions'] = { display: 'granted' }; __nativeReturns['GymRest.status'] = { notifications: true }; startTimer(60); true`); await settle();
+    await p.eval('finishRestTimer(timerSessionId, true); true'); await settle();
+    c.check('granting notification permission suppresses duplicate web gong', await p.eval('window.__restChimes === 1'));
+    await p.eval('playChime = window.__originalChime; true');
+    await p.eval(`__nativeReturns['GymRest.schedule'] = { __reject: 'unavailable' }; startTimer(60); true`); await settle();
+    c.check('bridge failure keeps browser sound fallback available', await p.eval(`!nativeRestManaged && document.getElementById('timer-note').textContent === t('nativeRest.unavailable')`));
+    c.check('native messages exist in every language', await p.eval(`['sk','en','es','pt-BR','fr','ar'].every(l => ['channel','permissionTitle','permissionBody','settings','late','notifications','unavailable'].every(k => !!I18N[l]['nativeRest.' + k]))`));
+    c.check('no page errors', !errors.length, errors);
+    const web = await openApp({ name: 'rest-web', debugPort: 9918, native: false, work });
+    await web.p.eval('startTimer(60); pauseRestTimer(); resumeRestTimer(); addRestTime(15); stopTimer(); true');
+    c.check('browser timer remains usable without native plugins', await web.p.eval('timerInterval === null') && !web.errors.length);
+    console.log(`==== checks: ${c.pass} passed, ${c.fail} failed ====`);
+    process.exitCode = c.fail ? 1 : 0;
+  } finally { closeAll(); server.close(); }
+})().catch(e => { console.error(e); closeAll(); process.exitCode = 1; });

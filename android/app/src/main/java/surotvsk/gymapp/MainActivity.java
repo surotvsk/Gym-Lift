@@ -8,6 +8,7 @@ public class MainActivity extends BridgeActivity {
     public void onCreate(Bundle savedInstanceState) {
         registerPlugin(GymHealthPlugin.class);   // Health Connect (vlastný plugin v appke)
         registerPlugin(GymBarsPlugin.class);     // farba pod stavovou a navigačnou lištou podľa témy appky
+        registerPlugin(GymRestPlugin.class);     // oddych pri vypnutej obrazovke
         super.onCreate(savedInstanceState);
     }
 }

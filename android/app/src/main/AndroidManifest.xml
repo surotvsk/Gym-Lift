@@ -45,6 +45,10 @@
             </intent-filter>
         </activity-alias>
 
+        <receiver android:name=".GymRestReceiver" android:exported="false" />
+        <service android:name=".GymRestService" android:exported="false"
+            android:foregroundServiceType="shortService" />
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.fileprovider"
@@ -63,9 +67,11 @@
     <uses-permission android:name="android.permission.health.READ_HEART_RATE" />
     <uses-permission android:name="android.permission.health.READ_ACTIVE_CALORIES_BURNED" />
     <uses-permission android:name="android.permission.health.WRITE_EXERCISE" />
-    <!-- Pripomienky stačia s presnosťou na pár minút; presné budíky (Android 14+: zakázané,
-         na Google Play obmedzené) appka nepotrebuje. Plugin LocalNotifications ich inak pridá. -->
-    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" tools:node="remove" />
+    <!-- Používateľom spustený oddych; pred vydaním overiť deklarácie Play. -->
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
     <queries>
         <package android:name="com.google.android.apps.healthdata" />
     </queries>

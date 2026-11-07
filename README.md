@@ -83,6 +83,21 @@ everything on your own device.
 
 ---
 
+## Tutorial
+
+A short, skippable six-step tour introduces choosing a plan, starting a workout, entering sets,
+using the rest timer, saving results, and navigating the app. On a fresh guest device it starts
+after initial setup. Existing users and signed-in accounts without a tour choice receive a
+dismissible invitation on Today instead.
+
+Use Back and Next to explore, or Skip / Close to leave. Replay it at any time from
+Settings → Help → Show the tour when no workout is active. The tour waits for setup and other
+dialogs to close and yields when a dialog opens.
+
+The tour never creates or changes workout data. Its completion or dismissal is stored only on
+this device in the localStorage key `gymquest_tutorial`; it is not synced to an account.
+All six app languages, including Arabic right-to-left, are supported.
+
 ## How to run it
 
 **Online:** open https://surotvsk.github.io/Gymquest/

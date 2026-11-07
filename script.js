@@ -23039,6 +23039,66 @@ function renderRestSoundSetting() {
 const REST_TIMER_KEY = 'gymquest_resttimer';
 let wasHidden = document.hidden;
 
+/* Natívne volania idú v poradí: pomalý štart nesmie predbehnúť pauzu alebo zrušenie. */
+let nativeRestQueue = Promise.resolve(), nativeRestRevision = 0, nativeRestManaged = false;
+const NATIVE_REST_I18N = {
+  en: ['Rest timer', 'Allow precise rest alerts', 'Allow Alarms & reminders in Android settings for timely rest alerts. Without it, alerts may be late. Silent mode and Do Not Disturb still apply.', 'Open settings', 'Rest alerts may be late without exact-alarm access.', 'Enable notifications in Android settings to receive rest alerts.', 'Native rest alerts are unavailable; keep the app open.'],
+  sk: ['Časovač oddychu', 'Povoliť presné upozornenia', 'Pre včasné upozornenia povoľ Budíky a pripomienky v nastaveniach Androidu. Bez povolenia môžu meškať. Tichý režim a Nerušiť ostávajú platné.', 'Otvoriť nastavenia', 'Bez povolenia presných budíkov môžu upozornenia meškať.', 'Pre upozornenia na oddych povoľ oznámenia v nastaveniach Androidu.', 'Natívne upozornenia nie sú dostupné; nechaj appku otvorenú.'],
+  es: ['Temporizador de descanso', 'Permitir avisos puntuales', 'Permite Alarmas y recordatorios en los ajustes de Android. Sin este permiso, los avisos pueden retrasarse. Se respetan el modo silencio y No molestar.', 'Abrir ajustes', 'Sin permiso para alarmas exactas, los avisos pueden retrasarse.', 'Activa las notificaciones en los ajustes de Android para recibir avisos de descanso.', 'Los avisos nativos no están disponibles; mantén la app abierta.'],
+  'pt-BR': ['Temporizador de descanso', 'Permitir avisos pontuais', 'Permita Alarmes e lembretes nas configurações do Android. Sem essa permissão, os avisos podem atrasar. Os modos silencioso e Não perturbe continuam valendo.', 'Abrir configurações', 'Sem permissão para alarmes exatos, os avisos podem atrasar.', 'Ative as notificações nas configurações do Android para receber avisos de descanso.', 'Os avisos nativos estão indisponíveis; mantenha o app aberto.'],
+  fr: ['Minuteur de repos', 'Autoriser les alertes précises', 'Autorise Alarmes et rappels dans les paramètres Android. Sans cette autorisation, les alertes peuvent arriver en retard. Les modes silencieux et Ne pas déranger restent actifs.', 'Ouvrir les paramètres', 'Sans autorisation des alarmes exactes, les alertes peuvent arriver en retard.', 'Active les notifications dans les paramètres Android pour recevoir les alertes de repos.', 'Les alertes natives sont indisponibles ; garde l’application ouverte.'],
+  ar: ['مؤقت الراحة', 'السماح بتنبيهات دقيقة', 'اسمح بالمنبهات والتذكيرات في إعدادات أندرويد لتنبيهات الراحة في موعدها. دون الإذن قد تتأخر التنبيهات. يظل الوضع الصامت وعدم الإزعاج ساريين.', 'فتح الإعدادات', 'قد تتأخر التنبيهات دون إذن المنبهات الدقيقة.', 'فعّل الإشعارات في إعدادات أندرويد لتلقي تنبيهات الراحة.', 'التنبيهات الأصلية غير متاحة؛ أبقِ التطبيق مفتوحًا.']
+};
+Object.keys(NATIVE_REST_I18N).forEach(lang => ['channel', 'permissionTitle', 'permissionBody', 'settings', 'late', 'notifications', 'unavailable'].forEach((key, i) => {
+  I18N[lang]['nativeRest.' + key] = NATIVE_REST_I18N[lang][i];
+}));
+
+function nativeRestCancel() {
+  const plugin = nativePlugin('GymRest');
+  nativeRestRevision++;
+  nativeRestManaged = false;
+  if (plugin) nativeRestQueue = nativeRestQueue.then(() => plugin.cancel()).catch(() => {});
+}
+function nativeRestSync(ask) {
+  const plugin = nativePlugin('GymRest');
+  if (!plugin || timerPausedLeft !== null || timerEnd <= Date.now()) return;
+  const rev = ++nativeRestRevision;
+  const args = { id: String(timerEnd), endAt: timerEnd, title: t('nativeRest.channel'), body: t('trening.timerDone'), sound: restSoundOn() };
+  nativeRestManaged = true;
+  nativeRestQueue = nativeRestQueue.then(() => plugin.schedule(args)).then(async result => {
+    if (rev !== nativeRestRevision) return;
+    let notifications = result.notifications !== false;
+    nativeRestManaged = notifications;
+    if (!notifications) {
+      showRestNote(t('nativeRest.notifications'));
+      const ln = nativePlugin('LocalNotifications');
+      if (ask && ln) {
+        const perm = await ln.checkPermissions();
+        if (perm.display === 'prompt' || perm.display === 'prompt-with-rationale') {
+          await ln.requestPermissions();
+          if (rev !== nativeRestRevision) return;
+          const current = await plugin.status({ sound: args.sound });
+          if (rev !== nativeRestRevision) return;
+          nativeRestManaged = notifications = current.notifications === true;
+          if (notifications) hideRestNote();
+        }
+      }
+    }
+    if (rev !== nativeRestRevision || result.exact !== false) return;
+    showRestNote((!notifications ? t('nativeRest.notifications') + ' ' : '') + t('nativeRest.late'));
+    let asked = true;
+    try { asked = localStorage.getItem('gymquest_rest_alarm_asked') === '1'; } catch (e) {}
+    if (ask && !asked && !document.querySelector('.modal-backdrop:not([hidden])')) {
+      try { localStorage.setItem('gymquest_rest_alarm_asked', '1'); } catch (e) {}
+      showGeneric(t('nativeRest.permissionTitle'), t('nativeRest.settings'), () => {
+        plugin.requestExact().catch(() => showRestNote(t('nativeRest.late')));
+      }, esc(t('nativeRest.permissionBody')));
+    }
+  }).catch(() => {
+    if (rev === nativeRestRevision) { nativeRestManaged = false; showRestNote(t('nativeRest.unavailable')); }
+  });
+}
+
 /* Uložená hodnota: JSON { v: 2, endAt, pausedLeftMs, totalMs, presetId }.
    Staršia verzia (v96) ukladala len číslo = koniec odpočtu; to sa stále prijme. */
 function persistRestTimer(on) {
@@ -23083,14 +23143,18 @@ function finishRestTimer(sessionId, withSound) {
   if (timerCompletedId === sessionId) return;    // toto dokončenie je už spracované
   timerCompletedId = sessionId;
 
-  stopTimer();
+  const restPlugin = nativePlugin('GymRest');
+  const restId = String(timerEnd);
+  if (restPlugin) nativeRestQueue = nativeRestQueue.then(() => restPlugin.finish({ id: restId })).catch(() => {});
+
+  stopTimer(true);
   const bar = document.getElementById('timer-bar');
   bar.classList.add('done');
   bar.hidden = false;
   bar.setAttribute('aria-label', t('trening.timerComplete'));
   document.getElementById('timer-time').textContent = '00:00';
   renderRestCard();
-  if (withSound && restSoundOn()) playChime(restSoundLength());
+  if (withSound && restSoundOn() && !nativeRestManaged) playChime(restSoundLength());
 }
 
 /* Smie za toto dokončenie zaznieť gong? Iba ak appka bežala naživo a koniec sme
@@ -23147,6 +23211,7 @@ function restoreRestTimer() {
   renderRestCard();
   updateTimerDisplay();
   armRestTimer();
+  nativeRestSync();
 }
 
 /* Spustí odpočet. Ak práve iný beží, nahradí ho a hlásku "Nahradené X za Y" ukáže na karte.
@@ -23174,6 +23239,7 @@ function startTimer(seconds, presetId, quiet) {
   if (wasRunning && !quiet && oldSeconds > 0) {
     showRestNote(t('rest.replaced', { old: t('rest.secondsLabel', { n: oldSeconds }), new: t('rest.secondsLabel', { n: Math.round(seconds) }) }));
   }
+  nativeRestSync(true);
 }
 
 function showRestNote(text) {
@@ -23206,6 +23272,7 @@ function pauseRestTimer() {
   const left = timerEnd - Date.now();
   if (left <= 0) return;
   timerPausedLeft = left;
+  nativeRestCancel();
   persistRestTimer(true);
   renderRestCard();
   updateTimerDisplay();
@@ -23215,6 +23282,7 @@ function resumeRestTimer() {
   if (timerInterval === null || timerPausedLeft === null) return;
   timerEnd = Date.now() + timerPausedLeft;
   timerPausedLeft = null;
+  nativeRestSync();
   persistRestTimer(true);
   renderRestCard();
   updateTimerDisplay();
@@ -23225,6 +23293,7 @@ function addRestTime(sec) {
   const cap = REST_PRESET_MAX_SECONDS * 1000;
   if (timerPausedLeft !== null) timerPausedLeft = Math.min(cap, timerPausedLeft + sec * 1000);
   else timerEnd = Math.min(Date.now() + cap, timerEnd + sec * 1000);
+  nativeRestSync();
   persistRestTimer(true);
   updateTimerDisplay();
 }
@@ -23287,7 +23356,8 @@ function updateTimerDisplay() {
   if (tile) tile.classList.add('bt-running');
 }
 
-function stopTimer() {
+function stopTimer(keepNative) {
+  if (keepNative !== true) nativeRestCancel();
   if (timerInterval) clearInterval(timerInterval);
   timerInterval = null;
   timerPausedLeft = null;
@@ -26047,6 +26117,7 @@ function setupEvents() {
   });
   on('btn-rest-sound', () => {
     state.settings.restSound = !restSoundOn();
+    if (timerInterval !== null) nativeRestSync();
     unlockAudio();               // používateľský pokyn = povolenie prehrávať zvuk
     renderRestSoundSetting();
     saveState();
@@ -27616,7 +27687,7 @@ function nativeInit() {
   const app = nativePlugin('App');
   if (app) {
     app.addListener('backButton', () => { nativeBack(); });
-    app.addListener('resume', () => { nativeRemindersApply(); healthRecheck().then(healthRetryRecent); });   // povolenia/čas v systéme, tep z hodiniek
+    app.addListener('resume', () => { nativeRemindersApply(); healthRecheck().then(healthRetryRecent); if (timerInterval !== null) nativeRestSync(); });   // povolenia/čas v systéme, tep z hodiniek
   }
   const ln = nativePlugin('LocalNotifications');
   if (ln) ln.createChannel({ id: 'reminders', name: t('rem.title'), importance: 3 }).catch(() => {});
