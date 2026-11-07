@@ -9,6 +9,7 @@ public class MainActivity extends BridgeActivity {
         registerPlugin(GymHealthPlugin.class);   // Health Connect (vlastný plugin v appke)
         registerPlugin(GymBarsPlugin.class);     // farba pod stavovou a navigačnou lištou podľa témy appky
         registerPlugin(GymRestPlugin.class);     // oddych pri vypnutej obrazovke
+        registerPlugin(GymGooglePlugin.class);   // Google účet cez Credential Manager
         super.onCreate(savedInstanceState);
     }
 }

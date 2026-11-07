@@ -35,7 +35,7 @@
     }, 4000);
   </script>
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
-  <link rel="stylesheet" href="style.css?v=109">
+  <link rel="stylesheet" href="style.css?v=110">
 </head>
 <body data-tab="dnes">
 
@@ -759,6 +759,11 @@
         </div>
         <p class="card-note" id="auto-backup-last"></p>
         <button class="btn btn-secondary btn-block" id="btn-backup-now" data-i18n="backup.saveNow">Uložiť zálohu teraz</button>
+        <div class="setting-block" id="google-account-row" hidden>
+          <span class="card-sub" id="google-account-hint" data-i18n="google.linkHint">Prepoj Google s týmto účtom. Tréningy aj účet zostanú rovnaké.</span>
+          <button type="button" class="btn btn-secondary btn-block" id="btn-google-connect" data-i18n="google.connect">Prepojiť Google</button>
+          <p class="card-note" id="google-account-status" role="status" hidden></p>
+        </div>
         <div class="setting-block" id="signout-row" hidden>
           <span class="card-sub" data-i18n="signout.hint">Prepne toto zariadenie do hosťovského režimu. Dáta účtu zostanú zachované.</span>
           <button type="button" class="btn btn-secondary btn-block" id="btn-settings-signout" data-i18n="community.signOut">Odhlásiť sa</button>
@@ -1130,8 +1135,8 @@
     </div>
   </div>
 
-  <script src="community-config.js?v=109"></script>
-  <script src="vendor/supabase-js.js?v=109"></script>
-  <script src="script.js?v=109"></script>
+  <script src="community-config.js?v=110"></script>
+  <script src="vendor/supabase-js.js?v=110"></script>
+  <script src="script.js?v=110"></script>
 </body>
 </html>

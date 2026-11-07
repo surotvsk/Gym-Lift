@@ -5,6 +5,8 @@
 | `bash tests/android/run-all.sh` | Chrome only | everything below marked "headless" |
 | `build-www.js` | — | what goes into the app (`www/`): app files, MP4 + images, no WebM / service worker / tests; < 40 MB; web files untouched |
 | `native-core.js` (headless) | Chrome | native mode on/off, no service worker or update UI in the app, MP4-only video, splash hidden |
+| `native-google.js` (headless) | Chrome | cancellation, nonce forwarding, safe identity linking, session races, six languages |
+| `google-workspace.js` | local Supabase + synthetic A/B credentials | explicit guest ownership and account/workout isolation through the Google flow |
 | `native-back.js` (headless) | Chrome | hardware Back for every sheet (table complete), stacked sheets, sub-views, tabs, Today → background, running workout kept |
 | `native-theme.js` (headless) | Chrome | status bar follows light / dark / system, live system switch |
 | `native-share.js` (headless) | Chrome | export, auto backup and progress photo go through Filesystem + share sheet |

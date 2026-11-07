@@ -61,3 +61,10 @@ sound routing remains a manual check.
 On this machine SwiftShader crashes during boot. Use an ephemeral AVD with
 `-read-only -no-window -no-audio -no-snapshot -gpu lavapipe -camera-back none -camera-front none -port 5554`.
 Both `GymQuest_Android15` and `Medium_Phone_API_37.0` boot successfully with these flags.
+
+### Google sign-in (Phase 6b)
+
+Android can sign into an existing account with Google and connect Google from Settings without
+moving workout data between accounts. New accounts still use email registration to preserve the
+server's age-confirmation rule. The controls stay unavailable until the owner configures the
+public Web OAuth client ID and Supabase provider. See [Google setup and verification](GOOGLE-SIGN-IN.md).

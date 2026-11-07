@@ -18656,6 +18656,7 @@ function communityAuthHtml() {
     + '<button type="button" class="btn btn-secondary" data-community-action="signup" data-busy-kind="signup"' + (authIsBusy('signup') ? ' disabled' : '') + '>' + esc(t('community.signUp')) + '</button>'
     + '<button type="button" class="btn btn-secondary" data-community-action="forgot">' + esc(t('auth.forgotPassword')) + '</button>'
     + '</div>'
+    + googleSignInHtml()
     + '<div class="plan-actions">' + authMailButton('confirm', 'auth.resendConfirmation', 'data-community-action="resend-confirm"') + '</div>'
     + '<p class="card-note">' + esc(t('auth.confirmNote')) + '</p>'
     + '<p class="card-note">' + esc(t('community.offlineNote')) + '</p>'
@@ -19514,6 +19515,7 @@ function communityCredentials() {
 /* Zmena účtu sa nikdy neprekrýva s bežiacou synchronizáciou: najprv sa fronta
    zastaví a dobehne, až potom sa mení session. */
 async function communitySignIn() {
+  if (googleAuthBusy) return;
   const sb = communityClient(); if (!sb) return;
   const c = communityCredentials();
   communitySetMessage('');
@@ -19524,6 +19526,103 @@ async function communitySignIn() {
   renderCommunity();
   await wsBindSession(true);   // vlastný priestor účtu + automatické načítanie
 }
+/* ---------- Google účet (Android): tokeny iba v pamäti, existujúca izolácia účtov ---------- */
+let googleAuthBusy = false;
+const GOOGLE_AUTH_I18N = {
+  en: ['Sign in with Google', 'Connect Google', 'Google sign-in is not available yet. Use email and password.', 'Connect Google to this account. Your workouts and account stay the same.', 'New here? Create and verify your account by email first, then connect Google in Settings.', 'Sign in with your password first, then connect Google in Settings.', 'Google is connected to this account.', 'Google sign-in failed. Try again or use email and password.', 'No Google account is available. Add one in Android settings, then try again.', 'Your account changed while Google was open. Please try again.', 'You are offline. Connect to the internet and try again.'],
+  sk: ['Prihlásiť sa cez Google', 'Prepojiť Google', 'Prihlásenie cez Google zatiaľ nie je dostupné. Použi e-mail a heslo.', 'Prepoj Google s týmto účtom. Tréningy aj účet zostanú rovnaké.', 'Si tu nový? Najprv vytvor a over účet e-mailom, potom prepoj Google v Nastaveniach.', 'Najprv sa prihlás heslom, potom prepoj Google v Nastaveniach.', 'Google je prepojený s týmto účtom.', 'Prihlásenie cez Google zlyhalo. Skús znova alebo použi e-mail a heslo.', 'Nie je dostupný účet Google. Pridaj ho v nastaveniach Androidu a skús znova.', 'Počas výberu Google sa účet zmenil. Skús to znova.', 'Si offline. Pripoj sa na internet a skús znova.'],
+  es: ['Iniciar sesión con Google', 'Conectar Google', 'El acceso con Google aún no está disponible. Usa tu correo y contraseña.', 'Conecta Google a esta cuenta. Tu cuenta y tus entrenamientos no cambian.', '¿Eres nuevo? Primero crea y verifica tu cuenta por correo; después conecta Google en Ajustes.', 'Primero inicia sesión con tu contraseña y después conecta Google en Ajustes.', 'Google está conectado a esta cuenta.', 'No se pudo iniciar sesión con Google. Inténtalo de nuevo o usa tu correo y contraseña.', 'No hay ninguna cuenta de Google disponible. Añade una en los ajustes de Android y vuelve a intentarlo.', 'Tu cuenta cambió mientras Google estaba abierto. Inténtalo de nuevo.', 'Sin conexión. Conéctate a internet e inténtalo de nuevo.'],
+  'pt-BR': ['Entrar com o Google', 'Conectar Google', 'O acesso com o Google ainda não está disponível. Use e-mail e senha.', 'Conecte o Google a esta conta. Sua conta e seus treinos continuam iguais.', 'É novo aqui? Primeiro crie e confirme sua conta por e-mail; depois conecte o Google em Configurações.', 'Entre primeiro com sua senha e depois conecte o Google em Configurações.', 'O Google está conectado a esta conta.', 'Não foi possível entrar com o Google. Tente novamente ou use e-mail e senha.', 'Nenhuma conta do Google disponível. Adicione uma nas configurações do Android e tente novamente.', 'Sua conta mudou enquanto o Google estava aberto. Tente novamente.', 'Você está offline. Conecte-se à internet e tente novamente.'],
+  fr: ['Se connecter avec Google', 'Associer Google', 'La connexion Google n’est pas encore disponible. Utilise ton e-mail et ton mot de passe.', 'Associe Google à ce compte. Ton compte et tes entraînements restent les mêmes.', 'Nouveau ici ? Crée et confirme d’abord ton compte par e-mail, puis associe Google dans les paramètres.', 'Connecte-toi d’abord avec ton mot de passe, puis associe Google dans les paramètres.', 'Google est associé à ce compte.', 'La connexion Google a échoué. Réessaie ou utilise ton e-mail et ton mot de passe.', 'Aucun compte Google disponible. Ajoute-en un dans les paramètres Android, puis réessaie.', 'Ton compte a changé pendant que Google était ouvert. Réessaie.', 'Tu es hors ligne. Connecte-toi à Internet et réessaie.'],
+  ar: ['تسجيل الدخول باستخدام Google', 'ربط Google', 'تسجيل الدخول باستخدام Google غير متاح بعد. استخدم البريد الإلكتروني وكلمة المرور.', 'اربط Google بهذا الحساب. سيبقى حسابك وتمارينك كما هي.', 'هل أنت جديد؟ أنشئ حسابك وأكّده بالبريد الإلكتروني أولًا، ثم اربط Google من الإعدادات.', 'سجّل الدخول بكلمة المرور أولًا، ثم اربط Google من الإعدادات.', 'تم ربط Google بهذا الحساب.', 'تعذّر تسجيل الدخول باستخدام Google. حاول مجددًا أو استخدم البريد الإلكتروني وكلمة المرور.', 'لا يوجد حساب Google متاح. أضف حسابًا في إعدادات أندرويد ثم حاول مجددًا.', 'تغيّر حسابك أثناء فتح Google. حاول مجددًا.', 'أنت غير متصل. اتصل بالإنترنت وحاول مجددًا.']
+};
+Object.keys(GOOGLE_AUTH_I18N).forEach(lang => ['signin', 'connect', 'unavailable', 'linkHint', 'newAccount', 'passwordFirst', 'linked', 'error', 'noCredential', 'changed', 'offline'].forEach((key, i) => {
+  I18N[lang]['google.' + key] = GOOGLE_AUTH_I18N[lang][i];
+}));
+function googleReady() {
+  return isNativeApp() && communityConfigured() && /^[0-9]+-[A-Za-z0-9_-]+\.apps\.googleusercontent\.com$/.test(String(communityCfg().googleWebClientId || '')) && !!nativePlugin('GymGoogle');
+}
+function googleSignInHtml() {
+  if (!isNativeApp()) return '';
+  return '<div class="plan-actions"><button type="button" class="btn btn-secondary" data-community-action="google-signin"'
+    + (!googleReady() || googleAuthBusy ? ' disabled' : '') + '>' + esc(t('google.signin')) + '</button></div>'
+    + '<p class="card-note">' + esc(t(googleReady() ? 'google.newAccount' : 'google.unavailable')) + '</p>';
+}
+function renderGoogleAccount() {
+  const row = document.getElementById('google-account-row'), b = document.getElementById('btn-google-connect');
+  if (!row || !b) return;
+  row.hidden = !isNativeApp() || !(wsSlot && wsSlot.owner);
+  b.disabled = googleAuthBusy || !googleReady();
+  const hint = document.getElementById('google-account-hint');
+  if (hint) hint.textContent = t(googleReady() ? 'google.linkHint' : 'google.unavailable');
+}
+function googleAuthMessage(key, link) {
+  if (link) {
+    const el = document.getElementById('google-account-status');
+    if (el) { el.textContent = key ? t(key) : ''; el.hidden = !key; }
+  } else {
+    communitySetMessageText(key ? t(key) : '');
+    renderCommunity();
+  }
+}
+function googleAuthControls() {
+  document.querySelectorAll('[data-community-action="google-signin"]').forEach(b => { b.disabled = googleAuthBusy || !googleReady(); });
+  renderGoogleAccount();
+}
+async function communityGoogleSignIn(link) {
+  link = link === true;
+  if (googleAuthBusy || syncStopping || authBusy.size) return;
+  if (!googleReady()) { googleAuthMessage('google.unavailable', link); return; }
+  if (navigator.onLine === false) { googleAuthMessage('google.offline', link); return; }
+  const sb = communitySb(), plugin = nativePlugin('GymGoogle');
+  const slot = wsSlot && wsSlot.id, owner = wsSlot && wsSlot.owner;
+  let paused = false;
+  googleAuthBusy = true;
+  googleAuthControls();
+  try {
+    const before = await sb.auth.getSession();
+    if (before.error) throw before.error;
+    const uid = before.data?.session?.user?.id || null;
+    if (link ? (!uid || uid !== owner) : !!uid) { googleAuthMessage('google.passwordFirst', link); return; }
+    const credential = await plugin.signIn({ clientId: communityCfg().googleWebClientId });
+    if (credential?.cancelled) return; // žiadne quiesce, zmena session ani uloženie dát
+    if (!credential || typeof credential.token !== 'string' || !credential.token || typeof credential.nonce !== 'string' || !credential.nonce) throw new Error('invalid_credential');
+    await syncQuiesce(); paused = true;
+    const now = await sb.auth.getSession();
+    if (now.error || (now.data?.session?.user?.id || null) !== uid || wsSlot?.id !== slot || wsSlot?.owner !== owner) {
+      googleAuthMessage('google.changed', link); return;
+    }
+    const input = { provider: 'google', token: credential.token, nonce: credential.nonce };
+    const result = link ? await sb.auth.linkIdentity(input) : await sb.auth.signInWithIdToken(input);
+    if (result.error) {
+      const code = String(result.error.code || '');
+      googleAuthMessage(/identity|email.*confirm|user_already_exists|unexpected_failure/.test(code) ? 'google.passwordFirst' : 'google.error', link);
+      return;
+    }
+    const current = await sb.auth.getSession();
+    const userId = result.data?.user?.id || result.data?.session?.user?.id;
+    if (!userId || current.error || current.data?.session?.user?.id !== userId || (link && userId !== uid)) {
+      // Nečakaná identita nesmie pokračovať v synchronizácii pôvodného priestoru.
+      await sb.auth.signOut({ scope: 'local' });
+      googleAuthMessage('google.changed', link); return;
+    }
+    syncResume(); paused = false;
+    if (link) {
+      googleAuthMessage('google.linked', true); // rovnaký účet a priestor, žiadne kopírovanie tréningov
+    } else {
+      communitySetMessage('');
+      await wsBindSession(true); // ten istý bezpečný tok ako e-mailové prihlásenie
+      renderCommunity();
+    }
+  } catch (e) {
+    if (e?.code !== 'CANCELLED') googleAuthMessage(e?.code === 'NO_CREDENTIAL' ? 'google.noCredential' : 'google.error', link);
+  } finally {
+    if (paused) syncResume();
+    googleAuthBusy = false;
+    googleAuthControls();
+  }
+}
+
 /* ---------- E-maily účtu: potvrdenie registrácie, opätovné poslanie, obnova hesla ----------
    Správy sú pravdivé: „odoslané“ znamená len to, že server požiadavku prijal (doručenie do
    schránky sa overiť nedá), a nikdy neprezradia, či e-mail už má účet. Opakované posielanie
@@ -19600,7 +19699,7 @@ function authMailButton(kind, labelKey, attrs) {
   return '<button type="button" class="btn btn-secondary" data-mail-kind="' + kind + '" data-mail-label="' + labelKey + '" ' + attrs
     + (left > 0 || authIsBusy(kind) ? ' disabled' : '') + '>' + esc(left > 0 ? t('auth.waitButton', { n: left }) : t(labelKey)) + '</button>';
 }
-function communitySignUp() { return authOnce('signup', communitySignUpNow); }
+function communitySignUp() { if (googleAuthBusy) return; return authOnce('signup', communitySignUpNow); }
 async function communitySignUpNow() {
   const sb = communityClient(); if (!sb) return;
   const c = communityCredentials();
@@ -19657,12 +19756,15 @@ async function communityResendConfirmation() {
    ďalšom prihlásení); zariadenie sa prepne do hosťovského priestoru. Odhlasuje
    sa len toto zariadenie (scope 'local'), nie ostatné zariadenia účtu. */
 async function communitySignOut() {
+  if (googleAuthBusy) return;
   const sb = communitySb(); if (!sb) return;
   await syncQuiesce();
   persistState();
   await pushDisable(sb);   // upozornenia tohto účtu na tomto zariadení končia (kým je ešte prihlásený)
   communityResetSocial2();
   try { await sb.auth.signOut({ scope: 'local' }); } catch (e) {}
+  const google = nativePlugin('GymGoogle');
+  if (google) google.clear().catch(() => {});
   communityProfile = null;
   communityConsent = null;
   communityView = 'feed';
@@ -25906,6 +26008,7 @@ function syncRender() {
   show('btn-cloud-restore', signedSlot);
   show('btn-cloud-delete', signedSlot);
   show('signout-row', signedSlot);
+  renderGoogleAccount();
 }
 /* Spätná kompatibilita názvu: volá sa z applyStaticI18n a openSettings. */
 function renderCloudBackupSetting() { syncRender(); }
@@ -26137,6 +26240,7 @@ function setupEvents() {
   });
   on('btn-cloud-delete', cloudDeleteBackup);
   on('btn-settings-signout', requestSignOut);
+  on('btn-google-connect', () => communityGoogleSignIn(true));
   on('btn-sync-resolve', () => { syncConflictShown = false; syncOpenConflictDialog(true); });
   on('btn-sync-link', syncOpenLinkDialog);
   on('btn-sync-recovery', syncOpenRecoveryList);
@@ -26279,6 +26383,7 @@ function setupEvents() {
     else if (act === 'enable') communityEnable();
     else if (act === 'disable') communityDisable();
     else if (act === 'signin') communitySignIn();
+    else if (act === 'google-signin') communityGoogleSignIn(false);
     else if (act === 'signup') communitySignUp();
     else if (act === 'signout') requestSignOut();
     else if (act === 'push-on') pushEnable();
