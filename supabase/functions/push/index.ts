@@ -29,6 +29,7 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 import { sendPush, type Vapid } from './webpush.ts';
 import { deliverFcm, fcmConfig } from './fcm.ts';
+import { suppressForViewing } from './presence.ts';
 
 const cors = {
   'Access-Control-Allow-Origin': '*',
@@ -97,6 +98,7 @@ Deno.serve(async (req: Request) => {
   let sent = 0, gone = 0, failed = 0, skipped = 0;
   await Promise.all(subs.map(async (s: { endpoint: string; p256dh: string; auth: string; lang: string }) => {
     if (!allowedEndpoint(s.endpoint)) { skipped++; return; }
+    if (suppressForViewing(data.viewing, s.endpoint)) { skipped++; return; }
     const text = (TEXT[s.lang] || TEXT.en).replace('{name}', name);
     const payload = { type: 'chat', title: 'GymQuest', body: text, conv, tag: 'gq-chat-' + conv };
     try {
@@ -108,7 +110,8 @@ Deno.serve(async (req: Request) => {
   }));
   // Android app (0016): the same notification through FCM; off without FCM_SERVICE_ACCOUNT.
   const fcm = fcmConfig((k) => Deno.env.get(k), supabaseUrl);
-  if (fcm && Array.isArray(data.fcm) && data.fcm.length) {
+  if (suppressForViewing(data.viewing) && Array.isArray(data.fcm)) skipped += data.fcm.length;
+  if (!suppressForViewing(data.viewing) && fcm && Array.isArray(data.fcm) && data.fcm.length) {
     const r = await deliverFcm(data.fcm, name, conv, fcm, (token) => admin.rpc('push_fcm_gone', { p_token: token }));
     sent += r.sent; gone += r.gone; failed += r.failed;
   }

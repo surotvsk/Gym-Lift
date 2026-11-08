@@ -129,3 +129,13 @@ with grants, by cascade):
 | 0005 | re-applied | v47 | correct |
 | 0005 rolled back | yes | v47 / production (= Release-1 rollback target) | correct |
 | 0005 rolled back | rolled back | production | **bug** (= production today) |
+
+## Phase 7 (0018)
+
+`node tests/social/feed-presence.js` uses only the existing local stack and disposable accounts. It checks
+ranking/cursors, visibility and grants, lease expiry/multiple viewers, cooldown after suppression, Apple
+target retention, rollback, and a timed deep cursor. It restores the initial migration state.
+`node tests/social/push-presence.js` checks the Apple exception and conservative delivery defaults.
+Deployment order is app → 0018 → push function; production execution requires owner approval.
+
+2026-11-09 local Phase7 results: feed-presence38/38, push-presence10/10, FCM transport25/25, DB FCM34/34. Deep cursor985ms/1829 local posts; local schema restored.

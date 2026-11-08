@@ -16821,6 +16821,7 @@ function communityStopRealtime() {
 }
 /* Po odhlásení, opustení Community či vypnutí: žiadne živé spojenie ani odznaky. */
 function communityResetSocial2() {
+  communityViewingStop();
   communityStopRealtime();
   communityBadges = { chats: 0, requests: 0 };
   communityShowBadges();
@@ -17202,9 +17203,61 @@ function communityChatScrollToEnd() {
 function communityChatVisible() {
   return activeTab === 'komunita' && communityView === 'chat' && !!communityChatId && document.visibilityState === 'visible';
 }
+/* Krátky serverový prenájom: iba viditeľný chat, 20 s obnovenie / 30 s expirácia.
+   Poradie RPC je sériové, aby pomalý heartbeat neobnovil už zatvorený chat. */
+let communityViewingTimer = null, communityViewingTarget = null, communityViewingViewer = null;
+let communityViewingQueue = Promise.resolve();
+function communityViewingWrite(target, conversation) {
+  if (conversation && target.pending) return communityViewingQueue;
+  if (conversation) target.pending = true;
+  communityViewingQueue = communityViewingQueue.catch(() => {}).then(async () => {
+    const controller = new AbortController();
+    let timer;
+    const current = () => !controller.signal.aborted && (!conversation ||
+      (communityViewingTarget === target && communityChatVisible() && communityVersion >= 10));
+    try {
+      await Promise.race([(async () => {
+        if (!current()) return;
+        const session = await target.sb.auth.getSession();
+        if (session.data?.session?.user?.id !== target.uid || !current()) return;
+        let request = target.sb.rpc('chat_viewing', { p_viewer: target.viewer, p_conversation: conversation });
+        if (request.abortSignal) request = request.abortSignal(controller.signal);
+        const r = await request;
+        if (r.error && communityMissingFn(r.error)) communityVersion = Math.min(communityVersion, 9);
+      })(), new Promise(resolve => { timer = setTimeout(() => { controller.abort(); resolve(); }, 5000); })]);
+    } catch (e) { /* Expirácia je poistka pri strate siete, bez blokovania chatu. */ }
+    finally { clearTimeout(timer); if (conversation) target.pending = false; }
+  });
+  return communityViewingQueue;
+}
+function communityViewingStop() {
+  clearInterval(communityViewingTimer); communityViewingTimer = null;
+  const old = communityViewingTarget;
+  communityViewingTarget = null;
+  if (old) return communityViewingWrite(old, null);
+  return communityViewingQueue;
+}
+function communityViewingSync() {
+  const sb = communityClient(), uid = communityProfile?.id;
+  const cid = communityVersion >= 10 && sb && uid && communityChatVisible() && communityChatMeta?.can_send ? communityChatId : null;
+  if (!cid) { communityViewingStop(); return; }
+  if (communityViewingTarget?.cid === cid && communityViewingTarget.uid === uid) return;
+  communityViewingStop();
+  if (!communityViewingViewer) communityViewingViewer = crypto.randomUUID();
+  const target = { sb, uid, cid, viewer: communityViewingViewer };
+  communityViewingTarget = target;
+  communityViewingWrite(target, cid);
+  communityViewingTimer = setInterval(() => {
+    if (!communityChatVisible() || communityChatId !== cid || communityProfile?.id !== uid || communityVersion < 10) {
+      communityViewingSync(); return;
+    }
+    communityViewingWrite(target, cid);
+  }, 20000);
+}
 /* Adresa nesie #chat=<id> počas čítania chatu (service worker podľa nej pozná otvorený chat);
    replaceState, aby história Späť ostala čistá. Cudzí hash sa nikdy nemaže. */
 function communityChatHashSync() {
+  communityViewingSync();
   try {
     const want = communityChatVisible() ? '#chat=' + communityChatId : '';
     if (want ? location.hash === want : !/^#chat=/.test(location.hash)) return;
@@ -18804,6 +18857,7 @@ function communitySocialCardHtml(p, inComments) {
     + (mod && !mine ? '<button type="button" class="btn btn-secondary" data-community-action="mod-remove" data-post="' + escAttr(p.id) + '">' + esc(t('community.removePost')) + '</button>' : '');
   /* v83: ako príspevok na X – avatar vľavo, vpravo meno · čas · ⋯, text, fotky, tréning, akcie (jeden celok) */
   return '<article class="community-card cpost xpost" data-post="' + escAttr(p.id) + '">'
+    + (p.suggested ? '<p class="card-note cpost-suggested">' + esc(t('community.suggested')) + '</p>' : '')
     + (p.reposted_by ? '<p class="community-shared cpost-shared">' + communityIcon('share') + ' ' + esc(t('community.sharedBy', { name: p.reposted_by_name || t('community.unknownUser') })) + '</p>' : '')
     + '<div class="xp-row">'
     + '<button type="button" class="cpost-avatar" data-community-action="open-user" data-user="' + escAttr(p.user_id) + '" aria-label="' + escAttr(p.name || t('community.unknownUser')) + '">' + communityAvatarHtml(p.avatar) + '</button>'
@@ -18872,6 +18926,7 @@ async function communityLoadFeed(sb, reset) {
 }
 /* Sociálny prehľad (Všetci / Sledovaní / profil): server vráti len to, čo smieš vidieť
    (schválené, bez blokovaných a pozastavených autorov); stránkovanie podľa poslednej položky. */
+Object.entries({ sk: 'Odporúčané', en: 'Suggested', es: 'Sugerido', 'pt-BR': 'Sugerido', fr: 'Suggestion', ar: 'مقترح' }).forEach(([lang, text]) => { I18N[lang]['community.suggested'] = text; });
 async function communityLoadSocialFeed(sb, reset) {
   const feed = communityFeed;   // Späť môže medzitým obnoviť iný zoznam – zapisuje sa len do tohto
   if (feed.loading || (feed.done && !reset)) return;
@@ -18885,8 +18940,24 @@ async function communityLoadSocialFeed(sb, reset) {
   const last = reset ? null : feed.items[feed.items.length - 1];
   let res;
   try {
-    res = await sb.rpc('community_feed', { p_scope: feed.scope || 'everyone', p_user: feed.user || null,
-      p_before: last ? last.at : null, p_before_id: last ? last.id : null, p_limit: COMMUNITY_PAGE });
+    if (reset) feed.rankCursor = null;
+    const ranked = communityVersion >= 10 && (feed.scope || 'everyone') === 'everyone';
+    const cursor = reset ? null : feed.rankCursor;
+    if (ranked) {
+      res = await sb.rpc('community_feed_ranked', { p_before_tier: cursor?.rank_tier ?? null,
+        p_before: cursor?.rank_at || null, p_before_id: cursor?.post_id || null,
+        p_asof: cursor?.rank_asof || null, p_limit: COMMUNITY_PAGE });
+      if (res.error && communityMissingFn(res.error)) {
+        communityVersion = Math.min(communityVersion, 9);
+        // Rollback servera: nový chronologický zoznam, nikdy nezmiešať dva typy kurzora.
+        feed.rankCursor = null; feed.loading = false;
+        return communityLoadSocialFeed(sb, true);
+      }
+      if (!res.error && res.data?.length) feed.rankCursor = res.data[res.data.length - 1];
+    } else {
+      res = await sb.rpc('community_feed', { p_scope: feed.scope || 'everyone', p_user: feed.user || null,
+        p_before: last ? last.at : null, p_before_id: last ? last.id : null, p_limit: COMMUNITY_PAGE });
+    }
   } catch (e) { res = { error: e }; }
   feed.loading = false;
   if (res.error) {
@@ -18918,7 +18989,7 @@ async function communityFeedItemsFromRows(sb, rows) {
     caption: r.caption || '', photos: Array.isArray(r.photos) ? r.photos : [], at: r.activity_at, published: r.activity_at,
     reposted_by: r.reposted_by, reposted_by_name: r.reposted_by_name,
     likes: Number(r.likes) || 0, reposts: Number(r.reposts) || 0, liked: !!r.liked_by_me, reposted: !!r.reposted_by_me,
-    comments: Number(r.comments) || 0, visibility: r.visibility || 'public',
+    comments: Number(r.comments) || 0, visibility: r.visibility || 'public', suggested: r.suggested === true,
   }));
   const urls = await communitySignedUrls(sb, [].concat(...items.map((p) => p.photos.map((ph) => ph.thumb))));
   await communityLoadPostShares(sb, items.map((p) => p.id));
@@ -19760,6 +19831,7 @@ async function communitySignOut() {
   const sb = communitySb(); if (!sb) return;
   await syncQuiesce();
   persistState();
+  await Promise.race([communityViewingStop(), new Promise(resolve => setTimeout(resolve, 1500))]);
   await pushDisable(sb);   // upozornenia tohto účtu na tomto zariadení končia (kým je ešte prihlásený)
   communityResetSocial2();
   try { await sb.auth.signOut({ scope: 'local' }); } catch (e) {}

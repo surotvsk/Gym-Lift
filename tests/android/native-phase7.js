@@ -1,0 +1,68 @@
+'use strict';
+const {counter,startServerOnce,openApp,closeAll}=require('./lib-native');
+const fs=require('fs'),work='/tmp/gq-phase7';fs.mkdirSync(work,{recursive:true});
+(async()=>{
+ const t=counter(),server=await startServerOnce(work);
+ try{
+  const {p,errors}=await openApp({name:'phase7',debugPort:9923,native:true,work});const ev=s=>p.eval(s);
+  await ev(`window.__p7={calls:[],uid:'account-a',hidden:false,missing:false,net:false,rows:[],tick:null};
+    communityVersion=10; communitySocial=true;
+    communityRefreshFeed=()=>{}; communitySignedUrls=async()=>({}); communityLoadPostShares=async()=>{};
+    window.__p7sb={auth:{getSession:async()=>({data:{session:{user:{id:__p7.uid}}}})},rpc:async(name,args)=>{
+      __p7.calls.push({name,args});
+      if(__p7.net)return {error:{code:'NETWORK'}};
+      if(__p7.missing&&['community_feed_ranked','chat_viewing'].includes(name))return {error:{code:'PGRST202'}};
+      return {data:name==='chat_viewing'?null:__p7.rows};}};
+    communityClient=()=>__p7sb;
+    Object.defineProperty(document,'visibilityState',{configurable:true,get:()=>__p7.hidden?'hidden':'visible'});
+    window.__p7Interval=setInterval;
+    setInterval=(fn,ms)=>ms===20000?(__p7.tick=fn,555555):__p7Interval(fn,ms);
+    window.__p7Reset=()=>{communityFeed={items:[],scope:'everyone',loading:false,done:false};__p7.calls=[];};
+    __p7Reset(); true`);
+  await ev(`__p7.rows=Array.from({length:12},(_,i)=>({post_id:'post'+i,author_id:'author',rank_tier:2,rank_at:'2026-11-07T10:00:00.123456+00:00',rank_asof:'2026-11-07T11:00:00+00:00',suggested:true,activity_at:'2026-11-07T09:00:00Z',photos:[]}));communityLoadSocialFeed(__p7sb,true)`);
+  t.check('v10 default feed uses ranked RPC',await ev(`__p7.calls[0].name==='community_feed_ranked'`));
+  t.check('suggested marker maps to cards',await ev(`communityFeed.items.every(p=>p.suggested)`));
+  await ev(`__p7.rows=[];communityLoadSocialFeed(__p7sb,false)`);
+  t.check('cursor keeps full timestamp precision and snapshot',await ev(`__p7.calls[1].args.p_before==='2026-11-07T10:00:00.123456+00:00'&&__p7.calls[1].args.p_before_id==='post11'&&__p7.calls[1].args.p_before_tier===2&&!!__p7.calls[1].args.p_asof`));
+  await ev(`__p7Reset();communityVersion=9;communityLoadSocialFeed(__p7sb,true)`);
+  t.check('old backend uses chronological feed',await ev(`__p7.calls[0].name==='community_feed'`));
+  for(const scope of ['friends','following','user']){
+    await ev(`__p7Reset();communityVersion=10;communityFeed.scope=${JSON.stringify(scope)};communityLoadSocialFeed(__p7sb,true)`);
+    t.check(scope+' scope unchanged',await ev(`__p7.calls[0].name==='community_feed'`));
+  }
+  await ev(`__p7Reset();communityVersion=10;__p7.missing=true;communityLoadSocialFeed(__p7sb,true)`);
+  t.check('missing ranked RPC restarts legacy feed',await ev(`communityVersion===9&&__p7.calls.map(c=>c.name).join(',')==='community_feed_ranked,community_feed'&&!communityFeed.rankCursor`));
+  await ev(`__p7Reset();communityVersion=10;__p7.missing=false;__p7.net=true;communityLoadSocialFeed(__p7sb,true)`);
+  t.check('network error does not silently downgrade',await ev(`communityVersion===10&&communityFeed.error&&__p7.calls.length===1`));
+  await ev(`__p7.net=false;__p7.calls=[];communityProfile={id:'account-a'};communityChatId='chat-a';communityChatMeta={can_send:true};activeTab='komunita';communityView='chat';communityViewingSync();communityViewingQueue`);
+  t.check('visible open chat acquires lease',await ev(`__p7.calls.length===1&&__p7.calls[0].args.p_conversation==='chat-a'`));
+  await ev(`communityViewingSync();communityViewingQueue`);
+  t.check('rerender does not duplicate heartbeat',await ev(`__p7.calls.length===1`));
+  await ev(`__p7.tick();communityViewingQueue`);
+  t.check('20-second timer refreshes lease',await ev(`__p7.calls.length===2`));
+  await ev(`__p7.hidden=true;communityChatHashSync();communityViewingQueue`);
+  t.check('hidden document clears lease and timer',await ev(`__p7.calls.at(-1).args.p_conversation===null&&!communityViewingTimer`));
+  await ev(`__p7.hidden=false;communityChatHashSync();communityViewingQueue`);
+  t.check('visible return reacquires',await ev(`__p7.calls.at(-1).args.p_conversation==='chat-a'`));
+  await ev(`communityChatId='chat-b';communityViewingSync();communityViewingQueue`);
+  t.check('switch serializes old clear before new lease',await ev(`__p7.calls.slice(-2).map(c=>c.args.p_conversation).join(',')===',chat-b'`));
+  await ev(`activeTab='dnes';communityChatHashSync();communityViewingQueue`);
+  t.check('leaving Community clears lease',await ev(`!communityViewingTarget&&__p7.calls.at(-1).args.p_conversation===null`));
+  await ev(`communityVersion=9;activeTab='komunita';__p7.calls=[];communityViewingSync();communityViewingQueue`);
+  t.check('old server receives no presence calls',await ev(`__p7.calls.length===0`));
+  await ev(`communityVersion=10;__p7.missing=true;communityViewingSync();communityViewingQueue`);
+  t.check('missing presence RPC downgrades safely',await ev(`communityVersion===9`));
+  await ev(`communityViewingStop();communityViewingQueue`);
+  await ev(`communityVersion=10;__p7.missing=false;__p7.calls=[];__p7.uid='account-b';communityViewingSync();communityViewingQueue`);
+  t.check('stale account cannot write lease',await ev(`__p7.calls.length===0`));
+  await ev(`communityViewingStop();communityViewingQueue`);
+  await ev(`__p7.uid='account-a';communityVersion=10;__p7.calls=[];
+    window.__p7rpc=__p7sb.rpc; window.__p7release=null;
+    communityViewingQueue=new Promise(resolve=>{__p7release=resolve;});
+    communityViewingSync();__p7.tick();__p7.tick();activeTab='dnes';communityViewingSync();__p7release();communityViewingQueue`);
+  t.check('delayed and repeated heartbeat cannot renew chat after leaving',await ev(`__p7.calls.length===1&&__p7.calls[0].args.p_conversation===null`));
+  for(const lang of ['sk','en','es','pt-BR','fr','ar'])t.check(lang+' suggested translation',await ev(`!!I18N[${JSON.stringify(lang)}]['community.suggested']`));
+  t.check('no browser errors',errors.length===0);
+  console.log(`==== checks: ${t.pass} passed, ${t.fail} failed ====`);process.exitCode=t.fail?1:0;
+ }finally{closeAll();server.close();}
+})().catch(e=>{console.error(e.stack);closeAll();process.exitCode=1;});

@@ -147,6 +147,7 @@ const STACK = [
   { n: 16, up: '0016_push_fcm.sql', down: '0016_down.sql', present: "to_regclass('public.push_fcm_tokens') is not null" },
   { n: 17, up: '0017_leaderboard_v2.sql', down: '0017_down.sql',
     present: "to_regprocedure('public.leaderboard_achievement_value_v2(text[],integer)') is not null" },
+  { n: 18, up: '0018_feed_presence.sql', down: '0018_down.sql', present: "to_regclass('public.chat_presence') is not null" },
 ];
 let lastRollback = null;   // posledný rollbackFrom: čo sa vrátilo a aká bola verzia predtým
 function rollbackFrom(n) {

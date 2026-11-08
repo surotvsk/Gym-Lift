@@ -167,6 +167,13 @@ in the prototype.
   marked seen only while the chat is actually visible (not while the app is in the background). Back from a
   friend's profile returns to the same chat at the same scroll position, and the avatar or name in the chat
   header opens that profile.
+- **Feed ranking (server version 10 / migration 0018):** Everyone shows friends and followed accounts first,
+  then public posts marked **Suggested**. Suggestions use recency with a five-minute boost for posts liked
+  by followed accounts; a third consecutive post from one author is deferred while other authors remain.
+  Following, Friends and profile feeds keep their existing behavior. Older servers keep the chronological feed.
+- **Chat alerts (0018 + updated push function):** while a chat is visible, a short viewing heartbeat suppresses
+  redundant Android/browser alerts for that conversation. It expires after 30 seconds without renewal.
+  Apple Web Push notifications are always delivered visibly. Leaving or hiding the chat clears the heartbeat.
 - **Community** (v83) opens straight into the feed, like X/Twitter in Bento shapes and colours: a compact header
   that stays on top while you scroll (*Community*, **New post**, search and **⋯** with Friends — and pending
   requests —, Top 20 with your rank, your profile, My posts and Moderation for moderators; on phones narrower
