@@ -12972,8 +12972,10 @@ function superLabelText(info) {
   return t(info.kind === 'circuit' ? 'superset.circuit' : 'superset.label', { l: info.label });
 }
 
-/* Po označení série ide fokus na rovnakú sériu ďalšieho člena skupiny (posledný člen nikam neskáče). */
-function focusNextSupersetSet(item) {
+/* Po označení série ide fokus na rovnakú sériu ďalšieho člena skupiny (posledný člen nikam neskáče).
+   Mapuje sa podľa (číslo série, strana), nie podľa poradia riadkov: jednostranný cvik strieda L1, P1, L2…
+   Bilaterálny zdroj → prvá strana jednostranného cieľa; jednostranný zdroj → rovnaká strana. Cieľ s menej sériami: bez pohybu. */
+function focusNextSupersetSet(item, index, side) {
   const block = item.closest ? item.closest('.exercise') : null;
   if (!block || block.dataset.slot === undefined) return;
   const plan = getSession() ? currentPlan() : getPlan(selectedPlan);
@@ -12981,10 +12983,15 @@ function focusNextSupersetSet(item) {
   if (next === null) return;
   const targets = Array.from(document.querySelectorAll('#exercise-list .exercise[data-slot="' + next + '"]')).filter((b) => !b.classList.contains('exercise-closed'));
   const target = targets[targets.length - 1];
-  if (!target) return;
-  const mine = Array.from(block.querySelectorAll('.sets .set-item')).indexOf(item);
-  const items = Array.from(target.querySelectorAll('.sets .set-item'));
-  const pick = items[mine] || items.find((it) => !it.classList.contains('set-done')) || items[0];
+  const info = exerciseSlots(plan)[next];
+  if (!target || !info) return;
+  const seg = exerciseSegments(info).filter((sg) => sg.active).pop();
+  const tex = seg ? seg.ex : info.ex;
+  if (index >= sessionSetCount(tex)) return;
+  const tSides = exerciseSideOrder(tex);
+  const tSide = tSides ? (side && tSides.indexOf(side) >= 0 ? side : tSides[0]) : null;
+  const pos = tSides ? index * tSides.length + tSides.indexOf(tSide) : index;
+  const pick = target.querySelectorAll('.sets .set-item')[pos];
   const btn = pick && pick.querySelector('.set-btn');
   if (!btn || btn.disabled) return;
   try { btn.focus({ preventScroll: true }); } catch (e) { btn.focus(); }
@@ -13423,7 +13430,7 @@ function buildSetItem(ex, index, plannedFailure, side, readOnly) {
       syncDone();
       setSessionNote(null, 0);
       updateSummary();
-      if (setMark('done', ex, index, side)) focusNextSupersetSet(item);   // supersérie: ďalší člen
+      if (setMark('done', ex, index, side)) focusNextSupersetSet(item, index, side);   // supersérie: ďalší člen
     });
   }
 

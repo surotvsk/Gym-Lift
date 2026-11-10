@@ -141,8 +141,8 @@ function check(name, ok, info) {
     const blk = (i) => `document.querySelectorAll('#exercise-list .exercise')[${i}]`;
     await ev(`(${blk(0)}.querySelectorAll('.sets .set-btn')[0].click(), true)`);
     check('completing set 1 of member 1 focuses set 1 of member 2', await ev(`document.activeElement === ${blk(1)}.querySelectorAll('.sets .set-btn')[0]`), await ev(`document.activeElement && document.activeElement.className`));
-    await ev(`(${blk(1)}.querySelectorAll('.sets .set-btn')[0].click(), true)`);
-    check('completing set 1 of the LAST member does not jump to another exercise', await ev(`document.activeElement === ${blk(1)}.querySelectorAll('.sets .set-btn')[0]`));
+    await ev(`(document.activeElement.blur(), ${blk(1)}.querySelectorAll('.sets .set-btn')[0].click(), true)`);
+    check('completing set 1 of the LAST member does not move focus into another exercise', await ev(`document.activeElement === document.body`), await ev(`document.activeElement.className`));
     await ev(`(${blk(0)}.querySelectorAll('.sets .set-btn')[1].click(), true)`);
     check('set 2 of member 1 focuses set 2 of member 2', await ev(`document.activeElement === ${blk(1)}.querySelectorAll('.sets .set-btn')[1]`));
     await ev(`(${blk(0)}.querySelectorAll('.sets .set-btn')[1].click(), true)`);   // un-tick: no jump
@@ -181,12 +181,39 @@ function check(name, ok, info) {
     check('a pair is a "Superset" in history', await ev(`historyGroupWrap([{ group: 'a' }, { group: 'a' }], ['x', 'y'], '').includes('Superset A')`));
     check('no group → output is exactly as before', await ev(`historyGroupWrap([{}, {}], ['x', 'y'], '<br>') === 'x<br>y' && historyGroupWrap([{}, {}], ['x', 'y'], '') === 'xy'`));
 
+    console.log('== focus mapping with one-sided and two-sided members');
+    await ev(`(clearSession(), true)`);
+    await ev(`(() => {
+      state.plans['ssmix'] = { id: 'ssmix', builtin: false, customName: 'SS mix', location: null, exercises: [
+        { id: 'cx-mixa', name: 'Bi A', sets: 3, reps: 8, weight: 20, group: 'm1' },
+        { id: 'cx-mixu', name: 'Uni B', sets: 3, reps: 8, weight: 10, unilateral: true, startSide: 'left', group: 'm1' },
+        { id: 'cx-mixv', name: 'Uni C', sets: 3, reps: 8, weight: 10, unilateral: true, startSide: 'right', group: 'm1' },
+        { id: 'cx-mixs', name: 'Short D', sets: 1, reps: 8, weight: 10, group: 'm1' }] };
+      state.planOrder.push('ssmix'); selectedPlan = 'ssmix'; switchTab('trening'); saveState(); ensureSession(getPlan('ssmix')); renderTrening(); return true; })()`); await wait(250);
+    const sb = (m, k) => `document.querySelectorAll('#exercise-list .exercise')[${m}].querySelectorAll('.sets .set-item')[${k}].querySelector('.set-btn')`;
+    const click = (m, k) => ev(`(document.activeElement.blur(), ${sb(m, k)}.click(), true)`);
+    const focused = (m, k) => ev(`document.activeElement === ${sb(m, k)}`);
+    await click(0, 1);   // bilateral set 2 → unilateral B: set 2, first side (left) = item 2
+    check('bilateral set 2 → unilateral set 2, first side (item index 2, not R1)', await focused(1, 2), await ev(`document.activeElement.closest('.set-item') && document.activeElement.closest('.set-item').textContent.slice(0, 6)`));
+    await click(1, 3);   // B: set 2 right → C (start right): set 2 right = item 2
+    check('unilateral R2 → unilateral set 2, same side (right)', await focused(2, 2));
+    await click(1, 2);   // B L2 → C: set 2 left = item 3
+    check('unilateral L2 → unilateral set 2, same side (left)', await focused(2, 3));
+    await click(2, 3);   // C L2 → short bilateral D has 1 set → no focus move
+    check('target member with fewer sets: focus does not move', await ev(`document.activeElement === document.body`), await ev(`document.activeElement.className`));
+    await ev(`(document.activeElement.blur(), true)`);
+    await ev(`(clearSession(), true)`);
+    await ev(`(() => { const r = getPlan('ssmix').exercises; r.reverse(); r.forEach((x) => { x.group = 'm2'; }); saveState(); ensureSession(getPlan('ssmix')); renderTrening(); return true; })()`); await wait(250);
+    await click(2, 5);   // order now D(1 set), C, B, A: B (index 2) is unilateral; set bilateral A is last. B R3 → A set 3
+    check('unilateral R3 → bilateral set 3 (not flat index 5)', await focused(3, 2), await ev(`document.activeElement.className`));
+    await ev(`(clearSession(), true)`);
+
     console.log('== plan without groups');
     await ev(`(() => { selectedPlan = 'ssplain'; switchTab('trening'); renderTrening(); return true; })()`); await wait(200);
     await ev(`(ensureSession(getPlan('ssplain')), renderTrening(), true)`); await wait(200);
     check('no .superset in the DOM, 4 blocks as direct children, no data-slot', await ev(`document.querySelectorAll('#exercise-list .superset').length === 0 && document.querySelectorAll('#exercise-list > .exercise').length === 4 && !document.querySelector('#exercise-list [data-slot]')`));
-    await ev(`(document.querySelectorAll('#exercise-list .exercise')[0].querySelectorAll('.sets .set-btn')[0].click(), true)`);
-    check('completing a set in an ungrouped plan moves no focus to another exercise', await ev(`document.activeElement === document.querySelectorAll('#exercise-list .exercise')[0].querySelectorAll('.sets .set-btn')[0] || !document.activeElement.closest('.exercise') || document.activeElement.closest('.exercise') === document.querySelectorAll('#exercise-list .exercise')[0]`));
+    await ev(`(document.activeElement.blur(), document.querySelectorAll('#exercise-list .exercise')[0].querySelectorAll('.sets .set-btn')[0].click(), true)`);
+    check('completing a set in an ungrouped plan moves no focus (nothing focused)', await ev(`document.activeElement === document.body`), await ev(`document.activeElement.className`));
     await ev(`(clearSession(), saveState(), true)`);
 
     console.log('== looks: 6 languages, RTL, 390 px, themes');
