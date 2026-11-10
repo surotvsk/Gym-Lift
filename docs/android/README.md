@@ -42,9 +42,14 @@ The upload keystore lives outside the repo in `claude-code/android-keys/`.
 show a foreground countdown; longer rests use an alarm and a regular countdown notification.
 The app explains Android's Alarms & reminders access once. Without it, long background
 alerts may be delayed. Notification permission and channel settings must also allow alerts.
-The Rest sound switch selects a sound or silent channel. Android controls sound routing,
-Do Not Disturb, and the native chime duration; the web sound-length preference applies
-only to the browser gong.
+With the Rest sound switch on, the chime plays on the **alarm volume** (`USAGE_ALARM`), like the
+Clock app's timer: it rings even when the phone is on vibrate/silent, and in Do Not Disturb it
+follows Android's "Alarms" exception. The notification channel `rest-alarm` only vibrates, so the
+sound never plays twice. A sound timer counts as native even without notification permission,
+which keeps the web gong silent. With the switch off, the `rest-silent` channel shows the alert
+without sound or vibration. The web sound-length preference applies only to the browser gong.
+Owner device check 2026-11-10 (Samsung A21s, v105): the old notification-volume chime was silent
+in vibrate mode and too quiet. That is why Android versionCode 5 has the alarm stream and a louder chime (≈ −11 dBFS RMS, was −23).
 
 Before a Play release, review the exact-alarm and foreground-service declarations for
 this user-started workout rest timer. Device checks must cover screen off, battery saver,
@@ -55,8 +60,9 @@ Targeted checks: `GQ_TEST_PORT=8191 node tests/android/native-rest.js` and
 refuses a physical device, and requires a debug APK whose bundled Community config has
 empty URL/key values. Never run it against a personal phone. On 2026-11-07 the emulator
 suite passed 14/14 on both Android 15 (API 35) and API 37, covering screen off, battery
-saver, pause/replacement, and denied alarm/notification permissions. Physical wired/Bluetooth
-sound routing remains a manual check.
+saver, pause/replacement, and denied alarm/notification permissions. On 2026-11-10 it passed
+17/17 on API 37, adding the alarm-stream chime and no-double-sound checks. Physical
+wired/Bluetooth sound routing remains a manual check.
 
 On this machine SwiftShader crashes during boot. Use an ephemeral AVD with
 `-read-only -no-window -no-audio -no-snapshot -gpu lavapipe -camera-back none -camera-front none -port 5554`.

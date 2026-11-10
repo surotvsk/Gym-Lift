@@ -12,6 +12,8 @@ const sh = (...args) => adb('shell', ...args);
 const wait = ms => new Promise(r => setTimeout(r, ms));
 let c, ev, pass = 0, fail = 0;
 function check(name, ok) { console.log((ok ? 'PASS ' : 'FAIL ') + name); ok ? pass++ : fail++; }
+// Zvuk konca pauzy hrá na hlasitosti budíka (USAGE_ALARM), nie ako zvuk notifikácie.
+const alarmChime = () => sh('dumpsys', 'audio').split('\n').some(l => /type:android\.media\.MediaPlayer/.test(l) && /usage=USAGE_ALARM/.test(l));
 const alert = () => sh('dumpsys', 'notification', '--noredact').split('\n').some(l => /NotificationRecord/.test(l) && l.includes(pkg) && /id=6202\b/.test(l));
 async function launch() {
   sh('input', 'keyevent', '224');
@@ -48,8 +50,10 @@ async function timer(code) { await ev(code + '; nativeRestQueue'); }
     await timer('startTimer(3)');
     check('short timer starts foreground countdown', sh('dumpsys', 'activity', 'services', pkg).includes('GymRestService'));
     sh('input', 'keyevent', '3'); sh('input', 'keyevent', '223');
-    await wait(4300);
+    await waitFor(() => alert(), 8000, 'alert').catch(() => false);
     check('screen-off background timer posts alert', alert());
+    check('chime plays on the alarm stream', alarmChime());
+    check('alert channel itself is silent (no double sound)', !/channel=rest-alert/.test(sh('dumpsys', 'notification', '--noredact')));
     await launch(); await timer('startTimer(3); pauseRestTimer()'); await wait(4000);
     check('paused timer does not alert', !alert());
     await timer('startTimer(2); startTimer(5)'); await wait(2800);
@@ -75,8 +79,10 @@ async function timer(code) { await ev(code + '; nativeRestQueue'); }
     await launch(); await timer('stopTimer()');
     sh('pm', 'revoke', pkg, 'android.permission.POST_NOTIFICATIONS');
     await launch();
-    const denied = await ev(`Capacitor.Plugins.GymRest.schedule({id:'no-notifications',endAt:Date.now()+3000,title:'Test rest',body:'Done',sound:true})`);
-    check('revoked notifications reported unavailable', denied.notifications === false);
+    const denied = await ev(`Capacitor.Plugins.GymRest.schedule({id:'no-notifications',endAt:Date.now()+3000,title:'Test rest',body:'Done',sound:false})`);
+    check('revoked notifications reported unavailable (silent timer)', denied.notifications === false);
+    const loud = await ev(`Capacitor.Plugins.GymRest.schedule({id:'no-notifications-sound',endAt:Date.now()+3000,title:'Test rest',body:'Done',sound:true})`);
+    check('sound timer stays native without notifications (no web double)', loud.notifications === true);
     await wait(4000); check('revoked notification permission is respected', !alert());
   } finally {
     try { sh('am', 'force-stop', pkg); sh('appops', 'set', pkg, 'SCHEDULE_EXACT_ALARM', 'allow'); sh('pm', 'grant', pkg, 'android.permission.POST_NOTIFICATIONS'); sh('cmd', 'power', 'set-mode', '0'); sh('dumpsys', 'battery', 'reset'); sh('input', 'keyevent', '224'); adb('forward', '--remove', 'tcp:9334'); } catch (_) {}

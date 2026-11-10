@@ -4,6 +4,7 @@ import android.app.*
 import android.content.*
 import android.content.pm.ServiceInfo
 import android.media.AudioAttributes
+import android.media.MediaPlayer
 import android.net.Uri
 import android.os.*
 import android.provider.Settings
@@ -64,7 +65,9 @@ internal object GymRest {
     private fun manager(c: Context) = c.getSystemService(AlarmManager::class.java)
     fun exact(c: Context) = Build.VERSION.SDK_INT < 31 || manager(c).canScheduleExactAlarms()
     fun notifications(c: Context, sound: Boolean): Boolean {
-        val channel = c.getSystemService(NotificationManager::class.java).getNotificationChannel(if (sound) "rest-alert" else "rest-silent")
+        // So zvukom upozorní chime() aj bez povolených notifikácií, web gong by zaznel dvakrát.
+        if (sound) return true
+        val channel = c.getSystemService(NotificationManager::class.java).getNotificationChannel(if (sound) "rest-alarm" else "rest-silent")
         return NotificationManagerCompat.from(c).areNotificationsEnabled() && channel?.importance != NotificationManager.IMPORTANCE_NONE
     }
     fun id(c: Context): String? = prefs(c).getString("id", null)
@@ -74,9 +77,10 @@ internal object GymRest {
 
     fun channels(c: Context, title: String) {
         val nm = c.getSystemService(NotificationManager::class.java)
-        val attrs = AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_NOTIFICATION).build()
-        val sound = NotificationChannel("rest-alert", title, NotificationManager.IMPORTANCE_HIGH).apply {
-            setSound(Uri.parse("android.resource://${c.packageName}/${R.raw.rest_chime}"), attrs)
+        // Zvuk hrá chime() na hlasitosti budíka (ako časovač v Hodinách); kanál iba vibruje.
+        nm.deleteNotificationChannel("rest-alert") // starý kanál so zvukom notifikácie (v103–v105)
+        val sound = NotificationChannel("rest-alarm", title, NotificationManager.IMPORTANCE_HIGH).apply {
+            setSound(null, null)
             enableVibration(true)
         }
         val silent = NotificationChannel("rest-silent", title, NotificationManager.IMPORTANCE_HIGH).apply { setSound(null, null); enableVibration(false) }
@@ -87,7 +91,7 @@ internal object GymRest {
     fun notification(c: Context, countdown: Boolean): Notification {
         val p = prefs(c)
         val open = PendingIntent.getActivity(c, COUNTDOWN, Intent(c, MainActivity::class.java), PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
-        val channel = if (countdown) "rest-countdown" else if (p.getBoolean("sound", false)) "rest-alert" else "rest-silent"
+        val channel = if (countdown) "rest-countdown" else if (p.getBoolean("sound", false)) "rest-alarm" else "rest-silent"
         return NotificationCompat.Builder(c, channel).setSmallIcon(android.R.drawable.ic_lock_idle_alarm)
             .setContentTitle(p.getString("title", "Gym-Lift"))
             .setContentText(if (countdown) null else p.getString("body", ""))
@@ -128,6 +132,7 @@ internal object GymRest {
 
     fun cancel(c: Context) {
         prefs(c).edit().remove("id").commit()
+        playing?.let { stop(it) }
         manager(c).cancel(alarm(c))
         c.stopService(Intent(c, GymRestService::class.java))
         NotificationManagerCompat.from(c).cancel(COUNTDOWN)
@@ -135,19 +140,46 @@ internal object GymRest {
         NotificationManagerCompat.from(c).cancel(ALERT)
     }
 
-    fun finish(c: Context, token: String?) {
-        if (token == null || token != id(c) || remaining(c) > 0) return
+    /** done() sa volá presne raz: hneď, alebo keď dohrá zvuk. */
+    fun finish(c: Context, token: String?, done: () -> Unit = {}) {
+        if (token == null || token != id(c) || remaining(c) > 0) { done(); return }
         prefs(c).edit().remove("id").commit() // služba aj alarm smú upozorniť spolu iba raz
         manager(c).cancel(alarm(c))
         c.stopService(Intent(c, GymRestService::class.java))
         NotificationManagerCompat.from(c).cancel(COUNTDOWN)
         NotificationManagerCompat.from(c).cancel(LONG_COUNTDOWN)
         try { NotificationManagerCompat.from(c).notify(ALERT, notification(c, false)) } catch (_: SecurityException) {}
+        if (prefs(c).getBoolean("sound", false)) chime(c, done) else done()
     }
+
+    /** Hlasitosť budíka: hrá aj v režime vibrácií; Nerušiť riadi Android podľa povolenia budíkov. */
+    fun chime(c: Context, done: () -> Unit) {
+        var once = false
+        val end = { if (!once) { once = true; done() } }
+        playing?.release() // nový koniec pauzy nahradí ešte znejúci starý
+        try {
+            val player = MediaPlayer()
+            playing = player // silná referencia: GC by inak zvuk utíšil
+            player.setAudioAttributes(AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_ALARM)
+                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION).build())
+            player.setWakeMode(c, PowerManager.PARTIAL_WAKE_LOCK) // obrazovka je zhasnutá
+            player.setDataSource(c, Uri.parse("android.resource://${c.packageName}/${R.raw.rest_chime}"))
+            player.setOnCompletionListener { stop(it); end() }
+            player.setOnErrorListener { mp, _, _ -> stop(mp); end(); true }
+            player.prepare()
+            player.start()
+            Handler(Looper.getMainLooper()).postDelayed({ end() }, 5000) // poistka pre goAsync
+        } catch (_: Exception) { playing?.let { stop(it) }; end() }
+    }
+    private var playing: MediaPlayer? = null
+    private fun stop(p: MediaPlayer) { p.release(); if (playing === p) playing = null }
 }
 
 class GymRestReceiver : BroadcastReceiver() {
-    override fun onReceive(context: Context, intent: Intent) { GymRest.finish(context, intent.getStringExtra("id")) }
+    override fun onReceive(context: Context, intent: Intent) {
+        val pending = goAsync() // proces musí žiť, kým dohrá zvuk
+        GymRest.finish(context, intent.getStringExtra("id")) { pending.finish() }
+    }
 }
 
 class GymRestService : Service() {
@@ -166,7 +198,7 @@ class GymRestService : Service() {
         wake = getSystemService(PowerManager::class.java).newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "GymLift:rest").apply {
             acquire(GymRest.SHORT_LIMIT + 2000)
         }
-        handler.postDelayed({ GymRest.finish(this, token); stopSelf() }, left.coerceAtLeast(1))
+        handler.postDelayed({ GymRest.finish(this, token) { stopSelf() } }, left.coerceAtLeast(1))
         return START_NOT_STICKY
     }
     override fun onTimeout(startId: Int) { stopSelf() }
