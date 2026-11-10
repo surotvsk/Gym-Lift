@@ -49,7 +49,9 @@ function check(name, ok, info) {
     r = await plan(15);
     check('15 (< bar) → total 20, not exact, no plates', r.total === 20 && r.exact === false && r.perSide.length === 0, r);
     r = await plan(140, `{ bar: 20, plates: PLATE_DEFAULT.plates, pairs: { '25': 1, '20': 0 } }`);
-    check('pairs {25:1, 20:0}: 140 → [25,15,10,5,2.5,1.25], total 137.5', J(r.perSide) === J([25, 15, 10, 5, 2.5, 1.25]) && r.total === 137.5, r);
+    check('pairs {25:1, 20:0}: 140 → [25,15,15,5], total 140, exact (unlisted sizes unlimited)', J(r) === J({ perSide: [25, 15, 15, 5], total: 140, exact: true }), r);
+    r = await plan(140, `{ bar: 20, plates: PLATE_DEFAULT.plates, pairs: { '25': 1, '20': 0, '15': 1 } }`);
+    check('pairs {25:1, 20:0, 15:1}: 140 → [25,15,10,10], total 140, exact', J(r) === J({ perSide: [25, 15, 10, 10], total: 140, exact: true }), r);
     r = await plan(200);
     check('unlimited pairs: 200 → 4 × 25 kg-ish stack, exact', r.exact && r.total === 200 && J(r.perSide) === J([25, 25, 25, 15]), r);
     check('roundToPlates(101) = 100; roundToPlates(10) = 0; roundToPlates(20) = 20',

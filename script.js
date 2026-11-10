@@ -13403,8 +13403,8 @@ function plateSettings() {
   const own = state && state.settings ? cleanPlateSettings(state.settings.plates) : null;
   return own || { bar: PLATE_DEFAULT.bar, plates: PLATE_DEFAULT.plates.slice() };
 }
-/* Chamtivo od najväčšieho kotúča na jednu stranu. Keď je `pairs` zadané, ide o zásobu:
-   kotúč bez uvedeného počtu = 1 pár. Bez `pairs` sú páry neobmedzené.
+/* Chamtivo od najväčšieho kotúča na jednu stranu. Uvedený počet v `pairs` je presný limit párov
+   danej veľkosti; veľkosť bez uvedeného počtu je neobmedzená.
    total = tyč + 2 × súčet jednej strany = najbližšia zostaviteľná váha ≤ cieľ. */
 function platePlan(target, cfg) {
   const c = cfg || plateSettings();
@@ -13421,7 +13421,7 @@ function platePlan(target, cfg) {
     let cnt = Math.floor(left / g);
     if (c.pairs) {
       const lim = c.pairs[String(kg)];
-      cnt = Math.min(cnt, lim === undefined ? 1 : lim);
+      if (lim !== undefined) cnt = Math.min(cnt, lim);
     }
     for (let i = 0; i < cnt; i++) perSide.push(kg);
     left -= cnt * g;
