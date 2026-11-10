@@ -156,7 +156,7 @@ function check(name, ok, info) {
     await ev(`(${blk(0)}.querySelectorAll('.sets .set-btn')[1].click(), true)`);   // un-tick: no jump
     await ev(`(${blk(0)}.querySelectorAll('.sets .set-btn')[1].click(), true)`);
     /* výmena člena 1 počas tréningu */
-    await ev(`(${blk(0)}.querySelector('.exercise-swap').click(), true)`); await wait(200);
+    await ev(`(${blk(0)}.querySelector('.btn-ex-more').click(), document.querySelector('#modal-ex-actions .exercise-swap').click(), true)`); await wait(200);
     await ev(`(applySubstitution('machine-chest-press'), true)`); await wait(300);
     const swapInfo = await ev(`(() => { const w = document.querySelectorAll('#exercise-list .superset'); return { n: w.length, ex: w[0] ? w[0].querySelectorAll('.exercise').length : -1, closed: w[0] ? w[0].querySelectorAll('.exercise-closed').length : -1,
       total: document.querySelectorAll('#exercise-list .exercise').length, names: w[0] ? Array.from(w[0].querySelectorAll('.exercise-name')).map((x) => x.textContent) : [] }; })()`);

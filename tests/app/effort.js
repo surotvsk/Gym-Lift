@@ -181,7 +181,7 @@ function check(name, ok, info) {
     await tickSet(ex0, 0);
     await p.eval(`(renderTrening(), true)`);   // session started by the tick → the swap button needs a render
     await pick(ex0, 0, '7');
-    await p.eval(`(${ex0}.querySelector('.exercise-swap').click(), true)`);
+    await p.eval(`(${ex0}.querySelector('.btn-ex-more').click(), document.querySelector('#modal-ex-actions .exercise-swap').click(), true)`);
     await wait(200);
     await p.eval(`(applySubstitution('hammer-curl'), true)`);
     await wait(300);

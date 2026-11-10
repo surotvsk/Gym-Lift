@@ -4996,3 +4996,32 @@ html.ios .tour { --tour-top: max(34px, calc(env(safe-area-inset-top, 0px) + 34px
 }
 .hist-superset[data-kind="circuit"] { border-inline-start-color: var(--lime); }
 .hist-superset-label { display: block; }
+
+/* ===== Gym-basics: prehľad ===== */
+/* Jedno "⋯" na konci riadku sérií; položky listu sú veľké riadky (≥ 44 px) */
+.set-count-row > .btn-ex-more {
+  margin-inline-start: auto; flex: 0 0 auto; width: 44px; height: 44px; min-height: 44px; padding: 0; border: 0; border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center; background: var(--b-mini); color: inherit; cursor: pointer; box-shadow: none;
+}
+.btn-ex-more .kico { width: 22px; height: 22px; }
+.exercise-head > .exercise-info {
+  position: relative; align-self: center; flex: 0 0 auto; width: 28px; height: 28px; min-height: 28px; padding: 0; border: 0; border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center; background: var(--b-mini); color: inherit; cursor: pointer; box-shadow: none;
+}
+.exercise-head > .exercise-info::after { content: ''; position: absolute; inset: -8px; }
+.exercise-head > .exercise-info .kico { width: 14px; height: 14px; }
+.ex-actions-list { display: flex; flex-direction: column; gap: var(--sp-2); margin-top: var(--sp-3); }
+.ex-actions-list > .ex-action {
+  display: flex; align-items: center; justify-content: flex-start; width: 100%; min-height: 48px; padding-block: 0; padding-inline: var(--sp-4);
+  font-family: inherit; font-size: var(--fs-md, 1rem); font-weight: 700; text-align: start; cursor: pointer; box-sizing: border-box;
+  background: var(--surface-2); color: var(--text); border: 1px solid var(--border); border-radius: 16px;
+}
+.ex-actions-list > .ex-action[hidden] { display: none; }
+.modal-ex-actions .sheet-head h3 { overflow-wrap: anywhere; }
+/* Doplnky v riadku editora plánu: zatvorené "Ďalšie možnosti" */
+.edit-more { margin-top: var(--sp-2); }
+.edit-more[hidden] { display: none; }
+.edit-more > summary {
+  display: flex; align-items: center; min-height: 44px; cursor: pointer; font-size: var(--fs-sm); font-weight: 700; color: var(--text-dim);
+}
+.edit-more[open] > summary { color: var(--text); }

@@ -56,6 +56,10 @@ function check(name, ok, info) {
     const exEl = (i) => `document.querySelectorAll('#exercise-list .exercise')[${i}]`;
     const ex0 = exEl(0);
     const clickIn = (el, sel, i) => p.eval(`(${el}.querySelectorAll(${J(sel)})[${i || 0}].click(), true)`);
+    /* Akcie cviku sú v liste ⋯: otvor ⋯ dlaždice, ťukni na položku (list sa zavrie sám). */
+    const actIn = (el, sel) => p.eval(`(${el}.querySelector('.btn-ex-more').click(), document.querySelector('#modal-ex-actions ' + ${J(sel)}).click(), true)`);
+    /* Položka listu ⋯ (null, ak chýba): vyhodnotí expr nad prvkom b a list zavrie. */
+    const peek = (el, sel, expr) => p.eval(`(() => { ${el}.querySelector('.btn-ex-more').click(); const b = document.querySelector('#modal-ex-actions ' + ${J(sel)}); const r = ${expr}; closeExerciseActions(); return r; })()`);
     const warm = (el) => p.eval(`Array.from(${el}.querySelectorAll('.warmup-item')).map((d) => d.querySelector('.warmup-label').textContent + '|' + d.querySelector('.warmup-reps').textContent + '|' + d.querySelector('.warmup-weight').textContent + '|' + (d.querySelector('.warmup-done').classList.contains('done') ? 'done' : '-'))`);
 
     console.log('== ramp maths');
@@ -79,14 +83,14 @@ function check(name, ok, info) {
     check('a 15 kg bar changes the first row to 15', r[0] === 15, r);
 
     console.log('== buttons');
-    check('bench has "+ Warm-up" and "Warm-up ramp" in .ex-mini', await p.eval(`!!${ex0}.querySelector('.ex-mini .btn-add-warmup') && !!${ex0}.querySelector('.ex-mini .btn-warmup-ramp')`));
-    check('dumbbell row has both', await p.eval(`!!${exEl(1)}.querySelector('.ex-mini .btn-add-warmup') && !!${exEl(1)}.querySelector('.ex-mini .btn-warmup-ramp')`));
-    check('assisted row: "+ Warm-up" stays, no ramp button', await p.eval(`!!${exEl(2)}.querySelector('.ex-mini .btn-add-warmup') && !${exEl(2)}.querySelector('.btn-warmup-ramp')`));
-    check('labels are "+ Warm-up" and "Warm-up ramp"', J(await p.eval(`[${ex0}.querySelector('.btn-add-warmup').textContent, ${ex0}.querySelector('.btn-warmup-ramp').textContent]`)) === J(['+ Warm-up', 'Warm-up ramp']));
+    check('bench has "+ Warm-up" and "Warm-up ramp" in its ⋯ sheet', (await peek(ex0, '.btn-add-warmup', 'b !== null')) && (await peek(ex0, '.btn-warmup-ramp', 'b !== null')));
+    check('dumbbell row has both', (await peek(exEl(1), '.btn-add-warmup', 'b !== null')) && (await peek(exEl(1), '.btn-warmup-ramp', 'b !== null')));
+    check('assisted row: "+ Warm-up" stays, no ramp button', (await peek(exEl(2), '.btn-add-warmup', 'b !== null')) && (await peek(exEl(2), '.btn-warmup-ramp', 'b === null')));
+    check('labels are "+ Warm-up" and "Warm-up ramp"', J([await peek(ex0, '.btn-add-warmup', 'b.textContent'), await peek(ex0, '.btn-warmup-ramp', 'b.textContent')]) === J(['+ Warm-up', 'Warm-up ramp']));
     check('no warm-up rows before adding', J(await warm(ex0)) === '[]');
 
     console.log('== adding / editing');
-    await clickIn(ex0, '.btn-add-warmup');
+    await actIn(ex0, '.btn-add-warmup');
     check('W1 added: 50 % of 100 = 50 kg × 5', J(await warm(ex0)) === J(['W1|5×|50|-']), await warm(ex0));
     check('adding a warm-up starts the workout', !!(await p.eval('getSession()')));
     check('the warm-up block sits above the working sets', await p.eval(`(() => { const e = ${ex0}; const w = e.querySelector('.warmups'); const s = e.querySelector('.sets'); return !!w && !!(w.compareDocumentPosition(s) & Node.DOCUMENT_POSITION_FOLLOWING); })()`));
@@ -109,21 +113,21 @@ function check(name, ok, info) {
     await clickIn(ex0, '.warmup-done', 0);
     check('✓ toggles done', J(await warm(ex0)) === J(['W1|8×|42.25|done']), await warm(ex0));
     await clickIn(ex0, '.warmup-done', 0);
-    for (let k = 0; k < 5; k++) await clickIn(ex0, '.btn-add-warmup');
-    check('6 warm-ups, then the add button disappears', (await p.eval(`${ex0}.querySelectorAll('.warmup-item').length`)) === 6 && !(await p.eval(`!!${ex0}.querySelector('.btn-add-warmup')`)));
+    for (let k = 0; k < 5; k++) await actIn(ex0, '.btn-add-warmup');
+    check('6 warm-ups, then the add button disappears', (await p.eval(`${ex0}.querySelectorAll('.warmup-item').length`)) === 6 && (await peek(ex0, '.btn-add-warmup', 'b === null')));
     check('the 7th add is refused', await p.eval(`addWarmup(getPlan('wtest').exercises[0]) === false`));
     for (let k = 0; k < 6; k++) await clickIn(ex0, '.warmup-remove', 0);
-    check('✕ removes (back to none) and the add button returns', J(await warm(ex0)) === '[]' && (await p.eval(`!!${ex0}.querySelector('.btn-add-warmup')`)));
+    check('✕ removes (back to none) and the add button returns', J(await warm(ex0)) === '[]' && (await peek(ex0, '.btn-add-warmup', 'b !== null')));
     check('empty session map is cleaned up', await p.eval(`!('warmups' in getSession())`));
     check('the plan is unchanged (no warm-up fields)', await p.eval(`!JSON.stringify(state.plans['wtest']).includes('warm')`));
 
     console.log('== ramp button / done are kept');
-    await clickIn(ex0, '.btn-warmup-ramp');
+    await actIn(ex0, '.btn-warmup-ramp');
     check('ramp fills 4 rows', J(await warm(ex0)) === J(['W1|10×|20|-', 'W2|5×|40|-', 'W3|3×|60|-', 'W4|2×|80|-']), await warm(ex0));
     await clickIn(ex0, '.warmup-done', 0);
     await clickIn(ex0, '.warmup-done', 1);
     await clickIn(ex0, '.warmup-remove', 3);
-    await clickIn(ex0, '.btn-warmup-ramp');
+    await actIn(ex0, '.btn-warmup-ramp');
     const afterRamp = await warm(ex0);
     check('re-applying the ramp keeps the DONE rows and replaces the rest', afterRamp.length >= 2 && afterRamp[0].endsWith('|done') && afterRamp[1].endsWith('|done') && afterRamp.slice(2).every((x) => x.endsWith('|-')) && afterRamp.length <= 6, afterRamp);
     await p.eval(`(() => { const e = getPlan('wtest').exercises[0]; const s = getSession(); s.warmups[exerciseSessionKey(e)] = [{ w: 20, r: 10, done: true }, { w: 40, r: 5, done: true }, { w: 60, r: 3, done: false }]; saveState(); renderTrening(); return true; })()`);
@@ -136,13 +140,13 @@ function check(name, ok, info) {
     check('warm-ups survive a reload', J(await warm(ex0)) === J(['W1|10×|20|done', 'W2|5×|40|done', 'W3|3×|60|-']), await warm(ex0));
 
     console.log('== unilateral / other rows');
-    await clickIn(exEl(3), '.btn-add-warmup');
+    await actIn(exEl(3), '.btn-add-warmup');
     check('unilateral row: ONE warm-up list (not per side)', (await p.eval(`${exEl(3)}.querySelectorAll('.warmup-item').length`)) === 1 && (await p.eval(`${exEl(3)}.querySelectorAll('.warmups').length`)) === 1);
     await clickIn(exEl(3), '.warmup-remove', 0);
-    await clickIn(exEl(1), '.btn-warmup-ramp');
+    await actIn(exEl(1), '.btn-warmup-ramp');
     check('dumbbell ramp renders 12 / 18 / 24', J(await p.eval(`Array.from(${exEl(1)}.querySelectorAll('.warmup-weight')).map((x) => x.textContent)`)) === J(['12', '18', '24']));
     await clickIn(exEl(1), '.warmup-remove', 0); await clickIn(exEl(1), '.warmup-remove', 0); await clickIn(exEl(1), '.warmup-remove', 0);
-    await clickIn(exEl(2), '.btn-add-warmup');
+    await actIn(exEl(2), '.btn-add-warmup');
     check('assisted "+ Warm-up" works (floor of 50 % of 20 = 10)', J(await p.eval(`Array.from(${exEl(2)}.querySelectorAll('.warmup-weight')).map((x) => x.textContent)`)) === J(['10']));
     await clickIn(exEl(2), '.warmup-remove', 0);
 
@@ -219,9 +223,9 @@ function check(name, ok, info) {
     console.log('== replacing an exercise');
     await p.eval(`(() => { selectedPlan = 'wtest'; switchTab('trening'); renderTrening(); return true; })()`);
     await p.eval(`(${ex0}.querySelectorAll('.sets .set-btn')[0].click(), true)`);   // 1 hotová séria pred výmenou
-    await clickIn(ex0, '.btn-add-warmup');
+    await actIn(ex0, '.btn-add-warmup');
     check('warm-ups are stored per exercise key in the running workout', J(await p.eval(`Object.keys(getSession().warmups || {})`)) === J(['bench-press']));
-    await p.eval(`(${ex0}.querySelector('.exercise-swap').click(), true)`);
+    await actIn(ex0, '.exercise-swap');
     await wait(200);
     await p.eval(`(applySubstitution('hammer-curl'), true)`);
     await wait(300);
@@ -229,7 +233,7 @@ function check(name, ok, info) {
     const subKey = await p.eval(`(() => { const st = substitutionSteps(${J(slot)}); return st.length ? String(st[st.length - 1].key) : null; })()`);
     check('the exercise was replaced', !!subKey && subKey !== 'bench-press', subKey);
     check('the closed original keeps its warm-up, locked', await p.eval(`(() => { const e = document.querySelector('#exercise-list .exercise.exercise-closed'); return !!e && e.querySelectorAll('.warmup-item').length === 1 && Array.from(e.querySelectorAll('.warmup-item button')).every((x) => x.disabled) && !e.querySelector('.btn-add-warmup'); })()`));
-    await p.eval(`(document.querySelectorAll('#exercise-list .exercise')[1].querySelector('.btn-add-warmup').click(), true)`);
+    await actIn(`document.querySelectorAll('#exercise-list .exercise')[1]`, '.btn-add-warmup');
     await wait(200);
     check('the replacement gets its own warm-ups', (await p.eval(`(getSession().warmups[${J(subKey)}] || []).length`)) === 1);
     await p.eval(`(requestUndoSubstitution(${J(slot)}), true)`);
@@ -241,8 +245,8 @@ function check(name, ok, info) {
     console.log('== languages');
     for (const lang of ['sk', 'en', 'es', 'pt-BR', 'fr', 'ar']) {
       await p.eval(`(setLang(${J(lang)}), switchTab('trening'), renderTrening(), true)`);
-      const x = await p.eval(`(() => { const e = ${ex0}; return { add: e.querySelector('.btn-add-warmup').textContent, ramp: e.querySelector('.btn-warmup-ramp').textContent, label: e.querySelector('.warmup-label').textContent,
-        aria: Array.from(e.querySelectorAll('.warmup-item button')).map((b) => b.getAttribute('aria-label')).join('|'), title: e.querySelector('.btn-add-warmup').title + e.querySelector('.btn-warmup-ramp').title,
+      const x = await p.eval(`(() => { const e = ${ex0}; return { add: (e.querySelector('.btn-ex-more').click(), document.querySelector('#modal-ex-actions .btn-add-warmup').textContent), ramp: document.querySelector('#modal-ex-actions .btn-warmup-ramp').textContent, label: e.querySelector('.warmup-label').textContent,
+        aria: Array.from(e.querySelectorAll('.warmup-item button')).map((b) => b.getAttribute('aria-label')).join('|'), title: document.querySelector('#modal-ex-actions .btn-add-warmup').title + document.querySelector('#modal-ex-actions .btn-warmup-ramp').title, _c: closeExerciseActions(),
         hist: historyWarmupsText(state.history[state.history.length - 1].exercises[0]), dir: document.documentElement.dir,
         miss: Object.keys(I18N.en).filter((k) => k.startsWith('warmup.') && I18N[${J(lang)}][k] === undefined) }; })()`);
       check(lang + ': warm-up texts translated, no missing warmup.* key', !/warmup\.|setReps\.|setWeight\./.test(x.add + x.ramp + x.label + x.aria + x.title + x.hist) && x.miss.length === 0 && x.add.length > 0 && x.ramp.length > 0 && x.hist.includes('20'), x);

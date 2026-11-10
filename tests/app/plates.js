@@ -71,15 +71,17 @@ function check(name, ok, info) {
       if (!state.planOrder.includes('ptest')) state.planOrder.push('ptest');
       selectedPlan = 'ptest'; saveState(); switchTab('trening'); renderTrening(); return true; })()`);
     await wait(300);
-    const has = (i) => p.eval(`!!document.querySelectorAll('#exercise-list .exercise')[${i}].querySelector('.ex-mini .btn-plates')`);
+    /* Kotúče sú položka listu ⋯ cviku: otvor ⋯ dlaždice, zisti, či tam je, a list zavri. */
+    const has = (i) => p.eval(`(() => { document.querySelectorAll('#exercise-list .exercise')[${i}].querySelector('.btn-ex-more').click(); const r = !!document.querySelector('#modal-ex-actions .btn-plates'); closeExerciseActions(); return r; })()`);
+    const openPlatesFrom = (i) => p.eval(`(document.querySelectorAll('#exercise-list .exercise')[${i}].querySelector('.btn-ex-more').click(), document.querySelector('#modal-ex-actions .btn-plates').click(), true)`);
     check('bench press (library barbell) has the button', await has(0));
     check('custom Curl test has the button', await has(1));
     check('assisted row has no button', !(await has(2)));
     check('dumbbell library exercise has no button', !(await has(3)));
-    check('button label is translated', (await p.eval(`document.querySelector('.btn-plates').textContent`)) === 'Plates');
+    check('button label is translated', (await p.eval(`(() => { document.querySelector('#exercise-list .btn-ex-more').click(); const r = document.querySelector('#modal-ex-actions .btn-plates').textContent; closeExerciseActions(); return r; })()`)) === 'Plates');
 
     console.log('== sheet');
-    await p.eval(`(document.querySelector('.btn-plates').click(), true)`);
+    await openPlatesFrom(0);
     await wait(200);
     check('sheet opens', await p.eval(`!document.getElementById('modal-plates').hidden`));
     check('target prefilled with 82.5', (await p.eval(`document.getElementById('plate-target').value`)) === '82.5');
@@ -98,7 +100,7 @@ function check(name, ok, info) {
     await p.eval(`(selectedPlan = 'ptest', switchTab('trening'), renderTrening(), true)`); await wait(300);
     check('bar 15 persists after a reload (state.settings.plates.bar)', (await p.eval(`state.settings.plates && state.settings.plates.bar`)) === 15, await p.eval(`state.settings.plates`));
     check('the sheet is closed after the reload', await p.eval(`document.getElementById('modal-plates').hidden`));
-    await p.eval(`(document.querySelectorAll('#exercise-list .exercise')[1].querySelector('.btn-plates').click(), true)`);
+    await openPlatesFrom(1);
     const cv = await p.eval(`({ w: document.getElementById('plate-target').value, bar: document.querySelector('#plate-bars [data-bar="15"]').classList.contains('active') })`);
     check('custom row opens with its weight (30) and the saved bar', cv.w === '30' && cv.bar, cv);
     await p.eval(`(document.getElementById('btn-plates-close').click(), true)`);
@@ -155,16 +157,16 @@ function check(name, ok, info) {
     console.log('== keyboard and focus of the sheet');
     check('#modal-plates is a labelled modal dialog', await p.eval(`(() => { const d = document.querySelector('#modal-plates .modal'); const l = d.getAttribute('aria-labelledby'); return d.getAttribute('role') === 'dialog' && d.getAttribute('aria-modal') === 'true' && !!l && !!document.getElementById(l) && document.getElementById(l).textContent.length > 0; })()`));
     await p.eval(`(selectedPlan = 'ptest', ensureSession(getPlan('ptest')), switchTab('trening'), renderTrening(), true)`); await wait(500);
-    await p.eval(`(() => { const b = document.querySelector('#exercise-list .exercise .btn-plates'); b.focus(); b.click(); return true; })()`);
+    await p.eval(`(() => { const b = document.querySelector('#exercise-list .exercise .btn-ex-more'); b.focus(); b.click(); document.querySelector('#modal-ex-actions .btn-plates').click(); return true; })()`);
     await wait(100);
     check('opening focuses the first control (target weight)', await p.eval(`document.activeElement === document.getElementById('plate-target')`), await p.eval(`document.activeElement.id || document.activeElement.className`));
     await p.eval(`(document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true })), true)`);
     await wait(100);
     check('Escape closes the sheet', await p.eval(`document.getElementById('modal-plates').hidden`));
-    check('closing restores focus to the "Plates" button', await p.eval(`document.activeElement && document.activeElement.classList.contains('btn-plates')`), await p.eval(`document.activeElement.tagName + '/' + (document.activeElement.id || document.activeElement.className) + '/btns=' + document.querySelectorAll('.btn-plates').length`));
-    await p.eval(`(document.querySelector('#exercise-list .exercise .btn-plates').click(), true)`);
+    check('closing restores focus to the opener (the exercise ⋯ button)', await p.eval(`document.activeElement && document.activeElement.classList.contains('btn-ex-more')`), await p.eval(`document.activeElement.tagName + '/' + (document.activeElement.id || document.activeElement.className)`));
+    await openPlatesFrom(0);
     await p.eval(`(document.getElementById('btn-plates-close').click(), true)`);
-    check('the close button also restores focus to the opener', await p.eval(`document.activeElement && document.activeElement.classList.contains('btn-plates')`));
+    check('the close button also restores focus to the opener', await p.eval(`document.activeElement && document.activeElement.classList.contains('btn-ex-more')`));
     check('isBusy() with the plates sheet open (no session, no tests of other causes)', await p.eval(`(() => { const s = JSON.stringify(state.session || null); const m = document.getElementById('modal-plates'); const g = window.getSession; window.getSession = () => null; const t0 = window.totalSetsDone; window.totalSetsDone = () => 0; const ed = editingPlan; editingPlan = null; m.hidden = false; const open = isBusy(); m.hidden = true; const closed = isBusy(); window.getSession = g; window.totalSetsDone = t0; editingPlan = ed; return open === true && closed === false; })()`));
     check('no exceptions', p.errors.length === 0, p.errors);
     check('no console errors', logs.length === 0, logs);

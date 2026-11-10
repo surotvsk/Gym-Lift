@@ -51,16 +51,21 @@ function check(name, ok, info) {
     const ex0 = `document.querySelectorAll('#exercise-list .exercise')[0]`;
     const drops = () => p.eval(`Array.from(${ex0}.querySelectorAll('.drop-item')).map((d) => d.querySelector('.drop-label').textContent + '|' + d.querySelector('.drop-reps').textContent + '|' + d.querySelector('.drop-weight').textContent + '|' + (d.querySelector('.drop-done').classList.contains('done') ? 'done' : '-'))`);
     const clickIn = (sel, i) => p.eval(`(${ex0}.querySelectorAll(${J(sel)})[${i || 0}].click(), true)`);
+    /* Akcie cviku sú v liste ⋯: otvor ⋯ dlaždice a ťukni na položku (list sa zavrie sám). */
+    const actIn = (el, sel) => p.eval(`(${el}.querySelector('.btn-ex-more').click(), document.querySelector('#modal-ex-actions ' + ${J(sel)}).click(), true)`);
+    const act = (sel) => actIn(ex0, sel);
+    /* Prečíta položku listu ⋯ (a list zavrie). */
+    const peek = (el, sel, expr) => p.eval(`(() => { ${el}.querySelector('.btn-ex-more').click(); const b = document.querySelector('#modal-ex-actions ' + ${J(sel)}); const r = ${expr}; closeExerciseActions(); return r; })()`);
 
     console.log('== adding drop sets');
-    check('every exercise has a "+ Drop set" button', (await p.eval(`Array.from(document.querySelectorAll('#exercise-list .exercise')).every((e) => !!e.querySelector('.btn-add-drop') && e.querySelector('.btn-add-drop').textContent.includes('Drop set'))`)));
+    check('every exercise has a "+ Drop set" item in its ⋯ sheet', (await p.eval(`Array.from(document.querySelectorAll('#exercise-list .exercise')).every((e) => { e.querySelector('.btn-ex-more').click(); const b = document.querySelector('#modal-ex-actions .btn-add-drop'); const ok = !!b && b.textContent.includes('Drop set'); closeExerciseActions(); return ok; })`)));
     check('no drop rows before adding', J(await drops()) === '[]');
     /* Posledná séria 70 kg × 8 (zmenená váha a opakovania) → drop séria 55 kg (70 × 0,8 = 56 → 55) × 8. */
     await p.eval(`(setSetWeight(getPlan('dtest').exercises[0], 2, '70'), setSetReps(getPlan('dtest').exercises[0], 2, '8'), renderTrening(), true)`);
-    await clickIn('.btn-add-drop');
+    await act('.btn-add-drop');
     check('drop set 1: ~20 % lighter than the last set (rounded to 2.5) and the same reps', J(await drops()) === J(['⬇ Drop set 1|8×|55|-']), await drops());
     check('adding a drop set starts the workout', !!(await p.eval('getSession()')));
-    await clickIn('.btn-add-drop');
+    await act('.btn-add-drop');
     check('drop set 2 continues from drop set 1 (55 → 45)', J(await drops()) === J(['⬇ Drop set 1|8×|55|-', '⬇ Drop set 2|8×|45|-']), await drops());
     /* úprava: drop 2 → 40 kg a 6 opakovaní */
     await clickIn('.drop-weight', 1);
@@ -75,8 +80,8 @@ function check(name, ok, info) {
     check('an invalid value is refused (editor stays open)', (await p.eval(`!!document.querySelector('.drop-editor')`)) && J(await drops()) === J(['⬇ Drop set 1|8×|55|-', '⬇ Drop set 2|6×|42.5|-']));
     await p.eval(`(closeSetWeightEditor(), true)`);
     check('the normal sets did not change', J(await p.eval(`Array.from(${ex0}.querySelectorAll('.set-item:not(.drop-item) input.set-weight')).map((x) => x.value)`)) === J(['62.5', '62.5', '70']));
-    for (let k = 0; k < 3; k++) await clickIn('.btn-add-drop');
-    check('at most 5 drop sets; then the button disappears', (await p.eval(`${ex0}.querySelectorAll('.drop-item').length`)) === 5 && !(await p.eval(`!!${ex0}.querySelector('.btn-add-drop')`)));
+    for (let k = 0; k < 3; k++) await act('.btn-add-drop');
+    check('at most 5 drop sets; then the button disappears', (await p.eval(`${ex0}.querySelectorAll('.drop-item').length`)) === 5 && (await peek(ex0, '.btn-add-drop', 'b === null')));
     for (let k = 0; k < 3; k++) await clickIn('.drop-remove', 4 - k);
     check('✕ removes a drop set', (await drops()).length === 2, await drops());
     await clickIn('.drop-done', 0); await clickIn('.drop-done', 1); await clickIn('.drop-done', 1);
@@ -100,7 +105,7 @@ function check(name, ok, info) {
 
     console.log('== saved history');
     /* Drop séria 3 pridaná, ale NEDOKONČENÁ → nesmie ísť do histórie. */
-    await clickIn('.btn-add-drop');
+    await act('.btn-add-drop');
     const xpBefore = await p.eval(`workoutXpFor(totalSetsDone())`);
     await p.eval(`(finishWorkout(), confirmFinish(), true)`);
     await wait(300);
@@ -131,9 +136,9 @@ function check(name, ok, info) {
     console.log('== replacing an exercise');
     await p.eval(`(() => { switchTab('trening'); selectedPlan = 'dtest'; renderTrening(); return true; })()`);
     await p.eval(`(${ex0}.querySelectorAll('.set-item:not(.drop-item) .set-btn')[0].click(), true)`);   // 1 hotová séria pred výmenou
-    await clickIn('.btn-add-drop');
+    await act('.btn-add-drop');
     check('drop sets are stored per exercise in the running workout', J(await p.eval(`Object.keys(getSession().drops || {})`)) === J(['cx-d1']));
-    await p.eval(`(${ex0}.querySelector('.exercise-swap').click(), true)`);
+    await act('.exercise-swap');
     await wait(200);
     await p.eval(`(applySubstitution('hammer-curl'), true)`);
     await wait(300);
@@ -141,7 +146,7 @@ function check(name, ok, info) {
     const subKey = await p.eval(`(() => { const st = substitutionSteps(${J(slot)}); return st.length ? String(st[st.length - 1].key) : null; })()`);
     check('the exercise was replaced', !!subKey, subKey);
     check('the closed original keeps its drop set, locked (no add button)', await p.eval(`(() => { const e = document.querySelector('#exercise-list .exercise.exercise-closed'); return !!e && e.querySelectorAll('.drop-item').length === 1 && Array.from(e.querySelectorAll('.drop-item button')).every((x) => x.disabled) && !e.querySelector('.btn-add-drop'); })()`));
-    await p.eval(`(document.querySelectorAll('#exercise-list .exercise')[1].querySelector('.btn-add-drop').click(), true)`);
+    await actIn(`document.querySelectorAll('#exercise-list .exercise')[1]`, '.btn-add-drop');
     await wait(200);
     check('the replacement gets its own drop sets', (await p.eval(`(getSession().drops[${J(subKey)}] || []).length`)) === 1);
     await p.eval(`(requestUndoSubstitution(${J(slot)}), true)`);
@@ -153,8 +158,8 @@ function check(name, ok, info) {
     console.log('== languages');
     for (const lang of ['sk', 'en', 'es', 'pt-BR', 'fr', 'ar']) {
       await p.eval(`(setLang(${J(lang)}), switchTab('trening'), renderTrening(), true)`);
-      const r = await p.eval(`(() => { const e = ${ex0}; return { add: e.querySelector('.btn-add-drop').textContent, label: e.querySelector('.drop-label').textContent,
-        aria: Array.from(e.querySelectorAll('.drop-item button')).map((x) => x.getAttribute('aria-label')).join('|'), title: e.querySelector('.btn-add-drop').title,
+      const r = await p.eval(`(() => { const e = ${ex0}; return { add: (e.querySelector('.btn-ex-more').click(), document.querySelector('#modal-ex-actions .btn-add-drop').textContent), label: e.querySelector('.drop-label').textContent,
+        aria: Array.from(e.querySelectorAll('.drop-item button')).map((x) => x.getAttribute('aria-label')).join('|'), title: document.querySelector('#modal-ex-actions .btn-add-drop').title, _c: closeExerciseActions(),
         hist: historyDropsText(state.history[state.history.length - 1].exercises[0]), dir: document.documentElement.dir }; })()`);
       check(lang + ': drop set texts translated', !/drop\.|setReps\.|setWeight\./.test(r.add + r.label + r.aria + r.title + r.hist) && r.add.includes(await p.eval(`t('drop.add')`)), r);
       if (lang === 'ar') {

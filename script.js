@@ -7601,6 +7601,7 @@ const BASICS_I18N = {
     'effort.noteRir': 'RIR: koľko opakovaní ti ešte zostávalo v rezerve (0 = žiadne).', 'effort.history': 'Námaha: {list}',
     'superset.label': 'Supersérie {l}', 'superset.circuit': 'Okruh {l}',
     'superset.link': 'Spojiť s ďalším', 'superset.unlink': 'Zrušiť spojenie',
+    'exactions.more': 'Ďalšie akcie pre {name}', 'exactions.close': 'Zavrieť', 'exactions.progress': 'Pokrok', 'exactions.moreOptions': 'Ďalšie možnosti',
   },
   en: {
     'settings.autoRest': 'Start rest automatically', 'settings.autoRestHint': 'The rest timer starts by itself when you mark a set done. In a superset, after the last exercise.',
@@ -7625,6 +7626,7 @@ const BASICS_I18N = {
     'effort.noteRir': 'RIR: reps you still had left in the tank (0 = none).', 'effort.history': 'Effort: {list}',
     'superset.label': 'Superset {l}', 'superset.circuit': 'Circuit {l}',
     'superset.link': 'Link with next', 'superset.unlink': 'Unlink',
+    'exactions.more': 'More actions for {name}', 'exactions.close': 'Close', 'exactions.progress': 'Progress', 'exactions.moreOptions': 'More options',
   },
   es: {
     'settings.autoRest': 'Iniciar el descanso automáticamente', 'settings.autoRestHint': 'El temporizador de descanso empieza solo al marcar una serie. En una superserie, tras el último ejercicio.',
@@ -7649,6 +7651,7 @@ const BASICS_I18N = {
     'effort.noteRir': 'RIR: repeticiones que te quedaban en reserva (0 = ninguna).', 'effort.history': 'Esfuerzo: {list}',
     'superset.label': 'Superserie {l}', 'superset.circuit': 'Circuito {l}',
     'superset.link': 'Unir con el siguiente', 'superset.unlink': 'Separar',
+    'exactions.more': 'Más acciones para {name}', 'exactions.close': 'Cerrar', 'exactions.progress': 'Progreso', 'exactions.moreOptions': 'Más opciones',
   },
   'pt-BR': {
     'settings.autoRest': 'Iniciar o descanso automaticamente', 'settings.autoRestHint': 'O cronômetro de descanso começa sozinho ao marcar uma série. Em um superset, após o último exercício.',
@@ -7673,6 +7676,7 @@ const BASICS_I18N = {
     'effort.noteRir': 'RIR: repetições que você ainda conseguiria fazer (0 = nenhuma).', 'effort.history': 'Esforço: {list}',
     'superset.label': 'Superset {l}', 'superset.circuit': 'Circuito {l}',
     'superset.link': 'Ligar ao próximo', 'superset.unlink': 'Desligar',
+    'exactions.more': 'Mais ações para {name}', 'exactions.close': 'Fechar', 'exactions.progress': 'Progresso', 'exactions.moreOptions': 'Mais opções',
   },
   fr: {
     'settings.autoRest': 'Démarrer le repos automatiquement', 'settings.autoRestHint': 'Le minuteur de repos démarre seul quand tu valides une série. Dans une superset, après le dernier exercice.',
@@ -7697,6 +7701,7 @@ const BASICS_I18N = {
     'effort.noteRir': 'RIR : répétitions qu’il te restait en réserve (0 = aucune).', 'effort.history': 'Effort : {list}',
     'superset.label': 'Superset {l}', 'superset.circuit': 'Circuit {l}',
     'superset.link': 'Lier au suivant', 'superset.unlink': 'Délier',
+    'exactions.more': 'Plus d’actions pour {name}', 'exactions.close': 'Fermer', 'exactions.progress': 'Progression', 'exactions.moreOptions': 'Plus d’options',
   },
   ar: {
     'settings.autoRest': 'بدء الراحة تلقائيًا', 'settings.autoRestHint': 'يبدأ مؤقت الراحة تلقائيًا عند تحديد مجموعة كمكتملة. في السوبرست، بعد آخر تمرين.',
@@ -7721,6 +7726,7 @@ const BASICS_I18N = {
     'effort.noteRir': 'RIR: عدد التكرارات التي كان بإمكانك إضافتها (0 = لا شيء).', 'effort.history': 'الجهد: {list}',
     'superset.label': 'سوبرست {l}', 'superset.circuit': 'دائرة {l}',
     'superset.link': 'ربط بالتالي', 'superset.unlink': 'فك الربط',
+    'exactions.more': 'المزيد من الإجراءات لـ {name}', 'exactions.close': 'إغلاق', 'exactions.progress': 'التقدّم', 'exactions.moreOptions': 'خيارات إضافية',
   },
 };
 for (const lang of Object.keys(BASICS_I18N)) Object.assign(I18N[lang] || (I18N[lang] = {}), BASICS_I18N[lang]);
@@ -13290,6 +13296,17 @@ function buildExerciseBlock(seg, info, plan) {
   name.className = 'exercise-name';
   name.textContent = exerciseDisplayName(ex);
   head.appendChild(name);
+  /* Info o cviku: malá ikona pri názve (dlaždica nemá žiadny ďalší riadok tlačidiel). */
+  if (ex.id && BUILTIN_EXERCISE_IDS.has(ex.id)) {
+    const infoBtn = document.createElement('button');
+    infoBtn.type = 'button';
+    infoBtn.className = 'exercise-info mini-icon';
+    infoBtn.innerHTML = bentoIcon('info');
+    infoBtn.title = exerciseDisplayName(ex);
+    infoBtn.setAttribute('aria-label', t('bento.exerciseInfo', { name: exerciseDisplayName(ex) }));
+    infoBtn.addEventListener('click', () => openExerciseSheet(ex.id, 'info'));
+    head.appendChild(infoBtn);
+  }
   const sides = exerciseSideOrder(ex);
   if (sides) {
     const lr = document.createElement('small');
@@ -13350,37 +13367,26 @@ function buildExerciseBlock(seg, info, plan) {
   }
   div.appendChild(sets);
 
-  /* + Pridať sériu / Odstrániť poslednú sériu – len v rozbehnutom tréningu a pri aktívnom cviku. */
-  if (seg.active && getSession()) div.appendChild(buildSetCountRow(ex));
-
-  const mini = document.createElement('div');
-  mini.className = 'mini ex-mini';
-  mini.appendChild(buildDropsBlock(ex, seg.readOnly));
-  if (!seg.readOnly && isBarbellExercise(ex)) mini.appendChild(buildPlatesButton(ex));
-  if (!seg.readOnly) for (const b of buildWarmupButtons(ex)) mini.appendChild(b);
-  /* Aktívny cvik je možné vymeniť – ale iba počas rozbehnutého tréningu, aby výmena
-     nikdy nezačala meranie trvania nechtiac. Pred tréningom sa plán upravuje normálne. */
+  /* + Pridať sériu / Odstrániť poslednú sériu – len v rozbehnutom tréningu a pri aktívnom cviku;
+     na konci riadku je jediné "⋯" s ostatnými akciami cviku. Mimo tréningu stojí "⋯" samo. */
+  const moreBtn = !seg.readOnly && seg.active ? buildMoreButton(ex, info) : null;
   if (seg.active && getSession()) {
-    const swap = document.createElement('button');
-    swap.type = 'button';
-    swap.className = 'exercise-swap mini-icon';
-    swap.innerHTML = bentoIcon('swap');
-    swap.title = t('exercise.replace');
-    swap.setAttribute('aria-label', t('exercise.replace') + ': ' + exerciseDisplayName(ex));
-    swap.addEventListener('click', () => openLibrary('replace', { slot: info.slot, base: info.base, ex }));
-    mini.appendChild(swap);
+    div.appendChild(buildSetCountRow(ex, moreBtn));
+  } else if (moreBtn) {
+    const lone = document.createElement('div');
+    lone.className = 'mini set-count-row';
+    lone.appendChild(moreBtn);
+    div.appendChild(lone);
   }
-  if (ex.id && BUILTIN_EXERCISE_IDS.has(ex.id)) {
-    const infoBtn = document.createElement('button');
-    infoBtn.type = 'button';
-    infoBtn.className = 'exercise-info mini-icon';
-    infoBtn.innerHTML = bentoIcon('info');
-    infoBtn.title = exerciseDisplayName(ex);
-    infoBtn.setAttribute('aria-label', t('bento.exerciseInfo', { name: exerciseDisplayName(ex) }));
-    infoBtn.addEventListener('click', () => openExerciseSheet(ex.id, 'info'));
-    mini.appendChild(infoBtn);
+
+  /* .ex-mini drží len obsah (drop série); prázdny sa nevykreslí. */
+  const dropsBox = buildDropsBlock(ex, seg.readOnly);
+  if (dropsBox.childElementCount) {
+    const mini = document.createElement('div');
+    mini.className = 'mini ex-mini';
+    mini.appendChild(dropsBox);
+    div.appendChild(mini);
   }
-  div.appendChild(mini);
 
   /* Posledná náhrada sa dá vrátiť späť – pôvodný cvik sa tým znova sprístupní. */
   if (seg.active && seg.step) {
@@ -13551,7 +13557,7 @@ function buildSetItem(ex, index, plannedFailure, side, readOnly) {
 }
 
 /* Tlačidlá pod sériami cviku: pridať sériu navyše / odstrániť poslednú. */
-function buildSetCountRow(ex) {
+function buildSetCountRow(ex, moreBtn) {
   const row = document.createElement('div');
   row.className = 'mini set-count-row';
   const add = document.createElement('button');
@@ -13567,10 +13573,23 @@ function buildSetCountRow(ex) {
   rem.disabled = sessionSetCount(ex) <= 1;
   rem.addEventListener('click', () => { closeSetWeightEditor(); requestRemoveLastSet(ex); });
   row.append(add, rem);
+  if (moreBtn) row.appendChild(moreBtn);
   return row;
 }
 
-/* Drop série cviku: riadky "Drop séria 1" (✓ / opakovania / váha / ✕) a tlačidlo "+ Drop séria". */
+/* Tlačidlo "+ Drop séria" (žije v liste ⋯ cviku); null, keď je limit. */
+function buildDropButton(ex) {
+  if (sessionDrops(ex).length >= DROP_MAX) return null;
+  const add = document.createElement('button');
+  add.type = 'button';
+  add.className = 'btn-add-drop';
+  add.textContent = t('drop.add');
+  add.title = t('drop.addTitle');
+  add.addEventListener('click', () => { closeSetWeightEditor(); if (addDrop(ex)) { setSessionNote(null, 0); renderTrening(); } });
+  return add;
+}
+
+/* Drop série cviku: riadky "Drop séria 1" (✓ / opakovania / váha / ✕); pridáva sa z listu ⋯. */
 function buildDropsBlock(ex, readOnly) {
   const box = document.createElement('div');
   box.className = 'drops';
@@ -13622,15 +13641,6 @@ function buildDropsBlock(ex, readOnly) {
     item.append(label, done, reps, weight, remove);
     box.appendChild(item);
   });
-  if (!readOnly && list.length < DROP_MAX) {
-    const add = document.createElement('button');
-    add.type = 'button';
-    add.className = 'btn-add-drop';
-    add.textContent = t('drop.add');
-    add.title = t('drop.addTitle');
-    add.addEventListener('click', () => { closeSetWeightEditor(); if (addDrop(ex)) { setSessionNote(null, 0); renderTrening(); } });
-    box.appendChild(add);
-  }
   return box;
 }
 
@@ -13689,6 +13699,76 @@ function openSetValueEditor(item, cfg) {
   input.focus();
   input.select();
 }
+/* ---------- Akcie cviku (⋯) ---------- */
+/* Jedno kruhové "⋯" na konci riadku sérií otvorí list s ostatnými akciami cviku. Položky sú rovnaké
+   tlačidlá ako predtým (buildWarmupButtons, buildDropButton, buildPlatesButton, výmena) – list sa pri
+   ťuknutí najprv zavrie (fokus sa vráti na "⋯"), potom sa vykoná pôvodná akcia. */
+let exActionsOpener = null;
+function buildMoreButton(ex, info) {
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className = 'btn-ex-more';
+  btn.innerHTML = '<svg class="kico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="19" cy="12" r="1.2"/></svg>';
+  btn.title = t('exactions.more', { name: exerciseDisplayName(ex) });
+  btn.setAttribute('aria-label', t('exactions.more', { name: exerciseDisplayName(ex) }));
+  btn.addEventListener('click', () => { closeSetWeightEditor(); openExerciseActions(ex, info, btn); });
+  return btn;
+}
+/* Položky listu v poradí: rozcvička, rad, drop séria, kotúče, výmena, pokrok (zapojí sa neskôr, zatiaľ skrytý). */
+function exerciseActionButtons(ex, info) {
+  const out = [];
+  const warm = buildWarmupButtons(ex);   // [+ Rozcvička?, Rozcvičkový rad?]
+  for (const b of warm) out.push(b);
+  const drop = buildDropButton(ex);
+  if (drop) out.push(drop);
+  if (isBarbellExercise(ex)) out.push(buildPlatesButton(ex));
+  if (getSession() && info) {
+    const swap = document.createElement('button');
+    swap.type = 'button';
+    swap.className = 'exercise-swap';
+    swap.textContent = t('exercise.replace');
+    swap.addEventListener('click', () => openLibrary('replace', { slot: info.slot, base: info.base, ex }));
+    out.push(swap);
+  }
+  const prog = document.createElement('button');
+  prog.type = 'button';
+  prog.className = 'btn-ex-progress';
+  prog.textContent = t('exactions.progress');
+  prog.hidden = true;
+  out.push(prog);
+  return out;
+}
+function openExerciseActions(ex, info, opener) {
+  exActionsOpener = opener || document.activeElement;
+  const modal = document.getElementById('modal-ex-actions');
+  document.getElementById('ex-actions-title').textContent = exerciseDisplayName(ex);
+  const list = document.getElementById('ex-actions-list');
+  list.innerHTML = '';
+  for (const b of exerciseActionButtons(ex, info)) {
+    b.classList.add('ex-action');
+    list.appendChild(b);
+  }
+  modal.hidden = false;
+  const first = list.querySelector('button:not([hidden])');
+  if (first) { try { first.focus({ preventScroll: true }); } catch (e) { first.focus(); } }
+}
+function closeExerciseActions() {
+  const modal = document.getElementById('modal-ex-actions');
+  if (modal.hidden) return;
+  modal.hidden = true;
+  restoreSheetFocus(exActionsOpener); exActionsOpener = null;
+  refreshUpdateBanner();
+}
+function initExerciseActions() {
+  on('btn-ex-actions-close', closeExerciseActions);
+  /* Zachytávanie: list sa zavrie skôr, než položka vykoná svoju akciu. */
+  document.getElementById('ex-actions-list').addEventListener('click', (e) => {
+    if (e.target.closest && e.target.closest('button')) closeExerciseActions();
+  }, true);
+  const modal = document.getElementById('modal-ex-actions');
+  modal.addEventListener('click', (e) => { if (e.target === modal) closeExerciseActions(); });
+}
+
 /* ---------- Kalkulačka kotúčov ---------- */
 /* Predvolené: tyč 20 kg a kotúče po 25 … 1,25 kg; páry sú neobmedzené, kým sa nenastavia počty.
    Váhy cvikov sú v appke len v kg. Nastavenie je synchronizované (state.settings.plates). */
@@ -14291,6 +14371,7 @@ function buildPlatesButton(ex) {
   return btn;
 }
 function initPlateSheet() {
+  initExerciseActions();
   on('btn-plates-close', closePlateCalc);
   on('plate-target', () => {
     const v = cleanSetWeightValue(document.getElementById('plate-target').value);
@@ -15207,7 +15288,13 @@ function renderEditPanel() {
     warmCheck.addEventListener('change', () => {
       if (warmCheck.checked) editDraft[idx].warmupRamp = true; else delete editDraft[idx].warmupRamp;
     });
-    row.appendChild(warmBox);
+    /* Doplnky fázy 1 (rozcvičkový rad, spojenie do supersérie) sú v zatvorenom "Ďalšie možnosti". */
+    const moreOpts = document.createElement('details');
+    moreOpts.className = 'edit-more';
+    const moreSum = document.createElement('summary');
+    moreSum.textContent = t('exactions.moreOptions');
+    moreOpts.append(moreSum, warmBox);
+    const syncMoreOpts = () => { moreOpts.hidden = Array.from(moreOpts.children).every((c) => c === moreSum || c.hidden); };
 
     /* Voliteľné "Asistovaný cvik": číslo je pomoc v kg a menej pomoci je pokrok. Asistovaný cvik z knižnice
        je asistovaný vždy (prepínač zapnutý a neaktívny); vlastný riadok si ho zapína sám. */
@@ -15230,6 +15317,7 @@ function renderEditPanel() {
       /* Zabudovaný neasistovaný cvik prepínač nemá (zámena s "Dips" je vylúčená); prepisom názvu sa stane vlastným. */
       assistBox.hidden = !fixed && !!d.id && BUILTIN_EXERCISE_IDS.has(d.id);
       warmBox.hidden = isAssisted(d);
+      syncMoreOpts();
     };
     syncAssist();
     assistCheck.addEventListener('change', () => {
@@ -15237,6 +15325,7 @@ function renderEditPanel() {
       if (assistCheck.checked) editDraft[idx].assisted = true; else delete editDraft[idx].assisted;
     });
     row.appendChild(assistBox);
+    row.appendChild(moreOpts);
 
     /* Supersérie / okruh: štítok skupiny a tlačidlo "Spojiť s ďalším" / "Zrušiť spojenie". */
     if (gInfo && gInfo.pos === 0) {   // štítok len raz, na hornom okraji prvého člena
@@ -15255,7 +15344,8 @@ function renderEditPanel() {
         if (linked) unlinkRow(editDraft, idx); else linkWithNext(editDraft, idx);
         renderEditPanel();
       });
-      row.appendChild(lb);
+      moreOpts.appendChild(lb);
+      syncMoreOpts();
     }
 
     const nameInput = row.querySelector('.edit-name');
@@ -27515,6 +27605,8 @@ function setupEvents() {
     const ctPanel = document.getElementById('custom-timer');
     if (ctPanel && !ctPanel.hidden) { hideCustomTimer(); return; }
     if (presetManageMode) { setPresetManageMode(false); return; }
+    const exActionsSheet = document.getElementById('modal-ex-actions');
+    if (exActionsSheet && !exActionsSheet.hidden) { closeExerciseActions(); return; }
     const platesSheet = document.getElementById('modal-plates');
     if (platesSheet && !platesSheet.hidden) { closePlateCalc(); return; }
     const effortSheet = document.getElementById('modal-effort');
@@ -27972,7 +28064,7 @@ function isBusy() {
   const forms = ['modal-confirm', 'modal-history-edit', 'modal-settings', 'modal-setup', 'modal-generic',
     'modal-planchoice', 'modal-fullbody', 'modal-lang', 'modal-measure', 'modal-food',
     'modal-library', 'modal-exercise', 'modal-photo-add', 'modal-photo', 'modal-photo-compare',
-    'modal-community-caption', 'modal-auth', 'modal-sync', 'modal-plates', 'modal-effort'];
+    'modal-community-caption', 'modal-auth', 'modal-sync', 'modal-plates', 'modal-effort', 'modal-ex-actions'];
   for (const id of forms) {
     const el = document.getElementById(id);
     if (el && !el.hidden) return true;                   // otvorený formulár / dialóg
@@ -28580,6 +28672,7 @@ function tourHelpShow() {
    žiadny dialóg z index.html. Všetky majú rovnaký z-index, navrchu je posledný v DOM. */
 const NATIVE_BACK_CLOSE = [
   ['modal-rest', '#btn-rest-close'],
+  ['modal-ex-actions', '#btn-ex-actions-close'],
   ['modal-plates', '#btn-plates-close'],
   ['modal-effort', '#btn-effort-close'],
   ['modal-confirm', '#btn-confirm-cancel'],
