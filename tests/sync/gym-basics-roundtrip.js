@@ -109,10 +109,22 @@ async function roundtrip({ ref, newSrv, oldSrv, A, obsA }) {
   const oldSees = await o.p.eval(`(() => ({ h: JSON.parse(JSON.stringify(state.history[0])), plates: state.settings.plates || null, effort: state.settings.effort || null, g: state.plans.gb1.exercises.map((e) => [e.group || null, e.warmupRamp === true]) }))()`);
   check('[' + label + '] old build keeps the new fields in memory', canon(oldSees.h) === canon(core0.hist[0]) && canon(oldSees.plates) === canon(core0.plates) && oldSees.effort === 'rir' && J(oldSees.g) === J([['g1', true], ['g1', false], [null, false]]), oldSees);
   const oldXp = await o.p.eval(`typeof totalXP === 'function' ? totalXP() : null`);
+  /* Kontrola v starom builde: bez nových polí (len v pamäti, bez uloženia; stav sa hneď vráti) je totalXP rovnaké. */
+  const ctl = await o.p.eval(`(() => {
+    const hSave = JSON.stringify(state.history), pSave = JSON.stringify(state.plans);
+    const before = totalXP();
+    for (const h of state.history) for (const e of (h.exercises || [])) { delete e.warmups; delete e.setRpe; delete e.sideRpe; delete e.group; }
+    for (const id of Object.keys(state.plans)) for (const e of (state.plans[id].exercises || [])) { delete e.group; delete e.warmupRamp; }
+    const after = totalXP();
+    state.history = JSON.parse(hSave); state.plans = JSON.parse(pSave);
+    return { before, after, restored: JSON.stringify(state.history) === hSave }; })()`);
+  check('[' + label + '] control inside the old build: totalXP is equal with and without the new fields (they never move XP)', ctl.before === ctl.after && ctl.restored && typeof ctl.before === 'number', ctl);
+  if (/f9590a9/.test(label)) check('[' + label + '] v106: old build totalXP right after loading equals the new device (xp0)', oldXp === xp0, { oldXp, xp0 });
   await o.p.eval(`(() => { state.plans.gb2.customName = 'GB Other (z mobilu)'; saveState(); return true; })()`);
   await o.p.eval(`__gq.addWorkout('old-w1', '2026-10-25')`);
   await o.p.eval('__gq.syncNow()');
   const so = await o.p.eval('__gq.snap()');
+  const oldXp1 = await o.p.eval(`totalXP()`);
   const c1 = await obsA.row();
   check('[' + label + '] old build uploaded exactly one new revision, synced, no conflict', c1.revision === c0.revision + 1 && so.status === 'sync.st.synced' && !(so.meta && so.meta.conflict), { rev: [c0.revision, c1.revision], st: so.status });
   const hx = c1.payload.history.find((h) => h.id === core0.hist[0].id);
@@ -144,6 +156,8 @@ async function roundtrip({ ref, newSrv, oldSrv, A, obsA }) {
   const fresh = JSON.parse(await f.p.eval(CORE));
   check('[' + label + '] a fresh new device gets identical history, plans and settings, and the same total XP', J(fresh.hist) === J(core1.hist) && J(fresh.plans.gb1) === J(core1.plans.gb1) && canon(fresh.plates) === canon(core1.plates) && fresh.effort === 'rir' && (await f.p.eval('totalXP()')) === xp1);
   /* Starý build (pred v101) počíta XP inak (uložené xp, nie odvodené) — len informácia, nie chyba nových polí. */
+  if (/f9590a9/.test(label)) check('[' + label + '] v106: after its upload the old build totalXP equals the new device (xp1)', oldXp1 === xp1, { oldXp1, xp1 });
+  /* v95: absolútna hodnota XP sa líši, lebo vzorec XP v v95 je staršie než v101 (odvodené XP); kontrola vyššie dokazuje, že nové polia XP nehýbu. */
   console.log('  INFO [' + label + '] total XP: new device ' + xp0 + ', old build ' + oldXp + (oldXp === xp0 ? ' (equal)' : ' (older XP formula, not caused by the new fields)'));
   check('[' + label + '] new devices: no page errors', n.p.errors.length === 0 && f.p.errors.length === 0, [n.p.errors, f.p.errors]);
   const cEnd = await obsA.row();
