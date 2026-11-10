@@ -7575,6 +7575,60 @@ const SYNC_I18N = {
 };
 for (const lang of Object.keys(SYNC_I18N)) Object.assign(I18N[lang] || (I18N[lang] = {}), SYNC_I18N[lang]);
 
+/* Preklady "Gym-basics" (zapisovanie tréningu: kotúče, rozcvičky, RPE, supersérie, auto pauza);
+   všetkých 6 jazykov, pri štarte sa vlejú do I18N ako SYNC_I18N. */
+const BASICS_I18N = {
+  sk: {
+    'plates.button': 'Kotúče', 'plates.buttonTitle': 'Kalkulačka kotúčov: čo naložiť na každú stranu činky',
+    'plates.title': 'Kalkulačka kotúčov', 'plates.close': 'Zavrieť',
+    'plates.target': 'Cieľová váha', 'plates.targetAria': 'Cieľová váha v kg',
+    'plates.bar': 'Tyč', 'plates.barCustom': 'Vlastná tyč v kg', 'plates.available': 'Kotúče, ktoré máš',
+    'plates.perSide': 'Na každú stranu', 'plates.barOnly': 'Len tyč',
+    'plates.closest': 'Najbližšie možné: {kg} kg', 'plates.exact': 'Presne: {kg} kg',
+  },
+  en: {
+    'plates.button': 'Plates', 'plates.buttonTitle': 'Plate calculator: what to load on each side of the bar',
+    'plates.title': 'Plate calculator', 'plates.close': 'Close',
+    'plates.target': 'Target weight', 'plates.targetAria': 'Target weight in kg',
+    'plates.bar': 'Bar', 'plates.barCustom': 'Custom bar in kg', 'plates.available': 'Plates you have',
+    'plates.perSide': 'Per side', 'plates.barOnly': 'Just the bar',
+    'plates.closest': 'Closest possible: {kg} kg', 'plates.exact': 'Exact: {kg} kg',
+  },
+  es: {
+    'plates.button': 'Discos', 'plates.buttonTitle': 'Calculadora de discos: qué poner a cada lado de la barra',
+    'plates.title': 'Calculadora de discos', 'plates.close': 'Cerrar',
+    'plates.target': 'Peso objetivo', 'plates.targetAria': 'Peso objetivo en kg',
+    'plates.bar': 'Barra', 'plates.barCustom': 'Barra personalizada en kg', 'plates.available': 'Discos que tienes',
+    'plates.perSide': 'Por lado', 'plates.barOnly': 'Solo la barra',
+    'plates.closest': 'Lo más cercano posible: {kg} kg', 'plates.exact': 'Exacto: {kg} kg',
+  },
+  'pt-BR': {
+    'plates.button': 'Anilhas', 'plates.buttonTitle': 'Calculadora de anilhas: o que colocar em cada lado da barra',
+    'plates.title': 'Calculadora de anilhas', 'plates.close': 'Fechar',
+    'plates.target': 'Peso alvo', 'plates.targetAria': 'Peso alvo em kg',
+    'plates.bar': 'Barra', 'plates.barCustom': 'Barra personalizada em kg', 'plates.available': 'Anilhas que você tem',
+    'plates.perSide': 'Por lado', 'plates.barOnly': 'Só a barra',
+    'plates.closest': 'Mais próximo possível: {kg} kg', 'plates.exact': 'Exato: {kg} kg',
+  },
+  fr: {
+    'plates.button': 'Disques', 'plates.buttonTitle': 'Calculateur de disques : quoi charger de chaque côté de la barre',
+    'plates.title': 'Calculateur de disques', 'plates.close': 'Fermer',
+    'plates.target': 'Charge visée', 'plates.targetAria': 'Charge visée en kg',
+    'plates.bar': 'Barre', 'plates.barCustom': 'Barre personnalisée en kg', 'plates.available': 'Disques que tu as',
+    'plates.perSide': 'Par côté', 'plates.barOnly': 'La barre seule',
+    'plates.closest': 'Le plus proche possible : {kg} kg', 'plates.exact': 'Exact : {kg} kg',
+  },
+  ar: {
+    'plates.button': 'الأقراص', 'plates.buttonTitle': 'حاسبة الأقراص: ما الذي يوضع على كل جانب من البار',
+    'plates.title': 'حاسبة الأقراص', 'plates.close': 'إغلاق',
+    'plates.target': 'الوزن المستهدف', 'plates.targetAria': 'الوزن المستهدف بالكيلوغرام',
+    'plates.bar': 'البار', 'plates.barCustom': 'بار مخصص بالكيلوغرام', 'plates.available': 'الأقراص المتوفرة لديك',
+    'plates.perSide': 'لكل جانب', 'plates.barOnly': 'البار فقط',
+    'plates.closest': 'الأقرب الممكن: {kg} كغ', 'plates.exact': 'بالضبط: {kg} كغ',
+  },
+};
+for (const lang of Object.keys(BASICS_I18N)) Object.assign(I18N[lang] || (I18N[lang] = {}), BASICS_I18N[lang]);
+
 /* Health Connect (len Android appka): prepínač v Nastaveniach a tep pri dokončenom tréningu. */
 const HEALTH_I18N = {
   sk: {
@@ -10214,6 +10268,8 @@ function backfillState() {
   state.settings.restPresets = Array.isArray(state.settings.restPresets)
     ? cleanRestPresets(state.settings.restPresets)
     : defaultRestPresets();
+  /* Kotúče: neplatné nastavenie sa zahodí (plateSettings() potom použije predvolené), nikdy nehádže. */
+  if (state.settings.plates !== undefined && !cleanPlateSettings(state.settings.plates)) delete state.settings.plates;
   /* Vlastné aktivity (beh/chôdza/cyklistika): idempotentná normalizácia.
      Stará záloha bez aktivít naimportuje prázdny zoznam. */
   if (!Array.isArray(state.activities)) state.activities = [];
@@ -10428,6 +10484,7 @@ function migrateV2toV3(parsed) {
   out.settings.restPresets = Array.isArray(out.settings.restPresets)
     ? cleanRestPresets(out.settings.restPresets)
     : defaultRestPresets();
+  if (out.settings.plates !== undefined && !cleanPlateSettings(out.settings.plates)) delete out.settings.plates;
   /* Automatické zálohovanie: len explicitné true ho zapne (predvolene vypnuté).
      Kniha záloh sa normalizuje nedeštruktívne – chýbajúca alebo poškodená
      hodnota sa nahradí východiskom, platná sa zachová presne. */
@@ -12993,6 +13050,7 @@ function buildExerciseBlock(seg, info, plan) {
   const mini = document.createElement('div');
   mini.className = 'mini ex-mini';
   mini.appendChild(buildDropsBlock(ex, seg.readOnly));
+  if (!seg.readOnly && isBarbellExercise(ex)) mini.appendChild(buildPlatesButton(ex));
   /* Aktívny cvik je možné vymeniť – ale iba počas rozbehnutého tréningu, aby výmena
      nikdy nezačala meranie trvania nechtiac. Pred tréningom sa plán upravuje normálne. */
   if (seg.active && getSession()) {
@@ -13312,6 +13370,188 @@ function openSetValueEditor(item, cfg) {
   input.focus();
   input.select();
 }
+/* ---------- Kalkulačka kotúčov ---------- */
+/* Predvolené: tyč 20 kg a kotúče po 25 … 1,25 kg; páry sú neobmedzené, kým sa nenastavia počty.
+   Váhy cvikov sú v appke len v kg. Nastavenie je synchronizované (state.settings.plates). */
+const PLATE_DEFAULT = { bar: 20, plates: [25, 20, 15, 10, 5, 2.5, 1.25] };
+
+/* Overí a vyčistí uložené nastavenie kotúčov; neplatné → null. */
+function cleanPlateSettings(raw) {
+  if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return null;
+  const bar = Number(raw.bar);
+  if (!Number.isFinite(bar) || bar < 0 || bar > 100 || !Array.isArray(raw.plates)) return null;
+  const plates = [];
+  for (const p of raw.plates) {
+    const n = Number(p);
+    if (!Number.isFinite(n) || n <= 0 || n > 100) return null;
+    if (!plates.includes(n)) plates.push(n);
+  }
+  plates.sort((x, y) => y - x);
+  const out = { bar, plates };
+  if (raw.pairs && typeof raw.pairs === 'object' && !Array.isArray(raw.pairs)) {
+    const pairs = {};
+    for (const k of Object.keys(raw.pairs)) {
+      const c = Number(raw.pairs[k]);
+      if (Number.isFinite(Number(k)) && Number.isInteger(c) && c >= 0 && c <= 99) pairs[k] = c;
+    }
+    if (Object.keys(pairs).length) out.pairs = pairs;
+  }
+  return out;
+}
+/* Vždy platné nastavenie: uložené (ak je v poriadku), inak predvolené. */
+function plateSettings() {
+  const own = state && state.settings ? cleanPlateSettings(state.settings.plates) : null;
+  return own || { bar: PLATE_DEFAULT.bar, plates: PLATE_DEFAULT.plates.slice() };
+}
+/* Chamtivo od najväčšieho kotúča na jednu stranu. Keď je `pairs` zadané, ide o zásobu:
+   kotúč bez uvedeného počtu = 1 pár. Bez `pairs` sú páry neobmedzené.
+   total = tyč + 2 × súčet jednej strany = najbližšia zostaviteľná váha ≤ cieľ. */
+function platePlan(target, cfg) {
+  const c = cfg || plateSettings();
+  const bar = Number(c.bar) || 0;
+  const goal = Number.isFinite(Number(target)) ? Number(target) : 0;
+  if (goal < bar) return { perSide: [], total: bar, exact: false };
+  const M = 1000;   // celé čísla (g) – žiadne chyby z desatinných čísel
+  let left = Math.floor(((goal - bar) / 2) * M + 1e-6);
+  const perSide = [];
+  const sorted = (c.plates || []).slice().sort((x, y) => y - x);
+  for (const kg of sorted) {
+    const g = Math.round(kg * M);
+    if (g <= 0) continue;
+    let cnt = Math.floor(left / g);
+    if (c.pairs) {
+      const lim = c.pairs[String(kg)];
+      cnt = Math.min(cnt, lim === undefined ? 1 : lim);
+    }
+    for (let i = 0; i < cnt; i++) perSide.push(kg);
+    left -= cnt * g;
+  }
+  const sum = perSide.reduce((a, b) => a + b, 0);
+  const total = Math.round((bar + 2 * sum) * M) / M;
+  return { perSide, total, exact: Math.abs(total - goal) < 1e-6 };
+}
+/* Váha zaokrúhlená nadol na zostaviteľnú; pod tyčou 0. */
+function roundToPlates(weight, cfg) {
+  const c = cfg || plateSettings();
+  if (!(Number(weight) >= (Number(c.bar) || 0))) return 0;
+  return platePlan(weight, c).total;
+}
+/* Činkový cvik: knižnica má barbell, alebo cvik nie je v knižnici (vlastný); asistovaný nikdy. */
+function isBarbellExercise(ex) {
+  if (!ex || isAssisted(ex)) return false;
+  const lib = libraryEntry(builtinExerciseId(ex));
+  return !lib || (Array.isArray(lib.equipment) && lib.equipment.includes('barbell'));
+}
+
+let plateTarget = 0;
+function openPlateCalc(weight) {
+  const w = Number(weight);
+  plateTarget = Number.isFinite(w) && w > 0 ? w : 0;
+  document.getElementById('modal-plates').hidden = false;
+  renderPlateSheet();
+}
+function closePlateCalc() {
+  document.getElementById('modal-plates').hidden = true;
+}
+/* Zmena nastavenia zo listu: zachová počty párov, uloží a prekreslí. */
+function savePlateSettings(patch) {
+  const cur = plateSettings();
+  const next = cleanPlateSettings(Object.assign({}, cur, patch));
+  if (!next) return;
+  state.settings.plates = next;
+  saveState();
+  renderPlateSheet();
+}
+function plateNum(n) { return String(Math.round(n * 1000) / 1000); }
+function plateDrawing(plan, cfg) {
+  const NS = 'http://www.w3.org/2000/svg';
+  const H = 64, maxKg = Math.max(25, ...cfg.plates, 1);
+  let x = 6;
+  const svg = document.createElementNS(NS, 'svg');
+  svg.setAttribute('class', 'plate-svg');
+  svg.setAttribute('aria-hidden', 'true');
+  const rect = (cls, rx, w, h) => {
+    const r = document.createElementNS(NS, 'rect');
+    r.setAttribute('class', cls); r.setAttribute('x', rx); r.setAttribute('y', (H - h) / 2);
+    r.setAttribute('width', w); r.setAttribute('height', h); r.setAttribute('rx', 2);
+    svg.appendChild(r);
+  };
+  rect('plate-bar', 0, 12 + plan.perSide.length * 12 + 40, 6);
+  plan.perSide.forEach((kg) => {
+    const h = 20 + 44 * Math.sqrt(kg / maxKg);
+    rect('plate-disc', x + 12, 10, h);
+    x += 12;
+  });
+  svg.setAttribute('viewBox', '0 0 ' + (12 + plan.perSide.length * 12 + 52) + ' ' + H);
+  return svg;
+}
+function renderPlateSheet() {
+  const cfg = plateSettings();
+  const input = document.getElementById('plate-target');
+  if (document.activeElement !== input) input.value = plateTarget > 0 ? plateNum(plateTarget) : '';
+  /* Tyč: 20 / 15 / 10 alebo vlastná */
+  const bars = document.getElementById('plate-bars');
+  bars.innerHTML = '';
+  [20, 15, 10].forEach((b) => {
+    const btn = document.createElement('button');
+    btn.type = 'button'; btn.className = 'chip plate-bar-chip' + (cfg.bar === b ? ' active' : '');
+    btn.dataset.bar = String(b); btn.textContent = b + ' ' + t('units.kg');
+    btn.setAttribute('aria-pressed', cfg.bar === b ? 'true' : 'false');
+    btn.addEventListener('click', () => savePlateSettings({ bar: b }));
+    bars.appendChild(btn);
+  });
+  const custom = document.getElementById('plate-bar-custom');
+  if (document.activeElement !== custom) custom.value = [20, 15, 10].includes(cfg.bar) ? '' : plateNum(cfg.bar);
+  /* Kotúče: ťuk zahrnie / vylúči veľkosť */
+  const tog = document.getElementById('plate-toggles');
+  tog.innerHTML = '';
+  const sizes = Array.from(new Set(PLATE_DEFAULT.plates.concat(cfg.plates))).sort((a, b) => b - a);
+  sizes.forEach((kg) => {
+    const on = cfg.plates.includes(kg);
+    const btn = document.createElement('button');
+    btn.type = 'button'; btn.className = 'chip plate-toggle' + (on ? ' active' : '');
+    btn.dataset.kg = String(kg); btn.textContent = plateNum(kg);
+    btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+    btn.addEventListener('click', () => savePlateSettings({ plates: on ? cfg.plates.filter((p) => p !== kg) : cfg.plates.concat(kg) }));
+    tog.appendChild(btn);
+  });
+  /* Výsledok */
+  const plan = platePlan(plateTarget, cfg);
+  document.getElementById('plate-per-side').textContent = plan.perSide.length ? plan.perSide.map(plateNum).join(' · ') : t('plates.barOnly');
+  const closest = document.getElementById('plate-closest');
+  closest.textContent = plateTarget > 0 ? t(plan.exact ? 'plates.exact' : 'plates.closest', { kg: plateNum(plan.total) }) : '';
+  closest.classList.toggle('plate-inexact', plateTarget > 0 && !plan.exact);
+  const draw = document.getElementById('plate-draw');
+  draw.innerHTML = '';
+  draw.appendChild(plateDrawing(plan, cfg));
+}
+/* Tlačidlo "Kotúče" v riadku akcií cviku: otvorí kalkulačku s pracovnou váhou cviku. */
+function buildPlatesButton(ex) {
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className = 'btn-plates';
+  btn.textContent = t('plates.button');
+  btn.title = t('plates.buttonTitle');
+  btn.addEventListener('click', () => {
+    closeSetWeightEditor();
+    const last = Math.max(0, sessionSetCount(ex) - 1);
+    openPlateCalc(effectiveSetWeight(ex, last));
+  });
+  return btn;
+}
+function initPlateSheet() {
+  on('btn-plates-close', closePlateCalc);
+  on('plate-target', () => {
+    const v = cleanSetWeightValue(document.getElementById('plate-target').value);
+    plateTarget = v === null ? 0 : v;
+    renderPlateSheet();
+  }, 'input');
+  on('plate-bar-custom', () => {
+    const v = cleanSetWeightValue(document.getElementById('plate-bar-custom').value);
+    if (v !== null && v <= 100) savePlateSettings({ bar: v });
+  }, 'input');
+}
+
 function updateSummary() {
   const plan = currentPlan();
   const done = totalSetsDone();
@@ -26689,6 +26929,7 @@ function setupEvents() {
   /* Bento: časovač oddychu ako list, štart plánu z dlaždice, Full Body, návraty z listov */
   on('btn-open-rest', openRestSheet);
   on('btn-rest-close', closeRestSheet);
+  initPlateSheet();
   on('tr-start', () => { const p = getPlan(selectedPlan); if (p && ensureSession(p)) saveState(); renderTrening(); window.scrollTo(0, 0); });
   on('btn-fullbody-tile', openFullBodyBuilder);
   on('btn-train-tile', () => {
@@ -27481,6 +27722,7 @@ function tourHelpShow() {
    žiadny dialóg z index.html. Všetky majú rovnaký z-index, navrchu je posledný v DOM. */
 const NATIVE_BACK_CLOSE = [
   ['modal-rest', '#btn-rest-close'],
+  ['modal-plates', '#btn-plates-close'],
   ['modal-confirm', '#btn-confirm-cancel'],
   ['modal-result', '#btn-result-close'],
   ['modal-setup', null],

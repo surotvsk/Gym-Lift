@@ -4913,3 +4913,18 @@ html.ios .tour { --tour-top: max(34px, calc(env(safe-area-inset-top, 0px) + 34px
 .tour-invite { flex-wrap: wrap; }
 .tour-invite p { flex: 1 1 100%; }
 .tour-invite .btn { min-height: 44px; min-width: 44px; flex: 1 1 0; }
+
+/* ===== Gym-basics: zapisovanie ===== */
+.btn-plates { min-height: 40px; }
+.modal-plates .modal-input { width: 100%; box-sizing: border-box; }
+.plate-result { margin: var(--sp-3) 0; padding: var(--sp-3); background: var(--surface-2); border-radius: 16px; }
+.plate-per-side { margin: 0; font-size: 1.4rem; font-weight: 700; color: var(--text); overflow-wrap: anywhere; }
+.plate-draw { margin: var(--sp-2) 0; overflow-x: auto; }
+.plate-svg { height: 64px; width: auto; max-width: 100%; display: block; }
+.plate-svg .plate-bar { fill: var(--text-dim); }
+.plate-svg .plate-disc { fill: var(--accent); }
+.plate-closest { margin: 0; }
+.plate-closest.plate-inexact { color: var(--text); font-weight: 600; }
+.plate-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2); }
+.plate-row .plate-bar-custom { flex: 1 1 8rem; min-width: 0; max-width: 100%; }
+.modal-plates .chip { min-height: 44px; min-width: 44px; white-space: nowrap; }

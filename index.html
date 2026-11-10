@@ -538,6 +538,31 @@
   </nav>
 
 
+  <!-- ============ MODAL: kalkulačka kotúčov ============ -->
+  <div class="modal-backdrop" id="modal-plates" hidden>
+    <div class="modal modal-form modal-plates">
+      <div class="sheet-head">
+        <h3 data-i18n="plates.title">Kalkulačka kotúčov</h3>
+        <button type="button" class="btn-icon" id="btn-plates-close" data-i18n-title="plates.close" data-i18n-aria="plates.close">✕</button>
+      </div>
+      <label class="sheet-label" for="plate-target" data-i18n="plates.target">Cieľová váha</label>
+      <input type="text" class="modal-input" id="plate-target" inputmode="decimal" autocomplete="off" data-i18n-aria="plates.targetAria">
+      <div class="plate-result">
+        <span class="sheet-label" data-i18n="plates.perSide">Na každú stranu</span>
+        <p class="plate-per-side" id="plate-per-side"></p>
+        <div class="plate-draw" id="plate-draw"></div>
+        <p class="card-note plate-closest" id="plate-closest"></p>
+      </div>
+      <span class="sheet-label" data-i18n="plates.bar">Tyč</span>
+      <div class="plate-row">
+        <div class="timer-chips" id="plate-bars"></div>
+        <input type="text" class="modal-input plate-bar-custom" id="plate-bar-custom" inputmode="decimal" autocomplete="off" data-i18n-aria="plates.barCustom" data-i18n-placeholder="plates.barCustom">
+      </div>
+      <span class="sheet-label" data-i18n="plates.available">Kotúče, ktoré máš</span>
+      <div class="timer-chips" id="plate-toggles"></div>
+    </div>
+  </div>
+
   <!-- ============ MODAL: časovač oddychu (Bento list) ============ -->
   <div class="modal-backdrop" id="modal-rest" hidden>
     <div class="modal modal-form modal-rest">
