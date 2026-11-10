@@ -7593,6 +7593,11 @@ const BASICS_I18N = {
     'warmup.remove': 'Odstrániť rozcvičku {n}', 'warmup.editorNote': 'Mení sa iba táto rozcvička. Plán sa nemení.',
     'warmup.repsEditor': 'Opakovania rozcvičky {n}', 'warmup.weightEditor': 'Váha rozcvičky {n} v kg',
     'warmup.history': 'Rozcvička: {list}', 'warmup.planToggle': 'Rozcvičkový rad automaticky na začiatku tréningu',
+    'settings.effort': 'Námaha série', 'settings.effortHint': 'Zaznamenaj, ako ťažká bola každá séria. Pri hotových sériách sa objaví malé tlačidlo.',
+    'effort.title': 'Námaha série', 'effort.close': 'Zavrieť',
+    'effort.clear': 'Vymazať', 'effort.chipAria': 'Séria {n}: námaha {value}. Ťuknutím zmeníš.',
+    'effort.chipAriaEmpty': 'Séria {n}: námaha nezadaná. Ťuknutím ju zadáš.', 'effort.noteRpe': 'RPE: ako ťažká séria bola, od 6 (ľahká) po 10 (naplno).',
+    'effort.noteRir': 'RIR: koľko opakovaní ti ešte zostávalo v rezerve (0 = žiadne).', 'effort.history': 'Námaha: {list}',
   },
   en: {
     'plates.button': 'Plates', 'plates.buttonTitle': 'Plate calculator: what to load on each side of the bar',
@@ -7609,6 +7614,11 @@ const BASICS_I18N = {
     'warmup.remove': 'Remove warm-up {n}', 'warmup.editorNote': 'Only this warm-up changes. Your plan stays the same.',
     'warmup.repsEditor': 'Reps of warm-up {n}', 'warmup.weightEditor': 'Weight of warm-up {n} in kg',
     'warmup.history': 'Warm-up: {list}', 'warmup.planToggle': 'Add the warm-up ramp automatically when the workout starts',
+    'settings.effort': 'Effort rating', 'settings.effortHint': 'Rate how hard each set felt. A small button appears on completed sets.',
+    'effort.title': 'Set effort', 'effort.close': 'Close',
+    'effort.clear': 'Clear', 'effort.chipAria': 'Set {n}: effort {value}. Tap to change.',
+    'effort.chipAriaEmpty': 'Set {n}: effort not rated. Tap to rate.', 'effort.noteRpe': 'RPE: how hard the set was, from 6 (easy) to 10 (all-out).',
+    'effort.noteRir': 'RIR: reps you still had left in the tank (0 = none).', 'effort.history': 'Effort: {list}',
   },
   es: {
     'plates.button': 'Discos', 'plates.buttonTitle': 'Calculadora de discos: qué poner a cada lado de la barra',
@@ -7625,6 +7635,11 @@ const BASICS_I18N = {
     'warmup.remove': 'Quitar el calentamiento {n}', 'warmup.editorNote': 'Solo cambia este calentamiento. Tu plan no cambia.',
     'warmup.repsEditor': 'Repeticiones del calentamiento {n}', 'warmup.weightEditor': 'Peso del calentamiento {n} en kg',
     'warmup.history': 'Calentamiento: {list}', 'warmup.planToggle': 'Añadir la rampa de calentamiento automáticamente al empezar el entrenamiento',
+    'settings.effort': 'Esfuerzo de la serie', 'settings.effortHint': 'Anota lo difícil que fue cada serie. Aparece un botón pequeño en las series hechas.',
+    'effort.title': 'Esfuerzo de la serie', 'effort.close': 'Cerrar',
+    'effort.clear': 'Borrar', 'effort.chipAria': 'Serie {n}: esfuerzo {value}. Toca para cambiarlo.',
+    'effort.chipAriaEmpty': 'Serie {n}: esfuerzo sin anotar. Toca para anotarlo.', 'effort.noteRpe': 'RPE: dificultad de la serie de 6 (fácil) a 10 (esfuerzo máximo).',
+    'effort.noteRir': 'RIR: repeticiones que te quedaban en reserva (0 = ninguna).', 'effort.history': 'Esfuerzo: {list}',
   },
   'pt-BR': {
     'plates.button': 'Anilhas', 'plates.buttonTitle': 'Calculadora de anilhas: o que colocar em cada lado da barra',
@@ -7641,6 +7656,11 @@ const BASICS_I18N = {
     'warmup.remove': 'Remover o aquecimento {n}', 'warmup.editorNote': 'Só este aquecimento muda. Seu plano não muda.',
     'warmup.repsEditor': 'Repetições do aquecimento {n}', 'warmup.weightEditor': 'Carga do aquecimento {n} em kg',
     'warmup.history': 'Aquecimento: {list}', 'warmup.planToggle': 'Adicionar a rampa de aquecimento automaticamente ao iniciar o treino',
+    'settings.effort': 'Esforço da série', 'settings.effortHint': 'Registre a dificuldade de cada série. Um botão pequeno aparece nas séries concluídas.',
+    'effort.title': 'Esforço da série', 'effort.close': 'Fechar',
+    'effort.clear': 'Limpar', 'effort.chipAria': 'Série {n}: esforço {value}. Toque para alterar.',
+    'effort.chipAriaEmpty': 'Série {n}: esforço sem nota. Toque para registrar.', 'effort.noteRpe': 'RPE: dificuldade da série de 6 (fácil) a 10 (esforço máximo).',
+    'effort.noteRir': 'RIR: repetições que você ainda conseguiria fazer (0 = nenhuma).', 'effort.history': 'Esforço: {list}',
   },
   fr: {
     'plates.button': 'Disques', 'plates.buttonTitle': 'Calculateur de disques : quoi charger de chaque côté de la barre',
@@ -7657,6 +7677,11 @@ const BASICS_I18N = {
     'warmup.remove': 'Retirer l’échauffement {n}', 'warmup.editorNote': 'Seul cet échauffement change. Ton plan ne change pas.',
     'warmup.repsEditor': 'Répétitions de l’échauffement {n}', 'warmup.weightEditor': 'Charge de l’échauffement {n} en kg',
     'warmup.history': 'Échauffement : {list}', 'warmup.planToggle': 'Ajouter automatiquement la montée d’échauffement au début de la séance',
+    'settings.effort': 'Effort de la série', 'settings.effortHint': 'Note la difficulté de chaque série. Une petite pastille apparaît sur les séries terminées.',
+    'effort.title': 'Effort de la série', 'effort.close': 'Fermer',
+    'effort.clear': 'Effacer', 'effort.chipAria': 'Série {n} : effort {value}. Touche pour modifier.',
+    'effort.chipAriaEmpty': 'Série {n} : effort non noté. Touche pour le noter.', 'effort.noteRpe': 'RPE : difficulté de la série de 6 (facile) à 10 (effort maximal).',
+    'effort.noteRir': 'RIR : répétitions qu’il te restait en réserve (0 = aucune).', 'effort.history': 'Effort : {list}',
   },
   ar: {
     'plates.button': 'الأقراص', 'plates.buttonTitle': 'حاسبة الأقراص: ما الذي يوضع على كل جانب من البار',
@@ -7673,6 +7698,11 @@ const BASICS_I18N = {
     'warmup.remove': 'حذف الإحماء {n}', 'warmup.editorNote': 'يتغير هذا الإحماء فقط. خطتك لا تتغير.',
     'warmup.repsEditor': 'تكرارات الإحماء {n}', 'warmup.weightEditor': 'وزن الإحماء {n} بالكيلوغرام',
     'warmup.history': 'إحماء: {list}', 'warmup.planToggle': 'إضافة تدرّج الإحماء تلقائيًا عند بدء التمرين',
+    'settings.effort': 'تقييم الجهد', 'settings.effortHint': 'سجّل مدى صعوبة كل مجموعة. يظهر زر صغير على المجموعات المكتملة.',
+    'effort.title': 'جهد المجموعة', 'effort.close': 'إغلاق',
+    'effort.clear': 'مسح', 'effort.chipAria': 'المجموعة {n}: الجهد {value}. المس للتغيير.',
+    'effort.chipAriaEmpty': 'المجموعة {n}: لم يُسجَّل الجهد. المس للتسجيل.', 'effort.noteRpe': 'RPE: مدى صعوبة المجموعة من 6 (سهلة) إلى 10 (أقصى جهد).',
+    'effort.noteRir': 'RIR: عدد التكرارات التي كان بإمكانك إضافتها (0 = لا شيء).', 'effort.history': 'الجهد: {list}',
   },
 };
 for (const lang of Object.keys(BASICS_I18N)) Object.assign(I18N[lang] || (I18N[lang] = {}), BASICS_I18N[lang]);
@@ -10232,6 +10262,14 @@ function normalizeActiveSession(raw) {
     for (const [key, val] of Object.entries(raw.warmupsInit)) if (key && val === true) warmupsInit[key] = true;
   }
   if (Object.keys(warmupsInit).length) out.warmupsInit = warmupsInit;
+  /* Námaha sérií (RPE 6–10 po 0,5): len platné hodnoty na platných kľúčoch sérií. */
+  const setRpe = {};
+  if (raw.setRpe && typeof raw.setRpe === 'object' && !Array.isArray(raw.setRpe)) {
+    for (const [key, val] of Object.entries(raw.setRpe)) {
+      if (/:\d+(:[LR])?$/.test(key) && validRpe(val)) setRpe[key] = val;
+    }
+  }
+  if (Object.keys(setRpe).length) out.setRpe = setRpe;
   /* Zmena počtu sérií cviku (+ Pridať sériu): celé nenulové čísla; chýbajúce pole = bez zmeny. */
   const setDelta = {};
   if (raw.setDelta && typeof raw.setDelta === 'object' && !Array.isArray(raw.setDelta)) {
@@ -10315,7 +10353,7 @@ function migrateSessionKeys(sess, map) {
     }
     return key;
   };
-  for (const field of ['completedSets', 'actualFailureSets', 'setWeights', 'setReps', 'setWeightLocks', 'setRepsLocks', 'drops', 'warmups', 'warmupsInit', 'setDelta', 'substituted']) {
+  for (const field of ['completedSets', 'actualFailureSets', 'setWeights', 'setReps', 'setWeightLocks', 'setRepsLocks', 'drops', 'warmups', 'warmupsInit', 'setRpe', 'setDelta', 'substituted']) {
     const src = sess[field];
     if (!src || typeof src !== 'object' || Array.isArray(src)) continue;
     const out = {};
@@ -10334,6 +10372,8 @@ function backfillState() {
     : defaultRestPresets();
   /* Kotúče: neplatné nastavenie sa zahodí (plateSettings() potom použije predvolené), nikdy nehádže. */
   if (state.settings.plates !== undefined && !cleanPlateSettings(state.settings.plates)) delete state.settings.plates;
+  /* Námaha série: platné je len 'rpe' / 'rir'; všetko ostatné = vypnuté (pole sa nevyskytuje). */
+  if (state.settings.effort !== undefined && state.settings.effort !== 'rpe' && state.settings.effort !== 'rir') delete state.settings.effort;
   /* Vlastné aktivity (beh/chôdza/cyklistika): idempotentná normalizácia.
      Stará záloha bez aktivít naimportuje prázdny zoznam. */
   if (!Array.isArray(state.activities)) state.activities = [];
@@ -10549,6 +10589,7 @@ function migrateV2toV3(parsed) {
     ? cleanRestPresets(out.settings.restPresets)
     : defaultRestPresets();
   if (out.settings.plates !== undefined && !cleanPlateSettings(out.settings.plates)) delete out.settings.plates;
+  if (out.settings.effort !== undefined && out.settings.effort !== 'rpe' && out.settings.effort !== 'rir') delete out.settings.effort;
   /* Automatické zálohovanie: len explicitné true ho zapne (predvolene vypnuté).
      Kniha záloh sa normalizuje nedeštruktívne – chýbajúca alebo poškodená
      hodnota sa nahradí východiskom, platná sa zachová presne. */
@@ -12562,7 +12603,7 @@ function lastSetKeys(ex) {
   for (const side of sessionSetSides(ex)) if (side) keys.push(setSessionKey(ex, idx, side));
   return keys;
 }
-const SESSION_SET_MAPS = ['completedSets', 'actualFailureSets', 'setWeights', 'setReps', 'setWeightLocks', 'setRepsLocks'];
+const SESSION_SET_MAPS = ['completedSets', 'actualFailureSets', 'setWeights', 'setReps', 'setWeightLocks', 'setRepsLocks', 'setRpe'];
 /* Má posledná séria hotovú / zlyhanie značku alebo vlastnú váhu či opakovania? */
 function lastSetTouched(ex) {
   const sess = getSession();
@@ -13201,6 +13242,7 @@ function buildSetItem(ex, index, plannedFailure, side, readOnly) {
     setBtn.classList.toggle('done', on);
     item.classList.toggle('set-done', on);
     setBtn.setAttribute('aria-pressed', on ? 'true' : 'false');
+    syncEffortChip(item, ex, index, side, on, readOnly);
   };
   syncDone();
   setBtn.setAttribute('aria-label', ariaPre + t('trening.setDoneAria', { n: index + 1 }));
@@ -13298,6 +13340,8 @@ function buildSetItem(ex, index, plannedFailure, side, readOnly) {
   };
 
   item.append(label, field('weight'), field('reps'), failBtn, setBtn);
+  const effortChip = item.querySelector('.set-effort');   // čip námahy patrí na koniec riadku
+  if (effortChip) item.appendChild(effortChip);
   return item;
 }
 
@@ -13721,6 +13765,212 @@ function buildWarmupButtons(ex) {
     out.push(ramp);
   }
   return out;
+}
+
+/* ---------- Námaha série (RPE / RIR) ----------
+   Voliteľné hodnotenie každej hotovej série: RPE 6–10 po 0,5, alebo RIR (opakovania v rezerve) = 10 − RPE.
+   Ukladá sa vždy ako RPE: sess.setRpe[kľúč série] = číslo. Režim je state.settings.effort ('rpe' / 'rir';
+   chýba = vypnuté), synchronizuje sa s účtom. Hodnotenie nikdy nemení hotové série, XP, rekordy ani úspechy.
+   Odznačená séria si hodnotenie ponechá (skryté); do histórie idú len hodnotenia HOTOVÝCH sérií. */
+const RPE_VALUES = [6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10];
+function validRpe(v) { return typeof v === 'number' && Number.isFinite(v) && v >= 6 && v <= 10 && Math.round(v * 2) === v * 2; }
+function effortMode() {
+  const v = state && state.settings ? state.settings.effort : null;
+  return v === 'rpe' || v === 'rir' ? v : 'off';
+}
+function setEffortMode(mode) {
+  if (mode === 'rpe' || mode === 'rir') state.settings.effort = mode;
+  else delete state.settings.effort;
+  saveState();
+  renderEffortSetting();
+  if (typeof renderTrening === 'function' && activeTab === 'trening') renderTrening();
+}
+function getSetRpe(ex, index, side) {
+  const sess = getSession();
+  const v = sess && sess.setRpe ? sess.setRpe[setSessionKey(ex, index, side)] : undefined;
+  return validRpe(v) ? v : null;
+}
+function setSetRpe(ex, index, side, rpe) {
+  const sess = getSession() || (rpe == null ? null : ensureSession());
+  if (!sess) return false;
+  const key = setSessionKey(ex, index, side);
+  if (rpe == null) {
+    if (sess.setRpe) {
+      delete sess.setRpe[key];
+      if (!Object.keys(sess.setRpe).length) delete sess.setRpe;
+    }
+  } else {
+    if (!validRpe(rpe)) return false;
+    if (!sess.setRpe) sess.setRpe = {};
+    sess.setRpe[key] = rpe;
+  }
+  saveState();
+  return true;
+}
+function effortNum(n) { return n.toLocaleString(langMeta(activeLang()).locale); }
+/* 'RPE 8.5' / 'RIR 1.5' (RIR od 4 vyššie = '4+'); desatinný oddeľovač podľa jazyka. */
+function effortText(rpe, mode) {
+  const m = mode || effortMode();
+  if (m === 'rir') {
+    const rir = 10 - rpe;
+    return 'RIR ' + (rir >= 4 ? effortNum(4) + '+' : effortNum(rir));
+  }
+  return 'RPE ' + effortNum(rpe);
+}
+/* Ťuknutím otvorený list: { ex, index, side, onPick } pre práve upravovanú sériu. */
+let effortTarget = null;
+function effortOptions() {
+  return effortMode() === 'rir'
+    ? [[10, '0'], [9, '1'], [8, '2'], [7, '3'], [6, '4+']].map(([rpe, label]) => [rpe, label === '4+' ? effortNum(4) + '+' : effortNum(Number(label))])
+    : RPE_VALUES.map((v) => [v, effortNum(v)]);
+}
+function renderEffortSheet() {
+  const box = document.getElementById('effort-options');
+  if (!box || !effortTarget) return;
+  const cur = getSetRpe(effortTarget.ex, effortTarget.index, effortTarget.side);
+  const mode = effortMode();
+  document.getElementById('effort-note').textContent = t(mode === 'rir' ? 'effort.noteRir' : 'effort.noteRpe');
+  box.innerHTML = '';
+  effortOptions().forEach(([rpe, label]) => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'chip effort-opt' + (cur === rpe ? ' active' : '');
+    btn.dataset.rpe = String(rpe);
+    btn.textContent = label;
+    btn.setAttribute('aria-label', effortText(rpe, mode));
+    btn.setAttribute('aria-pressed', cur === rpe ? 'true' : 'false');
+    btn.addEventListener('click', () => pickEffort(rpe));
+    box.appendChild(btn);
+  });
+  document.getElementById('btn-effort-clear').hidden = cur === null;
+}
+function openEffortSheet(target) {
+  effortTarget = target;
+  document.getElementById('modal-effort').hidden = false;
+  renderEffortSheet();
+}
+function closeEffortSheet() {
+  document.getElementById('modal-effort').hidden = true;
+  effortTarget = null;
+}
+function pickEffort(rpe) {
+  const tg = effortTarget;
+  if (!tg) return;
+  if (setSetRpe(tg.ex, tg.index, tg.side, rpe)) { setSessionNote(null, 0); if (tg.onPick) tg.onPick(); }
+  closeEffortSheet();
+}
+/* Čip pod riadkom hotovej série (len pri zapnutej námahe a hotovej sérii; inak sa z DOM odstráni). */
+function syncEffortChip(item, ex, index, side, done, readOnly) {
+  let chip = item.querySelector('.set-effort');
+  if (effortMode() === 'off' || !done) { if (chip) chip.remove(); return; }
+  if (!chip) {
+    chip = document.createElement('button');
+    chip.type = 'button';
+    chip.className = 'set-effort';
+    item.appendChild(chip);
+    if (readOnly) chip.disabled = true;
+    else chip.addEventListener('click', () => { closeSetWeightEditor(); openEffortSheet({ ex, index, side, onPick: () => syncEffortChip(item, ex, index, side, true, readOnly) }); });
+  }
+  const v = getSetRpe(ex, index, side);
+  chip.textContent = v === null ? effortMode().toUpperCase() : effortText(v);
+  chip.classList.toggle('rated', v !== null);
+  const n = index + 1;
+  chip.setAttribute('aria-label', (side ? t('unilateral.setSide', { n, side: sideName(side) }) + ' — ' : '')
+    + (v === null ? t('effort.chipAriaEmpty', { n }) : t('effort.chipAria', { n, value: effortText(v) })));
+}
+/* Stav prepínača v Nastaveniach. */
+function renderEffortSetting() {
+  const mode = effortMode();
+  document.querySelectorAll('#effort-chips [data-effort]').forEach((c) => {
+    const on = c.dataset.effort === mode;
+    c.classList.toggle('active', on);
+    c.setAttribute('aria-pressed', on ? 'true' : 'false');
+  });
+}
+function initEffort() {
+  document.querySelectorAll('#effort-chips [data-effort]').forEach((c) => c.addEventListener('click', () => setEffortMode(c.dataset.effort)));
+  on('btn-effort-close', closeEffortSheet);
+  on('btn-effort-clear', () => {
+    const tg = effortTarget;
+    if (tg && setSetRpe(tg.ex, tg.index, tg.side, null)) { setSessionNote(null, 0); if (tg.onPick) tg.onPick(); }
+    closeEffortSheet();
+  });
+  renderEffortSetting();
+}
+
+/* História: setRpe = pole dĺžky sérií (číslo alebo null), jednostranný cvik sideRpe = { left, right }.
+   Zapisujú sa len hodnotenia HOTOVÝCH sérií; bez hodnotenia sa pole vynechá. */
+function historyApplyEffort(entry, ex, sess, sides) {
+  const rpeMap = sess && sess.setRpe;
+  if (!rpeMap) return;
+  const n = sessionSetCount(ex);
+  const read = (i, side) => {
+    const key = setSessionKey(ex, i, side);
+    return sess.completedSets[key] && validRpe(rpeMap[key]) ? rpeMap[key] : null;
+  };
+  if (sides) {
+    const out = { left: [], right: [] };
+    for (let i = 0; i < n; i++) for (const side of ['left', 'right']) out[side].push(sides.includes(side) ? read(i, side) : null);
+    if (out.left.concat(out.right).some((v) => v !== null)) entry.sideRpe = out;
+  } else {
+    const list = [];
+    for (let i = 0; i < n; i++) list.push(read(i));
+    if (list.some((v) => v !== null)) entry.setRpe = list;
+  }
+}
+function cleanRpeList(list, n) {
+  if (!Array.isArray(list) || list.length !== n) return null;
+  return list.every((v) => v === null || validRpe(v)) && list.some((v) => v !== null) ? list.slice() : null;
+}
+/* Platný záznam z histórie: { list } alebo { sides: { left, right } }; inak null. */
+function cleanHistorySetRpe(e) {
+  if (!e) return null;
+  const n = Math.round(Number(e.sets)) || 0;
+  if (n < 1) return null;
+  if (e.unilateral === true) {
+    const s = e.sideRpe;
+    if (!s || typeof s !== 'object') return null;
+    const left = Array.isArray(s.left) && s.left.length === n && s.left.every((v) => v === null || validRpe(v)) ? s.left : null;
+    const right = Array.isArray(s.right) && s.right.length === n && s.right.every((v) => v === null || validRpe(v)) ? s.right : null;
+    if (!left || !right || !left.concat(right).some((v) => v !== null)) return null;
+    return { sides: { left: left.slice(), right: right.slice() } };
+  }
+  const list = cleanRpeList(e.setRpe, n);
+  return list ? { list } : null;
+}
+/* "Námaha: 1: RPE 8.5 · 3: RPE 9" podľa nastavenia (vypnuté = prázdny text, údaje ostávajú uložené). */
+function historyEffortText(e) {
+  const mode = effortMode();
+  if (mode === 'off') return '';
+  const c = cleanHistorySetRpe(e);
+  if (!c) return '';
+  const parts = [];
+  if (c.list) c.list.forEach((v, i) => { if (v !== null) parts.push((i + 1) + ': ' + effortText(v, mode)); });
+  else {
+    const n = c.sides.left.length;
+    for (let i = 0; i < n; i++) for (const side of ['left', 'right']) {
+      const v = c.sides[side][i];
+      if (v !== null) parts.push(t('unilateral.setSide', { n: i + 1, side: sideName(side) }) + ': ' + effortText(v, mode));
+    }
+  }
+  return parts.length ? t('effort.history', { list: parts.join(' · ') }) : '';
+}
+function historyEffortHtml(e, tag) {
+  const text = historyEffortText(e);
+  return text ? `<${tag} class="effort-note">${esc(text)}</${tag}>` : '';
+}
+/* Úprava záznamu v histórii: pole sa orežú / doplnia na nový počet sérií; neplatné sa zahodia. */
+function historyEditEffort(e) {
+  const n = Math.max(1, Math.round(e.sets) || 1);
+  const fit = (list) => (Array.isArray(list) ? list.slice(0, n).concat(new Array(Math.max(0, n - list.length)).fill(null)).map((v) => (validRpe(v) ? v : null)) : null);
+  if (e.setRpe !== undefined) {
+    const l = e.unilateral === true ? null : fit(e.setRpe);
+    if (l && l.some((v) => v !== null)) e.setRpe = l; else delete e.setRpe;
+  }
+  if (e.sideRpe !== undefined) {
+    const s = e.sideRpe && e.unilateral === true ? { left: fit(e.sideRpe.left), right: fit(e.sideRpe.right) } : null;
+    if (s && s.left && s.right && s.left.concat(s.right).some((v) => v !== null)) e.sideRpe = s; else delete e.sideRpe;
+  }
 }
 
 let plateTarget = 0;
@@ -16210,7 +16460,7 @@ function requestUndoSubstitution(slot) {
     const prefix = String(last.key) + ':';
     for (const k of Object.keys(sess.completedSets)) if (k.indexOf(prefix) === 0) delete sess.completedSets[k];
     for (const k of Object.keys(sess.actualFailureSets)) if (k.indexOf(prefix) === 0) delete sess.actualFailureSets[k];
-    for (const field of ['setWeights', 'setReps', 'setWeightLocks', 'setRepsLocks']) {
+    for (const field of ['setWeights', 'setReps', 'setWeightLocks', 'setRepsLocks', 'setRpe']) {
       if (!sess[field]) continue;
       for (const k of Object.keys(sess[field])) if (k.indexOf(prefix) === 0) delete sess[field][k];
       if (!Object.keys(sess[field]).length) delete sess[field];
@@ -22037,14 +22287,14 @@ function historyExerciseDetail(ex, displayName) {
     let out = head + `<div class="history-side-note">${esc(t('unilateral.completed', { sides: completedSidesLabel(done) }))}</div>`;
     const list = sideFailureList(fails);
     if (list) out += `<div class="failure-note">🔥 ${esc(t('unilateral.failureList', { list }))}</div>`;
-    return out + historyWarmupsHtml(ex, 'div') + historyDropsHtml(ex, 'div');
+    return out + historyWarmupsHtml(ex, 'div') + historyEffortHtml(ex, 'div') + historyDropsHtml(ex, 'div');
   }
   const line = `${esc(displayName !== undefined ? displayName : ex.name)} ${ex.sets}×${esc(historyRepsValue(ex))} · ${historyWeightText(ex)}`;
   const fSets = cleanFailureSets(ex.actualFailureSets, ex.sets);
   /* Zlyhanie sa zobrazuje len vtedy, keď bolo naozaj zaznamenané – nikdy z plánu. */
   return (fSets.length
     ? line + `<div class="failure-note">🔥 ${esc(t('failure.sets', { sets: fSets.join(', ') }))}</div>`
-    : line) + historyWarmupsHtml(ex, 'div') + historyDropsHtml(ex, 'div');
+    : line) + historyWarmupsHtml(ex, 'div') + historyEffortHtml(ex, 'div') + historyDropsHtml(ex, 'div');
 }
 /* Riadok s drop sériami v histórii / kalendári (alebo prázdny reťazec). */
 function historyDropsHtml(ex, tag) {
@@ -22180,6 +22430,7 @@ function workoutBlock(w) {
       <span class="day-ex-completed">${esc(t('unilateral.completed', { sides: completedSidesLabel(done) }))}</span>
       ${list ? `<span class="day-ex-failure">🔥 ${esc(t('unilateral.failureList', { list }))}</span>` : ''}
       ${historyWarmupsHtml(ex, 'span')}
+      ${historyEffortHtml(ex, 'span')}
       ${historyDropsHtml(ex, 'span')}
     </div>`;
     }
@@ -22190,6 +22441,7 @@ function workoutBlock(w) {
       <span class="day-ex-meta">${ex.sets} × ${esc(historyRepsValue(ex))} · ${historyWeightText(ex)} · ${ex.setsDone} ${t('history.setsDoneLabel')}</span>
       ${fSets.length ? `<span class="day-ex-failure">🔥 ${esc(t('failure.sets', { sets: fSets.join(', ') }))}</span>` : ''}
       ${historyWarmupsHtml(ex, 'span')}
+      ${historyEffortHtml(ex, 'span')}
       ${historyDropsHtml(ex, 'span')}
     </div>`;
   }).join('');
@@ -22387,6 +22639,7 @@ function renderAll() {
   const fbModal = document.getElementById('modal-fullbody');
   if (fbModal && !fbModal.hidden) renderFullBodyBuilder();
   renderRestSoundSetting();   // stav Zapnuté/Vypnuté musí zareagovať na zmenu jazyka
+  renderEffortSetting();
   refreshUpdateBanner();   // aktualizácia sa môže ponúknuť, len ak nič neupravujeme
 }
 
@@ -22565,6 +22818,7 @@ function historyExerciseEntry(ex, sess) {
     historyApplySetReps(entry, ex);
     historyApplyWarmups(entry, ex);
     historyApplyDrops(entry, ex);
+    historyApplyEffort(entry, ex, sess, sides);
     entry.sidesFailure = cleanFails;
     /* actualFailureSets zostáva zjednotením čísel sérií – pre staršie zobrazenia aj kompatibilitu. */
     entry.actualFailureSets = Array.from(new Set(cleanFails.left.concat(cleanFails.right)))
@@ -22582,6 +22836,7 @@ function historyExerciseEntry(ex, sess) {
     historyApplySetReps(entry, ex);
     historyApplyWarmups(entry, ex);
     historyApplyDrops(entry, ex);
+    historyApplyEffort(entry, ex, sess, null);
   }
   return entry;
 }
@@ -22953,6 +23208,7 @@ function saveHistoryEdit() {
     /* Rovnako opakovania jednotlivých sérií: ručne zmenené opakovania alebo počet sérií ich nahradia. */
     if (Array.isArray(e.setReps) && (!orig || e.reps !== orig.reps || e.sets !== orig.sets || !cleanHistorySetReps(e))) { delete e.setReps; delete e.sideReps; }
     /* Existujúce polia do zlyhania sa orežú na nový počet sérií; starým záznamom sa nepridávajú. */
+    historyEditEffort(e);
     if (Array.isArray(e.actualFailureSets)) e.actualFailureSets = cleanFailureSets(e.actualFailureSets, e.sets);
     if (Array.isArray(e.plannedFailureSets)) e.plannedFailureSets = cleanFailureSets(e.plannedFailureSets, e.sets);
     if (e.unilateral === true) {
@@ -23143,6 +23399,7 @@ function openSettings() {
   renderAutoBackupSetting();
   renderCloudBackupSetting();
   renderRestSoundSetting();
+  renderEffortSetting();
   if (appUpdateCheck !== 'checking' && appUpdateCheck !== 'downloading') appUpdateCheck = '';
   renderAppUpdateSetting();
   const removeBtn = document.getElementById('btn-remove-demo');
@@ -27240,6 +27497,7 @@ function setupEvents() {
   on('btn-open-rest', openRestSheet);
   on('btn-rest-close', closeRestSheet);
   initPlateSheet();
+  initEffort();
   on('tr-start', () => { const p = getPlan(selectedPlan); if (p && ensureSession(p)) saveState(); renderTrening(); window.scrollTo(0, 0); });
   on('btn-fullbody-tile', openFullBodyBuilder);
   on('btn-train-tile', () => {
@@ -28033,6 +28291,7 @@ function tourHelpShow() {
 const NATIVE_BACK_CLOSE = [
   ['modal-rest', '#btn-rest-close'],
   ['modal-plates', '#btn-plates-close'],
+  ['modal-effort', '#btn-effort-close'],
   ['modal-confirm', '#btn-confirm-cancel'],
   ['modal-result', '#btn-result-close'],
   ['modal-setup', null],

@@ -4952,3 +4952,17 @@ html.ios .tour { --tour-top: max(34px, calc(env(safe-area-inset-top, 0px) + 34px
 .warmups .set-weight-editor { flex: none; }
 .warmup-note { display: block; font-size: var(--fs-xs); color: var(--text-dim); margin-top: 2px; }
 .edit-warmup { margin-top: var(--sp-2); }
+/* Námaha série (RPE / RIR): čip pod hotovou sériou, list s hodnotami, prepínač v Nastaveniach */
+.effort-chips { display: flex; gap: var(--sp-2); flex-wrap: wrap; margin-top: var(--sp-2); }
+.effort-chips .len-chip { min-height: 44px; min-width: 44px; }
+.exercise .set-item .set-effort {
+  grid-column: 1 / -1; justify-self: start; min-height: 44px; min-width: 44px; box-sizing: border-box; margin-top: 2px;
+  padding-block: 0; padding-inline: 14px; font-family: inherit; font-size: var(--fs-sm); font-weight: 700; cursor: pointer;
+  background: var(--surface-2); color: var(--text-dim); border: 1px dashed var(--border-strong); border-radius: 999px;
+}
+.exercise .set-item .set-effort.rated { background: var(--surface-3); color: var(--text); border-style: solid; }
+.exercise .set-item .set-effort:disabled { opacity: .6; cursor: default; }
+.effort-options { margin: var(--sp-3) 0; }
+.modal-effort .effort-options .chip.effort-opt { min-height: 44px; min-width: 56px; white-space: nowrap; justify-content: center; }
+.modal-effort .effort-clear[hidden] { display: none; }
+.effort-note { display: block; font-size: var(--fs-xs); color: var(--text-dim); margin-top: 2px; }

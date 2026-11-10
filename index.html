@@ -563,6 +563,19 @@
     </div>
   </div>
 
+  <!-- ============ MODAL: námaha série (RPE / RIR) ============ -->
+  <div class="modal-backdrop" id="modal-effort" hidden>
+    <div class="modal modal-form modal-effort" role="dialog" aria-modal="true" aria-labelledby="effort-title">
+      <div class="sheet-head">
+        <h3 id="effort-title" data-i18n="effort.title">Námaha série</h3>
+        <button type="button" class="btn-icon" id="btn-effort-close" data-i18n-title="effort.close" data-i18n-aria="effort.close">✕</button>
+      </div>
+      <p class="card-note" id="effort-note"></p>
+      <div class="timer-chips effort-options" id="effort-options"></div>
+      <button type="button" class="btn btn-secondary btn-block effort-clear" id="btn-effort-clear" data-i18n="effort.clear">Vymazať</button>
+    </div>
+  </div>
+
   <!-- ============ MODAL: časovač oddychu (Bento list) ============ -->
   <div class="modal-backdrop" id="modal-rest" hidden>
     <div class="modal modal-form modal-rest">
@@ -738,6 +751,18 @@
           <button class="btn btn-secondary btn-block" id="btn-test-sound" data-i18n="settings.testSound">Otestovať zvuk</button>
           <p class="card-note test-sound-hint" id="test-sound-hint" hidden data-i18n="settings.testSoundDisabledHint">Ak chceš zvuk otestovať, zapni zvuk po skončení pauzy.</p>
           <p class="card-note test-sound-error" id="test-sound-error" hidden></p>
+        </div>
+      </section>
+
+      <section class="set-group" aria-labelledby="set-effort-t">
+        <h4 class="set-label" id="set-effort-t" data-i18n="settings.effort">Námaha série</h4>
+        <div class="setting-block">
+          <span class="card-sub" data-i18n="settings.effortHint">Zaznamenaj, ako ťažká bola každá séria. Pri hotových sériách sa objaví malé tlačidlo.</span>
+          <div class="effort-chips" id="effort-chips" role="group" data-i18n-aria="settings.effort">
+            <button type="button" class="len-chip" data-effort="off" aria-pressed="true" data-i18n="settings.off">Vypnuté</button>
+            <button type="button" class="len-chip" data-effort="rpe" aria-pressed="false">RPE</button>
+            <button type="button" class="len-chip" data-effort="rir" aria-pressed="false">RIR</button>
+          </div>
         </div>
       </section>
 
