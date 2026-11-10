@@ -13704,6 +13704,7 @@ function openSetValueEditor(item, cfg) {
    tlačidlá ako predtým (buildWarmupButtons, buildDropButton, buildPlatesButton, výmena) – list sa pri
    ťuknutí najprv zavrie (fokus sa vráti na "⋯"), potom sa vykoná pôvodná akcia. */
 let exActionsOpener = null;
+const editMoreOpen = new WeakSet();   // riadky konceptu editora, ktorým je "Ďalšie možnosti" otvorené (prežije prekreslenie)
 function buildMoreButton(ex, info) {
   const btn = document.createElement('button');
   btn.type = 'button';
@@ -13763,7 +13764,18 @@ function initExerciseActions() {
   on('btn-ex-actions-close', closeExerciseActions);
   /* Zachytávanie: list sa zavrie skôr, než položka vykoná svoju akciu. */
   document.getElementById('ex-actions-list').addEventListener('click', (e) => {
-    if (e.target.closest && e.target.closest('button')) closeExerciseActions();
+    if (!(e.target.closest && e.target.closest('button'))) return;
+    const blk = exActionsOpener && exActionsOpener.closest ? exActionsOpener.closest('.exercise') : null;
+    const row = blk ? blk.dataset.row : undefined;
+    closeExerciseActions();
+    /* Akcia, ktorá prekreslila tréning (rozcvička, drop, rad), zničí pôvodné ⋯ – fokus ide na nové ⋯ toho istého cviku;
+       ak akcia otvorila iný list (kotúče, knižnica), fokus sa nechá tomu listu. */
+    if (row !== undefined) setTimeout(() => {
+      if (document.querySelector('.modal-backdrop:not([hidden])')) return;
+      if (document.activeElement && document.activeElement.classList && document.activeElement.classList.contains('btn-ex-more')) return;
+      const nb = document.querySelector('#exercise-list .exercise[data-row="' + row + '"] .btn-ex-more');
+      if (nb) { try { nb.focus({ preventScroll: true }); } catch (err) { nb.focus(); } }
+    }, 0);
   }, true);
   const modal = document.getElementById('modal-ex-actions');
   modal.addEventListener('click', (e) => { if (e.target === modal) closeExerciseActions(); });
@@ -15291,6 +15303,8 @@ function renderEditPanel() {
     /* Doplnky fázy 1 (rozcvičkový rad, spojenie do supersérie) sú v zatvorenom "Ďalšie možnosti". */
     const moreOpts = document.createElement('details');
     moreOpts.className = 'edit-more';
+    moreOpts.open = editMoreOpen.has(ex);
+    moreOpts.addEventListener('toggle', () => { if (moreOpts.open) editMoreOpen.add(ex); else editMoreOpen.delete(ex); });
     const moreSum = document.createElement('summary');
     moreSum.textContent = t('exactions.moreOptions');
     moreOpts.append(moreSum, warmBox);

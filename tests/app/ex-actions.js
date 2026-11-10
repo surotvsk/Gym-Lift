@@ -81,15 +81,18 @@ function check(name, ok, info) {
     await open(0);
     await p.eval(`(${sheet}.querySelector('.btn-add-warmup').click(), true)`); await wait(150);
     check('+ Warm-up adds a warm-up row', (await p.eval(`${exEl(0)}.querySelectorAll('.warmup-item').length`)) === 1);
+    check('focus moves to the new ⋯ of the same exercise (warm-up)', await p.eval(`document.activeElement === ${exEl(0)}.querySelector('.btn-ex-more')`));
     check('the sheet closed', await sheetHidden());
     await open(0);
     await p.eval(`(${sheet}.querySelector('.btn-warmup-ramp').click(), true)`); await wait(150);
     check('Warm-up ramp fills the ramp (4 rows for 100 kg)', (await p.eval(`${exEl(0)}.querySelectorAll('.warmup-item').length`)) === 4);
     check('the sheet closed (ramp)', await sheetHidden());
+    check('focus moves to the new ⋯ of the same exercise (ramp)', await p.eval(`document.activeElement === ${exEl(0)}.querySelector('.btn-ex-more')`));
     await open(0);
     await p.eval(`(${sheet}.querySelector('.btn-add-drop').click(), true)`); await wait(150);
     check('+ Drop set adds a drop row, .ex-mini appears', (await p.eval(`${exEl(0)}.querySelectorAll('.drop-item').length`)) === 1 && (await p.eval(`!!${exEl(0)}.querySelector('.ex-mini .drop-item')`)));
     check('the sheet closed (drop)', await sheetHidden());
+    check('focus moves to the new ⋯ of the same exercise (drop)', await p.eval(`document.activeElement === ${exEl(0)}.querySelector('.btn-ex-more')`));
     await open(0);
     await p.eval(`(${sheet}.querySelector('.btn-plates').click(), true)`); await wait(150);
     check('Plates opens #modal-plates prefilled with the working weight', await p.eval(`!document.getElementById('modal-plates').hidden && document.getElementById('plate-target').value === '100'`), await p.eval(`document.getElementById('plate-target').value`));
@@ -125,6 +128,21 @@ function check(name, ok, info) {
     check('the summary reads "More options"', await p.eval(`document.querySelector('details.edit-more > summary').textContent.trim()`) === 'More options');
     check('pre-phase-1 controls stay outside (sets to failure, both sides)', await p.eval(`${rows}.every((r) => !r.querySelector('details.edit-more .edit-unilateral') && !!r.querySelector('.edit-unilateral'))`));
     check('opening the details shows the link button', await p.eval(`(() => { const d = document.querySelector('details.edit-more'); d.open = true; return d.querySelector('.edit-link').getBoundingClientRect().height > 0; })()`));
+    await wait(100);
+    const chev = () => p.eval(`(() => { const d = document.querySelector('details.edit-more'); const a = getComputedStyle(d.querySelector('summary'), '::after'); return { t: a.transform, c: a.content, w: parseFloat(a.width), m: getComputedStyle(d.querySelector('summary')).listStyleType }; })()`);
+    await p.eval(`(document.querySelector('details.edit-more').open = false, true)`); await wait(300);
+    const cClosed = await chev();
+    await p.eval(`(document.querySelector('details.edit-more').open = true, true)`); await wait(300);
+    const cOpen = await chev();
+    check('the summary has a visible disclosure chevron that turns when open', cClosed.c !== 'none' && cClosed.w > 0 && cClosed.m === 'none' && cClosed.t !== cOpen.t, [cClosed, cOpen]);
+    /* Spojiť: riadok 0 má otvorené details; po prekreslení zostanú otvorené a ukazujú "Unlink". */
+    await p.eval(`(document.querySelector('details.edit-more .edit-link').click(), true)`); await wait(150);
+    check('Link: the group label is visible, details stay open, Unlink is visible', await p.eval(`(() => { const r = document.querySelectorAll('.edit-row')[0]; const d = r.querySelector('details.edit-more'); const l = r.querySelector('.edit-group-label'); const u = d.querySelector('.edit-link');
+      return !!l && l.getBoundingClientRect().height > 0 && d.open && u.textContent === 'Unlink' && u.getBoundingClientRect().height > 0; })()`));
+    check('rows that were not opened stay closed', await p.eval(`Array.from(document.querySelectorAll('.edit-row')).slice(1).every((r) => !r.querySelector('details.edit-more').open)`));
+    await p.eval(`(document.querySelectorAll('.edit-row')[1].querySelector('.edit-move[data-move="-1"]').click(), true)`); await wait(150);
+    check('moving a row keeps its open state with the row (identity, not index)', await p.eval(`Array.from(document.querySelectorAll('.edit-row')).map((r) => r.querySelector('details.edit-more').open).join()`) === 'false,true,false,false,false');
+    check('the open details moved with its exercise (Bench row)', await p.eval(`document.querySelectorAll('.edit-row')[1].querySelector('.edit-name').value`) === 'Bench press' || (await p.eval(`document.querySelectorAll('.edit-row')[1].querySelector('.edit-name').value`)).startsWith('Bench'));
     await p.eval(`(document.getElementById('btn-edit-cancel').click(), true)`); await wait(300);
 
     console.log('== calm tile at 390 px (no drops)');
@@ -168,6 +186,19 @@ function check(name, ok, info) {
       check(theme + ': sheet items are ≥ 44 px tall', await p.eval(`Array.from(${sheet}.querySelectorAll('#ex-actions-list button:not([hidden])')).every((x) => x.getBoundingClientRect().height >= 44)`));
       await esc(); await wait(60);
     }
+    console.log('== outside a session and read-only segments');
+    await p.eval(`(clearSession(), selectedPlan = 'xtest', renderTrening(), true)`); await wait(200);
+    check('no session: one lone ⋯, no set-count buttons', await p.eval(`(() => { const e = document.querySelector('#exercise-list .exercise'); const r = e.querySelector('.set-count-row'); return !getSession() && !!r && r.querySelectorAll('button').length === 1 && !!r.querySelector('.btn-ex-more') && e.querySelectorAll('.btn-ex-more').length === 1; })()`));
+    await open(0);
+    check('no session: no swap item, Plates present for the barbell', await p.eval(`!${sheet}.querySelector('.exercise-swap') && !!${sheet}.querySelector('.btn-plates')`), await items());
+    await esc(); await wait(60);
+    await p.eval(`(ensureSession(getPlan('xtest')), saveState(), renderTrening(), true)`); await wait(200);
+    await p.eval(`(${exEl(0)}.querySelectorAll('.set-item:not(.drop-item) .set-btn')[0].click(), true)`);   // 1 hotová séria pred výmenou
+    await open(0); await p.eval(`(${sheet}.querySelector('.btn-add-drop').click(), true)`); await wait(150);
+    await open(0); await p.eval(`(${sheet}.querySelector('.exercise-swap').click(), true)`); await wait(200);
+    await p.eval(`(applySubstitution('hammer-curl'), true)`); await wait(300);
+    check('read-only (replaced) segment: no ⋯, drop rows still shown', await p.eval(`(() => { const c = document.querySelector('#exercise-list .exercise.exercise-closed'); return !!c && !c.querySelector('.btn-ex-more') && c.querySelectorAll('.drop-item').length >= 1; })()`), await p.eval(`Array.from(document.querySelectorAll('#exercise-list .exercise')).map((e) => e.className + '|' + e.querySelectorAll('.drop-item').length + '|' + e.querySelectorAll('.btn-ex-more').length)`));
+    check('the replacement tile has its own ⋯', await p.eval(`(() => { const t = Array.from(document.querySelectorAll('#exercise-list .exercise:not(.exercise-closed)')); return t.length >= 1 && t.every((e) => e.querySelectorAll('.btn-ex-more').length === 1); })()`));
     check('no exceptions', p.errors.length === 0, p.errors);
     check('no console errors', logs.length === 0, logs);
   } catch (e) {
