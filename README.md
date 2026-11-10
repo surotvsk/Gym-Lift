@@ -48,6 +48,20 @@ everything on your own device.
 - **Editable rest-timer presets** — the quick-start buttons are yours: change any time, give a preset
   your own name, reorder them, add your own, or delete one for good. A custom time can be started once
   without saving, or saved as a reusable preset.
+- **Start rest automatically** — an optional switch in ⚙️ Settings: ticking a set starts the rest timer
+  with the preset you used last. In a superset or circuit it waits until the last exercise of the round.
+  Off by default, and the setting stays on the device.
+- **Plate calculator** — tap the small plate button on a barbell exercise to see which plates to load
+  on each side of the bar for the set's weight. Set your bar weight and the plates you own in the sheet;
+  the setting is saved with your account.
+- **Warm-up sets and warm-up ramp** — add warm-up sets to any exercise with **+ Warm-up**, or switch on
+  the warm-up ramp in the plan editor to get a ready-made ramp every time. Warm-ups are saved in your
+  history but never change your sets, XP, records or streak.
+- **Effort rating (RPE / RIR)** — an optional setting. When it is on, completed sets get a small chip
+  where you rate how hard the set was, as RPE or as reps in reserve. Off by default; unilateral exercises
+  are rated per side.
+- **Supersets and circuits** — group two or more neighbouring exercises in the plan editor. The workout
+  shows them as one lettered block and moves you to the next exercise in the group after each set.
 - **Comparison with last time** — every exercise shows whether you went heavier or lighter than your
   previous session **of the same workout plan**.
 - **Six languages** — full **Slovak, English, Spanish, Brazilian Portuguese, French and Arabic**
