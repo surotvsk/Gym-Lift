@@ -4966,3 +4966,29 @@ html.ios .tour { --tour-top: max(34px, calc(env(safe-area-inset-top, 0px) + 34px
 .modal-effort .effort-options .chip.effort-opt { min-height: 44px; min-width: 56px; white-space: nowrap; justify-content: center; }
 .modal-effort .effort-clear[hidden] { display: none; }
 .effort-note { display: block; font-size: var(--fs-xs); color: var(--text-dim); margin-top: 2px; }
+/* Supersérie a okruhy: zátvorka na začiatku riadku (logické vlastnosti, v RTL je vpravo) */
+.superset {
+  display: flex; flex-direction: column; gap: 8px;
+  border-inline-start: 4px solid var(--accent); padding-inline-start: var(--sp-2);
+  border-radius: 4px; min-width: 0;
+}
+.superset[data-kind="circuit"] { border-inline-start-color: var(--lime); }
+.superset-label, .hist-superset-label, .edit-group-label {
+  font-size: var(--fs-xs); font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--text-dim);
+}
+.edit-row.in-group { border-inline-start: 4px solid var(--accent); }
+.edit-row.in-group[data-group-kind="circuit"] { border-inline-start-color: var(--lime); }
+.edit-row.group-first { border-end-start-radius: 0; border-end-end-radius: 0; margin-block-end: -4px; }
+.edit-row.group-mid { border-radius: 0; margin-block-end: -4px; }
+.edit-row.group-last { border-start-start-radius: 0; border-start-end-radius: 0; }
+.edit-group-label { flex: 1 1 100%; }
+.edit-link {
+  min-height: 44px; padding-block: 0; padding-inline: 14px; font-family: inherit; font-size: var(--fs-sm); font-weight: 700; cursor: pointer;
+  background: var(--surface-3); color: var(--text); border: 1px dashed var(--border-strong); border-radius: 999px;
+}
+.hist-superset {
+  display: block; margin-block: 4px; padding-inline-start: var(--sp-2); text-align: start;
+  border-inline-start: 3px solid var(--accent);
+}
+.hist-superset[data-kind="circuit"] { border-inline-start-color: var(--lime); }
+.hist-superset-label { display: block; }

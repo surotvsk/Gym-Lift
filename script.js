@@ -7598,6 +7598,8 @@ const BASICS_I18N = {
     'effort.clear': 'Vymazať', 'effort.chipAria': 'Séria {n}: námaha {value}. Ťuknutím zmeníš.',
     'effort.chipAriaEmpty': 'Séria {n}: námaha nezadaná. Ťuknutím ju zadáš.', 'effort.noteRpe': 'RPE: ako ťažká séria bola, od 6 (ľahká) po 10 (naplno).',
     'effort.noteRir': 'RIR: koľko opakovaní ti ešte zostávalo v rezerve (0 = žiadne).', 'effort.history': 'Námaha: {list}',
+    'superset.label': 'Supersérie {l}', 'superset.circuit': 'Okruh {l}',
+    'superset.link': 'Spojiť s ďalším', 'superset.unlink': 'Zrušiť spojenie',
   },
   en: {
     'plates.button': 'Plates', 'plates.buttonTitle': 'Plate calculator: what to load on each side of the bar',
@@ -7619,6 +7621,8 @@ const BASICS_I18N = {
     'effort.clear': 'Clear', 'effort.chipAria': 'Set {n}: effort {value}. Tap to change.',
     'effort.chipAriaEmpty': 'Set {n}: effort not rated. Tap to rate.', 'effort.noteRpe': 'RPE: how hard the set was, from 6 (easy) to 10 (all-out).',
     'effort.noteRir': 'RIR: reps you still had left in the tank (0 = none).', 'effort.history': 'Effort: {list}',
+    'superset.label': 'Superset {l}', 'superset.circuit': 'Circuit {l}',
+    'superset.link': 'Link with next', 'superset.unlink': 'Unlink',
   },
   es: {
     'plates.button': 'Discos', 'plates.buttonTitle': 'Calculadora de discos: qué poner a cada lado de la barra',
@@ -7640,6 +7644,8 @@ const BASICS_I18N = {
     'effort.clear': 'Borrar', 'effort.chipAria': 'Serie {n}: esfuerzo {value}. Toca para cambiarlo.',
     'effort.chipAriaEmpty': 'Serie {n}: esfuerzo sin anotar. Toca para anotarlo.', 'effort.noteRpe': 'RPE: dificultad de la serie de 6 (fácil) a 10 (esfuerzo máximo).',
     'effort.noteRir': 'RIR: repeticiones que te quedaban en reserva (0 = ninguna).', 'effort.history': 'Esfuerzo: {list}',
+    'superset.label': 'Superserie {l}', 'superset.circuit': 'Circuito {l}',
+    'superset.link': 'Unir con el siguiente', 'superset.unlink': 'Separar',
   },
   'pt-BR': {
     'plates.button': 'Anilhas', 'plates.buttonTitle': 'Calculadora de anilhas: o que colocar em cada lado da barra',
@@ -7661,6 +7667,8 @@ const BASICS_I18N = {
     'effort.clear': 'Limpar', 'effort.chipAria': 'Série {n}: esforço {value}. Toque para alterar.',
     'effort.chipAriaEmpty': 'Série {n}: esforço sem nota. Toque para registrar.', 'effort.noteRpe': 'RPE: dificuldade da série de 6 (fácil) a 10 (esforço máximo).',
     'effort.noteRir': 'RIR: repetições que você ainda conseguiria fazer (0 = nenhuma).', 'effort.history': 'Esforço: {list}',
+    'superset.label': 'Super-set {l}', 'superset.circuit': 'Circuito {l}',
+    'superset.link': 'Ligar ao próximo', 'superset.unlink': 'Desligar',
   },
   fr: {
     'plates.button': 'Disques', 'plates.buttonTitle': 'Calculateur de disques : quoi charger de chaque côté de la barre',
@@ -7682,6 +7690,8 @@ const BASICS_I18N = {
     'effort.clear': 'Effacer', 'effort.chipAria': 'Série {n} : effort {value}. Touche pour modifier.',
     'effort.chipAriaEmpty': 'Série {n} : effort non noté. Touche pour le noter.', 'effort.noteRpe': 'RPE : difficulté de la série de 6 (facile) à 10 (effort maximal).',
     'effort.noteRir': 'RIR : répétitions qu’il te restait en réserve (0 = aucune).', 'effort.history': 'Effort : {list}',
+    'superset.label': 'Superset {l}', 'superset.circuit': 'Circuit {l}',
+    'superset.link': 'Lier au suivant', 'superset.unlink': 'Délier',
   },
   ar: {
     'plates.button': 'الأقراص', 'plates.buttonTitle': 'حاسبة الأقراص: ما الذي يوضع على كل جانب من البار',
@@ -7703,6 +7713,8 @@ const BASICS_I18N = {
     'effort.clear': 'مسح', 'effort.chipAria': 'المجموعة {n}: الجهد {value}. المس للتغيير.',
     'effort.chipAriaEmpty': 'المجموعة {n}: لم يُسجَّل الجهد. المس للتسجيل.', 'effort.noteRpe': 'RPE: مدى صعوبة المجموعة من 6 (سهلة) إلى 10 (أقصى جهد).',
     'effort.noteRir': 'RIR: عدد التكرارات التي كان بإمكانك إضافتها (0 = لا شيء).', 'effort.history': 'الجهد: {list}',
+    'superset.label': 'سوبرست {l}', 'superset.circuit': 'دائرة {l}',
+    'superset.link': 'ربط بالتالي', 'superset.unlink': 'فك الربط',
   },
 };
 for (const lang of Object.keys(BASICS_I18N)) Object.assign(I18N[lang] || (I18N[lang] = {}), BASICS_I18N[lang]);
@@ -10333,6 +10345,7 @@ function normalizePlans() {
     delete plan.name;
     if (!Array.isArray(plan.exercises)) plan.exercises = [];
     /* Miesto tréningu (gym/home/outdoor) – voliteľné; neznáma hodnota sa vyprázdni. */
+    normalizeGroups(plan.exercises);   // neplatné `group` (osamotené / nesusedné) sa odstráni
     plan.location = (plan.location === 'gym' || plan.location === 'home' || plan.location === 'outdoor') ? plan.location : null;
   }
   const ids = Object.keys(state.plans);
@@ -12865,6 +12878,138 @@ function setPlanManageMode(on) {
   renderTrening();
 }
 
+/* ---------- Supersérie a okruhy ----------
+   Riadok plánu má voliteľné `group` (reťazec). Skupinu tvoria LEN susedné riadky s rovnakou hodnotou (aspoň 2);
+   všetko ostatné je neplatné a normalizeGroups to odstráni. Sused sa počíta v poradí cvikov tréningu
+   (exerciseSlots), takže tréning aj automatická pauza vidia rovnaké skupiny. Pridané cviky sú vždy bez skupiny. */
+function groupIdOf(row) {
+  return row && typeof row === 'object' && typeof row.group === 'string' && row.group ? row.group : '';
+}
+
+/* Odstráni `group` z riadkov, ktoré nesedia v susednom behu ≥ 2 riadkov s rovnakou hodnotou. Mení pole na mieste,
+   vracia true pri zmene. Nikdy nehádže (aj pri nesprávnych dátach) a nič iné než neplatné `group` nemení. */
+function normalizeGroups(exercises) {
+  if (!Array.isArray(exercises)) return false;
+  const drop = [];
+  for (let i = 0; i < exercises.length; i++) {
+    const row = exercises[i];
+    if (!row || typeof row !== 'object' || !Object.prototype.hasOwnProperty.call(row, 'group')) continue;
+    const g = groupIdOf(row);
+    if (!g || (groupIdOf(exercises[i - 1]) !== g && groupIdOf(exercises[i + 1]) !== g)) drop.push(row);
+  }
+  for (const row of drop) delete row.group;
+  return drop.length > 0;
+}
+
+/* Behy skupín nad zoznamom riadkov: Map<index, { label, pos, size, kind, group }>. `limit` = koľko prvých riadkov
+   môže byť v skupine (ostatné sú pridané cviky). Písmená idú podľa poradia výskytu. */
+function groupInfoOf(rows, limit) {
+  const map = new Map();
+  const n = Math.min(rows.length, limit === undefined ? rows.length : limit);
+  let letter = 0;
+  for (let i = 0; i < n;) {
+    const g = groupIdOf(rows[i]);
+    let j = i + 1;
+    if (g) while (j < n && groupIdOf(rows[j]) === g) j++;
+    const size = j - i;
+    if (g && size >= 2) {
+      const label = String.fromCharCode(65 + (letter % 26)) + (letter >= 26 ? String(Math.floor(letter / 26)) : '');
+      letter++;
+      for (let k = i; k < j; k++) map.set(k, { label, pos: k - i, size, kind: size >= 3 ? 'circuit' : 'superset', group: g });
+    }
+    i = j;
+  }
+  return map;
+}
+
+function supersetInfo(plan) {
+  const base = plan && Array.isArray(plan.exercises) ? plan.exercises.length : 0;
+  return groupInfoOf(exerciseSlots(plan).map((s) => s.ex), base);
+}
+
+/* Ďalší člen skupiny (index slotu) alebo null, ak je cvik posledný / bez skupiny. */
+function nextInGroup(plan, rowIndex) {
+  const info = supersetInfo(plan).get(rowIndex);
+  return info && info.pos < info.size - 1 ? rowIndex + 1 : null;
+}
+function isLastInGroup(plan, rowIndex) {
+  return nextInGroup(plan, rowIndex) === null;
+}
+
+function newGroupId() {
+  return 'g' + Date.now().toString(36) + Math.random().toString(36).slice(2, 5);
+}
+
+/* Spojí riadok i s nasledujúcim (do jeho skupiny, prípadne založí novú); celý sused. beh sa pridá do tej istej skupiny. */
+function linkWithNext(rows, i) {
+  if (!Array.isArray(rows) || i < 0 || i >= rows.length - 1 || !rows[i] || !rows[i + 1]) return false;
+  const a = rows[i], b = rows[i + 1];
+  const old = groupIdOf(b);
+  const g = groupIdOf(a) || old || newGroupId();
+  a.group = g;
+  b.group = g;
+  if (old && old !== g) for (let k = i + 2; k < rows.length && groupIdOf(rows[k]) === old; k++) rows[k].group = g;
+  normalizeGroups(rows);
+  return true;
+}
+
+/* Rozpojí riadok i od nasledujúceho (zvyšok skupiny dostane novú); posledný člen skupiny z nej jednoducho vystúpi. */
+function unlinkRow(rows, i) {
+  if (!Array.isArray(rows) || i < 0 || i >= rows.length || !rows[i]) return false;
+  const g = groupIdOf(rows[i]);
+  if (!g) return false;
+  if (groupIdOf(rows[i + 1]) === g) {
+    const next = newGroupId();
+    for (let k = i + 1; k < rows.length && groupIdOf(rows[k]) === g; k++) rows[k].group = next;
+  } else {
+    delete rows[i].group;
+  }
+  normalizeGroups(rows);
+  return true;
+}
+
+function superLabelText(info) {
+  return t(info.kind === 'circuit' ? 'superset.circuit' : 'superset.label', { l: info.label });
+}
+
+/* Po označení série ide fokus na rovnakú sériu ďalšieho člena skupiny (posledný člen nikam neskáče). */
+function focusNextSupersetSet(item) {
+  const block = item.closest ? item.closest('.exercise') : null;
+  if (!block || block.dataset.slot === undefined) return;
+  const plan = getSession() ? currentPlan() : getPlan(selectedPlan);
+  const next = plan ? nextInGroup(plan, Number(block.dataset.slot)) : null;
+  if (next === null) return;
+  const targets = Array.from(document.querySelectorAll('#exercise-list .exercise[data-slot="' + next + '"]')).filter((b) => !b.classList.contains('exercise-closed'));
+  const target = targets[targets.length - 1];
+  if (!target) return;
+  const mine = Array.from(block.querySelectorAll('.sets .set-item')).indexOf(item);
+  const items = Array.from(target.querySelectorAll('.sets .set-item'));
+  const pick = items[mine] || items.find((it) => !it.classList.contains('set-done')) || items[0];
+  const btn = pick && pick.querySelector('.set-btn');
+  if (!btn || btn.disabled) return;
+  try { btn.focus({ preventScroll: true }); } catch (e) { btn.focus(); }
+  if (btn.scrollIntoView) btn.scrollIntoView({ block: 'nearest' });
+}
+
+/* Zátvorka skupiny v histórii: len pre SUSEDNÉ záznamy s rovnakou skupinou. Bez skupín vráti kusy spojené ako doteraz. */
+function historyGroupWrap(entries, pieces, sep) {
+  const info = groupInfoOf(Array.isArray(entries) ? entries : []);
+  if (!info.size) return pieces.join(sep);
+  let html = '', prevWrap = true;
+  for (let i = 0; i < pieces.length;) {
+    const gi = info.get(i);
+    if (!gi) {
+      html += (html && !prevWrap ? sep : '') + pieces[i];
+      prevWrap = false; i++;
+      continue;
+    }
+    const inner = pieces.slice(i, i + gi.size).join(sep);
+    html += (html && !prevWrap ? sep : '') + '<div class="hist-superset" data-kind="' + gi.kind + '"><span class="hist-superset-label">' + esc(superLabelText(gi)) + '</span>' + inner + '</div>';
+    prevWrap = true; i += gi.size;
+  }
+  return html;
+}
+
 function renderTrening() {
   trainRender();
   if (getSession() && getSession().quick) keepSessionPlan();   // rýchly tréning sa nikdy nezobrazí ako iný plán
@@ -12949,9 +13094,33 @@ function renderTrening() {
   /* Jeden plánový cvik môže mať po výmene počas tréningu viac segmentov:
      pôvodný cvik (iba na čítanie, jeho hotové série zostávajú pod jeho menom)
      a aktívnu náhradu. Plán sa pritom nikdy nemení. */
-  for (const info of exerciseSlots(plan)) {
-    for (const seg of exerciseSegments(info)) list.appendChild(buildExerciseBlock(seg, info, plan));
-  }
+  const slots = exerciseSlots(plan);
+  const groups = supersetInfo(plan);
+  let wrap = null;
+  slots.forEach((info, si) => {
+    const gi = groups.get(si);
+    let host = list;
+    if (gi) {
+      if (gi.pos === 0 || !wrap) {
+        wrap = document.createElement('div');
+        wrap.className = 'superset';
+        wrap.dataset.kind = gi.kind;
+        const lab = document.createElement('div');
+        lab.className = 'superset-label';
+        lab.textContent = superLabelText(gi);
+        wrap.appendChild(lab);
+        list.appendChild(wrap);
+      }
+      host = wrap;
+    } else {
+      wrap = null;
+    }
+    for (const seg of exerciseSegments(info)) {
+      const blk = buildExerciseBlock(seg, info, plan);
+      if (gi) blk.dataset.slot = String(si);
+      host.appendChild(blk);
+    }
+  });
 
   updateSummary();         // skutočný počet hotových sérií aj stav tlačidla Dokončiť
   refreshUpdateBanner();   // otvorenie/zatvorenie editora plánu mení stav "zaneprázdnený"
@@ -13254,6 +13423,7 @@ function buildSetItem(ex, index, plannedFailure, side, readOnly) {
       syncDone();
       setSessionNote(null, 0);
       updateSummary();
+      if (setMark('done', ex, index, side)) focusNextSupersetSet(item);   // supersérie: ďalší člen
     });
   }
 
@@ -14860,10 +15030,17 @@ function renderEditPanel() {
 
   const rows = document.getElementById('edit-rows');
   rows.innerHTML = '';
+  normalizeGroups(editDraft);
+  const draftGroups = groupInfoOf(editDraft);
   editDraft.forEach((ex, idx) => {
     const row = document.createElement('div');
     row.className = 'edit-row';
     row.dataset.idx = idx;
+    const gInfo = draftGroups.get(idx);
+    if (gInfo) {
+      row.classList.add('in-group', 'group-' + (gInfo.pos === 0 ? 'first' : gInfo.pos === gInfo.size - 1 ? 'last' : 'mid'));
+      row.dataset.groupKind = gInfo.kind;
+    }
     const exLabel = escAttr(exerciseDisplayName(ex));
     row.innerHTML = `
       <span class="edit-tools">
@@ -15009,6 +15186,26 @@ function renderEditPanel() {
       if (assistCheck.checked) editDraft[idx].assisted = true; else delete editDraft[idx].assisted;
     });
     row.appendChild(assistBox);
+
+    /* Supersérie / okruh: štítok skupiny a tlačidlo "Spojiť s ďalším" / "Zrušiť spojenie". */
+    if (gInfo) {
+      const gl = document.createElement('span');
+      gl.className = 'edit-group-label';
+      gl.textContent = superLabelText(gInfo);
+      row.appendChild(gl);
+    }
+    const linked = !!gInfo && gInfo.pos < gInfo.size - 1;
+    if (linked || idx < editDraft.length - 1) {
+      const lb = document.createElement('button');
+      lb.type = 'button';
+      lb.className = 'edit-link';
+      lb.textContent = t(linked ? 'superset.unlink' : 'superset.link');
+      lb.addEventListener('click', () => {
+        if (linked) unlinkRow(editDraft, idx); else linkWithNext(editDraft, idx);
+        renderEditPanel();
+      });
+      row.appendChild(lb);
+    }
 
     const nameInput = row.querySelector('.edit-name');
     const numInputs = row.querySelectorAll('.edit-num');
@@ -15298,8 +15495,11 @@ function saveEditPlan() {
     if (ex.assisted === true) out.assisted = true;
     /* Rozcvičkový rad na začiatku tréningu: ukladá sa len keď je zapnutý. */
     if (ex.warmupRamp === true) out.warmupRamp = true;
+    /* Supersérie / okruh: skupina sa zachová (neplatné sa odstráni hneď nižšie). */
+    if (groupIdOf(ex)) out.group = ex.group;
     return out;
   });
+  normalizeGroups(plan.exercises);
   dedupeExerciseIdentities();
   /* Zmenená strana / asistencia sa premietne do rovnakého cviku v ostatných plánoch; váha, série a opakovania nikdy
      (váha ide len do pamäte ako predvoľba pre nový riadok).
@@ -22100,7 +22300,7 @@ function renderPokrok() {
       const setsDone = w.exercises.reduce((s, ex) => s + exerciseSlotCount(ex), 0);
       const row = document.createElement('div');
       row.className = 'history-row';
-      const detail = w.exercises.map(e => historyExerciseDetail(e)).join('<br>');
+      const detail = historyGroupWrap(w.exercises, w.exercises.map(e => historyExerciseDetail(e)), '<br>');
       row.innerHTML = `
         <div class="history-main">
           <div class="history-name">${esc(historyPlanName(w))}</div>
@@ -22417,7 +22617,7 @@ function closeDay() {
 function workoutBlock(w) {
   const div = document.createElement('div');
   div.className = 'day-workout';
-  const rows = w.exercises.map(ex => {
+  const rowParts = w.exercises.map(ex => {
     if (ex.unilateral === true) {
       const sets = Math.round(Number(ex.sets)) || 0;
       const done = cleanSideSets(ex.sidesDone, sets);
@@ -22444,7 +22644,8 @@ function workoutBlock(w) {
       ${historyEffortHtml(ex, 'span')}
       ${historyDropsHtml(ex, 'span')}
     </div>`;
-  }).join('');
+  });
+  const rows = historyGroupWrap(w.exercises, rowParts, '');
   div.innerHTML = `
     <div class="day-workout-head">
       <span class="day-workout-name">${esc(historyPlanName(w))}</span>
@@ -22797,6 +22998,7 @@ function historyExerciseEntry(ex, sess) {
   };
   /* Asistovaný cvik: značka na zázname (additívne), aby história ukazovala "Pomoc" aj po zmene plánu. */
   if (isAssisted(ex)) entry.assisted = true;
+  if (groupIdOf(ex)) entry.group = ex.group;   // supersérie: skupina sa v histórii len zobrazuje
   if (sides) {
     /* Jednostranný cvik: každá strana sa zaznamenáva samostatne.
        setsDone zostáva SÚČET oboch strán – rovnaký význam ako pri bežnom cviku. */
@@ -22935,11 +23137,14 @@ function confirmFinish() {
     const w = identity ? nextWorkingWeight(completedMainSets(ex, sess), { assisted: isAssisted(ex) }) : null;
     if (w !== null) remembered[identity] = { weight: w };
   };
-  for (const info of exerciseSlots(plan)) {
+  const finishGroups = supersetInfo(plan);
+  for (const [si, info] of exerciseSlots(plan).entries()) {
     const steps = substitutionSteps(info.slot);
     const originalDone = countDoneSets(info.ex);
+    const slotGroup = finishGroups.get(si);   // náhrada patrí do skupiny svojho slotu
+    const tagGroup = (e) => { if (slotGroup) e.group = slotGroup.group; else delete e.group; return e; };
     if (!steps.length || originalDone > 0) {
-      const entry = historyExerciseEntry(info.ex, sess);
+      const entry = tagGroup(historyExerciseEntry(info.ex, sess));
       noteWeight(info.ex);
       if (steps.length) {
         /* Zapíše sa cvik, ktorý pôvodný NAOZAJ vystriedal – pri reťazci teda prvý, nie posledný. */
@@ -22949,7 +23154,7 @@ function confirmFinish() {
       exercises.push(entry);
     }
     for (let i = 0; i < steps.length; i++) {
-      const entry = historyExerciseEntry(steps[i].ex, sess);
+      const entry = tagGroup(historyExerciseEntry(steps[i].ex, sess));
       noteWeight(steps[i].ex);
       if (steps[i].oldName) entry.substitutedFor = steps[i].oldName;
       /* Aj náhrada, ktorá bola neskôr vymenená, si nechá svoje série a povie, kým bola nahradená. */
