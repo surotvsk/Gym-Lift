@@ -7579,6 +7579,7 @@ for (const lang of Object.keys(SYNC_I18N)) Object.assign(I18N[lang] || (I18N[lan
    všetkých 6 jazykov, pri štarte sa vlejú do I18N ako SYNC_I18N. */
 const BASICS_I18N = {
   sk: {
+    'settings.autoRest': 'Začať pauzu automaticky', 'settings.autoRestHint': 'Po označení série sa sám spustí odpočet oddychu. V supersérii až po poslednom cviku.',
     'plates.button': 'Kotúče', 'plates.buttonTitle': 'Kalkulačka kotúčov: čo naložiť na každú stranu činky',
     'plates.title': 'Kalkulačka kotúčov', 'plates.close': 'Zavrieť',
     'plates.target': 'Cieľová váha', 'plates.targetAria': 'Cieľová váha v kg',
@@ -7602,6 +7603,7 @@ const BASICS_I18N = {
     'superset.link': 'Spojiť s ďalším', 'superset.unlink': 'Zrušiť spojenie',
   },
   en: {
+    'settings.autoRest': 'Start rest automatically', 'settings.autoRestHint': 'The rest timer starts by itself when you mark a set done. In a superset, after the last exercise.',
     'plates.button': 'Plates', 'plates.buttonTitle': 'Plate calculator: what to load on each side of the bar',
     'plates.title': 'Plate calculator', 'plates.close': 'Close',
     'plates.target': 'Target weight', 'plates.targetAria': 'Target weight in kg',
@@ -7625,6 +7627,7 @@ const BASICS_I18N = {
     'superset.link': 'Link with next', 'superset.unlink': 'Unlink',
   },
   es: {
+    'settings.autoRest': 'Iniciar el descanso automáticamente', 'settings.autoRestHint': 'El temporizador de descanso empieza solo al marcar una serie. En una superserie, tras el último ejercicio.',
     'plates.button': 'Discos', 'plates.buttonTitle': 'Calculadora de discos: qué poner a cada lado de la barra',
     'plates.title': 'Calculadora de discos', 'plates.close': 'Cerrar',
     'plates.target': 'Peso objetivo', 'plates.targetAria': 'Peso objetivo en kg',
@@ -7648,6 +7651,7 @@ const BASICS_I18N = {
     'superset.link': 'Unir con el siguiente', 'superset.unlink': 'Separar',
   },
   'pt-BR': {
+    'settings.autoRest': 'Iniciar o descanso automaticamente', 'settings.autoRestHint': 'O cronômetro de descanso começa sozinho ao marcar uma série. Em uma superssérie, após o último exercício.',
     'plates.button': 'Anilhas', 'plates.buttonTitle': 'Calculadora de anilhas: o que colocar em cada lado da barra',
     'plates.title': 'Calculadora de anilhas', 'plates.close': 'Fechar',
     'plates.target': 'Peso alvo', 'plates.targetAria': 'Peso alvo em kg',
@@ -7671,6 +7675,7 @@ const BASICS_I18N = {
     'superset.link': 'Ligar ao próximo', 'superset.unlink': 'Desligar',
   },
   fr: {
+    'settings.autoRest': 'Démarrer le repos automatiquement', 'settings.autoRestHint': 'Le minuteur de repos démarre seul quand tu valides une série. Dans une superset, après le dernier exercice.',
     'plates.button': 'Disques', 'plates.buttonTitle': 'Calculateur de disques : quoi charger de chaque côté de la barre',
     'plates.title': 'Calculateur de disques', 'plates.close': 'Fermer',
     'plates.target': 'Charge visée', 'plates.targetAria': 'Charge visée en kg',
@@ -7694,6 +7699,7 @@ const BASICS_I18N = {
     'superset.link': 'Lier au suivant', 'superset.unlink': 'Délier',
   },
   ar: {
+    'settings.autoRest': 'بدء الراحة تلقائيًا', 'settings.autoRestHint': 'يبدأ مؤقت الراحة تلقائيًا عند تحديد مجموعة كمكتملة. في السوبرست، بعد آخر تمرين.',
     'plates.button': 'الأقراص', 'plates.buttonTitle': 'حاسبة الأقراص: ما الذي يوضع على كل جانب من البار',
     'plates.title': 'حاسبة الأقراص', 'plates.close': 'إغلاق',
     'plates.target': 'الوزن المستهدف', 'plates.targetAria': 'الوزن المستهدف بالكيلوغرام',
@@ -13125,6 +13131,7 @@ function renderTrening() {
     for (const seg of exerciseSegments(info)) {
       const blk = buildExerciseBlock(seg, info, plan);
       if (gi) blk.dataset.slot = String(si);
+      blk.dataset.row = String(si);   // index slotu aj bez skupiny (auto pauza)
       host.appendChild(blk);
     }
   });
@@ -13430,7 +13437,15 @@ function buildSetItem(ex, index, plannedFailure, side, readOnly) {
       syncDone();
       setSessionNote(null, 0);
       updateSummary();
-      if (setMark('done', ex, index, side)) focusNextSupersetSet(item, index, side);   // supersérie: ďalší člen
+      if (setMark('done', ex, index, side)) {
+        focusNextSupersetSet(item, index, side);   // supersérie: ďalší člen
+        const blk = item.closest ? item.closest('.exercise') : null;
+        const sides = exerciseSideOrder(ex);
+        /* Auto pauza: pri jednostrannom cviku až po poslednej strane danej série (nie medzi Ľ a P). */
+        if (blk && blk.dataset.row !== undefined && (!sides || !side || side === sides[sides.length - 1])) {
+          maybeAutoRest(getSession() ? currentPlan() : getPlan(selectedPlan), Number(blk.dataset.row));
+        }
+      }
     });
   }
 
@@ -22847,6 +22862,7 @@ function renderAll() {
   const fbModal = document.getElementById('modal-fullbody');
   if (fbModal && !fbModal.hidden) renderFullBodyBuilder();
   renderRestSoundSetting();   // stav Zapnuté/Vypnuté musí zareagovať na zmenu jazyka
+  renderAutoRestSetting();
   renderEffortSetting();
   refreshUpdateBanner();   // aktualizácia sa môže ponúknuť, len ak nič neupravujeme
 }
@@ -23611,6 +23627,7 @@ function openSettings() {
   renderAutoBackupSetting();
   renderCloudBackupSetting();
   renderRestSoundSetting();
+  renderAutoRestSetting();
   renderEffortSetting();
   if (appUpdateCheck !== 'checking' && appUpdateCheck !== 'downloading') appUpdateCheck = '';
   renderAppUpdateSetting();
@@ -24188,6 +24205,28 @@ function playChime(length) {
   });
 }
 
+/* Auto pauza (len zariadenie): po označení série spustí odpočet, ak je zapnutá, beží tréning,
+   cvik je posledný v skupine a odpočet ešte nebeží. Predvoľba = naposledy spustená, inak prvá. */
+function autoRestOn() {
+  return !!(state && state.settings && state.settings.autoRest === true);
+}
+function maybeAutoRest(plan, rowIndex) {
+  if (!autoRestOn() || !getSession() || !plan || timerInterval !== null) return false;
+  if (!isLastInGroup(plan, rowIndex)) return false;
+  const list = restPresets();
+  const pr = restPresetById(state.settings.lastRestPresetId) || list[0];
+  if (!pr || !(pr.seconds > 0)) return false;
+  startTimer(pr.seconds, pr.id, true);
+  return true;
+}
+function renderAutoRestSetting() {
+  const btn = document.getElementById('btn-auto-rest');
+  const stateEl = document.getElementById('auto-rest-state');
+  const on = autoRestOn();
+  if (btn) { btn.setAttribute('aria-checked', on ? 'true' : 'false'); btn.classList.toggle('on', on); }
+  if (stateEl) stateEl.textContent = on ? t('settings.on') : t('settings.off');
+}
+
 function restSoundOn() {
   return !!(state && state.settings && state.settings.restSound === true);
 }
@@ -24426,6 +24465,7 @@ function startTimer(seconds, presetId, quiet) {
   timerPausedLeft = null;
   timerTotalMs = seconds * 1000;
   timerPresetId = presetId || null;
+  if (presetId && state.settings.lastRestPresetId !== presetId) { state.settings.lastRestPresetId = presetId; saveState(); }   // pre auto pauzu
   const bar = document.getElementById('timer-bar');
   bar.classList.remove('done');
   bar.removeAttribute('aria-label');
@@ -25733,7 +25773,7 @@ function saveActivityEdit() {
    zmeny na oboch stranách = trvalý konflikt, kým používateľ nevyberie.
 
    Iba na zariadení (nikdy sa nenahrávajú a cloud ich neprepíše):
-     settings.lang, restSound, restSoundLength, customRestMinutes, customRestSeconds,
+     settings.lang, restSound, restSoundLength, autoRest, lastRestPresetId, customRestMinutes, customRestSeconds,
      autoBackup, autoBackupOfferedAt, autoBackupWorkoutCount, communityOptIn,
      cloudBackup (starý prepínač), activeSession, activeActivity, odpočet pauzy.
    Všetko ostatné (história, plány, cviky, aktivity, miery, jedlo, profil, ciele,
@@ -25755,7 +25795,7 @@ const SYNC_TRIGGER_THROTTLE_MS = 10000;
 const CLOUD_MEDIA_MAX_BYTES = 50 * 1024 * 1024;   // Supabase Free per-file limit
 const BACKUP_SCHEMA_VERSION = 3;                  // zhoduje sa s state.version
 const DEVICE_SETTING_KEYS = ['healthConnect', 'lang', 'restSound', 'restSoundLength', 'customRestMinutes', 'customRestSeconds',
-  'autoBackup', 'autoBackupOfferedAt', 'autoBackupWorkoutCount', 'communityOptIn', 'cloudBackup'];
+  'autoBackup', 'autoBackupOfferedAt', 'autoBackupWorkoutCount', 'communityOptIn', 'cloudBackup', 'autoRest', 'lastRestPresetId'];
 const DEVICE_STATE_KEYS = ['activeSession', 'activeActivity'];
 
 /* Testovací háčik: v produkcii nič nerobí. Testy ním vkladajú deterministické
@@ -27320,6 +27360,11 @@ function setupEvents() {
     if (timerInterval !== null) nativeRestSync();
     unlockAudio();               // používateľský pokyn = povolenie prehrávať zvuk
     renderRestSoundSetting();
+    saveState();
+  });
+  on('btn-auto-rest', () => {
+    state.settings.autoRest = !autoRestOn();
+    renderAutoRestSetting();
     saveState();
   });
   on('btn-backup-save', saveBackupNow);
