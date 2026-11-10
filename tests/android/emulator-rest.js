@@ -12,8 +12,8 @@ const sh = (...args) => adb('shell', ...args);
 const wait = ms => new Promise(r => setTimeout(r, ms));
 let c, ev, pass = 0, fail = 0;
 function check(name, ok) { console.log((ok ? 'PASS ' : 'FAIL ') + name); ok ? pass++ : fail++; }
-// Zvuk konca pauzy hrá na hlasitosti budíka (USAGE_ALARM), nie ako zvuk notifikácie.
-const alarmChime = () => sh('dumpsys', 'audio').split('\n').some(l => /type:android\.media\.MediaPlayer/.test(l) && /usage=USAGE_ALARM/.test(l));
+// Zvuk konca pauzy hrá na hlasitosti médií (USAGE_MEDIA: slúchadlá/Bluetooth, tlačidlá hlasitosti), nie ako zvuk notifikácie.
+const alarmChime = () => sh('dumpsys', 'audio').split('\n').some(l => /type:android\.media\.MediaPlayer/.test(l) && /usage=USAGE_MEDIA/.test(l));
 const alert = () => sh('dumpsys', 'notification', '--noredact').split('\n').some(l => /NotificationRecord/.test(l) && l.includes(pkg) && /id=6202\b/.test(l));
 async function launch() {
   sh('input', 'keyevent', '224');
@@ -52,7 +52,7 @@ async function timer(code) { await ev(code + '; nativeRestQueue'); }
     sh('input', 'keyevent', '3'); sh('input', 'keyevent', '223');
     await waitFor(() => alert(), 8000, 'alert').catch(() => false);
     check('screen-off background timer posts alert', alert());
-    check('chime plays on the alarm stream', alarmChime());
+    check('chime plays on the media stream', alarmChime());
     check('alert channel itself is silent (no double sound)', !/channel=rest-alert/.test(sh('dumpsys', 'notification', '--noredact')));
     await launch(); await timer('startTimer(3); pauseRestTimer()'); await wait(4000);
     check('paused timer does not alert', !alert());

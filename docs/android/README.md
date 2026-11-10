@@ -42,14 +42,17 @@ The upload keystore lives outside the repo in `claude-code/android-keys/`.
 show a foreground countdown; longer rests use an alarm and a regular countdown notification.
 The app explains Android's Alarms & reminders access once. Without it, long background
 alerts may be delayed. Notification permission and channel settings must also allow alerts.
-With the Rest sound switch on, the chime plays on the **alarm volume** (`USAGE_ALARM`), like the
-Clock app's timer: it rings even when the phone is on vibrate/silent, and in Do Not Disturb it
-follows Android's "Alarms" exception. The notification channel `rest-alarm` only vibrates, so the
+With the Rest sound switch on, the chime plays on the **media volume** (`USAGE_MEDIA`, like music and
+Bluetooth audio): through connected wired/Bluetooth headphones, otherwise the speaker; the volume
+buttons control it; it plays on vibrate/silent, and in Do Not Disturb it follows Android's "Media"
+exception. Music playing at the same time ducks briefly (transient audio focus) instead of stopping. The notification channel `rest-alarm` only vibrates, so the
 sound never plays twice. A sound timer counts as native even without notification permission,
 which keeps the web gong silent. With the switch off, the `rest-silent` channel shows the alert
 without sound or vibration. The web sound-length preference applies only to the browser gong.
 Owner device check 2026-11-10 (Samsung A21s, v105): the old notification-volume chime was silent
 in vibrate mode and too quiet. That is why Android versionCode 5 has the alarm stream and a louder chime (≈ −11 dBFS RMS, was −23).
+Second owner check (vc6): the alarm stream played on the speaker even with headphones and could not be
+turned down, so versionCode 7 uses the media stream.
 
 Before a Play release, review the exact-alarm and foreground-service declarations for
 this user-started workout rest timer. Device checks must cover screen off, battery saver,
