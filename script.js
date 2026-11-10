@@ -1498,7 +1498,7 @@ const I18N = {
     'picker.subtitle': 'Zaškrtni cviky, ktoré chceš pridať do tohto plánu.',
     'picker.apply': 'Pridať do plánu',
     'unilateral.trainBoth': 'Cvičiť každú stranu samostatne',
-    'shared.note': 'Spoločné s ostatnými plánmi',
+    'shared.note': 'Váha platí len pre tento plán. Jedna strana a asistencia platia vo všetkých plánoch.',
     'unilateral.startLeft': 'Začať ľavou',
     'unilateral.startRight': 'Začať pravou',
     'unilateral.left': 'Ľavá',
@@ -1611,7 +1611,7 @@ const I18N = {
     'trening.addPlan': '+ Pridať tréning',
     'trening.managePlans': 'Upraviť plány',
     'trening.managePlansDone': 'Hotovo',
-    'trening.manageHint': 'Potiahni plán a zmeň jeho poradie, alebo ťukni na ✏️ a uprav ho.',
+    'trening.manageHint': 'Potiahni ⠿ a zmeň poradie plánov – ukladá sa hneď. Ťukni na ✏️ a uprav plán.',
     'trening.movePlanLeft': 'Posunúť doľava',
     'trening.movePlanRight': 'Posunúť doprava',
     'trening.dragPlan': 'Presunúť plán',
@@ -2433,7 +2433,7 @@ const I18N = {
     'picker.subtitle': 'Tick the exercises you want to add to this plan.',
     'picker.apply': 'Add to plan',
     'unilateral.trainBoth': 'Train both sides separately',
-    'shared.note': 'Shared with your other plans',
+    'shared.note': 'This weight is only for this plan. One-side and assisted settings apply to all your plans.',
     'unilateral.startLeft': 'Start with left',
     'unilateral.startRight': 'Start with right',
     'unilateral.left': 'Left',
@@ -2546,7 +2546,7 @@ const I18N = {
     'trening.addPlan': '+ Add workout plan',
     'trening.managePlans': 'Manage plans',
     'trening.managePlansDone': 'Done',
-    'trening.manageHint': 'Drag a plan to change its order, or tap ✏️ to edit it.',
+    'trening.manageHint': 'Drag ⠿ to change the order – it saves right away. Tap ✏️ to edit a plan.',
     'trening.movePlanLeft': 'Move left',
     'trening.movePlanRight': 'Move right',
     'trening.dragPlan': 'Move workout plan',
@@ -3374,7 +3374,7 @@ const I18N = {
     'picker.subtitle': 'Marca los ejercicios que quieres añadir a este plan.',
     'picker.apply': 'Añadir al plan',
     'unilateral.trainBoth': 'Entrenar ambos lados por separado',
-    'shared.note': 'Compartido con tus otros planes',
+    'shared.note': 'Este peso es solo para este plan. Los ajustes de un lado y asistido se aplican a todos tus planes.',
     'unilateral.startLeft': 'Empezar por la izquierda',
     'unilateral.startRight': 'Empezar por la derecha',
     'unilateral.left': 'Izquierda',
@@ -3487,7 +3487,7 @@ const I18N = {
     'trening.addPlan': '+ Añadir plan de entrenamiento',
     'trening.managePlans': 'Gestionar planes',
     'trening.managePlansDone': 'Listo',
-    'trening.manageHint': 'Arrastra un plan para cambiar su orden, o toca ✏️ para editarlo.',
+    'trening.manageHint': 'Arrastra ⠿ para cambiar el orden: se guarda al instante. Toca ✏️ para editar un plan.',
     'trening.movePlanLeft': 'Mover a la izquierda',
     'trening.movePlanRight': 'Mover a la derecha',
     'trening.dragPlan': 'Mover plan de entrenamiento',
@@ -4307,7 +4307,7 @@ const I18N = {
     'picker.subtitle': 'Marque os exercícios que você quer adicionar a este plano.',
     'picker.apply': 'Adicionar ao plano',
     'unilateral.trainBoth': 'Treinar cada lado separadamente',
-    'shared.note': 'Compartilhado com seus outros planos',
+    'shared.note': 'Este peso vale só para este plano. Os ajustes de um lado e assistido valem para todos os seus planos.',
     'unilateral.startLeft': 'Começar pelo esquerdo',
     'unilateral.startRight': 'Começar pelo direito',
     'unilateral.left': 'Esquerdo',
@@ -4420,7 +4420,7 @@ const I18N = {
     'trening.addPlan': '+ Adicionar plano de treino',
     'trening.managePlans': 'Gerenciar planos',
     'trening.managePlansDone': 'Pronto',
-    'trening.manageHint': 'Arraste um plano para mudar a ordem, ou toque em ✏️ para editá-lo.',
+    'trening.manageHint': 'Arraste ⠿ para mudar a ordem – é salvo na hora. Toque em ✏️ para editar um plano.',
     'trening.movePlanLeft': 'Mover para a esquerda',
     'trening.movePlanRight': 'Mover para a direita',
     'trening.dragPlan': 'Mover plano de treino',
@@ -5240,7 +5240,7 @@ const I18N = {
     'picker.subtitle': 'Coche les exercices que tu veux ajouter à ce plan.',
     'picker.apply': 'Ajouter au plan',
     'unilateral.trainBoth': 'Travailler chaque côté séparément',
-    'shared.note': 'Partagé avec tes autres plans',
+    'shared.note': 'Ce poids ne vaut que pour ce plan. Les réglages d’un seul côté et assisté s’appliquent à tous tes plans.',
     'unilateral.startLeft': 'Commencer à gauche',
     'unilateral.startRight': 'Commencer à droite',
     'unilateral.left': 'Gauche',
@@ -5353,7 +5353,7 @@ const I18N = {
     'trening.addPlan': '+ Ajouter un plan d’entraînement',
     'trening.managePlans': 'Gérer les plans',
     'trening.managePlansDone': 'Terminé',
-    'trening.manageHint': 'Fais glisser un plan pour changer l’ordre, ou touche ✏️ pour le modifier.',
+    'trening.manageHint': 'Fais glisser ⠿ pour changer l’ordre : c’est enregistré tout de suite. Touche ✏️ pour modifier un plan.',
     'trening.movePlanLeft': 'Déplacer à gauche',
     'trening.movePlanRight': 'Déplacer à droite',
     'trening.dragPlan': 'Déplacer le plan d’entraînement',
@@ -6179,7 +6179,7 @@ const I18N = {
     'picker.subtitle': 'حدّد التمارين التي تريد إضافتها إلى هذه الخطة.',
     'picker.apply': 'إضافة إلى الخطة',
     'unilateral.trainBoth': 'تدريب كل جهة على حدة',
-    'shared.note': 'مشترك مع خططك الأخرى',
+    'shared.note': 'هذا الوزن لهذه الخطة فقط. إعدادات الجانب الواحد والمساعدة تنطبق على كل خططك.',
     'unilateral.startLeft': 'البدء باليسرى',
     'unilateral.startRight': 'البدء باليمنى',
     'unilateral.left': 'اليسرى',
@@ -6305,7 +6305,7 @@ const I18N = {
     'trening.addPlan': '+ إضافة خطة تمرين',
     'trening.managePlans': 'إدارة الخطط',
     'trening.managePlansDone': 'تم',
-    'trening.manageHint': 'اسحب الخطة لتغيير ترتيبها، أو اضغط ✏️ لتعديلها.',
+    'trening.manageHint': 'اسحب ⠿ لتغيير الترتيب، ويُحفظ فورًا. اضغط ✏️ لتعديل الخطة.',
     'trening.movePlanLeft': 'تحريك لليسار',
     'trening.movePlanRight': 'تحريك لليمين',
     'trening.dragPlan': 'تحريك خطة التمرين',
@@ -12692,8 +12692,9 @@ function updatePlanManageButton() {
   btn.setAttribute('aria-pressed', planManageMode ? 'true' : 'false');
   const label = btn.querySelector('.bt-line') || btn;
   label.textContent = t(planManageMode ? 'trening.managePlansDone' : 'trening.managePlans');
-  const hint = document.getElementById('plan-manage-hint');
-  if (hint) hint.hidden = !planManageMode;
+  // Lišta s Hotovo je priamo nad plánmi: poradie sa ukladá hneď, Hotovo iba ukončí úpravy.
+  const bar = document.getElementById('plan-manage-bar');
+  if (bar) bar.hidden = !planManageMode;
 }
 
 function setPlanManageMode(on) {
@@ -14106,7 +14107,7 @@ function renderEditPanel() {
       <input type="number" class="edit-num" min="0" max="999" value="${ex.weight}">
       <button class="btn-icon btn-icon-danger" title="${t('trening.deleteExerciseTitle')}">🗑️</button>`;
 
-    /* Poznámka pod váhou: cvik je aj v inom pláne, takže váha a strana sú spoločné. */
+    /* Poznámka pod váhou: cvik je aj v inom pláne – váha je len pre tento plán, strana a asistencia sú spoločné. */
     const sharedNote = document.createElement('div');
     sharedNote.className = 'edit-shared-note';
     sharedNote.textContent = t('shared.note');
@@ -14345,7 +14346,7 @@ function seedDraftRow(row) {
   return !!src;
 }
 
-/* Poznámka "Spoločné s ostatnými plánmi" len pri riadku, ktorého zmena sa naozaj rozšíri:
+/* Poznámka (váha len pre tento plán, strana a asistencia pre všetky) len pri riadku, ktorého zmena sa naozaj rozšíri:
    prvý riadok svojej identity v návrhu a cvik je aj v inom pláne. */
 function refreshSharedNotes() {
   if (!Array.isArray(editDraft)) return;
@@ -14509,7 +14510,8 @@ function saveEditPlan() {
     return out;
   });
   dedupeExerciseIdentities();
-  /* Zmenená váha / strana sa premietne do rovnakého cviku v ostatných plánoch; série a opakovania nikdy.
+  /* Zmenená strana / asistencia sa premietne do rovnakého cviku v ostatných plánoch; váha, série a opakovania nikdy
+     (váha ide len do pamäte ako predvoľba pre nový riadok).
      Len PRVÝ riadok danej identity v pláne je zdroj (neskorší duplikát zostáva lokálny). */
   const shareAt = Date.now();
   editDraft.forEach((d, i) => {
@@ -14526,7 +14528,7 @@ function saveEditPlan() {
     else if (uni && row.startSide !== base.startSide) values.startSide = row.startSide;
     if ((row.assisted === true) !== (base.assisted === true)) values.assisted = row.assisted === true;
     if (Object.keys(values).length) {
-      applyExerciseDefaults(identity, values, shareAt);
+      applyExerciseDefaults(identity, values, shareAt, plan.id);
       /* Rozbehnutý tréning: novšia úprava používateľa vyhráva nad pamätanou váhou pri Dokončiť. */
       const sess = getSession();
       if (sess) {
@@ -21934,9 +21936,12 @@ function exerciseMemoryEntry(identity) {
   return typeof m.weight === 'number' && Number.isFinite(w) && w >= 0 && w <= 999 ? m : null;
 }
 
-/* Zapíše spoločné hodnoty cviku do každého riadka plánu s rovnakou identitou a do settings.exerciseMemory.
-   Nič nezapisuje a nevolá saveState; vráti true, ak sa niečo zmenilo (zmena => `at`). */
-function applyExerciseDefaults(identity, values, at) {
+/* Zapíše spoločné hodnoty cviku do riadkov plánov s rovnakou identitou a do settings.exerciseMemory.
+   Váha patrí plánu (rozhodnutie vlastníka 2026-11-10): do riadka sa zapíše iba v pláne `planId`; v ostatných
+   plánoch zostáva ich vlastná. Jednostrannosť, strana a asistencia sú vlastnosti cviku a platia všade.
+   settings.exerciseMemory drží poslednú váhu ako predvoľbu pre nový riadok / rýchly tréning.
+   Nevolá saveState; vráti true, ak sa niečo zmenilo (zmena => `at`). */
+function applyExerciseDefaults(identity, values, at, planId) {
   if (!identity || !values) return false;
   const fields = ['weight', 'unilateral', 'startSide', 'assisted'].filter((f) => values[f] !== undefined);
   if (!fields.length) return false;
@@ -21947,11 +21952,11 @@ function applyExerciseDefaults(identity, values, at) {
       changed = true;
     }
   };
-  for (const plan of Object.values(state.plans || {})) {
+  for (const [pid, plan] of Object.entries(state.plans || {})) {
     if (!plan || !Array.isArray(plan.exercises)) continue;
     /* Zdvojený cvik v jednom pláne (pyramída, rozcvička) je zámer: spoločné hodnoty dostane len PRVÝ riadok. */
     const ex = plan.exercises.find((r) => r && exerciseRowIdentity(r) === identity);
-    if (ex) for (const f of fields) setField(ex, f, values[f]);
+    if (ex) for (const f of fields) if (f !== 'weight' || pid === planId) setField(ex, f, values[f]);
   }
   if (!state.settings.exerciseMemory || typeof state.settings.exerciseMemory !== 'object' || Array.isArray(state.settings.exerciseMemory)) {
     state.settings.exerciseMemory = {};
@@ -21970,8 +21975,8 @@ function applyExerciseDefaults(identity, values, at) {
   return changed;
 }
 /* Samostatné volanie (jedno saveState => normálny nárast počítadla zmien, synchronizuje sa). */
-function rememberExerciseDefaults(identity, values, at) {
-  const changed = applyExerciseDefaults(identity, values, at == null ? Date.now() : at);
+function rememberExerciseDefaults(identity, values, at, planId) {
+  const changed = applyExerciseDefaults(identity, values, at == null ? Date.now() : at, planId);
   if (changed) saveState();
   return changed;
 }
@@ -22188,7 +22193,7 @@ function confirmFinish() {
       const row = p && Array.isArray(p.exercises) ? p.exercises.find((r) => r && exerciseRowIdentity(r) === identity) : null;
       if (row && typeof row.weight === 'number') rowsW[pid] = row.weight;
     }
-    if (!applyExerciseDefaults(identity, values, rememberedAt)) continue;
+    if (!applyExerciseDefaults(identity, values, rememberedAt, plan.id)) continue;   // váha len do plánu tohto tréningu
     memoryBefore[identity] = cur;
     memoryAfter[identity] = Object.assign({}, values);
     if (Object.keys(rowsW).length) memoryRowBefore[identity] = rowsW;
@@ -26208,6 +26213,7 @@ function setupEvents() {
   on('btn-edit-cancel', cancelEditPlan);
 
   on('btn-manage-plans', () => setPlanManageMode(!planManageMode));
+  on('btn-plan-manage-done', () => setPlanManageMode(false));
   on('btn-add-plan', openPlanChoice);
   on('btn-choice-blank', () => { closePlanChoice(); addPlan(); });
   on('btn-choice-fullbody', openFullBodyBuilder);

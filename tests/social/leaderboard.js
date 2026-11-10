@@ -247,7 +247,8 @@ scenario('rollback 0017_down and re-apply', async () => {
   check('old behaviour: old achievement ids count (25+100+750), level = total/100', !r.error && row(a).achievement === 875 && row(a).level === Math.floor(row(a).total / 100) && row(a).level === 98, J(r) + J(row(a)));
   sql(`update public.leaderboard_entries set achievement_xp = 5100 where user_id = ${lit(a.id)};`);
   L.reapply(undone);
-  check('re-applied: version 9', sqlVal('select public.community_social_version()') === '9');
+  // 0017 a všetko novšie (0018 → 10) sa vráti; verzia je tá pred rollbackom.
+  check('re-applied: version restored (' + undone.versionBefore + ')', Number(undone.versionBefore) >= 9 && sqlVal('select public.community_social_version()') === undone.versionBefore);
   check('re-applied: level follows the new curve again', row(a).level === levelOf(row(a).total), J(row(a)));
   const n = await member('rb17-n');
   await submit(n, 600, 100, 12, ['first', 'w10']);

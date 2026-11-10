@@ -296,8 +296,9 @@ plan in orange and the recommended one marked ✦.
 
 **Manage plans** (next to **+ Add workout plan**) switches the same grid into a one-plan-per-row
 management list with a ⠿ drag handle and a ✏️ pencil on each plan: drag a plan to change the rotation
-order, or tap the pencil to edit that plan. The handles stay hidden during normal use so the names keep
-the whole card. **✏️ Edit plan** always edits the selected plan, and the editor's ‹ › buttons reorder
+order, or tap the pencil to edit that plan. A lime bar right above the plans says that the new order
+**saves right away** and has a big **Done** button that ends managing (v106; the *Done* tile below
+does the same). The handles stay hidden during normal use so the names keep the whole card. **✏️ Edit plan** always edits the selected plan, and the editor's ‹ › buttons reorder
 one step at a time.
 
 Editing a plan lets you rename it, delete it with 🗑️, reorder **and** add its exercises, and change each
@@ -367,10 +368,12 @@ how the accents are typed), so *My curl* in two of your plans is one exercise. W
 two completed sets**; if no weight was used twice, it is the weight of the last completed set. Drop sets
 are not counted. Examples: *40 / 45 / 45* gives 45, *60 / 60 / 50* gives 60, *60 / 60 / 80* gives 60,
 *50 / 55 / 60* gives 60, and *60 plus a 40 kg drop set* gives 60. For an exercise done one side at a time
-the rule is applied per side and the heavier side wins. The weight is written into the first row of that
-exercise in **every** plan (a second row of the same exercise in one plan, such as a warm-up or pyramid
-set, keeps its own value) and kept in your settings, so it syncs to your other devices. Sets and reps stay
-per plan. **Quick workout** starts from the remembered weight too. A workout in progress uses the values
+the rule is applied per side and the heavier side wins. **The weight belongs to the plan (v106):** it is
+written into the first row of that exercise in the plan you trained (a second row of the same exercise in
+one plan, such as a warm-up or pyramid set, keeps its own value); the same exercise in your other plans
+keeps its own weight, so you can use 80 kg in one plan and 60 kg in another. The last weight is also kept
+in your settings (it syncs to your other devices) as the starting weight for a **new** row and for
+**Quick workout**. Sets and reps stay per plan. A workout in progress uses the values
 it started with, so a change that arrives from another device never alters a running session. If you
 change the weight, one-sided setting or assisted mark of an exercise in the plan editor *during* a workout,
 the running workout keeps its starting values, the new values apply from the next workout, and Finish does
@@ -378,8 +381,10 @@ not overwrite them with the remembered weight (your newer edit wins). **Undo thi
 remembered weights back to what they were before Finish (a mistyped 600 does not stay), unless you have
 changed that weight since.
 
-**Shared settings in the plan editor.** The weight, **Train both sides separately** and the starting side
-of an exercise are shared with your other plans (the editor says *Shared with your other plans*).
+**Shared settings in the plan editor.** **Train both sides separately**, the starting side and the assisted
+mark of an exercise are shared with your other plans; the weight is only for this plan (the editor says
+*This weight is only for this plan. One-side and assisted settings apply to all your plans.*). Before v106
+the weight was shared too; plans keep whatever weight they had when they updated.
 A new row starts from the remembered values when you leave the name field; values you typed
 yourself are never overwritten.
 

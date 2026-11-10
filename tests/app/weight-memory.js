@@ -4,8 +4,8 @@
 
      GQ_TEST_PORT=8190 node tests/app/weight-memory.js
 
-   Checks: Dokončiť zapíše váhu do každého plánu s rovnakým cvikom (nie sérií/opakovania) aj do
-   settings.exerciseMemory; história drží skutočné váhy; Zahodiť nič nemení; snímka: zmena plánu zvonka
+   Checks: Dokončiť zapíše váhu iba do plánu tréningu (váha patrí plánu, rozhodnutie vlastníka 2026-11-10;
+   strana/asistencia sú spoločné) aj do settings.exerciseMemory (predvoľba pre nový riadok / rýchly tréning); história drží skutočné váhy; Zahodiť nič nemení; snímka: zmena plánu zvonka
    počas tréningu nezmení rozbehnutý tréning (ani cez syncApply-ekvivalent), starší tréning bez snímky sa správa ako doteraz;
    rýchly tréning s vlastným cvikom zapíše pamäť; completedMainSets == setWeights z histórie; po obnovení stránky všetko ostane;
    žiadny zápis, keď sa nič nezmenilo. */
@@ -54,7 +54,7 @@ function check(name, ok, info) {
     await E(`(() => { const ok = document.getElementById('btn-setup-ok'); if (ok && !document.getElementById('modal-setup').hidden) ok.click(); setLang('en'); return true; })()`);
     await E(setup);
 
-    console.log('== Finish applies the working weight to every plan with the same exercise');
+    console.log('== Finish applies the working weight to its own plan only (weight per plan)');
     await start('wpush');
     await E(`(() => { const [a] = ${wi('wpush')}.exercises; setSetWeight(a, 1, 62.5); setSetWeight(a, 2, 62.5);
       toggleSetMark('done', a, 0, true); toggleSetMark('done', a, 1, true); toggleSetMark('done', a, 2, true); saveState(); return true; })()`);
@@ -65,7 +65,7 @@ function check(name, ok, info) {
       mem: state.settings.exerciseMemory['bench-press'], hist: state.history[state.history.length - 1].exercises[0],
       sess: getSession() })`);
     check('Push bench row = 62.5', after.push === 62.5, after.push);
-    check('Full Body bench row = 62.5', after.full === 62.5, after.full);
+    check('Full Body bench row keeps its own 60 (weight is per plan)', after.full === 60, after.full);
     check('Full Body sets/reps unchanged (4 x 5)', after.fullSets === 4 && after.fullReps === 5, after);
     check('exerciseMemory[bench-press] = 62.5 with at', after.mem && after.mem.weight === 62.5 && Math.abs(after.mem.at - Date.now()) < 60000, after.mem);
     check('history still 60/62.5/62.5', J(after.hist.setWeights) === J([60, 62.5, 62.5]), after.hist.setWeights);
@@ -74,17 +74,17 @@ function check(name, ok, info) {
     const seqAfter = await E(`syncMetaRead().seq`);
     check('change counter advanced (syncs)', seqAfter > seqBefore, { seqBefore, seqAfter });
     await start('wfull');
-    check('next session in Full Body shows 62.5 in all 4 sets', J(await shownWeights(0)) === J(['62.5', '62.5', '62.5', '62.5']) || J(await shownWeights(0)) === J(['62.5 kg', '62.5 kg', '62.5 kg', '62.5 kg']) || (await E(`[0,1,2,3].every((i) => effectiveSetWeight(${wi('wfull')}.exercises[0], i) === 62.5)`)), await shownWeights(0));
+    check('next session in Full Body shows its own 60 in all 4 sets', await E(`[0,1,2,3].every((i) => effectiveSetWeight(${wi('wfull')}.exercises[0], i) === 60)`), await shownWeights(0));
 
     console.log('== Snapshot: outside change during a running session');
-    check('session has a snapshot for the exercises', await E(`!!getSession().snapshot && getSession().snapshot['bench-press#0'].weight === 62.5`));
+    check('session has a snapshot for the exercises', await E(`!!getSession().snapshot && getSession().snapshot['bench-press#0'].weight === 60`));
     await E(`(() => { ${wi('wfull')}.exercises[0].weight = 80; ${wi('wpush')}.exercises[0].weight = 80; saveState(); renderTrening(); return true; })()`);
     check('plan row changed from "another device" to 80', (await rowW('wfull', 0)) === 80);
-    check('running session still shows 62.5 (effectiveSetWeight)', await E(`[0,1,2,3].every((i) => effectiveSetWeight(${wi('wfull')}.exercises[0], i) === 62.5)`));
+    check('running session still shows 60 (effectiveSetWeight)', await E(`[0,1,2,3].every((i) => effectiveSetWeight(${wi('wfull')}.exercises[0], i) === 60)`));
     const shown = J(await shownWeights(0));
     check('running session DOM shows no 80', shown.indexOf('80') < 0, shown);
-    check('slot exercise carries the snapshot weight', await E(`exerciseSlots(currentPlan())[0].ex.weight === 62.5`));
-    check('snapshot survives normalize (reload path)', await E(`normalizeActiveSession(JSON.parse(JSON.stringify(getSession()))).snapshot['bench-press#0'].weight === 62.5`));
+    check('slot exercise carries the snapshot weight', await E(`exerciseSlots(currentPlan())[0].ex.weight === 60`));
+    check('snapshot survives normalize (reload path)', await E(`normalizeActiveSession(JSON.parse(JSON.stringify(getSession()))).snapshot['bench-press#0'].weight === 60`));
     check('normalizer drops invalid snapshot entries', await E(`(() => { const s = JSON.parse(JSON.stringify(getSession())); s.snapshot = { a: { weight: 'x' }, b: { weight: 5, unilateral: 1 }, c: 7 }; const n = normalizeActiveSession(s).snapshot; return JSON.stringify(n) === JSON.stringify({ b: { weight: 5 } }); })()`));
     // starší tréning bez snímky: správanie ako doteraz (živý riadok plánu)
     await E(`(() => { delete getSession().snapshot; renderTrening(); return true; })()`);
@@ -143,7 +143,7 @@ function check(name, ok, info) {
     await finish();
     const dup = await E(`({ a0: state.plans['dA'].exercises[0].weight, a1: state.plans['dA'].exercises[1].weight, b: state.plans['dB'].exercises[0].weight,
       mem: state.settings.exerciseMemory['bench-press'].weight, h: state.history[state.history.length - 1].exercises.map((e) => ({ sw: e.setWeights, pw: e.plannedWeight, w: e.weight })) })`);
-    check('A slot1 = 62.5, A slot2 stays 80, B = 62.5, memory 62.5', dup.a0 === 62.5 && dup.a1 === 80 && dup.b === 62.5 && dup.mem === 62.5, dup);
+    check('A slot1 = 62.5, A slot2 stays 80, B keeps its own 60, memory 62.5', dup.a0 === 62.5 && dup.a1 === 80 && dup.b === 60 && dup.mem === 62.5, dup);
     check('history records both slots with their own planned weight (60 / 80)', dup.h.length === 2 && dup.h[0].pw === 60 && dup.h[1].pw === 80 && J(dup.h[0].sw) === J([62.5, 62.5]), dup.h);
 
     console.log('== Quick workout / library start uses the remembered weight');
@@ -181,7 +181,7 @@ function check(name, ok, info) {
     await edit('wpush', typeNum(0, 2, 70));
     const bump = await save();
     check('editor save is one change-counter bump', bump === 1, bump);
-    check('bench weight 70 in Full Body first row', await rowW('wfull', 0) === 70);
+    check('Push edit to 70 does not touch Full Body (stays 60)', await rowW('wpush', 0) === 70 && await rowW('wfull', 0) === 60);
     check('later duplicate bench row in Full Body keeps its own 40', await rowW('wfull', 2) === 40);
     check('memory bench = 70', await E(`state.settings.exerciseMemory['bench-press'].weight`) === 70);
     await edit('wpush', typeNum(0, 0, 5) + typeNum(0, 1, 3));
@@ -197,7 +197,7 @@ function check(name, ok, info) {
     check('unchanged editor save: memory .at and every plan row unchanged', await E(`state.settings.exerciseMemory['bench-press'].at`) === atBefore && await snapRows() === rowsBefore);
     await edit('wfull', typeNum(2, 2, 45));
     await save();
-    check('edit of a later duplicate row stays local (Push 70, first Full Body row 70, dup 45)', await rowW('wpush', 0) === 70 && await rowW('wfull', 0) === 70 && await rowW('wfull', 2) === 45);
+    check('edit of a later duplicate row stays local (Push 70, first Full Body row 60, dup 45)', await rowW('wpush', 0) === 70 && await rowW('wfull', 0) === 60 && await rowW('wfull', 2) === 45);
     await edit('wpush', `(() => { const c = rows()[1].querySelector('.edit-unilateral'); c.checked = true; c.dispatchEvent(new Event('change', { bubbles: true })); rows()[1].querySelector('.side-chip[data-side="right"]').click(); })();`);
     await save();
     const cu = await E(`({ u: ${wi('wfull')}.exercises[1].unilateral, s: ${wi('wfull')}.exercises[1].startSide, mem: state.settings.exerciseMemory[exerciseRowIdentity(state.plans['wpush'].exercises[1])], sets: ${wi('wfull')}.exercises[1].sets })`);
@@ -214,7 +214,7 @@ function check(name, ok, info) {
     check('note visible on the seeded row', await E(`!document.querySelectorAll('#edit-rows .edit-row')[1].querySelector('.edit-shared-note').hidden`));
     await E(`(() => { const el = document.querySelectorAll('#edit-rows .edit-row')[1].querySelectorAll('.edit-num')[2]; el.value = '80'; el.dispatchEvent(new Event('input', { bubbles: true })); return true; })()`);
     await save();
-    check('seeded row changed to 80 propagates to Push + Full Body first row, not Full Body dup', await rowW('wpush', 0) === 80 && await rowW('wfull', 0) === 80 && await rowW('wfull', 2) === 45 && await rowW('wlegs', 1) === 80);
+    check('seeded row changed to 80 stays in Legs (Push 70, Full Body 60, dup 45); memory 80', await rowW('wpush', 0) === 70 && await rowW('wfull', 0) === 60 && await rowW('wfull', 2) === 45 && await rowW('wlegs', 1) === 80 && await E(`state.settings.exerciseMemory['bench-press'].weight`) === 80);
     await edit('wlegs', `addLibraryExerciseToDraft('dumbbell-curl'); 0`);
     const seeded = await E(`(() => { const r = editDraft[2]; return r ? [r.weight, r.unilateral] : null; })()`);
     await E(`cancelEditPlan()`);
@@ -222,7 +222,7 @@ function check(name, ok, info) {
     const stBeforeEdit = await fullState();
     await edit('wlegs', typeNum(1, 2, 99));
     await E(`cancelEditPlan()`);
-    check('cancel/discard editor: no propagation, nothing changed', await fullState() === stBeforeEdit && await rowW('wpush', 0) === 80);
+    check('cancel/discard editor: no propagation, nothing changed', await fullState() === stBeforeEdit && await rowW('wpush', 0) === 70);
     await E(`(() => { ${wi('wpush')}.exercises.push({ name: 'Cable Thing', sets: 3, reps: 10, weight: 33 }); backfillState(); rememberExerciseDefaults(exerciseIdentity({ name: 'Cable Thing' }), { weight: 33 }, 5); return true; })()`);
     const rename = (i, name, commit = true) => `(() => { const el = document.querySelectorAll('#edit-rows .edit-row')[${i}].querySelector('.edit-name'); el.value = ${J(name)}; el.dispatchEvent(new Event('input', { bubbles: true })); ${commit ? "el.dispatchEvent(new Event('change', { bubbles: true }));" : ''} })();`;
     await edit('wlegs', rename(0, 'cable  THING'));
@@ -255,7 +255,7 @@ function check(name, ok, info) {
     await E(rename(2, 'cable thing'));
     check('weight typed first (60) survives a name commit whose memory is 33', await E(`editDraft[2].weight === 60 && document.querySelectorAll('#edit-rows .edit-row')[2].querySelectorAll('.edit-num')[2].value === '60'`));
     await save();
-    check('the typed 60 propagates to the other plan and memory', await rowW('wpush', 2) === 60 && await E(`state.settings.exerciseMemory[exerciseIdentity({ name: 'Cable Thing' })].weight`) === 60);
+    check('the typed 60 goes to memory; the other plan keeps its own 33', await rowW('wpush', 2) === 33 && await E(`state.settings.exerciseMemory[exerciseIdentity({ name: 'Cable Thing' })].weight`) === 60);
     await E(`(() => { ${wi('wlegs')}.exercises.pop(); saveState(); return true; })()`);
     await E(`cancelEditPlan()`);
     await edit('wpush', `(() => { rows()[1].querySelector('.side-chip[data-side="right"]'); })();`);
@@ -275,13 +275,13 @@ function check(name, ok, info) {
     await save();
     const runAfter = await E(`[0, 1, 2].map((i) => effectiveSetWeight(exerciseSlots(currentPlan())[0].ex, i))`);
     check('running session on Push keeps its weights', J(runBefore) === J(runAfter), { runBefore, runAfter });
-    check('Push plan row updated to 90, Full Body 90', await rowW('wpush', 0) === 90 && await rowW('wfull', 0) === 90);
+    check('Full Body row updated to 90, Push keeps its own weight', await rowW('wfull', 0) === 90 && await rowW('wpush', 0) !== 90);
     await E(`(() => { clearSession(); saveState(); return true; })()`);
 
     console.log('== Shared note');
     await edit('wpush', `0`);
     const note = (i) => E(`(() => { const n = document.querySelectorAll('#edit-rows .edit-row')[${i}].querySelector('.edit-shared-note'); return !!n && !n.hidden && n.getBoundingClientRect().height > 0 && n.textContent; })()`);
-    check('note visible for bench (in 2 plans) in English', (await note(0)) === 'Shared with your other plans', await note(0));
+    check('note visible for bench (in 2 plans) in English', (await note(0)) === 'This weight is only for this plan. One-side and assisted settings apply to all your plans.', await note(0));
     await E(`(() => { state.plans['wpush'].exercises.push({ name: 'Solo Move', sets: 2, reps: 5, weight: 5 }); backfillState(); cancelEditPlan(); startEditPlan('wpush'); return true; })()`);
     check('note hidden for an exercise in only one plan', (await note(2)) === false, await note(2));
     await E(`(() => { cancelEditPlan(); return true; })()`);
@@ -299,7 +299,7 @@ function check(name, ok, info) {
     check('session records the edited identity', await E(`getSession().editedIdentities && getSession().editedIdentities.includes('bench-press')`));
     check('running session still shows its start weights (62.5 done sets, 60 snapshot)', await E(`getSession().snapshot['bench-press#0'].weight === 60`));
     await finish();
-    check('Finish keeps the edited 70 in every plan and memory (62.5 not written)', await rowW('wpush', 0) === 70 && await rowW('wfull', 0) === 70 && await E(`state.settings.exerciseMemory['bench-press'].weight`) === 70);
+    check('Finish keeps the edited 70 in Push and memory (62.5 not written); Full Body keeps 60', await rowW('wpush', 0) === 70 && await rowW('wfull', 0) === 60 && await E(`state.settings.exerciseMemory['bench-press'].weight`) === 70);
     check('normalizer keeps editedIdentities, drops junk', await E(`(() => { const s = { id: 'x', startedAt: 5, planId: 'wpush', completedSets: {}, actualFailureSets: {}, editedIdentities: ['a', 'a', 5, '', 'b'] }; return JSON.stringify(normalizeActiveSession(s).editedIdentities) === JSON.stringify(['a', 'b']); })()`));
     const noteTxt = await E(`(() => { const out = []; for (const l of ['sk','en','es','pt-BR','fr','ar']) { setLang(l); out.push(t('trening.planSaved')); } setLang('en'); return out; })()`);
     check('planSaved note differs and is set in 6 languages', new Set(noteTxt).size === 6 && noteTxt.every((x) => x && x !== 'trening.planSaved'), noteTxt);
@@ -331,7 +331,7 @@ function check(name, ok, info) {
     await edit('wpush', typeNum(0, 2, 65));
     await save();
     await undo();
-    check('Finish, then edit to 65, then Undo: 65 stays in plans and memory', await rowW('wpush', 0) === 65 && await rowW('wfull', 0) === 65 && await E(`state.settings.exerciseMemory['bench-press'].weight`) === 65 && await histN() === h0);
+    check('Finish, then edit to 65, then Undo: 65 stays in Push and memory; Full Body keeps 60', await rowW('wpush', 0) === 65 && await rowW('wfull', 0) === 60 && await E(`state.settings.exerciseMemory['bench-press'].weight`) === 65 && await histN() === h0);
     check('history normalizer validates memory fields', await E(`(() => { const f = { memoryBefore: { a: null, b: { weight: 5, at: 3 }, c: { weight: 'x' }, d: 4 }, memoryAfter: { a: null, e: { weight: 1000 }, f: { weight: 2 } }, memoryRowBefore: { g: { p: 5, q: 'z' }, h: 5, i: { p: -1 } } };
       return JSON.stringify([cleanMemoryTrail(f.memoryBefore, 'memoryBefore'), cleanMemoryTrail(f.memoryAfter, 'memoryAfter'), cleanMemoryTrail(f.memoryRowBefore, 'memoryRowBefore')]) === JSON.stringify([{ a: null, b: { weight: 5, at: 3 } }, { f: { weight: 2 } }, { g: { p: 5 } }]); })()`));
 

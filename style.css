@@ -4161,7 +4161,12 @@ html[data-theme="dark"] .bt-badge { background: #D6F35A; color: #121212; }
 .mini .mini-dark, .tr-detail #tr-start { background: #121212; color: #D6F35A; }
 html[data-theme="dark"] .tr-detail #tr-start { background: #D6F35A; color: #121212; }
 .tr-tiles { margin-bottom: 8px; }
-.plan-manage-hint { margin: 8px 4px; font-size: 13px; color: var(--b-hd-small); }
+/* Úprava plánov: lišta nad plánmi – čo robiť + výrazné Hotovo (poradie sa ukladá hneď). */
+.plan-manage-bar { display: flex; align-items: center; gap: 10px; margin: 0 0 var(--sp-2); padding: 10px 10px 10px 14px; border-radius: 22px; background: var(--b-lime); color: var(--b-pastel-fg); }
+.plan-manage-bar[hidden] { display: none; }
+.plan-manage-hint { flex: 1 1 auto; min-width: 0; margin: 0; font-size: 13px; line-height: 1.35; }
+.plan-manage-done { flex: 0 0 auto; display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0 16px; border: 0; border-radius: 999px; background: var(--b-dark); color: var(--b-on-dark); font: inherit; font-weight: 700; cursor: pointer; }
+.plan-manage-done .kico { width: 18px; height: 18px; }
 /* prebiehajúci tréning */
 .bt-session { margin-bottom: 8px; min-height: 176px; cursor: default; display: flex; }
 .bt-session[hidden] { display: none; }

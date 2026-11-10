@@ -154,10 +154,14 @@ async function shot(p, name) { const r = await p.c.send('Page.captureScreenshot'
     const before = await pA.eval(`document.querySelector('#community-feed .xpost')`);
     await pA.eval(`(window.__firstNode = document.querySelector('#community-feed .xpost'), true)`);
     for (let i = 0; i < 6; i++) { await pA.eval(`window.scrollTo(0, document.documentElement.scrollHeight)`); await wait(900); }
-    const st = await pA.eval(`({ n: communityFeed.items.length, keys: communityFeed.items.map((x) => x.id + '|' + (x.reposted_by || '')), at: communityFeed.items.map((x) => x.at), same: document.querySelector('#community-feed .xpost') === window.__firstNode, dom: document.querySelectorAll('#community-feed .xpost').length })`);
+    const st = await pA.eval(`({ n: communityFeed.items.length, keys: communityFeed.items.map((x) => x.id + '|' + (x.reposted_by || '')), at: communityFeed.items.map((x) => x.at), sug: communityFeed.items.map((x) => x.suggested === true), ranked: communityVersion >= 10, same: document.querySelector('#community-feed .xpost') === window.__firstNode, dom: document.querySelectorAll('#community-feed .xpost').length })`);
     check('more pages loaded by scrolling (' + first + ' → ' + st.n + ')', st.n > first + 10, J({ first, n: st.n }));
     check('no duplicates', new Set(st.keys).size === st.keys.length);
-    check('same order as before (newest activity first)', st.at.every((x, i) => i === 0 || st.at[i - 1] >= x));
+    if (!st.ranked) check('same order as before (newest activity first)', st.at.every((x, i) => i === 0 || st.at[i - 1] >= x));
+    else {   // 0018 (verzia 10): najprv priatelia a sledovaní (najnovšie prvé), potom Odporúčané
+      const firstSug = st.sug.indexOf(true), own = firstSug < 0 ? st.at : st.at.slice(0, firstSug);
+      check('ranked order: followed/friends first (newest first), then Suggested', (firstSug < 0 || st.sug.slice(firstSug).every(Boolean)) && own.every((x, i) => i === 0 || own[i - 1] >= x), J({ sug: st.sug }));
+    }
     check('loading more does not re-render what was already there', st.same && st.dom === st.n);
     check('… and leaves no stray text between appended posts', await pA.eval(`![...document.getElementById('community-feed').childNodes].some((n) => n.nodeType === 3 && n.textContent.trim())`));
     await pA.c.send('Network.enable');

@@ -35,7 +35,7 @@
     }, 4000);
   </script>
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
-  <link rel="stylesheet" href="style.css?v=111">
+  <link rel="stylesheet" href="style.css?v=112">
 </head>
 <body data-tab="dnes">
 
@@ -166,6 +166,10 @@
 
       <!-- Bento: výber plánu (bez rozbehnutého tréningu) -->
       <div class="tr-pick" id="tr-pick">
+        <div class="plan-manage-bar" id="plan-manage-bar" hidden>
+          <p class="plan-manage-hint" id="plan-manage-hint" data-i18n="trening.manageHint">Potiahni ⠿ a zmeň poradie plánov – ukladá sa hneď. Ťukni na ✏️ a uprav plán.</p>
+          <button type="button" class="plan-manage-done" id="btn-plan-manage-done"><svg class="kico" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span data-i18n="trening.managePlansDone">Hotovo</span></button>
+        </div>
         <div class="plan-chips" id="plan-chips"></div>
         <div class="bt w4 tr-detail" id="tr-detail">
           <span class="bt-l" id="plan-title">Push</span>
@@ -182,7 +186,6 @@
           <button type="button" class="bt w2" id="btn-fullbody-tile"><svg class="kico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="1"/><rect x="13.5" y="3.5" width="7" height="7" rx="1"/><rect x="3.5" y="13.5" width="7" height="7" rx="1"/><rect x="13.5" y="13.5" width="7" height="7" rx="1"/></svg><span class="bt-line bt-bottom" data-i18n="bento.fullBody">Full Body</span></button>
           <button type="button" class="bt bt-lav w4 train-tile" id="btn-train-tile" data-train-action="open" aria-expanded="false" hidden><svg class="kico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c1.2-3.5 3.6-5 6.5-5s5.3 1.5 6.5 5"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 15c2 .6 3.3 2.2 4 5"/></svg><span class="train-tile-text"><b data-i18n="train.open">Trénovať s priateľom</b><span class="bt-line" data-i18n="bento.trainLine">Pozvi priateľa a vidíte si navzájom série naživo</span></span></button>
         </div>
-        <p class="edit-hint plan-manage-hint" id="plan-manage-hint" hidden data-i18n="trening.manageHint">Potiahni plán a zmeň jeho poradie, alebo ťukni na ✏️ a uprav ho.</p>
       </div>
 
       <div class="edit-panel" id="edit-panel" hidden>
@@ -1135,8 +1138,8 @@
     </div>
   </div>
 
-  <script src="community-config.js?v=111"></script>
-  <script src="vendor/supabase-js.js?v=111"></script>
-  <script src="script.js?v=111"></script>
+  <script src="community-config.js?v=112"></script>
+  <script src="vendor/supabase-js.js?v=112"></script>
+  <script src="script.js?v=112"></script>
 </body>
 </html>
