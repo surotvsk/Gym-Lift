@@ -7651,7 +7651,7 @@ const BASICS_I18N = {
     'superset.link': 'Unir con el siguiente', 'superset.unlink': 'Separar',
   },
   'pt-BR': {
-    'settings.autoRest': 'Iniciar o descanso automaticamente', 'settings.autoRestHint': 'O cronômetro de descanso começa sozinho ao marcar uma série. Em uma superssérie, após o último exercício.',
+    'settings.autoRest': 'Iniciar o descanso automaticamente', 'settings.autoRestHint': 'O cronômetro de descanso começa sozinho ao marcar uma série. Em um superset, após o último exercício.',
     'plates.button': 'Anilhas', 'plates.buttonTitle': 'Calculadora de anilhas: o que colocar em cada lado da barra',
     'plates.title': 'Calculadora de anilhas', 'plates.close': 'Fechar',
     'plates.target': 'Peso alvo', 'plates.targetAria': 'Peso alvo em kg',
@@ -7671,7 +7671,7 @@ const BASICS_I18N = {
     'effort.clear': 'Limpar', 'effort.chipAria': 'Série {n}: esforço {value}. Toque para alterar.',
     'effort.chipAriaEmpty': 'Série {n}: esforço sem nota. Toque para registrar.', 'effort.noteRpe': 'RPE: dificuldade da série de 6 (fácil) a 10 (esforço máximo).',
     'effort.noteRir': 'RIR: repetições que você ainda conseguiria fazer (0 = nenhuma).', 'effort.history': 'Esforço: {list}',
-    'superset.label': 'Super-set {l}', 'superset.circuit': 'Circuito {l}',
+    'superset.label': 'Superset {l}', 'superset.circuit': 'Circuito {l}',
     'superset.link': 'Ligar ao próximo', 'superset.unlink': 'Desligar',
   },
   fr: {
@@ -12897,19 +12897,29 @@ function groupIdOf(row) {
 function normalizeGroups(exercises) {
   if (!Array.isArray(exercises)) return false;
   const drop = [];
+  let changed = false;
+  const seen = new Set();   // id skupín, ktoré už mal skorší beh (rovnaké id v dvoch samostatných behoch)
   for (let i = 0; i < exercises.length; i++) {
     const row = exercises[i];
     if (!row || typeof row !== 'object' || !Object.prototype.hasOwnProperty.call(row, 'group')) continue;
     const g = groupIdOf(row);
-    if (!g || (groupIdOf(exercises[i - 1]) !== g && groupIdOf(exercises[i + 1]) !== g)) drop.push(row);
+    if (!g || (groupIdOf(exercises[i - 1]) !== g && groupIdOf(exercises[i + 1]) !== g)) { drop.push(row); continue; }
+    if (groupIdOf(exercises[i - 1]) === g) continue;   // pokračovanie behu, ktorý sa už vyriešil
+    /* začiatok behu: ak sa to isté id už použilo skôr, dostane nový beh nové id (inak by ich "Spojiť s ďalším" zlúčilo) */
+    if (seen.has(g)) {
+      const fresh = newGroupId();
+      for (let k = i; k < exercises.length && groupIdOf(exercises[k]) === g; k++) exercises[k].group = fresh;
+      seen.add(fresh);
+      changed = true;
+    } else seen.add(g);
   }
   for (const row of drop) delete row.group;
-  return drop.length > 0;
+  return changed || drop.length > 0;
 }
 
 /* Behy skupín nad zoznamom riadkov: Map<index, { label, pos, size, kind, group }>. `limit` = koľko prvých riadkov
    môže byť v skupine (ostatné sú pridané cviky). Písmená idú podľa poradia výskytu. */
-function groupInfoOf(rows, limit) {
+function groupInfoOf(rows, limit, history) {
   const map = new Map();
   const n = Math.min(rows.length, limit === undefined ? rows.length : limit);
   let letter = 0;
@@ -12917,11 +12927,14 @@ function groupInfoOf(rows, limit) {
     const g = groupIdOf(rows[i]);
     let j = i + 1;
     if (g) while (j < n && groupIdOf(rows[j]) === g) j++;
-    const size = j - i;
+    const span = j - i;
+    /* História: po výmene cviku nesú skupinu aj pôvodný záznam, aj náhrada (substitutedFor) – počítajú sa odlišné sloty */
+    let size = span;
+    if (g && history) { size = 0; for (let k = i; k < j; k++) if (!(rows[k] && rows[k].substitutedFor)) size++; }
     if (g && size >= 2) {
       const label = String.fromCharCode(65 + (letter % 26)) + (letter >= 26 ? String(Math.floor(letter / 26)) : '');
       letter++;
-      for (let k = i; k < j; k++) map.set(k, { label, pos: k - i, size, kind: size >= 3 ? 'circuit' : 'superset', group: g });
+      for (let k = i; k < j; k++) map.set(k, { label, pos: k - i, size, span, kind: size >= 3 ? 'circuit' : 'superset', group: g });
     }
     i = j;
   }
@@ -13006,7 +13019,7 @@ function focusNextSupersetSet(item, index, side) {
 
 /* Zátvorka skupiny v histórii: len pre SUSEDNÉ záznamy s rovnakou skupinou. Bez skupín vráti kusy spojené ako doteraz. */
 function historyGroupWrap(entries, pieces, sep) {
-  const info = groupInfoOf(Array.isArray(entries) ? entries : []);
+  const info = groupInfoOf(Array.isArray(entries) ? entries : [], undefined, true);
   if (!info.size) return pieces.join(sep);
   let html = '', prevWrap = true;
   for (let i = 0; i < pieces.length;) {
@@ -13016,9 +13029,9 @@ function historyGroupWrap(entries, pieces, sep) {
       prevWrap = false; i++;
       continue;
     }
-    const inner = pieces.slice(i, i + gi.size).join(sep);
+    const inner = pieces.slice(i, i + gi.span).join(sep);
     html += (html && !prevWrap ? sep : '') + '<div class="hist-superset" data-kind="' + gi.kind + '"><span class="hist-superset-label">' + esc(superLabelText(gi)) + '</span>' + inner + '</div>';
-    prevWrap = true; i += gi.size;
+    prevWrap = true; i += gi.span;
   }
   return html;
 }
@@ -14011,6 +14024,7 @@ function effortText(rpe, mode) {
 }
 /* Ťuknutím otvorený list: { ex, index, side, onPick } pre práve upravovanú sériu. */
 let effortTarget = null;
+let effortOpener = null;   // čip, ktorý list otvoril
 function effortOptions() {
   return effortMode() === 'rir'
     ? [[10, '0'], [9, '1'], [8, '2'], [7, '3'], [6, '4+']].map(([rpe, label]) => [rpe, label === '4+' ? effortNum(4) + '+' : effortNum(Number(label))])
@@ -14038,12 +14052,18 @@ function renderEffortSheet() {
 }
 function openEffortSheet(target) {
   effortTarget = target;
+  effortOpener = document.activeElement;
   document.getElementById('modal-effort').hidden = false;
   renderEffortSheet();
+  const first = document.querySelector('#effort-options .effort-opt');
+  if (first) { try { first.focus({ preventScroll: true }); } catch (e) { first.focus(); } }
 }
 function closeEffortSheet() {
   document.getElementById('modal-effort').hidden = true;
   effortTarget = null;
+  /* čip pod sériou sa po výbere prekreslí – vtedy sa fokus vráti na čip rovnakej série, ak existuje */
+  restoreSheetFocus(effortOpener); effortOpener = null;
+  refreshUpdateBanner();
 }
 function pickEffort(rpe) {
   const tg = effortTarget;
@@ -14166,14 +14186,23 @@ function historyEditEffort(e) {
 }
 
 let plateTarget = 0;
+let plateOpener = null;   // tlačidlo, ktoré list otvorilo (po zatvorení sa naň vráti fokus)
+function restoreSheetFocus(el) {
+  if (el && el.isConnected && el.focus) { try { el.focus({ preventScroll: true }); } catch (e) { el.focus(); } }
+}
 function openPlateCalc(weight) {
   const w = Number(weight);
   plateTarget = Number.isFinite(w) && w > 0 ? w : 0;
+  plateOpener = document.activeElement;
   document.getElementById('modal-plates').hidden = false;
   renderPlateSheet();
+  const first = document.getElementById('plate-target');
+  if (first) { try { first.focus({ preventScroll: true }); } catch (e) { first.focus(); } }
 }
 function closePlateCalc() {
   document.getElementById('modal-plates').hidden = true;
+  restoreSheetFocus(plateOpener); plateOpener = null;
+  refreshUpdateBanner();
 }
 /* Zmena nastavenia zo listu: zachová počty párov, uloží a prekreslí. */
 function savePlateSettings(patch) {
@@ -15210,11 +15239,11 @@ function renderEditPanel() {
     row.appendChild(assistBox);
 
     /* Supersérie / okruh: štítok skupiny a tlačidlo "Spojiť s ďalším" / "Zrušiť spojenie". */
-    if (gInfo) {
+    if (gInfo && gInfo.pos === 0) {   // štítok len raz, na hornom okraji prvého člena
       const gl = document.createElement('span');
       gl.className = 'edit-group-label';
       gl.textContent = superLabelText(gInfo);
-      row.appendChild(gl);
+      row.insertBefore(gl, row.firstChild);
     }
     const linked = !!gInfo && gInfo.pos < gInfo.size - 1;
     if (linked || idx < editDraft.length - 1) {
@@ -27486,6 +27515,10 @@ function setupEvents() {
     const ctPanel = document.getElementById('custom-timer');
     if (ctPanel && !ctPanel.hidden) { hideCustomTimer(); return; }
     if (presetManageMode) { setPresetManageMode(false); return; }
+    const platesSheet = document.getElementById('modal-plates');
+    if (platesSheet && !platesSheet.hidden) { closePlateCalc(); return; }
+    const effortSheet = document.getElementById('modal-effort');
+    if (effortSheet && !effortSheet.hidden) { closeEffortSheet(); return; }
     const restSheet = document.getElementById('modal-rest');
     if (restSheet && !restSheet.hidden) { closeRestSheet(); return; }
     /* v DOM je modal-generic nad modal-sync (napr. potvrdenie obnovy kópie nad zoznamom kópií) – najprv ten vrchný */
@@ -27939,7 +27972,7 @@ function isBusy() {
   const forms = ['modal-confirm', 'modal-history-edit', 'modal-settings', 'modal-setup', 'modal-generic',
     'modal-planchoice', 'modal-fullbody', 'modal-lang', 'modal-measure', 'modal-food',
     'modal-library', 'modal-exercise', 'modal-photo-add', 'modal-photo', 'modal-photo-compare',
-    'modal-community-caption', 'modal-auth', 'modal-sync'];
+    'modal-community-caption', 'modal-auth', 'modal-sync', 'modal-plates', 'modal-effort'];
   for (const id of forms) {
     const el = document.getElementById(id);
     if (el && !el.hidden) return true;                   // otvorený formulár / dialóg

@@ -126,6 +126,46 @@ function check(name, ok, info) {
       await p.eval(`(closePlateCalc(), true)`);
     }
     await p.eval(`(document.documentElement.removeAttribute('data-theme'), true)`);
+
+    console.log('== selected state of the chips (light + dark)');
+    /* Pomocník v stránke: pozadie, obrys, farba textu a kontrast textu voči pozadiu čipu. */
+    await p.eval(`(window.__chip = (el) => {
+      const lum = (c) => { const a = c.map((v) => { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); }); return 0.2126 * a[0] + 0.7152 * a[1] + 0.0722 * a[2]; };
+      const rgb = (s) => (s.match(/[\\d.]+/g) || []).slice(0, 3).map(Number);
+      const cs = getComputedStyle(el), bg = rgb(cs.backgroundColor), fg = rgb(cs.color);
+      const L1 = lum(fg), L2 = lum(bg);
+      return { bg: cs.backgroundColor, color: cs.color, borderStyle: cs.borderTopStyle, opacity: cs.opacity, deco: cs.textDecorationLine, contrast: (Math.max(L1, L2) + 0.05) / (Math.min(L1, L2) + 0.05) };
+    }, true)`);
+    await p.eval(`(state.settings.plates = { bar: 20, plates: [25, 20, 15, 10, 5, 2.5] }, true)`);   // 1.25 je vypnutý
+    for (const theme of ['light', 'dark']) {
+      await p.eval(`(document.documentElement.setAttribute('data-theme', ${J(theme)}), openPlateCalc(100), true)`);
+      await wait(200);
+      const on = await p.eval(`window.__chip(document.querySelector('#plate-bars [data-bar="20"]'))`);
+      const off = await p.eval(`window.__chip(document.querySelector('#plate-bars [data-bar="15"]'))`);
+      check(theme + ': pressed bar chip has a different background than an unpressed one', on.bg !== off.bg, { on, off });
+      check(theme + ': pressed bar chip text contrast >= 4.5', on.contrast >= 4.5, on);
+      const tOn = await p.eval(`window.__chip(document.querySelector('#plate-toggles [data-kg="25"]'))`);
+      const tOff = await p.eval(`window.__chip(document.querySelector('#plate-toggles [data-kg="1.25"]'))`);
+      check(theme + ': plate toggle ON differs from OFF', tOn.bg !== tOff.bg && tOn.contrast >= 4.5, { tOn, tOff });
+      check(theme + ': plate toggle OFF is dashed and struck through / dimmed', tOff.borderStyle === 'dashed' && (/line-through/.test(tOff.deco) || Number(tOff.opacity) < 1), tOff);
+      await p.eval(`(closePlateCalc(), true)`);
+    }
+    await p.eval(`(document.documentElement.removeAttribute('data-theme'), delete state.settings.plates, true)`);
+
+    console.log('== keyboard and focus of the sheet');
+    check('#modal-plates is a labelled modal dialog', await p.eval(`(() => { const d = document.querySelector('#modal-plates .modal'); const l = d.getAttribute('aria-labelledby'); return d.getAttribute('role') === 'dialog' && d.getAttribute('aria-modal') === 'true' && !!l && !!document.getElementById(l) && document.getElementById(l).textContent.length > 0; })()`));
+    await p.eval(`(selectedPlan = 'ptest', ensureSession(getPlan('ptest')), switchTab('trening'), renderTrening(), true)`); await wait(500);
+    await p.eval(`(() => { const b = document.querySelector('#exercise-list .exercise .btn-plates'); b.focus(); b.click(); return true; })()`);
+    await wait(100);
+    check('opening focuses the first control (target weight)', await p.eval(`document.activeElement === document.getElementById('plate-target')`), await p.eval(`document.activeElement.id || document.activeElement.className`));
+    await p.eval(`(document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true })), true)`);
+    await wait(100);
+    check('Escape closes the sheet', await p.eval(`document.getElementById('modal-plates').hidden`));
+    check('closing restores focus to the "Plates" button', await p.eval(`document.activeElement && document.activeElement.classList.contains('btn-plates')`), await p.eval(`document.activeElement.tagName + '/' + (document.activeElement.id || document.activeElement.className) + '/btns=' + document.querySelectorAll('.btn-plates').length`));
+    await p.eval(`(document.querySelector('#exercise-list .exercise .btn-plates').click(), true)`);
+    await p.eval(`(document.getElementById('btn-plates-close').click(), true)`);
+    check('the close button also restores focus to the opener', await p.eval(`document.activeElement && document.activeElement.classList.contains('btn-plates')`));
+    check('isBusy() with the plates sheet open (no session, no tests of other causes)', await p.eval(`(() => { const s = JSON.stringify(state.session || null); const m = document.getElementById('modal-plates'); const g = window.getSession; window.getSession = () => null; const t0 = window.totalSetsDone; window.totalSetsDone = () => 0; const ed = editingPlan; editingPlan = null; m.hidden = false; const open = isBusy(); m.hidden = true; const closed = isBusy(); window.getSession = g; window.totalSetsDone = t0; editingPlan = ed; return open === true && closed === false; })()`));
     check('no exceptions', p.errors.length === 0, p.errors);
     check('no console errors', logs.length === 0, logs);
   } catch (e) {

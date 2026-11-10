@@ -200,6 +200,55 @@ function check(name, ok, info) {
     console.log('== Android Back');
     check('modal-effort is in NATIVE_BACK_CLOSE', await p.eval(`NATIVE_BACK_CLOSE.some((x) => x[0] === 'modal-effort')`));
 
+    console.log('== history edit refits the ratings when the set count changes');
+    const refit = (sets0, rpe0, sets1) => p.eval(`(() => {
+      const id = 'he-refit-' + Math.random().toString(36).slice(2, 6);
+      state.history.push({ id, date: '2026-01-05', planId: 'etest', planName: 'Effort test', xp: 0, durationMin: 10,
+        exercises: [{ name: 'Refit test', sets: ${sets0}, reps: 5, weight: 50, setsDone: ${sets0}, setRpe: ${J(rpe0)} }] });
+      openHistoryEdit(id);
+      const inp = document.querySelector('#he-exercises .he-ex-row input[data-f="sets"]');
+      inp.value = '${sets1}'; inp.dispatchEvent(new Event('input'));
+      saveHistoryEdit();
+      const e = state.history.find((w) => w.id === id).exercises[0];
+      state.history = state.history.filter((w) => w.id !== id);
+      return e.setRpe === undefined ? null : e.setRpe;
+    })()`);
+    check('3 → 2 sets drops the 3rd rating', J(await refit(3, [7, 8, 9], 2)) === J([7, 8]), await refit(3, [7, 8, 9], 2));
+    check('2 → 3 sets pads with null', J(await refit(2, [7, 8], 3)) === J([7, 8, null]));
+    check('3 → 1 set where only the dropped sets were rated removes setRpe', (await refit(3, [null, 8, 9], 1)) === null);
+    await p.eval(`(document.getElementById('modal-history-edit').hidden = true, true)`);
+
+    console.log('== picker: selected state, keyboard, focus');
+    await p.eval(`(selectedPlan = 'etest', switchTab('trening'), renderTrening(), true)`); await wait(300);
+    await p.eval(`(() => { const c = ${mainSets(ex0)}[0].querySelector('.set-effort'); if (!c) ${mainSets(ex0)}[0].querySelector('.set-btn').click(); return true; })()`); await wait(200);
+    await p.eval(`(window.__chip = (el) => {
+      const lum = (c) => { const a = c.map((v) => { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); }); return 0.2126 * a[0] + 0.7152 * a[1] + 0.0722 * a[2]; };
+      const rgb = (s) => (s.match(/[\\d.]+/g) || []).slice(0, 3).map(Number);
+      const cs = getComputedStyle(el), bg = rgb(cs.backgroundColor), fg = rgb(cs.color);
+      const L1 = lum(fg), L2 = lum(bg);
+      return { bg: cs.backgroundColor, contrast: (Math.max(L1, L2) + 0.05) / (Math.min(L1, L2) + 0.05) };
+    }, true)`);
+    await p.eval(`(setEffortMode('rpe'), ${mainSets(ex0)}[0].querySelector('.set-effort').focus(), ${mainSets(ex0)}[0].querySelector('.set-effort').click(), true)`);
+    await wait(150);
+    check('opening the picker focuses its first option', await p.eval(`document.activeElement === document.querySelector('#effort-options .effort-opt')`), await p.eval(`document.activeElement.className`));
+    check('isBusy() is true with the picker open (no other cause)', await p.eval(`(() => { const g = window.getSession, t0 = window.totalSetsDone, ed = editingPlan; window.getSession = () => null; window.totalSetsDone = () => 0; editingPlan = null; const open = isBusy(); document.getElementById('modal-effort').hidden = true; const closed = isBusy(); document.getElementById('modal-effort').hidden = false; window.getSession = g; window.totalSetsDone = t0; editingPlan = ed; return open === true && closed === false; })()`));
+    await p.eval(`(document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true })), true)`);
+    await wait(100);
+    check('Escape closes the picker', await p.eval(`document.getElementById('modal-effort').hidden`));
+    check('closing restores focus to the chip that opened it', await p.eval(`document.activeElement === ${mainSets(ex0)}[0].querySelector('.set-effort')`), await p.eval(`document.activeElement.className`));
+    for (const theme of ['light', 'dark']) {
+      await p.eval(`(document.documentElement.setAttribute('data-theme', ${J(theme)}), ${mainSets(ex0)}[0].querySelector('.set-effort').click(), true)`);
+      await wait(100);
+      await p.eval(`(document.querySelector('#effort-options .effort-opt[data-rpe="8"]').click(), ${mainSets(ex0)}[0].querySelector('.set-effort').click(), true)`);   // vyberie 8 a znova otvorí
+      await wait(100);
+      const on = await p.eval(`window.__chip(document.querySelector('#effort-options .effort-opt[aria-pressed="true"]'))`);
+      const off = await p.eval(`window.__chip(document.querySelector('#effort-options .effort-opt[aria-pressed="false"]'))`);
+      check(theme + ': the selected rating has a different background than the others', on.bg !== off.bg, { on, off });
+      check(theme + ': selected rating text contrast >= 4.5', on.contrast >= 4.5, on);
+      await p.eval(`(document.getElementById('btn-effort-close').click(), true)`);
+    }
+    await p.eval(`(document.documentElement.removeAttribute('data-theme'), true)`);
+
     console.log('== 390 px layout');
     await p.c.send('Emulation.setDeviceMetricsOverride', { width: 390, height: 844, deviceScaleFactor: 2, mobile: true });
     await p.eval(`(renderTrening(), true)`);

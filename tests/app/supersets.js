@@ -70,6 +70,14 @@ function check(name, ok, info) {
     check('nextInGroup / isLastInGroup', await ev(`(() => {
       const plan = { id: 'x', exercises: [{ name: 'a', group: 'p' }, { name: 'b', group: 'p' }, { name: 'c' }] };
       return nextInGroup(plan, 0) === 1 && nextInGroup(plan, 1) === null && nextInGroup(plan, 2) === null && isLastInGroup(plan, 0) === false && isLastInGroup(plan, 1) === true && isLastInGroup(plan, 2) === true; })()`));
+    check('normalizeGroups gives a second run that reuses an id a fresh id; Link with next cannot merge them', await ev(`(() => {
+      const r = [{ group: 'g' }, { group: 'g' }, {}, { group: 'g' }, { group: 'g' }];
+      const ch = normalizeGroups(r);
+      const sep = ch === true && r[0].group === 'g' && r[1].group === 'g' && r[3].group && r[3].group !== 'g' && r[3].group === r[4].group;
+      const again = normalizeGroups(r) === false;
+      linkWithNext(r, 1);   // 1 a 2 sa spoja, ale beh 3-4 zostane samostatný
+      const noMerge = r[2].group === r[1].group && r[3].group !== r[1].group;
+      return sep && again && noMerge; })()`));
     check('linkWithNext / unlinkRow on plain rows', await ev(`(() => {
       const r = [{ name: 'a' }, { name: 'b' }, { name: 'c' }];
       linkWithNext(r, 0); const two = r[0].group && r[0].group === r[1].group && !r[2].group;
@@ -85,15 +93,15 @@ function check(name, ok, info) {
     await link(0);
     let g = await eg();
     check('linking row 0 with row 1 gives both the same group', same(g.slice(0, 2)) && !g[2] && !g[3], g);
-    check('the editor shows the bracket "Superset A" on both rows', J((await labels())) === J(['Superset A', 'Superset A', '', '']), await labels());
+    check('the editor shows the label "Superset A" once, on the first member only', J((await labels())) === J(['Superset A', '', '', '']), await labels());
     check('row 0 now offers "Unlink"', (await ev(`${editRows()}[0].querySelector('.edit-link').textContent`)) === 'Unlink');
     await link(1);
     g = await eg();
     check('linking row 1 with row 2 makes all three one group', same(g.slice(0, 3)) && !g[3], g);
-    check('the label reads "Circuit A"', J(await labels()) === J(['Circuit A', 'Circuit A', 'Circuit A', '']), await labels());
+    check('the label reads "Circuit A"', J(await labels()) === J(['Circuit A', '', '', '']), await labels());
     await link(0);   // Unlink row 0 → cut after row 0
     g = await eg();
-    check('unlinking row 0 clears the left-over single member and keeps the pair 1-2', !g[0] && same(g.slice(1, 3)) && J(await labels()) === J(['', 'Superset A', 'Superset A', '']), g);
+    check('unlinking row 0 clears the left-over single member and keeps the pair 1-2', !g[0] && same(g.slice(1, 3)) && J(await labels()) === J(['', 'Superset A', '', '']), g);
     await link(1);   // Unlink row 1 → both clear
     check('unlinking again clears the rest', (await eg()).every((x) => !x));
     await link(0); await link(1);
@@ -101,7 +109,7 @@ function check(name, ok, info) {
     await ev(`(${editRows()}[1].querySelector('.btn-icon-danger').click(), true)`); await wait(150);
     await ev(`(document.getElementById('btn-generic-ok').click(), true)`); await wait(150);
     g = await eg();
-    check('deleting the middle of a 3-circuit keeps the remaining 2 linked', g.length === 3 && same(g.slice(0, 2)) && !g[2] && J(await labels()) === J(['Superset A', 'Superset A', '']), g);
+    check('deleting the middle of a 3-circuit keeps the remaining 2 linked', g.length === 3 && same(g.slice(0, 2)) && !g[2] && J(await labels()) === J(['Superset A', '', '']), g);
     /* pretiahnutie riadku 1 na koniec rozbije susednosť */
     await ev(`(() => {
       const c = document.getElementById('edit-rows'); const rows = c.querySelectorAll('.edit-row');
@@ -169,16 +177,21 @@ function check(name, ok, info) {
     check('personal records are the same as without groups', await ev(`(() => { const a = JSON.stringify(personalRecords()); const saved = state.history; state.history = saved.map((w) => { const c = JSON.parse(JSON.stringify(w)); c.exercises.forEach((e) => delete e.group); return c; }); const b = JSON.stringify(personalRecords()); state.history = saved; return a === b; })()`));
     await ev(`(document.getElementById('modal-result').hidden = true, switchTab('pokrok'), setPokrokView('progress'), true)`); await wait(300);
     const histBr = await ev(`(() => { const x = document.querySelectorAll('#history-list .hist-superset'); return { n: x.length, label: x[0] ? x[0].querySelector('.hist-superset-label').textContent : '' }; })()`);
-    check('History list shows one bracket "Circuit A" around the 3 adjacent entries', histBr.n === 1 && histBr.label === 'Circuit A', histBr);
+    check('History list shows one bracket "Superset A" (2 slots, not "Circuit A") around the 3 adjacent entries (original + replacement + member 2)', histBr.n === 1 && histBr.label === 'Superset A', histBr);
     await ev(`(switchTab('kalendar'), openDay(todayISO()), true)`); await wait(300);
     const calBr = await ev(`(() => { const x = document.querySelectorAll('#modal-day .hist-superset'); return { n: x.length, label: x[0] ? x[0].querySelector('.hist-superset-label').textContent : '', inside: x[0] ? x[0].querySelectorAll('.day-ex').length : 0 }; })()`);
-    check('Calendar day view shows the same bracket around 3 entries', calBr.n === 1 && calBr.label === 'Circuit A' && calBr.inside === 3, calBr);
+    check('Calendar day view shows the same "Superset A" bracket around 3 entries', calBr.n === 1 && calBr.label === 'Superset A' && calBr.inside === 3, calBr);
     await ev(`(closeDay(), true)`);
     const id = await ev(`state.history[state.history.length - 1].id`);
     await ev(`(() => { openHistoryEdit(${J(id)}); const inp = document.querySelector('#he-exercises .he-ex-row input[data-f="weight"]'); inp.value = '105'; inp.dispatchEvent(new Event('input')); saveHistoryEdit(); return true; })()`);
     check('editing the workout in history keeps group', J(await ev(`state.history.find((w) => w.id === ${J(id)}).exercises.map((e) => e.group || null)`)) === J(gs));
     check('entries that do not sit next to each other get no bracket', await ev(`(() => { const html = historyGroupWrap([{ group: 'a' }, {}, { group: 'a' }], ['x', 'y', 'z'], ''); return !html.includes('hist-superset'); })()`));
     check('a pair is a "Superset" in history', await ev(`historyGroupWrap([{ group: 'a' }, { group: 'a' }], ['x', 'y'], '').includes('Superset A')`));
+    check('history: original + replacement + member 2 = 2 slots → one "Superset A" wrapper around all 3; 3 real slots → "Circuit A"', await ev(`(() => {
+      const two = historyGroupWrap([{ group: 'a' }, { group: 'a', substitutedFor: 'X' }, { group: 'a' }], ['x', 'y', 'z'], '');
+      const three = historyGroupWrap([{ group: 'a' }, { group: 'a' }, { group: 'a', substitutedFor: 'X' }, { group: 'a' }], ['w', 'x', 'y', 'z'], '');
+      return two.includes('Superset A') && !two.includes('Circuit') && (two.match(/hist-superset"/g) || []).length === 1 && two.indexOf('x') < two.indexOf('</div>') && two.indexOf('z') < two.indexOf('</div>')
+        && three.includes('Circuit A') && (three.match(/hist-superset"/g) || []).length === 1; })()`));
     check('no group → output is exactly as before', await ev(`historyGroupWrap([{}, {}], ['x', 'y'], '<br>') === 'x<br>y' && historyGroupWrap([{}, {}], ['x', 'y'], '') === 'xy'`));
 
     console.log('== focus mapping with one-sided and two-sided members');

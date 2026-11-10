@@ -4928,6 +4928,10 @@ html.ios .tour { --tour-top: max(34px, calc(env(safe-area-inset-top, 0px) + 34px
 .plate-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2); }
 .plate-row .plate-bar-custom { flex: 1 1 8rem; min-width: 0; max-width: 100%; }
 .modal-plates .chip { min-height: 44px; min-width: 44px; white-space: nowrap; }
+/* Vybraný čip v listoch kotúčov a námahy: pravidlo Bento `.chip:not(...)` (0,3,0) prebíja `.chip.active`, preto sa ide cez id + aria-pressed */
+#modal-plates .chip[aria-pressed="true"], #modal-effort .chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+/* Vypnutý kotúč: prerušovaný obrys, tlmený text, prečiarknutie */
+#modal-plates .plate-toggle[aria-pressed="false"] { border-style: dashed; color: var(--text-dim); text-decoration: line-through; opacity: .75; }
 /* Rozcvičky: ľahší vzhľad než pracovné série (text-dim, obrysový štvorec), rovnaké stĺpce ako riadok série */
 .btn-add-warmup, .btn-warmup-ramp { min-height: 40px; }
 .warmups { display: flex; flex-direction: column; gap: 4px; margin: 0 0 8px; }

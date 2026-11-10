@@ -11,6 +11,10 @@
    3. NOVÉ zariadenie sa znovu zosynchronizuje (aj po reštarte, aj čerstvé zariadenie): žiadny konflikt, záznamy histórie
       s novými poľami bajt po bajte rovnaké, settings.plates/effort, group/warmupRamp plánu nedotknuté, celkové XP rovnaké,
       zmena zo starého zariadenia je prítomná.
+   4. (Review Focus 2) STARÝ build navyše UPRAVÍ cez vlastné uloženie: plán gb1 (zmení opakovania riadku v editore plánu) a záznam
+      histórie s warmups/setRpe/sideRpe (zmení počet sérií v úprave histórie). Po zosynchronizovaní nové zariadenie: žiadny konflikt,
+      rovnaké celkové XP ako čerstvé zariadenie z rovnakých dát, plán gb1 platný (group/warmupRamp smú zmiznúť; riadky, série,
+      opakovania a váhy ostanú), upravený záznam sa vykreslí bez chýb (cleanHistorySetRpe znesie zlú dĺžku setRpe).
    Každé zariadenie má vlastný server/port (vlastný origin = vlastné úložisko = "iné zariadenie"). */
 'use strict';
 const fs = require('fs');
@@ -121,6 +125,18 @@ async function roundtrip({ ref, newSrv, oldSrv, A, obsA }) {
   check('[' + label + '] control inside the old build: totalXP is equal with and without the new fields (they never move XP)', ctl.before === ctl.after && ctl.restored && typeof ctl.before === 'number', ctl);
   if (/f9590a9/.test(label)) check('[' + label + '] v106: old build totalXP right after loading equals the new device (xp0)', oldXp === xp0, { oldXp, xp0 });
   await o.p.eval(`(() => { state.plans.gb2.customName = 'GB Other (z mobilu)'; saveState(); return true; })()`);
+  /* (a) staré uloženie plánu: zmena opakovaní prvého riadku plánu gb1 cez jeho vlastný editor */
+  const planEdit = await o.p.eval(`(() => { startEditPlan('gb1'); editDraft[0].reps = 6; saveEditPlan(); const r = getPlan('gb1').exercises;
+    return { reps: r.map((e) => e.reps), groups: r.map((e) => e.group || null), ramp: r.map((e) => e.warmupRamp === true), editing: editingPlan }; })()`);
+  check('[' + label + '] old build edited plan gb1 through its own plan editor (reps 5 -> 6, saved)', planEdit.reps[0] === 6 && planEdit.reps[1] === 8 && planEdit.editing === null, planEdit);
+  console.log('  INFO [' + label + '] after its own plan save the old build holds groups ' + J(planEdit.groups) + ', warmupRamp ' + J(planEdit.ramp));
+  /* (b) staré uloženie histórie: počet sérií prvého cviku záznamu s warmups/setRpe 3 -> 4 */
+  const histEdit = await o.p.eval(`(() => { const id = state.history[0].id; openHistoryEdit(id);
+    const inp = document.querySelector('#he-exercises .he-ex-row input[data-f="sets"]'); inp.value = '4'; inp.dispatchEvent(new Event('input'));
+    saveHistoryEdit();
+    const e = state.history.find((w) => w.id === id).exercises; return { id, sets: e.map((x) => x.sets), keys: Object.keys(e[0]).sort().join(',') }; })()`);
+  check('[' + label + '] old build edited the history entry through its own history editor (sets 3 -> 4, saved)', histEdit.sets[0] === 4, histEdit);
+  console.log('  INFO [' + label + '] after its own history save the entry 0 keys are: ' + histEdit.keys);
   await o.p.eval(`__gq.addWorkout('old-w1', '2026-10-25')`);
   await o.p.eval('__gq.syncNow()');
   const so = await o.p.eval('__gq.snap()');
@@ -128,9 +144,10 @@ async function roundtrip({ ref, newSrv, oldSrv, A, obsA }) {
   const c1 = await obsA.row();
   check('[' + label + '] old build uploaded exactly one new revision, synced, no conflict', c1.revision === c0.revision + 1 && so.status === 'sync.st.synced' && !(so.meta && so.meta.conflict), { rev: [c0.revision, c1.revision], st: so.status });
   const hx = c1.payload.history.find((h) => h.id === core0.hist[0].id);
-  check('[' + label + '] cloud payload: history entry with warmups/setRpe/sideRpe/group is byte-identical after the old upload', !!hx && canon(hx) === canon(core0.hist[0]), { cloud: hx, orig: core0.hist[0] });
+  check('[' + label + '] cloud payload: the edited history entry is present with 4 sets for exercise 0 and the same exercises (names, count)', !!hx && hx.exercises[0].sets === 4 && J(hx.exercises.map((e) => e.name)) === J(core0.hist[0].exercises.map((e) => e.name)), hx);
   check('[' + label + '] cloud payload: settings.plates + settings.effort intact', canon(c1.payload.settings.plates) === canon(core0.plates) && c1.payload.settings.effort === 'rir', c1.payload.settings);
-  check('[' + label + '] cloud payload: superset plan keeps group + warmupRamp (old device did not edit it); the old change is present', c1.payload.plans.gb1.exercises[0].group === 'g1' && c1.payload.plans.gb1.exercises[1].group === 'g1' && c1.payload.plans.gb1.exercises[0].warmupRamp === true && c1.payload.plans.gb2.customName === 'GB Other (z mobilu)' && c1.payload.history.some((h) => h.id === 'old-w1'), c1.payload.plans.gb1);
+  const gx = c1.payload.plans.gb1.exercises;
+  check('[' + label + '] cloud payload: edited plan gb1 is valid (rows, sets, weights intact; reps edited; group/warmupRamp may be gone); the other old changes are present', gx.length === 3 && J(gx.map((e) => [e.name, e.sets, e.weight])) === J([['Bench Press', 3, 60], ['Rad s činkou', 3, 40], ['Jednoručný veslo', 2, 14]]) && gx[0].reps === 6 && gx[1].reps === 8 && gx[2].reps === 12 && c1.payload.plans.gb2.customName === 'GB Other (z mobilu)' && c1.payload.history.some((h) => h.id === 'old-w1'), gx);
   check('[' + label + '] old build: no page errors', o.p.errors.length === 0, o.p.errors);
   o.b.killHard(true);
 
@@ -139,12 +156,19 @@ async function roundtrip({ ref, newSrv, oldSrv, A, obsA }) {
   const n1 = await n.p.eval('__gq.snap()');
   const core1 = JSON.parse(await n.p.eval(CORE));
   check('[' + label + '] new device pulled the old device change (plan name + the old workout), no conflict, synced', n1.hist.includes('old-w1') && (await n.p.eval(`state.plans.gb2.customName`)) === 'GB Other (z mobilu)' && n1.status === 'sync.st.synced' && !(n1.meta && n1.meta.conflict), { st: n1.status, hist: n1.hist });
-  check('[' + label + '] new device: history entries with the new fields are byte-identical', canon(core1.hist) === canon(core0.hist), { a: core0.hist, b: core1.hist });
+  check('[' + label + '] new device: history equals the cloud (the edited entry came back unchanged by the pull)', canon(core1.hist.find((h) => h.id === core0.hist[0].id)) === canon(c1.payload.history.find((h) => h.id === core0.hist[0].id)), core1.hist);
   check('[' + label + '] new device: settings.plates and settings.effort intact', canon(core1.plates) === canon(core0.plates) && core1.effort === 'rir', { plates: core1.plates, effort: core1.effort });
-  check('[' + label + '] new device: superset plan group/warmupRamp intact', J(core1.plans.gb1) === J(core0.plans.gb1), { a: core0.plans.gb1, b: core1.plans.gb1 });
+  check('[' + label + '] new device: plan gb1 valid after the old edit (no conflict; reps 6, other rows unchanged)', core1.plans.gb1.length === 3 && core1.plans.gb1[0].reps === 6 && J(core1.plans.gb1.map((e) => [e.name, e.sets, e.weight])) === J([['Bench Press', 3, 60], ['Rad s činkou', 3, 40], ['Jednoručný veslo', 2, 14]]), core1.plans.gb1);
+  /* upravený záznam sa na novom zariadení vykreslí (História + Kalendár) bez chýb stránky; setRpe zlej dĺžky nespadne */
+  const errs0 = n.p.errors.length;
+  const rendered = await n.p.eval(`(() => { const e = state.history.find((h) => h.id === ${J(core0.hist[0].id)});
+    switchTab('pokrok'); setPokrokView('progress'); const a = document.body.innerText.length;
+    switchTab('kalendar'); openDay(e.date); const d = document.getElementById('modal-day').innerText; closeDay();
+    return { a, d: d.length, sets: e.exercises[0].sets, rpeLen: Array.isArray(e.exercises[0].setRpe) ? e.exercises[0].setRpe.length : null, cleaned: cleanHistorySetRpe(e.exercises[0]) }; })()`);
+  check('[' + label + '] new device renders the edited history entry (History + Calendar) without page errors', rendered.sets === 4 && rendered.d > 0 && n.p.errors.length === errs0, rendered);
   const oldW = await n.p.eval(`historyEntryXp(state.history.find((h) => h.id === 'old-w1'))`);
   const xp1 = await n.p.eval('totalXP()');
-  check('[' + label + '] new device: total XP = XP before + the old workout (new fields never change XP)', xp1 === xp0 + oldW, { xp0, oldW, xp1 });
+  check('[' + label + '] new device: total XP is a finite number computed from the synced data (checked against a fresh device below)', Number.isFinite(xp1), { xp0, oldW, xp1 });
   n.p = await n.b.restart(true); await n.p.navigate('http://localhost:' + NEW_PORT + '/'); await R(n.p);
   await n.p.eval('__gq.syncNow()');
   check('[' + label + '] new device after restart: same data, synced, same XP', J(JSON.parse(await n.p.eval(CORE))) === J(core1) && (await n.p.eval('__gq.snap()')).status === 'sync.st.synced' && (await n.p.eval('totalXP()')) === xp1);
