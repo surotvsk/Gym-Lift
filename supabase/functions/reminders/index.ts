@@ -1,7 +1,7 @@
 // ============================================================================
 // GymQuest — Edge Function: reminders
 // ----------------------------------------------------------------------------
-// Sends the water / meal / workout reminders (migration 0012). Called ONLY by the
+// Sends the water / meal / workout reminders (migration 0012) and the own reminders (0019, text from the member). Called ONLY by the
 // database: pg_cron runs reminders_dispatch() every 5 minutes, which POSTs here
 // with the header x-gq-reminder: <REMINDER_SECRET>. There is no user JWT, so the
 // function is deployed with JWT verification off and checks the shared secret
@@ -33,6 +33,12 @@ const TEXT: Record<string, Record<string, string>> = {
     'pt-BR': '🏋️ Hora de treinar – bora!', fr: '🏋️ C’est l’heure de l’entraînement – on y va !', ar: '🏋️ حان وقت التمرين – هيا بنا!',
   },
 };
+
+// Own reminder text is user content: plain text only (the notification shows it as text, never as HTML),
+// control characters removed, at most 60 characters. Never logged.
+function cleanText(v: unknown): string {
+  return String(v ?? '').replace(/[\u0000-\u001f\u007f-\u009f\u2028\u2029]/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 60);
+}
 
 function allowedEndpoint(endpoint: string): boolean {
   const testPrefix = Deno.env.get('PUSH_TEST_ENDPOINT_PREFIX');
@@ -74,9 +80,23 @@ Deno.serve(async (req: Request) => {
   const jobs: Promise<void>[] = [];
   for (const t of targets) {
     const kinds: string[] = Array.isArray(t.kinds) ? t.kinds.filter((k: string) => TEXT[k]) : [];
+    const custom: { id: string; text: string }[] = (Array.isArray(t.custom) ? t.custom : []).slice(0, 10)
+      .map((c: { id?: unknown; text?: unknown }) => ({ id: String(c?.id ?? '').replace(/[^A-Za-z0-9_-]/g, '').slice(0, 40), text: cleanText(c?.text) }))
+      .filter((c: { id: string; text: string }) => c.id && c.text);
     const subs = (Array.isArray(t.subs) ? t.subs : []).slice(0, 10);
     for (const s of subs) {
       if (!allowedEndpoint(s.endpoint)) { skipped++; continue; }
+      for (const c of custom) {
+        jobs.push((async () => {
+          const payload = { type: 'reminder', kind: 'custom', title: 'GymQuest', body: c.text, tag: 'gq-reminder-custom-' + c.id };
+          try {
+            const status = await sendPush(s, payload, vapid, { ttl: 1800, urgency: 'normal', topic: ('remc' + c.id).slice(0, 32) });
+            if (status >= 200 && status < 300) sent++;
+            else if (status === 404 || status === 410) { gone++; await admin.rpc('push_gone', { p_endpoint: s.endpoint }); }
+            else failed++;
+          } catch (_e) { failed++; }
+        })());
+      }
       for (const kind of kinds) {
         jobs.push((async () => {
           const payload = { type: 'reminder', kind, title: 'GymQuest', body: (TEXT[kind][s.lang] || TEXT[kind].en), tag: 'gq-reminder-' + kind };

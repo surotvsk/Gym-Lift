@@ -9,6 +9,7 @@ import androidx.health.connect.client.records.ExerciseSessionRecord
 import androidx.health.connect.client.records.HeartRateRecord
 import androidx.health.connect.client.records.metadata.Metadata
 import androidx.health.connect.client.request.AggregateRequest
+import androidx.health.connect.client.request.ReadRecordsRequest
 import androidx.health.connect.client.time.TimeRangeFilter
 import com.getcapacitor.JSArray
 import com.getcapacitor.JSObject
@@ -31,6 +32,8 @@ import java.time.ZoneId
  *  checkPermissions()         → { granted: [...] }  (no prompt)
  *  requestPermissions()       → { granted: ["READ_HEART_RATE", "READ_ACTIVE_CALORIES_BURNED", "WRITE_EXERCISE"] }
  *  readStats({start, end})    → { hrAvg?, hrMax?, hrCount, kcal? }   (ISO-8601 instants, the workout's window)
+ *  heartRateSamples({start, end}) → { samples: [{ t: epoch ms, bpm }] }  krivka tepu pre graf: zoradená, najviac 300 bodov
+ *                                (časové koše, z každého max); bez povolenia reject("denied"). Nič sa neukladá.
  *  writeWorkout({id, start, end, title}) → { ok }  weightlifting session, clientRecordId = workout id (upsert)
  *  deleteWorkout({id})        → { ok }
  * Only the workout's own time window is read; only GymQuest's own sessions are written or deleted.
@@ -122,6 +125,34 @@ class GymHealthPlugin : Plugin() {
                 kc[ActiveCaloriesBurnedRecord.ACTIVE_CALORIES_TOTAL]?.let { out.put("kcal", it.inKilocalories) }
             } catch (e: Exception) { /* bez povolenia na kalórie: nič */ }
             call.resolve(out)
+        }
+    }
+
+    @PluginMethod
+    fun heartRateSamples(call: PluginCall) {
+        val c = client() ?: return call.reject("unavailable")
+        val start = parse(call.getString("start")) ?: return call.reject("bad_start")
+        val end = parse(call.getString("end")) ?: return call.reject("bad_end")
+        if (!end.isAfter(start)) return call.reject("bad_window")
+        scope.launch {
+            try {
+                val raw = ArrayList<HrSample>()
+                var token: String? = null
+                var pages = 0
+                do {
+                    val res = c.readRecords(ReadRecordsRequest(HeartRateRecord::class, TimeRangeFilter.between(start, end), pageSize = 1000, pageToken = token))
+                    for (rec in res.records) for (s in rec.samples) raw.add(HrSample(s.time.toEpochMilli(), s.beatsPerMinute))
+                    token = res.pageToken
+                    pages++
+                } while (token != null && pages < 50)
+                val arr = JSArray()
+                HeartRateSeries.downsample(raw, start.toEpochMilli(), end.toEpochMilli()).forEach { arr.put(JSObject().put("t", it.t).put("bpm", it.bpm)) }
+                call.resolve(JSObject().put("samples", arr))
+            } catch (e: SecurityException) {
+                call.reject("denied")
+            } catch (e: Exception) {
+                call.reject(e.message ?: "read_error")
+            }
         }
     }
 

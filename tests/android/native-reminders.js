@@ -51,6 +51,22 @@ const DATA = { water_on: true, water_every: 60, water_from: '08:00', water_to: '
     l = await sched(Object.assign({}, DATA, { water_every: 30, water_from: '00:00', water_to: '23:30', meal_times: ['07:00', '10:00', '13:00', '16:00', '19:00', '22:00'], workout_days: [1, 2, 3, 4, 5, 6, 7] }));
     check('worst case stays ≤ 64', l.length <= 64, l.length);
 
+    /* 0019: voda vo vybraných časoch, vlastné pripomienky (ID 3100 + 8 × poradie + deň; všetky dni = denné) */
+    const V2 = Object.assign({}, DATA, { water_mode: 'times', water_times: ['15:47', '10:03', '10:03'], meals_on: false, workout_on: false,
+      custom: [{ id: 'a', text: '  Take\tcreatine ', time: '09:15', days: [1, 2, 3, 4, 5, 6, 7] }, { id: 'b', text: 'Stretch', time: '21:30', days: [7, 1] },
+        { id: 'c', text: '   ', time: '08:00', days: [1] }, { id: 'd', text: 'No days', time: '08:00', days: [] }, { id: 'e', text: 'Bad time', time: 'x', days: [2] }] });
+    l = await sched(V2);
+    check('water at set times: de-duplicated, sorted, ids 1000+ (10:03, 15:47)', JSON.stringify(l.filter((n) => n.id < 2000).map((n) => [n.id, n.schedule.on.hour, n.schedule.on.minute])) === '[[1000,10,3],[1001,15,47]]', l.filter((n) => n.id < 2000));
+    const cu = l.filter((n) => n.id >= 3100);
+    check('own reminders: daily (3100), Mon+Sun weekday ones (3109 → Android 2, 3115 → Android 1); invalid ones skipped',
+      JSON.stringify(cu.map((n) => [n.id, n.schedule.on.weekday || 0, n.schedule.on.hour, n.schedule.on.minute])) === '[[3100,0,9,15],[3109,2,21,30],[3115,1,21,30]]', cu.map((n) => n.id));
+    check('own reminder text is plain text (cleaned) in the body; other fields as for the rest', cu[0].body === 'Take creatine' && cu[1].body === 'Stretch' && cu.every((n) => n.channelId === 'reminders' && n.title === 'GymQuest' && n.isExactNotification === false));
+    check('all ids unique and in 1000–3999', new Set(l.map((n) => n.id)).size === l.length && l.every((n) => n.id >= 1000 && n.id < 4000));
+    l = await sched(Object.assign({}, DATA, { water_mode: 'times', water_times: Array.from({ length: 12 }, (_, i) => String(i + 6).padStart(2, '0') + ':07'),
+      custom: Array.from({ length: 10 }, (_, i) => ({ id: 'z' + i, text: 'n' + i, time: '07:00', days: [1, 2, 3, 4, 5, 6] })) }));
+    check('worst case with 10 own reminders on 6 days: unique ids, all < 4000', new Set(l.map((n) => n.id)).size === l.length && l.every((n) => n.id < 4000) && l.length === 12 + 3 + 3 + 60, l.length);
+    check('old server shape (no new keys) gives the old list', (await sched(DATA)).length === 19);
+
     /* zapnuté upozornenia pre prihláseného → naplánuje */
     await p.eval(`(communityProfile = { id: ${JSON.stringify(ME)} }, pushDeviceWrite({ uid: ${JSON.stringify(ME)} }), remindersData = ${JSON.stringify(DATA)}, true)`);
     await clearNativeCalls(p);

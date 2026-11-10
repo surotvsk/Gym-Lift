@@ -100,6 +100,10 @@ account id that is not one of the two disposable test accounts.
 |---|---|
 | old-version round trip (v95 and v90, 19 checks each) | a v100 device saves shared exercise data (custom exercise in two plans, assisted row, one-sided row, `settings.exerciseMemory`, a real Finish) and uploads; an older build (git ref, served on a second port = another "device") loads the same account, changes an unrelated field and uploads without a conflict; v100 syncs again (also after a restart) with every id, assisted flag, weight and memory entry unchanged, and a fresh v100 device gets the same data. Editing a plan with assisted exercises in the old build would drop the mark; this test deliberately edits only an unrelated field. |
 
+### `old-bodyfat-roundtrip.js` (separate script, local stack only)
+
+Phase 8 (v107): new measurement fields (neck, body fat %) survive a sync round trip through an old build (v105, the Play app) that edits an unrelated field. Run like `old-version-roundtrip.js` (`GQ_OLD_REFS` overrides the old build).
+
 Run (account A of the disposable local users; `GQ_OLD_REFS="ref1,ref2"` overrides the default old builds
 `821a538` (v95) and `5b20048` (v90)):
 

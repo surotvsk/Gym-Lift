@@ -35,7 +35,7 @@
     }, 4000);
   </script>
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
-  <link rel="stylesheet" href="style.css?v=112">
+  <link rel="stylesheet" href="style.css?v=113">
 </head>
 <body data-tab="dnes">
 
@@ -298,8 +298,20 @@
         <div class="card" id="body-chart-card" hidden>
           <h3 class="card-title" data-i18n="body.chartTitle">Vývoj</h3>
           <div class="metric-chips" id="body-metric-chips" role="group" data-i18n-aria="body.metricAria"></div>
+          <div class="metric-chips" id="body-range-chips" role="group" data-i18n-aria="body.rangeAria"></div>
           <div class="chart-box" id="body-chart"></div>
           <p class="card-note" id="body-chart-range"></p>
+        </div>
+
+        <div class="card" id="body-compare-card" hidden>
+          <h3 class="card-title" data-i18n="body.cmpTitle">Porovnanie dvoch dátumov</h3>
+          <div id="body-compare"></div>
+        </div>
+
+        <div class="card" id="bodyfat-card">
+          <h3 class="card-title" data-i18n="bodyfat.title">Kalkulačka telesného tuku</h3>
+          <p class="card-note" data-i18n="bodyfat.intro"></p>
+          <div id="bodyfat-box"></div>
         </div>
 
         <div class="card" id="calorie-off">
@@ -1138,8 +1150,8 @@
     </div>
   </div>
 
-  <script src="community-config.js?v=112"></script>
-  <script src="vendor/supabase-js.js?v=112"></script>
-  <script src="script.js?v=112"></script>
+  <script src="community-config.js?v=113"></script>
+  <script src="vendor/supabase-js.js?v=113"></script>
+  <script src="script.js?v=113"></script>
 </body>
 </html>

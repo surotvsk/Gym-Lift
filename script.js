@@ -1915,6 +1915,16 @@ const I18N = {
     'rem.time': 'Čas tréningu', 'rem.note': 'Pripomienky prídu ako upozornenia na zariadenia so zapnutými upozorneniami, podľa času v tvojom telefóne.',
     'rem.save': 'Uložiť pripomienky', 'rem.saved': 'Pripomienky sú uložené.',
     'rem.errInvalid': 'Skontroluj časy: „od“ musí byť skôr ako „do“ a jedlo či tréning najneskôr o 23:30.',
+    'rem.errInvalid2': 'Skontroluj časy: „od“ musí byť skôr ako „do“ a tréning najneskôr o 23:30.',
+    'rem.waterMode': 'Spôsob pripomienok vody', 'rem.modeInterval': 'Po intervaloch',
+    'rem.modeTimes': 'Vo vybraných časoch', 'rem.waterTimeN': 'Čas vody {n}',
+    'rem.addTime': 'Pridať čas', 'rem.removeTime': 'Odstrániť čas {n}',
+    'rem.addMeal': 'Pridať jedlo', 'rem.removeMeal': 'Odstrániť jedlo {n}',
+    'rem.own': 'Vlastné pripomienky', 'rem.ownNone': 'Zatiaľ nemáš vlastné pripomienky.',
+    'rem.addOwn': 'Pridať pripomienku', 'rem.ownText': 'Text pripomienky',
+    'rem.ownPlaceholder': 'napr. Vziať kreatín', 'rem.ownTime': 'Čas pripomienky',
+    'rem.ownDays': 'Dni pripomienky', 'rem.removeOwn': 'Zmazať pripomienku',
+    'rem.errOwn': 'Každá vlastná pripomienka potrebuje text (najviac 60 znakov), čas a aspoň jeden deň.',
     'share.textPlan': 'Tréningový plán: {name}', 'share.textWorkout': 'Tréning: {name}',
     'share.exercisesOne': '{n} cvik', 'share.exercisesFew': '{n} cviky',
     'share.exercisesOther': '{n} cvikov', 'share.setsDone': '{d}/{s} sérií',
@@ -2278,6 +2288,22 @@ const I18N = {
     'body.chartRange': 'Najnižšie {min} · najvyššie {max} {unit}',
     'body.chartNeedTwo': 'Pre graf pridaj ešte jeden zápis.',
     'body.chartAria': 'Graf vývoja, najnižšie {min}, najvyššie {max}',
+    'body.rangeAria': 'Časový rozsah grafu',
+    'body.range.all': 'Všetko',
+    'body.range.3m': '3 mesiace',
+    'body.range.1m': '1 mesiac',
+    'body.chartNone': 'V tomto období nie je žiadny zápis.',
+    'body.cmpTitle': 'Porovnanie dvoch dátumov',
+    'body.cmpFrom': 'Od',
+    'body.cmpTo': 'Do',
+    'body.cmpMeasure': 'Miera',
+    'body.cmpChange': 'Zmena',
+    'body.cmpDays': 'Dní medzi: {n}',
+    'body.cmpNone': 'Na oboch dátumoch nie je zapísaná žiadna spoločná miera.',
+    'body.cmpNote': 'Nižší pás a nižší telesný tuk sú zelené, ostatné zmeny sú neutrálne.',
+    'body.cmpBetter': 'zlepšenie',
+    'body.cmpWorse': 'zhoršenie',
+    'body.cmpTableAria': 'Porovnanie mier medzi dvoma dátumami',
     'body.historyTitle': 'História meraní',
     'body.storageNotice': 'Uložené dáta začínajú byť veľké a čoskoro môžu prekročiť to, čo tento prehliadač udrží. Vyexportuj si zálohu a zváž, či nepotrebuješ vymazať staré záznamy. GymQuest sám nikdy nič nemaže.',
     'body.f.weight': 'Telesná hmotnosť',
@@ -2288,6 +2314,18 @@ const I18N = {
     'body.f.thighLeft': 'Ľavé stehno',
     'body.f.thighRight': 'Pravé stehno',
     'body.f.hip': 'Boky',
+    'body.f.neck': 'Krk',
+    'body.f.bodyFat': 'Telesný tuk',
+    'bodyfat.title': 'Kalkulačka telesného tuku',
+    'bodyfat.intro': 'Odhad z obvodov tela (metóda US Navy), zvyčajne ±3–4 %. Nie je to lekárska rada.',
+    'bodyfat.date': 'Dátum merania',
+    'bodyfat.fill': 'Vyplň všetky namerané hodnoty a uvidíš odhad.',
+    'bodyfat.result': 'Odhad telesného tuku: {pct} %',
+    'bodyfat.errNeck': 'Pás musí byť väčší ako krk (u žien pás + boky väčšie ako krk).',
+    'bodyfat.errOut': 'Výsledok {pct} % je mimo rozsahu 3–60 %. Skontroluj merania.',
+    'bodyfat.save': 'Uložiť ako meranie',
+    'bodyfat.saved': 'Uložené do merania z {date}.',
+    'bodyfat.updates': 'Meranie z {date} sa doplní týmito hodnotami.',
 
     'calorie.title': 'Odhad dennej energie',
     'calorie.offHint': 'Voliteľné a predvolene skryté. GymQuest nič neodhaduje, kým to sám nezapneš.',
@@ -2850,6 +2888,16 @@ const I18N = {
     'rem.time': 'Workout time', 'rem.note': 'Reminders arrive as notifications on your devices that have notifications on, at your phone’s local time.',
     'rem.save': 'Save reminders', 'rem.saved': 'Reminders saved.',
     'rem.errInvalid': 'Check the times: “from” must be before “to”, and meals or workouts at 23:30 at the latest.',
+    'rem.errInvalid2': 'Check the times: “from” must be before “to”, and the workout at 23:30 at the latest.',
+    'rem.waterMode': 'How water reminders work', 'rem.modeInterval': 'At intervals',
+    'rem.modeTimes': 'At set times', 'rem.waterTimeN': 'Water time {n}',
+    'rem.addTime': 'Add time', 'rem.removeTime': 'Remove time {n}',
+    'rem.addMeal': 'Add meal', 'rem.removeMeal': 'Remove meal {n}',
+    'rem.own': 'Own reminders', 'rem.ownNone': 'No own reminders yet.',
+    'rem.addOwn': 'Add reminder', 'rem.ownText': 'Reminder text',
+    'rem.ownPlaceholder': 'e.g. Take creatine', 'rem.ownTime': 'Reminder time',
+    'rem.ownDays': 'Reminder days', 'rem.removeOwn': 'Delete reminder',
+    'rem.errOwn': 'Each own reminder needs a text (up to 60 characters), a time and at least one day.',
     'share.textPlan': 'Workout plan: {name}', 'share.textWorkout': 'Workout: {name}',
     'share.exercisesOne': '{n} exercise', 'share.exercisesFew': '{n} exercises',
     'share.exercisesOther': '{n} exercises', 'share.setsDone': '{d}/{s} sets',
@@ -3221,6 +3269,22 @@ const I18N = {
     'body.chartRange': 'Lowest {min} · highest {max} {unit}',
     'body.chartNeedTwo': 'Add another entry to see a trend.',
     'body.chartAria': 'Trend chart, lowest {min}, highest {max}',
+    'body.rangeAria': 'Chart time range',
+    'body.range.all': 'All',
+    'body.range.3m': '3 months',
+    'body.range.1m': '1 month',
+    'body.chartNone': 'No entries in this period.',
+    'body.cmpTitle': 'Compare two dates',
+    'body.cmpFrom': 'From',
+    'body.cmpTo': 'To',
+    'body.cmpMeasure': 'Measurement',
+    'body.cmpChange': 'Change',
+    'body.cmpDays': 'Days between: {n}',
+    'body.cmpNone': 'No measurement is recorded on both dates.',
+    'body.cmpNote': 'Lower waist and lower body fat are green; other changes are neutral.',
+    'body.cmpBetter': 'improvement',
+    'body.cmpWorse': 'worse',
+    'body.cmpTableAria': 'Measurements compared between two dates',
     'body.historyTitle': 'Measurement history',
     'body.storageNotice': 'Your stored data is getting large and may soon exceed what this browser can keep. Export a backup and consider deleting old entries you no longer need. GymQuest never deletes anything for you.',
     'body.f.weight': 'Body weight',
@@ -3231,6 +3295,18 @@ const I18N = {
     'body.f.thighLeft': 'Left thigh',
     'body.f.thighRight': 'Right thigh',
     'body.f.hip': 'Hip',
+    'body.f.neck': 'Neck',
+    'body.f.bodyFat': 'Body fat',
+    'bodyfat.title': 'Body fat calculator',
+    'bodyfat.intro': 'Estimate from tape measurements (US Navy method), usually within ±3–4 %. Not medical advice.',
+    'bodyfat.date': 'Measurement date',
+    'bodyfat.fill': 'Fill in all the measurements to see the estimate.',
+    'bodyfat.result': 'Estimated body fat: {pct} %',
+    'bodyfat.errNeck': 'Waist must be larger than neck (for women, waist + hip larger than neck).',
+    'bodyfat.errOut': 'The result {pct} % is outside 3–60 %. Check your measurements.',
+    'bodyfat.save': 'Save as measurement',
+    'bodyfat.saved': 'Saved to the measurement from {date}.',
+    'bodyfat.updates': 'The measurement from {date} will be updated with these values.',
 
     'calorie.title': 'Daily energy estimate',
     'calorie.offHint': 'Optional and hidden by default. GymQuest estimates nothing until you turn this on.',
@@ -3791,6 +3867,16 @@ const I18N = {
     'rem.time': 'Hora del entrenamiento', 'rem.note': 'Los recordatorios llegan como notificaciones a tus dispositivos con notificaciones activadas, según la hora de tu teléfono.',
     'rem.save': 'Guardar recordatorios', 'rem.saved': 'Recordatorios guardados.',
     'rem.errInvalid': 'Revisa las horas: «de» debe ser antes que «a», y las comidas o entrenamientos como muy tarde a las 23:30.',
+    'rem.errInvalid2': 'Revisa las horas: «de» debe ser antes que «a», y el entrenamiento como muy tarde a las 23:30.',
+    'rem.waterMode': 'Cómo funcionan los recordatorios de agua', 'rem.modeInterval': 'Por intervalos',
+    'rem.modeTimes': 'A horas fijas', 'rem.waterTimeN': 'Hora de agua {n}',
+    'rem.addTime': 'Añadir hora', 'rem.removeTime': 'Quitar la hora {n}',
+    'rem.addMeal': 'Añadir comida', 'rem.removeMeal': 'Quitar la comida {n}',
+    'rem.own': 'Recordatorios propios', 'rem.ownNone': 'Aún no tienes recordatorios propios.',
+    'rem.addOwn': 'Añadir recordatorio', 'rem.ownText': 'Texto del recordatorio',
+    'rem.ownPlaceholder': 'p. ej. Tomar creatina', 'rem.ownTime': 'Hora del recordatorio',
+    'rem.ownDays': 'Días del recordatorio', 'rem.removeOwn': 'Eliminar recordatorio',
+    'rem.errOwn': 'Cada recordatorio propio necesita un texto (máximo 60 caracteres), una hora y al menos un día.',
     'share.textPlan': 'Plan de entrenamiento: {name}', 'share.textWorkout': 'Entrenamiento: {name}',
     'share.exercisesOne': '{n} ejercicio', 'share.exercisesFew': '{n} ejercicios',
     'share.exercisesOther': '{n} ejercicios', 'share.setsDone': '{d}/{s} series',
@@ -4154,6 +4240,22 @@ const I18N = {
     'body.chartRange': 'Más bajo {min} · más alto {max} {unit}',
     'body.chartNeedTwo': 'Añade otra entrada para ver una tendencia.',
     'body.chartAria': 'Gráfico de evolución, mínimo {min}, máximo {max}',
+    'body.rangeAria': 'Intervalo de tiempo del gráfico',
+    'body.range.all': 'Todo',
+    'body.range.3m': '3 meses',
+    'body.range.1m': '1 mes',
+    'body.chartNone': 'No hay entradas en este periodo.',
+    'body.cmpTitle': 'Comparar dos fechas',
+    'body.cmpFrom': 'Desde',
+    'body.cmpTo': 'Hasta',
+    'body.cmpMeasure': 'Medida',
+    'body.cmpChange': 'Cambio',
+    'body.cmpDays': 'Días entre ambas: {n}',
+    'body.cmpNone': 'Ninguna medida está registrada en las dos fechas.',
+    'body.cmpNote': 'Menos cintura y menos grasa corporal van en verde; los demás cambios son neutros.',
+    'body.cmpBetter': 'mejora',
+    'body.cmpWorse': 'empeora',
+    'body.cmpTableAria': 'Medidas comparadas entre dos fechas',
     'body.historyTitle': 'Historial de medidas',
     'body.storageNotice': 'Tus datos guardados se están haciendo grandes y pronto pueden superar lo que este navegador puede mantener. Exporta una copia y valora borrar entradas antiguas que ya no necesites. GymQuest nunca borra nada por ti.',
     'body.f.weight': 'Peso corporal',
@@ -4164,6 +4266,18 @@ const I18N = {
     'body.f.thighLeft': 'Muslo izquierdo',
     'body.f.thighRight': 'Muslo derecho',
     'body.f.hip': 'Cadera',
+    'body.f.neck': 'Cuello',
+    'body.f.bodyFat': 'Grasa corporal',
+    'bodyfat.title': 'Calculadora de grasa corporal',
+    'bodyfat.intro': 'Estimación a partir de medidas con cinta (método US Navy), normalmente ±3–4 %. No es consejo médico.',
+    'bodyfat.date': 'Fecha de la medición',
+    'bodyfat.fill': 'Rellena todas las medidas para ver la estimación.',
+    'bodyfat.result': 'Grasa corporal estimada: {pct} %',
+    'bodyfat.errNeck': 'La cintura debe ser mayor que el cuello (en mujeres, cintura + cadera mayor que el cuello).',
+    'bodyfat.errOut': 'El resultado {pct} % está fuera de 3–60 %. Revisa las medidas.',
+    'bodyfat.save': 'Guardar como medición',
+    'bodyfat.saved': 'Guardado en la medición del {date}.',
+    'bodyfat.updates': 'La medición del {date} se actualizará con estos valores.',
 
     'calorie.title': 'Estimación de energía diaria',
     'calorie.offHint': 'Opcional y oculta por defecto. GymQuest no estima nada hasta que tú lo actives.',
@@ -4724,6 +4838,16 @@ const I18N = {
     'rem.time': 'Horário do treino', 'rem.note': 'Os lembretes chegam como notificações nos seus dispositivos com notificações ativadas, no horário do seu celular.',
     'rem.save': 'Salvar lembretes', 'rem.saved': 'Lembretes salvos.',
     'rem.errInvalid': 'Confira os horários: “das” deve ser antes de “às”, e refeições ou treinos no máximo às 23:30.',
+    'rem.errInvalid2': 'Confira os horários: “das” deve ser antes de “às”, e o treino no máximo às 23:30.',
+    'rem.waterMode': 'Como funcionam os lembretes de água', 'rem.modeInterval': 'Em intervalos',
+    'rem.modeTimes': 'Em horários definidos', 'rem.waterTimeN': 'Horário da água {n}',
+    'rem.addTime': 'Adicionar horário', 'rem.removeTime': 'Remover horário {n}',
+    'rem.addMeal': 'Adicionar refeição', 'rem.removeMeal': 'Remover refeição {n}',
+    'rem.own': 'Lembretes próprios', 'rem.ownNone': 'Você ainda não tem lembretes próprios.',
+    'rem.addOwn': 'Adicionar lembrete', 'rem.ownText': 'Texto do lembrete',
+    'rem.ownPlaceholder': 'ex.: Tomar creatina', 'rem.ownTime': 'Horário do lembrete',
+    'rem.ownDays': 'Dias do lembrete', 'rem.removeOwn': 'Excluir lembrete',
+    'rem.errOwn': 'Cada lembrete próprio precisa de um texto (até 60 caracteres), um horário e pelo menos um dia.',
     'share.textPlan': 'Plano de treino: {name}', 'share.textWorkout': 'Treino: {name}',
     'share.exercisesOne': '{n} exercício', 'share.exercisesFew': '{n} exercícios',
     'share.exercisesOther': '{n} exercícios', 'share.setsDone': '{d}/{s} séries',
@@ -5087,6 +5211,22 @@ const I18N = {
     'body.chartRange': 'Menor {min} · maior {max} {unit}',
     'body.chartNeedTwo': 'Adicione outro registro para ver uma tendência.',
     'body.chartAria': 'Gráfico de evolução, menor {min}, maior {max}',
+    'body.rangeAria': 'Período do gráfico',
+    'body.range.all': 'Tudo',
+    'body.range.3m': '3 meses',
+    'body.range.1m': '1 mês',
+    'body.chartNone': 'Nenhum registro neste período.',
+    'body.cmpTitle': 'Comparar duas datas',
+    'body.cmpFrom': 'De',
+    'body.cmpTo': 'Até',
+    'body.cmpMeasure': 'Medida',
+    'body.cmpChange': 'Variação',
+    'body.cmpDays': 'Dias entre as datas: {n}',
+    'body.cmpNone': 'Nenhuma medida está registrada nas duas datas.',
+    'body.cmpNote': 'Menos cintura e menos gordura corporal aparecem em verde; as outras variações são neutras.',
+    'body.cmpBetter': 'melhora',
+    'body.cmpWorse': 'piora',
+    'body.cmpTableAria': 'Medidas comparadas entre duas datas',
     'body.historyTitle': 'Histórico de medidas',
     'body.storageNotice': 'Seus dados salvos estão ficando grandes e logo podem passar do que este navegador consegue manter. Exporte um backup e considere apagar registros antigos que você não precisa mais. O GymQuest nunca apaga nada por você.',
     'body.f.weight': 'Peso corporal',
@@ -5097,6 +5237,18 @@ const I18N = {
     'body.f.thighLeft': 'Coxa esquerda',
     'body.f.thighRight': 'Coxa direita',
     'body.f.hip': 'Quadril',
+    'body.f.neck': 'Pescoço',
+    'body.f.bodyFat': 'Gordura corporal',
+    'bodyfat.title': 'Calculadora de gordura corporal',
+    'bodyfat.intro': 'Estimativa a partir de medidas com fita (método US Navy), normalmente ±3–4 %. Não é aconselhamento médico.',
+    'bodyfat.date': 'Data da medição',
+    'bodyfat.fill': 'Preencha todas as medidas para ver a estimativa.',
+    'bodyfat.result': 'Gordura corporal estimada: {pct} %',
+    'bodyfat.errNeck': 'A cintura deve ser maior que o pescoço (em mulheres, cintura + quadril maior que o pescoço).',
+    'bodyfat.errOut': 'O resultado {pct} % está fora de 3–60 %. Confira as medidas.',
+    'bodyfat.save': 'Salvar como medição',
+    'bodyfat.saved': 'Salvo na medição de {date}.',
+    'bodyfat.updates': 'A medição de {date} será atualizada com estes valores.',
 
     'calorie.title': 'Estimativa de energia diária',
     'calorie.offHint': 'Opcional e oculta por padrão. O GymQuest não estima nada até você ativar.',
@@ -5657,6 +5809,16 @@ const I18N = {
     'rem.time': 'Heure de l’entraînement', 'rem.note': 'Les rappels arrivent comme notifications sur tes appareils où les notifications sont activées, à l’heure de ton téléphone.',
     'rem.save': 'Enregistrer les rappels', 'rem.saved': 'Rappels enregistrés.',
     'rem.errInvalid': 'Vérifie les heures : « de » doit être avant « à », et repas ou entraînement au plus tard à 23 h 30.',
+    'rem.errInvalid2': 'Vérifie les heures : « de » doit être avant « à », et l’entraînement au plus tard à 23 h 30.',
+    'rem.waterMode': 'Mode des rappels d’eau', 'rem.modeInterval': 'À intervalles',
+    'rem.modeTimes': 'À des heures fixes', 'rem.waterTimeN': 'Heure d’eau {n}',
+    'rem.addTime': 'Ajouter une heure', 'rem.removeTime': 'Supprimer l’heure {n}',
+    'rem.addMeal': 'Ajouter un repas', 'rem.removeMeal': 'Supprimer le repas {n}',
+    'rem.own': 'Rappels personnels', 'rem.ownNone': 'Pas encore de rappel personnel.',
+    'rem.addOwn': 'Ajouter un rappel', 'rem.ownText': 'Texte du rappel',
+    'rem.ownPlaceholder': 'p. ex. Prendre la créatine', 'rem.ownTime': 'Heure du rappel',
+    'rem.ownDays': 'Jours du rappel', 'rem.removeOwn': 'Supprimer le rappel',
+    'rem.errOwn': 'Chaque rappel personnel a besoin d’un texte (60 caractères maximum), d’une heure et d’au moins un jour.',
     'share.textPlan': 'Programme : {name}', 'share.textWorkout': 'Séance : {name}',
     'share.exercisesOne': '{n} exercice', 'share.exercisesFew': '{n} exercices',
     'share.exercisesOther': '{n} exercices', 'share.setsDone': '{d}/{s} séries',
@@ -6020,6 +6182,22 @@ const I18N = {
     'body.chartRange': 'Minimum {min} · maximum {max} {unit}',
     'body.chartNeedTwo': 'Ajoute une autre entrée pour voir une tendance.',
     'body.chartAria': 'Graphique d’évolution, minimum {min}, maximum {max}',
+    'body.rangeAria': 'Période du graphique',
+    'body.range.all': 'Tout',
+    'body.range.3m': '3 mois',
+    'body.range.1m': '1 mois',
+    'body.chartNone': 'Aucune entrée sur cette période.',
+    'body.cmpTitle': 'Comparer deux dates',
+    'body.cmpFrom': 'De',
+    'body.cmpTo': 'À',
+    'body.cmpMeasure': 'Mesure',
+    'body.cmpChange': 'Variation',
+    'body.cmpDays': 'Jours entre les deux : {n}',
+    'body.cmpNone': 'Aucune mesure n’est enregistrée aux deux dates.',
+    'body.cmpNote': 'Moins de tour de taille et moins de masse grasse sont en vert ; les autres variations sont neutres.',
+    'body.cmpBetter': 'amélioration',
+    'body.cmpWorse': 'dégradation',
+    'body.cmpTableAria': 'Mesures comparées entre deux dates',
     'body.historyTitle': 'Historique des mesures',
     'body.storageNotice': 'Tes données enregistrées deviennent volumineuses et pourraient bientôt dépasser ce que ce navigateur peut garder. Exporte une sauvegarde et envisage de supprimer les anciennes entrées dont tu n’as plus besoin. GymQuest ne supprime jamais rien à ta place.',
     'body.f.weight': 'Poids corporel',
@@ -6030,6 +6208,18 @@ const I18N = {
     'body.f.thighLeft': 'Cuisse gauche',
     'body.f.thighRight': 'Cuisse droite',
     'body.f.hip': 'Hanches',
+    'body.f.neck': 'Cou',
+    'body.f.bodyFat': 'Masse grasse',
+    'bodyfat.title': 'Calculateur de masse grasse',
+    'bodyfat.intro': 'Estimation à partir de mesures au ruban (méthode US Navy), généralement ±3–4 %. Ce n’est pas un avis médical.',
+    'bodyfat.date': 'Date de la mesure',
+    'bodyfat.fill': 'Remplis toutes les mesures pour voir l’estimation.',
+    'bodyfat.result': 'Masse grasse estimée : {pct} %',
+    'bodyfat.errNeck': 'La taille doit être supérieure au cou (pour les femmes, taille + hanches supérieures au cou).',
+    'bodyfat.errOut': 'Le résultat {pct} % est hors de 3–60 %. Vérifie les mesures.',
+    'bodyfat.save': 'Enregistrer comme mesure',
+    'bodyfat.saved': 'Enregistré dans la mesure du {date}.',
+    'bodyfat.updates': 'La mesure du {date} sera mise à jour avec ces valeurs.',
 
     'calorie.title': 'Estimation de l’énergie quotidienne',
     'calorie.offHint': 'Facultatif et masqué par défaut. GymQuest n’estime rien tant que tu ne l’actives pas.',
@@ -6609,6 +6799,16 @@ const I18N = {
     'rem.time': 'وقت التمرين', 'rem.note': 'تصل التذكيرات كإشعارات على أجهزتك التي فعّلت عليها الإشعارات، حسب توقيت هاتفك.',
     'rem.save': 'حفظ التذكيرات', 'rem.saved': 'تم حفظ التذكيرات.',
     'rem.errInvalid': 'تحقّق من الأوقات: يجب أن يكون «من» قبل «إلى»، والوجبات أو التمرين في 23:30 كحد أقصى.',
+    'rem.errInvalid2': 'تحقّق من الأوقات: يجب أن يكون «من» قبل «إلى»، والتمرين في 23:30 كحد أقصى.',
+    'rem.waterMode': 'طريقة تذكيرات الماء', 'rem.modeInterval': 'على فترات منتظمة',
+    'rem.modeTimes': 'في أوقات محددة', 'rem.waterTimeN': 'وقت الماء {n}',
+    'rem.addTime': 'إضافة وقت', 'rem.removeTime': 'حذف الوقت {n}',
+    'rem.addMeal': 'إضافة وجبة', 'rem.removeMeal': 'حذف الوجبة {n}',
+    'rem.own': 'تذكيراتي الخاصة', 'rem.ownNone': 'لا توجد تذكيرات خاصة بعد.',
+    'rem.addOwn': 'إضافة تذكير', 'rem.ownText': 'نص التذكير',
+    'rem.ownPlaceholder': 'مثلاً: تناول الكرياتين', 'rem.ownTime': 'وقت التذكير',
+    'rem.ownDays': 'أيام التذكير', 'rem.removeOwn': 'حذف التذكير',
+    'rem.errOwn': 'كل تذكير خاص يحتاج إلى نص (حتى 60 حرفًا) ووقت ويوم واحد على الأقل.',
     'share.textPlan': 'خطة تمرين: {name}', 'share.textWorkout': 'تمرين: {name}',
     'share.exercisesZero': '{n} تمرين', 'share.exercisesOne': 'تمرين واحد',
     'share.exercisesTwo': 'تمرينان', 'share.exercisesFew': '{n} تمارين',
@@ -6974,6 +7174,22 @@ const I18N = {
     'body.chartRange': 'الأدنى {min} · الأعلى {max} {unit}',
     'body.chartNeedTwo': 'أضف قياسًا آخر لرؤية اتجاه.',
     'body.chartAria': 'مخطط التطوّر، الأدنى {min}، الأعلى {max}',
+    'body.rangeAria': 'النطاق الزمني للمخطط',
+    'body.range.all': 'الكل',
+    'body.range.3m': '3 أشهر',
+    'body.range.1m': 'شهر واحد',
+    'body.chartNone': 'لا توجد قياسات في هذه الفترة.',
+    'body.cmpTitle': 'مقارنة تاريخين',
+    'body.cmpFrom': 'من',
+    'body.cmpTo': 'إلى',
+    'body.cmpMeasure': 'القياس',
+    'body.cmpChange': 'التغيّر',
+    'body.cmpDays': 'الأيام بين التاريخين: {n}',
+    'body.cmpNone': 'لا يوجد قياس مسجّل في كلا التاريخين.',
+    'body.cmpNote': 'انخفاض الخصر ودهون الجسم يظهر بالأخضر، وبقية التغيّرات محايدة.',
+    'body.cmpBetter': 'تحسّن',
+    'body.cmpWorse': 'أسوأ',
+    'body.cmpTableAria': 'القياسات مقارنةً بين تاريخين',
     'body.historyTitle': 'سجلّ القياسات',
     'body.storageNotice': 'بياناتك المحفوظة تكبر وقد تتجاوز قريبًا ما يستطيع هذا المتصفح الاحتفاظ به. صدّر نسخة احتياطية وفكّر في حذف القياسات القديمة التي لم تعد تحتاجها. GymQuest لا يحذف شيئًا نيابة عنك أبدًا.',
     'body.f.weight': 'وزن الجسم',
@@ -6984,6 +7200,18 @@ const I18N = {
     'body.f.thighLeft': 'الفخذ الأيسر',
     'body.f.thighRight': 'الفخذ الأيمن',
     'body.f.hip': 'محيط الأرداف',
+    'body.f.neck': 'الرقبة',
+    'body.f.bodyFat': 'دهون الجسم',
+    'bodyfat.title': 'حاسبة دهون الجسم',
+    'bodyfat.intro': 'تقدير من قياسات الشريط (طريقة US Navy)، عادةً بهامش ±3–4 %. ليست نصيحة طبية.',
+    'bodyfat.date': 'تاريخ القياس',
+    'bodyfat.fill': 'املأ كل القياسات لترى التقدير.',
+    'bodyfat.result': 'دهون الجسم المقدّرة: {pct} %',
+    'bodyfat.errNeck': 'يجب أن يكون محيط الخصر أكبر من محيط الرقبة (للنساء: الخصر + الأرداف أكبر من الرقبة).',
+    'bodyfat.errOut': 'النتيجة {pct} % خارج النطاق 3–60 %. تحقّق من القياسات.',
+    'bodyfat.save': 'حفظ كقياس',
+    'bodyfat.saved': 'تم الحفظ في قياس {date}.',
+    'bodyfat.updates': 'سيتم تحديث قياس {date} بهذه القيم.',
 
     'calorie.title': 'تقدير الطاقة اليومية',
     'calorie.offHint': 'اختياري ومخفي افتراضيًا. GymQuest لا يقدّر شيئًا حتى تشغّله بنفسك.',
@@ -7584,6 +7812,10 @@ const HEALTH_I18N = {
     'health.unavailable': 'Health Connect v tomto telefóne nie je dostupný. Nainštaluj ho z Google Play.',
     'health.hr': '♥ priemer {avg} · max {max} úderov/min', 'health.kcal': '{kcal} kcal',
     'health.refresh': 'Obnoviť tep', 'health.none': 'Z hodiniek zatiaľ nie je tep.',
+    'health.chart.loading': 'Načítavam tep…', 'health.chart.empty': 'Pre tento tréning nie je krivka tepu.',
+    'health.chart.denied': 'Tep nie je povolený v Health Connect, graf sa nedá ukázať.',
+    'health.chart.aria': 'Tep počas tréningu: {n} meraní, najnižší {min}, najvyšší {max}, priemer {avg} úderov/min',
+    'health.chart.avg': 'priemer {n}', 'health.chart.max': 'max {n}', 'health.chart.min': 'min',
   },
   en: {
     'health.title': 'Health Connect', 'health.switch': 'Connect to Health Connect',
@@ -7592,6 +7824,10 @@ const HEALTH_I18N = {
     'health.unavailable': 'Health Connect is not available on this phone. Install it from Google Play.',
     'health.hr': '♥ avg {avg} · max {max} bpm', 'health.kcal': '{kcal} kcal',
     'health.refresh': 'Refresh heart rate', 'health.none': 'No heart rate from your watch yet.',
+    'health.chart.loading': 'Loading heart rate…', 'health.chart.empty': 'No heart-rate curve for this workout.',
+    'health.chart.denied': 'Heart rate is not allowed in Health Connect, so the chart can’t be shown.',
+    'health.chart.aria': 'Heart rate during the workout: {n} readings, lowest {min}, highest {max}, average {avg} bpm',
+    'health.chart.avg': 'avg {n}', 'health.chart.max': 'max {n}', 'health.chart.min': 'min',
   },
   es: {
     'health.title': 'Health Connect', 'health.switch': 'Conectar con Health Connect',
@@ -7600,6 +7836,10 @@ const HEALTH_I18N = {
     'health.unavailable': 'Health Connect no está disponible en este teléfono. Instálalo desde Google Play.',
     'health.hr': '♥ media {avg} · máx {max} ppm', 'health.kcal': '{kcal} kcal',
     'health.refresh': 'Actualizar pulso', 'health.none': 'Aún no hay pulso de tu reloj.',
+    'health.chart.loading': 'Cargando pulso…', 'health.chart.empty': 'No hay curva de pulso de este entrenamiento.',
+    'health.chart.denied': 'El pulso no está permitido en Health Connect, no se puede mostrar el gráfico.',
+    'health.chart.aria': 'Pulso durante el entrenamiento: {n} lecturas, mínimo {min}, máximo {max}, media {avg} ppm',
+    'health.chart.avg': 'media {n}', 'health.chart.max': 'máx {n}', 'health.chart.min': 'min',
   },
   'pt-BR': {
     'health.title': 'Health Connect', 'health.switch': 'Conectar ao Health Connect',
@@ -7608,6 +7848,10 @@ const HEALTH_I18N = {
     'health.unavailable': 'O Health Connect não está disponível neste telefone. Instale-o pelo Google Play.',
     'health.hr': '♥ média {avg} · máx {max} bpm', 'health.kcal': '{kcal} kcal',
     'health.refresh': 'Atualizar frequência cardíaca', 'health.none': 'Ainda não há frequência cardíaca do seu relógio.',
+    'health.chart.loading': 'Carregando frequência cardíaca…', 'health.chart.empty': 'Sem curva de frequência cardíaca neste treino.',
+    'health.chart.denied': 'A frequência cardíaca não está permitida no Health Connect, então o gráfico não pode ser mostrado.',
+    'health.chart.aria': 'Frequência cardíaca durante o treino: {n} leituras, mínima {min}, máxima {max}, média {avg} bpm',
+    'health.chart.avg': 'média {n}', 'health.chart.max': 'máx {n}', 'health.chart.min': 'min',
   },
   fr: {
     'health.title': 'Health Connect', 'health.switch': 'Connecter à Health Connect',
@@ -7616,6 +7860,10 @@ const HEALTH_I18N = {
     'health.unavailable': 'Health Connect n’est pas disponible sur ce téléphone. Installe-le depuis Google Play.',
     'health.hr': '♥ moy. {avg} · max {max} bpm', 'health.kcal': '{kcal} kcal',
     'health.refresh': 'Actualiser la fréquence cardiaque', 'health.none': 'Pas encore de fréquence cardiaque de ta montre.',
+    'health.chart.loading': 'Chargement de la fréquence cardiaque…', 'health.chart.empty': 'Pas de courbe de fréquence cardiaque pour cet entraînement.',
+    'health.chart.denied': 'La fréquence cardiaque n’est pas autorisée dans Health Connect, le graphique ne peut pas être affiché.',
+    'health.chart.aria': 'Fréquence cardiaque pendant l’entraînement : {n} mesures, minimum {min}, maximum {max}, moyenne {avg} bpm',
+    'health.chart.avg': 'moy. {n}', 'health.chart.max': 'max {n}', 'health.chart.min': 'min',
   },
   ar: {
     'health.title': 'Health Connect', 'health.switch': 'الربط مع Health Connect',
@@ -7624,6 +7872,10 @@ const HEALTH_I18N = {
     'health.unavailable': 'Health Connect غير متوفر على هذا الهاتف. ثبّته من Google Play.',
     'health.hr': '♥ المتوسط {avg} · الأقصى {max} نبضة/د', 'health.kcal': '{kcal} سعرة',
     'health.refresh': 'تحديث النبض', 'health.none': 'لا يوجد نبض من ساعتك بعد.',
+    'health.chart.loading': 'جارٍ تحميل النبض…', 'health.chart.empty': 'لا يوجد منحنى نبض لهذا التمرين.',
+    'health.chart.denied': 'النبض غير مسموح به في Health Connect، لذا لا يمكن عرض الرسم.',
+    'health.chart.aria': 'النبض أثناء التمرين: {n} قراءة، الأدنى {min}، الأقصى {max}، المتوسط {avg} نبضة/د',
+    'health.chart.avg': 'المتوسط {n}', 'health.chart.max': 'الأقصى {n}', 'health.chart.min': 'د',
   },
 };
 for (const lang of Object.keys(HEALTH_I18N)) Object.assign(I18N[lang] || (I18N[lang] = {}), HEALTH_I18N[lang]);
@@ -9787,7 +10039,12 @@ const MEASURE_LIMITS = {
   waistCm: [1, 400], chestCm: [1, 400],
   armLeftCm: [1, 400], armRightCm: [1, 400],
   thighLeftCm: [1, 400], thighRightCm: [1, 400], hipCm: [1, 400],
+  neckCm: [1, 400], bodyFatPct: [3, 60],
 };
+/* Nové polia (krk, telesný tuk %). Staršie verzie appky (v105 a skôr) ich pri načítaní zahodia,
+   preto sa zrkadlia aj do settings.measureExtra (staré normalizovanie nechá settings nedotknuté). */
+const MEASURE_EXTRA_FIELDS = ['neckCm', 'bodyFatPct'];
+const MEASURE_ALL_FIELDS = MEASURE_FIELDS.concat(MEASURE_EXTRA_FIELDS);
 const KG_PER_LB = 0.45359237;
 const CM_PER_IN = 2.54;
 
@@ -9813,8 +10070,35 @@ function cleanMeasurement(raw) {
   if (!id || !isDateKey(raw.date)) return null;
   const out = { id, date: raw.date };
   for (const f of MEASURE_FIELDS) out[f] = cleanMeasureValue(f, raw[f]);
+  /* Nové polia sa pridajú len keď majú hodnotu: staré záznamy zostanú bajt po bajte rovnaké. */
+  for (const f of MEASURE_EXTRA_FIELDS) {
+    const v = cleanMeasureValue(f, raw[f]);
+    if (v !== null) out[f] = v;
+  }
   out.note = typeof raw.note === 'string' ? raw.note : '';
   return out;   // prázdny záznam sa necháva – používateľ si ho môže vymazať sám
+}
+
+/* Zrkadlo nových polí v settings.measureExtra[id]. Ak starý klient záznam prepísal bez nich,
+   hodnoty sa z zrkadla obnovia (rebuildOnly = len prepočítať zrkadlo po vlastnej úprave); zrkadlo sa vždy prepočíta zo záznamov (osirelé id zaniknú). */
+function measureExtraRestore(out, rebuildOnly) {
+  const mirror = (out.settings.measureExtra && typeof out.settings.measureExtra === 'object'
+    && !Array.isArray(out.settings.measureExtra)) ? out.settings.measureExtra : {};
+  const next = {};
+  for (const m of out.measurements) {
+    const saved = (mirror[m.id] && typeof mirror[m.id] === 'object') ? mirror[m.id] : {};
+    const entry = {};
+    for (const f of MEASURE_EXTRA_FIELDS) {
+      if (m[f] === undefined && !rebuildOnly) {
+        const v = cleanMeasureValue(f, saved[f]);
+        if (v !== null) m[f] = v;
+      }
+      if (m[f] !== undefined && m[f] !== null) entry[f] = m[f];
+    }
+    if (Object.keys(entry).length) next[m.id] = entry;
+  }
+  if (Object.keys(next).length) out.settings.measureExtra = next;
+  else delete out.settings.measureExtra;
 }
 
 function cleanMacro(value, max) {
@@ -9913,7 +10197,7 @@ function lengthUnitLabel() { return bodyUnits() === 'imperial' ? t('units.in') :
 /* Jedno desatinné miesto, zobrazované jednotky. */
 function formatMeasure(value, kind) {
   if (value === null || value === undefined || !Number.isFinite(Number(value))) return '—';
-  const shown = kind === 'weight' ? weightToDisplay(Number(value)) : lengthToDisplay(Number(value));
+  const shown = measureToDisplay(Number(value), kind);
   return (Math.round(shown * 10) / 10).toFixed(1);
 }
 
@@ -9932,7 +10216,7 @@ function measureSeries(field) {
 }
 
 function latestMeasurement() {
-  const list = sortedMeasurements().filter((m) => MEASURE_FIELDS.some((f) => m[f] !== null));
+  const list = sortedMeasurements().filter((m) => MEASURE_ALL_FIELDS.some((f) => m[f] !== null && m[f] !== undefined));
   return list.length ? list[list.length - 1] : null;
 }
 
@@ -10406,6 +10690,7 @@ function migrateV2toV3(parsed) {
     foodLog: cleanFoodLog(base.foodLog),
     profile: cleanProfile(base.profile),
   };
+  measureExtraRestore(out);
   const goal = Math.round(Number(out.settings.weeklyGoal));
   out.settings.weeklyGoal = Math.min(GOAL_MAX, Math.max(GOAL_MIN, Number.isFinite(goal) && goal ? goal : 3));
   /* Jazyk: platný kód sa zachová presne (vrátane starých 'sk'/'en'), neplatná
@@ -15721,6 +16006,8 @@ function addLibraryExerciseToDraft(entryId) {
 let pokrokView = 'stats';   // Bento: prehľad štatistík; podpohľady sa otvárajú ako listy
 let pokrokReturnTab = null; // list otvorený z inej karty (Dnes, Ty) – Späť vráti tam
 let chartField = 'weightKg';
+let chartRange = 'all';
+let compareA = null, compareB = null;   // id záznamov v porovnaní dvoch dátumov
 let measureEditId = null;
 let foodModalMode = 'entry';
 let foodModalId = null;
@@ -15735,6 +16022,8 @@ const MEASURE_META = [
   { field: 'thighLeftCm', kind: 'length', key: 'body.f.thighLeft' },
   { field: 'thighRightCm', kind: 'length', key: 'body.f.thighRight' },
   { field: 'hipCm', kind: 'length', key: 'body.f.hip' },
+  { field: 'neckCm', kind: 'length', key: 'body.f.neck' },
+  { field: 'bodyFatPct', kind: 'percent', key: 'body.f.bodyFat' },
 ];
 
 /* Aktivita: faktory používa Mifflin-St Jeor pre odhad denného výdaja energie. */
@@ -15750,7 +16039,14 @@ function measureMeta(field) {
   return MEASURE_META.find((m) => m.field === field) || MEASURE_META[0];
 }
 function measureLabel(field) { return t(measureMeta(field).key); }
-function measureUnit(kind) { return kind === 'weight' ? weightUnitLabel() : lengthUnitLabel(); }
+function measureUnit(kind) { return kind === 'weight' ? weightUnitLabel() : (kind === 'percent' ? '%' : lengthUnitLabel()); }
+/* Uložená hodnota -> zobrazovaná (kg/lb, cm/in, % ostáva) a späť. */
+function measureToDisplay(value, kind) {
+  return kind === 'weight' ? weightToDisplay(value) : (kind === 'percent' ? value : lengthToDisplay(value));
+}
+function measureFromDisplay(value, kind) {
+  return kind === 'weight' ? weightFromDisplay(value) : (kind === 'percent' ? Math.round(Number(value) * 100) / 100 : lengthFromDisplay(value));
+}
 function formatMeasureValue(value, kind) {
   return formatMeasure(value, kind) + ' ' + measureUnit(kind);
 }
@@ -17551,6 +17847,7 @@ let remindersBusy = false;
 function remindersAvailable() { return communityVersion >= 6; }
 async function remindersLoad(sb) {
   remindersData = null;
+  remindersDraft = null;
   if (!sb || !remindersAvailable()) return;
   try { const r = await sb.rpc('reminders_get'); if (r && !r.error) remindersData = r.data; } catch (e) {}
   await remindersEnsureDefaults(sb);
@@ -17576,10 +17873,104 @@ async function remindersEnsureDefaults(sb) {
 function remindersEveryLabel(min) {
   return min < 60 ? t('rem.everyMin', { n: min }) : t('rem.everyHours', { n: String(min / 60).replace('.', activeLang() === 'en' ? '.' : ',') });
 }
+/* Pripomienky v2 (migrácia 0019, verzia 11): voda aj vo vybraných časoch, až 6 časov jedla a vlastné
+   pripomienky (text + čas + dni). Staršie servery dostanú dnešnú kartu. Rozpracované úpravy (pridané
+   riadky, zmeny) držíme v `remindersDraft`, aby ich prekreslenie karty nezahodilo. */
+let remindersDraft = null;
+const REMINDER_MAX = { water_times: 12, meal_times: 6, custom: 10 };
+function remindersV2() { return communityVersion >= 11; }
+function remindersCleanText(v) { return String(v == null ? '' : v).replace(/[\u0000-\u001f\u007f-\u009f\u2028\u2029]/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 60); }
+function remindersNewId() { return 'r' + Date.now().toString(36) + Math.floor(Math.random() * 1296).toString(36); }
+function remindersFormFromData(d) {
+  const arr = (v, def) => (Array.isArray(v) ? v.slice() : def);
+  return {
+    water_on: !!d.water_on, water_every: Number(d.water_every) || 120, water_from: d.water_from || '08:00', water_to: d.water_to || '21:00',
+    water_mode: d.water_mode === 'times' ? 'times' : 'interval', water_times: arr(d.water_times, []).slice(0, REMINDER_MAX.water_times),
+    meals_on: !!d.meals_on, meal_times: arr(d.meal_times, ['08:00', '12:30', '18:30']).slice(0, REMINDER_MAX.meal_times),
+    workout_on: !!d.workout_on, workout_time: d.workout_time || '17:00', workout_days: arr(d.workout_days, [1, 3, 5]).map(Number),
+    custom: (Array.isArray(d.custom) ? d.custom : []).slice(0, REMINDER_MAX.custom)
+      .map((c) => ({ id: String(c.id), text: String(c.text || ''), time: c.time || '09:00', days: (Array.isArray(c.days) ? c.days : []).map(Number) })),
+  };
+}
+/* Hodnoty formulára; čo v DOM nie je (napr. „každých/od/do“, keď je voda vo vybraných časoch), zostane z rozpracovaného stavu. */
+function remindersFormRead() {
+  const f = remindersDraft || remindersFormFromData(remindersData || {});
+  const root = document.getElementById('community-reminders');
+  if (!root) return f;
+  const el = (id) => document.getElementById(id);
+  const val = (id, def) => { const e = el(id); return e ? e.value : def; };
+  const on = (id, def) => { const e = el(id); return e ? !!e.checked : def; };
+  const list = (prefix) => Array.from(root.querySelectorAll('input[id^="' + prefix + '"]')).map((e) => e.value);
+  const out = {
+    water_on: on('rem-water-on', f.water_on), water_every: Number(val('rem-water-every', f.water_every)) || 120,
+    water_from: val('rem-water-from', f.water_from), water_to: val('rem-water-to', f.water_to), water_mode: f.water_mode,
+    water_times: f.water_mode === 'times' ? list('rem-wt-') : f.water_times,   // v režime „intervaly“ riadky nie sú v DOM
+    meals_on: on('rem-meals-on', f.meals_on), meal_times: list('rem-meal-'),
+    workout_on: on('rem-workout-on', f.workout_on), workout_time: val('rem-workout-time', f.workout_time),
+    workout_days: Array.from(root.querySelectorAll('.crem-day.active')).map((b) => Number(b.dataset.day)),
+  };
+  out.custom = Array.from(root.querySelectorAll('.crem-own')).map((row) => ({
+    id: row.dataset.id, text: (row.querySelector('.crem-own-text') || {}).value || '', time: (row.querySelector('.crem-time') || {}).value || '',
+    days: Array.from(row.querySelectorAll('.crem-oday.active')).map((b) => Number(b.dataset.day)),
+  }));
+  return out;
+}
+function remindersCardHtmlV2(d) {
+  const f = remindersDraft || remindersFormFromData(d);
+  const time = (id, v, label) => '<input type="time" class="modal-input crem-time" id="' + id + '" value="' + escAttr(v || '') + '" aria-label="' + escAttr(label) + '">';
+  const del = (act, i, label) => '<button type="button" class="btn btn-secondary crem-del" data-community-action="' + act + '" data-i="' + i + '" aria-label="' + escAttr(label) + '" title="' + escAttr(label) + '">✕</button>';
+  const add = (act, label) => '<button type="button" class="btn btn-secondary crem-add" data-community-action="' + act + '">+ ' + esc(label) + '</button>';
+  const dayNames = localeData().weekdaysShort;
+  const chips = (cls, act, days, extra) => [1, 2, 3, 4, 5, 6, 7].map((n) => '<button type="button" class="goal-chip ' + cls + (days.includes(n) ? ' active' : '') + '"' + (act ? ' data-community-action="' + act + '"' : '') + ' data-day="' + n + '"' + extra
+    + ' aria-pressed="' + (days.includes(n) ? 'true' : 'false') + '">' + esc(dayNames[n - 1]) + '</button>').join('');
+  const times = f.water_mode === 'times';
+  const mode = (m, key) => '<button type="button" class="goal-chip crem-mode' + (f.water_mode === m ? ' active' : '') + '" data-community-action="rem-wmode" data-mode="' + m + '" aria-pressed="' + (f.water_mode === m ? 'true' : 'false') + '">' + esc(t(key)) + '</button>';
+  return '<div class="card crem" id="community-reminders"><h3 class="card-title">' + esc(t('rem.title')) + '</h3>'
+    + '<label class="community-check" for="rem-water-on"><input type="checkbox" id="rem-water-on"' + (f.water_on ? ' checked' : '') + '><span>💧 ' + esc(t('rem.water')) + '</span></label>'
+    + '<div class="crem-row" role="group" aria-label="' + escAttr(t('rem.waterMode')) + '">' + mode('interval', 'rem.modeInterval') + mode('times', 'rem.modeTimes') + '</div>'
+    + (times
+      ? '<div class="crem-row">' + f.water_times.map((v, i) => '<span class="crem-slot">' + time('rem-wt-' + i, v, t('rem.waterTimeN', { n: i + 1 })) + del('rem-wt-del', i, t('rem.removeTime', { n: i + 1 })) + '</span>').join('')
+        + (f.water_times.length < REMINDER_MAX.water_times ? add('rem-wt-add', t('rem.addTime')) : '') + '</div>'
+      : '<div class="crem-row"><label class="crem-lbl" for="rem-water-every">' + esc(t('rem.every')) + '</label><select class="modal-input crem-select" id="rem-water-every">'
+        + REMINDER_WATER_STEPS.map((m) => '<option value="' + m + '"' + (Number(f.water_every || 120) === m ? ' selected' : '') + '>' + esc(remindersEveryLabel(m)) + '</option>').join('') + '</select>'
+        + '<span class="crem-lbl">' + esc(t('rem.from')) + '</span>' + time('rem-water-from', f.water_from, t('rem.from'))
+        + '<span class="crem-lbl">' + esc(t('rem.to')) + '</span>' + time('rem-water-to', f.water_to, t('rem.to')) + '</div>')
+    + '<label class="community-check" for="rem-meals-on"><input type="checkbox" id="rem-meals-on"' + (f.meals_on ? ' checked' : '') + '><span>🍽️ ' + esc(t('rem.meals')) + '</span></label>'
+    + '<div class="crem-row">' + f.meal_times.map((v, i) => '<span class="crem-slot">' + time('rem-meal-' + i, v, t('rem.mealN', { n: i + 1 })) + del('rem-meal-del', i, t('rem.removeMeal', { n: i + 1 })) + '</span>').join('')
+    + (f.meal_times.length < REMINDER_MAX.meal_times ? add('rem-meal-add', t('rem.addMeal')) : '') + '</div>'
+    + '<label class="community-check" for="rem-workout-on"><input type="checkbox" id="rem-workout-on"' + (f.workout_on ? ' checked' : '') + '><span>🏋️ ' + esc(t('rem.workout')) + '</span></label>'
+    + '<div class="crem-row crem-days" role="group" aria-label="' + escAttr(t('rem.days')) + '">' + chips('crem-day', 'rem-day', f.workout_days, '')
+    + time('rem-workout-time', f.workout_time, t('rem.time')) + '</div>'
+    + '<h4 class="crem-sub">🔔 ' + esc(t('rem.own')) + '</h4>'
+    + (f.custom.length ? f.custom.map((c, i) => '<div class="crem-own" data-id="' + escAttr(c.id) + '">'
+      + '<input type="text" class="modal-input crem-own-text" id="rem-c-text-' + i + '" maxlength="60" value="' + escAttr(c.text) + '" placeholder="' + escAttr(t('rem.ownPlaceholder')) + '" aria-label="' + escAttr(t('rem.ownText')) + '">'
+      + '<div class="crem-row">' + time('rem-c-time-' + i, c.time, t('rem.ownTime')) + del('rem-own-del', i, t('rem.removeOwn')) + '</div>'
+      + '<div class="crem-row crem-days" role="group" aria-label="' + escAttr(t('rem.ownDays')) + '">' + chips('crem-oday', 'rem-own-day', c.days, '') + '</div></div>').join('')
+      : '<p class="card-note crem-empty">' + esc(t('rem.ownNone')) + '</p>')
+    + (f.custom.length < REMINDER_MAX.custom ? '<div class="crem-row">' + add('rem-own-add', t('rem.addOwn')) + '</div>' : '')
+    + '<p class="card-note">' + esc(t('rem.note')) + '</p>'
+    + '<div class="plan-actions"><button type="button" class="btn btn-primary" data-community-action="rem-save"' + (remindersBusy ? ' disabled' : '') + '>' + esc(t('rem.save')) + '</button></div></div>';
+}
+/* Pridať / odobrať riadok, prepnúť režim vody: formulár sa najprv prečíta do konceptu, potom prekreslí. */
+function remindersEdit(act, a) {
+  const f = remindersFormRead();
+  const i = Number(a.dataset.i);
+  if (act === 'rem-wmode') f.water_mode = a.dataset.mode === 'times' ? 'times' : 'interval';
+  else if (act === 'rem-wt-add') { if (f.water_times.length < REMINDER_MAX.water_times) f.water_times.push('12:00'); }
+  else if (act === 'rem-wt-del') f.water_times.splice(i, 1);
+  else if (act === 'rem-meal-add') { if (f.meal_times.length < REMINDER_MAX.meal_times) f.meal_times.push('12:00'); }
+  else if (act === 'rem-meal-del') f.meal_times.splice(i, 1);
+  else if (act === 'rem-own-add') { if (f.custom.length < REMINDER_MAX.custom) f.custom.push({ id: remindersNewId(), text: '', time: '09:00', days: [1, 2, 3, 4, 5, 6, 7] }); }
+  else if (act === 'rem-own-del') f.custom.splice(i, 1);
+  remindersDraft = f;
+  renderCommunity();
+  if (act === 'rem-own-add') { const e = document.getElementById('rem-c-text-' + (f.custom.length - 1)); if (e) e.focus(); }
+}
 function remindersCardHtml() {
   if (!remindersAvailable() || !pushAvailable()) return '';
   if (pushState() !== 'on') return '<div class="card crem" id="community-reminders"><h3 class="card-title">' + esc(t('rem.title')) + '</h3><p class="card-note">' + esc(t('rem.needPush')) + '</p></div>';
   const d = remindersData || {};
+  if (remindersV2()) return remindersCardHtmlV2(d);
   const meals = Array.isArray(d.meal_times) ? d.meal_times : ['08:00', '12:30', '18:30'];
   const days = Array.isArray(d.workout_days) ? d.workout_days.map(Number) : [1, 3, 5];
   const time = (id, v, label) => '<input type="time" class="modal-input crem-time" id="' + id + '" value="' + escAttr(v || '') + '" aria-label="' + escAttr(label) + '">';
@@ -17606,7 +17997,17 @@ async function remindersSave() {
   const on = (id) => { const el = document.getElementById(id); return !!(el && el.checked); };
   let tz = 'UTC';
   try { tz = Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC'; } catch (e) {}
-  const p = {
+  let p;
+  if (remindersV2()) {
+    const f = remindersFormRead();
+    remindersDraft = f;   // pri chybe (alebo neplatnom texte) úpravy zostanú vo formulári
+    const hhmm = (v) => /^\d{2}:\d{2}$/.test(v);
+    const custom = f.custom.map((c) => ({ id: c.id, text: remindersCleanText(c.text), time: c.time, days: c.days.slice().sort((x, y) => x - y) }));
+    if (custom.some((c) => !c.text || !hhmm(c.time) || !c.days.length)) { communitySetMessageText(t('rem.errOwn')); renderCommunity(); return; }
+    p = { tz, water_on: f.water_on, water_every: f.water_every, water_from: f.water_from, water_to: f.water_to,
+      water_mode: f.water_mode, water_times: f.water_times.filter(hhmm),
+      meals_on: f.meals_on, meal_times: f.meal_times.filter(hhmm), workout_on: f.workout_on, workout_time: f.workout_time, workout_days: f.workout_days, custom };
+  } else p = {
     tz, water_on: on('rem-water-on'), water_every: Number(val('rem-water-every')) || 120, water_from: val('rem-water-from'), water_to: val('rem-water-to'),
     meals_on: on('rem-meals-on'), meal_times: [0, 1, 2].map((i) => val('rem-meal-' + i)).filter((v) => /^\d{2}:\d{2}$/.test(v)),
     workout_on: on('rem-workout-on'), workout_time: val('rem-workout-time'),
@@ -17616,8 +18017,8 @@ async function remindersSave() {
   let res;
   try { res = await sb.rpc('reminders_set', { p }); } catch (e) { res = { error: e }; }
   remindersBusy = false;
-  if (res.error) { communitySetMessageText(/invalid_(reminders|timezone)/.test(String((res.error && res.error.message) || '')) ? t('rem.errInvalid') : communityErrText(res.error)); }
-  else { remindersData = res.data; communitySetMessage('rem.saved'); nativeRemindersApply(); }
+  if (res.error) { communitySetMessageText(/invalid_(reminders|timezone)/.test(String((res.error && res.error.message) || '')) ? t(remindersV2() ? 'rem.errInvalid2' : 'rem.errInvalid') : communityErrText(res.error)); }
+  else { remindersData = res.data; remindersDraft = null; communitySetMessage('rem.saved'); nativeRemindersApply(); }
   renderCommunity();
 }
 
@@ -20429,6 +20830,7 @@ function renderBodyUnits() {
 
 function setBodyUnits(units) {
   state.settings.bodyUnits = units === 'imperial' ? 'imperial' : 'metric';
+  bodyFatDraft = null;   // rozpísané hodnoty sú v starých jednotkách
   saveState();
   renderPokrok();
 }
@@ -20457,8 +20859,8 @@ function renderBodySummary() {
     name.textContent = t(m.key);
     if (prev) {
       /* Neutrálne: nárast ani pokles nie je sám o sebe dobrý ani zlý. */
-      const nowShown = m.kind === 'weight' ? weightToDisplay(last.value) : lengthToDisplay(last.value);
-      const prevShown = m.kind === 'weight' ? weightToDisplay(prev.value) : lengthToDisplay(prev.value);
+      const nowShown = measureToDisplay(last.value, m.kind);
+      const prevShown = measureToDisplay(prev.value, m.kind);
       const diff = Math.round((nowShown - prevShown) * 10) / 10;
       const delta = document.createElement('span');
       delta.className = 'measure-delta';
@@ -20518,7 +20920,7 @@ function renderBodyHistory() {
 
     const values = document.createElement('div');
     values.className = 'measure-entry-values';
-    const parts = MEASURE_META.filter((x) => m[x.field] !== null)
+    const parts = MEASURE_META.filter((x) => m[x.field] !== null && m[x.field] !== undefined)
       .map((x) => measureLabel(x.field) + ' ' + formatMeasureValue(m[x.field], x.kind));
     values.textContent = parts.length ? parts.join(' · ') : t('body.noValues');
     row.appendChild(values);
@@ -20537,7 +20939,7 @@ function renderBodyHistory() {
 function buildSparkline(series, kind) {
   const ns = 'http://www.w3.org/2000/svg';
   const W = 300, H = 140, PAD = 12;
-  const vals = series.map((p) => (kind === 'weight' ? weightToDisplay(p.value) : lengthToDisplay(p.value)));
+  const vals = series.map((p) => measureToDisplay(p.value, kind));
   const lo = Math.min(...vals), hi = Math.max(...vals);
   const span = (hi - lo) || 1;
   const n = vals.length;
@@ -20580,11 +20982,165 @@ function buildSparkline(series, kind) {
   return svg;
 }
 
+/* Rozsah grafu: 'all' | '3m' | '1m' (iba zobrazenie, nič sa neukladá). */
+const BODY_CHART_RANGES = ['all', '3m', '1m'];
+
+/* Dátum (YYYY-MM-DD) -> číslo dňa (UTC, bez posunu letného času). */
+function chartDayNum(iso) {
+  const p = String(iso).split('-').map(Number);
+  return Math.round(Date.UTC(p[0], p[1] - 1, p[2]) / 86400000);
+}
+
+/* Body v zvolenom rozsahu: 3 / 1 mesiac dozadu od dnešného dňa. */
+function chartRangeSeries(series, range, now) {
+  if (range !== '3m' && range !== '1m') return series;
+  const d = now ? new Date(now.getTime()) : new Date();
+  /* Deň sa orezá na posledný deň cieľového mesiaca (31. 3. − 1 mesiac = 28./29. 2.). */
+  const day = d.getDate();
+  d.setDate(1);
+  d.setMonth(d.getMonth() - (range === '3m' ? 3 : 1));
+  d.setDate(Math.min(day, new Date(d.getFullYear(), d.getMonth() + 1, 0).getDate()));
+  const pad = (n) => String(n).padStart(2, '0');
+  const cut = d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
+  return series.filter((p) => p.date >= cut);
+}
+
+/* "Pekné" značky osi y: 3 až 5 hodnôt, krok z radu 1/2/5 × 10^k. */
+function chartNiceTicks(lo, hi) {
+  if (!(hi > lo)) {
+    const pad = Math.max(Math.abs(lo) * 0.05, 1);
+    lo -= pad; hi += pad;
+  }
+  const raw = (hi - lo) / 3;
+  const pow = Math.pow(10, Math.floor(Math.log10(raw)));
+  const step = [1, 2, 5, 10].map((m) => m * pow).find((s) => s >= raw);
+  const decimals = step >= 1 ? 0 : Math.ceil(-Math.log10(step) - 1e-9);
+  const first = Math.floor(lo / step + 1e-9), last = Math.ceil(hi / step - 1e-9);
+  const ticks = [];
+  for (let i = first; i <= last; i++) ticks.push(Math.round(i * step * 1e6) / 1e6);
+  return { ticks, decimals };
+}
+
+/* Krátky dátum osi x ("10 nov."); rok len keď graf presahuje viac rokov. */
+function chartShortDate(iso, withYear) {
+  const d = parseDate(iso);
+  return d.getDate() + ' ' + localeData().monthsShort[d.getMonth()] + (withYear ? ' ' + String(d.getFullYear()).slice(2) : '');
+}
+
+/* Responzívny čiarový graf s dátumovou osou x. Šírka sa berie zo skutočnej šírky
+   boxu (1 jednotka viewBoxu = 1 px), takže písmo ostane čitateľné aj pri 320 px.
+   Os času plynie VŽDY zľava doprava (aj v arabčine): čísla a dátumy sa čítajú
+   zľava doprava a starší záznam je vľavo – rovnako ako v zdravotných aplikáciách. */
+function buildBodyChart(box, series, meta) {
+  const ns = 'http://www.w3.org/2000/svg';
+  const W = Math.max(Math.round(box.clientWidth) || 300, 240), H = 210;
+  const unit = measureUnit(meta.kind);
+  const vals = series.map((p) => measureToDisplay(p.value, meta.kind));
+  const shownVal = (v) => (Math.round(v * 10) / 10).toFixed(1);
+
+  const svg = document.createElementNS(ns, 'svg');
+  svg.setAttribute('class', 'chart-svg');
+  svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+  svg.setAttribute('width', W);
+  svg.setAttribute('height', H);
+  svg.setAttribute('role', 'group');
+  svg.setAttribute('aria-label', t('body.chartAria', { n: series.length, min: shownVal(Math.min(...vals)), max: shownVal(Math.max(...vals)) }));
+  box.appendChild(svg);
+  const fs = parseFloat(getComputedStyle(svg).fontSize) || 11;
+  const cw = fs * 0.62;   // odhad šírky znaku
+
+  const nice = chartNiceTicks(Math.min(...vals), Math.max(...vals));
+  const tickTxt = nice.ticks.map((v) => v.toFixed(nice.decimals));
+  const yW = Math.max(...tickTxt.map((s) => s.length)) * cw;
+  const days = series.map((p) => chartDayNum(p.date));
+  const d0 = days[0], d1 = days[days.length - 1];
+  const withYear = series[0].date.slice(0, 4) !== series[series.length - 1].date.slice(0, 4);
+  const labW = (withYear ? 9 : 7) * cw + fs;   // šírka jedného dátumu + medzera
+  const half = labW / 2;
+  const L = Math.ceil(yW + 8 + Math.max(0, half - yW - 8)), R = W - Math.ceil(half);
+  const T = 12, B = H - 30;
+  const yMin = nice.ticks[0], yMax = nice.ticks[nice.ticks.length - 1];
+  const x = (dn) => (d1 === d0 ? (L + R) / 2 : L + ((dn - d0) / (d1 - d0)) * (R - L));
+  const y = (v) => B - ((v - yMin) / (yMax - yMin)) * (B - T);
+  const mk = (tag, attrs, text) => {
+    const e = document.createElementNS(ns, tag);
+    for (const k of Object.keys(attrs)) e.setAttribute(k, attrs[k]);
+    if (text !== undefined) e.textContent = text;
+    return e;
+  };
+
+  /* Os y: vodorovné čiary + hodnoty (jednotky sú v popise grafu). */
+  nice.ticks.forEach((v, i) => {
+    svg.appendChild(mk('line', { class: 'chart-grid', x1: L, x2: W - 4, y1: y(v).toFixed(1), y2: y(v).toFixed(1) }));
+    svg.appendChild(mk('text', { class: 'chart-axis', x: L - 6, y: (y(v) + fs * 0.35).toFixed(1), 'text-anchor': 'end' }, tickTxt[i]));
+  });
+
+  /* Os x: dátumy rovnomerne v čase, počet podľa šírky (bez prekrytia). */
+  const k = d1 === d0 ? 1 : Math.max(2, Math.min(5, Math.floor((R - L) / labW) + 1));
+  for (let i = 0; i < k; i++) {
+    const dn = k === 1 ? d0 : d0 + ((d1 - d0) * i) / (k - 1);
+    const iso = k === 1 ? series[0].date : (i === 0 ? series[0].date : (i === k - 1 ? series[series.length - 1].date : isoFromDayNum(Math.round(dn))));
+    svg.appendChild(mk('text', { class: 'chart-axis', x: x(dn).toFixed(1), y: H - 10, 'text-anchor': 'middle' }, chartShortDate(iso, withYear)));
+  }
+
+  const pts = series.map((p, i) => [x(days[i]), y(vals[i])]);
+  const line = pts.map(([px, py], i) => (i ? 'L' : 'M') + px.toFixed(1) + ' ' + py.toFixed(1)).join(' ');
+  if (pts.length > 1) {
+    svg.appendChild(mk('path', { class: 'chart-area', d: line + ' L' + pts[pts.length - 1][0].toFixed(1) + ' ' + B + ' L' + pts[0][0].toFixed(1) + ' ' + B + ' Z' }));
+    svg.appendChild(mk('path', { class: 'chart-line', d: line }));
+  }
+
+  /* Bodka na záznam; ťuk / fokus / Enter ukáže dátum a hodnotu. Neviditeľná
+     väčšia plocha (r = 22) dáva dotykový cieľ ≥ 44 px. */
+  const tip = document.createElement('div');
+  tip.className = 'chart-tip';
+  tip.setAttribute('role', 'status');
+  tip.hidden = true;
+  box.appendChild(tip);
+  const show = (i) => {
+    svg.querySelectorAll('.chart-dot').forEach((d, j) => d.classList.toggle('active', j === i));
+    tip.textContent = formatDate(series[i].date) + ' · ' + shownVal(vals[i]) + ' ' + unit;
+    tip.hidden = false;
+    const bw = box.clientWidth, tw = tip.offsetWidth;
+    tip.style.left = Math.max(0, Math.min(bw - tw, pts[i][0] - tw / 2)).toFixed(0) + 'px';
+    tip.style.top = Math.max(0, pts[i][1] - tip.offsetHeight - 10).toFixed(0) + 'px';
+  };
+  pts.forEach(([px, py], i) => {
+    const g = mk('g', { class: 'chart-pt', tabindex: '0', role: 'button', 'data-i': i,
+      'aria-label': formatDate(series[i].date) + ', ' + shownVal(vals[i]) + ' ' + unit });
+    g.appendChild(mk('circle', { class: 'chart-hit', cx: px.toFixed(1), cy: py.toFixed(1), r: 22 }));
+    g.appendChild(mk('circle', { class: 'chart-dot', cx: px.toFixed(1), cy: py.toFixed(1), r: 4 }));
+    g.addEventListener('focus', () => show(i));
+    g.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); show(i); } });
+    svg.appendChild(g);
+  });
+  /* Jediný handler (prepíše sa pri každom vykreslení): vyberie najbližšiu bodku podľa x,
+     aby husté body (r = 22 sa prekrývajú) zostali ťukateľné; mimo bodiek tooltip zatvorí. */
+  box.onclick = (e) => {
+    const r = svg.getBoundingClientRect();
+    const sc = r.width ? W / r.width : 1;
+    const cx = (e.clientX - r.left) * sc, cy = (e.clientY - r.top) * sc;
+    let best = -1, bd = Infinity;
+    pts.forEach(([px], i) => { const dx = Math.abs(px - cx); if (dx < bd) { bd = dx; best = i; } });
+    if (best >= 0 && bd <= 22 && Math.abs(pts[best][1] - cy) <= 22) { show(best); return; }
+    tip.hidden = true;
+    svg.querySelectorAll('.chart-dot.active').forEach((d) => d.classList.remove('active'));
+  };
+  return svg;
+}
+
+function isoFromDayNum(n) {
+  const d = new Date(n * 86400000);
+  const pad = (v) => String(v).padStart(2, '0');
+  return d.getUTCFullYear() + '-' + pad(d.getUTCMonth() + 1) + '-' + pad(d.getUTCDate());
+}
+
 function renderBodyChart() {
   const card = document.getElementById('body-chart-card');
   const chips = document.getElementById('body-metric-chips');
   const box = document.getElementById('body-chart');
   const rangeEl = document.getElementById('body-chart-range');
+  const rangeChips = document.getElementById('body-range-chips');
   if (!card || !chips || !box || !rangeEl) return;
 
   const withPoints = MEASURE_META.filter((m) => measureSeries(m.field).length >= 1);
@@ -20605,21 +21161,133 @@ function renderBodyChart() {
     chip.addEventListener('click', () => { chartField = m.field; renderBodyChart(); });
     chips.appendChild(chip);
   }
+  if (rangeChips) {
+    rangeChips.innerHTML = '';
+    for (const r of BODY_CHART_RANGES) {
+      const chip = document.createElement('button');
+      chip.type = 'button';
+      chip.className = 'metric-chip' + (chartRange === r ? ' active' : '');
+      chip.dataset.range = r;
+      chip.textContent = t('body.range.' + r);
+      chip.setAttribute('aria-pressed', chartRange === r ? 'true' : 'false');
+      chip.addEventListener('click', () => { chartRange = r; renderBodyChart(); });
+      rangeChips.appendChild(chip);
+    }
+  }
 
   const meta = measureMeta(chartField);
-  const series = measureSeries(chartField);
+  const series = chartRangeSeries(measureSeries(chartField), chartRange);
   box.innerHTML = '';
-  if (series.length < 2) {
-    rangeEl.textContent = t('body.chartNeedTwo');
+  if (!series.length) {
+    rangeEl.textContent = t('body.chartNone');
     return;
   }
-  box.appendChild(buildSparkline(series, meta.kind));
-  const vals = series.map((p) => (meta.kind === 'weight' ? weightToDisplay(p.value) : lengthToDisplay(p.value)));
-  rangeEl.textContent = t('body.chartRange', {
+  buildBodyChart(box, series, meta);
+  const vals = series.map((p) => measureToDisplay(p.value, meta.kind));
+  const rangeTxt = t('body.chartRange', {
     min: (Math.round(Math.min(...vals) * 10) / 10).toFixed(1),
     max: (Math.round(Math.max(...vals) * 10) / 10).toFixed(1),
     unit: measureUnit(meta.kind),
   });
+  rangeEl.textContent = series.length < 2 ? t('body.chartNeedTwo') + ' ' + rangeTxt : rangeTxt;
+}
+
+/* ---------- Telo: porovnanie dvoch dátumov ---------- */
+/* Pokles je dobrý len pri páse a telesnom tuku; ostatné zmeny sú neutrálne. */
+const COMPARE_LOWER_IS_BETTER = ['waistCm', 'bodyFatPct'];
+
+function renderBodyCompare() {
+  const card = document.getElementById('body-compare-card');
+  const box = document.getElementById('body-compare');
+  if (!card || !box) return;
+  const list = sortedMeasurements().filter((m) => MEASURE_ALL_FIELDS.some((f) => m[f] !== null && m[f] !== undefined));
+  card.hidden = list.length < 2;
+  if (list.length < 2) return;
+  if (!list.some((m) => m.id === compareA)) compareA = list[0].id;
+  if (!list.some((m) => m.id === compareB)) compareB = list[list.length - 1].id;
+
+  box.innerHTML = '';
+  const opts = list.map((m) => ({ value: m.id, label: formatDate(m.date) }));
+  const grid = document.createElement('div');
+  grid.className = 'field-grid';
+  grid.appendChild(buildSelect('cmp-a', t('body.cmpFrom'), opts, compareA));
+  grid.appendChild(buildSelect('cmp-b', t('body.cmpTo'), opts, compareB));
+  grid.querySelectorAll('.field').forEach((f) => f.classList.remove('field-wide'));
+  grid.querySelectorAll('select').forEach((s) => s.addEventListener('change', () => {
+    compareA = document.getElementById('cmp-a').value;
+    compareB = document.getElementById('cmp-b').value;
+    renderBodyCompare();
+    const again = document.getElementById(s.id);
+    if (again) again.focus();
+  }));
+  box.appendChild(grid);
+
+  const a = measurementById(compareA), b = measurementById(compareB);
+  if (!a || !b) return;
+  const days = Math.abs(chartDayNum(b.date) - chartDayNum(a.date));
+  const daysEl = document.createElement('p');
+  daysEl.className = 'card-note';
+  daysEl.id = 'cmp-days';
+  daysEl.textContent = t('body.cmpDays', { n: days });
+  box.appendChild(daysEl);
+
+  const rows = MEASURE_META.filter((m) => a[m.field] !== null && a[m.field] !== undefined && b[m.field] !== null && b[m.field] !== undefined);
+  if (!rows.length) {
+    const p = document.createElement('p');
+    p.className = 'empty-state';
+    p.id = 'cmp-none';
+    p.textContent = t('body.cmpNone');
+    box.appendChild(p);
+    return;
+  }
+  const table = document.createElement('table');
+  table.className = 'cmp-table';
+  table.id = 'cmp-table';
+  table.setAttribute('aria-label', t('body.cmpTableAria'));
+  const head = document.createElement('tr');
+  for (const txt of [t('body.cmpMeasure'), formatDate(a.date), formatDate(b.date), t('body.cmpChange')]) {
+    const th = document.createElement('th');
+    th.scope = 'col';
+    th.textContent = txt;
+    head.appendChild(th);
+  }
+  const thead = document.createElement('thead');
+  thead.appendChild(head);
+  table.appendChild(thead);
+  const tbody = document.createElement('tbody');
+  for (const m of rows) {
+    const tr = document.createElement('tr');
+    tr.dataset.field = m.field;
+    const th = document.createElement('th');
+    th.scope = 'row';
+    th.textContent = t(m.key);
+    const tdA = document.createElement('td');
+    tdA.textContent = formatMeasure(a[m.field], m.kind);
+    const tdB = document.createElement('td');
+    tdB.textContent = formatMeasure(b[m.field], m.kind);
+    /* Rozdiel z hodnôt zaokrúhlených na 1 desatinu, ako sú zobrazené v A a B. */
+    const r1 = (v) => Math.round(measureToDisplay(v, m.kind) * 10) / 10;
+    const diff = Math.round((r1(b[m.field]) - r1(a[m.field])) * 10) / 10;
+    const tdD = document.createElement('td');
+    tdD.className = 'cmp-diff';
+    let word = '';
+    if (diff !== 0 && COMPARE_LOWER_IS_BETTER.includes(m.field)) {
+      const good = diff < 0;
+      tdD.classList.add(good ? 'cmp-good' : 'cmp-bad');
+      word = ', ' + t(good ? 'body.cmpBetter' : 'body.cmpWorse');
+    }
+    const txt = (diff > 0 ? '+' : (diff < 0 ? '−' : '±')) + Math.abs(diff).toFixed(1) + ' ' + measureUnit(m.kind);
+    tdD.textContent = txt;
+    tdD.setAttribute('aria-label', txt + word);
+    tr.append(th, tdA, tdB, tdD);
+    tbody.appendChild(tr);
+  }
+  table.appendChild(tbody);
+  box.appendChild(table);
+  const note = document.createElement('p');
+  note.className = 'card-note';
+  note.textContent = t('body.cmpNote');
+  box.appendChild(note);
 }
 
 /* ---------- Telo: meranie (modal) ---------- */
@@ -20631,7 +21299,7 @@ function renderMeasureFields(values) {
   grid.className = 'field-grid';
   for (const m of MEASURE_META) {
     const current = values && values[m.field] !== null && values[m.field] !== undefined
-      ? Math.round((m.kind === 'weight' ? weightToDisplay(values[m.field]) : lengthToDisplay(values[m.field])) * 10) / 10
+      ? Math.round(measureToDisplay(values[m.field], m.kind) * 10) / 10
       : '';
     grid.appendChild(buildField('m-' + m.field, measureLabel(m.field) + ' (' + measureUnit(m.kind) + ')', current));
   }
@@ -20675,7 +21343,7 @@ function saveMeasure() {
     const meta = measureMeta(field);
     const limit = MEASURE_LIMITS[field];
     const canon = (Number.isFinite(n) && n > 0)
-      ? (meta.kind === 'weight' ? weightFromDisplay(n) : lengthFromDisplay(n))
+      ? measureFromDisplay(n, meta.kind)
       : null;
     if (canon === null || canon < limit[0] || canon > limit[1]) {
       bad.push(measureLabel(field));
@@ -20687,11 +21355,12 @@ function saveMeasure() {
 
   if (bad.length) { showMeasureError(t('body.errRange', { fields: bad.join(', ') })); return; }
   const note = document.getElementById('measure-note').value.trim();
-  if (MEASURE_FIELDS.every((f) => values[f] === null) && !note) {
+  if (MEASURE_ALL_FIELDS.every((f) => values[f] === null) && !note) {
     showMeasureError(t('body.errEmpty'));
     return;
   }
 
+  for (const f of MEASURE_EXTRA_FIELDS) if (values[f] === null) delete values[f];
   const entry = Object.assign({ id: measureEditId || uid(), date, note }, values);
   if (measureEditId) {
     const at = state.measurements.findIndex((m) => m.id === measureEditId);
@@ -20701,6 +21370,7 @@ function saveMeasure() {
     state.measurements.push(entry);
   }
   measureEditId = null;
+  measureExtraRestore(state, true);   // zrkadlo nových polí pre staré verzie appky
   reconcileAchievements();   // úspech "Telesný denník" (váha v 4 týždňoch)
   saveState();
   document.getElementById('modal-measure').hidden = true;
@@ -20713,6 +21383,7 @@ function requestDeleteMeasurement(id) {
   if (!m) return;
   showGeneric(t('body.deleteTitle'), t('common.delete'), () => {
     state.measurements = state.measurements.filter((x) => x.id !== id);
+    measureExtraRestore(state, true);
     saveState();
     renderPokrok();
   }, t('body.deleteConfirm', { date: formatDate(m.date) }));
@@ -21243,11 +21914,172 @@ function requestDeleteFood(id) {
   }, t('food.deleteTemplateConfirm', { name: f.name }));
 }
 
+/* ---------- Telo: kalkulačka telesného tuku (US Navy, obvody v cm) ---------- */
+/* Rozpracované vstupy (zobrazované jednotky) prežijú prekreslenie; po uložení alebo zmene jednotiek sa zahodia. */
+let bodyFatDraft = null;
+
+/* Vráti { pct } alebo { err: 'fill' | 'neck' | 'range', pct? }. Vstupy v cm; boky len pre ženy. */
+function bodyFatNavy(sex, heightCm, neckCm, waistCm, hipCm) {
+  const num = (v) => (Number.isFinite(v) && v > 0 ? v : null);
+  const h = num(heightCm), nk = num(neckCm), w = num(waistCm), hp = num(hipCm);
+  if ((sex !== 'male' && sex !== 'female') || !h || !nk || !w || (sex === 'female' && !hp)) return { err: 'fill' };
+  const girth = sex === 'male' ? w - nk : w + hp - nk;
+  if (girth <= 0) return { err: 'neck' };
+  const pct = sex === 'male'
+    ? 495 / (1.0324 - 0.19077 * Math.log10(girth) + 0.15456 * Math.log10(h)) - 450
+    : 495 / (1.29579 - 0.35004 * Math.log10(girth) + 0.22100 * Math.log10(h)) - 450;
+  const rounded = Math.round(pct * 10) / 10;
+  if (!Number.isFinite(rounded) || rounded < MEASURE_LIMITS.bodyFatPct[0] || rounded > MEASURE_LIMITS.bodyFatPct[1]) {
+    return { err: 'range', pct: rounded };
+  }
+  return { pct: rounded };
+}
+
+/* Prečíta vstupy kalkulačky a prepočíta do cm (null = prázdne alebo neplatné). */
+function bodyFatReadInputs() {
+  const val = (id) => {
+    const el = document.getElementById(id);
+    const raw = el ? el.value.trim() : '';
+    const n = raw === '' ? NaN : Number(raw);
+    return Number.isFinite(n) && n > 0 ? lengthFromDisplay(n) : null;
+  };
+  const sexEl = document.getElementById('bf-sex');
+  return {
+    date: (document.getElementById('bf-date') || {}).value || '',
+    sex: sexEl ? sexEl.value : '',
+    heightCm: val('bf-height'), neckCm: val('bf-neck'), waistCm: val('bf-waist'), hipCm: val('bf-hip'),
+  };
+}
+
+function bodyFatExistingOn(date) {
+  const same = (state.measurements || []).filter((m) => m.date === date);
+  return same.length ? same[same.length - 1] : null;
+}
+
+function bodyFatRefresh() {
+  const res = document.getElementById('bf-result');
+  const save = document.getElementById('btn-bf-save');
+  const upd = document.getElementById('bf-updates');
+  if (!res || !save) return;
+  const inp = bodyFatReadInputs();
+  const hipWrap = document.getElementById('bf-hip') ? document.getElementById('bf-hip').closest('.field') : null;
+  if (hipWrap) hipWrap.hidden = inp.sex !== 'female';
+  const r = bodyFatNavy(inp.sex, inp.heightCm, inp.neckCm, inp.waistCm, inp.hipCm);
+  res.classList.toggle('bf-bad', !!r.err && r.err !== 'fill');
+  if (r.err === 'fill') res.textContent = t('bodyfat.fill');
+  else if (r.err === 'neck') res.textContent = t('bodyfat.errNeck');
+  else if (r.err === 'range') res.textContent = t('bodyfat.errOut', { pct: r.pct.toFixed(1) });
+  else res.textContent = t('bodyfat.result', { pct: r.pct.toFixed(1) });
+  save.disabled = !!r.err;
+  const ex = isDateKey(inp.date) ? bodyFatExistingOn(inp.date) : null;
+  if (upd) { upd.hidden = !ex; upd.textContent = ex ? t('bodyfat.updates', { date: formatDate(inp.date) }) : ''; }
+  const shown = (id) => { const el = document.getElementById(id); return el ? el.value : ''; };
+  bodyFatDraft = { date: inp.date, sex: inp.sex, height: shown('bf-height'), neck: shown('bf-neck'), waist: shown('bf-waist'), hip: shown('bf-hip') };
+  const msg = document.getElementById('bf-msg');
+  if (msg) msg.hidden = true;
+}
+
+function renderBodyFatCard() {
+  const box = document.getElementById('bodyfat-box');
+  if (!box) return;
+  /* Prekreslenie počas písania nesmie zhodiť fokus ani rozpísané hodnoty. */
+  if (box.contains(document.activeElement) && box.firstChild) return;
+  const p = state.profile || {};
+  const lastOf = (field) => { const s = measureSeries(field); return s.length ? s[s.length - 1].value : null; };
+  const disp = (cm) => (cm === null || cm === undefined ? '' : Math.round(lengthToDisplay(cm) * 10) / 10);
+  const d = bodyFatDraft || {
+    date: todayISO(), sex: p.sex || '', height: disp(p.heightCm),
+    neck: disp(lastOf('neckCm')), waist: disp(lastOf('waistCm')), hip: disp(lastOf('hipCm')),
+  };
+  box.innerHTML = '';
+  const grid = document.createElement('div');
+  grid.className = 'field-grid';
+  const dateWrap = document.createElement('div');
+  dateWrap.className = 'field field-wide';
+  const dateLabel = document.createElement('label');
+  dateLabel.setAttribute('for', 'bf-date');
+  dateLabel.textContent = t('bodyfat.date');
+  const dateInp = document.createElement('input');
+  dateInp.type = 'date'; dateInp.id = 'bf-date'; dateInp.value = d.date;
+  dateWrap.append(dateLabel, dateInp);
+  grid.appendChild(dateWrap);
+  grid.appendChild(buildSelect('bf-sex', t('calorie.inSex'), [
+    { value: '', label: t('calorie.sexPick') },
+    { value: 'male', label: t('calorie.sexMale') },
+    { value: 'female', label: t('calorie.sexFemale') },
+  ], d.sex));
+  const unit = ' (' + lengthUnitLabel() + ')';
+  grid.appendChild(buildField('bf-height', t('calorie.inHeight') + unit, d.height));
+  grid.appendChild(buildField('bf-neck', t('body.f.neck') + unit, d.neck));
+  grid.appendChild(buildField('bf-waist', t('body.f.waist') + unit, d.waist));
+  grid.appendChild(buildField('bf-hip', t('body.f.hip') + unit, d.hip));
+  box.appendChild(grid);
+
+  const upd = document.createElement('p');
+  upd.className = 'card-note'; upd.id = 'bf-updates'; upd.hidden = true;
+  const res = document.createElement('p');
+  res.className = 'bf-result'; res.id = 'bf-result';
+  res.setAttribute('role', 'status'); res.setAttribute('aria-live', 'polite');
+  const err = document.createElement('p');
+  err.className = 'card-note form-error'; err.id = 'bf-error'; err.hidden = true;
+  const msg = document.createElement('p');
+  msg.className = 'card-note'; msg.id = 'bf-msg'; msg.setAttribute('role', 'status');
+  msg.hidden = true;
+  const save = document.createElement('button');
+  save.type = 'button'; save.className = 'btn btn-primary btn-block'; save.id = 'btn-bf-save';
+  save.textContent = t('bodyfat.save');
+  save.addEventListener('click', saveBodyFat);
+  box.append(upd, res, err, save, msg);
+  box.querySelectorAll('input, select').forEach((el) => {
+    el.addEventListener('input', bodyFatRefresh);
+    el.addEventListener('change', bodyFatRefresh);
+  });
+  bodyFatRefresh();
+}
+
+function saveBodyFat() {
+  const err = document.getElementById('bf-error');
+  const fail = (m) => { if (err) { err.textContent = m; err.hidden = false; } };
+  const inp = bodyFatReadInputs();
+  if (!isDateKey(inp.date)) { fail(t('body.errDate')); return; }
+  if (inp.heightCm < 50 || inp.heightCm > 260) { fail(t('calorie.errHeight')); return; }
+  const r = bodyFatNavy(inp.sex, inp.heightCm, inp.neckCm, inp.waistCm, inp.hipCm);
+  if (r.err) return;
+  if (err) err.hidden = true;
+
+  /* Výška a pohlavie sa uložia do profilu ako pri kalorickom odhade. */
+  state.profile.heightCm = Math.round(inp.heightCm * 10) / 10;
+  state.profile.sex = inp.sex;
+
+  let entry = bodyFatExistingOn(inp.date);
+  if (!entry) {
+    entry = { id: uid(), date: inp.date, note: '' };
+    for (const f of MEASURE_FIELDS) entry[f] = null;
+    state.measurements.push(entry);
+  }
+  entry.neckCm = cleanMeasureValue('neckCm', inp.neckCm);
+  entry.waistCm = cleanMeasureValue('waistCm', inp.waistCm);
+  if (inp.sex === 'female') entry.hipCm = cleanMeasureValue('hipCm', inp.hipCm);
+  entry.bodyFatPct = r.pct;
+  measureExtraRestore(state, true);
+  reconcileAchievements();
+  saveState();
+  bodyFatDraft = null;
+  const savedMsg = t('bodyfat.saved', { date: formatDate(inp.date) });
+  renderPokrok();
+  bodyFatRefresh();   // poznámka „bude aktualizované“ po uložení nesmie zostať zastaraná
+  bodyFatDraft = null;
+  const msg = document.getElementById('bf-msg');
+  if (msg) { msg.textContent = savedMsg; msg.hidden = false; }
+}
+
 /* ---------- Telo + jedlo: jedno prekreslenie ---------- */
 function renderBody() {
   renderBodyUnits();
   renderBodySummary();
   renderBodyChart();
+  renderBodyCompare();
+  renderBodyFatCard();
   renderCalorieCard();
   renderBodyHistory();
   renderTips();
@@ -21785,6 +22617,7 @@ function renderDayDetail(key) {
     for (const w of workouts) body.appendChild(workoutBlock(w));
     for (const a of acts) body.appendChild(activityBlock(a));
   }
+  healthHrChartsMount(body);
 
   const achIds = achievementsByDate()[key] || [];
   if (achIds.length) {
@@ -22516,6 +23349,17 @@ function nativeThemeBars(t) {
   }
   const bars = nativePlugin('GymBars');
   if (bars) bars.setColors({ color: THEME_COLORS[t], dark: t === 'dark' }).catch(() => {});
+}
+
+/* Android appka s 3-tlačidlovou navigáciou: tab bar sa pripne na celú šírku tesne nad systémové tlačidlá
+   (html.nav-buttons). Capacitor 8 dáva WebView medzi lišty, takže env() režim nepovie – pýta sa GymBars. */
+function nativeNavMode() {
+  const bars = nativePlugin('GymBars');
+  if (!bars || !bars.navMode) return;
+  bars.navMode().then((r) => {
+    document.documentElement.classList.toggle('nav-buttons', !!r && r.mode === 'buttons');
+    if (typeof updateStickyBottom === 'function') updateStickyBottom();
+  }).catch(() => {});
 }
 
 /* Android appka: WebView ignoruje <a download>, preto sa súbor zapíše do cache appky a ponúkne
@@ -26193,6 +27037,7 @@ function setupEvents() {
   on('confirm-note', (e) => { if (e.key === 'Enter') { e.preventDefault(); confirmFinish(); } }, 'keydown');
   on('btn-session-more', toggleSessionMenu);
   window.addEventListener('resize', updateStickyBottom);
+  window.addEventListener('resize', () => { const c = document.getElementById('body-chart'); if (c && c.offsetParent && c.firstChild && Math.abs(c.clientWidth - (Number(c.firstChild.getAttribute('width')) || 0)) > 1) renderBodyChart(); });
   document.addEventListener('click', (e) => {   // klik mimo ⋯ menu ho zavrie
     if (sessionMenuOpen() && !(e.target.closest && e.target.closest('#session-menu, #btn-session-more'))) closeSessionMenu();
   });
@@ -26466,7 +27311,8 @@ function setupEvents() {
     else if (act === 'signout') requestSignOut();
     else if (act === 'push-on') pushEnable();
     else if (act === 'rem-save') remindersSave();
-    else if (act === 'rem-day') { const on = !a.classList.contains('active'); a.classList.toggle('active', on); a.setAttribute('aria-pressed', on ? 'true' : 'false'); }
+    else if (/^rem-(wmode|wt-add|wt-del|meal-add|meal-del|own-add|own-del)$/.test(act)) remindersEdit(act, a);
+    else if (act === 'rem-day' || act === 'rem-own-day') { const on = !a.classList.contains('active'); a.classList.toggle('active', on); a.setAttribute('aria-pressed', on ? 'true' : 'false'); }
     else if (act === 'save-profile') communitySaveProfile();
     else if (act === 'more') { const sb = communityClient(); if (sb) { communityFeed.error = false; communityLoadFeed(sb, false); } }
     else if (act === 'feed-retry') { const sb = communityClient(); if (sb) { communityFeed.error = false; communityLoadFeed(sb, true); } }
@@ -27561,7 +28407,7 @@ function nativePushState() {
 /* Pripomienky v telefóne: tie isté nastavenia účtu (reminders_get), ale plánuje ich Android
    (LocalNotifications), takže chodia aj bez siete. Server ich posiela len na webové odbery, preto
    nevznikajú dvojité. Voda každých N minút od–do vrátane (ako reminders_due), jedlá v ich čase,
-   tréning v zvolené dni (ISO Po=1 → Android Ne=1). ID: voda 1000+, jedlá 2000+, tréning 3000+. */
+   tréning v zvolené dni (ISO Po=1 → Android Ne=1). ID: voda 1000+, jedlá 2000+, tréning 3000+, vlastné 3100–3179. */
 const NATIVE_REM_TEXT = {
   water: { sk: '💧 Čas napiť sa vody', en: '💧 Time to drink some water', es: '💧 Hora de beber agua',
     'pt-BR': '💧 Hora de beber água', fr: '💧 C’est le moment de boire de l’eau', ar: '💧 حان وقت شرب الماء' },
@@ -27574,14 +28420,17 @@ function nativeReminderSchedule(d) {
   const out = [];
   if (!d) return out;
   const mins = (v) => { const m = /^(\d{1,2}):(\d{2})/.exec(String(v || '')); return m ? Number(m[1]) * 60 + Number(m[2]) : null; };
-  const note = (id, kind, m, weekday) => {
+  const note = (id, kind, m, weekday, text) => {
     const on = { hour: Math.floor(m / 60), minute: m % 60 };
     if (weekday) on.weekday = weekday;
-    return { id, title: 'GymQuest', body: NATIVE_REM_TEXT[kind][activeLang()] || NATIVE_REM_TEXT[kind].en,
+    return { id, title: 'GymQuest', body: text || NATIVE_REM_TEXT[kind][activeLang()] || NATIVE_REM_TEXT[kind].en,
       channelId: 'reminders', smallIcon: 'ic_stat_gq', schedule: { on, allowWhileIdle: true },
       isExactNotification: false };   // presné budíky appka nemá (Play) – inak by plugin pri plánovaní otváral nastavenia
   };
-  if (d.water_on) {
+  if (d.water_on && d.water_mode === 'times') {   // 0019: voda v presných časoch (až 12)
+    const ts = (Array.isArray(d.water_times) ? d.water_times : []).map(mins).filter((m) => m !== null);
+    Array.from(new Set(ts)).sort((a, b) => a - b).slice(0, 12).forEach((m, i) => out.push(note(1000 + i, 'water', m)));
+  } else if (d.water_on) {
     const from = mins(d.water_from), to = mins(d.water_to), every = Math.max(30, Number(d.water_every) || 120);
     if (from !== null && to !== null) for (let m = from, i = 0; m <= to && i < 48; m += every, i++) out.push(note(1000 + i, 'water', m));
   }
@@ -27592,6 +28441,17 @@ function nativeReminderSchedule(d) {
     const m = mins(d.workout_time);
     if (m !== null) Array.from(new Set(d.workout_days.map(Number))).filter((x) => x >= 1 && x <= 7).sort((a, b) => a - b)
       .forEach((iso) => out.push(note(3000 + iso, 'workout', m, (iso % 7) + 1)));
+  }
+  /* Vlastné pripomienky (0019): ID 3100 + 8 × poradie + (0 = každý deň, inak ISO deň 1–7); text používateľa
+     ako obyčajný text (nikdy HTML). Všetky dni = jedno denné upozornenie. */
+  if (Array.isArray(d.custom)) {
+    d.custom.slice(0, 10).forEach((c, idx) => {
+      const m = mins(c && c.time), text = remindersCleanText(c && c.text);
+      const days = Array.from(new Set(((c && c.days) || []).map(Number))).filter((x) => x >= 1 && x <= 7).sort((a, b) => a - b);
+      if (m === null || !text || !days.length) return;
+      if (days.length === 7) out.push(note(3100 + idx * 8, 'custom', m, 0, text));
+      else days.forEach((iso) => out.push(note(3100 + idx * 8 + iso, 'custom', m, (iso % 7) + 1, text)));
+    });
   }
   return out;
 }
@@ -27802,6 +28662,7 @@ async function healthReadInto(id) {
   const hc = nativePlugin('GymHealth');
   const w = state.history.find((x) => x.id === id);
   if (!hc || !w || !w.health) return false;
+  delete hrCache[id];   // nové čítanie → aj krivka sa načíta znova
   let r;
   try { r = await hc.readStats({ start: w.health.start, end: w.health.end }); } catch (e) { return false; }
   const cur = state.history.find((x) => x.id === id);   // medzitým mohol byť zmazaný
@@ -27849,13 +28710,138 @@ function renderResultHealth(entry) {
   el.textContent = txt;
   el.hidden = !txt;
 }
+/* Graf tepu v detaile tréningu. Vzorky sa čítajú z Health Connect na požiadanie a držia sa len v pamäti
+   (hrCache) – nikdy v state, localStorage, zálohe ani Community. */
+const HR_MAX_POINTS = 300;
+const hrCache = {};   // id tréningu → Promise s { samples } alebo { error }
+function healthHrClean(r, w) {
+  const a = Date.parse(w.health.start), b = Date.parse(w.health.end);
+  const raw = r && Array.isArray(r.samples) ? r.samples : [];
+  const out = raw.map((x) => ({ t: Number(x && x.t), bpm: Math.round(Number(x && x.bpm)) }))
+    .filter((x) => Number.isFinite(x.t) && x.t >= a && x.t <= b && x.bpm >= 25 && x.bpm <= 250)
+    .sort((p, q) => p.t - q.t);
+  if (out.length <= HR_MAX_POINTS) return out;
+  const step = out.length / HR_MAX_POINTS, keep = [];
+  for (let i = 0; i < HR_MAX_POINTS; i++) {   // poistka: z každého kusa ostane najvyšší tep
+    let best = null;
+    for (let j = Math.floor(i * step); j < Math.floor((i + 1) * step); j++) if (!best || out[j].bpm > best.bpm) best = out[j];
+    if (best) keep.push(best);
+  }
+  return keep;
+}
+function healthHrLoad(w) {
+  if (!hrCache[w.id]) {
+    const hc = nativePlugin('GymHealth');
+    const id = w.id;
+    const pr = hrCache[id] = Promise.resolve().then(() => hc.heartRateSamples({ start: w.health.start, end: w.health.end }))
+      .then((r) => ({ samples: healthHrClean(r, w) }))
+      .catch((e) => ({ error: /denied/.test(String(e && e.message || e)) ? 'denied' : 'error' }));
+    // v pamäti ostane len úspešný neprázdny výsledok; chyba alebo prázdno sa pri ďalšom otvorení skúsi znova
+    pr.then((r) => { if (r.error || !r.samples || r.samples.length < 2) { if (hrCache[id] === pr) delete hrCache[id]; } });
+  }
+  return hrCache[w.id];
+}
+/* Čas osi x je v minútach od začiatku; os plynie vždy zľava doprava (ako graf mier). */
+function buildHrChart(box, samples, w) {
+  const ns = 'http://www.w3.org/2000/svg';
+  const W = Math.max(Math.round(box.clientWidth) || 300, 240), H = 170;
+  const t0 = Date.parse(w.health.start), t1 = Date.parse(w.health.end);
+  const mins = Math.max((t1 - t0) / 60000, 1);
+  const bpms = samples.map((p) => p.bpm);
+  const lo = Math.min(...bpms), hi = Math.max(...bpms);
+  const mean = Math.round(bpms.reduce((a, b) => a + b, 0) / bpms.length);
+  const avg = w.health.hrAvg || mean;
+  const svg = document.createElementNS(ns, 'svg');
+  svg.setAttribute('class', 'chart-svg hr-svg');
+  svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+  svg.setAttribute('width', W);
+  svg.setAttribute('height', H);
+  svg.setAttribute('role', 'img');
+  svg.setAttribute('aria-label', t('health.chart.aria', { n: samples.length, min: lo, max: hi, avg }));
+  box.appendChild(svg);
+  const fs = parseFloat(getComputedStyle(svg).fontSize) || 11;
+  const cw = fs * 0.62;
+  const nice = chartNiceTicks(Math.min(lo, avg), Math.max(hi, avg));
+  const tickTxt = nice.ticks.map((v) => v.toFixed(nice.decimals));
+  const yW = Math.max(...tickTxt.map((s) => s.length)) * cw;
+  const avgTxt = t('health.chart.avg', { n: avg }), lw = avgTxt.length * cw + 4;
+  const side = lw <= W * 0.22;   // popisok priemeru v pravom okraji (krivka tam nikdy nie je); inak nad/pod čiarou
+  const L = Math.ceil(yW + 8), R = W - 8 - (side ? Math.ceil(lw) + 4 : 0), T = 20, B = H - 26;
+  const yMin = nice.ticks[0], yMax = nice.ticks[nice.ticks.length - 1];
+  const x = (ms) => L + ((ms - t0) / (t1 - t0)) * (R - L);
+  const y = (v) => B - ((v - yMin) / (yMax - yMin)) * (B - T);
+  const mk = (tag, attrs, text) => {
+    const e = document.createElementNS(ns, tag);
+    for (const k of Object.keys(attrs)) e.setAttribute(k, attrs[k]);
+    if (text !== undefined) e.textContent = text;
+    return e;
+  };
+  nice.ticks.forEach((v, i) => {
+    svg.appendChild(mk('line', { class: 'chart-grid', x1: L, x2: R, y1: y(v).toFixed(1), y2: y(v).toFixed(1) }));
+    svg.appendChild(mk('text', { class: 'chart-axis', x: L - 6, y: (y(v) + fs * 0.35).toFixed(1), 'text-anchor': 'end' }, tickTxt[i]));
+  });
+  const stepMin = [1, 2, 5, 10, 15, 20, 30, 60, 120].find((s) => mins / s <= 5) || 120;
+  for (let m = 0; m <= mins + 1e-6; m += stepMin) {
+    const mxp = x(t0 + m * 60000);
+    svg.appendChild(mk('text', { class: 'chart-axis', x: mxp.toFixed(1), y: H - 8, 'text-anchor': m === 0 ? 'start' : (mxp > R - 3 * cw ? 'end' : 'middle') }, m === 0 ? '0 ' + t('health.chart.min') : String(m)));
+  }
+  const pts = samples.map((p) => [x(p.t), y(p.bpm)]);
+  const line = pts.map(([px, py], i) => (i ? 'L' : 'M') + px.toFixed(1) + ' ' + py.toFixed(1)).join(' ');
+  if (pts.length > 1) {
+    svg.appendChild(mk('path', { class: 'chart-area', d: line + ' L' + pts[pts.length - 1][0].toFixed(1) + ' ' + B + ' L' + pts[0][0].toFixed(1) + ' ' + B + ' Z' }));
+    svg.appendChild(mk('path', { class: 'chart-line hr-line', d: line }));
+  }
+  svg.appendChild(mk('line', { class: 'hr-avg', x1: L, x2: R, y1: y(avg).toFixed(1), y2: y(avg).toFixed(1) }));
+  /* Popisok priemeru (keď sa nezmestí do okraja): z miest pozdĺž čiary (nad/pod) vyberie to, kde je krivka najďalej od textu (pri zhode radšej vpravo). */
+  const ay = y(avg);
+  let bestC = null;
+  for (let k = 0; k <= 12 && !side; k++) {
+    for (const above of [true, false]) {
+      const x0 = R - lw - (k / 12) * (R - L - lw), ty = above ? ay - 4 : ay + fs + 2;
+      if (ty - fs < T - 8 || ty > B) continue;   // zostane v ploche grafu
+      const x1 = x0 + lw, y0 = ty - fs, y1 = ty + 2;
+      let clear = Infinity;
+      for (const [px, py] of pts) {
+        if (px < x0 - 3 || px > x1 + 3) continue;
+        clear = Math.min(clear, py < y0 ? y0 - py : (py > y1 ? py - y1 : 0));
+      }
+      if (!bestC || clear > bestC.clear + 0.5) bestC = { clear, x0, ty };
+    }
+  }
+  if (side) bestC = { x0: R + 4, ty: ay + fs * 0.35 };
+  else if (!bestC) bestC = { x0: R - lw, ty: ay - 4 };
+  svg.appendChild(mk('text', { class: 'chart-axis hr-avg-label', x: bestC.x0.toFixed(1), y: bestC.ty.toFixed(1), 'text-anchor': 'start' }, avgTxt));
+  const mi = bpms.indexOf(hi), [mx, my] = pts[mi];
+  svg.appendChild(mk('circle', { class: 'chart-dot hr-max', cx: mx.toFixed(1), cy: my.toFixed(1), r: 4.5 }));
+  svg.appendChild(mk('text', { class: 'chart-axis hr-max-label', x: Math.min(Math.max(mx, L + 24), R - 24).toFixed(1), y: Math.max(my - 9, fs).toFixed(1), 'text-anchor': 'middle' }, t('health.chart.max', { n: hi })));
+  return svg;
+}
+/* Po vykreslení detailu dňa: každý placeholder dostane graf, načítanie alebo poznámku. */
+function healthHrChartsMount(root) {
+  if (!healthOn()) return;
+  (root || document).querySelectorAll('[data-hr-chart]').forEach((box) => {
+    const w = state.history.find((x) => x.id === box.dataset.hrChart);
+    if (!w || !w.health || !w.health.start || !w.health.end) return;
+    const note = (key) => { box.innerHTML = `<p class="card-note hr-note">${esc(t(key))}</p>`; };
+    note('health.chart.loading');
+    healthHrLoad(w).then((r) => {
+      if (!box.isConnected) return;
+      box.innerHTML = '';
+      if (r.error === 'denied') return note('health.chart.denied');
+      if (r.error || !r.samples || r.samples.length < 2) return note('health.chart.empty');
+      buildHrChart(box, r.samples, w);
+    });
+  });
+}
 /* Detail dňa: tep tréningu; bez dát (alebo prečítané krátko po tréningu) tlačidlo "Obnoviť tep". */
 function healthDayHtml(w) {
   if (!isNativeApp() || !w || !w.health) return '';
   const txt = healthLineText(w);
   const readAt = Date.parse(w.health.readAt || '') || 0;
   const canRefresh = !!nativePlugin('GymHealth') && (!w.health.hrAvg || readAt < Date.parse(w.health.end) + 24 * 3600 * 1000);
+  const chart = healthOn() && w.health.start && w.health.end ? `<div class="hr-chart" data-hr-chart="${escAttr(w.id)}"></div>` : '';
   return `<div class="day-ex-meta health-line">${esc(txt || t('health.none'))}</div>`
+    + chart
     + (canRefresh ? `<button type="button" class="btn btn-secondary btn-sm health-refresh" data-health-refresh="${escAttr(w.id)}">${esc(t('health.refresh'))}</button>` : '');
 }
 
@@ -27867,10 +28853,12 @@ function nativeInit() {
   const splash = nativePlugin('SplashScreen');
   if (splash) splash.hide().catch(() => {});
   nativeThemeBars(themeResolved());   // tému pri štarte nastavuje skript v <head>, lišta sa zladí tu
+  nativeNavMode();
+  window.addEventListener('resize', nativeNavMode);   // otočenie / zmena režimu navigácie
   const app = nativePlugin('App');
   if (app) {
     app.addListener('backButton', () => { nativeBack(); });
-    app.addListener('resume', () => { nativeRemindersApply(); healthRecheck().then(healthRetryRecent); if (timerInterval !== null) nativeRestSync(); });   // povolenia/čas v systéme, tep z hodiniek
+    app.addListener('resume', () => { nativeNavMode(); nativeRemindersApply(); healthRecheck().then(healthRetryRecent); if (timerInterval !== null) nativeRestSync(); });   // povolenia/čas v systéme, tep z hodiniek
   }
   const ln = nativePlugin('LocalNotifications');
   if (ln) ln.createChannel({ id: 'reminders', name: t('rem.title'), importance: 3 }).catch(() => {});

@@ -2,6 +2,9 @@ package surotvsk.gymapp
 
 import android.content.res.Configuration
 import android.graphics.Color
+import android.provider.Settings
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowCompat
 import com.getcapacitor.Plugin
 import com.getcapacitor.PluginCall
@@ -11,6 +14,7 @@ import com.getcapacitor.annotation.CapacitorPlugin
 /**
  * GymQuest system bars in the app theme. Called from script.js (nativeThemeBars) as Capacitor.Plugins.GymBars:
  *  setColors({ color: "#E9E8E4", dark: false }) → {}
+ *  navMode() → { mode: "buttons" | "gesture" }   (3-button navigation = the tab bar docks on the buttons)
  *
  * Capacitor 8 (SystemBars) pads the WebView inside the status and navigation bars, so what shows
  * behind both bars is the window's background, which follows the PHONE's light/dark mode, not the
@@ -31,6 +35,27 @@ class GymBarsPlugin : Plugin() {
         color = parsed
         dark = call.getBoolean("dark", false) ?: false
         activity.runOnUiThread { apply(); call.resolve() }
+    }
+
+    /**
+     * Settings.Secure navigation_mode: 0 = 3 buttons, 1 = 2 buttons, 2 = gesture. Without the setting
+     * (some ROMs) the navigation-bar inset decides: >= 40 dp means buttons (the gesture pill is ~24 dp).
+     */
+    @PluginMethod
+    fun navMode(call: PluginCall) {
+        activity.runOnUiThread {
+            val setting = try { Settings.Secure.getInt(activity.contentResolver, "navigation_mode", -1) } catch (_: Exception) { -1 }
+            val buttons = when (setting) {
+                0, 1 -> true
+                2 -> false
+                else -> {
+                    val view = activity.window.decorView
+                    val px = ViewCompat.getRootWindowInsets(view)?.getInsets(WindowInsetsCompat.Type.navigationBars())?.bottom ?: 0
+                    px >= 40 * view.resources.displayMetrics.density
+                }
+            }
+            call.resolve(com.getcapacitor.JSObject().put("mode", if (buttons) "buttons" else "gesture"))
+        }
     }
 
     override fun handleOnConfigurationChanged(newConfig: Configuration?) {
