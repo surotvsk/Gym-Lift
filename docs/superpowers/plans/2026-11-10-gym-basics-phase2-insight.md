@@ -82,7 +82,9 @@
   - Each item runs the same function as today's button, then closes the sheet.
 - Decisions:
   - **Exercise tile:**
-    - `.ex-mini` keeps the existing `+ Add set` / `Remove last set` row and exactly one round `⋯` button (`.btn-ex-more`, aria-label "More actions for {name}").
+    - In a session, the existing set-count row (`+ Add set` / `Remove last set`, from `buildSetCountRow`) also gets exactly one round `⋯` button at its end (`.btn-ex-more`, aria-label "More actions for {name}").
+    - Outside a session, `⋯` stands alone where the row would be.
+    - `.ex-mini` keeps only content rows (drop rows) and is not rendered when empty.
     - Existing warm-up rows, drop rows, the effort chip and the superset bracket keep rendering where they are when they exist.
     - A read-only (replaced) segment has no `⋯`.
     - Outside a running session the tile shows `⋯` only if at least one item applies (Plates applies before a session).
@@ -103,7 +105,7 @@
     - and the sheet closes.
   - Escape closes the sheet and focus returns to `.btn-ex-more`. The sheet is in `isBusy()` and `NATIVE_BACK_CLOSE`.
   - Editor rows have a closed `details.edit-more` containing the ramp checkbox and the link button. The superset label is still visible with the details closed.
-  - Tile calm check: at 390 px a barbell tile's `.ex-mini` holds a single row of controls. Its height is ≤ 56 px, and it contains exactly 3 buttons: `+ Add set`, `Remove last set` and `⋯`.
+  - Tile calm check: at 390 px, in a session, a barbell tile shows its controls in one row: the set-count row contains exactly 3 buttons (`+ Add set`, `Remove last set`, `⋯`), has height ≤ 56 px, and no other button row follows it while there are no drops.
   - All 6 languages, RTL, light and dark, no console errors.
 - [ ] **Step 2: Run it.** Expected: FAIL.
 - [ ] **Step 3: Implement. Adapt the old suites' selectors** so they open `⋯` first. Their assertions on behaviour stay identical.
