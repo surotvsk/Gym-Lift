@@ -7585,6 +7585,14 @@ const BASICS_I18N = {
     'plates.bar': 'Tyč', 'plates.barCustom': 'Vlastná tyč v kg', 'plates.available': 'Kotúče, ktoré máš',
     'plates.perSide': 'Na každú stranu', 'plates.barOnly': 'Len tyč',
     'plates.closest': 'Najbližšie možné: {kg} kg', 'plates.exact': 'Presne: {kg} kg',
+    'warmup.add': '+ Rozcvička', 'warmup.addTitle': 'Pridaj ľahkú rozcvičkovú sériu pred pracovné série.',
+    'warmup.ramp': 'Rozcvičkový rad', 'warmup.rampTitle': 'Doplní rozcvičky podľa pracovnej váhy (hotové zostanú).',
+    'warmup.label': 'R{n}', 'warmup.name': 'Rozcvička {n}', 'warmup.doneAria': 'Rozcvička {n} hotová',
+    'warmup.repsAria': 'Rozcvička {n}: {reps} opakovaní. Ťuknutím zmeníš opakovania.',
+    'warmup.weightAria': 'Rozcvička {n}: {kg} kg. Ťuknutím zmeníš váhu.',
+    'warmup.remove': 'Odstrániť rozcvičku {n}', 'warmup.editorNote': 'Mení sa iba táto rozcvička. Plán sa nemení.',
+    'warmup.repsEditor': 'Opakovania rozcvičky {n}', 'warmup.weightEditor': 'Váha rozcvičky {n} v kg',
+    'warmup.history': 'Rozcvička: {list}', 'warmup.planToggle': 'Rozcvičkový rad automaticky na začiatku tréningu',
   },
   en: {
     'plates.button': 'Plates', 'plates.buttonTitle': 'Plate calculator: what to load on each side of the bar',
@@ -7593,6 +7601,14 @@ const BASICS_I18N = {
     'plates.bar': 'Bar', 'plates.barCustom': 'Custom bar in kg', 'plates.available': 'Plates you have',
     'plates.perSide': 'Per side', 'plates.barOnly': 'Just the bar',
     'plates.closest': 'Closest possible: {kg} kg', 'plates.exact': 'Exact: {kg} kg',
+    'warmup.add': '+ Warm-up', 'warmup.addTitle': 'Add a light warm-up set before your working sets.',
+    'warmup.ramp': 'Warm-up ramp', 'warmup.rampTitle': 'Fill in warm-up sets from your working weight (finished ones stay).',
+    'warmup.label': 'W{n}', 'warmup.name': 'Warm-up {n}', 'warmup.doneAria': 'Warm-up {n} done',
+    'warmup.repsAria': 'Warm-up {n}: {reps} reps. Tap to change the reps.',
+    'warmup.weightAria': 'Warm-up {n}: {kg} kg. Tap to change the weight.',
+    'warmup.remove': 'Remove warm-up {n}', 'warmup.editorNote': 'Only this warm-up changes. Your plan stays the same.',
+    'warmup.repsEditor': 'Reps of warm-up {n}', 'warmup.weightEditor': 'Weight of warm-up {n} in kg',
+    'warmup.history': 'Warm-up: {list}', 'warmup.planToggle': 'Add the warm-up ramp automatically when the workout starts',
   },
   es: {
     'plates.button': 'Discos', 'plates.buttonTitle': 'Calculadora de discos: qué poner a cada lado de la barra',
@@ -7601,6 +7617,14 @@ const BASICS_I18N = {
     'plates.bar': 'Barra', 'plates.barCustom': 'Barra personalizada en kg', 'plates.available': 'Discos que tienes',
     'plates.perSide': 'Por lado', 'plates.barOnly': 'Solo la barra',
     'plates.closest': 'Lo más cercano posible: {kg} kg', 'plates.exact': 'Exacto: {kg} kg',
+    'warmup.add': '+ Calentamiento', 'warmup.addTitle': 'Añade una serie ligera de calentamiento antes de las series de trabajo.',
+    'warmup.ramp': 'Rampa de calentamiento', 'warmup.rampTitle': 'Rellena series de calentamiento según tu peso de trabajo (las hechas se mantienen).',
+    'warmup.label': 'C{n}', 'warmup.name': 'Calentamiento {n}', 'warmup.doneAria': 'Calentamiento {n} hecho',
+    'warmup.repsAria': 'Calentamiento {n}: {reps} repeticiones. Toca para cambiar las repeticiones.',
+    'warmup.weightAria': 'Calentamiento {n}: {kg} kg. Toca para cambiar el peso.',
+    'warmup.remove': 'Quitar el calentamiento {n}', 'warmup.editorNote': 'Solo cambia este calentamiento. Tu plan no cambia.',
+    'warmup.repsEditor': 'Repeticiones del calentamiento {n}', 'warmup.weightEditor': 'Peso del calentamiento {n} en kg',
+    'warmup.history': 'Calentamiento: {list}', 'warmup.planToggle': 'Añadir la rampa de calentamiento automáticamente al empezar el entrenamiento',
   },
   'pt-BR': {
     'plates.button': 'Anilhas', 'plates.buttonTitle': 'Calculadora de anilhas: o que colocar em cada lado da barra',
@@ -7609,6 +7633,14 @@ const BASICS_I18N = {
     'plates.bar': 'Barra', 'plates.barCustom': 'Barra personalizada em kg', 'plates.available': 'Anilhas que você tem',
     'plates.perSide': 'Por lado', 'plates.barOnly': 'Só a barra',
     'plates.closest': 'Mais próximo possível: {kg} kg', 'plates.exact': 'Exato: {kg} kg',
+    'warmup.add': '+ Aquecimento', 'warmup.addTitle': 'Adicione uma série leve de aquecimento antes das séries de trabalho.',
+    'warmup.ramp': 'Rampa de aquecimento', 'warmup.rampTitle': 'Preenche séries de aquecimento a partir da carga de trabalho (as concluídas ficam).',
+    'warmup.label': 'A{n}', 'warmup.name': 'Aquecimento {n}', 'warmup.doneAria': 'Aquecimento {n} concluído',
+    'warmup.repsAria': 'Aquecimento {n}: {reps} repetições. Toque para mudar as repetições.',
+    'warmup.weightAria': 'Aquecimento {n}: {kg} kg. Toque para mudar a carga.',
+    'warmup.remove': 'Remover o aquecimento {n}', 'warmup.editorNote': 'Só este aquecimento muda. Seu plano não muda.',
+    'warmup.repsEditor': 'Repetições do aquecimento {n}', 'warmup.weightEditor': 'Carga do aquecimento {n} em kg',
+    'warmup.history': 'Aquecimento: {list}', 'warmup.planToggle': 'Adicionar a rampa de aquecimento automaticamente ao iniciar o treino',
   },
   fr: {
     'plates.button': 'Disques', 'plates.buttonTitle': 'Calculateur de disques : quoi charger de chaque côté de la barre',
@@ -7617,6 +7649,14 @@ const BASICS_I18N = {
     'plates.bar': 'Barre', 'plates.barCustom': 'Barre personnalisée en kg', 'plates.available': 'Disques que tu as',
     'plates.perSide': 'Par côté', 'plates.barOnly': 'La barre seule',
     'plates.closest': 'Le plus proche possible : {kg} kg', 'plates.exact': 'Exact : {kg} kg',
+    'warmup.add': '+ Échauffement', 'warmup.addTitle': 'Ajoute une série d’échauffement légère avant tes séries de travail.',
+    'warmup.ramp': 'Montée d’échauffement', 'warmup.rampTitle': 'Ajoute des séries d’échauffement selon ta charge de travail (celles déjà faites restent).',
+    'warmup.label': 'É{n}', 'warmup.name': 'Échauffement {n}', 'warmup.doneAria': 'Échauffement {n} fait',
+    'warmup.repsAria': 'Échauffement {n} : {reps} répétitions. Touche pour changer les répétitions.',
+    'warmup.weightAria': 'Échauffement {n} : {kg} kg. Touche pour changer la charge.',
+    'warmup.remove': 'Retirer l’échauffement {n}', 'warmup.editorNote': 'Seul cet échauffement change. Ton plan ne change pas.',
+    'warmup.repsEditor': 'Répétitions de l’échauffement {n}', 'warmup.weightEditor': 'Charge de l’échauffement {n} en kg',
+    'warmup.history': 'Échauffement : {list}', 'warmup.planToggle': 'Ajouter automatiquement la montée d’échauffement au début de la séance',
   },
   ar: {
     'plates.button': 'الأقراص', 'plates.buttonTitle': 'حاسبة الأقراص: ما الذي يوضع على كل جانب من البار',
@@ -7625,6 +7665,14 @@ const BASICS_I18N = {
     'plates.bar': 'البار', 'plates.barCustom': 'بار مخصص بالكيلوغرام', 'plates.available': 'الأقراص المتوفرة لديك',
     'plates.perSide': 'لكل جانب', 'plates.barOnly': 'البار فقط',
     'plates.closest': 'الأقرب الممكن: {kg} كغ', 'plates.exact': 'بالضبط: {kg} كغ',
+    'warmup.add': '+ إحماء', 'warmup.addTitle': 'أضف مجموعة إحماء خفيفة قبل مجموعات العمل.',
+    'warmup.ramp': 'تدرّج الإحماء', 'warmup.rampTitle': 'يملأ مجموعات الإحماء حسب وزن العمل (المكتملة تبقى).',
+    'warmup.label': 'إ{n}', 'warmup.name': 'إحماء {n}', 'warmup.doneAria': 'تم الإحماء {n}',
+    'warmup.repsAria': 'إحماء {n}: {reps} تكرارًا. المس لتغيير التكرارات.',
+    'warmup.weightAria': 'إحماء {n}: {kg} كغ. المس لتغيير الوزن.',
+    'warmup.remove': 'حذف الإحماء {n}', 'warmup.editorNote': 'يتغير هذا الإحماء فقط. خطتك لا تتغير.',
+    'warmup.repsEditor': 'تكرارات الإحماء {n}', 'warmup.weightEditor': 'وزن الإحماء {n} بالكيلوغرام',
+    'warmup.history': 'إحماء: {list}', 'warmup.planToggle': 'إضافة تدرّج الإحماء تلقائيًا عند بدء التمرين',
   },
 };
 for (const lang of Object.keys(BASICS_I18N)) Object.assign(I18N[lang] || (I18N[lang] = {}), BASICS_I18N[lang]);
@@ -9393,6 +9441,7 @@ function todayLabel() {
 }
 
 /* ---------- Konstanty ---------- */
+const WARMUP_MAX = 6;  // najviac rozcvičiek na jeden cvik v tréningu
 const DROP_MAX = 5;   // najviac drop sérií na jeden cvik v tréningu
 
 /* Kľúč stavu AKTÍVNEHO pracovného priestoru (nastaví wsInit pred loadState):
@@ -10168,6 +10217,21 @@ function normalizeActiveSession(raw) {
     }
   }
   if (Object.keys(drops).length) out.drops = drops;
+  /* Rozcvičky: najviac WARMUP_MAX platných záznamov na cvik; warmupsInit = cviky s už doplneným radom. */
+  const warmups = {};
+  if (raw.warmups && typeof raw.warmups === 'object' && !Array.isArray(raw.warmups)) {
+    for (const [key, list] of Object.entries(raw.warmups)) {
+      if (!Array.isArray(list)) continue;
+      const clean = list.slice(0, WARMUP_MAX).map(cleanWarmupEntry).filter(Boolean);
+      if (clean.length) warmups[key] = clean;
+    }
+  }
+  if (Object.keys(warmups).length) out.warmups = warmups;
+  const warmupsInit = {};
+  if (raw.warmupsInit && typeof raw.warmupsInit === 'object' && !Array.isArray(raw.warmupsInit)) {
+    for (const [key, val] of Object.entries(raw.warmupsInit)) if (key && val === true) warmupsInit[key] = true;
+  }
+  if (Object.keys(warmupsInit).length) out.warmupsInit = warmupsInit;
   /* Zmena počtu sérií cviku (+ Pridať sériu): celé nenulové čísla; chýbajúce pole = bez zmeny. */
   const setDelta = {};
   if (raw.setDelta && typeof raw.setDelta === 'object' && !Array.isArray(raw.setDelta)) {
@@ -10251,7 +10315,7 @@ function migrateSessionKeys(sess, map) {
     }
     return key;
   };
-  for (const field of ['completedSets', 'actualFailureSets', 'setWeights', 'setReps', 'setWeightLocks', 'setRepsLocks', 'drops', 'setDelta', 'substituted']) {
+  for (const field of ['completedSets', 'actualFailureSets', 'setWeights', 'setReps', 'setWeightLocks', 'setRepsLocks', 'drops', 'warmups', 'warmupsInit', 'setDelta', 'substituted']) {
     const src = sess[field];
     if (!src || typeof src !== 'object' || Array.isArray(src)) continue;
     const out = {};
@@ -13024,6 +13088,11 @@ function buildExerciseBlock(seg, info, plan) {
     div.appendChild(note);
   }
 
+  /* Rozcvičky: rad z plánu sa doplní raz pri štarte; blok je nad sériami. */
+  if (!seg.readOnly) autoWarmupRamp(ex);
+  const warmupsBox = buildWarmupsBlock(ex, seg.readOnly);
+  if (warmupsBox) div.appendChild(warmupsBox);
+
   /* Štvorce sérií (ťuknutie = hotová) a pod nimi pilulky S1, S2 … s opakovaniami, váhou a zlyhaním */
   const sets = document.createElement('div');
   sets.className = 'sets';
@@ -13051,6 +13120,7 @@ function buildExerciseBlock(seg, info, plan) {
   mini.className = 'mini ex-mini';
   mini.appendChild(buildDropsBlock(ex, seg.readOnly));
   if (!seg.readOnly && isBarbellExercise(ex)) mini.appendChild(buildPlatesButton(ex));
+  if (!seg.readOnly) for (const b of buildWarmupButtons(ex)) mini.appendChild(b);
   /* Aktívny cvik je možné vymeniť – ale iba počas rozbehnutého tréningu, aby výmena
      nikdy nezačala meranie trvania nechtiac. Pred tréningom sa plán upravuje normálne. */
   if (seg.active && getSession()) {
@@ -13441,6 +13511,216 @@ function isBarbellExercise(ex) {
   if (!ex || isAssisted(ex)) return false;
   const lib = libraryEntry(builtinExerciseId(ex));
   return !lib || (Array.isArray(lib.equipment) && lib.equipment.includes('barbell'));
+}
+
+/* ---------- Rozcvičkové série ----------
+   Rozcvičky žijú v session pri cviku (sess.warmups[kľúč cviku] = [{ w, r, done }]), plán sa nemení
+   (okrem voliteľného príznaku riadku `warmupRamp`). Do histórie idú len dokončené ({ weight, reps }).
+   Nikdy sa nepočítajú do sérií, XP, rekordov, úspechov ani série dní. Rozcvičky sú na cvik, nie na stranu.
+   Váha sa ukladá tak, ako je vypočítaná / zadaná (kotúče dávajú aj x,25), preto nie je zaokrúhlená na 0,5. */
+function sessionWarmups(ex) {
+  const sess = getSession();
+  const list = sess && sess.warmups ? sess.warmups[exerciseSessionKey(ex)] : null;
+  return Array.isArray(list) ? list : [];
+}
+/* Rovnaké pravidlá ako drop séria: konečná váha 0..999, celé opakovania 1..999. */
+function cleanWarmupEntry(d) { return cleanDropEntry(d); }
+/* Váha rozcvičky z editora: čiarka aj bodka, 0..999, bez zaokrúhlenia na 0,5; neplatné → null. */
+function cleanWarmupWeight(v) {
+  if (typeof v === 'number') return Number.isFinite(v) ? Math.round(Math.max(0, Math.min(999, v)) * 1000) / 1000 : null;
+  const raw = String(v == null ? '' : v).trim().replace(',', '.');
+  if (!/^\d+(\.\d+)?$/.test(raw)) return null;
+  const n = Number(raw);
+  return Number.isFinite(n) ? Math.round(Math.min(999, n) * 1000) / 1000 : null;
+}
+function isDumbbellExercise(ex) {
+  const lib = libraryEntry(builtinExerciseId(ex));
+  return !!(lib && Array.isArray(lib.equipment) && (lib.equipment.includes('dumbbell') || lib.equipment.includes('dumbbells')));
+}
+/* Pracovná váha cviku = váha poslednej série (rovnako ako pri drop sérii a kotúčoch). */
+function warmupBaseWeight(ex) {
+  return Number(effectiveSetWeight(ex, Math.max(0, sessionSetCount(ex) - 1))) || 0;
+}
+/* Zaokrúhlenie váhy rozcvičky nadol: činka na kotúče, jednoručky na párne kg, ostatné na celé kg. */
+function warmupRound(ex, x, cfg) {
+  if (isBarbellExercise(ex)) return roundToPlates(x, cfg);
+  if (isDumbbellExercise(ex)) return Math.floor(x / 2 + 1e-9) * 2;
+  return Math.floor(x + 1e-9);
+}
+/* Rozcvičkový rad k pracovnej váhe: tyč × 10, potom 40 / 60 / 80 % (5 / 3 / 2 opakovania). */
+function warmupRamp(ex, workingWeight) {
+  const W = Number(workingWeight);
+  if (!ex || isAssisted(ex) || !Number.isFinite(W) || W <= 0) return [];
+  const cfg = plateSettings();
+  const bar = Number(cfg.bar) || 0;
+  const barbell = isBarbellExercise(ex);
+  const out = [];
+  const push = (w, r) => {
+    if (!(w > 0) || w >= W || (barbell && w < bar)) return;
+    if (out.length && out[out.length - 1].w === w) return;
+    out.push({ w, r });
+  };
+  if (barbell) push(bar, 10);
+  for (const [f, r] of [[0.4, 5], [0.6, 3], [0.8, 2]]) push(warmupRound(ex, W * f, cfg), r);
+  return out;
+}
+/* "+ Rozcvička": predvolene 50 % pracovnej váhy (činka: aspoň tyč), 5 opakovaní. */
+function addWarmup(ex) {
+  const list = sessionWarmups(ex);
+  if (list.length >= WARMUP_MAX) return false;
+  const sess = ensureSession();
+  if (!sess) return false;
+  const W = warmupBaseWeight(ex);
+  const cfg = plateSettings();
+  const bar = Number(cfg.bar) || 0;
+  const half = W * 0.5;
+  const w = isBarbellExercise(ex) ? (W > bar ? Math.max(bar, roundToPlates(half, cfg)) : bar) : Math.max(0, warmupRound(ex, half, cfg));
+  if (!sess.warmups) sess.warmups = {};
+  sess.warmups[exerciseSessionKey(ex)] = list.concat([{ w, r: 5, done: false }]);
+  saveState();
+  return true;
+}
+function updateWarmup(ex, index, patch) {
+  const sess = getSession();
+  const key = exerciseSessionKey(ex);
+  if (!sess || !sess.warmups || !Array.isArray(sess.warmups[key]) || !sess.warmups[key][index]) return false;
+  const next = cleanWarmupEntry(Object.assign({}, sess.warmups[key][index], patch));
+  if (!next) return false;
+  sess.warmups[key][index] = next;
+  saveState();
+  return true;
+}
+function removeWarmup(ex, index) {
+  const sess = getSession();
+  const key = exerciseSessionKey(ex);
+  if (!sess || !sess.warmups || !Array.isArray(sess.warmups[key])) return;
+  sess.warmups[key].splice(index, 1);
+  if (!sess.warmups[key].length) delete sess.warmups[key];
+  if (!Object.keys(sess.warmups).length) delete sess.warmups;
+  saveState();
+}
+/* Rozcvičkový rad: hotové rozcvičky ostanú, nehotové sa nahradia radom (len ťažšie než posledná hotová). */
+function applyWarmupRamp(ex) {
+  const ramp = warmupRamp(ex, warmupBaseWeight(ex));
+  if (!ramp.length) return false;
+  const sess = ensureSession();
+  if (!sess) return false;
+  const done = sessionWarmups(ex).filter((d) => d.done);
+  const top = done.reduce((m, d) => Math.max(m, d.w), -1);
+  const next = done.concat(ramp.filter((x) => x.w > top).map((x) => ({ w: x.w, r: x.r, done: false }))).slice(0, WARMUP_MAX);
+  if (!sess.warmups) sess.warmups = {};
+  if (next.length) sess.warmups[exerciseSessionKey(ex)] = next; else delete sess.warmups[exerciseSessionKey(ex)];
+  if (!Object.keys(sess.warmups).length) delete sess.warmups;
+  saveState();
+  return true;
+}
+/* Riadok plánu s `warmupRamp`: rad sa doplní RAZ pri štarte cviku v tréningu (sess.warmupsInit);
+   po zmazaní sa už nikdy nedoplní. */
+function autoWarmupRamp(ex) {
+  const sess = getSession();
+  if (!sess || !ex || ex.warmupRamp !== true) return;
+  const key = exerciseSessionKey(ex);
+  if (sess.warmupsInit && sess.warmupsInit[key]) return;
+  if (!sess.warmupsInit) sess.warmupsInit = {};
+  sess.warmupsInit[key] = true;
+  if (!sessionWarmups(ex).length) applyWarmupRamp(ex);
+  saveState();
+}
+/* Platné rozcvičky zo záznamu histórie (alebo null). */
+function cleanHistoryWarmups(e) {
+  if (!e || !Array.isArray(e.warmups) || !e.warmups.length || e.warmups.length > WARMUP_MAX) return null;
+  const out = e.warmups.map((d) => ({ weight: Number(d && d.weight), reps: Number(d && d.reps) }));
+  return out.every((d) => Number.isFinite(d.weight) && d.weight >= 0 && d.weight <= 999 && Number.isInteger(d.reps) && d.reps >= 1 && d.reps <= 999) ? out : null;
+}
+/* "Rozcvička: 20 kg × 10 · 40 kg × 5" (alebo prázdny text). */
+function historyWarmupsText(e) {
+  const list = cleanHistoryWarmups(e);
+  if (!list) return '';
+  return t('warmup.history', { list: list.map((d) => `${d.weight} ${t('units.kg')} × ${d.reps}`).join(' · ') });
+}
+/* Riadok s rozcvičkami v histórii / kalendári (alebo prázdny reťazec). */
+function historyWarmupsHtml(e, tag) {
+  const text = historyWarmupsText(e);
+  return text ? `<${tag} class="warmup-note">${esc(text)}</${tag}>` : '';
+}
+/* Dokončené rozcvičky do histórie: [{ weight, reps }]. */
+function historyApplyWarmups(entry, ex) {
+  const list = sessionWarmups(ex).filter((d) => d.done).map((d) => ({ weight: d.w, reps: d.r }));
+  if (list.length) entry.warmups = list;
+}
+/* Blok rozcvičiek nad sériami: riadky "R1" (váha / opakovania / ✓ / ✕). Prázdny zoznam = žiadny blok. */
+function buildWarmupsBlock(ex, readOnly) {
+  const list = sessionWarmups(ex);
+  if (!list.length) return null;
+  const box = document.createElement('div');
+  box.className = 'warmups';
+  list.forEach((d, i) => {
+    const item = document.createElement('div');
+    item.className = 'warmup-item' + (d.done ? ' warmup-is-done' : '');
+    const label = document.createElement('span');
+    label.className = 'warmup-label';
+    label.textContent = t('warmup.label', { n: i + 1 });
+    label.title = t('warmup.name', { n: i + 1 });
+    const weight = document.createElement('button');
+    weight.type = 'button'; weight.className = 'warmup-weight'; weight.textContent = String(d.w);
+    weight.dataset.unit = t('units.kg');
+    weight.setAttribute('aria-label', t('warmup.weightAria', { n: i + 1, kg: d.w }));
+    const reps = document.createElement('button');
+    reps.type = 'button'; reps.className = 'warmup-reps'; reps.textContent = d.r + '×';
+    reps.setAttribute('aria-label', t('warmup.repsAria', { n: i + 1, reps: d.r }));
+    const done = document.createElement('button');
+    done.type = 'button'; done.className = 'warmup-done' + (d.done ? ' done' : ''); done.textContent = '✓';
+    done.setAttribute('aria-label', t('warmup.doneAria', { n: i + 1 }));
+    done.setAttribute('aria-pressed', d.done ? 'true' : 'false');
+    const remove = document.createElement('button');
+    remove.type = 'button'; remove.className = 'warmup-remove'; remove.textContent = '✕';
+    remove.setAttribute('aria-label', t('warmup.remove', { n: i + 1 }));
+    remove.title = t('warmup.remove', { n: i + 1 });
+    if (readOnly) {
+      [weight, reps, done, remove].forEach((b) => { b.disabled = true; });
+    } else {
+      done.addEventListener('click', () => { closeSetWeightEditor(); updateWarmup(ex, i, { done: !d.done }); setSessionNote(null, 0); renderTrening(); });
+      reps.addEventListener('click', () => openSetValueEditor(item, {
+        extraClass: 'set-reps-editor warmup-editor', note: t('warmup.editorNote'),
+        editorAria: t('warmup.repsEditor', { n: i + 1 }), inputAria: t('warmup.repsEditor', { n: i + 1 }),
+        lessAria: t('setReps.less'), moreAria: t('setReps.more'), minusText: '−1', plusText: '+1', step: 1,
+        unit: t('units.reps'), inputMode: 'numeric', inputClass: 'set-reps-input', okClass: 'set-reps-ok',
+        current: () => d.r, clean: cleanSetRepsValue,
+        save: (v) => { const n = cleanSetRepsValue(v); return n !== null && updateWarmup(ex, i, { r: n }); },
+      }));
+      weight.addEventListener('click', () => openSetValueEditor(item, {
+        extraClass: 'warmup-editor', note: t('warmup.editorNote'),
+        editorAria: t('warmup.weightEditor', { n: i + 1 }), inputAria: t('warmup.weightEditor', { n: i + 1 }),
+        lessAria: t('setWeight.less'), moreAria: t('setWeight.more'), minusText: '−2.5', plusText: '+2.5', step: 2.5,
+        unit: t('units.kg'), inputMode: 'decimal', inputClass: 'set-weight-input', okClass: 'set-weight-ok',
+        current: () => d.w, clean: cleanWarmupWeight,
+        save: (v) => { const n = cleanWarmupWeight(v); return n !== null && updateWarmup(ex, i, { w: n }); },
+      }));
+      remove.addEventListener('click', () => { closeSetWeightEditor(); removeWarmup(ex, i); setSessionNote(null, 0); renderTrening(); });
+    }
+    item.append(label, weight, reps, done, remove);
+    box.appendChild(item);
+  });
+  return box;
+}
+/* Tlačidlá "+ Rozcvička" a "Rozcvičkový rad" do riadku akcií cviku (rad nie je pri asistovanom cviku). */
+function buildWarmupButtons(ex) {
+  const out = [];
+  if (sessionWarmups(ex).length < WARMUP_MAX) {
+    const add = document.createElement('button');
+    add.type = 'button'; add.className = 'btn-add-warmup';
+    add.textContent = t('warmup.add'); add.title = t('warmup.addTitle');
+    add.addEventListener('click', () => { closeSetWeightEditor(); if (addWarmup(ex)) { setSessionNote(null, 0); renderTrening(); } });
+    out.push(add);
+  }
+  if (warmupRamp(ex, warmupBaseWeight(ex)).length) {
+    const ramp = document.createElement('button');
+    ramp.type = 'button'; ramp.className = 'btn-warmup-ramp';
+    ramp.textContent = t('warmup.ramp'); ramp.title = t('warmup.rampTitle');
+    ramp.addEventListener('click', () => { closeSetWeightEditor(); if (applyWarmupRamp(ex)) { setSessionNote(null, 0); renderTrening(); } });
+    out.push(ramp);
+  }
+  return out;
 }
 
 let plateTarget = 0;
@@ -14433,6 +14713,24 @@ function renderEditPanel() {
     sideBox.append(sideToggle, sideStart);
     row.appendChild(sideBox);
 
+    /* Voliteľný "Rozcvičkový rad": pri štarte cviku v tréningu sa sám doplní (nie pri asistovanom cviku). */
+    const warmBox = document.createElement('div');
+    warmBox.className = 'edit-warmup edit-warmup-box';
+    const warmLabel = document.createElement('label');
+    warmLabel.className = 'edit-side-toggle';
+    const warmCheck = document.createElement('input');
+    warmCheck.type = 'checkbox';
+    warmCheck.className = 'edit-warmup-ramp';
+    warmCheck.checked = ex.warmupRamp === true;
+    const warmText = document.createElement('span');
+    warmText.textContent = t('warmup.planToggle');
+    warmLabel.append(warmCheck, warmText);
+    warmBox.appendChild(warmLabel);
+    warmCheck.addEventListener('change', () => {
+      if (warmCheck.checked) editDraft[idx].warmupRamp = true; else delete editDraft[idx].warmupRamp;
+    });
+    row.appendChild(warmBox);
+
     /* Voliteľné "Asistovaný cvik": číslo je pomoc v kg a menej pomoci je pokrok. Asistovaný cvik z knižnice
        je asistovaný vždy (prepínač zapnutý a neaktívny); vlastný riadok si ho zapína sám. */
     const assistBox = document.createElement('div');
@@ -14453,6 +14751,7 @@ function renderEditPanel() {
       assistCheck.disabled = fixed;
       /* Zabudovaný neasistovaný cvik prepínač nemá (zámena s "Dips" je vylúčená); prepisom názvu sa stane vlastným. */
       assistBox.hidden = !fixed && !!d.id && BUILTIN_EXERCISE_IDS.has(d.id);
+      warmBox.hidden = isAssisted(d);
     };
     syncAssist();
     assistCheck.addEventListener('change', () => {
@@ -14747,6 +15046,8 @@ function saveEditPlan() {
     }
     /* Editor značku asistovaného cviku nemení, ale nesmie ju pri uložení stratiť. */
     if (ex.assisted === true) out.assisted = true;
+    /* Rozcvičkový rad na začiatku tréningu: ukladá sa len keď je zapnutý. */
+    if (ex.warmupRamp === true) out.warmupRamp = true;
     return out;
   });
   dedupeExerciseIdentities();
@@ -15921,6 +16222,11 @@ function requestUndoSubstitution(slot) {
     if (sess.drops) {
       delete sess.drops[String(last.key)];
       if (!Object.keys(sess.drops).length) delete sess.drops;
+    }
+    for (const f of ['warmups', 'warmupsInit']) {
+      if (!sess[f]) continue;
+      delete sess[f][String(last.key)];
+      if (!Object.keys(sess[f]).length) delete sess[f];
     }
     saveState();
     renderTrening();
@@ -21731,14 +22037,14 @@ function historyExerciseDetail(ex, displayName) {
     let out = head + `<div class="history-side-note">${esc(t('unilateral.completed', { sides: completedSidesLabel(done) }))}</div>`;
     const list = sideFailureList(fails);
     if (list) out += `<div class="failure-note">🔥 ${esc(t('unilateral.failureList', { list }))}</div>`;
-    return out + historyDropsHtml(ex, 'div');
+    return out + historyWarmupsHtml(ex, 'div') + historyDropsHtml(ex, 'div');
   }
   const line = `${esc(displayName !== undefined ? displayName : ex.name)} ${ex.sets}×${esc(historyRepsValue(ex))} · ${historyWeightText(ex)}`;
   const fSets = cleanFailureSets(ex.actualFailureSets, ex.sets);
   /* Zlyhanie sa zobrazuje len vtedy, keď bolo naozaj zaznamenané – nikdy z plánu. */
   return (fSets.length
     ? line + `<div class="failure-note">🔥 ${esc(t('failure.sets', { sets: fSets.join(', ') }))}</div>`
-    : line) + historyDropsHtml(ex, 'div');
+    : line) + historyWarmupsHtml(ex, 'div') + historyDropsHtml(ex, 'div');
 }
 /* Riadok s drop sériami v histórii / kalendári (alebo prázdny reťazec). */
 function historyDropsHtml(ex, tag) {
@@ -21873,6 +22179,7 @@ function workoutBlock(w) {
       <span class="day-ex-meta">${esc(tPlural('unilateral.setsPerSide', sets))} · ${esc(historyRepsValue(ex))} ${t('units.reps')} · ${historyWeightText(ex)} · ${ex.setsDone} ${t('history.setsDoneLabel')}</span>
       <span class="day-ex-completed">${esc(t('unilateral.completed', { sides: completedSidesLabel(done) }))}</span>
       ${list ? `<span class="day-ex-failure">🔥 ${esc(t('unilateral.failureList', { list }))}</span>` : ''}
+      ${historyWarmupsHtml(ex, 'span')}
       ${historyDropsHtml(ex, 'span')}
     </div>`;
     }
@@ -21882,6 +22189,7 @@ function workoutBlock(w) {
       <span class="day-ex-name">${esc(historyExerciseName(ex))}</span>
       <span class="day-ex-meta">${ex.sets} × ${esc(historyRepsValue(ex))} · ${historyWeightText(ex)} · ${ex.setsDone} ${t('history.setsDoneLabel')}</span>
       ${fSets.length ? `<span class="day-ex-failure">🔥 ${esc(t('failure.sets', { sets: fSets.join(', ') }))}</span>` : ''}
+      ${historyWarmupsHtml(ex, 'span')}
       ${historyDropsHtml(ex, 'span')}
     </div>`;
   }).join('');
@@ -22255,6 +22563,7 @@ function historyExerciseEntry(ex, sess) {
     entry.sidesDone = cleanDone;
     historyApplySetWeights(entry, ex, Array.from(new Set(cleanDone.left.concat(cleanDone.right))));
     historyApplySetReps(entry, ex);
+    historyApplyWarmups(entry, ex);
     historyApplyDrops(entry, ex);
     entry.sidesFailure = cleanFails;
     /* actualFailureSets zostáva zjednotením čísel sérií – pre staršie zobrazenia aj kompatibilitu. */
@@ -22271,6 +22580,7 @@ function historyExerciseEntry(ex, sess) {
     entry.actualFailureSets = cleanFailureSets(fails, sessionSetCount(ex));
     historyApplySetWeights(entry, ex, done);
     historyApplySetReps(entry, ex);
+    historyApplyWarmups(entry, ex);
     historyApplyDrops(entry, ex);
   }
   return entry;
