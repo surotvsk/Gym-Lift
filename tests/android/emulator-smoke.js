@@ -47,6 +47,8 @@ async function connectWebView() {
     if (r.exceptionDetails) throw new Error('eval: ' + (r.exceptionDetails.exception && r.exceptionDetails.exception.description || r.exceptionDetails.text));
     return r.result.value;
   };
+  // Po návrate z pozadia môže existovať socket skôr než nový WebView načíta skript.
+  await waitFor(() => ev("typeof exportData === 'function' && typeof activeTab !== 'undefined'"), 20000, 'WebView app script ready');
   return { c, ev };
 }
 function shot(name) {
