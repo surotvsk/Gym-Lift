@@ -26310,7 +26310,7 @@ const CSV_EXERCISE_ALIASES = {
   'Leg Press': 'leg-press', 'Leg Press (Machine)': 'leg-press', 'Leg Press Horizontal (Machine)': 'leg-press',
   'Lunge (Dumbbell)': 'lunges', 'Lunge': 'lunges',
   'Leg Curl': 'leg-curls', 'Lying Leg Curl (Machine)': 'leg-curls', 'Seated Leg Curl (Machine)': 'leg-curls', 'Leg Curl (Machine)': 'leg-curls',
-  'Standing Calf Raise (Machine)': 'calf-raises', 'Standing Calf Raise (Barbell)': 'calf-raises', 'Standing Calf Raise (Dumbbell)': 'calf-raises',
+  'Standing Calf Raise (Machine)': 'calf-raises', 
   'Calf Raise': 'calf-raises', 'Calf Press (Machine)': 'calf-raises', 'Calf Raise (Machine)': 'calf-raises',
   'Push Up': 'push-up', 'Push-Up': 'push-up', 'Push Ups': 'push-up', 'Pushup': 'push-up',
   'Bicep Curl (Band)': 'band-bicep-curl', 'Bicep Curl (Resistance Band)': 'band-bicep-curl',
@@ -26413,7 +26413,7 @@ function csvParseDateTime(raw) {
   const ts = Date.UTC(y, mo - 1, d, h, mi, sec);
   const chk = new Date(ts);
   if (chk.getUTCFullYear() !== y || chk.getUTCMonth() !== mo - 1 || chk.getUTCDate() !== d) return null;
-  return { date: String(y) + '-' + String(mo).padStart(2, '0') + '-' + String(d).padStart(2, '0'), ts, prefix: m[0].trim() };
+  return { date: String(y) + '-' + String(mo).padStart(2, '0') + '-' + String(d).padStart(2, '0'), ts, prefix: String(y) + '-' + String(mo).padStart(2, '0') + '-' + String(d).padStart(2, '0') + ' ' + String(h).padStart(2, '0') + ':' + String(mi).padStart(2, '0') + (sec ? ':' + String(sec).padStart(2, '0') : '') };   // kanonický tvar RRRR-MM-DD HH:MM[:SS], vždy krátky
 }
 /* Trvanie Strong: "1h 9m", "44m", "3h", "2h 38m 5s", "01:09:00" alebo sekundy; platné 1 s – 48 h, inak null. */
 function csvParseDuration(raw) {
@@ -26449,7 +26449,7 @@ function csvRoundKg(w, unit) {
 /* csvToWorkouts(rows, format, opts) -> { workouts, unitDetected, unmatched, skippedRows }.
    Tréning = rovnaký začiatok + názov; cviky v poradí súboru (rovnaký cvik v jednom tréningu sa zlúči). Séria:
    normal / failure -> pracovné série (failure aj do actualFailureSets), warmup -> warmups, drop -> drops (najviac DROP_MAX,
-   zvyšok a drop-only cvik idú medzi pracovné série); cvik bez pracovnej série sa vynechá. Váhy v kg (lb × 0.45359237 na 0.25).
+   zvyšok a drop-only cvik idú medzi pracovné série); cvik bez pracovnej série sa vynechá. Váhy v kg (lb × 0.45359237 na 0.25). Výsledok má aj `ignoredRows` (riadky "Rest Timer" – pauzy, nie série); `skippedRows` sú nepoužiteľné riadky.
    opts.delimiter (voliteľné, z parseCsv) = ';' berie čiarku vždy ako desatinnú. Jednotka: stĺpec Weight Unit / weight_kg / weight_lbs má prednosť, inak opts.unit, inak kg. Nikdy nevyhadzuje. */
 function csvToWorkouts(rows, format, opts) {
   const res = { workouts: [], unitDetected: null, unmatched: [], skippedRows: 0, ignoredRows: 0 };
@@ -26505,7 +26505,7 @@ function csvToWorkouts(rows, format, opts) {
       rpe = rpe === null ? null : Math.round(rpe * 2) / 2;
       if (rpe !== null && !validRpe(rpe)) rpe = null;
       const title = String(cell(r, cTitle)).trim().slice(0, 100);
-      const key = when.prefix + '|' + title;   // len zhodnutá časť dátumu (krátka a stabilná), nie celá bunka
+      const key = when.prefix + '|' + title;   // kanonický dátum a čas (krátky a stabilný), nie text bunky
       let wk = workouts.get(key);
       if (!wk) {
         let dur = null;

@@ -121,7 +121,7 @@ const fx = (n) => fs.readFileSync(path.join(FIX, n), 'utf8');
     const hv = await run('hevy.csv');
     const hw = hv.o.workouts;
     check('Hevy: 2 workouts, kg detected, date from "15 Nov 2024, 18:02"', hw.length === 2 && hv.o.unitDetected === 'kg' && hw[0].date === '2024-11-15' && hw[1].date === '2024-11-17' && hw[0].source === 'hevy'
-      && hw[0].importKey === 'hevy|15 Nov 2024, 18:02|Morning workout', hw[0]);
+      && hw[0].importKey === 'hevy|2024-11-15 18:02|Morning workout', hw[0]);
     check('Hevy: duration = end - start (63 min)', hw[0].durationSeconds === 3780 && hw[1].durationSeconds === 3000, [hw[0].durationSeconds, hw[1].durationSeconds]);
     check('Hevy: sets, RPE 8.5, empty weight/reps with duration_seconds (plank)', J(hw[0].exercises[0].setWeights) === '[60,70]' && J(hw[0].exercises[0].setRpe) === '[null,8.5]' && hw[0].exercises[2].exId === 'plank'
       && hw[0].exercises[2].durationSeconds === 90 && hw[0].exercises[1].exId === 'lat-pulldown', hw[0].exercises);
@@ -188,8 +188,12 @@ const fx = (n) => fs.readFileSync(path.join(FIX, n), 'utf8');
     const longKey = await ev(`(() => { const junk = 'x'.repeat(100000); const r = parseCsv(${J(H)} + '2024-01-02 10:00:00' + junk + ',' + 'T'.repeat(100000) + ',1m,Bench Press,1,60,8,0,0,,,\\n'); const o = csvToWorkouts(r.rows, 'strong', { unit: 'kg', delimiter: r.delimiter }); return { n: o.workouts.length, len: o.workouts[0] && o.workouts[0].importKey.length }; })()`);
     check('importKey is short even with 100 KB junk in the date and title cells', longKey.n === 1 && longKey.len <= 200, longKey);
     const k2 = await ev(`(() => { const f = (t) => { const r = parseCsv(t); return csvToWorkouts(r.rows, detectCsvFormat(r.rows[0]), { unit: null, delimiter: r.delimiter }).workouts.map((w) => w.importKey + '/' + w.id); }; const t = ${J(fx('hevy.csv'))}; return [f(t), f(t)]; })()`);
-    check('same file parsed twice gives identical importKeys and ids', J(k2[0]) === J(k2[1]) && k2[0].length === 2 && k2[0][0].startsWith('hevy|15 Nov 2024, 18:02|Morning workout/'), k2);
-    const removed = await ev(`(() => { const names = ['Overhead Press (Dumbbell)', 'Bicep Curl (Barbell)', 'EZ Bar Biceps Curl', 'Lateral Raise (Cable)', 'Hip Thrust (Machine)', 'Seated Calf Raise (Machine)', 'Romanian Deadlift (Dumbbell)', 'Lunge (Barbell)', 'Walking Lunge (Dumbbell)', 'Walking Lunge', 'Bulgarian Split Squat', 'Bulgarian Split Squat (Dumbbell)', 'Chin Up']; return names.every((n) => { const m = matchExercise(n); return m.exId === null && m.name === n; }); })()`);
+    check('same file parsed twice gives identical importKeys and ids', J(k2[0]) === J(k2[1]) && k2[0].length === 2 && k2[0][0].startsWith('hevy|2024-11-15 18:02|Morning workout/'), k2);
+    const pad = await ev(`(() => { const t = ${J(H)} + '2024-01-02' + ' '.repeat(300) + '10:00,X,1m,Bench Press,1,60,8,0,0,,,\\n'; const f = () => { const r = parseCsv(t); return csvToWorkouts(r.rows, 'strong', { unit: 'kg', delimiter: r.delimiter }).workouts.map((w) => w.importKey); }; return [f(), f()]; })()`);
+    check('space-padded date cell: canonical key (<= 200, identical across parses)', pad[0].length === 1 && pad[0][0] === 'strong|2024-01-02 10:00|X' && J(pad[0]) === J(pad[1]), pad);
+    const canon = await ev(`['15 Nov 2024, 18:02', 'Nov 15, 2024, 6:02 PM', '2024-11-15T18:02:00', '2024-11-15 18:02:00', '15.11.2024 18:02'].map((v) => csvParseDateTime(v).prefix)`);
+    check('importKey prefix is canonical across format variants', canon.every((v) => v === '2024-11-15 18:02'), canon);
+    const removed = await ev(`(() => { const names = ['Overhead Press (Dumbbell)', 'Bicep Curl (Barbell)', 'EZ Bar Biceps Curl', 'Lateral Raise (Cable)', 'Hip Thrust (Machine)', 'Seated Calf Raise (Machine)', 'Romanian Deadlift (Dumbbell)', 'Lunge (Barbell)', 'Walking Lunge (Dumbbell)', 'Walking Lunge', 'Bulgarian Split Squat', 'Bulgarian Split Squat (Dumbbell)', 'Chin Up', 'Standing Calf Raise (Barbell)', 'Standing Calf Raise (Dumbbell)']; return names.every((n) => { const m = matchExercise(n); return m.exId === null && m.name === n; }); })()`);
     check('equipment/movement-crossing names stay unmatched (custom identity)', removed === true, removed);
     const kept = await ev(`['Bench Press (Barbell)', 'Lunge (Dumbbell)', 'Bicep Curl (Dumbbell)', 'Romanian Deadlift (Barbell)'].map((n) => matchExercise(n).exId)`);
     check('same-equipment aliases are kept', J(kept) === '["bench-press","lunges","bicep-curls","romanian-deadlift"]', kept);
