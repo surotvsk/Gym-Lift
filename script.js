@@ -7641,7 +7641,7 @@ const BASICS_I18N = {
     "prog.day.lowerB": "Dolná časť B",
     "prog.day.squat": "Deň drepu",
     "prog.day.bench": "Deň tlaku na lavičke",
-    "prog.day.deadlift": "Deň mŕtveho ťahu",
+    "prog.day.hinge": "Deň rumunského ťahu",
     "prog.day.press": "Deň tlaku nad hlavu",
   },
   en: {
@@ -7707,7 +7707,7 @@ const BASICS_I18N = {
     "prog.day.lowerB": "Lower B",
     "prog.day.squat": "Squat day",
     "prog.day.bench": "Bench day",
-    "prog.day.deadlift": "Deadlift day",
+    "prog.day.hinge": "Hinge day",
     "prog.day.press": "Overhead press day",
   },
   es: {
@@ -7773,7 +7773,7 @@ const BASICS_I18N = {
     "prog.day.lowerB": "Tren inferior B",
     "prog.day.squat": "Día de sentadilla",
     "prog.day.bench": "Día de press de banca",
-    "prog.day.deadlift": "Día de peso muerto",
+    "prog.day.hinge": "Día de bisagra de cadera",
     "prog.day.press": "Día de press militar",
   },
   'pt-BR': {
@@ -7839,7 +7839,7 @@ const BASICS_I18N = {
     "prog.day.lowerB": "Inferior B",
     "prog.day.squat": "Dia de agachamento",
     "prog.day.bench": "Dia de supino",
-    "prog.day.deadlift": "Dia de levantamento terra",
+    "prog.day.hinge": "Dia de dobradiça de quadril",
     "prog.day.press": "Dia de desenvolvimento",
   },
   fr: {
@@ -7905,7 +7905,7 @@ const BASICS_I18N = {
     "prog.day.lowerB": "Bas du corps B",
     "prog.day.squat": "Jour squat",
     "prog.day.bench": "Jour développé couché",
-    "prog.day.deadlift": "Jour soulevé de terre",
+    "prog.day.hinge": "Jour charnière de hanche",
     "prog.day.press": "Jour développé militaire",
   },
   ar: {
@@ -7971,7 +7971,7 @@ const BASICS_I18N = {
     "prog.day.lowerB": "سفلي ب",
     "prog.day.squat": "يوم القرفصاء",
     "prog.day.bench": "يوم ضغط البنش",
-    "prog.day.deadlift": "يوم الرفعة الميتة",
+    "prog.day.hinge": "يوم مفصلة الورك",
     "prog.day.press": "يوم الضغط فوق الرأس",
   },
 };
@@ -26524,7 +26524,8 @@ function initSuggestSheet() {
    Program má buď priamo `days` + `schedule`, alebo `variants` ([{ id, nameKey, daysPerWeek, schedule, days }]).
    days = plány, ktoré sa vytvoria (jeden na šablónu dňa); schedule = poradie dní v týždni (dĺžka = daysPerWeek),
    takže A/B striedanie (3 tréningy, 2 plány) aj „6 dní = 6 plánov“ vyjdú rovnako.
-   Knižnica nemá samostatný mŕtvy ťah; hlavný ťah vlny je rumunský mŕtvy ťah (romanian-deadlift). */
+   Vlna má 3 hlavné ťahy s tréningovým maximom (squats, bench-press, overhead-press). Knižnica nemá klasický mŕtvy ťah
+   a rumunský mŕtvy ťah (romanian-deadlift) sa nemaxuje, preto štvrtý deň („Hinge“) ho robí lineárne 3×8 bez TM. */
 function progDay(programId, id, rowsSpec) {
   return {
     id,
@@ -26585,11 +26586,11 @@ const PROGRAMS = (() => {
     {
       id: wave, nameKey: 'prog.strength-wave.name', descKey: 'prog.strength-wave.desc',
       level: 'intermediate', daysPerWeek: 4, weeks: 8, deloadWeeks: [4, 8], kind: 'wave',
-      schedule: ['squat', 'bench', 'deadlift', 'press'],
+      schedule: ['squat', 'bench', 'hinge', 'press'],
       days: [
         progDay(wave, 'squat', [['squats', 3, 5, true], ['leg-press', 3, 10], ['leg-curls', 3, 10], ['calf-raises', 3, 12]]),
         progDay(wave, 'bench', [['bench-press', 3, 5, true], ['incline-dumbbell-press', 3, 10], ['bent-over-rows', 3, 8], ['single-arm-cable-triceps-extension', 3, 12]]),
-        progDay(wave, 'deadlift', [['romanian-deadlift', 3, 5, true], ['lat-pulldown', 3, 10], ['hip-thrust', 3, 10], ['hammer-curl', 3, 12]]),
+        progDay(wave, 'hinge', [['romanian-deadlift', 3, 8], ['lat-pulldown', 3, 10], ['hammer-curl', 3, 12], ['dead-bug', 3, 10]]),
         progDay(wave, 'press', [['overhead-press', 3, 5, true], ['cable-rows', 3, 10], ['lateral-raises', 3, 12], ['bicep-curls', 3, 10]]),
       ],
     },
@@ -26652,20 +26653,22 @@ function cleanProgramState(raw) {
     if (!variant) return null;
     if (!validProgramDate(raw.startedAt)) return null;
     const shift = Math.round(Number(raw.weekShift));
-    const out = {
-      id: prog.id,
-      variant: variant.id,
-      startedAt: raw.startedAt,
-      weekShift: Number.isFinite(shift) ? Math.max(-PROGRAM_SHIFT_MAX, Math.min(PROGRAM_SHIFT_MAX, shift)) : 0,
-      plans: {},
-      endedAt: validProgramDate(raw.endedAt) ? raw.endedAt : null,
-    };
+    /* Dopredná kompatibilita: neznáme polia z novšej verzie sa prenesú bezo zmeny (aj poradie kľúčov),
+       známe polia sa overia. Platný stav tak prejde bajt po bajte. */
+    const out = {};
+    for (const key of Object.keys(raw)) if (key !== '__proto__') out[key] = raw[key];
+    out.id = prog.id;
+    out.variant = variant.id;
+    out.startedAt = raw.startedAt;
+    out.weekShift = Number.isFinite(shift) ? Math.max(-PROGRAM_SHIFT_MAX, Math.min(PROGRAM_SHIFT_MAX, shift)) : 0;
     const plans = raw.plans && typeof raw.plans === 'object' && !Array.isArray(raw.plans) ? raw.plans : {};
+    out.plans = {};
     for (const d of variant.days) {
       if (typeof plans[d.id] === 'string' && plans[d.id]) out.plans[d.id] = plans[d.id];
     }
+    if ('endedAt' in raw) out.endedAt = validProgramDate(raw.endedAt) ? raw.endedAt : null;
     const tm = cleanProgramTm(raw.tm, prog);
-    if (tm) out.tm = tm;
+    if (tm) out.tm = tm; else delete out.tm;
     return out;
   } catch (err) {
     return null;
@@ -26690,7 +26693,15 @@ function startProgramState(programId, variantId, tm, planIdsByDay) {
    Vráti { week 1..N, total, deload, finished } alebo null pre neplatný program. */
 function programWeek(prog, today = todayISO()) {
   try {
-    const clean = cleanProgramState(prog);
+    return programWeekOf(cleanProgramState(prog), today);
+  } catch (err) {
+    return null;
+  }
+}
+
+/* Vnútorné: týždeň z už vyčisteného stavu (programPrescription ho nečistí druhýkrát). */
+function programWeekOf(clean, today) {
+  try {
     if (!clean) return null;
     const def = programById(clean.id);
     const total = def.weeks;
@@ -26728,8 +26739,7 @@ function programRoundWeight(exId, kg) {
 
 /* Predpis pre riadok plánu v aktuálnom týždni, alebo null (riadok bez progRow, iný plán, hotový program).
    Lineárne: série a opakovania zo šablóny; v odľahčení série = max(1, ceil(série × 0,6)) a váha riadku × 0,6.
-   Hlavný ťah vlny: setWeights/setReps z tréningového maxima (prog.tm); bez maxima váha null (UI sa opýta).
-   Poznámka: knižnica nemá klasický mŕtvy ťah, štvrtým hlavným ťahom je rumunský mŕtvy ťah (romanian-deadlift). */
+   Hlavný ťah vlny: setWeights/setReps z tréningového maxima (prog.tm); bez maxima váha null (UI sa opýta). */
 function programPrescription(prog, planId, row, today = todayISO()) {
   try {
     const clean = cleanProgramState(prog);
@@ -26741,7 +26751,7 @@ function programPrescription(prog, planId, row, today = todayISO()) {
     const day = variant && variant.days.find((d) => d.id === dayId);
     const tpl = day && day.rows[Number(idx)];
     if (!tpl || tpl.progRow !== row.progRow) return null;
-    const wk = programWeek(clean, today);
+    const wk = programWeekOf(clean, today);
     if (!wk || wk.finished) return null;
     const deload = wk.deload;
     if (def.kind === 'wave' && tpl.main) {
