@@ -1,0 +1,4 @@
+title,start_time,end_time,description,exercise_title,superset_id,exercise_notes,set_index,set_type,weight_kg,reps,distance_km,duration_seconds,rpe,gymlift_version
+"Push","15 Nov 2024, 12:00","15 Nov 2024, 12:55","","Bench Press",,"",0,normal,60,10,,0,,1
+"Push","15 Nov 2024, 12:00","15 Nov 2024, 12:55","","Bench Press",,"",1,normal,65,8,,0,8,1
+"Push","15 Nov 2024, 12:00","15 Nov 2024, 12:55","","Overhead Press",,"",0,normal,30,8,,0,,1

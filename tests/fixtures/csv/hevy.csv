@@ -1,0 +1,7 @@
+title,start_time,end_time,description,exercise_title,superset_id,exercise_notes,set_index,set_type,weight_kg,reps,distance_km,duration_seconds,rpe
+"Morning workout","15 Nov 2024, 18:02","15 Nov 2024, 19:05","","Bench Press (Barbell)",,"",0,normal,60,10,,0,
+"Morning workout","15 Nov 2024, 18:02","15 Nov 2024, 19:05","","Bench Press (Barbell)",,"",1,normal,70,8,,0,8.5
+"Morning workout","15 Nov 2024, 18:02","15 Nov 2024, 19:05","","Lat Pulldown (Cable)",,"",0,normal,50,12,,0,
+"Morning workout","15 Nov 2024, 18:02","15 Nov 2024, 19:05","","Plank",,"",0,normal,,,,90,
+"Leg day","17 Nov 2024, 07:30","17 Nov 2024, 08:20","Quick, hard","Squat (Barbell)",,"",0,normal,100,5,,0,
+"Leg day","17 Nov 2024, 07:30","17 Nov 2024, 08:20","Quick, hard","Squat (Barbell)",,"",1,normal,100,5,,0,

@@ -1,0 +1,20 @@
+Date,Workout Name,Duration,Exercise Name,Set Order,Weight,Weight Unit,Reps,Distance,Distance Unit,Seconds,Notes,Workout Notes,RPE
+2024-03-04 18:00:12,Push Day,1h 5m,Bench Press (Barbell),W,40,kg,10,0,,0,,"Felt ""heavy"", slow
+second line of note",
+2024-03-04 18:00:12,Push Day,1h 5m,Bench Press (Barbell),1,60,kg,8,0,,0,,"Felt ""heavy"", slow
+second line of note",
+2024-03-04 18:00:12,Push Day,1h 5m,Bench Press (Barbell),2,70,kg,6,0,,0,,"Felt ""heavy"", slow
+second line of note",
+2024-03-04 18:00:12,Push Day,1h 5m,Bench Press (Barbell),3,70,kg,5,0,,0,,"Felt ""heavy"", slow
+second line of note",9
+2024-03-04 18:00:12,Push Day,1h 5m,Overhead Press (Barbell),1,40,kg,8,0,,0,,,
+2024-03-04 18:00:12,Push Day,1h 5m,Overhead Press (Barbell),2,40,kg,7,0,,0,,,
+2024-03-04 18:00:12,Push Day,1h 5m,Zercher Squat,1,80,kg,5,0,,0,,,
+2024-03-04 18:00:12,Push Day,1h 5m,Plank,1,0,kg,0,0,,60,,,
+2024-03-06 07:30:00,Pull Day,48m,Pull Up,1,0,kg,8,0,,0,,,
+2024-03-06 07:30:00,Pull Day,48m,Pull Up,2,0,kg,7,0,,0,,,
+2024-03-06 07:30:00,Pull Day,48m,Bent Over Row (Barbell),1,60,kg,10,0,,0,,,
+2024-03-06 07:30:00,Pull Day,48m,Bent Over Row (Barbell),2,60,kg,10,0,,0,,,
+2024-03-06 07:30:00,Pull Day,48m,Bent Over Row (Barbell),Rest Timer,0,kg,0,0,,90,,,
+2024-03-06 07:30:00,Pull Day,48m,Bent Over Row (Barbell),F,60,kg,6,0,,0,,,10
+2024-03-06 07:30:00,Pull Day,48m,Bent Over Row (Barbell),D,40,kg,8,0,,0,,,

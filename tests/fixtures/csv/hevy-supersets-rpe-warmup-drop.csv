@@ -1,0 +1,8 @@
+title,start_time,end_time,description,exercise_title,superset_id,exercise_notes,set_index,set_type,weight_kg,reps,distance_km,duration_seconds,rpe
+"Upper","Oct 13, 2026, 9:50 PM","Oct 13, 2026, 10:45 PM","","Bench Press (Barbell)",0,"",0,warmup,40,10,,0,
+"Upper","Oct 13, 2026, 9:50 PM","Oct 13, 2026, 10:45 PM","","Bench Press (Barbell)",0,"",1,normal,80,6,,0,8
+"Upper","Oct 13, 2026, 9:50 PM","Oct 13, 2026, 10:45 PM","","Bench Press (Barbell)",0,"",2,failure,80,4,,0,10
+"Upper","Oct 13, 2026, 9:50 PM","Oct 13, 2026, 10:45 PM","","Bench Press (Barbell)",0,"",3,dropset,60,8,,0,
+"Upper","Oct 13, 2026, 9:50 PM","Oct 13, 2026, 10:45 PM","","Bent Over Row (Barbell)",0,"",0,normal,70,10,,0,7.5
+"Upper","Oct 13, 2026, 9:50 PM","Oct 13, 2026, 10:45 PM","","Bent Over Row (Barbell)",0,"",1,normal,70,9,,0,
+"Upper","Oct 13, 2026, 9:50 PM","Oct 13, 2026, 10:45 PM","","Hammer Curl (Dumbbell)",,"",0,normal,16,12,,0,

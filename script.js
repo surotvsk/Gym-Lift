@@ -26162,6 +26162,436 @@ function exerciseSummary(identity, seriesArg) {
   return { bestE1rm, heaviest, bestSet, bestVolume: max(lifted.map((p) => p.volume).filter((v) => v !== null)), sessions: series.length };
 }
 
+/* ---------- CSV: čítanie a zápis ---------- */
+/* Čisté funkcie: parser CSV (RFC 4180), rozpoznanie formátu (Strong / Hevy / Gym-Lift) a mapovanie riadkov na
+   importované tréningy. Nič sa nezapisuje do stavu, nič sa nevolá do siete a nič nevyhadzuje výnimku okrem
+   CsvError z parseCsv (neuzavreté úvodzovky, príliš veľa riadkov / stĺpcov) – volajúci ju zachytí.
+
+   Formáty (overené 2026-11-11, podrobnosti v .superpowers/sdd/…/task-3-report.md):
+   - Strong:   Date,Workout Name,Duration,Exercise Name,Set Order,Weight,Reps,Distance,Seconds,Notes,Workout Notes,RPE
+               (bez stĺpca s jednotkou); starší export má `;` a stĺpce Weight Unit / Distance Unit / Workout Duration.
+               Set Order: číslo = bežná séria, W = rozcvička, D = drop, F = zlyhanie, "Rest Timer" = len pauza.
+   - Hevy:     title,start_time,end_time,description,exercise_title,superset_id,exercise_notes,set_index,set_type,
+               weight_kg|weight_lbs,reps,distance_km|distance_miles,duration_seconds,rpe
+               set_type: normal / warmup / dropset / failure.
+   - Gym-Lift: rozloženie Hevy + posledný stĺpec `gymlift_version` (hodnota "1"). Čítače Hevy ho ignorujú.
+               Export (úloha 5) píše presne tento záhlavný riadok a v každom riadku `gymlift_version` = 1. */
+const CSV_MAX_ROWS = 200000;                 // tvrdý limit riadkov (vrátane záhlavia)
+const CSV_MAX_COLS = 500;                    // tvrdý limit stĺpcov v jednom riadku
+const CSV_MAX_CHARS = 25 * 1024 * 1024;      // ochrana parsera (UI odmieta súbory > 20 MB skôr)
+const CSV_LB_TO_KG = 0.45359237;
+
+class CsvError extends Error {
+  constructor(code, line) {
+    super('CSV ' + code + (line ? ' (line ' + line + ')' : ''));
+    this.name = 'CsvError';
+    this.code = code;
+    this.line = line || 0;
+  }
+}
+
+/* Oddeľovač zo záhlavného riadka: `;` vyhrá, ak je mimo úvodzoviek viac `;` ako `,`. */
+function csvDetectDelimiter(s) {
+  let commas = 0, semis = 0, inQ = false;
+  const end = Math.min(s.length, 200000);
+  for (let i = 0; i < end; i++) {
+    const c = s.charCodeAt(i);
+    if (c === 34) inQ = !inQ;
+    else if (!inQ) {
+      if (c === 10 || c === 13) break;
+      if (c === 44) commas++;
+      else if (c === 59) semis++;
+    }
+  }
+  return semis > commas ? ';' : ',';
+}
+
+/* Počet zalomení riadka v úseku (CRLF = 1, samotné CR alebo LF = 1). */
+function csvCountLines(s, from, to) {
+  let n = 0;
+  for (let i = from; i < to; i++) {
+    const c = s.charCodeAt(i);
+    if (c === 10) n++;
+    else if (c === 13 && s.charCodeAt(i + 1) !== 10) n++;
+  }
+  return n;
+}
+
+/* parseCsv(text) -> { rows, delimiter }. Lineárne, bez rekurzie; prázdne riadky sa vynechajú. */
+function parseCsv(text) {
+  let s = typeof text === 'string' ? text : String(text == null ? '' : text);
+  if (s.length > CSV_MAX_CHARS) throw new CsvError('too-large', 1);
+  if (s.charCodeAt(0) === 0xFEFF) s = s.slice(1);
+  /* Excel pridáva prvý riadok "sep=;" */
+  const sep = /^sep=(.)\r?\n/.exec(s.slice(0, 12));
+  if (sep) s = s.slice(sep[0].length);
+  const delimiter = csvDetectDelimiter(s);
+  const n = s.length;
+  const rows = [];
+  let row = [];
+  let line = 1;
+  let pos = 0;
+  const pushRow = () => {
+    let empty = true;
+    for (let k = 0; k < row.length; k++) if (row[k] !== '') { empty = false; break; }
+    if (!empty) {
+      if (rows.length >= CSV_MAX_ROWS) throw new CsvError('too-many-rows', line);
+      rows.push(row);
+    }
+    row = [];
+  };
+  while (pos < n) {
+    let value;
+    if (s.charCodeAt(pos) === 34) {
+      const openLine = line;
+      let p = pos + 1;
+      let buf = '';
+      for (;;) {
+        const q = s.indexOf('"', p);
+        if (q < 0) throw new CsvError('unterminated-quote', openLine);
+        buf += s.slice(p, q);
+        if (s.charCodeAt(q + 1) === 34) { buf += '"'; p = q + 2; continue; }
+        p = q + 1;
+        break;
+      }
+      line += csvCountLines(s, pos, p);
+      /* Zhovievavo: znaky za zatváracou úvodzovkou (až po oddeľovač) sa pridajú k hodnote. */
+      let e = p;
+      while (e < n) { const c = s[e]; if (c === delimiter || c === '\n' || c === '\r') break; e++; }
+      value = buf + s.slice(p, e);
+      pos = e;
+    } else {
+      let e = pos;
+      while (e < n) { const c = s[e]; if (c === delimiter || c === '\n' || c === '\r') break; e++; }
+      value = s.slice(pos, e);
+      pos = e;
+    }
+    row.push(value);
+    if (row.length > CSV_MAX_COLS) throw new CsvError('too-many-columns', line);
+    if (pos >= n) break;
+    if (s[pos] === delimiter) {
+      pos++;
+      if (pos >= n) row.push('');   // oddeľovač na úplnom konci súboru = prázdna posledná hodnota
+      continue;
+    }
+    if (s[pos] === '\r' && s[pos + 1] === '\n') pos += 2; else pos++;
+    line++;
+    pushRow();
+  }
+  if (row.length) pushRow();
+  return { rows, delimiter };
+}
+
+/* Formát podľa záhlavia: 'strong' | 'hevy' | 'gymquest' | null. Názvy stĺpcov sa porovnávajú bez ohľadu na veľkosť písmen. */
+function detectCsvFormat(header) {
+  if (!Array.isArray(header)) return null;
+  const h = new Set(header.map((c) => String(c == null ? '' : c).trim().toLowerCase()));
+  if (h.has('exercise_title') && h.has('start_time') && (h.has('weight_kg') || h.has('weight_lbs'))) {
+    return h.has('gymlift_version') ? 'gymquest' : 'hevy';
+  }
+  if (h.has('exercise name') && h.has('date') && h.has('set order') && (h.has('weight') || h.has('reps'))) return 'strong';
+  return null;
+}
+
+/* ---- Mapovanie názvov cvikov ---- */
+/* Bežné názvy zo Strongu a Hevy -> id knižnice. Kľúče sa porovnávajú bez ohľadu na veľkosť písmen a medzier.
+   Len cviky, ktorých zhoda je zrejmá (rovnaký pohyb); závažie navyše (napr. "Pull Up (Weighted)") sa nemapuje. */
+const CSV_EXERCISE_ALIASES = {
+  'Bench Press (Barbell)': 'bench-press', 'Bench Press': 'bench-press', 'Barbell Bench Press': 'bench-press', 'Flat Bench Press (Barbell)': 'bench-press',
+  'Overhead Press (Barbell)': 'overhead-press', 'Overhead Press': 'overhead-press', 'Standing Military Press (Barbell)': 'overhead-press', 'Military Press': 'overhead-press',
+  'Overhead Press (Dumbbell)': 'overhead-press', 'Shoulder Press (Barbell)': 'overhead-press',
+  'Dips': 'dips', 'Dip': 'dips', 'Triceps Dip': 'dips', 'Chest Dip': 'dips',
+  'Lateral Raise (Dumbbell)': 'lateral-raises', 'Lateral Raise (Cable)': 'lateral-raises', 'Lateral Raise': 'lateral-raises', 'Side Lateral Raise (Dumbbell)': 'lateral-raises',
+  'Pull Up': 'pull-ups', 'Pull-Up': 'pull-ups', 'Pull Ups': 'pull-ups', 'Chin Up': 'pull-ups',
+  'Bent Over Row (Barbell)': 'bent-over-rows', 'Barbell Row': 'bent-over-rows', 'Bent Over Row': 'bent-over-rows',
+  'Seated Cable Row': 'cable-rows', 'Seated Row (Cable)': 'cable-rows', 'Cable Row': 'cable-rows', 'Seated Cable Row - V Grip (Cable)': 'cable-rows', 'Seated Cable Row - Bar Grip': 'cable-rows',
+  'Bicep Curl (Dumbbell)': 'bicep-curls', 'Bicep Curl (Barbell)': 'bicep-curls', 'Bicep Curl': 'bicep-curls', 'EZ Bar Biceps Curl': 'bicep-curls', 'Biceps Curl (Dumbbell)': 'bicep-curls',
+  'Squat (Barbell)': 'squats', 'Squat': 'squats', 'Back Squat (Barbell)': 'squats', 'Barbell Squat': 'squats',
+  'Leg Press': 'leg-press', 'Leg Press (Machine)': 'leg-press', 'Leg Press Horizontal (Machine)': 'leg-press',
+  'Lunge (Dumbbell)': 'lunges', 'Lunge (Barbell)': 'lunges', 'Lunge': 'lunges', 'Walking Lunge (Dumbbell)': 'lunges', 'Walking Lunge': 'lunges',
+  'Leg Curl': 'leg-curls', 'Lying Leg Curl (Machine)': 'leg-curls', 'Seated Leg Curl (Machine)': 'leg-curls', 'Leg Curl (Machine)': 'leg-curls',
+  'Standing Calf Raise (Machine)': 'calf-raises', 'Standing Calf Raise (Barbell)': 'calf-raises', 'Standing Calf Raise (Dumbbell)': 'calf-raises', 'Seated Calf Raise (Machine)': 'calf-raises',
+  'Calf Raise': 'calf-raises', 'Calf Press (Machine)': 'calf-raises', 'Calf Raise (Machine)': 'calf-raises',
+  'Push Up': 'push-up', 'Push-Up': 'push-up', 'Push Ups': 'push-up', 'Pushup': 'push-up',
+  'Bicep Curl (Band)': 'band-bicep-curl', 'Bicep Curl (Resistance Band)': 'band-bicep-curl',
+  'Dumbbell Row': 'dumbbell-row', 'One Arm Dumbbell Row': 'dumbbell-row', 'Single Arm Dumbbell Row': 'dumbbell-row', 'Bent Over One Arm Row (Dumbbell)': 'dumbbell-row',
+  'Superman': 'superman',
+  'Pike Push Up': 'pike-push-up', 'Pike Push-Up': 'pike-push-up',
+  'Hammer Curl (Dumbbell)': 'hammer-curl', 'Hammer Curl': 'hammer-curl', 'Dumbbell Hammer Curl': 'hammer-curl',
+  'Diamond Push Up': 'diamond-push-up', 'Diamond Push-Up': 'diamond-push-up',
+  'Bodyweight Squat': 'bodyweight-squat', 'Squat (Bodyweight)': 'bodyweight-squat', 'Air Squat': 'bodyweight-squat',
+  'Bulgarian Split Squat': 'split-squat', 'Bulgarian Split Squat (Dumbbell)': 'split-squat', 'Split Squat (Dumbbell)': 'split-squat', 'Split Squat': 'split-squat',
+  'Step Up': 'step-up', 'Step-up': 'step-up', 'Step Up (Dumbbell)': 'step-up', 'Step-up (Dumbbell)': 'step-up',
+  'Glute Bridge': 'glute-bridge', 'Bodyweight Glute Bridge': 'glute-bridge',
+  'Hip Thrust (Barbell)': 'hip-thrust', 'Hip Thrust': 'hip-thrust', 'Hip Thrust (Machine)': 'hip-thrust',
+  'Single Leg Glute Bridge': 'single-leg-glute-bridge', 'Single Leg Bridge': 'single-leg-glute-bridge',
+  'Plank': 'plank',
+  'Dead Bug': 'dead-bug',
+  'Burpee': 'burpee', 'Burpees': 'burpee',
+  'Bicep Curl (Cable)': 'cable-curl', 'Cable Curl': 'cable-curl', 'Biceps Curl (Cable)': 'cable-curl',
+  'Chest Press (Machine)': 'machine-chest-press', 'Machine Chest Press': 'machine-chest-press', 'Seated Chest Press (Machine)': 'machine-chest-press',
+  'Pec Deck (Machine)': 'pec-deck', 'Butterfly (Pec Deck)': 'pec-deck', 'Chest Fly (Machine)': 'pec-deck', 'Pec Deck Fly': 'pec-deck', 'Pec Deck': 'pec-deck',
+  'Incline Bench Press (Dumbbell)': 'incline-dumbbell-press', 'Incline Dumbbell Press': 'incline-dumbbell-press', 'Incline Press (Dumbbell)': 'incline-dumbbell-press',
+  'Front Raise (Dumbbell)': 'front-raise', 'Front Raise': 'front-raise',
+  'Lat Pulldown (Cable)': 'lat-pulldown', 'Lat Pulldown (Machine)': 'lat-pulldown', 'Lat Pulldown': 'lat-pulldown',
+  'Pullover (Dumbbell)': 'dumbbell-pullover', 'Dumbbell Pullover': 'dumbbell-pullover',
+  'Cable Pullover': 'cable-pullover', 'Pullover (Cable)': 'cable-pullover',
+  'Single Arm Triceps Extension (Dumbbell)': 'single-arm-dumbbell-triceps-extension', 'Single Arm Tricep Extension (Dumbbell)': 'single-arm-dumbbell-triceps-extension',
+  'Single Arm Triceps Pushdown (Cable)': 'single-arm-cable-triceps-extension', 'Single Arm Triceps Extension (Cable)': 'single-arm-cable-triceps-extension',
+  'Hack Squat (Machine)': 'hack-squat', 'Hack Squat': 'hack-squat',
+  'Romanian Deadlift (Barbell)': 'romanian-deadlift', 'Romanian Deadlift': 'romanian-deadlift', 'Romanian Deadlift (Dumbbell)': 'romanian-deadlift',
+  'Leg Extension (Machine)': 'leg-extension', 'Leg Extension': 'leg-extension',
+  'Hip Adductor (Machine)': 'adductor-machine', 'Hip Adduction (Machine)': 'adductor-machine', 'Adductor Machine': 'adductor-machine', 'Hip Adductor': 'adductor-machine',
+  'Hip Abductor (Machine)': 'abductor-machine', 'Hip Abduction (Machine)': 'abductor-machine', 'Abductor Machine': 'abductor-machine', 'Hip Abductor': 'abductor-machine',
+  'Triceps Dip (Assisted)': 'assisted-dips', 'Chest Dip (Assisted)': 'assisted-dips', 'Dip (Assisted)': 'assisted-dips', 'Assisted Dip': 'assisted-dips', 'Dips (Assisted)': 'assisted-dips',
+  'Pull Up (Assisted)': 'assisted-pull-ups', 'Chin Up (Assisted)': 'assisted-pull-ups', 'Assisted Pull Up': 'assisted-pull-ups', 'Pull-Up (Assisted)': 'assisted-pull-ups',
+};
+
+/* Normalizovaný názov: NFC, orezané, jedna medzera, malé písmená. */
+function csvNormName(s) {
+  return String(s == null ? '' : s).normalize('NFC').trim().replace(/\s+/g, ' ').toLowerCase();
+}
+let csvNameIndex = null;
+/* Index normalizovaný názov -> id: názvy knižnice vo VŠETKÝCH jazykoch, potom aliasy (knižnica má prednosť). */
+function csvGetNameIndex() {
+  if (csvNameIndex) return csvNameIndex;
+  const m = new Map();
+  for (const e of EXERCISE_LIBRARY) {
+    for (const code of LANG_CODES) {
+      const dict = I18N[code];
+      const nm = dict && dict['exercise.' + e.id];
+      if (nm) { const k = csvNormName(nm); if (k && !m.has(k)) m.set(k, e.id); }
+    }
+  }
+  for (const [name, id] of Object.entries(CSV_EXERCISE_ALIASES)) {
+    const k = csvNormName(name);
+    if (k && BUILTIN_EXERCISE_IDS.has(id) && !m.has(k)) m.set(k, id);
+  }
+  csvNameIndex = m;
+  return m;
+}
+/* Názov z CSV -> { exId, name }. Bez zhody exId = null a pôvodný názov (vlastný cvik). Nikdy nevyhadzuje. */
+function matchExercise(name) {
+  const original = String(name == null ? '' : name).trim();
+  try {
+    const id = csvGetNameIndex().get(csvNormName(original));
+    return { exId: id || null, name: original };
+  } catch (err) {
+    return { exId: null, name: original };
+  }
+}
+
+/* ---- Hodnoty ---- */
+/* Číslo z CSV: desatinná čiarka (pri `;` vždy; pri `,` len v úvodzovkách), tisíce "1,234.5"; neplatné = NaN, prázdne = null. */
+function csvNumber(raw, semicolon) {
+  let v = String(raw == null ? '' : raw).trim();
+  if (v === '') return null;
+  if (semicolon) v = v.replace(',', '.');
+  else if (/^\d{1,3}(,\d{3})+(\.\d+)?$/.test(v)) v = v.replace(/,/g, '');
+  else if (/^\d+,\d+$/.test(v)) v = v.replace(',', '.');
+  if (!/^-?\d+(\.\d+)?$/.test(v)) return NaN;
+  return Number(v);
+}
+const CSV_MONTHS = { jan: 1, feb: 2, mar: 3, apr: 4, may: 5, jun: 6, jul: 7, aug: 8, sep: 9, oct: 10, nov: 11, dec: 12 };
+/* Dátum a čas -> { date: 'RRRR-MM-DD', ts } (ts = ms ako keby UTC, len na rozdiely). Formáty: Strong "2024-03-04 18:00:12",
+   Hevy "15 Nov 2024, 18:02" aj "Oct 13, 2026, 9:50 PM", ISO s "T", "04.03.2024 18:00". Čas sa nijako neposúva (zóna sa ignoruje). */
+function csvParseDateTime(raw) {
+  const v = String(raw == null ? '' : raw).trim();
+  let y, mo, d, h = 0, mi = 0, sec = 0, ap = '';
+  let m = /^(\d{4})-(\d{1,2})-(\d{1,2})(?:[ T,]+(\d{1,2}):(\d{2})(?::(\d{2}))?)?/.exec(v);
+  if (m) { y = +m[1]; mo = +m[2]; d = +m[3]; h = +(m[4] || 0); mi = +(m[5] || 0); sec = +(m[6] || 0); }
+  else if ((m = /^(\d{1,2})\s+([A-Za-z]{3,9})\.?,?\s+(\d{4})(?:,?\s+(\d{1,2}):(\d{2})(?::(\d{2}))?\s*([AaPp][Mm])?)?/.exec(v))) {
+    y = +m[3]; mo = CSV_MONTHS[m[2].slice(0, 3).toLowerCase()]; d = +m[1]; h = +(m[4] || 0); mi = +(m[5] || 0); sec = +(m[6] || 0); ap = (m[7] || '').toLowerCase();
+  } else if ((m = /^([A-Za-z]{3,9})\.?\s+(\d{1,2}),?\s+(\d{4})(?:,?\s+(\d{1,2}):(\d{2})(?::(\d{2}))?\s*([AaPp][Mm])?)?/.exec(v))) {
+    y = +m[3]; mo = CSV_MONTHS[m[1].slice(0, 3).toLowerCase()]; d = +m[2]; h = +(m[4] || 0); mi = +(m[5] || 0); sec = +(m[6] || 0); ap = (m[7] || '').toLowerCase();
+  } else if ((m = /^(\d{1,2})\.(\d{1,2})\.(\d{4})(?:[ ,]+(\d{1,2}):(\d{2})(?::(\d{2}))?)?/.exec(v))) {
+    d = +m[1]; mo = +m[2]; y = +m[3]; h = +(m[4] || 0); mi = +(m[5] || 0); sec = +(m[6] || 0);
+  } else return null;
+  if (ap === 'pm' && h < 12) h += 12;
+  if (ap === 'am' && h === 12) h = 0;
+  if (!mo || mo < 1 || mo > 12 || y < 1970 || y > 2100 || d < 1 || d > 31 || h > 23 || mi > 59 || sec > 59) return null;
+  const ts = Date.UTC(y, mo - 1, d, h, mi, sec);
+  const chk = new Date(ts);
+  if (chk.getUTCFullYear() !== y || chk.getUTCMonth() !== mo - 1 || chk.getUTCDate() !== d) return null;
+  return { date: String(y) + '-' + String(mo).padStart(2, '0') + '-' + String(d).padStart(2, '0'), ts };
+}
+/* Trvanie Strong: "1h 9m", "44m", "3h", "2h 38m 5s", "01:09:00" alebo sekundy; platné 1 s – 48 h, inak null. */
+function csvParseDuration(raw) {
+  const v = String(raw == null ? '' : raw).trim().toLowerCase();
+  if (!v) return null;
+  let secs = null, m;
+  if ((m = /^(?:(\d+)\s*h)?\s*(?:(\d+)\s*m(?:in)?)?\s*(?:(\d+)\s*s)?$/.exec(v)) && (m[1] || m[2] || m[3])) secs = (+(m[1] || 0)) * 3600 + (+(m[2] || 0)) * 60 + (+(m[3] || 0));
+  else if ((m = /^(\d+):(\d{2})(?::(\d{2}))?$/.exec(v))) secs = m[3] !== undefined ? (+m[1]) * 3600 + (+m[2]) * 60 + (+m[3]) : (+m[1]) * 60 + (+m[2]);
+  else if (/^\d+$/.test(v)) secs = Number(v);
+  return secs !== null && secs >= 1 && secs <= 48 * 3600 ? secs : null;
+}
+/* Typ série: Strong "Set Order" (číslo, W, D, F, Rest Timer) a Hevy "set_type". Neznáme = null (riadok sa preskočí). */
+function csvSetKind(format, raw) {
+  const v = String(raw == null ? '' : raw).trim().toLowerCase();
+  if (format === 'strong') {
+    if (/^\d+$/.test(v)) return 'normal';
+    if (v === 'w') return 'warmup';
+    if (v === 'd') return 'drop';
+    if (v === 'f') return 'failure';
+    return null;
+  }
+  const k = v.replace(/[^a-z]/g, '');
+  if (k === '' || k === 'normal') return 'normal';
+  if (k === 'warmup' || k === 'warmupset' || k === 'w') return 'warmup';
+  if (k === 'dropset' || k === 'drop' || k === 'd') return 'drop';
+  if (k === 'failure' || k === 'f') return 'failure';
+  return 'normal';
+}
+function csvRoundKg(w, unit) {
+  return unit === 'lb' ? Math.round(w * CSV_LB_TO_KG * 4) / 4 : Math.round(w * 1000) / 1000;
+}
+
+/* csvToWorkouts(rows, format, opts) -> { workouts, unitDetected, unmatched, skippedRows }.
+   Tréning = rovnaký začiatok + názov; cviky v poradí súboru (rovnaký cvik v jednom tréningu sa zlúči). Séria:
+   normal / failure -> pracovné série (failure aj do actualFailureSets), warmup -> warmups, drop -> drops (najviac DROP_MAX,
+   zvyšok a drop-only cvik idú medzi pracovné série); cvik bez pracovnej série sa vynechá. Váhy v kg (lb × 0.45359237 na 0.25).
+   opts.delimiter (voliteľné, z parseCsv) = ';' berie čiarku vždy ako desatinnú. Jednotka: stĺpec Weight Unit / weight_kg / weight_lbs má prednosť, inak opts.unit, inak kg. Nikdy nevyhadzuje. */
+function csvToWorkouts(rows, format, opts) {
+  const res = { workouts: [], unitDetected: null, unmatched: [], skippedRows: 0 };
+  try {
+    if (!Array.isArray(rows) || rows.length < 2 || !Array.isArray(rows[0])) return res;
+    if (format !== 'strong' && format !== 'hevy' && format !== 'gymquest') return res;
+    const optUnit = opts && (opts.unit === 'kg' || opts.unit === 'lb') ? opts.unit : null;
+    const semicolon = !!(opts && opts.delimiter === ';');   // volajúci pošle delimiter z parseCsv; bez neho sa desatinná čiarka rozpozná podľa tvaru
+    const col = {};
+    rows[0].forEach((c, i) => { const k = String(c == null ? '' : c).trim().toLowerCase(); if (k && col[k] === undefined) col[k] = i; });
+    const ix = (...names) => { for (const nm of names) if (col[nm] !== undefined) return col[nm]; return -1; };
+    const isStrong = format === 'strong';
+    const cStart = ix('date', 'start_time'), cTitle = ix('workout name', 'title'), cEx = ix('exercise name', 'exercise_title');
+    const cKind = ix('set order', 'set_type'), cReps = ix('reps'), cRpe = ix('rpe'), cEnd = ix('end_time'), cSuper = ix('superset_id');
+    const cSecs = ix('seconds', 'duration_seconds'), cDist = ix('distance', 'distance_km', 'distance_miles');
+    const cDur = ix('workout duration', 'duration');
+    const cUnit = ix('weight unit');
+    let cW = ix('weight', 'weight_kg', 'weight_lbs');
+    const colUnit = col['weight_lbs'] !== undefined && col['weight_kg'] === undefined ? 'lb' : (col['weight_kg'] !== undefined ? 'kg' : null);
+    if (cStart < 0 || cEx < 0 || cW < 0) return res;
+    const cell = (r, i) => (i >= 0 && i < r.length ? r[i] : '');
+    const workouts = new Map();
+    const unmatched = [];
+    const seenUnmatched = new Set();
+    let detected = null;
+    for (let ri = 1; ri < rows.length; ri++) {
+      const r = rows[ri];
+      if (!Array.isArray(r)) { res.skippedRows++; continue; }
+      const rawStart = String(cell(r, cStart)).trim();
+      const exName = String(cell(r, cEx)).trim().slice(0, 100);
+      const kind = csvSetKind(isStrong ? 'strong' : 'hevy', cell(r, cKind));
+      const when = csvParseDateTime(rawStart);
+      if (!exName || !when || !kind) { res.skippedRows++; continue; }
+      /* jednotka riadka */
+      let unit = null;
+      if (cUnit >= 0) { const u = String(cell(r, cUnit)).trim().toLowerCase(); unit = /^(lb|lbs|pound)/.test(u) ? 'lb' : /^(kg|kgs|kilo)/.test(u) ? 'kg' : null; }
+      if (!unit && !isStrong) unit = colUnit;
+      if (unit && !detected) detected = unit;
+      const useUnit = unit || optUnit || 'kg';
+      let w = csvNumber(cell(r, cW), semicolon);
+      const reps0 = csvNumber(cell(r, cReps), semicolon);
+      const secs0 = csvNumber(cell(r, cSecs), semicolon);
+      const dist0 = csvNumber(cell(r, cDist), semicolon);
+      let rpe = csvNumber(cell(r, cRpe), semicolon);
+      if ([w, reps0, secs0, dist0].some((x) => Number.isNaN(x) || (x !== null && x < 0)) || Number.isNaN(rpe)) { res.skippedRows++; continue; }
+      const kg = csvRoundKg(w === null ? 0 : w, useUnit);
+      const reps = Math.round(reps0 === null ? 0 : reps0);
+      const secs = Math.round(secs0 === null ? 0 : secs0);
+      if (kg > 999 || reps > 999 || secs > 86400) { res.skippedRows++; continue; }
+      if (kg === 0 && reps === 0 && secs === 0 && !(dist0 > 0)) { res.skippedRows++; continue; }
+      rpe = rpe === null ? null : Math.round(rpe * 2) / 2;
+      if (rpe !== null && !validRpe(rpe)) rpe = null;
+      const title = String(cell(r, cTitle)).trim().slice(0, 100);
+      const key = rawStart + '|' + title;
+      let wk = workouts.get(key);
+      if (!wk) {
+        let dur = null;
+        if (isStrong) dur = csvParseDuration(cell(r, cDur));
+        else if (cEnd >= 0) {
+          const end = csvParseDateTime(cell(r, cEnd));
+          const diff = end ? Math.round((end.ts - when.ts) / 1000) : 0;
+          dur = diff >= 1 && diff <= 48 * 3600 ? diff : null;
+        }
+        wk = { rawStart, title, date: when.date, dur, byEx: new Map(), order: [] };
+        workouts.set(key, wk);
+      }
+      const exKey = csvNormName(exName);
+      let acc = wk.byEx.get(exKey);
+      if (!acc) {
+        acc = { name: exName, sup: cSuper >= 0 ? String(cell(r, cSuper)).trim() : '', rows: [], secs: 0, skipped: 0 };
+        wk.byEx.set(exKey, acc);
+        wk.order.push(acc);
+      }
+      acc.rows.push({ kind, kg, reps, rpe, secs });
+      acc.secs += secs;
+    }
+    /* Zostavenie záznamov */
+    const usedIds = new Set();
+    for (const wk of workouts.values()) {
+      const exercises = [];
+      for (const acc of wk.order) {
+        let working = acc.rows.filter((x) => x.kind === 'normal' || x.kind === 'failure');
+        const warm = acc.rows.filter((x) => x.kind === 'warmup' && x.reps >= 1);
+        let drops = acc.rows.filter((x) => x.kind === 'drop');
+        if (!working.length) { working = drops; drops = []; }
+        else if (drops.length > DROP_MAX) { working = working.concat(drops.slice(DROP_MAX)); drops = drops.slice(0, DROP_MAX); }
+        drops = drops.filter((x) => x.reps >= 1);
+        if (!working.length) { res.skippedRows += acc.rows.length; continue; }
+        if (working.length > 99) { res.skippedRows += working.length - 99; working = working.slice(0, 99); }
+        const m = matchExercise(acc.name);
+        const lib = m.exId ? libraryEntry(m.exId) : null;
+        const assisted = !!(lib && lib.assisted);
+        const weights = working.map((x) => x.kg);
+        const entry = {
+          name: m.exId ? ((I18N.en && I18N.en['exercise.' + m.exId]) || m.name) : m.name,
+          sets: working.length,
+          reps: working[0].reps,
+          weight: assisted ? Math.min.apply(null, weights) : Math.max.apply(null, weights),
+          setsDone: working.length,
+          doneSets: working.map((x, i) => i + 1),
+          setWeights: weights,
+          setReps: working.map((x) => x.reps),
+          actualFailureSets: working.map((x, i) => (x.kind === 'failure' ? i + 1 : 0)).filter(Boolean),
+        };
+        if (m.exId) entry.exId = m.exId;
+        if (assisted) entry.assisted = true;
+        if (working.some((x) => x.rpe !== null)) entry.setRpe = working.map((x) => x.rpe);
+        if (warm.length) entry.warmups = warm.map((x) => ({ weight: x.kg, reps: x.reps }));
+        if (drops.length) entry.drops = drops.map((x) => ({ weight: x.kg, reps: x.reps }));
+        if (acc.secs > 0) entry.durationSeconds = acc.secs;
+        entry._sup = acc.sup;
+        if (!m.exId && !seenUnmatched.has(acc.name.toLowerCase())) { seenUnmatched.add(acc.name.toLowerCase()); unmatched.push(acc.name); }
+        exercises.push(entry);
+      }
+      if (!exercises.length) continue;
+      /* Supersérie: susedné cviky s rovnakým superset_id (aspoň 2) dostanú spoločné `group` */
+      let gn = 0;
+      for (let i = 0; i < exercises.length;) {
+        const s = exercises[i]._sup;
+        let j = i + 1;
+        if (s) while (j < exercises.length && exercises[j]._sup === s) j++;
+        if (s && j - i >= 2) { gn++; for (let k = i; k < j; k++) exercises[k].group = 'ss' + gn; }
+        i = j;
+      }
+      for (const e of exercises) delete e._sup;
+      const importKey = format === 'strong' ? 'strong|' : format === 'hevy' ? 'hevy|' : 'csv|';
+      const fullKey = importKey + wk.rawStart + '|' + wk.title;
+      let id = 'imp-' + stableHash(fullKey);
+      for (let n = 2; usedIds.has(id); n++) id = 'imp-' + stableHash(fullKey) + '-' + n;
+      usedIds.add(id);
+      const out = { id, date: wk.date, planName: wk.title || 'Workout', source: format === 'gymquest' ? 'csv' : format, importKey: fullKey, exercises };
+      if (wk.dur) out.durationSeconds = wk.dur;
+      res.workouts.push(out);
+    }
+    res.unitDetected = detected;
+    res.unmatched = unmatched;
+    return res;
+  } catch (err) {
+    return { workouts: [], unitDetected: null, unmatched: [], skippedRows: 0 };
+  }
+}
+
 /* ---------- Prehľad: progres cviku ---------- */
 /* List s progresom jedného cviku: 4 čísla, jeden graf (čipy), obdobie a zoznam tréningov. Len číta históriu;
    nič nezapisuje a nemení XP, rekordy ani úspechy. Odhad 1RM je vždy označený ako odhad. */
