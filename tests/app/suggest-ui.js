@@ -163,6 +163,54 @@ function check(name, ok, info) {
     check('Use calls the provider apply', (await p.eval('window.__calls')) === 1);
     await p.eval(`(chipProgramProvider = null, renderTrening(), true)`);
 
+    console.log('== provider failures (fix round 1)');
+    await p.eval(`(chipProgramProvider = () => { throw new Error('boom'); }, renderTrening(), true)`);
+    await wait(200);
+    check('a throwing provider falls back to the default suggestion (chip stays)', (await chipOf(0)) === 'Try 102.5 kg', await chipOf(0));
+    await p.eval(`(chipProgramProvider = () => null, renderTrening(), true)`);
+    await wait(200);
+    check('a provider returning null falls back to the default suggestion', (await chipOf(0)) === 'Try 102.5 kg', await chipOf(0));
+    await p.eval(`(chipProgramProvider = null, true)`);
+
+    console.log('== one rounding (plate set giving x.25 / x.75)');
+    await p.eval(`(() => {
+      state.settings.plates = { bar: 20, plates: [20, 10, 5, 2.5, 1.25, 0.625] };
+      state.history[0].exercises[0].weight = 101.25; state.plans.sg.exercises[0].weight = 101.25;
+      state.activeSession.setWeights = {}; state.activeSession.setWeightLocks = {}; state.activeSession.completedSets = {};
+      saveState(); renderTrening(); return true; })()`);
+    await wait(250);
+    const raw = await p.eval(`suggestNext(state.plans.sg.exercises[0], 'sg').weight`);
+    const stored = await p.eval(`cleanSetWeightValue(${raw})`);
+    check('control: engine suggests a weight that is not a 0.5 multiple (' + raw + ')', raw !== stored, [raw, stored]);
+    check('chip shows the stored value', (await chipOf(0)) === 'Try ' + stored + ' kg', await chipOf(0));
+    await p.eval(`(${exEl(0)}.querySelector('.sugg-chip').click(), true)`);
+    const same = await p.eval(`({ sentence: document.getElementById('suggest-text').textContent, use: document.getElementById('btn-suggest-use').textContent.trim() })`);
+    check('sentence and button show the same stored value, never the raw one', same.sentence.indexOf(stored + ' kg') >= 0 && same.sentence.indexOf(String(raw)) < 0 && same.use === 'Use ' + stored + ' kg', same);
+    await p.eval(`(document.getElementById('btn-suggest-use').click(), true)`);
+    await wait(250);
+    check('applied weights are the stored value', J(await weights(0)) === J([String(stored), String(stored), String(stored)]), await weights(0));
+    await p.eval(`(delete state.settings.plates, state.history[0].exercises[0].weight = 100, state.plans.sg.exercises[0].weight = 100, state.activeSession.setWeights = {}, state.activeSession.setWeightLocks = {}, saveState(), renderTrening(), true)`);
+
+    console.log('== focus after Use / replaced opener');
+    await wait(200);
+    await p.eval(`(${exEl(0)}.querySelector('.sugg-chip').click(), document.getElementById('btn-suggest-use').click(), true)`);
+    await wait(250);
+    check('after Use focus is on the first changed weight input of that exercise', await p.eval(`document.activeElement === ${exEl(0)}.querySelectorAll('input.set-weight')[0]`), await p.eval(`document.activeElement.className`));
+    await p.eval(`(state.activeSession.setWeights = {}, state.activeSession.setWeightLocks = {}, renderTrening(), ${exEl(0)}.querySelector('.sugg-chip').click(), renderTrening(), true)`);
+    await wait(200);
+    check('opener replaced while open: sheet still open', await p.eval(`!document.getElementById('modal-suggest').hidden`));
+    await p.eval(`(document.getElementById('btn-suggest-close').click(), true)`);
+    check('focus goes to the new chip of the same exercise', await p.eval(`document.activeElement === ${exEl(0)}.querySelector('.sugg-chip') && document.activeElement.isConnected`));
+    await p.eval(`(${exEl(0)}.querySelector('.sugg-chip').click(), state.settings.showSuggestions = false, renderTrening(), document.getElementById('btn-suggest-close').click(), true)`);
+    check('no chip left: focus falls back to the tile', await p.eval(`document.activeElement === ${exEl(0)}`));
+    await p.eval(`(state.settings.showSuggestions = undefined, renderTrening(), true)`);
+
+    console.log('== decimal format policy (D4)');
+    await p.eval(`(setLang('fr'), renderTrening(), true)`);
+    await wait(200);
+    check('in-session chip and weight fields keep the dot format even in fr (like history weights)', await p.eval(`(() => { const c = ${exEl(0)}.querySelector('.sugg-chip'); return !!c && /102\.5/.test(c.textContent) && !/102,5/.test(c.textContent) && historyWeightText({ weight: 102.5, sets: 1 }).indexOf('102.5') >= 0; })()`));
+    await p.eval(`(setLang('en'), true)`);
+
     console.log('== languages, RTL, themes at 390 px');
     const langs = ['sk', 'en', 'es', 'pt-BR', 'fr', 'ar'];
     for (const lang of langs) {

@@ -26190,15 +26190,28 @@ function openWorkingSlots(ex) {
   for (let i = 0; i < sessionSetCount(ex); i++) for (const side of sides) if (!setMark('done', ex, i, side)) out.push({ i, side });
   return out;
 }
+/* Jedno zaokrúhlenie návrhu: čip, veta aj tlačidlo aj zápis používajú rovnakú uloženú hodnotu (po 0,5 kg).
+   Pozn. (D4): váhy počas tréningu sa píšu s bodkou ako v histórii; desatinná čiarka platí len pre odvodené štatistiky. */
+function suggestKg(s) { return s ? cleanSetWeightValue(s.weight) : null; }
+/* Všetky sloty sérií cviku (aj hotové) v poradí na obrazovke, s ich účinnou váhou. */
+function slotWeights(ex) {
+  const sides = exerciseSideOrder(ex) || [null];
+  const out = [];
+  for (let i = 0; i < sessionSetCount(ex); i++) for (const side of sides) out.push(effectiveSetWeight(ex, i, side));
+  return out;
+}
 /* Nastaví váhu všetkých NEHOTOVÝCH sérií rozbehnutého tréningu (každá strana osobitne). Hotové série a riadky plánu sa nemenia. */
 function applySuggestion(ex, s) {
-  const kg = s ? cleanSetWeightValue(s.weight) : null;
+  const kg = suggestKg(s);
   if (kg === null || !getSession()) return false;
   let any = false;
   for (const slot of openWorkingSlots(ex)) any = setSetWeight(ex, slot.i, kg, slot.side) || any;
   return any;
 }
-/* Háčik pre programy (úloha 5): (ex, info, plan) => { text, sheetText, apply, useText? } alebo null. */
+/* Háčik pre programy (úloha 5): (ex, info, plan) => { text, sheetText, apply, useText? } alebo null.
+   Null aj výnimka = použije sa predvolený návrh (ten sám skrýva čip pri hotových sériách a už nastavenej váhe).
+   Čip z poskytovateľa už nič nefiltruje: poskytovateľ MUSÍ sám skryť čip (vrátiť null) pri všetkých hotových sériách
+   aj pri už nastavenej váhe, inak sa zobrazí navždy. */
 let chipProgramProvider = null;
 const SUGGEST_CHIP_KEYS = { up: 'chipUp', up2: 'chipUp', keep: 'chipKeep', reset: 'chipReset', lessHelp: 'chipLessHelp', keepHelp: 'chipKeepHelp', moreHelp: 'chipMoreHelp' };
 /* Čo ukáže čip: { text, sheetText, useText, apply } alebo null (nič sa nezobrazí). */
@@ -26206,17 +26219,20 @@ function chipInfo(ex, info, plan) {
   try {
     if (!suggestionsOn() || !getSession() || !plan) return null;
     if (typeof chipProgramProvider === 'function') {
-      const o = chipProgramProvider(ex, info, plan);
-      if (o && typeof o.text === 'string' && o.text) return { text: o.text, sheetText: String(o.sheetText || ''), useText: o.useText || t('suggest.useShort'), apply: typeof o.apply === 'function' ? o.apply : () => {} };
+      try {
+        const o = chipProgramProvider(ex, info, plan);
+        if (o && typeof o.text === 'string' && o.text) return { text: o.text, sheetText: String(o.sheetText || ''), useText: o.useText || t('suggest.useShort'), apply: typeof o.apply === 'function' ? o.apply : () => {} };
+      } catch (err) { /* chybný poskytovateľ = predvolený návrh, čip sa neskryje */ }
     }
     const s = suggestNext(ex, plan.id);
     if (!s) return null;
-    const kg = cleanSetWeightValue(s.weight);
+    const kg = suggestKg(s);
     if (kg === null || (!isAssisted(ex) && !(kg > 0)) || !SUGGEST_CHIP_KEYS[s.kind]) return null;
     const open = openWorkingSlots(ex);
     if (!open.length) return null;   // všetky série hotové
     if (effectiveSetWeight(ex, open[0].i, open[0].side) === kg) return null;   // už je nastavená
-    return { text: t('suggest.' + SUGGEST_CHIP_KEYS[s.kind], { kg }), sheetText: t(s.reasonKey, s.vars), useText: t('suggest.use', { kg }), apply: () => applySuggestion(ex, s) };
+    const rounded = { kind: s.kind, weight: kg, vars: { kg, reps: s.vars.reps } };
+    return { text: t('suggest.' + SUGGEST_CHIP_KEYS[s.kind], { kg }), sheetText: t(s.reasonKey, rounded.vars), useText: t('suggest.use', { kg }), apply: () => applySuggestion(ex, rounded) };
   } catch (err) {
     return null;
   }
@@ -26263,21 +26279,50 @@ function openSuggestSheet(ex, ci, opener) {
   try { first.focus({ preventScroll: true }); } catch (e) { first.focus(); }
   refreshUpdateBanner();
 }
+/* Dlaždica rovnakého cviku (po prekreslení je to nový prvok). */
+function tileForExercise(ex) {
+  const key = exerciseSessionKey(ex);
+  for (const blk of document.querySelectorAll('#exercise-list .exercise')) {
+    if (blk._chipCtx && exerciseSessionKey(blk._chipCtx.ex) === key) return blk;
+  }
+  return null;
+}
+/* Fokus po zatvorení: pôvodný čip, inak čip rovnakého cviku, inak dlaždica. */
+function restoreSuggestFocus(st) {
+  if (!st) return;
+  if (st.opener && st.opener.isConnected) { restoreSheetFocus(st.opener); return; }
+  const tile = tileForExercise(st.ex);
+  if (!tile) return;
+  const chip = tile.querySelector('.sugg-chip');
+  if (chip) { restoreSheetFocus(chip); return; }
+  tile.setAttribute('tabindex', '-1');
+  restoreSheetFocus(tile);
+}
 function closeSuggestSheet() {
   const modal = document.getElementById('modal-suggest');
   if (!modal || modal.hidden) return;
   modal.hidden = true;
-  const opener = suggestSheetState && suggestSheetState.opener;
+  const st = suggestSheetState;
   suggestSheetState = null;
-  restoreSheetFocus(opener);
+  restoreSuggestFocus(st);
   refreshUpdateBanner();
 }
 function useSuggestion() {
   const st = suggestSheetState;
   if (!st) return;
+  const before = slotWeights(st.ex);
   try { st.ci.apply(); } catch (err) { /* návrh nikdy nezhodí tréning */ }
+  const after = slotWeights(st.ex);
+  const changed = after.findIndex((w, i) => w !== before[i]);
   closeSuggestSheet();
   renderTrening();
+  /* Fokus na prvé zmenené pole váhy tohto cviku (ak sa nič nezmenilo, ostane fokus ako po zatvorení). */
+  if (changed >= 0) {
+    const tile = tileForExercise(st.ex);
+    const item = tile ? tile.querySelectorAll('.set-item:not(.drop-item)')[changed] : null;
+    const inp = item ? item.querySelector('input.set-weight') : null;
+    if (inp) { try { inp.focus({ preventScroll: true }); } catch (e) { inp.focus(); } }
+  } else restoreSuggestFocus(st);
 }
 function initSuggestSheet() {
   on('btn-suggest-close', closeSuggestSheet);
