@@ -9909,6 +9909,7 @@ function defaultState() {
     plans: JSON.parse(JSON.stringify(DEFAULT_PLANS)),
     planOrder: DEFAULT_PLAN_ORDER.slice(),
     history: [],
+    importedHistory: [],   // tréningy z CSV (Strong/Hevy): len história a grafy, nikdy XP/séria/rekordy
     excusedWeeks: [],
     goalHistory: {},     // ISO týždeň -> cieľ platný v tom týždni (snapshot pre vyhodnotenie série)
     legacyGoal: null,    // cieľ spred zavedenia snapshotov; null = nový používateľ bez histórie
@@ -10590,6 +10591,7 @@ function migrateV2toV3(parsed) {
       ? base.planOrder
       : DEFAULT_PLAN_ORDER.filter(id => Object.prototype.hasOwnProperty.call(plans, id)),
     history: Array.isArray(base.history) ? base.history : [],
+    importedHistory: cleanImportedHistory(base.importedHistory),
     excusedWeeks: Array.isArray(base.excusedWeeks) ? base.excusedWeeks : [],
     goalHistory: (base.goalHistory && typeof base.goalHistory === 'object' && !Array.isArray(base.goalHistory))
       ? base.goalHistory
@@ -25932,6 +25934,48 @@ function entryIdentity(entry) {
   }
 }
 
+/* ---------- Importované tréningy ---------- */
+/* Tréningy z CSV (Strong / Hevy) sú v samostatnom poli state.importedHistory, NIE v state.history.
+   Vďaka tomu sa z konštrukcie nikdy nepočítajú do XP, série, rekordov, úspechov, rebríčka ani dlaždíc
+   Stats/Dnes. Počítajú sa len do prehľadov (graf cviku, svaly, regenerácia) cez insightHistory().
+   Pole sa synchronizuje s účtom (je to dáta používateľa), nie je len pre zariadenie. */
+const IMPORT_SOURCES = ['strong', 'hevy', 'csv'];
+
+/* Platný importovaný tréning: objekt s id, dátumom RRRR-MM-DD, názvom, zdrojom, kľúčom importu a poľom cvikov. */
+function validImportedWorkout(w) {
+  if (!w || typeof w !== 'object' || Array.isArray(w)) return false;
+  if (typeof w.id !== 'string' || !w.id) return false;
+  if (typeof w.date !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(w.date)) return false;
+  if (typeof w.planName !== 'string') return false;
+  if (IMPORT_SOURCES.indexOf(w.source) < 0) return false;
+  if (typeof w.importKey !== 'string' || !w.importKey) return false;
+  if (!Array.isArray(w.exercises)) return false;
+  for (const e of w.exercises) if (!e || typeof e !== 'object' || Array.isArray(e)) return false;
+  return true;
+}
+/* Zahodí neplatné záznamy, nikdy nehádže a platné necháva presne také, aké boli. */
+function cleanImportedHistory(raw) {
+  try {
+    return Array.isArray(raw) ? raw.filter(validImportedWorkout) : [];
+  } catch (err) {
+    return [];
+  }
+}
+function isImportedWorkout(w) {
+  return !!w && typeof w === 'object' && Array.isArray(state && state.importedHistory) && state.importedHistory.indexOf(w) >= 0;
+}
+/* História pre prehľady = skutočné + importované tréningy. Zapamätané podľa identity a dĺžky oboch polí (ako xpMaps). */
+const insightCache = { h: null, hlen: -1, i: null, ilen: -1, all: null };
+function insightHistory() {
+  const h = Array.isArray(state.history) ? state.history : [];
+  const i = Array.isArray(state.importedHistory) ? state.importedHistory : [];
+  if (insightCache.h !== h || insightCache.hlen !== h.length || insightCache.i !== i || insightCache.ilen !== i.length) {
+    insightCache.h = h; insightCache.hlen = h.length; insightCache.i = i; insightCache.ilen = i.length;
+    insightCache.all = i.length ? h.concat(i) : h;
+  }
+  return insightCache.all;
+}
+
 /* Platný čas ukončenia tréningu (ms), inak null. Pole `endedAt` zapisuje len nové ukončenie, nikdy sa nevyžaduje. */
 function historyEndedAt(w) {
   const v = w && w.endedAt;
@@ -25960,7 +26004,7 @@ function exerciseSeries(identity) {
   const out = [];
   try {
     if (!identity || !Array.isArray(state.history)) return out;
-    for (const w of state.history) {
+    for (const w of insightHistory()) {
       if (!w || typeof w !== 'object' || typeof w.date !== 'string' || !Array.isArray(w.exercises)) continue;
       let sets = [], drops = [], assisted = false, found = false;
       for (const e of w.exercises) {
@@ -26019,8 +26063,14 @@ function xpNum(n) {
   if (typeof n !== 'number' || !Number.isFinite(n)) return '—';
   const r = Math.round(n * 10) / 10;
   /* Desatinný oddeľovač podľa jazyka (7,5 vo fr/sk/es/pt-BR); bez oddeľovania tisícov, aby riadky zostali krátke. */
-  try { return r.toLocaleString(langMeta(activeLang()).locale, { maximumFractionDigits: 1, useGrouping: false }); } catch (e) { return String(r); }
+  try {
+    /* Formátovač sa drží pre jazyk (toLocaleString pri každom čísle by pri tisícoch importovaných tréningov spomalil prehľad). */
+    const loc = langMeta(activeLang()).locale;
+    if (xpNumFmt.loc !== loc) { xpNumFmt.loc = loc; xpNumFmt.f = new Intl.NumberFormat(loc, { maximumFractionDigits: 1, useGrouping: false }); }
+    return xpNumFmt.f.format(r);
+  } catch (e) { return String(r); }
 }
+const xpNumFmt = { loc: null, f: null };
 function xpSetText(s) { return xpNum(s.weight) + '×' + xpNum(s.reps); }
 
 /* Krátky dátum osi grafu (mesiac, rok) podľa jazyka appky. */
@@ -26075,7 +26125,7 @@ function exerciseSessionList(identity) {
   const out = [];
   try {
     if (!identity || !Array.isArray(state.history)) return out;
-    state.history.forEach((w, idx) => {
+    insightHistory().forEach((w, idx) => {
       if (!w || typeof w !== 'object' || typeof w.date !== 'string' || !Array.isArray(w.exercises)) return;
       let sets = [], found = false;
       for (const e of w.exercises) {
@@ -26278,7 +26328,7 @@ function muscleBuckets(keys) {
   keys.forEach((k) => { out[k] = { week: k, sets: {}, volume: {}, totalVolume: 0 }; });
   try {
     if (!Array.isArray(state.history)) return out;
-    for (const w of state.history) {
+    for (const w of insightHistory()) {
       if (!w || typeof w !== 'object' || typeof w.date !== 'string' || !Array.isArray(w.exercises)) continue;
       const b = out[weekKey(parseDate(w.date))];
       if (!b) continue;
@@ -26340,7 +26390,7 @@ function muscleWeekStart(off) {
 /* Najstarší týždeň histórie ako posun v týždňoch (0 = len aktuálny týždeň). */
 function muscleMaxOffset() {
   let min = null;
-  for (const w of state.history || []) {
+  for (const w of insightHistory()) {
     if (!w || typeof w.date !== 'string') continue;
     const d = parseDate(w.date);
     if (!(d instanceof Date) || isNaN(d)) continue;
@@ -26447,7 +26497,7 @@ function muscleRecovery(now) {
   const n = typeof now === 'number' && Number.isFinite(now) ? now : Date.now();
   const load = {};
   try {
-    for (const w of Array.isArray(state.history) ? state.history : []) {
+    for (const w of insightHistory()) {
       if (!w || typeof w !== 'object' || !Array.isArray(w.exercises)) continue;
       const at = entryTime(w, n);
       if (at === null || n - at >= 96 * 3.6e6) continue;
