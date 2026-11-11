@@ -27325,6 +27325,7 @@ function stateMeaningful(s) {
   const n = syncNormalize(s);   // rovnaká normalizácia ako pri porovnaní strán
   const demo = n.demo === true;
   if (!demo && n.history.length) return true;
+  if (!demo && Array.isArray(n.importedHistory) && n.importedHistory.length) return true;   // samé importy sú tiež dáta používateľa
   if (n.activities.length || n.excusedWeeks.length) return true;
   if (n.measurements.length || n.foods.length || Object.keys(n.foodLog || {}).length) return true;
   const pr = n.profile || {};

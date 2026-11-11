@@ -106,6 +106,11 @@ function check(name, ok, info) {
     check('device-only keys do not change the hash', h1 === h2);
     await p.eval(`state.activeSession = null; true`);
 
+    console.log('== stateMeaningful (sync data safety)');
+    check('fresh default state is not meaningful', await ev(`stateMeaningful(defaultState())`) === false);
+    check('imports-only state is meaningful', await ev(`(() => { const s = defaultState(); s.importedHistory = [${J(good)}]; return stateMeaningful(s); })()`) === true);
+    check('imports-only state is meaningful after syncNormalize', await ev(`(() => { const s = defaultState(); s.importedHistory = [${J(good)}]; const n = syncNormalize(s); return [n.importedHistory.length, stateMeaningful(n)]; })()`).then((a) => J(a) === '[1,true]'));
+
     console.log('== performance (3000 imports)');
     await p.eval(`(() => { const day = (n) => localDateKey(addDays(new Date(), -n)); state.history = []; state.importedHistory = []; for (let i = 0; i < 3000; i++) state.importedHistory.push({ id: 'p' + i, date: day(i % 1095), planName: 'Imported', source: 'hevy', importKey: 'p' + i, exercises: [{ name: 'Bench Press', exId: 'bench-press', sets: 3, reps: 5, weight: 60 + (i % 40), setsDone: 3 }, { name: 'Squat', exId: 'squats', sets: 3, reps: 5, weight: 100, setsDone: 3 }] }); xpCacheClear(); return true; })()`);
     const t1 = await p.eval(`(() => { const t = performance.now(); renderStatsGrid(); return performance.now() - t; })()`);
