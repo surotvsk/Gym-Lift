@@ -7610,6 +7610,9 @@ const BASICS_I18N = {
     'csvx.open': 'CSV (Strong / Hevy)', 'csvx.exportLabel': 'Export', 'csvx.export': 'Exportovať CSV', 'csvx.include': 'Zahrnúť importované tréningy', 'csvx.importLabel': 'Import', 'csvx.pick': 'Importovať zo Strong alebo Hevy…', 'csvx.manage': 'Spravovať importy', 'csvx.srcRow': '{source} · tréningov: {n}', 'csvx.removeAll': 'Odstrániť všetky', 'csvx.removeAria': 'Odstrániť všetky importy zo zdroja {source}', 'csvx.help': 'Export nájdeš v nastaveniach aplikácie Strong alebo Hevy (hľadaj Export dát / CSV). Súbor .csv potom vyber tu.', 'csvx.exportEmpty': 'Zatiaľ nie je čo exportovať.',
     'csv.confirmOne': 'Importovať {n} tréning', 'csv.confirmFew': 'Importovať {n} tréningy', 'csv.confirmOther': 'Importovať {n} tréningov', 'csv.toastOne': 'Importovaný {n} tréning', 'csv.toastFew': 'Importované {n} tréningy', 'csv.toastOther': 'Importovaných {n} tréningov', 'csvx.srcRowOne': '{source} · {n} tréning', 'csvx.srcRowFew': '{source} · {n} tréningy', 'csvx.srcRowOther': '{source} · {n} tréningov', 'imp.deleteSourceConfirmOne': 'Odstráni sa {n} importovaný tréning zo zdroja {source}. Tvoje vlastné tréningy zostanú.', 'imp.deleteSourceConfirmFew': 'Odstránia sa {n} importované tréningy zo zdroja {source}. Tvoje vlastné tréningy zostanú.', 'imp.deleteSourceConfirmOther': 'Odstráni sa {n} importovaných tréningov zo zdroja {source}. Tvoje vlastné tréningy zostanú.', 'csv.skippedOne': 'Preskočený {n} riadok (nie je to séria s váhou)', 'csv.skippedFew': 'Preskočené {n} riadky (nie sú to série s váhou)', 'csv.skippedOther': 'Preskočených {n} riadkov (nie sú to série s váhou)',
     'suggest.up': 'Naposledy si zvládol všetky opakovania. Skús {kg} kg.', 'suggest.up2': 'Naposledy to išlo ľahko. Skús {kg} kg.', 'suggest.keep': 'Ešte to nešlo na všetky opakovania. Ostaň pri {kg} kg.', 'suggest.reset': 'Dva ťažké tréningy po sebe. Vráť sa na {kg} kg.', 'suggest.lessHelp': 'Naposledy si zvládol všetky opakovania. Skús s pomocou {kg} kg.', 'suggest.keepHelp': 'Ešte to nešlo na všetky opakovania. Ostaň pri pomoci {kg} kg.', 'suggest.moreHelp': 'Dva ťažké tréningy po sebe. Pridaj pomoc na {kg} kg.',
+    'suggest.chipUp': "Skús {kg} kg", 'suggest.chipKeep': "Ostaň pri {kg} kg", 'suggest.chipReset': "Vráť sa na {kg} kg", 'suggest.chipLessHelp': "Menej pomoci {kg} kg", 'suggest.chipKeepHelp': "Pomoc {kg} kg", 'suggest.chipMoreHelp': "Viac pomoci {kg} kg",
+    'suggest.sheetTitle': "Návrh", 'suggest.use': "Použiť {kg} kg", 'suggest.useShort': "Použiť", 'suggest.useAria': "Použiť {kg} kg", 'suggest.close': "Zavrieť", 'suggest.chipAria': "Návrh: {text}. Ťukni pre dôvod.", 'suggest.note': "Zmení sa len tento tréning, nie plán.",
+    'settings.showSuggestions': "Zobrazovať návrhy", 'settings.showSuggestionsHint': "Pri cviku sa objaví malý čip s návrhom váhy podľa minulého tréningu. Nič sa nezmení, kým ho nepoužiješ.",
   },
   en: {
     'settings.autoRest': 'Start rest automatically', 'settings.autoRestHint': 'The rest timer starts by itself when you mark a set done. In a superset, after the last exercise.',
@@ -7643,6 +7646,9 @@ const BASICS_I18N = {
     'csvx.open': 'CSV (Strong / Hevy)', 'csvx.exportLabel': 'Export', 'csvx.export': 'Export CSV', 'csvx.include': 'Include imported workouts', 'csvx.importLabel': 'Import', 'csvx.pick': 'Import from Strong or Hevy…', 'csvx.manage': 'Manage imported', 'csvx.srcRow': '{source} · {n} workouts', 'csvx.removeAll': 'Remove all', 'csvx.removeAria': 'Remove all imports from {source}', 'csvx.help': 'Look for Export data / CSV in the settings of the Strong or Hevy app, then pick the .csv file here.', 'csvx.exportEmpty': 'There is nothing to export yet.',
     'csv.confirmOne': 'Import {n} workout', 'csv.confirmOther': 'Import {n} workouts', 'csv.toastOne': 'Imported {n} workout', 'csv.toastOther': 'Imported {n} workouts', 'csvx.srcRowOne': '{source} · {n} workout', 'csvx.srcRowOther': '{source} · {n} workouts', 'imp.deleteSourceConfirmOne': '{n} imported workout from {source} will be removed. Your own workouts stay.', 'imp.deleteSourceConfirmOther': '{n} imported workouts from {source} will be removed. Your own workouts stay.', 'csv.skippedOne': '{n} row skipped (not a lifting set)', 'csv.skippedOther': '{n} rows skipped (not lifting sets)',
     'suggest.up': 'Last time you hit every rep. Try {kg} kg.', 'suggest.up2': 'Last time felt easy. Try {kg} kg.', 'suggest.keep': 'You did not hit every rep yet. Stay at {kg} kg.', 'suggest.reset': 'Two tough sessions in a row. Step back to {kg} kg.', 'suggest.lessHelp': 'Last time you hit every rep. Try {kg} kg of help.', 'suggest.keepHelp': 'You did not hit every rep yet. Stay at {kg} kg of help.', 'suggest.moreHelp': 'Two tough sessions in a row. Add help back up to {kg} kg.',
+    'suggest.chipUp': "Try {kg} kg", 'suggest.chipKeep': "Keep {kg} kg", 'suggest.chipReset': "Reset {kg} kg", 'suggest.chipLessHelp': "Less help {kg} kg", 'suggest.chipKeepHelp': "Keep help {kg} kg", 'suggest.chipMoreHelp': "More help {kg} kg",
+    'suggest.sheetTitle': "Suggestion", 'suggest.use': "Use {kg} kg", 'suggest.useShort': "Use", 'suggest.useAria': "Use {kg} kg", 'suggest.close': "Close", 'suggest.chipAria': "Suggestion: {text}. Tap for the reason.", 'suggest.note': "Only this workout changes, not your plan.",
+    'settings.showSuggestions': "Show suggestions", 'settings.showSuggestionsHint': "A small chip on each exercise suggests a weight based on your last workout. Nothing changes until you tap Use.",
   },
   es: {
     'settings.autoRest': 'Iniciar el descanso automáticamente', 'settings.autoRestHint': 'El temporizador de descanso empieza solo al marcar una serie. En una superserie, tras el último ejercicio.',
@@ -7676,6 +7682,9 @@ const BASICS_I18N = {
     'csvx.open': 'CSV (Strong / Hevy)', 'csvx.exportLabel': 'Exportar', 'csvx.export': 'Exportar CSV', 'csvx.include': 'Incluir entrenamientos importados', 'csvx.importLabel': 'Importar', 'csvx.pick': 'Importar desde Strong o Hevy…', 'csvx.manage': 'Gestionar importados', 'csvx.srcRow': '{source} · {n} entrenamientos', 'csvx.removeAll': 'Quitar todos', 'csvx.removeAria': 'Quitar todas las importaciones de {source}', 'csvx.help': 'Busca Exportar datos / CSV en los ajustes de la app Strong o Hevy y elige aquí el archivo .csv.', 'csvx.exportEmpty': 'Todavía no hay nada que exportar.',
     'csv.confirmOne': 'Importar {n} entrenamiento', 'csv.confirmOther': 'Importar {n} entrenamientos', 'csv.toastOne': 'Entrenamiento importado: {n}', 'csv.toastOther': 'Entrenamientos importados: {n}', 'csvx.srcRowOne': '{source} · {n} entrenamiento', 'csvx.srcRowOther': '{source} · {n} entrenamientos', 'imp.deleteSourceConfirmOne': 'Se quitará {n} entrenamiento importado de {source}. Tus propios entrenamientos se quedan.', 'imp.deleteSourceConfirmOther': 'Se quitarán {n} entrenamientos importados de {source}. Tus propios entrenamientos se quedan.', 'csv.skippedOne': '{n} fila omitida (no es una serie con peso)', 'csv.skippedOther': '{n} filas omitidas (no son series con peso)',
     'suggest.up': 'La última vez completaste todas las repeticiones. Prueba {kg} kg.', 'suggest.up2': 'La última vez fue fácil. Prueba {kg} kg.', 'suggest.keep': 'Aún no completaste todas las repeticiones. Quédate en {kg} kg.', 'suggest.reset': 'Dos sesiones difíciles seguidas. Baja a {kg} kg.', 'suggest.lessHelp': 'La última vez completaste todas las repeticiones. Prueba con {kg} kg de ayuda.', 'suggest.keepHelp': 'Aún no completaste todas las repeticiones. Quédate con {kg} kg de ayuda.', 'suggest.moreHelp': 'Dos sesiones difíciles seguidas. Sube la ayuda a {kg} kg.',
+    'suggest.chipUp': "Prueba {kg} kg", 'suggest.chipKeep': "Mantén {kg} kg", 'suggest.chipReset': "Baja a {kg} kg", 'suggest.chipLessHelp': "Menos ayuda {kg} kg", 'suggest.chipKeepHelp': "Ayuda {kg} kg", 'suggest.chipMoreHelp': "Más ayuda {kg} kg",
+    'suggest.sheetTitle': "Sugerencia", 'suggest.use': "Usar {kg} kg", 'suggest.useShort': "Usar", 'suggest.useAria': "Usar {kg} kg", 'suggest.close': "Cerrar", 'suggest.chipAria': "Sugerencia: {text}. Toca para ver el motivo.", 'suggest.note': "Solo cambia este entrenamiento, no tu plan.",
+    'settings.showSuggestions': "Mostrar sugerencias", 'settings.showSuggestionsHint': "Un pequeño chip en cada ejercicio sugiere un peso según tu último entrenamiento. Nada cambia hasta que pulsas Usar.",
   },
   'pt-BR': {
     'settings.autoRest': 'Iniciar o descanso automaticamente', 'settings.autoRestHint': 'O cronômetro de descanso começa sozinho ao marcar uma série. Em um superset, após o último exercício.',
@@ -7709,6 +7718,9 @@ const BASICS_I18N = {
     'csvx.open': 'CSV (Strong / Hevy)', 'csvx.exportLabel': 'Exportar', 'csvx.export': 'Exportar CSV', 'csvx.include': 'Incluir treinos importados', 'csvx.importLabel': 'Importar', 'csvx.pick': 'Importar do Strong ou Hevy…', 'csvx.manage': 'Gerenciar importados', 'csvx.srcRow': '{source} · {n} treinos', 'csvx.removeAll': 'Remover todos', 'csvx.removeAria': 'Remover todas as importações de {source}', 'csvx.help': 'Procure Exportar dados / CSV nas configurações do app Strong ou Hevy e escolha o arquivo .csv aqui.', 'csvx.exportEmpty': 'Ainda não há nada para exportar.',
     'csv.confirmOne': 'Importar {n} treino', 'csv.confirmOther': 'Importar {n} treinos', 'csv.toastOne': 'Treino importado: {n}', 'csv.toastOther': 'Treinos importados: {n}', 'csvx.srcRowOne': '{source} · {n} treino', 'csvx.srcRowOther': '{source} · {n} treinos', 'imp.deleteSourceConfirmOne': 'Será removido {n} treino importado de {source}. Seus próprios treinos ficam.', 'imp.deleteSourceConfirmOther': 'Serão removidos {n} treinos importados de {source}. Seus próprios treinos ficam.', 'csv.skippedOne': '{n} linha ignorada (não é uma série com carga)', 'csv.skippedOther': '{n} linhas ignoradas (não são séries com carga)',
     'suggest.up': 'Da última vez você fez todas as repetições. Tente {kg} kg.', 'suggest.up2': 'Da última vez foi fácil. Tente {kg} kg.', 'suggest.keep': 'Você ainda não fez todas as repetições. Fique em {kg} kg.', 'suggest.reset': 'Dois treinos difíceis seguidos. Volte para {kg} kg.', 'suggest.lessHelp': 'Da última vez você fez todas as repetições. Tente com {kg} kg de ajuda.', 'suggest.keepHelp': 'Você ainda não fez todas as repetições. Fique com {kg} kg de ajuda.', 'suggest.moreHelp': 'Dois treinos difíceis seguidos. Aumente a ajuda para {kg} kg.',
+    'suggest.chipUp': "Tente {kg} kg", 'suggest.chipKeep': "Mantenha {kg} kg", 'suggest.chipReset': "Volte a {kg} kg", 'suggest.chipLessHelp': "Menos ajuda {kg} kg", 'suggest.chipKeepHelp': "Ajuda {kg} kg", 'suggest.chipMoreHelp': "Mais ajuda {kg} kg",
+    'suggest.sheetTitle': "Sugestão", 'suggest.use': "Usar {kg} kg", 'suggest.useShort': "Usar", 'suggest.useAria': "Usar {kg} kg", 'suggest.close': "Fechar", 'suggest.chipAria': "Sugestão: {text}. Toque para ver o motivo.", 'suggest.note': "Só este treino muda, não o seu plano.",
+    'settings.showSuggestions': "Mostrar sugestões", 'settings.showSuggestionsHint': "Um pequeno chip em cada exercício sugere uma carga com base no último treino. Nada muda até você tocar em Usar.",
   },
   fr: {
     'settings.autoRest': 'Démarrer le repos automatiquement', 'settings.autoRestHint': 'Le minuteur de repos démarre seul quand tu valides une série. Dans une superset, après le dernier exercice.',
@@ -7742,6 +7754,9 @@ const BASICS_I18N = {
     'csvx.open': 'CSV (Strong / Hevy)', 'csvx.exportLabel': 'Export', 'csvx.export': 'Exporter le CSV', 'csvx.include': 'Inclure les entraînements importés', 'csvx.importLabel': 'Import', 'csvx.pick': 'Importer depuis Strong ou Hevy…', 'csvx.manage': 'Gérer les imports', 'csvx.srcRow': '{source} · {n} entraînements', 'csvx.removeAll': 'Tout retirer', 'csvx.removeAria': 'Retirer tous les imports de {source}', 'csvx.help': 'Cherche Exporter les données / CSV dans les réglages de l’app Strong ou Hevy, puis choisis ici le fichier .csv.', 'csvx.exportEmpty': 'Il n’y a encore rien à exporter.',
     'csv.confirmOne': 'Importer {n} entraînement', 'csv.confirmOther': 'Importer {n} entraînements', 'csv.toastOne': 'Entraînement importé : {n}', 'csv.toastOther': 'Entraînements importés : {n}', 'csvx.srcRowOne': '{source} · {n} entraînement', 'csvx.srcRowOther': '{source} · {n} entraînements', 'imp.deleteSourceConfirmOne': '{n} entraînement importé de {source} sera retiré. Tes propres entraînements restent.', 'imp.deleteSourceConfirmOther': '{n} entraînements importés de {source} seront retirés. Tes propres entraînements restent.', 'csv.skippedOne': '{n} ligne ignorée (ce n’est pas une série avec charge)', 'csv.skippedOther': '{n} lignes ignorées (ce ne sont pas des séries avec charge)',
     'suggest.up': 'La dernière fois, tu as fait toutes les répétitions. Essaie {kg} kg.', 'suggest.up2': "La dernière fois, c'était facile. Essaie {kg} kg.", 'suggest.keep': "Tu n'as pas encore fait toutes les répétitions. Reste à {kg} kg.", 'suggest.reset': 'Deux séances difficiles de suite. Redescends à {kg} kg.', 'suggest.lessHelp': "La dernière fois, tu as fait toutes les répétitions. Essaie avec {kg} kg d'aide.", 'suggest.keepHelp': "Tu n'as pas encore fait toutes les répétitions. Reste à {kg} kg d'aide.", 'suggest.moreHelp': "Deux séances difficiles de suite. Remonte l'aide à {kg} kg.",
+    'suggest.chipUp': "Essaie {kg} kg", 'suggest.chipKeep': "Reste à {kg} kg", 'suggest.chipReset': "Reviens à {kg} kg", 'suggest.chipLessHelp': "Moins d'aide {kg} kg", 'suggest.chipKeepHelp': "Aide {kg} kg", 'suggest.chipMoreHelp': "Plus d'aide {kg} kg",
+    'suggest.sheetTitle': "Suggestion", 'suggest.use': "Utiliser {kg} kg", 'suggest.useShort': "Utiliser", 'suggest.useAria': "Utiliser {kg} kg", 'suggest.close': "Fermer", 'suggest.chipAria': "Suggestion : {text}. Touche pour voir la raison.", 'suggest.note': "Seule cette séance change, pas ton plan.",
+    'settings.showSuggestions': "Afficher les suggestions", 'settings.showSuggestionsHint': "Une petite pastille sur chaque exercice propose une charge d'après ta dernière séance. Rien ne change tant que tu ne touches pas Utiliser.",
   },
   ar: {
     'settings.autoRest': 'بدء الراحة تلقائيًا', 'settings.autoRestHint': 'يبدأ مؤقت الراحة تلقائيًا عند تحديد مجموعة كمكتملة. في السوبرست، بعد آخر تمرين.',
@@ -7775,6 +7790,9 @@ const BASICS_I18N = {
     'csvx.open': 'CSV (Strong / Hevy)', 'csvx.exportLabel': 'تصدير', 'csvx.export': 'تصدير CSV', 'csvx.include': 'تضمين التمارين المستوردة', 'csvx.importLabel': 'استيراد', 'csvx.pick': 'استيراد من Strong أو Hevy…', 'csvx.manage': 'إدارة المستورد', 'csvx.srcRow': '{source} · {n} تمرين', 'csvx.removeAll': 'إزالة الكل', 'csvx.removeAria': 'إزالة كل ما استُورد من {source}', 'csvx.help': 'ابحث عن «تصدير البيانات / CSV» في إعدادات تطبيق Strong أو Hevy، ثم اختر ملف ‎.csv‎ هنا.', 'csvx.exportEmpty': 'لا يوجد ما يمكن تصديره بعد.',
     'csv.confirmOne': 'استيراد تمرين واحد', 'csv.confirmTwo': 'استيراد تمرينين', 'csv.confirmFew': 'استيراد {n} تمارين', 'csv.confirmMany': 'استيراد {n} تمرينًا', 'csv.confirmOther': 'استيراد {n} تمرين', 'csv.toastOne': 'تم استيراد تمرين واحد', 'csv.toastTwo': 'تم استيراد تمرينين', 'csv.toastFew': 'تم استيراد {n} تمارين', 'csv.toastMany': 'تم استيراد {n} تمرينًا', 'csv.toastOther': 'تم استيراد {n} تمرين', 'csvx.srcRowOne': '{source} · تمرين واحد', 'csvx.srcRowTwo': '{source} · تمرينان', 'csvx.srcRowFew': '{source} · {n} تمارين', 'csvx.srcRowMany': '{source} · {n} تمرينًا', 'csvx.srcRowOther': '{source} · {n} تمرين', 'imp.deleteSourceConfirmOne': 'سيُزال تمرين واحد مستورد من {source}. تمارينك الخاصة تبقى.', 'imp.deleteSourceConfirmTwo': 'سيُزال تمرينان مستوردان من {source}. تمارينك الخاصة تبقى.', 'imp.deleteSourceConfirmFew': 'سيُزال {n} تمارين مستوردة من {source}. تمارينك الخاصة تبقى.', 'imp.deleteSourceConfirmMany': 'سيُزال {n} تمرينًا مستوردًا من {source}. تمارينك الخاصة تبقى.', 'imp.deleteSourceConfirmOther': 'سيُزال {n} تمرين مستورد من {source}. تمارينك الخاصة تبقى.', 'csv.skippedOne': 'تم تخطي صف واحد (ليس مجموعة رفع)', 'csv.skippedTwo': 'تم تخطي صفين (ليسا مجموعتي رفع)', 'csv.skippedFew': 'تم تخطي {n} صفوف (ليست مجموعات رفع)', 'csv.skippedMany': 'تم تخطي {n} صفًا (ليست مجموعات رفع)', 'csv.skippedOther': 'تم تخطي {n} صفًا (ليست مجموعات رفع)',
     'suggest.up': 'في المرة السابقة أتممت كل التكرارات. جرّب {kg} كغ.', 'suggest.up2': 'في المرة السابقة كان الأمر سهلًا. جرّب {kg} كغ.', 'suggest.keep': 'لم تُتمّ كل التكرارات بعد. ابقَ عند {kg} كغ.', 'suggest.reset': 'جلستان صعبتان متتاليتان. ارجع إلى {kg} كغ.', 'suggest.lessHelp': 'في المرة السابقة أتممت كل التكرارات. جرّب مساعدة {kg} كغ.', 'suggest.keepHelp': 'لم تُتمّ كل التكرارات بعد. ابقَ عند مساعدة {kg} كغ.', 'suggest.moreHelp': 'جلستان صعبتان متتاليتان. ارفع المساعدة إلى {kg} كغ.',
+    'suggest.chipUp': "جرّب {kg} كغ", 'suggest.chipKeep': "ابقَ عند {kg} كغ", 'suggest.chipReset': "ارجع إلى {kg} كغ", 'suggest.chipLessHelp': "مساعدة أقل {kg} كغ", 'suggest.chipKeepHelp': "المساعدة {kg} كغ", 'suggest.chipMoreHelp': "مساعدة أكثر {kg} كغ",
+    'suggest.sheetTitle': "اقتراح", 'suggest.use': "استخدم {kg} كغ", 'suggest.useShort': "استخدم", 'suggest.useAria': "استخدم {kg} كغ", 'suggest.close': "إغلاق", 'suggest.chipAria': "اقتراح: {text}. اضغط لمعرفة السبب.", 'suggest.note': "يتغير هذا التمرين فقط، وليس خطتك.",
+    'settings.showSuggestions': "إظهار الاقتراحات", 'settings.showSuggestionsHint': "تظهر شارة صغيرة عند كل تمرين تقترح وزنًا بناءً على تمرينك الأخير. لا يتغير شيء حتى تضغط على استخدم.",
   },
 };
 for (const lang of Object.keys(BASICS_I18N)) Object.assign(I18N[lang] || (I18N[lang] = {}), BASICS_I18N[lang]);
@@ -13350,6 +13368,7 @@ function buildExerciseBlock(seg, info, plan) {
   const hint = document.createElement('div');
   hint.className = 'compare-hint bt-l';
   hint.innerHTML = comparisonHint(ex, plan.id);
+  if (!seg.readOnly) { div._chipCtx = { ex, info, plan }; attachSuggestChip(hint, ex, info, plan); }
   div.appendChild(hint);
 
   const head = document.createElement('div');
@@ -14470,6 +14489,7 @@ function updateSummary() {
   if (xpEl) xpEl.textContent = ' · +' + xpForNewWorkout(done, todayISO()) + ' ' + t('units.xp');
   bentoMarkExercises();
   bentoTrainMode();
+  refreshSuggestChips();
   refreshUpdateBanner();   // rozbehnutý tréning skrýva ponuku aktualizácie
   trainSchedulePublish();  // spoločný tréning: priateľ uvidí nový stav
 }
@@ -23103,6 +23123,7 @@ function renderAll() {
   renderRestSoundSetting();   // stav Zapnuté/Vypnuté musí zareagovať na zmenu jazyka
   renderAutoRestSetting();
   renderEffortSetting();
+  renderShowSuggestionsSetting();
   refreshUpdateBanner();   // aktualizácia sa môže ponúknuť, len ak nič neupravujeme
 }
 
@@ -23884,6 +23905,7 @@ function openSettings() {
   renderRestSoundSetting();
   renderAutoRestSetting();
   renderEffortSetting();
+  renderShowSuggestionsSetting();
   if (appUpdateCheck !== 'checking' && appUpdateCheck !== 'downloading') appUpdateCheck = '';
   renderAppUpdateSetting();
   const removeBtn = document.getElementById('btn-remove-demo');
@@ -26149,6 +26171,127 @@ function suggestCompute(ex, planId, today) {
   }
 }
 
+/* ===== Návrhy: čip v .compare-hint a list „prečo“ ===== */
+/* Zobrazovanie návrhov je len nastavenie zariadenia; nedefinované = zapnuté. */
+function suggestionsOn() {
+  return !(state && state.settings && state.settings.showSuggestions === false);
+}
+function renderShowSuggestionsSetting() {
+  const btn = document.getElementById('btn-show-suggestions');
+  const stateEl = document.getElementById('show-suggestions-state');
+  const on = suggestionsOn();
+  if (btn) { btn.setAttribute('aria-checked', on ? 'true' : 'false'); btn.classList.toggle('on', on); }
+  if (stateEl) stateEl.textContent = on ? t('settings.on') : t('settings.off');
+}
+/* Sloty sérií cviku v poradí na obrazovke (pri jednostrannom cviku séria 1 ľavá, pravá, …), len nehotové. */
+function openWorkingSlots(ex) {
+  const sides = exerciseSideOrder(ex) || [null];
+  const out = [];
+  for (let i = 0; i < sessionSetCount(ex); i++) for (const side of sides) if (!setMark('done', ex, i, side)) out.push({ i, side });
+  return out;
+}
+/* Nastaví váhu všetkých NEHOTOVÝCH sérií rozbehnutého tréningu (každá strana osobitne). Hotové série a riadky plánu sa nemenia. */
+function applySuggestion(ex, s) {
+  const kg = s ? cleanSetWeightValue(s.weight) : null;
+  if (kg === null || !getSession()) return false;
+  let any = false;
+  for (const slot of openWorkingSlots(ex)) any = setSetWeight(ex, slot.i, kg, slot.side) || any;
+  return any;
+}
+/* Háčik pre programy (úloha 5): (ex, info, plan) => { text, sheetText, apply, useText? } alebo null. */
+let chipProgramProvider = null;
+const SUGGEST_CHIP_KEYS = { up: 'chipUp', up2: 'chipUp', keep: 'chipKeep', reset: 'chipReset', lessHelp: 'chipLessHelp', keepHelp: 'chipKeepHelp', moreHelp: 'chipMoreHelp' };
+/* Čo ukáže čip: { text, sheetText, useText, apply } alebo null (nič sa nezobrazí). */
+function chipInfo(ex, info, plan) {
+  try {
+    if (!suggestionsOn() || !getSession() || !plan) return null;
+    if (typeof chipProgramProvider === 'function') {
+      const o = chipProgramProvider(ex, info, plan);
+      if (o && typeof o.text === 'string' && o.text) return { text: o.text, sheetText: String(o.sheetText || ''), useText: o.useText || t('suggest.useShort'), apply: typeof o.apply === 'function' ? o.apply : () => {} };
+    }
+    const s = suggestNext(ex, plan.id);
+    if (!s) return null;
+    const kg = cleanSetWeightValue(s.weight);
+    if (kg === null || (!isAssisted(ex) && !(kg > 0)) || !SUGGEST_CHIP_KEYS[s.kind]) return null;
+    const open = openWorkingSlots(ex);
+    if (!open.length) return null;   // všetky série hotové
+    if (effectiveSetWeight(ex, open[0].i, open[0].side) === kg) return null;   // už je nastavená
+    return { text: t('suggest.' + SUGGEST_CHIP_KEYS[s.kind], { kg }), sheetText: t(s.reasonKey, s.vars), useText: t('suggest.use', { kg }), apply: () => applySuggestion(ex, s) };
+  } catch (err) {
+    return null;
+  }
+}
+/* Čip patrí do riadku .compare-hint: žiadny nový riadok, výška dlaždice sa nemení. */
+function attachSuggestChip(hint, ex, info, plan) {
+  hint.classList.remove('has-chip');
+  hint.innerHTML = comparisonHint(ex, plan.id);
+  const ci = chipInfo(ex, info, plan);
+  if (!ci) return;
+  const text = document.createElement('span');
+  text.className = 'compare-text';
+  text.innerHTML = hint.innerHTML;
+  hint.innerHTML = '';
+  hint.classList.add('has-chip');
+  hint.appendChild(text);
+  const chip = document.createElement('button');
+  chip.type = 'button';
+  chip.className = 'sugg-chip';
+  chip.textContent = ci.text;
+  chip.setAttribute('aria-label', t('suggest.chipAria', { text: ci.text }));
+  chip.setAttribute('aria-haspopup', 'dialog');
+  chip.addEventListener('click', () => openSuggestSheet(ex, ci, chip));
+  hint.appendChild(chip);
+}
+/* Dlaždice sa pri ťuknutí na sériu či zmene váhy neprekresľujú, preto sa čip obnoví na mieste. */
+function refreshSuggestChips() {
+  try {
+    document.querySelectorAll('#exercise-list .exercise').forEach((blk) => {
+      const c = blk._chipCtx, hint = blk.querySelector('.compare-hint');
+      if (c && hint) attachSuggestChip(hint, c.ex, c.info, c.plan);
+    });
+  } catch (err) { /* čip nikdy nezhodí tréning */ }
+}
+let suggestSheetState = null;
+function openSuggestSheet(ex, ci, opener) {
+  const modal = document.getElementById('modal-suggest');
+  if (!modal || !ci) return;
+  suggestSheetState = { ex, ci, opener: opener || document.activeElement };
+  document.getElementById('suggest-text').textContent = ci.sheetText;
+  document.getElementById('btn-suggest-use').textContent = ci.useText;
+  modal.hidden = false;
+  const first = document.getElementById('btn-suggest-use');
+  try { first.focus({ preventScroll: true }); } catch (e) { first.focus(); }
+  refreshUpdateBanner();
+}
+function closeSuggestSheet() {
+  const modal = document.getElementById('modal-suggest');
+  if (!modal || modal.hidden) return;
+  modal.hidden = true;
+  const opener = suggestSheetState && suggestSheetState.opener;
+  suggestSheetState = null;
+  restoreSheetFocus(opener);
+  refreshUpdateBanner();
+}
+function useSuggestion() {
+  const st = suggestSheetState;
+  if (!st) return;
+  try { st.ci.apply(); } catch (err) { /* návrh nikdy nezhodí tréning */ }
+  closeSuggestSheet();
+  renderTrening();
+}
+function initSuggestSheet() {
+  on('btn-suggest-close', closeSuggestSheet);
+  on('btn-suggest-use', useSuggestion);
+  on('btn-show-suggestions', () => {
+    state.settings.showSuggestions = !suggestionsOn();
+    renderShowSuggestionsSetting();
+    saveState();
+    if (getSession()) renderTrening();
+  });
+  const modal = document.getElementById('modal-suggest');
+  modal.addEventListener('click', (e) => { if (e.target === modal) closeSuggestSheet(); });
+}
+
 /* ---------- Importované tréningy ---------- */
 /* Tréningy z CSV (Strong / Hevy) sú v samostatnom poli state.importedHistory, NIE v state.history.
    Vďaka tomu sa z konštrukcie nikdy nepočítajú do XP, série, rekordov, úspechov, rebríčka ani dlaždíc
@@ -28016,7 +28159,7 @@ const SYNC_TRIGGER_THROTTLE_MS = 10000;
 const CLOUD_MEDIA_MAX_BYTES = 50 * 1024 * 1024;   // Supabase Free per-file limit
 const BACKUP_SCHEMA_VERSION = 3;                  // zhoduje sa s state.version
 const DEVICE_SETTING_KEYS = ['healthConnect', 'lang', 'restSound', 'restSoundLength', 'customRestMinutes', 'customRestSeconds',
-  'autoBackup', 'autoBackupOfferedAt', 'autoBackupWorkoutCount', 'communityOptIn', 'cloudBackup', 'autoRest', 'lastRestPresetId'];
+  'autoBackup', 'autoBackupOfferedAt', 'autoBackupWorkoutCount', 'communityOptIn', 'cloudBackup', 'autoRest', 'lastRestPresetId', 'showSuggestions'];
 const DEVICE_STATE_KEYS = ['activeSession', 'activeActivity'];
 
 /* Testovací háčik: v produkcii nič nerobí. Testy ním vkladajú deterministické
@@ -29705,6 +29848,8 @@ function setupEvents() {
     /* Generické potvrdenie je v DOM posledné (index.html), teda navrchu nad každým listom: Esc ho zavrie ako prvé */
     const genModal = document.getElementById('modal-generic');
     if (genModal && !genModal.hidden) { closeGeneric(); return; }
+    const suggSheet = document.getElementById('modal-suggest');
+    if (suggSheet && !suggSheet.hidden) { closeSuggestSheet(); return; }   // list „prečo“ návrhu
     const csvSheet = document.getElementById('modal-csv-import');
     if (csvSheet && !csvSheet.hidden) { closeCsvImport(); return; }   // list importu CSV
     const csvMenu = document.getElementById('modal-csv');
@@ -30003,6 +30148,7 @@ function setupEvents() {
   initExerciseActions();
   initExerciseProgress();
   initMuscles();
+  initSuggestSheet();
   initCsvImport();
   initCsvSheet();
   initEffort();
@@ -30190,7 +30336,7 @@ function isBusy() {
   const forms = ['modal-confirm', 'modal-history-edit', 'modal-settings', 'modal-setup', 'modal-generic',
     'modal-planchoice', 'modal-fullbody', 'modal-lang', 'modal-measure', 'modal-food',
     'modal-library', 'modal-exercise', 'modal-photo-add', 'modal-photo', 'modal-photo-compare',
-    'modal-community-caption', 'modal-auth', 'modal-sync', 'modal-plates', 'modal-effort', 'modal-ex-actions', 'modal-ex-progress', 'modal-muscles', 'modal-csv', 'modal-csv-import'];
+    'modal-community-caption', 'modal-auth', 'modal-sync', 'modal-plates', 'modal-effort', 'modal-suggest', 'modal-ex-actions', 'modal-ex-progress', 'modal-muscles', 'modal-csv', 'modal-csv-import'];
   for (const id of forms) {
     const el = document.getElementById(id);
     if (el && !el.hidden) return true;                   // otvorený formulár / dialóg
@@ -30805,6 +30951,7 @@ const NATIVE_BACK_CLOSE = [
   ['modal-ex-actions', '#btn-ex-actions-close'],
   ['modal-plates', '#btn-plates-close'],
   ['modal-effort', '#btn-effort-close'],
+  ['modal-suggest', '#btn-suggest-close'],
   ['modal-confirm', '#btn-confirm-cancel'],
   ['modal-result', '#btn-result-close'],
   ['modal-setup', null],

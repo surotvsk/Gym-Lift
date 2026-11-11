@@ -5189,3 +5189,19 @@ button.record-row::after { content: '\203A'; flex: 0 0 auto; color: var(--text-f
 .csv-src:last-child { border-bottom: 0; }
 .csv-src span { min-width: 0; overflow-wrap: anywhere; }
 .csv-src .btn { flex: 0 0 auto; min-height: 44px; }
+
+/* ===== Gym-basics: koučing ===== */
+/* Čip návrhu je vnútri riadka .compare-hint: riadok sa nezväčší, dotyková plocha je 44 px cez ::after. */
+.exercise .compare-hint.has-chip { position: relative; z-index: 1; }   /* hint má opacity = vlastná vrstva; bez toho by dotykovú plochu čipu prekryla hlavička */
+.compare-hint.has-chip { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-2); flex-wrap: nowrap; }
+.compare-hint .compare-text { min-width: 0; flex: 1 1 auto; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sugg-chip {
+  position: relative; z-index: 1; flex: 0 0 auto; max-width: 60%; margin: -2px 0; padding: 0 var(--sp-2);
+  height: 18px; line-height: 18px; border: 0; border-radius: 9px; cursor: pointer;
+  background: color-mix(in srgb, currentColor 14%, transparent); color: inherit;
+  font: inherit; font-size: 11px; font-weight: var(--fw-bold); letter-spacing: .02em; text-transform: none;
+  white-space: nowrap;
+}
+.sugg-chip::after { content: ""; position: absolute; inset: -13px -6px; }
+.sugg-chip:focus-visible { outline: 2px solid currentColor; outline-offset: 1px; }
+.modal-suggest .suggest-text { font-size: var(--fs-md, 16px); color: var(--text); margin: 0 0 var(--sp-3); }

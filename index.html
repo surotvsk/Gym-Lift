@@ -588,6 +588,19 @@
     </div>
   </div>
 
+  <!-- ============ MODAL: návrh váhy – prečo ============ -->
+  <div class="modal-backdrop" id="modal-suggest" hidden>
+    <div class="modal modal-form modal-suggest" role="dialog" aria-modal="true" aria-labelledby="suggest-title">
+      <div class="sheet-head">
+        <h3 id="suggest-title" data-i18n="suggest.sheetTitle">Návrh</h3>
+        <button type="button" class="btn-icon" id="btn-suggest-close" data-i18n-title="suggest.close" data-i18n-aria="suggest.close">✕</button>
+      </div>
+      <p class="card-note suggest-text" id="suggest-text"></p>
+      <p class="card-note" data-i18n="suggest.note">Zmení sa len tento tréning, nie plán.</p>
+      <button type="button" class="btn btn-primary btn-block" id="btn-suggest-use"></button>
+    </div>
+  </div>
+
   <!-- ============ MODAL: časovač oddychu (Bento list) ============ -->
   <div class="modal-backdrop" id="modal-rest" hidden>
     <div class="modal modal-form modal-rest">
@@ -790,6 +803,22 @@
             <button type="button" class="len-chip" data-effort="off" aria-pressed="true" data-i18n="settings.off">Vypnuté</button>
             <button type="button" class="len-chip" data-effort="rpe" aria-pressed="false">RPE</button>
             <button type="button" class="len-chip" data-effort="rir" aria-pressed="false">RIR</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="set-group" aria-labelledby="set-sugg-t">
+        <h4 class="set-label" id="set-sugg-t" data-i18n="settings.showSuggestions">Zobrazovať návrhy</h4>
+        <div class="setting-row">
+          <div class="setting-main">
+            <span class="card-sub" data-i18n="settings.showSuggestionsHint">Pri cviku sa objaví malý čip s návrhom váhy.</span>
+          </div>
+          <div class="setting-control">
+            <span class="setting-state" id="show-suggestions-state">Zapnuté</span>
+            <button type="button" class="switch" id="btn-show-suggestions" role="switch" aria-checked="true"
+                    data-i18n-title="settings.showSuggestions" data-i18n-aria="settings.showSuggestions">
+              <span class="switch-knob" aria-hidden="true"></span>
+            </button>
           </div>
         </div>
       </section>
