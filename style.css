@@ -5081,3 +5081,23 @@ button.record-row::after { content: '\203A'; flex: 0 0 auto; color: var(--text-f
 .xp-session-plan { color: var(--text-dim); text-align: end; overflow-wrap: anywhere; }
 .xp-session-sets { margin-top: 2px; font-size: var(--fs-sm); color: var(--text-dim); font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
 #btn-ex-progress-more { margin-top: var(--sp-2); }
+
+/* Svaly: neutrálne pruhy a čísla, bez farieb "dobré / zlé" */
+.modal-muscles .sheet-scroll { padding: var(--sp-3) var(--sp-4) var(--sp-4); }
+.mu-nav { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-2); }
+.mu-step { flex: 0 0 auto; width: 44px; height: 44px; min-height: 44px; font-size: 1.5rem; line-height: 1; }
+.mu-step:disabled { opacity: .35; cursor: default; }
+[dir="rtl"] .mu-step { transform: scaleX(-1); }
+.mu-week { flex: 1 1 auto; min-width: 0; text-align: center; font-weight: var(--fw-bold); overflow-wrap: anywhere; }
+.mu-list { display: flex; flex-direction: column; margin-top: var(--sp-2); }
+.mu-row { padding: var(--sp-3) 0; border-bottom: 1px solid var(--border); }
+.mu-head { display: flex; justify-content: space-between; align-items: baseline; gap: var(--sp-3); font-size: var(--fs-sm); }
+.mu-name { font-weight: var(--fw-bold); overflow-wrap: anywhere; }
+.mu-val { color: var(--text-dim); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.mu-line { display: flex; align-items: center; gap: var(--sp-3); margin-top: 6px; }
+.mu-bar { flex: 1 1 auto; min-width: 0; height: 8px; border-radius: var(--r-full); background: var(--surface-2); overflow: hidden; }
+.mu-bar > i { display: block; height: 100%; border-radius: var(--r-full); background: var(--accent); }
+.mu-spark { flex: 0 0 auto; color: var(--text-faint); line-height: 0; }
+.mu-total { display: flex; justify-content: space-between; gap: var(--sp-3); margin-top: var(--sp-3); padding: var(--sp-3); background: var(--surface-2); border-radius: 16px; font-size: var(--fs-sm); }
+.mu-total > b { font-variant-numeric: tabular-nums; }
+.mu-note { margin-top: var(--sp-3); }

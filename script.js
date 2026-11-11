@@ -7603,6 +7603,7 @@ const BASICS_I18N = {
     'superset.link': 'Spojiť s ďalším', 'superset.unlink': 'Zrušiť spojenie',
     'exactions.more': 'Ďalšie akcie pre {name}', 'exactions.close': 'Zavrieť', 'exactions.progress': 'Pokrok', 'exactions.moreOptions': 'Ďalšie možnosti',
     'xprog.close': 'Zavrieť', 'xprog.statE1rm': 'Najlepší odhad 1RM', 'xprog.statHeaviest': 'Najťažšie', 'xprog.statBestSet': 'Najlepšia séria', 'xprog.statSessions': 'Tréningy', 'xprog.statLeastHelp': 'Najmenej pomoci', 'xprog.metricE1rm': 'Odhad 1RM', 'xprog.metricHeaviest': 'Najťažšie', 'xprog.metricVolume': 'Objem', 'xprog.metricHelp': 'Pomoc', 'xprog.metricGroup': 'Čo ukázať v grafe', 'xprog.rangeGroup': 'Obdobie', 'xprog.r3m': '3 M', 'xprog.r1y': '1 R', 'xprog.rAll': 'Všetko', 'xprog.empty': 'Zapíš tento cvik aspoň dvakrát a objaví sa graf.', 'xprog.sessions': 'Tréningy', 'xprog.more': 'Zobraziť viac', 'xprog.estNote': 'Odhad podľa Epleya, nie otestované maximum.', 'xprog.open': 'Zobraziť pokrok: {name}', 'xprog.link': 'Pokrok', 'xprog.chartAria': '{label}, {unit}: od {from} do {to}',
+    'muscles.title': 'Svaly', 'muscles.tile': 'Svaly', 'muscles.empty': 'Tento týždeň žiadne série', 'muscles.close': 'Zavrieť', 'muscles.weekGroup': 'Týždeň', 'muscles.prev': 'Predchádzajúci týždeň', 'muscles.next': 'Nasledujúci týždeň', 'muscles.thisWeek': 'Tento týždeň', 'muscles.lastWeek': 'Minulý týždeň', 'muscles.weekOf': 'Týždeň od {date}', 'muscles.volume': 'Celkový objem', 'muscles.other': 'Ostatné', 'muscles.note': 'Hlavný sval sa počíta ako 1 séria, pomocné svaly ako ½. Vlastné cviky patria do Ostatné. Bežné odporúčanie je asi 10–20 sérií na sval týždenne.', 'muscles.trend': '{name}: série za týždeň, posledných 8 týždňov',
   },
   en: {
     'settings.autoRest': 'Start rest automatically', 'settings.autoRestHint': 'The rest timer starts by itself when you mark a set done. In a superset, after the last exercise.',
@@ -7629,6 +7630,7 @@ const BASICS_I18N = {
     'superset.link': 'Link with next', 'superset.unlink': 'Unlink',
     'exactions.more': 'More actions for {name}', 'exactions.close': 'Close', 'exactions.progress': 'Progress', 'exactions.moreOptions': 'More options',
     'xprog.close': 'Close', 'xprog.statE1rm': 'Best est. 1RM', 'xprog.statHeaviest': 'Heaviest', 'xprog.statBestSet': 'Best set', 'xprog.statSessions': 'Sessions', 'xprog.statLeastHelp': 'Least help', 'xprog.metricE1rm': 'Est. 1RM', 'xprog.metricHeaviest': 'Heaviest', 'xprog.metricVolume': 'Volume', 'xprog.metricHelp': 'Help', 'xprog.metricGroup': 'What to show in the chart', 'xprog.rangeGroup': 'Period', 'xprog.r3m': '3 M', 'xprog.r1y': '1 Y', 'xprog.rAll': 'All', 'xprog.empty': 'Log this exercise at least twice to see a chart.', 'xprog.sessions': 'Sessions', 'xprog.more': 'Show more', 'xprog.estNote': 'Epley estimate, not a tested max.', 'xprog.open': 'Show progress for {name}', 'xprog.link': 'Progress', 'xprog.chartAria': '{label}, {unit}: from {from} to {to}',
+    'muscles.title': 'Muscles', 'muscles.tile': 'Muscles', 'muscles.empty': 'No sets this week', 'muscles.close': 'Close', 'muscles.weekGroup': 'Week', 'muscles.prev': 'Previous week', 'muscles.next': 'Next week', 'muscles.thisWeek': 'This week', 'muscles.lastWeek': 'Last week', 'muscles.weekOf': 'Week of {date}', 'muscles.volume': 'Total volume', 'muscles.other': 'Other', 'muscles.note': 'The main muscle counts as 1 set, helper muscles as ½. Custom exercises count as Other. Common guidance is about 10–20 sets per muscle per week.', 'muscles.trend': '{name}: sets per week, last 8 weeks',
   },
   es: {
     'settings.autoRest': 'Iniciar el descanso automáticamente', 'settings.autoRestHint': 'El temporizador de descanso empieza solo al marcar una serie. En una superserie, tras el último ejercicio.',
@@ -7655,6 +7657,7 @@ const BASICS_I18N = {
     'superset.link': 'Unir con el siguiente', 'superset.unlink': 'Separar',
     'exactions.more': 'Más acciones para {name}', 'exactions.close': 'Cerrar', 'exactions.progress': 'Progreso', 'exactions.moreOptions': 'Más opciones',
     'xprog.close': 'Cerrar', 'xprog.statE1rm': 'Mejor 1RM est.', 'xprog.statHeaviest': 'Más pesado', 'xprog.statBestSet': 'Mejor serie', 'xprog.statSessions': 'Sesiones', 'xprog.statLeastHelp': 'Menos ayuda', 'xprog.metricE1rm': '1RM est.', 'xprog.metricHeaviest': 'Más pesado', 'xprog.metricVolume': 'Volumen', 'xprog.metricHelp': 'Ayuda', 'xprog.metricGroup': 'Qué mostrar en el gráfico', 'xprog.rangeGroup': 'Periodo', 'xprog.r3m': '3 M', 'xprog.r1y': '1 A', 'xprog.rAll': 'Todo', 'xprog.empty': 'Registra este ejercicio al menos dos veces para ver un gráfico.', 'xprog.sessions': 'Sesiones', 'xprog.more': 'Mostrar más', 'xprog.estNote': 'Estimación de Epley, no un máximo medido.', 'xprog.open': 'Ver progreso de {name}', 'xprog.link': 'Progreso', 'xprog.chartAria': '{label}, {unit}: de {from} a {to}',
+    'muscles.title': 'Músculos', 'muscles.tile': 'Músculos', 'muscles.empty': 'Sin series esta semana', 'muscles.close': 'Cerrar', 'muscles.weekGroup': 'Semana', 'muscles.prev': 'Semana anterior', 'muscles.next': 'Semana siguiente', 'muscles.thisWeek': 'Esta semana', 'muscles.lastWeek': 'Semana pasada', 'muscles.weekOf': 'Semana del {date}', 'muscles.volume': 'Volumen total', 'muscles.other': 'Otros', 'muscles.note': 'El músculo principal cuenta como 1 serie y los músculos auxiliares como ½. Los ejercicios propios cuentan como Otros. Una pauta habitual es de unas 10–20 series por músculo a la semana.', 'muscles.trend': '{name}: series por semana, últimas 8 semanas',
   },
   'pt-BR': {
     'settings.autoRest': 'Iniciar o descanso automaticamente', 'settings.autoRestHint': 'O cronômetro de descanso começa sozinho ao marcar uma série. Em um superset, após o último exercício.',
@@ -7681,6 +7684,7 @@ const BASICS_I18N = {
     'superset.link': 'Ligar ao próximo', 'superset.unlink': 'Desligar',
     'exactions.more': 'Mais ações para {name}', 'exactions.close': 'Fechar', 'exactions.progress': 'Progresso', 'exactions.moreOptions': 'Mais opções',
     'xprog.close': 'Fechar', 'xprog.statE1rm': 'Melhor 1RM est.', 'xprog.statHeaviest': 'Mais pesado', 'xprog.statBestSet': 'Melhor série', 'xprog.statSessions': 'Sessões', 'xprog.statLeastHelp': 'Menos ajuda', 'xprog.metricE1rm': '1RM est.', 'xprog.metricHeaviest': 'Mais pesado', 'xprog.metricVolume': 'Volume', 'xprog.metricHelp': 'Ajuda', 'xprog.metricGroup': 'O que mostrar no gráfico', 'xprog.rangeGroup': 'Período', 'xprog.r3m': '3 M', 'xprog.r1y': '1 A', 'xprog.rAll': 'Tudo', 'xprog.empty': 'Registre este exercício pelo menos duas vezes para ver um gráfico.', 'xprog.sessions': 'Sessões', 'xprog.more': 'Mostrar mais', 'xprog.estNote': 'Estimativa de Epley, não um máximo testado.', 'xprog.open': 'Ver progresso de {name}', 'xprog.link': 'Progresso', 'xprog.chartAria': '{label}, {unit}: de {from} a {to}',
+    'muscles.title': 'Músculos', 'muscles.tile': 'Músculos', 'muscles.empty': 'Nenhuma série esta semana', 'muscles.close': 'Fechar', 'muscles.weekGroup': 'Semana', 'muscles.prev': 'Semana anterior', 'muscles.next': 'Próxima semana', 'muscles.thisWeek': 'Esta semana', 'muscles.lastWeek': 'Semana passada', 'muscles.weekOf': 'Semana de {date}', 'muscles.volume': 'Volume total', 'muscles.other': 'Outros', 'muscles.note': 'O músculo principal conta como 1 série e os músculos auxiliares como ½. Exercícios personalizados contam como Outros. Uma orientação comum é cerca de 10–20 séries por músculo por semana.', 'muscles.trend': '{name}: séries por semana, últimas 8 semanas',
   },
   fr: {
     'settings.autoRest': 'Démarrer le repos automatiquement', 'settings.autoRestHint': 'Le minuteur de repos démarre seul quand tu valides une série. Dans une superset, après le dernier exercice.',
@@ -7707,6 +7711,7 @@ const BASICS_I18N = {
     'superset.link': 'Lier au suivant', 'superset.unlink': 'Délier',
     'exactions.more': 'Plus d’actions pour {name}', 'exactions.close': 'Fermer', 'exactions.progress': 'Progression', 'exactions.moreOptions': 'Plus d’options',
     'xprog.close': 'Fermer', 'xprog.statE1rm': 'Meilleur 1RM est.', 'xprog.statHeaviest': 'Plus lourd', 'xprog.statBestSet': 'Meilleure série', 'xprog.statSessions': 'Séances', 'xprog.statLeastHelp': 'Moins d’aide', 'xprog.metricE1rm': '1RM est.', 'xprog.metricHeaviest': 'Plus lourd', 'xprog.metricVolume': 'Volume', 'xprog.metricHelp': 'Aide', 'xprog.metricGroup': 'Quoi afficher dans le graphique', 'xprog.rangeGroup': 'Période', 'xprog.r3m': '3 M', 'xprog.r1y': '1 A', 'xprog.rAll': 'Tout', 'xprog.empty': 'Enregistre cet exercice au moins deux fois pour voir un graphique.', 'xprog.sessions': 'Séances', 'xprog.more': 'Afficher plus', 'xprog.estNote': 'Estimation d’Epley, pas un maximum testé.', 'xprog.open': 'Voir la progression de {name}', 'xprog.link': 'Progression', 'xprog.chartAria': '{label}, {unit} : du {from} au {to}',
+    'muscles.title': 'Muscles', 'muscles.tile': 'Muscles', 'muscles.empty': 'Aucune série cette semaine', 'muscles.close': 'Fermer', 'muscles.weekGroup': 'Semaine', 'muscles.prev': 'Semaine précédente', 'muscles.next': 'Semaine suivante', 'muscles.thisWeek': 'Cette semaine', 'muscles.lastWeek': 'Semaine dernière', 'muscles.weekOf': 'Semaine du {date}', 'muscles.volume': 'Volume total', 'muscles.other': 'Autres', 'muscles.note': 'Le muscle principal compte pour 1 série, les muscles secondaires pour ½. Les exercices personnalisés comptent dans Autres. Une recommandation courante est d’environ 10 à 20 séries par muscle et par semaine.', 'muscles.trend': '{name} : séries par semaine, 8 dernières semaines',
   },
   ar: {
     'settings.autoRest': 'بدء الراحة تلقائيًا', 'settings.autoRestHint': 'يبدأ مؤقت الراحة تلقائيًا عند تحديد مجموعة كمكتملة. في السوبرست، بعد آخر تمرين.',
@@ -7733,6 +7738,7 @@ const BASICS_I18N = {
     'superset.link': 'ربط بالتالي', 'superset.unlink': 'فك الربط',
     'exactions.more': 'المزيد من الإجراءات لـ {name}', 'exactions.close': 'إغلاق', 'exactions.progress': 'التقدّم', 'exactions.moreOptions': 'خيارات إضافية',
     'xprog.close': 'إغلاق', 'xprog.statE1rm': 'أفضل 1RM تقديري', 'xprog.statHeaviest': 'الأثقل', 'xprog.statBestSet': 'أفضل مجموعة', 'xprog.statSessions': 'التمارين', 'xprog.statLeastHelp': 'أقل مساعدة', 'xprog.metricE1rm': '1RM تقديري', 'xprog.metricHeaviest': 'الأثقل', 'xprog.metricVolume': 'الحجم', 'xprog.metricHelp': 'المساعدة', 'xprog.metricGroup': 'ما يُعرض في الرسم', 'xprog.rangeGroup': 'الفترة', 'xprog.r3m': '3 أشهر', 'xprog.r1y': 'سنة', 'xprog.rAll': 'الكل', 'xprog.empty': 'سجّل هذا التمرين مرتين على الأقل لتظهر الرسوم.', 'xprog.sessions': 'التمارين', 'xprog.more': 'عرض المزيد', 'xprog.estNote': 'تقدير إيبلي، وليس حدًا أقصى تم اختباره.', 'xprog.open': 'عرض تقدّم {name}', 'xprog.link': 'التقدّم', 'xprog.chartAria': '{label}، {unit}: من {from} إلى {to}',
+    'muscles.title': 'العضلات', 'muscles.tile': 'العضلات', 'muscles.empty': 'لا توجد مجموعات هذا الأسبوع', 'muscles.close': 'إغلاق', 'muscles.weekGroup': 'الأسبوع', 'muscles.prev': 'الأسبوع السابق', 'muscles.next': 'الأسبوع التالي', 'muscles.thisWeek': 'هذا الأسبوع', 'muscles.lastWeek': 'الأسبوع الماضي', 'muscles.weekOf': 'أسبوع {date}', 'muscles.volume': 'الحجم الإجمالي', 'muscles.other': 'أخرى', 'muscles.note': 'تُحسب العضلة الرئيسية كمجموعة واحدة والعضلات المساعدة كنصف مجموعة. التمارين المخصصة تُحسب ضمن «أخرى». الإرشاد الشائع نحو 10–20 مجموعة لكل عضلة أسبوعيًا.', 'muscles.trend': '{name}: المجموعات في الأسبوع، آخر 8 أسابيع',
   },
 };
 for (const lang of Object.keys(BASICS_I18N)) Object.assign(I18N[lang] || (I18N[lang] = {}), BASICS_I18N[lang]);
@@ -11807,6 +11813,7 @@ function bentoGo(where) {
     if (r && r.scrollIntoView) r.closest('.card').scrollIntoView({ block: 'start' });
     return;
   }
+  if (where === 'muscles') { openMuscles(); return; }
   if (where === 'rest') { openRestSheet(); return; }
   if (where === 'profile') { openOwnProfileSheet(activeTab); return; }
   if (where === 'chats') { openMessagesTab(); return; }
@@ -14393,6 +14400,7 @@ function buildPlatesButton(ex) {
 function initPlateSheet() {
   initExerciseActions();
   initExerciseProgress();
+  initMuscles();
   on('btn-plates-close', closePlateCalc);
   on('plate-target', () => {
     const v = cleanSetWeightValue(document.getElementById('plate-target').value);
@@ -21561,6 +21569,7 @@ function renderStatsGrid() {
       ? recs.map((r) => '<span class="st-rec"><span>' + esc(recordedNameToDisplay(r.name)) + '</span><b>' + r.weight + '</b></span>').join('')
       : '<span class="bt-line">' + esc(t('pokrok.recordsEmpty')) + '</span>'))
     + tile('bt-peach w2 h2', 'motivation', L('bento.achievements') + '<span class="bt-v">' + ach + '</span><span class="bt-line">' + esc(t('bento.unlocked')) + '</span>')
+    + tile('w2 bt-muscles', 'muscles', L('muscles.tile') + '<span class="bt-line">' + muscleTileLine() + '</span>')
     + tile('w2', 'calendar', bentoIcon('calendar') + '<span class="bt-line bt-bottom">' + esc(t('tab.kalendar')) + '</span>')
     + tile('w2', 'history', bentoIcon('clock') + '<span class="bt-line bt-bottom">' + esc(t('bento.history')) + '</span>')
     + recent.map((w) => '<button type="button" class="bt w2" data-day="' + escAttr(w.date) + '"><span class="bt-l">' + esc(bentoShortDay(w.date)) + '</span><b class="st-plan">'
@@ -26218,6 +26227,170 @@ function exProgLinkHtml(ex, label) {
   return '<button type="button" class="ex-prog-link" data-xid="' + escAttr(id) + '" data-xname="' + escAttr(label) + '" aria-label="' + escAttr(t('xprog.open', { name: label })) + '">' + esc(label) + '</button>';
 }
 
+/* ---------- Prehľad: svaly ---------- */
+/* Série a objem za týždeň podľa svalovej skupiny. Len číta históriu; nič nezapisuje a nemení XP, rekordy ani úspechy.
+   Hlavný sval knižničného cviku = 1 séria, pomocné = ½; vlastný alebo neznámy cvik = "other". Rozcvičky sa nepočítajú nikdy. */
+const MUSCLE_KEYS = MUSCLE_CODES.concat(['other']);
+
+/* Podiel cviku na svaloch: { sval: váha }. Vlastný cvik sa nikdy nezhoduje podľa názvu, len zabudovaný cvik z knižnice. */
+function muscleShare(entry) {
+  try {
+    const id = entry && typeof entry === 'object' ? entryIdentity(entry) : null;
+    const lib = id && BUILTIN_EXERCISE_IDS.has(id) ? libraryEntry(id) : null;
+    if (!lib || MUSCLE_CODES.indexOf(lib.primary) < 0) return { other: 1 };
+    const out = {};
+    out[lib.primary] = 1;
+    (Array.isArray(lib.secondary) ? lib.secondary : []).forEach((m) => { if (MUSCLE_CODES.indexOf(m) >= 0 && !out[m]) out[m] = 0.5; });
+    return out;
+  } catch (err) {
+    return { other: 1 };
+  }
+}
+
+/* Jeden prechod históriou pre viac týždňov naraz: { kľúč týždňa: { week, sets, volume, totalVolume } }. Týždeň = weekKey (ako dlaždica Týždeň). */
+function muscleBuckets(keys) {
+  const out = {};
+  keys.forEach((k) => { out[k] = { week: k, sets: {}, volume: {}, totalVolume: 0 }; });
+  try {
+    if (!Array.isArray(state.history)) return out;
+    for (const w of state.history) {
+      if (!w || typeof w !== 'object' || typeof w.date !== 'string' || !Array.isArray(w.exercises)) continue;
+      const b = out[weekKey(parseDate(w.date))];
+      if (!b) continue;
+      for (const e of w.exercises) {
+        const ws = historyWorkingSets(e);
+        const drops = historyDropSets(e);
+        if (!ws.length && !drops.length) continue;
+        const share = muscleShare(e);
+        const assisted = historyEntryAssisted(e);
+        /* jednostranný cvik: séria s oboma stranami je jedna séria; objem sa spočíta za každú stranu */
+        const nSets = new Set(ws.map((s) => s.set)).size + drops.length;
+        const vol = assisted ? 0 : ws.concat(drops).reduce((a, s) => a + s.weight * s.reps, 0);
+        for (const m of Object.keys(share)) {
+          b.sets[m] = (b.sets[m] || 0) + nSets * share[m];
+          if (vol) b.volume[m] = (b.volume[m] || 0) + vol * share[m];
+        }
+        b.totalVolume += vol;
+      }
+    }
+  } catch (err) { /* poškodený záznam nesmie zhodiť Stats */ }
+  return out;
+}
+
+/* Série a objem jedného týždňa: { week, sets: { sval: číslo }, volume: { sval: číslo }, totalVolume }. */
+function muscleWeek(weekKeyStr) {
+  return muscleBuckets([weekKeyStr])[weekKeyStr];
+}
+
+/* Posledných `weeks` týždňov (najstarší prvý, končí aktuálnym): [{ week, sets }]. Jeden prechod históriou. */
+function muscleTrend(weeks) {
+  const n = Math.max(1, Math.min(104, Math.floor(Number(weeks)) || 8));
+  const keys = [];
+  for (let i = n - 1; i >= 0; i--) keys.push(weekKey(addDays(new Date(), -7 * i)));
+  const b = muscleBuckets(keys);
+  return keys.map((k) => ({ week: k, sets: b[k].sets }));
+}
+
+function muscleLabel(m) { return m === 'other' ? t('muscles.other') : t('muscle.' + m); }
+
+/* Svaly s nenulovými sériami, od najviac sérií; pri zhode podľa poradia MUSCLE_KEYS. */
+function muscleRanked(sets) {
+  return MUSCLE_KEYS.filter((m) => sets[m] > 0).sort((a, b) => (sets[b] - sets[a]) || (MUSCLE_KEYS.indexOf(a) - MUSCLE_KEYS.indexOf(b)));
+}
+
+/* Jeden riadok dlaždice Stats: "Hrudník · 12 sérií" alebo prázdny stav. */
+function muscleTileLine() {
+  const sets = muscleWeek(currentWeekKey()).sets;
+  const top = muscleRanked(sets)[0];
+  return top ? esc(muscleLabel(top)) + ' · <bdi>' + esc(xpNum(sets[top])) + '</bdi> ' + esc(t('units.sets')) : esc(t('muscles.empty'));
+}
+
+let muState = null;          // { off, maxOff, trend, opener }
+
+/* Pondelok týždňa posunutého o `off` týždňov dozadu. */
+function muscleWeekStart(off) {
+  const d = addDays(new Date(), -7 * off);
+  return addDays(d, -((d.getDay() + 6) % 7));
+}
+/* Najstarší týždeň histórie ako posun v týždňoch (0 = len aktuálny týždeň). */
+function muscleMaxOffset() {
+  let min = null;
+  for (const w of state.history || []) {
+    if (!w || typeof w.date !== 'string') continue;
+    const d = parseDate(w.date);
+    if (!(d instanceof Date) || isNaN(d)) continue;
+    if (min === null || d < min) min = d;
+  }
+  if (!min) return 0;
+  const a = muscleWeekStart(0), b = new Date(min.getFullYear(), min.getMonth(), min.getDate());
+  b.setDate(b.getDate() - ((b.getDay() + 6) % 7));
+  return Math.max(0, Math.min(520, Math.round((a - b) / (7 * 24 * 3600 * 1000))));
+}
+
+function renderMuscles() {
+  const s = muState;
+  const key = weekKey(addDays(new Date(), -7 * s.off));
+  const wk = muscleWeek(key);
+  const label = s.off === 0 ? t('muscles.thisWeek') : s.off === 1 ? t('muscles.lastWeek') : t('muscles.weekOf', { date: formatDate(localDateKey(muscleWeekStart(s.off))) });
+  document.getElementById('muscles-week').textContent = label;
+  const prev = document.getElementById('btn-muscles-prev'), next = document.getElementById('btn-muscles-next');
+  prev.disabled = s.off >= s.maxOff;
+  next.disabled = s.off <= 0;
+  const ranked = muscleRanked(wk.sets);
+  const max = ranked.length ? wk.sets[ranked[0]] : 1;
+  const list = document.getElementById('muscles-list');
+  list.innerHTML = ranked.length ? ranked.map((m) => {
+    const pts = s.trend.map((x, i) => ({ x: i, y: x.sets[m] || 0 }));
+    return '<div class="mu-row"><div class="mu-head"><span class="mu-name">' + esc(muscleLabel(m)) + '</span><span class="mu-val"><bdi dir="ltr">' + esc(xpNum(wk.sets[m])) + '</bdi> ' + esc(t('units.sets')) + '</span></div>'
+      + '<div class="mu-line"><span class="mu-bar"><i style="width:' + (Math.round(wk.sets[m] / max * 1000) / 10) + '%"></i></span>'
+      + '<span class="mu-spark" role="img" aria-label="' + escAttr(t('muscles.trend', { name: muscleLabel(m) })) + '">' + lineChartSvg(pts, { compact: true }) + '</span></div></div>';
+  }).join('') : '<div class="xp-empty">' + esc(t('muscles.empty')) + '</div>';
+  document.getElementById('muscles-total').innerHTML = '<span>' + esc(t('muscles.volume')) + '</span><b><bdi dir="ltr">' + esc(xpNum(Math.round(wk.totalVolume))) + '</bdi> ' + esc(t('units.kg')) + '</b>';
+}
+
+function openMuscles() {
+  const modal = document.getElementById('modal-muscles');
+  if (!modal) return;
+  const opener = modal.hidden ? document.activeElement : (muState && muState.opener);
+  /* Odvodené údaje sa počítajú raz pri otvorení: trend 8 týždňov a najstarší týždeň histórie. */
+  muState = { off: 0, maxOff: muscleMaxOffset(), trend: muscleTrend(8), opener };
+  renderMuscles();
+  modal.hidden = false;
+  const body = document.getElementById('muscles-body');
+  if (body) body.scrollTop = 0;
+  const target = document.getElementById('btn-muscles-close');
+  try { target.focus({ preventScroll: true }); } catch (e) { target.focus(); }
+  refreshUpdateBanner();
+}
+function closeMuscles() {
+  const modal = document.getElementById('modal-muscles');
+  if (!modal || modal.hidden) return;
+  modal.hidden = true;
+  const opener = muState && muState.opener;
+  muState = null;
+  restoreSheetFocus(opener);
+  refreshUpdateBanner();
+}
+function stepMuscles(delta) {
+  if (!muState) return;
+  const was = document.activeElement;
+  muState.off = Math.max(0, Math.min(muState.maxOff, muState.off + delta));
+  renderMuscles();
+  /* tlačidlo, ktoré sa práve vypol, nesmie nechať fokus v prázdne */
+  if (was && was.disabled) {
+    const other = document.getElementById(delta > 0 ? 'btn-muscles-next' : 'btn-muscles-prev');
+    const to = other && !other.disabled ? other : document.getElementById('btn-muscles-close');
+    try { to.focus({ preventScroll: true }); } catch (e) { to.focus(); }
+  }
+}
+function initMuscles() {
+  on('btn-muscles-close', closeMuscles);
+  on('btn-muscles-prev', () => stepMuscles(1));
+  on('btn-muscles-next', () => stepMuscles(-1));
+  const modal = document.getElementById('modal-muscles');
+  modal.addEventListener('click', (e) => { if (e.target === modal) closeMuscles(); });
+}
+
 /* ---------- Prehľad aktivít (Pokrok) ---------- */
 function renderActivities() {
   const list = document.getElementById('activities-list');
@@ -28050,6 +28223,8 @@ function setupEvents() {
   document.addEventListener('keydown', (e) => {
     if (e.key !== 'Escape') return;
     if (tourOpen()) { e.preventDefault(); closeTour('skipped'); return; }   // návod je navrchu, Esc zavrie len jeho
+    const muSheet = document.getElementById('modal-muscles');
+    if (muSheet && !muSheet.hidden) { closeMuscles(); return; }   // list Svaly
     const xpSheet = document.getElementById('modal-ex-progress');
     if (xpSheet && !xpSheet.hidden) { closeExerciseProgress(); return; }   // list progresu je navrchu nad detailom, dňom aj knižnicou
     const inviteModal = document.getElementById('modal-community-invite');
@@ -28527,7 +28702,7 @@ function isBusy() {
   const forms = ['modal-confirm', 'modal-history-edit', 'modal-settings', 'modal-setup', 'modal-generic',
     'modal-planchoice', 'modal-fullbody', 'modal-lang', 'modal-measure', 'modal-food',
     'modal-library', 'modal-exercise', 'modal-photo-add', 'modal-photo', 'modal-photo-compare',
-    'modal-community-caption', 'modal-auth', 'modal-sync', 'modal-plates', 'modal-effort', 'modal-ex-actions', 'modal-ex-progress'];
+    'modal-community-caption', 'modal-auth', 'modal-sync', 'modal-plates', 'modal-effort', 'modal-ex-actions', 'modal-ex-progress', 'modal-muscles'];
   for (const id of forms) {
     const el = document.getElementById(id);
     if (el && !el.hidden) return true;                   // otvorený formulár / dialóg
@@ -29136,6 +29311,7 @@ function tourHelpShow() {
 const NATIVE_BACK_CLOSE = [
   ['modal-rest', '#btn-rest-close'],
   ['modal-ex-progress', '#btn-ex-progress-close'],
+  ['modal-muscles', '#btn-muscles-close'],
   ['modal-ex-actions', '#btn-ex-actions-close'],
   ['modal-plates', '#btn-plates-close'],
   ['modal-effort', '#btn-effort-close'],
