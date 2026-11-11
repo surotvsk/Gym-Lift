@@ -138,6 +138,37 @@ function check(name, ok, info) {
       try { return exerciseSeries('bench-press').length; } finally { state.history = keep; } })()`);
     check('junk workouts add no points and do not throw', jw === 3, jw);
 
+    console.log('== doneSets');
+    const ds = { name: 'X', sets: 3, reps: 5, weight: 110, setsDone: 2, doneSets: [1, 3], setWeights: [100, 105, 110], setReps: [8, 6, 4] };
+    check('valid doneSets [1,3] (no RPE) is used exactly', same((await ev(`historyWorkingSets(${J(ds)})`)).map((x) => [x.set, x.weight, x.reps]), [[1, 100, 8], [3, 110, 4]]));
+    const bads = [[3, 1], [1, 1], [1, 4], [0, 1], [1], [1, 2, 3], 'x', [1.5, 2]];
+    check('invalid doneSets fall back to the heuristic (sets 1, 2), no throw', (await ev(`${J(bads)}.map((d) => historyWorkingSets(Object.assign(${J(ds)}, { doneSets: d })).map((x) => x.set).join())`)).every((v) => v === '1,2'));
+    console.log('== real finish writes doneSets');
+    await p.eval(`(() => {
+      state.history = [];
+      state.plans['dtest'] = { id: 'dtest', builtin: false, customName: 'Done test', location: null, exercises: [{ id: 'bench-press', name: 'Bench', sets: 3, reps: 5, weight: 100 }] };
+      if (!state.planOrder.includes('dtest')) state.planOrder.push('dtest');
+      selectedPlan = 'dtest'; saveState(); switchTab('trening'); renderTrening(); return true; })()`);
+    await wait(300);
+    await p.eval(`(() => { const b = document.querySelectorAll('#exercise-list .exercise .set-item:not(.drop-item) .set-btn'); b[0].click(); b[2].click(); return true; })()`);
+    await p.eval(`(finishWorkout(), confirmFinish(), true)`);
+    await wait(300);
+    const fe = await ev(`state.history[0].exercises[0]`);
+    check('finish with sets 1 and 3, no RPE: doneSets [1,3], setsDone 2', same(fe.doneSets, [1, 3]) && fe.setsDone === 2 && fe.setRpe === undefined, fe);
+    check('working sets are sets 1 and 3', same(await ev(`historyWorkingSets(state.history[0].exercises[0]).map((x) => x.set)`), [1, 3]));
+    const noDs = await ev(`(() => { const e = JSON.parse(JSON.stringify(state.history[0])); delete e.exercises[0].doneSets; return [historyDoneSets(e), historyDoneSets(state.history[0]), JSON.stringify(personalRecords())]; })()`);
+    check('historyDoneSets unchanged by doneSets', noDs[0] === noDs[1] && noDs[1] === 2, noDs);
+    check('XP and personalRecords unchanged by doneSets', await ev(`(() => { const w = state.history[0]; const a = historyEntryXp(w), r = JSON.stringify(personalRecords()); const c = JSON.parse(JSON.stringify(w)); delete c.exercises[0].doneSets; state.history = [c]; const same = historyEntryXp(c) === a && JSON.stringify(personalRecords()) === r; state.history = [w]; return same; })()`));
+    check('no doneSets for an unfinished-set exercise', await ev(`(() => { const e = historyExerciseEntry(state.plans.dtest.exercises[0], null); return e.doneSets === undefined && e.setsDone === 0; })()`));
+    console.log('== history edit keeps/drops doneSets');
+    const edit = (f, v) => p.eval(`(() => { openHistoryEdit(state.history[0].id); const i = document.querySelector('#he-exercises input[data-f="${f}"]'); i.value = '${v}'; i.dispatchEvent(new Event('input', { bubbles: true })); saveHistoryEdit(); return true; })()`);
+    await p.eval(`(() => { openHistoryEdit(state.history[0].id); saveHistoryEdit(); return true; })()`);
+    check('an edit that changes nothing keeps doneSets', same(await ev(`state.history[0].exercises[0].doneSets`), [1, 3]));
+    await edit('reps', 6);
+    check('editing reps keeps doneSets (still valid)', same(await ev(`state.history[0].exercises[0].doneSets`), [1, 3]));
+    await edit('setsDone', 3);
+    check('changing setsDone makes doneSets invalid -> deleted, heuristic takes over', (await ev(`state.history[0].exercises[0].doneSets === undefined`)) === true && same(await ev(`historyWorkingSets(state.history[0].exercises[0]).map((x) => x.set)`), [1, 2, 3]));
+
     console.log('== endedAt');
     await p.eval(`(() => {
       state.history = [{ id: 'old', planId: 'pa', planName: 'A', date: '2026-10-01', xp: 10, note: '', exercises: [{ name: 'Bench press', exId: 'bench-press', sets: 3, reps: 8, weight: 100, setsDone: 3 }] }];

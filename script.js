@@ -23189,6 +23189,7 @@ function historyExerciseEntry(ex, sess) {
       if (sess && sess.actualFailureSets[setSessionKey(ex, i)]) fails.push(i + 1);
     }
     entry.setsDone = done.length;
+    if (done.length) entry.doneSets = done.slice();   // presné čísla hotových sérií (aditívne)
     entry.actualFailureSets = cleanFailureSets(fails, sessionSetCount(ex));
     historyApplySetWeights(entry, ex, done);
     historyApplySetReps(entry, ex);
@@ -23561,6 +23562,8 @@ function saveHistoryEdit() {
     e.reps = Math.max(1, Math.min(99, Math.round(e.reps)));
     e.weight = Math.max(0, Math.min(999, Math.round(e.weight * 2) / 2));
     e.setsDone = Math.max(0, Math.min(e.sets, Math.round(e.setsDone)));
+    /* Presný zoznam hotových sérií platí, len kým súhlasí s počtom sérií a hotových; inak ho nahradí odhad. */
+    if (e.doneSets !== undefined && !cleanHistoryDoneSets(e)) delete e.doneSets;
     /* Váhy jednotlivých sérií platia len pre pôvodný záznam: ručne zmenená váha alebo počet
        sérií ich nahradí jednou váhou (inak by zobrazenie odporovalo upravenej hodnote). */
     const orig = heOriginal[idx];
@@ -25788,7 +25791,19 @@ function insightPosInt(v) {
 /* Hotové čísla sérií obyčajného cviku. V histórii je len POČET `setsDone`, nie zoznam, preto sa čísla
    odvodia: série so záznamom námahy alebo zlyhania sú iste hotové, zvyšok sa dopĺňa od prvej série.
    Starý záznam bez `setsDone` = všetky série hotové. */
+/* Presný zoznam hotových sérií `doneSets` (píše ho nové ukončenie): zoradené jedinečné celé čísla 1..sets,
+   počet = setsDone. Neplatný zoznam sa ignoruje (null) a čísla sa odvodia odhadom nižšie. */
+function cleanHistoryDoneSets(e) {
+  const sets = insightPosInt(e && e.sets);
+  const list = e && e.doneSets;
+  if (!sets || !Array.isArray(list) || !list.length || list.length > sets) return null;
+  const done = e.setsDone === undefined ? sets : insightPosInt(e.setsDone);
+  if (done !== list.length) return null;
+  return list.every((n, i) => Number.isInteger(n) && n >= 1 && n <= sets && (i === 0 || n > list[i - 1])) ? list.slice() : null;
+}
 function insightDoneNumbers(e, sets) {
+  const exact = cleanHistoryDoneSets(e);
+  if (exact) return exact;
   const count = e.setsDone === undefined ? sets : Math.min(sets, insightPosInt(e.setsDone) === null ? 0 : e.setsDone);
   if (count <= 0) return [];
   const sure = new Set();
