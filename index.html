@@ -96,6 +96,7 @@
           <span class="bt-l" id="bt-next-label"></span>
           <b class="bt-plan" id="bt-next-name"></b>
           <span class="bt-line" id="dnes-next-plan"></span>
+          <span class="bt-hint" id="bt-recovery-hint" hidden></span>
           <button type="button" class="bt-start" id="btn-start-workout"><svg class="kico" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l12-7.5-12-7.5Z"/></svg><span id="bt-start-text" data-i18n="bento.start">Štart</span></button>
         </div>
         <button type="button" class="bt bt-lime w2 h2" data-go="calendar" id="bt-week">
@@ -1242,6 +1243,8 @@
         <button type="button" class="btn-icon" id="btn-muscles-close" data-i18n-title="muscles.close" data-i18n-aria="muscles.close">✕</button>
       </div>
       <div class="sheet-scroll" id="muscles-body">
+        <div class="rec-map" id="muscles-map"></div>
+        <p class="card-note rec-note" data-i18n="recovery.note"></p>
         <div class="mu-nav" role="group" data-i18n-aria="muscles.weekGroup">
           <button type="button" class="btn-icon mu-step" id="btn-muscles-prev" data-i18n-title="muscles.prev" data-i18n-aria="muscles.prev">‹</button>
           <span class="mu-week" id="muscles-week" aria-live="polite"></span>

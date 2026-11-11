@@ -5101,3 +5101,19 @@ button.record-row::after { content: '\203A'; flex: 0 0 auto; color: var(--text-f
 .mu-total { display: flex; justify-content: space-between; gap: var(--sp-3); margin-top: var(--sp-3); padding: var(--sp-3); background: var(--surface-2); border-radius: 16px; font-size: var(--fs-sm); }
 .mu-total > b { font-variant-numeric: tabular-nums; }
 .mu-note { margin-top: var(--sp-3); }
+
+/* Zotavenie svalov: mapa tela (kresba zo zaoblených tvarov) a tip na Dnes; farby len z žetónov, bez "dobré / zlé" */
+.body-map { display: block; max-width: 100%; }
+.body-map.mini { height: 48px; width: auto; }
+.body-map.full { width: min(100%, 280px); height: auto; margin: 0 auto; }
+.body-map .bm-base { fill: var(--border); }
+.body-map [data-muscle] > * { fill: var(--surface-2); stroke: var(--border); stroke-width: .6; }
+.body-map .rec-1 > * { fill: var(--accent); fill-opacity: .2; }
+.body-map .rec-2 > * { fill: var(--accent); fill-opacity: .45; }
+.body-map .rec-3 > * { fill: var(--accent); fill-opacity: .75; }
+.bt-muscles .body-map { position: absolute; inset-inline-end: 14px; bottom: 12px; }
+.bt-muscles .bt-line { padding-inline-end: 56px; }
+.rec-map { padding: var(--sp-2) 0 0; }
+.rec-note { margin: var(--sp-2) 0 var(--sp-3); text-align: center; }
+.bt-hint { margin-top: 4px; font-size: 12px; line-height: 1.35; opacity: .6; overflow-wrap: anywhere; }
+.bt-hint[hidden] { display: none; }
