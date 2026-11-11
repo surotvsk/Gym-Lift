@@ -46,6 +46,7 @@ function check(name, ok, info) {
     })()`);
     const snap = `(() => (xpCacheClear(), { xp: totalXP(), streak: computeStreak(), wk: sessionsInWeek(currentWeekKey()), lvl: levelForXp(totalXP()), ach: Object.keys(state.achievements || {}).sort(), lb: leaderboardPayload(), pr: personalRecords(), real: state.history.length }))()`;
     const base = await ev(snap);
+    check('base snapshot is real (no threw, has xp)', !('threw' in base) && typeof base.xp === 'number' && base.xp > 0, base);
 
     console.log('== History list');
     check('API exists', await ev(`['deleteImportedWorkout', 'countImportedSource', 'removeImportedSource', 'confirmRemoveImportedSource'].map((n) => typeof window[n])`).then((a) => J(a) === '["function","function","function","function"]'));
@@ -108,12 +109,17 @@ function check(name, ok, info) {
     const day = await ev(`Array.from(document.querySelectorAll('#day-body .day-workout')).map((d) => ({ name: d.querySelector('.day-workout-name').textContent, tag: (d.querySelector('.imp-tag') || {}).textContent || '', xp: !!d.querySelector('.day-workout-xp'), del: !!d.querySelector('[data-action="delete-imported"]'), link: !!d.querySelector('.ex-prog-link') }))`);
     check('day sheet lists both, only the imported one tagged', day.length === 2 && day.filter((d) => d.tag === 'Imported · CSV').length === 1 && day.filter((d) => !d.tag).length === 1, day);
     check('imported block: no XP, delete button, exercise link', day.every((d) => d.tag ? (!d.xp && d.del && d.link) : (d.xp && !d.del)), day);
+    check('mixed-day status equals the real-only status', await ev(`document.getElementById('day-status').textContent`) === await ev(`t('kalendar.statusWorkout')`));
     check('imported block: no XP / share / health elements even with a health field', await ev(`(() => { const d = Array.from(document.querySelectorAll('#day-body .day-workout')).find((x) => x.querySelector('.imp-tag')); return ['.day-workout-xp', '.day-share', '.health-line', '.health-refresh'].map((s) => !!d.querySelector(s)); })()`).then((a) => J(a) === '[false,false,false,false]'));
     check('imported-only day status is neutral, not "Workout completed"', await ev(`(() => { const c = document.querySelector('.cal-cell[data-day="' + localDateKey(addDays(new Date(), -5)) + '"]'); return [c.getAttribute('aria-label'), dayStatusText(localDateKey(addDays(new Date(), -5)), 0)]; })()`).then((a) => !/completed/i.test(a[0]) && /Imported workout/.test(a[0])), 1);
+    check('imported-only day sheet shows imp.status', await ev(`(openDay(localDateKey(addDays(new Date(), -5))), document.getElementById('day-status').textContent)`) === await ev(`t('imp.status')`));
+    await p.eval(`(openDay(localDateKey(addDays(new Date(), -1))), true)`);
     await p.eval(`(document.querySelector('#day-body [data-action="delete-imported"]').click(), true)`);
     check('day-sheet delete asks first', await ev(`!document.getElementById('modal-generic').hidden && state.importedHistory.some((w) => w.id === 'i-mixed')`) === true);
     await p.eval(`(document.getElementById('btn-generic-ok').click(), true)`);
     check('day-sheet delete removes it and redraws the sheet', await ev(`[state.importedHistory.some((w) => w.id === 'i-mixed'), document.querySelectorAll('#day-body .day-workout').length]`).then((a) => J(a) === '[false,1]'));
+    /* pozitívna kontrola: skutočný blok s rovnakým health poľom ukáže .health-line (hradlo skrýva len import) */
+    check('positive control: real block with health renders .health-line, imported does not', await ev(`(() => { const o = window.isNativeApp; window.isNativeApp = () => true; try { const h = { hrAvg: 120, start: new Date().toISOString(), end: new Date().toISOString(), readAt: new Date().toISOString() }; const r = JSON.parse(JSON.stringify(state.history[0])); r.health = h; const i = JSON.parse(JSON.stringify(state.importedHistory[0])); i.health = h; return [!!workoutBlock(r).querySelector('.health-line'), !!workoutBlock(i, { imported: true }).querySelector('.health-line')]; } finally { window.isNativeApp = o; } })()`).then((a) => J(a) === '[true,false]'));
     check('modal-day still open', await ev(`!document.getElementById('modal-day').hidden`) === true);
     await p.eval(`(closeDay(), true)`);
 
@@ -123,6 +129,7 @@ function check(name, ok, info) {
 
     console.log('== languages, RTL');
     await p.eval(`(() => { state.importedHistory = [{ id: 'l1', date: localDateKey(new Date()), planName: 'Chest day', source: 'strong', importKey: 'l1', exercises: [{ name: 'Bench Press', exId: 'bench-press', sets: 3, reps: 5, weight: 80, setsDone: 3 }] }]; saveState(); return true; })()`);
+    const TAGS = { sk: 'Importované · Strong', en: 'Imported · Strong', es: 'Importado · Strong', 'pt-BR': 'Importado · Strong', fr: 'Importé · Strong', ar: 'مستورد · Strong' };
     for (const lang of ['sk', 'en', 'es', 'pt-BR', 'fr', 'ar']) {
       await p.eval(`(setLang('${lang}'), switchTab('pokrok'), setPokrokView('history'), renderPokrok(), true)`);
       const x = await ev(`(() => { const r = document.querySelector('#history-list .history-imported'); const tag = r.querySelector('.imp-tag').textContent; const d = document.querySelector('#history-list'); 
@@ -130,7 +137,7 @@ function check(name, ok, info) {
         document.querySelector('#history-list .history-imported [data-action="delete"]').click();
         const dlg = document.getElementById('generic-title').textContent + ' | ' + document.getElementById('generic-text').textContent; document.getElementById('btn-generic-cancel').click();
         return { tag, dlg, miss, dir: document.documentElement.dir, over: document.documentElement.scrollWidth <= window.innerWidth }; })()`);
-      check(lang + ': tag + dialog translated, no raw key / NaN, no overflow', x.miss.length === 0 && !/imp\.|NaN|undefined|\{/.test(x.tag + x.dlg) && x.over && x.tag.indexOf('Strong') >= 0 && (lang !== 'ar' || x.dir === 'rtl') && (lang === 'en' || lang === 'ar' || x.tag !== 'Imported · Strong' || true), x);
+      check(lang + ': tag + dialog translated, no raw key / NaN, no overflow', x.miss.length === 0 && !/imp\.|NaN|undefined|\{/.test(x.tag + x.dlg) && x.over && x.tag.indexOf('Strong') >= 0 && (lang !== 'ar' || x.dir === 'rtl') && x.tag === TAGS[lang], x);
       if (lang === 'ar') console.log('    ar tag: ' + x.tag + '  dialog: ' + x.dlg);
     }
     check('no page errors', p.errors.length === 0, p.errors.slice(0, 3));

@@ -22987,7 +22987,7 @@ function renderDayDetail(key) {
   statusEl.className = 'day-status ' + (total ? (workouts.length + acts.length ? 'day-status-done' : 'day-status-imp')
     : isFuture ? 'day-status-future'
     : key === today ? 'day-status-today' : 'day-status-miss');
-  statusEl.textContent = !workouts.length && !acts.length && imported.length ? t('imp.status') : dayStatusText(key, total);
+  statusEl.textContent = !workouts.length && !acts.length && imported.length ? t('imp.status') : dayStatusText(key, workouts.length + acts.length);
 
   const body = document.getElementById('day-body');
   body.innerHTML = '';
