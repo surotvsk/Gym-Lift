@@ -7604,7 +7604,7 @@ const BASICS_I18N = {
     'exactions.more': 'Ďalšie akcie pre {name}', 'exactions.close': 'Zavrieť', 'exactions.progress': 'Pokrok', 'exactions.moreOptions': 'Ďalšie možnosti',
     'xprog.close': 'Zavrieť', 'xprog.statE1rm': 'Najlepší odhad 1RM', 'xprog.statHeaviest': 'Najťažšie', 'xprog.statBestSet': 'Najlepšia séria', 'xprog.statSessions': 'Tréningy', 'xprog.statLeastHelp': 'Najmenej pomoci', 'xprog.metricE1rm': 'Odhad 1RM', 'xprog.metricHeaviest': 'Najťažšie', 'xprog.metricVolume': 'Objem', 'xprog.metricHelp': 'Pomoc', 'xprog.metricGroup': 'Čo ukázať v grafe', 'xprog.rangeGroup': 'Obdobie', 'xprog.r3m': '3 M', 'xprog.r1y': '1 R', 'xprog.rAll': 'Všetko', 'xprog.empty': 'Zapíš tento cvik aspoň dvakrát a objaví sa graf.', 'xprog.sessions': 'Tréningy', 'xprog.more': 'Zobraziť viac', 'xprog.estNote': 'Odhad podľa Epleya, nie otestované maximum.', 'xprog.open': 'Zobraziť pokrok: {name}', 'xprog.link': 'Pokrok', 'xprog.chartAria': '{label}, {unit}: od {from} do {to}',
     'muscles.title': 'Svaly', 'muscles.tile': 'Svaly', 'muscles.empty': 'Tento týždeň žiadne série', 'muscles.close': 'Zavrieť', 'muscles.weekGroup': 'Týždeň', 'muscles.prev': 'Predchádzajúci týždeň', 'muscles.next': 'Nasledujúci týždeň', 'muscles.thisWeek': 'Tento týždeň', 'muscles.lastWeek': 'Minulý týždeň', 'muscles.weekOf': 'Týždeň od {date}', 'muscles.volume': 'Celkový objem', 'muscles.other': 'Ostatné', 'muscles.note': 'Hlavný sval sa počíta ako 1 séria, pomocné svaly ako ½. Vlastné cviky patria do Ostatné. Bežné odporúčanie je asi 10–20 sérií na sval týždenne.', 'muscles.trend': '{name}: série za týždeň, posledných 8 týždňov',
-    'recovery.hint': '{muscle}: zotavenie ešte prebieha — zvážte {plan}', 'recovery.mapAria': 'Odhad zotavenia svalov, pohľad spredu a zozadu', 'recovery.note': 'Odhad z tvojich sérií za posledné 3 – 4 dni: výraznejšia farba = nedávnejšia záťaž. Nie je to lekárska rada.',
+    'recovery.hint': '{muscle}: zotavenie ešte prebieha — zváž {plan}', 'recovery.mapAria': 'Odhad zotavenia svalov, pohľad spredu a zozadu', 'recovery.note': 'Odhad z tvojich sérií za posledné 3 – 4 dni: výraznejšia farba = nedávnejšia záťaž. Nie je to lekárska rada.',
   },
   en: {
     'settings.autoRest': 'Start rest automatically', 'settings.autoRestHint': 'The rest timer starts by itself when you mark a set done. In a superset, after the last exercise.',
@@ -14410,9 +14410,6 @@ function buildPlatesButton(ex) {
   return btn;
 }
 function initPlateSheet() {
-  initExerciseActions();
-  initExerciseProgress();
-  initMuscles();
   on('btn-plates-close', closePlateCalc);
   on('plate-target', () => {
     const v = cleanSetWeightValue(document.getElementById('plate-target').value);
@@ -22480,7 +22477,7 @@ function renderPokrok() {
         row.type = 'button';
         row.dataset.xid = xid;
         row.dataset.xname = r.name;
-        row.setAttribute('aria-label', t('xprog.open', { name: r.name }));
+        /* Bez aria-label: prístupný názov tlačidla je jeho obsah (názov, váha, dátum), inak by ho nahradil. */
       }
       row.innerHTML = `
         <span class="record-main">
@@ -23603,7 +23600,10 @@ function openHistoryEdit(id) {
 function saveHistoryEdit() {
   const w = state.history.find(x => x.id === heWorkoutId);
   if (!w) return;
+  const prevDate = w.date;
   w.date = document.getElementById('he-date').value || w.date;
+  /* Zmena dátumu zneplatní čas ukončenia (inak by zotavenie počítalo so starým dňom). */
+  if (w.date !== prevDate) delete w.endedAt;
   w.note = document.getElementById('he-note').value.trim();
   w.exercises.forEach((e, idx) => {
     e.sets = Math.max(1, Math.min(99, Math.round(e.sets)));
@@ -25923,6 +25923,8 @@ function entryIdentity(entry) {
   try {
     if (!entry || typeof entry !== 'object') return null;
     if (typeof entry.exId === 'string' && BUILTIN_EXERCISE_IDS.has(entry.exId)) return entry.exId;
+    /* Starší záznam bez exId: názov zabudovaného cviku (aj preložený/starý) sa najprv premapuje na jeho id. */
+    if (typeof entry.name === 'string' && BUILTIN_NAME_TO_ID[entry.name] && BUILTIN_EXERCISE_IDS.has(BUILTIN_NAME_TO_ID[entry.name])) return BUILTIN_NAME_TO_ID[entry.name];
     return typeof entry.name === 'string' ? exerciseIdentity({ name: entry.name }) : null;
   } catch (err) {
     return null;
@@ -25932,7 +25934,9 @@ function entryIdentity(entry) {
 /* Platný čas ukončenia tréningu (ms), inak null. Pole `endedAt` zapisuje len nové ukončenie, nikdy sa nevyžaduje. */
 function historyEndedAt(w) {
   const v = w && w.endedAt;
-  return typeof v === 'number' && Number.isFinite(v) && v > 0 ? v : null;
+  if (!(typeof v === 'number' && Number.isFinite(v) && v > 0)) return null;
+  /* Platí len, kým jeho miestny dátum súhlasí s dátumom záznamu (po úprave dátumu by bol zastaraný). */
+  return typeof w.date === 'string' && localDateKey(new Date(v)) === w.date ? v : null;
 }
 
 /* Najlepšia séria: najvyšší odhad 1RM, inak najťažšia (pri zhode viac opakovaní). Asistované: najmenšia pomoc. */
@@ -25988,8 +25992,8 @@ function exerciseSeries(identity) {
 }
 
 /* Súhrn cviku z radu: najlepší odhad 1RM, najťažšia váha, najlepšia séria, najväčší objem, počet tréningov. */
-function exerciseSummary(identity) {
-  const series = exerciseSeries(identity);
+function exerciseSummary(identity, seriesArg) {
+  const series = Array.isArray(seriesArg) ? seriesArg : exerciseSeries(identity);
   const max = (list) => (list.length ? Math.max.apply(null, list) : null);
   const lifted = series.filter((p) => !p.assisted);
   const bestE1rm = max(lifted.map((p) => p.e1rm).filter((v) => v !== null));
@@ -26012,7 +26016,9 @@ function exerciseSummary(identity) {
 /* Číslo na max. 1 desatinné miesto bez zbytočných núl; null → pomlčka. */
 function xpNum(n) {
   if (typeof n !== 'number' || !Number.isFinite(n)) return '—';
-  return String(Math.round(n * 10) / 10);
+  const r = Math.round(n * 10) / 10;
+  /* Desatinný oddeľovač podľa jazyka (7,5 vo fr/sk/es/pt-BR); bez oddeľovania tisícov, aby riadky zostali krátke. */
+  try { return r.toLocaleString(langMeta(activeLang()).locale, { maximumFractionDigits: 1, useGrouping: false }); } catch (e) { return String(r); }
 }
 function xpSetText(s) { return xpNum(s.weight) + '×' + xpNum(s.reps); }
 
@@ -26101,7 +26107,13 @@ function xpMetricDefs(assisted) {
 function xpRangeCutoff(range) {
   if (range === 'all') return 0;
   const d = new Date();
-  if (range === '3m') d.setMonth(d.getMonth() - 3); else d.setFullYear(d.getFullYear() - 1);
+  d.setHours(0, 0, 0, 0);
+  const months = range === '3m' ? 3 : 12;
+  /* Odčítanie mesiacov bez pretečenia (31. máj − 3 M = koniec februára, nie 3. marec). */
+  const day = d.getDate();
+  d.setDate(1);
+  d.setMonth(d.getMonth() - months);
+  d.setDate(Math.min(day, new Date(d.getFullYear(), d.getMonth() + 1, 0).getDate()));
   return d.getTime();
 }
 function xpPointValue(p, metric) {
@@ -26178,7 +26190,7 @@ function openExerciseProgress(identity, displayName) {
   const series = exerciseSeries(identity);
   const assisted = series.length > 0 && series[series.length - 1].assisted;
   xpState = {
-    identity, name: xpDisplayName(identity, displayName), series, summary: exerciseSummary(identity), sessions: exerciseSessionList(identity),
+    identity, name: xpDisplayName(identity, displayName), series, summary: exerciseSummary(identity, series), sessions: exerciseSessionList(identity),
     assisted, metric: assisted ? 'help' : 'e1rm', range: 'all', shown: XP_SESSION_PAGE, opener,
   };
   document.getElementById('ex-progress-title').textContent = xpState.name;
@@ -26275,8 +26287,8 @@ function muscleBuckets(keys) {
         if (!ws.length && !drops.length) continue;
         const share = muscleShare(e);
         const assisted = historyEntryAssisted(e);
-        /* jednostranný cvik: séria s oboma stranami je jedna séria; objem sa spočíta za každú stranu */
-        const nSets = new Set(ws.map((s) => s.set)).size + drops.length;
+        /* jednostranný cvik: každá hotová strana = ½ série (obe strany = 1, jedna = ½), rovnako ako v zotavení; objem za každú stranu */
+        const nSets = (e && e.unilateral === true ? ws.length / 2 : new Set(ws.map((s) => s.set)).size) + drops.length;
         const vol = assisted ? 0 : ws.concat(drops).reduce((a, s) => a + s.weight * s.reps, 0);
         for (const m of Object.keys(share)) {
           b.sets[m] = (b.sets[m] || 0) + nSets * share[m];
@@ -26486,10 +26498,10 @@ function bodyMapSvg(recovery, opts) {
     + g('legs', both((c) => rect(c - 11, 56, 10, 22, 5) + rect(c + 1, 56, 10, 22, 5) + rect(c - 10, 79, 8, 18, 4) + rect(c + 2, 79, 8, 18, 4)))
     + g('arms', both((c) => rect(c - 22, 27, 7, 15, 3.5) + rect(c + 15, 27, 7, 15, 3.5) + rect(c - 23, 43, 6, 15, 3) + rect(c + 17, 43, 6, 15, 3)))
     + g('back', rect(73, 17, 22, 28, 7))
-    + g('shoulders', both((c) => ell(c - 15, 22, 5.5, 5.5) + ell(c + 15, 22, 5.5, 5.5)))
+    + g('shoulders', both((c) => ell(c - 17.5, 22, 4.5, 5.5) + ell(c + 17.5, 22, 4.5, 5.5)))
     + g('chest', rect(17, 18, 10.5, 12, 4) + rect(28.5, 18, 10.5, 12, 4))
     + g('core', rect(20, 32, 16, 20, 5))
-    + g('glutes', ell(78, 53, 6.5, 7) + ell(90, 53, 6.5, 7))
+    + g('glutes', ell(78, 50.5, 6.5, 5.5) + ell(90, 50.5, 6.5, 5.5))
     + '</svg>';
 }
 
@@ -26557,14 +26569,20 @@ function recoveryHintForToday() {
     if (getSession()) return null;
     const day = localDateKey(new Date());
     const rid = recommendedPlan();
-    if (recoveryShown && recoveryShown.day === day && recoveryShown.rid === rid && recoveryHintDay() === day) return recoveryHintText(recoveryShown);
+    /* Tip sa „minie“ až keď ho používateľ naozaj vidí: Dnes je aktívna karta a stránka je viditeľná. */
+    const seen = () => activeTab === 'dnes' && document.visibilityState === 'visible';
+    /* Zapamätaný tip platí, kým je deň a odporúčaný plán ten istý a (ak už bol zapísaný) kým kľúč dňa v úložisku drží. */
+    if (recoveryShown && recoveryShown.day === day && recoveryShown.rid === rid && (!recoveryShown.marked || recoveryHintDay() === day)) {
+      if (seen() && !recoveryShown.marked) { recoveryHintMark(day); recoveryShown.marked = true; }
+      return recoveryHintText(recoveryShown);
+    }
     recoveryShown = null;
     const info = recoveryHintInfo();
     if (!info) return null;
     const text = recoveryHintText(info);
     if (!text) return null;
-    recoveryShown = { day, rid, muscle: info.muscle, planId: info.planId };
-    recoveryHintMark(day);
+    recoveryShown = { day, rid, muscle: info.muscle, planId: info.planId, marked: false };
+    if (seen()) { recoveryHintMark(day); recoveryShown.marked = true; }
     return text;
   } catch (err) {
     return null;
@@ -28697,6 +28715,9 @@ function setupEvents() {
   on('btn-open-rest', openRestSheet);
   on('btn-rest-close', closeRestSheet);
   initPlateSheet();
+  initExerciseActions();
+  initExerciseProgress();
+  initMuscles();
   initEffort();
   on('tr-start', () => { const p = getPlan(selectedPlan); if (p && ensureSession(p)) saveState(); renderTrening(); window.scrollTo(0, 0); });
   on('btn-fullbody-tile', openFullBodyBuilder);

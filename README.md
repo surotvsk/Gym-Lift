@@ -62,8 +62,9 @@ everything on your own device.
   are rated per side.
 - **One ⋯ sheet per exercise** — the secondary actions (**+ Warm-up**, **Warm-up ramp**, **+ Drop set**,
   **Plates**, **Replace exercise** and **Progress**) live behind a single **⋯** button next to *Add set* and
-  *Remove last set*, so the exercise tile stays calm. In the plan editor the same sheet is behind
-  **More options** on each row.
+  *Remove last set*, so the exercise tile stays calm. **Plates** appears only for barbell (and custom)
+  exercises, and **Replace exercise** only during a workout. In the plan editor, **More options** on each
+  row holds only the warm-up ramp toggle and **Link / Unlink** (for supersets).
 - **Exercise progress** — open **Progress** from the ⋯ sheet, or tap a record, an exercise in your history, or
   the exercise library page. A chart shows the **estimated 1RM**, the heaviest weight, the volume, or (for
   assisted exercises) the help you used, over 3 months, 1 year or all time, with your best sets and sessions
@@ -180,7 +181,7 @@ in the prototype.
   (tap its name to switch plans), the running time and **Rest**, **Finish · +XP** and **Discard**; every
   exercise is a tile (the one you are on is lavender, a finished one lime) with square set buttons
   showing reps and weight, and below them a pill per set for its reps, weight and failure mark, the
-  drop-set button, replace and exercise details. The plan editor opens as a full-screen sheet.
+  ⋯ button and exercise details. The plan editor opens as a full-screen sheet.
 - **Rest timer** — a sheet (presets, custom time, managing timers) opened from **Rest**; a running timer
   is a lime pill above the menu on every tab.
 - **Stats** — Week (lime), Month and All tiles with workouts and sets, *Sets per week* for the last
@@ -793,7 +794,7 @@ opens from places you are already working in:
 - the **Exercise library** button on the **Training** screen,
 - the same button while a **plan editor** is open, where exercises you find can be added straight into
   the plan you are editing,
-- the **⇄ replace** button on any exercise **during a workout**.
+- **Replace exercise** in the **⋯** sheet of any exercise **during a workout**.
 
 ### Finding something to train
 

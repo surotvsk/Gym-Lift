@@ -48,7 +48,9 @@ const rec = (n, share, age, win, mult) => { if (age >= win) return 100; return M
   const NOW = 1.8e12;   // pevné "teraz" pre vzorce
   const setHist = (hist) => p.eval(`(state.history = ${J(hist)}, saveState(), true)`);
   const bench = (n, extra) => Object.assign({ name: 'Bench Press', exId: 'bench-press', sets: n, reps: 5, weight: 100, setsDone: n }, extra || {});
-  const wo = (id, ended, exs, date) => ({ id, date: date || '2027-01-15', planId: 'pp', planName: 'X', endedAt: ended, exercises: exs });
+  /* dátum záznamu = miestny dátum `endedAt` (endedAt s iným dňom sa po oprave ignoruje) */
+  const lkey = (ms) => { const d = new Date(ms); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); };
+  const wo = (id, ended, exs, date) => ({ id, date: date || lkey(ended), planId: 'pp', planName: 'X', endedAt: ended, exercises: exs });
   const R = async (hist, now) => { await setHist(hist); return JSON.parse(await ev(`JSON.stringify(muscleRecovery(${now === undefined ? NOW : now}))`)); };
   try {
     await p.navigate(BASE);
