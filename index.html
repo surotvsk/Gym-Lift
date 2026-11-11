@@ -185,6 +185,7 @@
           <button type="button" class="bt w2" id="btn-add-plan"><svg class="kico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg><span class="bt-line bt-bottom" data-i18n="bento.newPlan">Nový plán</span></button>
           <button type="button" class="bt bt-lime w2" id="btn-exercise-library"><svg class="kico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4.5h6a2 2 0 0 1 2 2V20a2 2 0 0 0-2-2H4V4.5ZM20 4.5h-6a2 2 0 0 0-2 2V20a2 2 0 0 1 2-2h6V4.5Z"/></svg><span class="bt-line bt-bottom" data-i18n="bento.library">Knižnica cvikov</span></button>
           <button type="button" class="bt w2" id="btn-fullbody-tile"><svg class="kico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="1"/><rect x="13.5" y="3.5" width="7" height="7" rx="1"/><rect x="3.5" y="13.5" width="7" height="7" rx="1"/><rect x="13.5" y="13.5" width="7" height="7" rx="1"/></svg><span class="bt-line bt-bottom" data-i18n="bento.fullBody">Full Body</span></button>
+          <button type="button" class="bt w4" id="btn-programs-tile" aria-haspopup="dialog"><svg class="kico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg><span class="bt-line bt-bottom" data-i18n="programs.tile">Programy</span></button>
           <button type="button" class="bt bt-lav w4 train-tile" id="btn-train-tile" data-train-action="open" aria-expanded="false" hidden><svg class="kico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c1.2-3.5 3.6-5 6.5-5s5.3 1.5 6.5 5"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 15c2 .6 3.3 2.2 4 5"/></svg><span class="train-tile-text"><b data-i18n="train.open">Trénovať s priateľom</b><span class="bt-line" data-i18n="bento.trainLine">Pozvi priateľa a vidíte si navzájom série naživo</span></span></button>
         </div>
       </div>
@@ -598,6 +599,18 @@
       <p class="card-note suggest-text" id="suggest-text"></p>
       <p class="card-note" data-i18n="suggest.note">Zmení sa len tento tréning, nie plán.</p>
       <button type="button" class="btn btn-primary btn-block" id="btn-suggest-use"></button>
+    </div>
+  </div>
+
+  <!-- ============ MODAL: programy (zoznam, detail, tréningové maximá, aktívny program) ============ -->
+  <div class="modal-backdrop" id="modal-programs" hidden>
+    <div class="modal modal-form modal-programs" role="dialog" aria-modal="true" aria-labelledby="programs-title">
+      <div class="sheet-head">
+        <button type="button" class="btn-icon" id="btn-programs-back" hidden data-i18n-title="programs.back" data-i18n-aria="programs.back">‹</button>
+        <h3 id="programs-title" data-i18n="programs.title">Programy</h3>
+        <button type="button" class="btn-icon" id="btn-programs-close" data-i18n-title="programs.close" data-i18n-aria="programs.close">✕</button>
+      </div>
+      <div id="programs-body"></div>
     </div>
   </div>
 

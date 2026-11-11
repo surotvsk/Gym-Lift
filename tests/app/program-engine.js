@@ -49,7 +49,7 @@ function check(name, ok, info) {
       const bad = await S(`(() => { const keys = []; for (const pr of PROGRAMS) { keys.push(pr.nameKey, pr.descKey); for (const v of programVariants(pr)) { if (v.nameKey) keys.push(v.nameKey); for (const d of v.days) keys.push(d.nameKey); } } return keys.filter((k) => !I18N[${J(l)}][k] || /Posted|undefined/.test(I18N[${J(l)}][k])); })()`);
       check(l + ': every name/desc/day key translated', Array.isArray(bad) && bad.length === 0, bad);
     }
-    check('no person/brand names in English strings', await S(`!/wendler|starting strength|stronglifts|5x5|nsuns|jim|reddit|\\bppl\\b/i.test(Object.keys(I18N.en).filter((k) => k.indexOf('prog.') === 0).map((k) => I18N.en[k]).join(' '))`));
+    check('no person/brand names in English strings', await S(`!/wendler|starting strength|stronglifts|5x5|nsuns|jim|reddit|\\bppl\\b/i.test(Object.keys(I18N.en).filter((k) => k.indexOf('prog.') === 0 && k.indexOf('prog.short.') !== 0).map((k) => I18N.en[k]).join(' '))`));   // prog.short.* = krátka predpona názvu plánu (napr. PPL, podľa zadania úlohy 4)
 
     console.log('== week maths');
     await p.eval(`(() => { window.P = (start, extra) => Object.assign({ id: 'push-pull-legs', variant: '3day', startedAt: start, weekShift: 0, plans: {} }, extra || {}); return true; })()`);

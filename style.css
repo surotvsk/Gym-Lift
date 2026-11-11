@@ -5205,3 +5205,47 @@ button.record-row::after { content: '\203A'; flex: 0 0 auto; color: var(--text-f
 .sugg-chip::after { content: ""; position: absolute; inset: -13px -6px; }
 .sugg-chip:focus-visible { outline: 2px solid currentColor; outline-offset: 1px; }
 .modal-suggest .suggest-text { font-size: var(--fs-md, 16px); color: var(--text); margin: 0 0 var(--sp-3); }
+
+/* Programy: jeden list (zoznam, detail, maximá, aktívny program); len Bento tokeny, dotykové plochy ≥ 44 px */
+.modal-programs { max-width: 440px; padding-bottom: 0; }
+#btn-programs-back[hidden] { display: none; }
+.modal-programs .sheet-head h3 { flex: 1 1 auto; min-width: 0; overflow-wrap: anywhere; }
+.programs-list, .programs-active-days { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--sp-2); }
+.programs-card, .programs-day-btn {
+  display: flex; align-items: center; justify-content: space-between; gap: var(--sp-3); width: 100%; min-height: 56px;
+  padding: var(--sp-3) var(--sp-4); text-align: start; font: inherit; color: var(--text);
+  background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--r-md); cursor: pointer;
+}
+.programs-card:focus-visible, .programs-day-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.programs-card-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.programs-card-name { font-weight: var(--fw-bold); overflow-wrap: anywhere; }
+.programs-card-meta { font-size: var(--fs-sm); color: var(--text-dim); }
+.programs-chev { flex: 0 0 auto; color: var(--text-faint); font-size: 1.4rem; line-height: 1; }
+/* › je zrkadlený znak: v RTL ho prehliadač obráti sám, preto žiadne scaleX */
+#programs-body { padding-top: var(--sp-3); }
+.programs-desc { margin: 0 0 var(--sp-3); color: var(--text); font-size: var(--fs-md); text-align: start; }
+.programs-meta, .programs-outline { margin: 0 0 var(--sp-2); font-size: var(--fs-sm); color: var(--text-dim); text-align: start; }
+.programs-outline { margin-bottom: var(--sp-4); }
+.programs-chips { display: flex; flex-wrap: wrap; gap: var(--sp-2); margin-bottom: var(--sp-4); }
+#modal-programs .chip { min-height: 44px; min-width: 44px; }
+#modal-programs .chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.programs-h { margin: var(--sp-4) 0 var(--sp-2); font-size: var(--fs-sm); font-weight: var(--fw-bold); color: var(--text-dim); text-transform: none; text-align: start; }
+.programs-day { margin-bottom: var(--sp-3); padding: var(--sp-3); background: var(--surface-2); border-radius: var(--r-md); }
+.programs-day h5 { margin: 0 0 var(--sp-2); font-size: var(--fs-md); font-weight: var(--fw-bold); color: var(--text); text-align: start; }
+.programs-day ul { list-style: none; margin: 0; padding: 0; }
+.programs-day li { display: flex; justify-content: space-between; gap: var(--sp-3); padding: var(--sp-1) 0; font-size: var(--fs-sm); color: var(--text); }
+.programs-sx { flex: 0 0 auto; color: var(--text-dim); white-space: nowrap; }
+.programs-foot { position: sticky; bottom: 0; margin-top: var(--sp-4); padding: var(--sp-3) 0 var(--sp-4); background: var(--surface); border-top: 1px solid var(--border); }
+.programs-actions { padding-bottom: var(--sp-4); }
+.programs-foot .btn { min-height: 48px; }
+.programs-tm-list { display: flex; flex-direction: column; gap: var(--sp-2); }
+.programs-tm-row { display: flex; align-items: center; gap: var(--sp-3); min-height: 48px; }
+.programs-tm-name { flex: 1 1 auto; min-width: 0; overflow-wrap: anywhere; color: var(--text); }
+.programs-tm-row .programs-tm { flex: 0 0 6.5rem; width: 6.5rem; min-height: 44px; box-sizing: border-box; text-align: center; }
+.programs-unit { flex: 0 0 auto; color: var(--text-dim); }
+.programs-prog-name { margin: 0 0 var(--sp-1); font-size: var(--fs-sm); color: var(--text-dim); text-align: start; }
+.programs-week { margin: 0 0 var(--sp-3); font-size: var(--fs-lg); font-weight: var(--fw-black); color: var(--text); text-align: start; overflow-wrap: anywhere; }
+.programs-day-gone { display: flex; align-items: center; min-height: 44px; padding: var(--sp-2) var(--sp-4); color: var(--text-faint); font-style: italic; }
+.programs-actions { display: flex; flex-direction: column; gap: var(--sp-2); margin-top: var(--sp-4); }
+.programs-actions .btn { min-height: 48px; margin: 0; }
+.programs-end { color: var(--danger); }

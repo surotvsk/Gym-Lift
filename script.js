@@ -7643,6 +7643,53 @@ const BASICS_I18N = {
     "prog.day.bench": "Deň tlaku na lavičke",
     "prog.day.hinge": "Deň rumunského ťahu",
     "prog.day.press": "Deň tlaku nad hlavu",
+    /* Koučing: programy (UI) */
+    "programs.tile": "Programy",
+    "programs.title": "Programy",
+    "programs.close": "Zavrieť",
+    "programs.back": "Späť",
+    "programs.levelBeginner": "Začiatočník",
+    "programs.levelIntermediate": "Stredne pokročilý",
+    "programs.daysWeekOne": "{n} tréning týždenne",
+    "programs.daysWeekFew": "{n} tréningy týždenne",
+    "programs.daysWeekOther": "{n} tréningov týždenne",
+    "programs.daysEither": "{a} alebo {b} tréningov týždenne",
+    "programs.weeksOne": "{n} týždeň",
+    "programs.weeksFew": "{n} týždne",
+    "programs.weeksOther": "{n} týždňov",
+    "programs.weekOne": "Týždeň {a}",
+    "programs.weekRange": "Týždne {a}–{b}",
+    "programs.kindBuild": "budovanie",
+    "programs.kindDeload": "odľahčenie",
+    "programs.start": "Začať program",
+    "programs.next": "Ďalej",
+    "programs.variants": "Tréningov týždenne",
+    "programs.workouts": "Tréningy v programe",
+    "programs.tmTitle": "Tréningové maximá",
+    "programs.tmNote": "Tréningové maximum je ťažká váha na asi 3 čisté opakovania, o niečo nad tvojou bežnou pracovnou váhou. Predvyplnili sme odhad z tvojich váh, uprav ho podľa seba.",
+    "programs.tmLabel": "Tréningové maximum: {name}, v kg",
+    "programs.weekOf": "Týždeň {n} z {total}",
+    "programs.weekShort": "Týždeň {n}/{total}",
+    "programs.deloadWeek": "Odľahčený týždeň",
+    "programs.repeat": "Zopakovať tento týždeň",
+    "programs.skip": "Preskočiť dopredu",
+    "programs.end": "Ukončiť program",
+    "programs.removed": "Odstránený",
+    "programs.finished": "Program dokončený 🎉",
+    "programs.finishedNote": "Skvelá práca. Tvoje plány aj história zostávajú.",
+    "programs.startAgain": "Začať znova",
+    "programs.endShort": "Ukončiť",
+    "programs.endTitle": "Ukončiť program?",
+    "programs.endText": "Tvoje plány a história zostanú. Skončí len týždenný rozvrh programu.",
+    "programs.endOk": "Ukončiť program",
+    "programs.goalTitle": "Týždenný cieľ",
+    "programs.goalText": "Tento program má {days}, tvoj týždenný cieľ je {g}. Zmeniť cieľ na {n}? Cieľ série sa zmení odteraz.",
+    "programs.goalOk": "Zmeniť na {n}",
+    "programs.goalKeep": "Nechať {g}",
+    "prog.short.beginner-full-body": "Začiatočník",
+    "prog.short.push-pull-legs": "PPL",
+    "prog.short.upper-lower": "Horná/dolná",
+    "prog.short.strength-wave": "Vlna",
   },
   en: {
     'settings.autoRest': 'Start rest automatically', 'settings.autoRestHint': 'The rest timer starts by itself when you mark a set done. In a superset, after the last exercise.',
@@ -7709,6 +7756,51 @@ const BASICS_I18N = {
     "prog.day.bench": "Bench day",
     "prog.day.hinge": "Hinge day",
     "prog.day.press": "Overhead press day",
+    /* Koučing: programy (UI) */
+    "programs.tile": "Programs",
+    "programs.title": "Programs",
+    "programs.close": "Close",
+    "programs.back": "Back",
+    "programs.levelBeginner": "Beginner",
+    "programs.levelIntermediate": "Intermediate",
+    "programs.daysWeekOne": "{n} workout a week",
+    "programs.daysWeekOther": "{n} workouts a week",
+    "programs.daysEither": "{a} or {b} workouts a week",
+    "programs.weeksOne": "{n} week",
+    "programs.weeksOther": "{n} weeks",
+    "programs.weekOne": "Week {a}",
+    "programs.weekRange": "Weeks {a}–{b}",
+    "programs.kindBuild": "build",
+    "programs.kindDeload": "deload",
+    "programs.start": "Start program",
+    "programs.next": "Next",
+    "programs.variants": "Workouts a week",
+    "programs.workouts": "Workouts in this program",
+    "programs.tmTitle": "Training maxes",
+    "programs.tmNote": "A training max is a heavy weight you could lift for about 3 clean reps, a little above your usual working weight. We filled in a guess from your remembered weights. Change it if needed.",
+    "programs.tmLabel": "Training max for {name} in kg",
+    "programs.weekOf": "Week {n} of {total}",
+    "programs.weekShort": "Week {n}/{total}",
+    "programs.deloadWeek": "Deload week",
+    "programs.repeat": "Repeat this week",
+    "programs.skip": "Skip ahead",
+    "programs.end": "End program",
+    "programs.removed": "Removed",
+    "programs.finished": "Program finished 🎉",
+    "programs.finishedNote": "Nice work. Your plans and history stay.",
+    "programs.startAgain": "Start again",
+    "programs.endShort": "End",
+    "programs.endTitle": "End program?",
+    "programs.endText": "Your workout plans and history stay. Only the program schedule ends.",
+    "programs.endOk": "End program",
+    "programs.goalTitle": "Weekly goal",
+    "programs.goalText": "This program has {days}, but your weekly goal is {g}. Change the goal to {n}? Your streak target changes from now on.",
+    "programs.goalOk": "Change to {n}",
+    "programs.goalKeep": "Keep {g}",
+    "prog.short.beginner-full-body": "Beginner",
+    "prog.short.push-pull-legs": "PPL",
+    "prog.short.upper-lower": "Upper/Lower",
+    "prog.short.strength-wave": "Wave",
   },
   es: {
     'settings.autoRest': 'Iniciar el descanso automáticamente', 'settings.autoRestHint': 'El temporizador de descanso empieza solo al marcar una serie. En una superserie, tras el último ejercicio.',
@@ -7775,6 +7867,51 @@ const BASICS_I18N = {
     "prog.day.bench": "Día de press de banca",
     "prog.day.hinge": "Día de bisagra de cadera",
     "prog.day.press": "Día de press militar",
+    /* Koučing: programy (UI) */
+    "programs.tile": "Programas",
+    "programs.title": "Programas",
+    "programs.close": "Cerrar",
+    "programs.back": "Atrás",
+    "programs.levelBeginner": "Principiante",
+    "programs.levelIntermediate": "Intermedio",
+    "programs.daysWeekOne": "{n} entrenamiento por semana",
+    "programs.daysWeekOther": "{n} entrenamientos por semana",
+    "programs.daysEither": "{a} o {b} entrenamientos por semana",
+    "programs.weeksOne": "{n} semana",
+    "programs.weeksOther": "{n} semanas",
+    "programs.weekOne": "Semana {a}",
+    "programs.weekRange": "Semanas {a}–{b}",
+    "programs.kindBuild": "progresión",
+    "programs.kindDeload": "descarga",
+    "programs.start": "Empezar programa",
+    "programs.next": "Siguiente",
+    "programs.variants": "Entrenamientos por semana",
+    "programs.workouts": "Entrenamientos del programa",
+    "programs.tmTitle": "Máximos de entrenamiento",
+    "programs.tmNote": "El máximo de entrenamiento es un peso pesado que podrías levantar unas 3 repeticiones limpias, algo por encima de tu peso de trabajo habitual. Hemos puesto una estimación según tus pesos guardados. Cámbiala si hace falta.",
+    "programs.tmLabel": "Máximo de entrenamiento de {name} en kg",
+    "programs.weekOf": "Semana {n} de {total}",
+    "programs.weekShort": "Semana {n}/{total}",
+    "programs.deloadWeek": "Semana de descarga",
+    "programs.repeat": "Repetir esta semana",
+    "programs.skip": "Saltar adelante",
+    "programs.end": "Terminar programa",
+    "programs.removed": "Eliminado",
+    "programs.finished": "Programa terminado 🎉",
+    "programs.finishedNote": "Buen trabajo. Tus planes y tu historial se quedan.",
+    "programs.startAgain": "Empezar de nuevo",
+    "programs.endShort": "Terminar",
+    "programs.endTitle": "¿Terminar el programa?",
+    "programs.endText": "Tus planes y tu historial se quedan. Solo termina el calendario del programa.",
+    "programs.endOk": "Terminar programa",
+    "programs.goalTitle": "Objetivo semanal",
+    "programs.goalText": "Este programa tiene {days}, pero tu objetivo semanal es {g}. ¿Cambiar el objetivo a {n}? El objetivo de tu racha cambia a partir de ahora.",
+    "programs.goalOk": "Cambiar a {n}",
+    "programs.goalKeep": "Mantener {g}",
+    "prog.short.beginner-full-body": "Principiante",
+    "prog.short.push-pull-legs": "PPL",
+    "prog.short.upper-lower": "Superior/Inferior",
+    "prog.short.strength-wave": "Ola",
   },
   'pt-BR': {
     'settings.autoRest': 'Iniciar o descanso automaticamente', 'settings.autoRestHint': 'O cronômetro de descanso começa sozinho ao marcar uma série. Em um superset, após o último exercício.',
@@ -7841,6 +7978,51 @@ const BASICS_I18N = {
     "prog.day.bench": "Dia de supino",
     "prog.day.hinge": "Dia de dobradiça de quadril",
     "prog.day.press": "Dia de desenvolvimento",
+    /* Koučing: programy (UI) */
+    "programs.tile": "Programas",
+    "programs.title": "Programas",
+    "programs.close": "Fechar",
+    "programs.back": "Voltar",
+    "programs.levelBeginner": "Iniciante",
+    "programs.levelIntermediate": "Intermediário",
+    "programs.daysWeekOne": "{n} treino por semana",
+    "programs.daysWeekOther": "{n} treinos por semana",
+    "programs.daysEither": "{a} ou {b} treinos por semana",
+    "programs.weeksOne": "{n} semana",
+    "programs.weeksOther": "{n} semanas",
+    "programs.weekOne": "Semana {a}",
+    "programs.weekRange": "Semanas {a}–{b}",
+    "programs.kindBuild": "progressão",
+    "programs.kindDeload": "descarga",
+    "programs.start": "Começar programa",
+    "programs.next": "Avançar",
+    "programs.variants": "Treinos por semana",
+    "programs.workouts": "Treinos do programa",
+    "programs.tmTitle": "Máximos de treino",
+    "programs.tmNote": "O máximo de treino é uma carga pesada que você levantaria em cerca de 3 repetições limpas, um pouco acima da sua carga de trabalho habitual. Preenchemos uma estimativa com base nas cargas lembradas. Mude se precisar.",
+    "programs.tmLabel": "Máximo de treino de {name} em kg",
+    "programs.weekOf": "Semana {n} de {total}",
+    "programs.weekShort": "Semana {n}/{total}",
+    "programs.deloadWeek": "Semana de descarga",
+    "programs.repeat": "Repetir esta semana",
+    "programs.skip": "Pular adiante",
+    "programs.end": "Encerrar programa",
+    "programs.removed": "Removido",
+    "programs.finished": "Programa concluído 🎉",
+    "programs.finishedNote": "Bom trabalho. Seus planos e histórico continuam.",
+    "programs.startAgain": "Começar de novo",
+    "programs.endShort": "Encerrar",
+    "programs.endTitle": "Encerrar o programa?",
+    "programs.endText": "Seus planos e histórico continuam. Só a agenda do programa termina.",
+    "programs.endOk": "Encerrar programa",
+    "programs.goalTitle": "Meta semanal",
+    "programs.goalText": "Este programa tem {days}, mas sua meta semanal é {g}. Mudar a meta para {n}? A meta da sua sequência muda a partir de agora.",
+    "programs.goalOk": "Mudar para {n}",
+    "programs.goalKeep": "Manter {g}",
+    "prog.short.beginner-full-body": "Iniciante",
+    "prog.short.push-pull-legs": "PPL",
+    "prog.short.upper-lower": "Superior/Inferior",
+    "prog.short.strength-wave": "Onda",
   },
   fr: {
     'settings.autoRest': 'Démarrer le repos automatiquement', 'settings.autoRestHint': 'Le minuteur de repos démarre seul quand tu valides une série. Dans une superset, après le dernier exercice.',
@@ -7907,6 +8089,51 @@ const BASICS_I18N = {
     "prog.day.bench": "Jour développé couché",
     "prog.day.hinge": "Jour charnière de hanche",
     "prog.day.press": "Jour développé militaire",
+    /* Koučing: programy (UI) */
+    "programs.tile": "Programmes",
+    "programs.title": "Programmes",
+    "programs.close": "Fermer",
+    "programs.back": "Retour",
+    "programs.levelBeginner": "Débutant",
+    "programs.levelIntermediate": "Intermédiaire",
+    "programs.daysWeekOne": "{n} séance par semaine",
+    "programs.daysWeekOther": "{n} séances par semaine",
+    "programs.daysEither": "{a} ou {b} séances par semaine",
+    "programs.weeksOne": "{n} semaine",
+    "programs.weeksOther": "{n} semaines",
+    "programs.weekOne": "Semaine {a}",
+    "programs.weekRange": "Semaines {a}–{b}",
+    "programs.kindBuild": "progression",
+    "programs.kindDeload": "décharge",
+    "programs.start": "Commencer le programme",
+    "programs.next": "Suivant",
+    "programs.variants": "Séances par semaine",
+    "programs.workouts": "Séances du programme",
+    "programs.tmTitle": "Maximums d’entraînement",
+    "programs.tmNote": "Le maximum d’entraînement est une charge lourde que tu pourrais soulever pour environ 3 répétitions propres, un peu au-dessus de ta charge de travail habituelle. Nous avons proposé une estimation d’après tes charges mémorisées. Modifie-la si besoin.",
+    "programs.tmLabel": "Maximum d’entraînement pour {name} en kg",
+    "programs.weekOf": "Semaine {n} sur {total}",
+    "programs.weekShort": "Semaine {n}/{total}",
+    "programs.deloadWeek": "Semaine de décharge",
+    "programs.repeat": "Répéter cette semaine",
+    "programs.skip": "Passer en avance",
+    "programs.end": "Terminer le programme",
+    "programs.removed": "Supprimé",
+    "programs.finished": "Programme terminé 🎉",
+    "programs.finishedNote": "Beau travail. Tes plans et ton historique restent.",
+    "programs.startAgain": "Recommencer",
+    "programs.endShort": "Terminer",
+    "programs.endTitle": "Terminer le programme ?",
+    "programs.endText": "Tes plans et ton historique restent. Seul le calendrier du programme s’arrête.",
+    "programs.endOk": "Terminer le programme",
+    "programs.goalTitle": "Objectif hebdomadaire",
+    "programs.goalText": "Ce programme compte {days}, mais ton objectif hebdomadaire est {g}. Passer l’objectif à {n} ? L’objectif de ta série change à partir de maintenant.",
+    "programs.goalOk": "Passer à {n}",
+    "programs.goalKeep": "Garder {g}",
+    "prog.short.beginner-full-body": "Débutant",
+    "prog.short.push-pull-legs": "PPL",
+    "prog.short.upper-lower": "Haut/Bas",
+    "prog.short.strength-wave": "Vague",
   },
   ar: {
     'settings.autoRest': 'بدء الراحة تلقائيًا', 'settings.autoRestHint': 'يبدأ مؤقت الراحة تلقائيًا عند تحديد مجموعة كمكتملة. في السوبرست، بعد آخر تمرين.',
@@ -7973,6 +8200,57 @@ const BASICS_I18N = {
     "prog.day.bench": "يوم ضغط البنش",
     "prog.day.hinge": "يوم مفصلة الورك",
     "prog.day.press": "يوم الضغط فوق الرأس",
+    /* Koučing: programy (UI) */
+    "programs.tile": "البرامج",
+    "programs.title": "البرامج",
+    "programs.close": "إغلاق",
+    "programs.back": "رجوع",
+    "programs.levelBeginner": "مبتدئ",
+    "programs.levelIntermediate": "متوسط",
+    "programs.daysWeekOne": "تمرين واحد أسبوعيًا",
+    "programs.daysWeekTwo": "تمرينان أسبوعيًا",
+    "programs.daysWeekFew": "{n} تمارين أسبوعيًا",
+    "programs.daysWeekMany": "{n} تمرينًا أسبوعيًا",
+    "programs.daysWeekOther": "{n} تمرين أسبوعيًا",
+    "programs.daysEither": "{a} أو {b} تمارين أسبوعيًا",
+    "programs.weeksOne": "أسبوع واحد",
+    "programs.weeksTwo": "أسبوعان",
+    "programs.weeksFew": "{n} أسابيع",
+    "programs.weeksMany": "{n} أسبوعًا",
+    "programs.weeksOther": "{n} أسبوع",
+    "programs.weekOne": "الأسبوع {a}",
+    "programs.weekRange": "الأسابيع {a}–{b}",
+    "programs.kindBuild": "بناء",
+    "programs.kindDeload": "تخفيف الحمل",
+    "programs.start": "ابدأ البرنامج",
+    "programs.next": "التالي",
+    "programs.variants": "التمارين في الأسبوع",
+    "programs.workouts": "تمارين البرنامج",
+    "programs.tmTitle": "الحد الأقصى للتدريب",
+    "programs.tmNote": "الحد الأقصى للتدريب وزن ثقيل يمكنك رفعه لنحو 3 تكرارات سليمة، أعلى قليلًا من وزن عملك المعتاد. وضعنا تقديرًا من أوزانك المحفوظة. عدّله إن لزم.",
+    "programs.tmLabel": "الحد الأقصى للتدريب لتمرين {name} بالكيلوغرام",
+    "programs.weekOf": "الأسبوع {n} من {total}",
+    "programs.weekShort": "الأسبوع {n}/{total}",
+    "programs.deloadWeek": "أسبوع تخفيف الحمل",
+    "programs.repeat": "كرّر هذا الأسبوع",
+    "programs.skip": "تخطَّ إلى الأمام",
+    "programs.end": "إنهاء البرنامج",
+    "programs.removed": "محذوفة",
+    "programs.finished": "اكتمل البرنامج 🎉",
+    "programs.finishedNote": "عمل رائع. تبقى خططك وسجلّك كما هي.",
+    "programs.startAgain": "ابدأ من جديد",
+    "programs.endShort": "إنهاء",
+    "programs.endTitle": "إنهاء البرنامج؟",
+    "programs.endText": "تبقى خططك وسجلّك. ينتهي فقط جدول البرنامج.",
+    "programs.endOk": "إنهاء البرنامج",
+    "programs.goalTitle": "الهدف الأسبوعي",
+    "programs.goalText": "يتضمن هذا البرنامج {days}، لكن هدفك الأسبوعي هو {g}. هل تريد تغيير الهدف إلى {n}؟ يتغير هدف سلسلتك من الآن فصاعدًا.",
+    "programs.goalOk": "تغيير إلى {n}",
+    "programs.goalKeep": "إبقاء {g}",
+    "prog.short.beginner-full-body": "مبتدئ",
+    "prog.short.push-pull-legs": "دفع/سحب/أرجل",
+    "prog.short.upper-lower": "علوي/سفلي",
+    "prog.short.strength-wave": "موجة",
   },
 };
 for (const lang of Object.keys(BASICS_I18N)) Object.assign(I18N[lang] || (I18N[lang] = {}), BASICS_I18N[lang]);
@@ -10842,6 +11120,8 @@ function migrateV2toV3(parsed) {
     foodLog: cleanFoodLog(base.foodLog),
     profile: cleanProfile(base.profile),
   };
+  /* Aktívny program: platný zostane bajt po bajte (aj neznáme polia), neplatný sa zahodí (null). */
+  if (Object.prototype.hasOwnProperty.call(base, 'program')) out.program = cleanProgramState(base.program);
   const goal = Math.round(Number(out.settings.weeklyGoal));
   out.settings.weeklyGoal = Math.min(GOAL_MAX, Math.max(GOAL_MIN, Number.isFinite(goal) && goal ? goal : 3));
   /* Jazyk: platný kód sa zachová presne (vrátane starých 'sk'/'en'), neplatná
@@ -11932,9 +12212,10 @@ function renderBento(info) {
     ? t('bento.inProgress', { time: formatDurationClock(sessionElapsedSeconds(sess)) })
     : t('bento.nextUp'));
   bentoSetText('bt-next-name', sess && !plan ? (sess.planName || t('pokrok.workoutFallback')) : planDisplayName(plan));
-  bentoSetText('dnes-next-plan', sess && plan
+  bentoSetText('dnes-next-plan', (sess && plan
     ? t('bento.setsOf', { done: totalSetsDone(), total: planExerciseCount(plan) })
-    : (plan ? bentoCountsText(ps.exercises, ps.sets) : t('dnes.nextPlan', { plan: planNameOf(recommendedPlan()) })));
+    : (plan ? bentoCountsText(ps.exercises, ps.sets) : t('dnes.nextPlan', { plan: planNameOf(recommendedPlan()) })))
+    + (plan ? programWeekSuffix(plan.id) : ''));
   const startBtn = document.getElementById('btn-start-workout');
   if (startBtn) {
     startBtn.innerHTML = sess
@@ -13440,7 +13721,7 @@ function bentoTrainMode() {
   const label = document.getElementById('tr-sess-plan');
   if (label) {
     const plan = sess ? currentPlan() : getPlan(selectedPlan);
-    label.innerHTML = esc(plan ? planDisplayName(plan) : (sess && sess.planName) || '') + (sess && sess.quick ? '' : ' <span aria-hidden="true">' + (trainShowPlans ? '▴' : '▾') + '</span>');
+    label.innerHTML = esc((plan ? planDisplayName(plan) : (sess && sess.planName) || '') + (plan ? programWeekSuffix(plan.id) : '')) + (sess && sess.quick ? '' : ' <span aria-hidden="true">' + (trainShowPlans ? '▴' : '▾') + '</span>');
     label.setAttribute('aria-expanded', trainShowPlans ? 'true' : 'false');
   }
 }
@@ -15913,6 +16194,8 @@ function saveEditPlan() {
     if (ex.assisted === true) out.assisted = true;
     /* Rozcvičkový rad na začiatku tréningu: ukladá sa len keď je zapnutý. */
     if (ex.warmupRamp === true) out.warmupRamp = true;
+    /* Riadok programu si pri úprave plánu drží progRow, inak by sa prestal predpisovať. */
+    if (typeof ex.progRow === 'string' && ex.progRow) out.progRow = ex.progRow;
     /* Supersérie / okruh: skupina sa zachová (neplatné sa odstráni hneď nižšie). */
     if (groupIdOf(ex)) out.group = ex.group;
     return out;
@@ -23300,6 +23583,8 @@ function renderAll() {
   // Otvorený Full Body builder musí prekresliť zdroje a preklady (výber zostáva zachovaný).
   const fbModal = document.getElementById('modal-fullbody');
   if (fbModal && !fbModal.hidden) renderFullBodyBuilder();
+  const progModal = document.getElementById('modal-programs');
+  if (progModal && !progModal.hidden && programsView.name !== 'tm') renderPrograms();   // jazyk / zmena týždňa
   renderRestSoundSetting();   // stav Zapnuté/Vypnuté musí zareagovať na zmenu jazyka
   renderAutoRestSetting();
   renderEffortSetting();
@@ -24108,12 +24393,7 @@ function saveSettingsGoal() {
     return false;
   }
   if (errEl) errEl.hidden = true;
-  state.settings.weeklyGoal = g;
-  syncGoalSnapshot();          // prebiehajúci týždeň si drží aktuálny cieľ; minulé sa nemenia
-  setGoalReadout(g);
-  reconcileAchievements();
-  saveState();
-  renderAll();
+  applyWeeklyGoal(g);          // prebiehajúci týždeň si drží aktuálny cieľ; minulé sa nemenia
   return true;
 }
 
@@ -26778,6 +27058,359 @@ function programPrescription(prog, planId, row, today = todayISO()) {
   } catch (err) {
     return null;
   }
+}
+
+/* ---------- Koučing: programy (UI) ----------
+   Jeden list #modal-programs s pohľadmi: zoznam -> detail -> (vlna) tréningové maximá, a aktívny program namiesto zoznamu.
+   Štart vytvorí jeden vlastný plán na deň (riadky s progRow) a nastaví state.program. Nič nemení históriu ani XP;
+   ukončenie plány nemaže. Týždeň sa len pripája k existujúcemu textu (programWeekSuffix), nič nové na Dnes. */
+let programsView = { name: 'list', programId: null, variantId: null, again: false };
+let programsOpener = null;
+let programsTm = {};   // rozpísané tréningové maximá (reťazce) pre krok vlny
+
+function activeProgram() {
+  try { return cleanProgramState(state && state.program); } catch (err) { return null; }
+}
+
+/* " · Týždeň 3/8" / " · Odľahčený týždeň" pre plán aktívneho programu; inak ''. Dokončený program nepripája nič. */
+function programWeekSuffix(planId) {
+  try {
+    const cur = activeProgram();
+    if (!cur || !planId || Object.values(cur.plans).indexOf(planId) < 0) return '';
+    const wk = programWeekOf(cur, todayISO());
+    if (!wk || wk.finished) return '';
+    return ' · ' + (wk.deload ? t('programs.deloadWeek') : t('programs.weekShort', { n: wk.week, total: wk.total }));
+  } catch (err) { return ''; }
+}
+
+function programPlanName(prog, day) {
+  return t('prog.short.' + prog.id) + ' · ' + t(day.nameKey);
+}
+
+function programMainIds(prog) {
+  const ids = [];
+  for (const v of programVariants(prog)) for (const d of v.days) for (const r of d.rows) if (r.main && ids.indexOf(r.exId) < 0) ids.push(r.exId);
+  return ids;
+}
+
+/* Predvyplnené tréningové maximum: 1,1 × zapamätaná váha cviku, zaokrúhlené na kotúče; bez pamäte prázdne. */
+function programTmPrefill(exId) {
+  const m = exerciseMemoryEntry(exId);
+  if (!m || !(Number(m.weight) > 0)) return '';
+  const w = roundToPlates(Number(m.weight) * 1.1, plateSettings());
+  return w > 0 ? String(Math.round(w * 100) / 100) : '';
+}
+
+/* Riadky plánu z šablóny dňa: knižničný cvik, série a opakovania, váha zo settings.exerciseMemory (inak 0). */
+function programPlanRows(day) {
+  return day.rows.map((r) => {
+    const m = exerciseMemoryEntry(r.exId);
+    const row = {
+      id: r.exId,
+      builtin: true,
+      name: (I18N.en && I18N.en['exercise.' + r.exId]) || r.exId,
+      sets: r.sets, reps: r.reps,
+      weight: m ? Number(m.weight) : 0,
+      plannedFailureSets: [],
+      progRow: r.progRow,
+    };
+    if (m && m.unilateral === true) { row.unilateral = true; row.startSide = m.startSide === 'right' ? 'right' : 'left'; }
+    return row;
+  });
+}
+
+/* Spoločné nastavenie týždenného cieľa (Nastavenia aj program): prebiehajúci týždeň si drží nový cieľ, minulé sa nemenia. */
+function applyWeeklyGoal(g) {
+  state.settings.weeklyGoal = g;
+  syncGoalSnapshot();
+  setGoalReadout(g);
+  reconcileAchievements();
+  saveState();
+  renderAll();
+}
+
+/* Cieľ sa mení až po potvrdení (ovplyvní cieľ série odteraz); pri zamietnutí program aj tak beží. */
+function offerProgramGoal(n) {
+  const g = weeklyGoal();
+  if (n === g || n < GOAL_MIN || n > GOAL_MAX) return;
+  showGeneric(t('programs.goalTitle'), t('programs.goalOk', { n }), () => applyWeeklyGoal(n),
+    esc(t('programs.goalText', { days: tPlural('programs.daysWeek', n), g, n })), t('programs.goalKeep', { g }));
+}
+
+/* Spustí program: vytvorí plány (alebo pri „Začať znova“ znovu použije existujúce), nastaví state.program. */
+function startProgram(programId, variantId, tm, reuse) {
+  const prog = programById(programId);
+  const variant = prog && programVariant(prog, variantId);
+  if (!variant) return null;
+  if (prog.kind === 'wave') {
+    for (const id of programMainIds(prog)) if (!(Number(tm && tm[id]) > 0)) return null;
+  }
+  const old = reuse ? activeProgram() : null;
+  if (!Array.isArray(state.planOrder)) state.planOrder = [];
+  const ids = {};
+  for (const day of variant.days) {
+    const prev = old && old.id === prog.id ? old.plans[day.id] : null;
+    if (prev && getPlan(prev)) { ids[day.id] = prev; continue; }
+    const id = 'p-' + uid();
+    state.plans[id] = { id, builtin: false, customName: programPlanName(prog, day), exercises: programPlanRows(day) };
+    state.planOrder.push(id);
+    ids[day.id] = id;
+  }
+  const next = startProgramState(prog.id, variant.id, tm, ids);
+  if (!next) return null;
+  state.program = next;
+  saveState();
+  programsView = { name: 'active', programId: null, variantId: null, again: false };
+  renderAll();
+  offerProgramGoal(variant.daysPerWeek);
+  return next;
+}
+
+/* Posun týždňa: opakovať = −1, preskočiť = +1; nikdy mimo 1..N a nikdy pri dokončenom programe. */
+function shiftProgramWeek(d) {
+  const cur = activeProgram();
+  if (!cur) return false;
+  const wk = programWeekOf(cur, todayISO());
+  if (!wk || wk.finished) return false;
+  if (d < 0 && wk.week <= 1) return false;
+  if (d > 0 && wk.week >= wk.total) return false;
+  const next = Math.max(-PROGRAM_SHIFT_MAX, Math.min(PROGRAM_SHIFT_MAX, cur.weekShift + d));
+  if (next === cur.weekShift) return false;
+  cur.weekShift = next;
+  state.program = cur;
+  saveState();
+  renderAll();
+  return true;
+}
+function repeatProgramWeek() { return shiftProgramWeek(-1); }
+function skipProgramWeek() { return shiftProgramWeek(1); }
+
+/* Ukončenie: plány ani história sa nemažú, mizne len state.program. */
+function endProgram() {
+  if (!state.program) return;
+  state.program = null;
+  saveState();
+  programsView = { name: 'list', programId: null, variantId: null, again: false };
+  renderAll();
+}
+
+function programOutline(prog) {
+  const segs = [];
+  for (let w = 1; w <= prog.weeks; w++) {
+    const k = prog.deloadWeeks.indexOf(w) >= 0 ? 'Deload' : 'Build';
+    const last = segs[segs.length - 1];
+    if (last && last.k === k) last.b = w; else segs.push({ k, a: w, b: w });
+  }
+  return segs.map((s) => (s.a === s.b ? t('programs.weekOne', { a: s.a }) : t('programs.weekRange', { a: s.a, b: s.b }))
+    + ': ' + t('programs.kind' + s.k)).join(' · ');
+}
+
+function programDaysText(prog) {
+  const vs = programVariants(prog).map((v) => v.daysPerWeek);
+  const lo = Math.min.apply(null, vs), hi = Math.max.apply(null, vs);
+  return lo === hi ? tPlural('programs.daysWeek', lo) : t('programs.daysEither', { a: lo, b: hi });
+}
+
+function programsRenderList() {
+  return '<div class="programs-list">' + PROGRAMS.map((p) => '<button type="button" class="programs-card" data-program="' + esc(p.id) + '">'
+    + '<span class="programs-card-text"><span class="programs-card-name">' + esc(t(p.nameKey)) + '</span>'
+    + '<span class="programs-card-meta">' + esc(t(p.level === 'beginner' ? 'programs.levelBeginner' : 'programs.levelIntermediate')
+      + ' · ' + programDaysText(p) + ' · ' + tPlural('programs.weeks', p.weeks)) + '</span></span>'
+    + '<span class="programs-chev" aria-hidden="true">›</span></button>').join('') + '</div>';
+}
+
+function programsRenderDetail() {
+  const prog = programById(programsView.programId);
+  if (!prog) return '';
+  const variant = programVariant(prog, programsView.variantId);
+  let h = '<p class="programs-desc">' + esc(t(prog.descKey)) + '</p>';
+  h += '<p class="programs-meta">' + esc(tPlural('programs.daysWeek', variant.daysPerWeek) + ' · ' + tPlural('programs.weeks', prog.weeks)) + '</p>';
+  h += '<p class="programs-outline">' + esc(programOutline(prog)) + '</p>';
+  if (Array.isArray(prog.variants)) {
+    h += '<div class="programs-chips" role="group" aria-label="' + esc(t('programs.variants')) + '">'
+      + prog.variants.map((v) => '<button type="button" class="chip" data-variant="' + esc(v.id) + '" aria-pressed="' + (v.id === variant.id ? 'true' : 'false') + '">' + esc(t(v.nameKey)) + '</button>').join('') + '</div>';
+  }
+  h += '<h4 class="programs-h">' + esc(t('programs.workouts')) + '</h4>';
+  h += variant.days.map((d) => '<section class="programs-day"><h5>' + esc(t(d.nameKey)) + '</h5><ul>'
+    + d.rows.map((r) => '<li><span>' + esc(exerciseDisplayName({ id: r.exId })) + '</span><span class="programs-sx">' + r.sets + ' × ' + r.reps + '</span></li>').join('')
+    + '</ul></section>').join('');
+  h += '<div class="programs-foot"><button type="button" class="btn btn-primary btn-block" id="btn-programs-start">'
+    + esc(t(prog.kind === 'wave' ? 'programs.next' : 'programs.start')) + '</button></div>';
+  return h;
+}
+
+function programsRenderTm() {
+  const prog = programById(programsView.programId);
+  if (!prog) return '';
+  let h = '<p class="programs-desc">' + esc(t('programs.tmNote')) + '</p><div class="programs-tm-list">';
+  for (const id of programMainIds(prog)) {
+    const name = exerciseDisplayName({ id });
+    h += '<label class="programs-tm-row"><span class="programs-tm-name">' + esc(name) + '</span>'
+      + '<input type="text" inputmode="decimal" autocomplete="off" class="modal-input programs-tm" data-ex="' + esc(id) + '" value="' + esc(programsTm[id] || '') + '" aria-label="' + esc(t('programs.tmLabel', { name })) + '">'
+      + '<span class="programs-unit">kg</span></label>';
+  }
+  h += '</div><div class="programs-foot"><button type="button" class="btn btn-primary btn-block" id="btn-programs-start"' + (programsTmReady() ? '' : ' disabled') + '>'
+    + esc(t('programs.start')) + '</button></div>';
+  return h;
+}
+
+function programsTmValue(id) {
+  const v = Number(String(programsTm[id] == null ? '' : programsTm[id]).trim().replace(',', '.'));
+  return Number.isFinite(v) && v > 0 && v <= 1000 ? v : 0;
+}
+function programsTmReady() {
+  const prog = programById(programsView.programId);
+  return !!prog && programMainIds(prog).every((id) => programsTmValue(id) > 0);
+}
+
+function programsRenderActive() {
+  const cur = activeProgram();
+  if (!cur) return programsRenderList();
+  const prog = programById(cur.id);
+  const variant = programVariant(prog, cur.variant);
+  const wk = programWeekOf(cur, todayISO());
+  const finished = !!(wk && wk.finished);
+  let h = '<p class="programs-prog-name">' + esc(t(prog.nameKey) + (variant.nameKey ? ' · ' + t(variant.nameKey) : '')) + '</p>';
+  h += '<p class="programs-week" id="programs-week">' + esc(finished ? t('programs.finished')
+    : t('programs.weekOf', { n: wk.week, total: wk.total }) + (wk.deload ? ' · ' + t('programs.deloadWeek') : '')) + '</p>';
+  if (finished) h += '<p class="programs-desc">' + esc(t('programs.finishedNote')) + '</p>';
+  h += '<ul class="programs-active-days">' + variant.days.map((d) => {
+    const pid = cur.plans[d.id], plan = pid ? getPlan(pid) : null;
+    return plan
+      ? '<li><button type="button" class="programs-day-btn" data-plan="' + esc(pid) + '"><span>' + esc(planDisplayName(plan)) + '</span><span class="programs-chev" aria-hidden="true">›</span></button></li>'
+      : '<li class="programs-day-gone"><span>' + esc(t(d.nameKey)) + ' · ' + esc(t('programs.removed')) + '</span></li>';
+  }).join('') + '</ul><div class="programs-actions">';
+  if (finished) {
+    h += '<button type="button" class="btn btn-primary btn-block" id="btn-programs-again">' + esc(t('programs.startAgain')) + '</button>'
+      + '<button type="button" class="btn btn-secondary btn-block" id="btn-programs-end">' + esc(t('programs.endShort')) + '</button>';
+  } else {
+    if (wk.week > 1) h += '<button type="button" class="btn btn-secondary btn-block" id="btn-programs-repeat">' + esc(t('programs.repeat')) + '</button>';
+    if (wk.week < wk.total) h += '<button type="button" class="btn btn-secondary btn-block" id="btn-programs-skip">' + esc(t('programs.skip')) + '</button>';
+    h += '<button type="button" class="btn btn-secondary btn-block programs-end" id="btn-programs-end">' + esc(t('programs.end')) + '</button>';
+  }
+  return h + '</div>';
+}
+
+function renderPrograms() {
+  const modal = document.getElementById('modal-programs');
+  if (!modal) return;
+  if (programsView.name === 'active' && !activeProgram()) programsView = { name: 'list', programId: null, variantId: null, again: false };
+  if (programsView.name === 'list' && activeProgram()) programsView = { name: 'active', programId: null, variantId: null, again: false };
+  const v = programsView.name;
+  const prog = programById(programsView.programId);
+  document.getElementById('programs-title').textContent = (v === 'detail' && prog) ? t(prog.nameKey) : (v === 'tm' ? t('programs.tmTitle') : t('programs.title'));
+  document.getElementById('btn-programs-back').hidden = !(v === 'detail' || v === 'tm');
+  document.getElementById('programs-body').innerHTML = v === 'detail' ? programsRenderDetail() : v === 'tm' ? programsRenderTm() : v === 'active' ? programsRenderActive() : programsRenderList();
+}
+
+function openPrograms(opener) {
+  const modal = document.getElementById('modal-programs');
+  if (!modal) return;
+  programsOpener = opener || document.activeElement;
+  programsView = { name: activeProgram() ? 'active' : 'list', programId: null, variantId: null, again: false };
+  renderPrograms();
+  modal.hidden = false;
+  const first = modal.querySelector('#programs-body button, #programs-body input') || document.getElementById('btn-programs-close');
+  try { first.focus({ preventScroll: true }); } catch (e) { first.focus(); }
+  refreshUpdateBanner();
+}
+function closePrograms() {
+  const modal = document.getElementById('modal-programs');
+  if (!modal || modal.hidden) return;
+  modal.hidden = true;
+  const op = programsOpener;
+  programsOpener = null;
+  restoreSheetFocus(op);
+  refreshUpdateBanner();
+}
+function programsCanStepBack() { return programsView.name === 'detail' || programsView.name === 'tm'; }
+/* Späť / Esc: o krok (tm -> detail alebo aktívny, detail -> zoznam), z koreňa zatvorí list. */
+function programsBack() {
+  if (programsView.name === 'tm') {
+    programsView = programsView.again ? { name: 'active', programId: null, variantId: null, again: false }
+      : { name: 'detail', programId: programsView.programId, variantId: programsView.variantId, again: false };
+  } else if (programsView.name === 'detail') {
+    programsView = { name: 'list', programId: null, variantId: null, again: false };
+  } else { closePrograms(); return; }
+  renderPrograms();
+  const h = document.getElementById('programs-title');
+  h.tabIndex = -1;
+  try { h.focus({ preventScroll: true }); } catch (e) { /* fokus je len pomôcka */ }
+}
+
+function programsGoTm(programId, variantId, again) {
+  const prog = programById(programId);
+  programsTm = {};
+  for (const id of programMainIds(prog)) programsTm[id] = programTmPrefill(id);
+  programsView = { name: 'tm', programId, variantId, again: !!again };
+  renderPrograms();
+  const first = document.querySelector('#programs-body input.programs-tm');
+  if (first) { try { first.focus({ preventScroll: true }); } catch (e) { first.focus(); } }
+}
+
+function programsStartClicked() {
+  const v = programsView;
+  if (v.name === 'detail') {
+    const prog = programById(v.programId);
+    if (prog.kind === 'wave') { programsGoTm(v.programId, v.variantId, false); return; }
+    startProgram(v.programId, v.variantId, null, false);
+  } else if (v.name === 'tm') {
+    if (!programsTmReady()) return;
+    const tm = {};
+    for (const id of programMainIds(programById(v.programId))) tm[id] = programsTmValue(id);
+    startProgram(v.programId, v.variantId, tm, v.again);
+  }
+}
+
+function programsConfirmEnd() {
+  showGeneric(t('programs.endTitle'), t('programs.endOk'), () => endProgram(), esc(t('programs.endText')), t('common.cancel'));
+}
+
+function initPrograms() {
+  on('btn-programs-tile', () => openPrograms(document.getElementById('btn-programs-tile')));
+  on('btn-programs-close', closePrograms);
+  on('btn-programs-back', programsBack);
+  const modal = document.getElementById('modal-programs');
+  if (!modal) return;
+  modal.addEventListener('click', (e) => { if (e.target === modal) closePrograms(); });
+  const body = document.getElementById('programs-body');
+  body.addEventListener('click', (e) => {
+    const el = e.target.closest('button');
+    if (!el || !body.contains(el)) return;
+    if (el.dataset.program) {
+      const prog = programById(el.dataset.program);
+      programsView = { name: 'detail', programId: prog.id, variantId: programVariants(prog)[0].id, again: false };
+      renderPrograms();
+      const h = document.getElementById('programs-title'); h.tabIndex = -1; try { h.focus({ preventScroll: true }); } catch (err) { /* pomôcka */ }
+    } else if (el.dataset.variant) {
+      programsView.variantId = el.dataset.variant;
+      renderPrograms();
+      const c = body.querySelector('[data-variant="' + el.dataset.variant + '"]');
+      if (c) { try { c.focus({ preventScroll: true }); } catch (err) { c.focus(); } }
+    } else if (el.dataset.plan) {
+      const id = el.dataset.plan;
+      closePrograms();
+      selectedPlan = id;
+      switchTab('trening');
+      renderAll();
+    } else if (el.id === 'btn-programs-start') programsStartClicked();
+    else if (el.id === 'btn-programs-repeat') repeatProgramWeek();
+    else if (el.id === 'btn-programs-skip') skipProgramWeek();
+    else if (el.id === 'btn-programs-end') programsConfirmEnd();
+    else if (el.id === 'btn-programs-again') {
+      const cur = activeProgram();
+      if (!cur) return;
+      if (programById(cur.id).kind === 'wave') programsGoTm(cur.id, cur.variant, true);
+      else startProgram(cur.id, cur.variant, null, true);
+    }
+  });
+  body.addEventListener('input', (e) => {
+    const inp = e.target.closest && e.target.closest('input.programs-tm');
+    if (!inp) return;
+    programsTm[inp.dataset.ex] = inp.value;
+    const btn = document.getElementById('btn-programs-start');
+    if (btn) btn.disabled = !programsTmReady();
+  });
 }
 
 /* ---------- Importované tréningy ---------- */
@@ -30338,6 +30971,8 @@ function setupEvents() {
     if (genModal && !genModal.hidden) { closeGeneric(); return; }
     const suggSheet = document.getElementById('modal-suggest');
     if (suggSheet && !suggSheet.hidden) { closeSuggestSheet(); return; }   // list „prečo“ návrhu
+    const progSheet = document.getElementById('modal-programs');
+    if (progSheet && !progSheet.hidden) { programsBack(); return; }   // list Programy (o krok späť, z koreňa zavrie)
     const csvSheet = document.getElementById('modal-csv-import');
     if (csvSheet && !csvSheet.hidden) { closeCsvImport(); return; }   // list importu CSV
     const csvMenu = document.getElementById('modal-csv');
@@ -30637,6 +31272,7 @@ function setupEvents() {
   initExerciseProgress();
   initMuscles();
   initSuggestSheet();
+  initPrograms();
   initCsvImport();
   initCsvSheet();
   initEffort();
@@ -30824,7 +31460,7 @@ function isBusy() {
   const forms = ['modal-confirm', 'modal-history-edit', 'modal-settings', 'modal-setup', 'modal-generic',
     'modal-planchoice', 'modal-fullbody', 'modal-lang', 'modal-measure', 'modal-food',
     'modal-library', 'modal-exercise', 'modal-photo-add', 'modal-photo', 'modal-photo-compare',
-    'modal-community-caption', 'modal-auth', 'modal-sync', 'modal-plates', 'modal-effort', 'modal-suggest', 'modal-ex-actions', 'modal-ex-progress', 'modal-muscles', 'modal-csv', 'modal-csv-import'];
+    'modal-community-caption', 'modal-auth', 'modal-sync', 'modal-plates', 'modal-effort', 'modal-suggest', 'modal-programs', 'modal-ex-actions', 'modal-ex-progress', 'modal-muscles', 'modal-csv', 'modal-csv-import'];
   for (const id of forms) {
     const el = document.getElementById(id);
     if (el && !el.hidden) return true;                   // otvorený formulár / dialóg
@@ -31440,6 +32076,7 @@ const NATIVE_BACK_CLOSE = [
   ['modal-plates', '#btn-plates-close'],
   ['modal-effort', '#btn-effort-close'],
   ['modal-suggest', '#btn-suggest-close'],
+  ['modal-programs', '#btn-programs-close'],
   ['modal-confirm', '#btn-confirm-cancel'],
   ['modal-result', '#btn-result-close'],
   ['modal-setup', null],
@@ -31479,6 +32116,7 @@ function nativeBack() {
     const ctPanel = document.getElementById('custom-timer');
     if (top.id === 'modal-rest' && ctPanel && !ctPanel.hidden) { hideCustomTimer(); return 'view'; }
     if (top.id === 'modal-rest' && presetManageMode) { setPresetManageMode(false); return 'view'; }
+    if (top.id === 'modal-programs' && programsCanStepBack()) { programsBack(); return 'view'; }
     const entry = NATIVE_BACK_CLOSE.find((e) => e[0] === top.id);
     if (entry && entry[1] === null) return 'blocked';
     const btn = entry ? document.querySelector(entry[1]) : null;
