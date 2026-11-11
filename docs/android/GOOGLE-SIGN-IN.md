@@ -13,14 +13,21 @@ Credential Manager session state without revoking the user's Google account.
 
 ## Existing account and age confirmation
 
-Migration 0005 requires `age_16_confirmed` during account creation. A Google ID token cannot
-carry this application's explicit checkbox confirmation. This implementation preserves the
-server rule: new users first register and verify their email, then connect Google in Settings.
-Existing accounts with the same verified email use Supabase's identity-linking rules. For a
-different email, sign in with the existing password and use Connect Google. Already-linked
-identities remain subject to Supabase ownership checks; the app never merges workout records.
-No migration or relaxation of age consent is included. Optional web OAuth is not implemented;
-web users retain the existing email/password flow.
+Migration 0005 requires `age_16_confirmed` during account creation, and a Google ID token cannot
+carry it. Since v109 + migration 0020 a NEW user can create the account directly with Google:
+the sign-in card has the same "I am 16 or older" checkbox as e-mail sign-up. When it is ticked,
+the app reads the e-mail from the ID token payload, calls `age_ticket_create(p_email)` (anon;
+stores only `sha256(lower(trim(email)))`, valid 10 minutes, global cap 30 per minute) and then
+`signInWithIdToken`. `handle_new_user()` accepts a Google sign-up only when it finds and deletes
+(single use) that ticket; the consent row gets source `google_signup`. Without a ticket the
+server still raises `age_confirmation_required`, so an unticked new user sees "To create an
+account with Google, first tick I am 16 or older." Existing users sign in with Google without
+the tick. The app uses the ticket only when `community_social_version()` is 12 or more; on an
+older server it keeps the previous behaviour (register by e-mail, then Connect Google in Settings).
+Settings → Connect Google (linking) is unchanged. Existing accounts with the same verified email
+use Supabase's identity-linking rules; for a different email, sign in with the existing password
+and use Connect Google. The app never merges workout records. Optional web OAuth is not
+implemented; web users retain the existing email/password flow.
 
 ## Owner setup (outside this code change)
 
@@ -48,7 +55,7 @@ retain password sign-in and all existing account/workout data. Do not delete ide
 
 ## Verification and limits
 
-At the end of implementation, run `tests/android/native-google.js`, the local workspace check
+At the end of implementation, run `tests/android/native-google.js`, `tests/android/google-age.js`, `tests/social/google-age.js` (the local GoTrue has Google disabled, so it tests the trigger through direct `auth.users` inserts with `provider: google`), the local workspace check
 `tests/android/google-workspace.js` with the existing synthetic local credentials, and the
 Android Kotlin/debug build. Mocks verify app boundaries, not Google provider correctness.
 Live Google acceptance still requires the owner's client/provider setup and a test Google account:

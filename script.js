@@ -20003,24 +20003,42 @@ async function communitySignIn() {
 /* ---------- Google účet (Android): tokeny iba v pamäti, existujúca izolácia účtov ---------- */
 let googleAuthBusy = false;
 const GOOGLE_AUTH_I18N = {
-  en: ['Sign in with Google', 'Connect Google', 'Google sign-in is not available yet. Use email and password.', 'Connect Google to this account. Your workouts and account stay the same.', 'New here? Create and verify your account by email first, then connect Google in Settings.', 'Sign in with your password first, then connect Google in Settings.', 'Google is connected to this account.', 'Google sign-in failed. Try again or use email and password.', 'No Google account is available. Add one in Android settings, then try again.', 'Your account changed while Google was open. Please try again.', 'You are offline. Connect to the internet and try again.'],
-  sk: ['Prihlásiť sa cez Google', 'Prepojiť Google', 'Prihlásenie cez Google zatiaľ nie je dostupné. Použi e-mail a heslo.', 'Prepoj Google s týmto účtom. Tréningy aj účet zostanú rovnaké.', 'Si tu nový? Najprv vytvor a over účet e-mailom, potom prepoj Google v Nastaveniach.', 'Najprv sa prihlás heslom, potom prepoj Google v Nastaveniach.', 'Google je prepojený s týmto účtom.', 'Prihlásenie cez Google zlyhalo. Skús znova alebo použi e-mail a heslo.', 'Nie je dostupný účet Google. Pridaj ho v nastaveniach Androidu a skús znova.', 'Počas výberu Google sa účet zmenil. Skús to znova.', 'Si offline. Pripoj sa na internet a skús znova.'],
-  es: ['Iniciar sesión con Google', 'Conectar Google', 'El acceso con Google aún no está disponible. Usa tu correo y contraseña.', 'Conecta Google a esta cuenta. Tu cuenta y tus entrenamientos no cambian.', '¿Eres nuevo? Primero crea y verifica tu cuenta por correo; después conecta Google en Ajustes.', 'Primero inicia sesión con tu contraseña y después conecta Google en Ajustes.', 'Google está conectado a esta cuenta.', 'No se pudo iniciar sesión con Google. Inténtalo de nuevo o usa tu correo y contraseña.', 'No hay ninguna cuenta de Google disponible. Añade una en los ajustes de Android y vuelve a intentarlo.', 'Tu cuenta cambió mientras Google estaba abierto. Inténtalo de nuevo.', 'Sin conexión. Conéctate a internet e inténtalo de nuevo.'],
-  'pt-BR': ['Entrar com o Google', 'Conectar Google', 'O acesso com o Google ainda não está disponível. Use e-mail e senha.', 'Conecte o Google a esta conta. Sua conta e seus treinos continuam iguais.', 'É novo aqui? Primeiro crie e confirme sua conta por e-mail; depois conecte o Google em Configurações.', 'Entre primeiro com sua senha e depois conecte o Google em Configurações.', 'O Google está conectado a esta conta.', 'Não foi possível entrar com o Google. Tente novamente ou use e-mail e senha.', 'Nenhuma conta do Google disponível. Adicione uma nas configurações do Android e tente novamente.', 'Sua conta mudou enquanto o Google estava aberto. Tente novamente.', 'Você está offline. Conecte-se à internet e tente novamente.'],
-  fr: ['Se connecter avec Google', 'Associer Google', 'La connexion Google n’est pas encore disponible. Utilise ton e-mail et ton mot de passe.', 'Associe Google à ce compte. Ton compte et tes entraînements restent les mêmes.', 'Nouveau ici ? Crée et confirme d’abord ton compte par e-mail, puis associe Google dans les paramètres.', 'Connecte-toi d’abord avec ton mot de passe, puis associe Google dans les paramètres.', 'Google est associé à ce compte.', 'La connexion Google a échoué. Réessaie ou utilise ton e-mail et ton mot de passe.', 'Aucun compte Google disponible. Ajoute-en un dans les paramètres Android, puis réessaie.', 'Ton compte a changé pendant que Google était ouvert. Réessaie.', 'Tu es hors ligne. Connecte-toi à Internet et réessaie.'],
-  ar: ['تسجيل الدخول باستخدام Google', 'ربط Google', 'تسجيل الدخول باستخدام Google غير متاح بعد. استخدم البريد الإلكتروني وكلمة المرور.', 'اربط Google بهذا الحساب. سيبقى حسابك وتمارينك كما هي.', 'هل أنت جديد؟ أنشئ حسابك وأكّده بالبريد الإلكتروني أولًا، ثم اربط Google من الإعدادات.', 'سجّل الدخول بكلمة المرور أولًا، ثم اربط Google من الإعدادات.', 'تم ربط Google بهذا الحساب.', 'تعذّر تسجيل الدخول باستخدام Google. حاول مجددًا أو استخدم البريد الإلكتروني وكلمة المرور.', 'لا يوجد حساب Google متاح. أضف حسابًا في إعدادات أندرويد ثم حاول مجددًا.', 'تغيّر حسابك أثناء فتح Google. حاول مجددًا.', 'أنت غير متصل. اتصل بالإنترنت وحاول مجددًا.']
+  en: ['Sign in with Google', 'Connect Google', 'Google sign-in is not available yet. Use email and password.', 'Connect Google to this account. Your workouts and account stay the same.', 'New here? Create and verify your account by email first, then connect Google in Settings.', 'Sign in with your password first, then connect Google in Settings.', 'Google is connected to this account.', 'Google sign-in failed. Try again or use email and password.', 'No Google account is available. Add one in Android settings, then try again.', 'Your account changed while Google was open. Please try again.', 'You are offline. Connect to the internet and try again.', 'New here? Tick “I am 16 or older” above, then continue with Google.', 'To create an account with Google, first tick “I am 16 or older”.'],
+  sk: ['Prihlásiť sa cez Google', 'Prepojiť Google', 'Prihlásenie cez Google zatiaľ nie je dostupné. Použi e-mail a heslo.', 'Prepoj Google s týmto účtom. Tréningy aj účet zostanú rovnaké.', 'Si tu nový? Najprv vytvor a over účet e-mailom, potom prepoj Google v Nastaveniach.', 'Najprv sa prihlás heslom, potom prepoj Google v Nastaveniach.', 'Google je prepojený s týmto účtom.', 'Prihlásenie cez Google zlyhalo. Skús znova alebo použi e-mail a heslo.', 'Nie je dostupný účet Google. Pridaj ho v nastaveniach Androidu a skús znova.', 'Počas výberu Google sa účet zmenil. Skús to znova.', 'Si offline. Pripoj sa na internet a skús znova.', 'Si tu nový? Zaškrtni vyššie „Mám 16 alebo viac rokov“ a pokračuj cez Google.', 'Ak chceš vytvoriť účet cez Google, najprv zaškrtni „Mám 16 alebo viac rokov“.'],
+  es: ['Iniciar sesión con Google', 'Conectar Google', 'El acceso con Google aún no está disponible. Usa tu correo y contraseña.', 'Conecta Google a esta cuenta. Tu cuenta y tus entrenamientos no cambian.', '¿Eres nuevo? Primero crea y verifica tu cuenta por correo; después conecta Google en Ajustes.', 'Primero inicia sesión con tu contraseña y después conecta Google en Ajustes.', 'Google está conectado a esta cuenta.', 'No se pudo iniciar sesión con Google. Inténtalo de nuevo o usa tu correo y contraseña.', 'No hay ninguna cuenta de Google disponible. Añade una en los ajustes de Android y vuelve a intentarlo.', 'Tu cuenta cambió mientras Google estaba abierto. Inténtalo de nuevo.', 'Sin conexión. Conéctate a internet e inténtalo de nuevo.', '¿Eres nuevo? Marca arriba «Tengo 16 años o más» y continúa con Google.', 'Para crear una cuenta con Google, primero marca «Tengo 16 años o más».'],
+  'pt-BR': ['Entrar com o Google', 'Conectar Google', 'O acesso com o Google ainda não está disponível. Use e-mail e senha.', 'Conecte o Google a esta conta. Sua conta e seus treinos continuam iguais.', 'É novo aqui? Primeiro crie e confirme sua conta por e-mail; depois conecte o Google em Configurações.', 'Entre primeiro com sua senha e depois conecte o Google em Configurações.', 'O Google está conectado a esta conta.', 'Não foi possível entrar com o Google. Tente novamente ou use e-mail e senha.', 'Nenhuma conta do Google disponível. Adicione uma nas configurações do Android e tente novamente.', 'Sua conta mudou enquanto o Google estava aberto. Tente novamente.', 'Você está offline. Conecte-se à internet e tente novamente.', 'É novo aqui? Marque acima «Tenho 16 anos ou mais» e continue com o Google.', 'Para criar uma conta com o Google, primeiro marque «Tenho 16 anos ou mais».'],
+  fr: ['Se connecter avec Google', 'Associer Google', 'La connexion Google n’est pas encore disponible. Utilise ton e-mail et ton mot de passe.', 'Associe Google à ce compte. Ton compte et tes entraînements restent les mêmes.', 'Nouveau ici ? Crée et confirme d’abord ton compte par e-mail, puis associe Google dans les paramètres.', 'Connecte-toi d’abord avec ton mot de passe, puis associe Google dans les paramètres.', 'Google est associé à ce compte.', 'La connexion Google a échoué. Réessaie ou utilise ton e-mail et ton mot de passe.', 'Aucun compte Google disponible. Ajoute-en un dans les paramètres Android, puis réessaie.', 'Ton compte a changé pendant que Google était ouvert. Réessaie.', 'Tu es hors ligne. Connecte-toi à Internet et réessaie.', 'Nouveau ici ? Coche ci-dessus « J’ai 16 ans ou plus », puis continue avec Google.', 'Pour créer un compte avec Google, coche d’abord « J’ai 16 ans ou plus ».'],
+  ar: ['تسجيل الدخول باستخدام Google', 'ربط Google', 'تسجيل الدخول باستخدام Google غير متاح بعد. استخدم البريد الإلكتروني وكلمة المرور.', 'اربط Google بهذا الحساب. سيبقى حسابك وتمارينك كما هي.', 'هل أنت جديد؟ أنشئ حسابك وأكّده بالبريد الإلكتروني أولًا، ثم اربط Google من الإعدادات.', 'سجّل الدخول بكلمة المرور أولًا، ثم اربط Google من الإعدادات.', 'تم ربط Google بهذا الحساب.', 'تعذّر تسجيل الدخول باستخدام Google. حاول مجددًا أو استخدم البريد الإلكتروني وكلمة المرور.', 'لا يوجد حساب Google متاح. أضف حسابًا في إعدادات أندرويد ثم حاول مجددًا.', 'تغيّر حسابك أثناء فتح Google. حاول مجددًا.', 'أنت غير متصل. اتصل بالإنترنت وحاول مجددًا.', 'هل أنت جديد؟ فعّل أعلاه «عمري 16 عامًا أو أكثر» ثم تابع باستخدام Google.', 'لإنشاء حساب باستخدام Google، فعّل أولًا «عمري 16 عامًا أو أكثر».']
 };
-Object.keys(GOOGLE_AUTH_I18N).forEach(lang => ['signin', 'connect', 'unavailable', 'linkHint', 'newAccount', 'passwordFirst', 'linked', 'error', 'noCredential', 'changed', 'offline'].forEach((key, i) => {
+Object.keys(GOOGLE_AUTH_I18N).forEach(lang => ['signin', 'connect', 'unavailable', 'linkHint', 'newAccount', 'passwordFirst', 'linked', 'error', 'noCredential', 'changed', 'offline', 'newAccountAge', 'ageFirst'].forEach((key, i) => {
   I18N[lang]['google.' + key] = GOOGLE_AUTH_I18N[lang][i];
 }));
 function googleReady() {
   return isNativeApp() && communityConfigured() && /^[0-9]+-[A-Za-z0-9_-]+\.apps\.googleusercontent\.com$/.test(String(communityCfg().googleWebClientId || '')) && !!nativePlugin('GymGoogle');
 }
+/* Podpora tiketu 16+ (0020): odhlásený používateľ nevie volať community_social_version (iba authenticated),
+   preto sa raz overí samostatná funkcia age_ticket_supported; chýbajúca funkcia / chyba = staré správanie. */
+let googleAgeSupported = null, googleAgeProbing = false;
+function googleAgeTicketOk() { return communityVersion >= 12 || googleAgeSupported === true; }
+async function googleAgeProbe() {
+  if (googleAgeSupported !== null || googleAgeProbing || communityVersion >= 12) return;
+  const sb = communitySb();
+  if (!sb) return;
+  googleAgeProbing = true;
+  let r;
+  try { r = await sb.rpc('age_ticket_supported'); } catch (e) { r = { error: e }; }
+  googleAgeProbing = false;
+  if (r && !r.error && r.data === true) googleAgeSupported = true;
+  else if (r && (!r.error || communityMissingFn(r.error))) googleAgeSupported = false;   // sieťová chyba: skúsi sa znova
+  else return;
+  if (googleAgeSupported && document.getElementById('community-age16')) renderCommunity();
+}
 function googleSignInHtml() {
   if (!isNativeApp()) return '';
+  if (googleReady()) googleAgeProbe();
   return '<div class="plan-actions"><button type="button" class="btn btn-secondary" data-community-action="google-signin"'
     + (!googleReady() || googleAuthBusy ? ' disabled' : '') + '>' + esc(t('google.signin')) + '</button></div>'
-    + '<p class="card-note">' + esc(t(googleReady() ? 'google.newAccount' : 'google.unavailable')) + '</p>';
+    + '<p class="card-note">' + esc(t(googleReady() ? (googleAgeTicketOk() ? 'google.newAccountAge' : 'google.newAccount') : 'google.unavailable')) + '</p>';
 }
 function renderGoogleAccount() {
   const row = document.getElementById('google-account-row'), b = document.getElementById('btn-google-connect');
@@ -20042,6 +20060,14 @@ function googleAuthMessage(key, link) {
 function googleAuthControls() {
   document.querySelectorAll('[data-community-action="google-signin"]').forEach(b => { b.disabled = googleAuthBusy || !googleReady(); });
   renderGoogleAccount();
+}
+/* E-mail z payloadu Google ID tokenu (base64url JSON; podpis overuje až server, tu ho netreba). */
+function googleTokenEmail(token) {
+  try {
+    const b = String(token).split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+    const e = JSON.parse(atob(b + '='.repeat((4 - b.length % 4) % 4))).email;
+    return typeof e === 'string' ? e : '';
+  } catch (e) { return ''; }
 }
 async function communityGoogleSignIn(link) {
   link = link === true;
@@ -20067,9 +20093,24 @@ async function communityGoogleSignIn(link) {
       googleAuthMessage('google.changed', link); return;
     }
     const input = { provider: 'google', token: credential.token, nonce: credential.nonce };
+    /* Nový účet cez Google: server (0020) ho prijme len s čerstvým tiketom pre presne tento e-mail, ktorý
+       sa vydá po zaškrtnutí „Mám 16 alebo viac rokov“. Token ani e-mail sa nikde nelogujú ani neukladajú. */
+    if (!link) await googleAgeProbe();
+    const ageServer = !link && googleAgeTicketOk();
+    const ageTicked = !!(document.getElementById('community-age16')?.checked) || (!document.getElementById('community-age16') && communityAge16);
+    if (ageServer && ageTicked) {
+      const email = googleTokenEmail(credential.token);
+      if (email) { try { await sb.rpc('age_ticket_create', { p_email: email }); } catch (e) {} }
+      // Chyba tiketu (napr. rate_limited) nesmie zablokovať existujúceho používateľa: prihlásenie sa skúsi aj tak,
+      // nový používateľ dostane od servera obvyklé odmietnutie.
+    }
     const result = link ? await sb.auth.linkIdentity(input) : await sb.auth.signInWithIdToken(input);
     if (result.error) {
       const code = String(result.error.code || '');
+      // Bez zaškrtnutého 16+ server nového používateľa odmietne (GoTrue to hlási ako unexpected_failure)
+      if (ageServer && !ageTicked && (code === 'unexpected_failure' || /age_confirmation_required/.test(String(result.error.message || '')))) {
+        googleAuthMessage('google.ageFirst', link); return;
+      }
       googleAuthMessage(/identity|email.*confirm|user_already_exists|unexpected_failure/.test(code) ? 'google.passwordFirst' : 'google.error', link);
       return;
     }

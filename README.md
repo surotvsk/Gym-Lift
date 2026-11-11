@@ -964,6 +964,13 @@ Community stops them. They start **switched on** (water every 2 hours 08:00–21
 Mon/Wed/Fri at 17:00, in your phone's time zone) as soon as notifications are on; every switch can be
 turned off and stays off.
 
+**Create an account with Google (v109, Android app, needs migration 0020 on the server).** A new user can tick
+"I am 16 or older" on the sign-in card and continue with Google; the server still refuses any account without
+that confirmation (it accepts a Google sign-up only after the tick, for exactly that e-mail, once, within 10
+minutes, and stores only a hash of the e-mail for that). Existing users sign in with Google without ticking.
+Without the tick a new Google user sees "To create an account with Google, first tick I am 16 or older."
+Before the server has the migration the old flow stays (register by e-mail, then Connect Google in Settings).
+
 **Reminders v2 (v107, needs migration 0019 on the server).** Water can be sent either at an interval or
 at **set times** you choose (up to 12). **Meals** take up to **six** times (older apps keep showing and
 saving meals 4-6 untouched: their three inputs only change the first three times). You can also add up to
