@@ -7605,6 +7605,7 @@ const BASICS_I18N = {
     'xprog.close': 'Zavrieť', 'xprog.statE1rm': 'Najlepší odhad 1RM', 'xprog.statHeaviest': 'Najťažšie', 'xprog.statBestSet': 'Najlepšia séria', 'xprog.statSessions': 'Tréningy', 'xprog.statLeastHelp': 'Najmenej pomoci', 'xprog.metricE1rm': 'Odhad 1RM', 'xprog.metricHeaviest': 'Najťažšie', 'xprog.metricVolume': 'Objem', 'xprog.metricHelp': 'Pomoc', 'xprog.metricGroup': 'Čo ukázať v grafe', 'xprog.rangeGroup': 'Obdobie', 'xprog.r3m': '3 M', 'xprog.r1y': '1 R', 'xprog.rAll': 'Všetko', 'xprog.empty': 'Zapíš tento cvik aspoň dvakrát a objaví sa graf.', 'xprog.sessions': 'Tréningy', 'xprog.more': 'Zobraziť viac', 'xprog.estNote': 'Odhad podľa Epleya, nie otestované maximum.', 'xprog.open': 'Zobraziť pokrok: {name}', 'xprog.link': 'Pokrok', 'xprog.chartAria': '{label}, {unit}: od {from} do {to}',
     'muscles.title': 'Svaly', 'muscles.tile': 'Svaly', 'muscles.empty': 'Tento týždeň žiadne série', 'muscles.close': 'Zavrieť', 'muscles.weekGroup': 'Týždeň', 'muscles.prev': 'Predchádzajúci týždeň', 'muscles.next': 'Nasledujúci týždeň', 'muscles.thisWeek': 'Tento týždeň', 'muscles.lastWeek': 'Minulý týždeň', 'muscles.weekOf': 'Týždeň od {date}', 'muscles.volume': 'Celkový objem', 'muscles.other': 'Ostatné', 'muscles.note': 'Hlavný sval sa počíta ako 1 séria, pomocné svaly ako ½. Vlastné cviky patria do Ostatné. Bežné odporúčanie je asi 10–20 sérií na sval týždenne.', 'muscles.trend': '{name}: série za týždeň, posledných 8 týždňov',
     'recovery.hint': '{muscle}: zotavenie ešte prebieha — zváž {plan}', 'recovery.mapAria': 'Odhad zotavenia svalov, pohľad spredu a zozadu', 'recovery.note': 'Odhad z tvojich sérií za posledné 3 – 4 dni: výraznejšia farba = nedávnejšia záťaž. Nie je to lekárska rada.',
+    'imp.tag': 'Importované · {source}', 'imp.deleteTitle': 'Vymazať importovaný tréning', 'imp.deleteConfirm': 'Tento importovaný tréning sa odstráni z histórie a grafov. Nikdy sa nepočítal do XP.', 'imp.deleteSourceTitle': 'Odstrániť importy zo zdroja {source}', 'imp.deleteSourceConfirm': 'Importované tréningy na odstránenie: {n} (zo zdroja {source}). Tvoje vlastné tréningy zostanú.',
   },
   en: {
     'settings.autoRest': 'Start rest automatically', 'settings.autoRestHint': 'The rest timer starts by itself when you mark a set done. In a superset, after the last exercise.',
@@ -7633,6 +7634,7 @@ const BASICS_I18N = {
     'xprog.close': 'Close', 'xprog.statE1rm': 'Best est. 1RM', 'xprog.statHeaviest': 'Heaviest', 'xprog.statBestSet': 'Best set', 'xprog.statSessions': 'Sessions', 'xprog.statLeastHelp': 'Least help', 'xprog.metricE1rm': 'Est. 1RM', 'xprog.metricHeaviest': 'Heaviest', 'xprog.metricVolume': 'Volume', 'xprog.metricHelp': 'Help', 'xprog.metricGroup': 'What to show in the chart', 'xprog.rangeGroup': 'Period', 'xprog.r3m': '3 M', 'xprog.r1y': '1 Y', 'xprog.rAll': 'All', 'xprog.empty': 'Log this exercise at least twice to see a chart.', 'xprog.sessions': 'Sessions', 'xprog.more': 'Show more', 'xprog.estNote': 'Epley estimate, not a tested max.', 'xprog.open': 'Show progress for {name}', 'xprog.link': 'Progress', 'xprog.chartAria': '{label}, {unit}: from {from} to {to}',
     'muscles.title': 'Muscles', 'muscles.tile': 'Muscles', 'muscles.empty': 'No sets this week', 'muscles.close': 'Close', 'muscles.weekGroup': 'Week', 'muscles.prev': 'Previous week', 'muscles.next': 'Next week', 'muscles.thisWeek': 'This week', 'muscles.lastWeek': 'Last week', 'muscles.weekOf': 'Week of {date}', 'muscles.volume': 'Total volume', 'muscles.other': 'Other', 'muscles.note': 'The main muscle counts as 1 set, helper muscles as ½. Custom exercises count as Other. Common guidance is about 10–20 sets per muscle per week.', 'muscles.trend': '{name}: sets per week, last 8 weeks',
     'recovery.hint': '{muscle} still recovering — consider {plan}', 'recovery.mapAria': 'Muscle recovery estimate, front and back view', 'recovery.note': 'Estimate from your sets in the last 3–4 days: stronger colour means worked more recently. Not medical advice.',
+    'imp.tag': 'Imported · {source}', 'imp.deleteTitle': 'Delete imported workout', 'imp.deleteConfirm': 'This imported workout will be removed from your history and charts. It never counted for XP.', 'imp.deleteSourceTitle': 'Remove imports from {source}', 'imp.deleteSourceConfirm': 'Imported workouts to remove: {n} (from {source}). Your own workouts stay.',
   },
   es: {
     'settings.autoRest': 'Iniciar el descanso automáticamente', 'settings.autoRestHint': 'El temporizador de descanso empieza solo al marcar una serie. En una superserie, tras el último ejercicio.',
@@ -7661,6 +7663,7 @@ const BASICS_I18N = {
     'xprog.close': 'Cerrar', 'xprog.statE1rm': 'Mejor 1RM est.', 'xprog.statHeaviest': 'Más pesado', 'xprog.statBestSet': 'Mejor serie', 'xprog.statSessions': 'Sesiones', 'xprog.statLeastHelp': 'Menos ayuda', 'xprog.metricE1rm': '1RM est.', 'xprog.metricHeaviest': 'Más pesado', 'xprog.metricVolume': 'Volumen', 'xprog.metricHelp': 'Ayuda', 'xprog.metricGroup': 'Qué mostrar en el gráfico', 'xprog.rangeGroup': 'Periodo', 'xprog.r3m': '3 M', 'xprog.r1y': '1 A', 'xprog.rAll': 'Todo', 'xprog.empty': 'Registra este ejercicio al menos dos veces para ver un gráfico.', 'xprog.sessions': 'Sesiones', 'xprog.more': 'Mostrar más', 'xprog.estNote': 'Estimación de Epley, no un máximo medido.', 'xprog.open': 'Ver progreso de {name}', 'xprog.link': 'Progreso', 'xprog.chartAria': '{label}, {unit}: de {from} a {to}',
     'muscles.title': 'Músculos', 'muscles.tile': 'Músculos', 'muscles.empty': 'Sin series esta semana', 'muscles.close': 'Cerrar', 'muscles.weekGroup': 'Semana', 'muscles.prev': 'Semana anterior', 'muscles.next': 'Semana siguiente', 'muscles.thisWeek': 'Esta semana', 'muscles.lastWeek': 'Semana pasada', 'muscles.weekOf': 'Semana del {date}', 'muscles.volume': 'Volumen total', 'muscles.other': 'Otros', 'muscles.note': 'El músculo principal cuenta como 1 serie y los músculos auxiliares como ½. Los ejercicios propios cuentan como Otros. Una pauta habitual es de unas 10–20 series por músculo a la semana.', 'muscles.trend': '{name}: series por semana, últimas 8 semanas',
     'recovery.hint': '{muscle}: aún en recuperación — considera {plan}', 'recovery.mapAria': 'Estimación de la recuperación muscular, vista frontal y posterior', 'recovery.note': 'Estimación según tus series de los últimos 3–4 días: color más intenso = trabajado más recientemente. No es un consejo médico.',
+    'imp.tag': 'Importado · {source}', 'imp.deleteTitle': 'Eliminar entrenamiento importado', 'imp.deleteConfirm': 'Este entrenamiento importado se quitará de tu historial y de los gráficos. Nunca contó para el XP.', 'imp.deleteSourceTitle': 'Quitar importaciones de {source}', 'imp.deleteSourceConfirm': 'Entrenamientos importados que se quitarán: {n} (de {source}). Tus propios entrenamientos se quedan.',
   },
   'pt-BR': {
     'settings.autoRest': 'Iniciar o descanso automaticamente', 'settings.autoRestHint': 'O cronômetro de descanso começa sozinho ao marcar uma série. Em um superset, após o último exercício.',
@@ -7689,6 +7692,7 @@ const BASICS_I18N = {
     'xprog.close': 'Fechar', 'xprog.statE1rm': 'Melhor 1RM est.', 'xprog.statHeaviest': 'Mais pesado', 'xprog.statBestSet': 'Melhor série', 'xprog.statSessions': 'Sessões', 'xprog.statLeastHelp': 'Menos ajuda', 'xprog.metricE1rm': '1RM est.', 'xprog.metricHeaviest': 'Mais pesado', 'xprog.metricVolume': 'Volume', 'xprog.metricHelp': 'Ajuda', 'xprog.metricGroup': 'O que mostrar no gráfico', 'xprog.rangeGroup': 'Período', 'xprog.r3m': '3 M', 'xprog.r1y': '1 A', 'xprog.rAll': 'Tudo', 'xprog.empty': 'Registre este exercício pelo menos duas vezes para ver um gráfico.', 'xprog.sessions': 'Sessões', 'xprog.more': 'Mostrar mais', 'xprog.estNote': 'Estimativa de Epley, não um máximo testado.', 'xprog.open': 'Ver progresso de {name}', 'xprog.link': 'Progresso', 'xprog.chartAria': '{label}, {unit}: de {from} a {to}',
     'muscles.title': 'Músculos', 'muscles.tile': 'Músculos', 'muscles.empty': 'Nenhuma série esta semana', 'muscles.close': 'Fechar', 'muscles.weekGroup': 'Semana', 'muscles.prev': 'Semana anterior', 'muscles.next': 'Próxima semana', 'muscles.thisWeek': 'Esta semana', 'muscles.lastWeek': 'Semana passada', 'muscles.weekOf': 'Semana de {date}', 'muscles.volume': 'Volume total', 'muscles.other': 'Outros', 'muscles.note': 'O músculo principal conta como 1 série e os músculos auxiliares como ½. Exercícios personalizados contam como Outros. Uma orientação comum é cerca de 10–20 séries por músculo por semana.', 'muscles.trend': '{name}: séries por semana, últimas 8 semanas',
     'recovery.hint': '{muscle}: ainda em recuperação — considere {plan}', 'recovery.mapAria': 'Estimativa de recuperação muscular, vista frontal e traseira', 'recovery.note': 'Estimativa com base nas suas séries dos últimos 3–4 dias: cor mais forte = trabalhado há menos tempo. Não é conselho médico.',
+    'imp.tag': 'Importado · {source}', 'imp.deleteTitle': 'Excluir treino importado', 'imp.deleteConfirm': 'Este treino importado será removido do seu histórico e dos gráficos. Ele nunca contou para o XP.', 'imp.deleteSourceTitle': 'Remover importações de {source}', 'imp.deleteSourceConfirm': 'Treinos importados a remover: {n} (de {source}). Seus próprios treinos ficam.',
   },
   fr: {
     'settings.autoRest': 'Démarrer le repos automatiquement', 'settings.autoRestHint': 'Le minuteur de repos démarre seul quand tu valides une série. Dans une superset, après le dernier exercice.',
@@ -7717,6 +7721,7 @@ const BASICS_I18N = {
     'xprog.close': 'Fermer', 'xprog.statE1rm': 'Meilleur 1RM est.', 'xprog.statHeaviest': 'Plus lourd', 'xprog.statBestSet': 'Meilleure série', 'xprog.statSessions': 'Séances', 'xprog.statLeastHelp': 'Moins d’aide', 'xprog.metricE1rm': '1RM est.', 'xprog.metricHeaviest': 'Plus lourd', 'xprog.metricVolume': 'Volume', 'xprog.metricHelp': 'Aide', 'xprog.metricGroup': 'Quoi afficher dans le graphique', 'xprog.rangeGroup': 'Période', 'xprog.r3m': '3 M', 'xprog.r1y': '1 A', 'xprog.rAll': 'Tout', 'xprog.empty': 'Enregistre cet exercice au moins deux fois pour voir un graphique.', 'xprog.sessions': 'Séances', 'xprog.more': 'Afficher plus', 'xprog.estNote': 'Estimation d’Epley, pas un maximum testé.', 'xprog.open': 'Voir la progression de {name}', 'xprog.link': 'Progression', 'xprog.chartAria': '{label}, {unit} : du {from} au {to}',
     'muscles.title': 'Muscles', 'muscles.tile': 'Muscles', 'muscles.empty': 'Aucune série cette semaine', 'muscles.close': 'Fermer', 'muscles.weekGroup': 'Semaine', 'muscles.prev': 'Semaine précédente', 'muscles.next': 'Semaine suivante', 'muscles.thisWeek': 'Cette semaine', 'muscles.lastWeek': 'Semaine dernière', 'muscles.weekOf': 'Semaine du {date}', 'muscles.volume': 'Volume total', 'muscles.other': 'Autres', 'muscles.note': 'Le muscle principal compte pour 1 série, les muscles secondaires pour ½. Les exercices personnalisés comptent dans Autres. Une recommandation courante est d’environ 10 à 20 séries par muscle et par semaine.', 'muscles.trend': '{name} : séries par semaine, 8 dernières semaines',
     'recovery.hint': '{muscle} : récupération en cours — pense à {plan}', 'recovery.mapAria': 'Estimation de la récupération musculaire, vue de face et de dos', 'recovery.note': 'Estimation d’après tes séries des 3–4 derniers jours : couleur plus marquée = travaillé plus récemment. Ce n’est pas un avis médical.',
+    'imp.tag': 'Importé · {source}', 'imp.deleteTitle': 'Supprimer l\'entraînement importé', 'imp.deleteConfirm': 'Cet entraînement importé sera retiré de votre historique et des graphiques. Il n\'a jamais compté pour l\'XP.', 'imp.deleteSourceTitle': 'Retirer les imports de {source}', 'imp.deleteSourceConfirm': 'Entraînements importés à retirer : {n} (de {source}). Vos propres entraînements restent.',
   },
   ar: {
     'settings.autoRest': 'بدء الراحة تلقائيًا', 'settings.autoRestHint': 'يبدأ مؤقت الراحة تلقائيًا عند تحديد مجموعة كمكتملة. في السوبرست، بعد آخر تمرين.',
@@ -7745,6 +7750,7 @@ const BASICS_I18N = {
     'xprog.close': 'إغلاق', 'xprog.statE1rm': 'أفضل 1RM تقديري', 'xprog.statHeaviest': 'الأثقل', 'xprog.statBestSet': 'أفضل مجموعة', 'xprog.statSessions': 'التمارين', 'xprog.statLeastHelp': 'أقل مساعدة', 'xprog.metricE1rm': '1RM تقديري', 'xprog.metricHeaviest': 'الأثقل', 'xprog.metricVolume': 'الحجم', 'xprog.metricHelp': 'المساعدة', 'xprog.metricGroup': 'ما يُعرض في الرسم', 'xprog.rangeGroup': 'الفترة', 'xprog.r3m': '3 أشهر', 'xprog.r1y': 'سنة', 'xprog.rAll': 'الكل', 'xprog.empty': 'سجّل هذا التمرين مرتين على الأقل لتظهر الرسوم.', 'xprog.sessions': 'التمارين', 'xprog.more': 'عرض المزيد', 'xprog.estNote': 'تقدير إيبلي، وليس حدًا أقصى تم اختباره.', 'xprog.open': 'عرض تقدّم {name}', 'xprog.link': 'التقدّم', 'xprog.chartAria': '{label}، {unit}: من {from} إلى {to}',
     'muscles.title': 'العضلات', 'muscles.tile': 'العضلات', 'muscles.empty': 'لا توجد مجموعات هذا الأسبوع', 'muscles.close': 'إغلاق', 'muscles.weekGroup': 'الأسبوع', 'muscles.prev': 'الأسبوع السابق', 'muscles.next': 'الأسبوع التالي', 'muscles.thisWeek': 'هذا الأسبوع', 'muscles.lastWeek': 'الأسبوع الماضي', 'muscles.weekOf': 'أسبوع {date}', 'muscles.volume': 'الحجم الإجمالي', 'muscles.other': 'أخرى', 'muscles.note': 'تُحسب العضلة الرئيسية كمجموعة واحدة والعضلات المساعدة كنصف مجموعة. التمارين المخصصة تُحسب ضمن «أخرى». الإرشاد الشائع نحو 10–20 مجموعة لكل عضلة أسبوعيًا.', 'muscles.trend': '{name}: المجموعات في الأسبوع، آخر 8 أسابيع',
     'recovery.hint': '{muscle}: التعافي لم يكتمل بعد — فكّر في {plan}', 'recovery.mapAria': 'تقدير تعافي العضلات، منظر أمامي وخلفي', 'recovery.note': 'تقدير مبني على مجموعاتك في آخر 3–4 أيام: اللون الأقوى يعني تدريبًا أحدث. ليس نصيحة طبية.',
+    'imp.tag': 'مستورد · {source}', 'imp.deleteTitle': 'حذف التمرين المستورد', 'imp.deleteConfirm': 'سيُزال هذا التمرين المستورد من سجلّك والرسوم البيانية. لم يُحتسب أبدًا في نقاط الخبرة.', 'imp.deleteSourceTitle': 'إزالة المستورد من {source}', 'imp.deleteSourceConfirm': 'التمارين المستوردة التي ستُزال: {n} (من {source}). تمارينك الخاصة تبقى.',
   },
 };
 for (const lang of Object.keys(BASICS_I18N)) Object.assign(I18N[lang] || (I18N[lang] = {}), BASICS_I18N[lang]);
@@ -22495,11 +22501,13 @@ function renderPokrok() {
 
   const history = document.getElementById('history-list');
   history.innerHTML = '';
-  if (!state.history.length) {
+  if (!state.history.length && !(state.importedHistory || []).length) {
     history.innerHTML = `<p class="empty-state">${t('pokrok.historyEmpty')}</p>`;
   } else {
-    const sorted = [...state.history].sort((a, b) => b.date.localeCompare(a.date));
+    /* Skutočné aj importované tréningy v jednom zozname podľa dátumu; import má vlastný riadok (bez XP a úpravy). */
+    const sorted = [...state.history, ...(state.importedHistory || [])].sort((a, b) => b.date.localeCompare(a.date));
     for (const w of sorted) {
+      if (isImportedWorkout(w)) { history.appendChild(importedHistoryRow(w)); continue; }
       const setsDone = w.exercises.reduce((s, ex) => s + exerciseSlotCount(ex), 0);
       const row = document.createElement('div');
       row.className = 'history-row';
@@ -22733,6 +22741,7 @@ function dayStatusText(key, count) {
 
 function renderKalendar() {
   const byDate = historyByDate();
+  const impByDate = importedByDate();
   const byActs = activitiesByDate();
   const today = todayISO();
   const lang = activeLang();
@@ -22765,27 +22774,28 @@ function renderKalendar() {
     const key = localDateKey(date);
     const workouts = byDate[key] || [];
     const count = workouts.length + ((byActs[key] || []).length);
+    const impCount = (impByDate[key] || []).length;   // importy: len neutrálna značka, nikdy zelený deň
     const isToday = key === today;
     const isFuture = key > today;
-    const status = dayStatusText(key, count);
+    const status = dayStatusText(key, count + impCount);
 
     const btn = document.createElement('button');
     btn.type = 'button';
     btn.dataset.day = key;
     btn.className = 'cal-cell'
-      + (count ? ' cal-done' : (isFuture || isToday ? '' : ' cal-miss'))
+      + (count ? ' cal-done' : (impCount ? ' cal-imp' : (isFuture || isToday ? '' : ' cal-miss')))
       + (isToday ? ' cal-today' : '')
       + (isFuture ? ' cal-future' : '')
       + (key === selectedDayKey ? ' cal-selected' : '')
       + (outside ? ' cal-outside' : '');
     let aria = t('kalendar.ariaDay', { date: formatFullDate(date), status });
-    if (count > 1) aria += ' · ' + tPlural('kalendar.ariaWorkoutCount', count);
+    if (count + impCount > 1) aria += ' · ' + tPlural('kalendar.ariaWorkoutCount', count + impCount);
     btn.setAttribute('aria-label', aria);
     /* Každý deň z vedľajšieho mesiaca dostane krátky názov mesiaca, aby bolo jasné, kam tréning patrí. */
     const monthLabel = outside
       ? `<span class="cal-mon" aria-hidden="true">${esc(String(localeData().monthsShort[date.getMonth()]).replace(/\.$/, ''))}</span>` : '';
     btn.innerHTML = `<span class="cal-num">${date.getDate()}</span>` + monthLabel
-      + (count > 1 ? `<span class="cal-badge">${count}</span>` : '');
+      + (count + impCount > 1 ? `<span class="cal-badge">${count + impCount}</span>` : '');
     grid.appendChild(btn);
   }
 }
@@ -22967,12 +22977,13 @@ function renderDayDetail(key) {
   const isFuture = key > today;
   const workouts = historyByDate()[key] || [];
   const acts = activitiesByDate()[key] || [];
-  const total = workouts.length + acts.length;
+  const imported = importedByDate()[key] || [];
+  const total = workouts.length + acts.length + imported.length;
 
   document.getElementById('day-title').textContent = formatFullDate(date);
 
   const statusEl = document.getElementById('day-status');
-  statusEl.className = 'day-status ' + (total ? 'day-status-done'
+  statusEl.className = 'day-status ' + (total ? (workouts.length + acts.length ? 'day-status-done' : 'day-status-imp')
     : isFuture ? 'day-status-future'
     : key === today ? 'day-status-today' : 'day-status-miss');
   statusEl.textContent = dayStatusText(key, total);
@@ -22987,6 +22998,7 @@ function renderDayDetail(key) {
     body.innerHTML = `<p class="card-note">${esc(t('kalendar.emptyPast'))}</p>`;
   } else {
     for (const w of workouts) body.appendChild(workoutBlock(w));
+    for (const w of imported) body.appendChild(importedWorkoutBlock(w));
     for (const a of acts) body.appendChild(activityBlock(a));
   }
 
@@ -25974,6 +25986,95 @@ function insightHistory() {
     insightCache.all = i.length ? h.concat(i) : h;
   }
   return insightCache.all;
+}
+
+/* ---------- Importované tréningy: História, Kalendár, mazanie ---------- */
+/* Importy majú vlastné cesty zobrazenia a mazania; skutočná história (úprava, späť, XP) sa ich nedotýka.
+   Importovaný tréning sa dá otvoriť (odkaz na cvik) a zmazať, nie upraviť. */
+
+/* Zdroj importu na zobrazenie ("Strong", "Hevy", "CSV"): značky, nie preklad. */
+function importSourceLabel(source) {
+  return source === 'strong' ? 'Strong' : source === 'hevy' ? 'Hevy' : 'CSV';
+}
+/* Jedna malá tlmená značka "Importované · Strong". */
+function importTagHtml(w) {
+  return '<span class="imp-tag">' + esc(t('imp.tag', { source: importSourceLabel(w.source) })) + '</span>';
+}
+/* Mapa dátum -> importované tréningy (jedna O(n) prechádzka). */
+function importedByDate() {
+  const map = {};
+  for (const w of (state.importedHistory || [])) {
+    if (!w || !w.date) continue;
+    (map[w.date] || (map[w.date] = [])).push(w);
+  }
+  return map;
+}
+/* Riadok v Histórii: bez XP a bez úpravy, len značka a zmazanie. */
+function importedHistoryRow(w) {
+  const setsDone = w.exercises.reduce((s, ex) => s + exerciseSlotCount(ex), 0);
+  const row = document.createElement('div');
+  row.className = 'history-row history-imported';
+  const detail = historyGroupWrap(w.exercises, w.exercises.map(e => historyExerciseDetail(e)), '<br>');
+  row.innerHTML = `
+    <div class="history-main">
+      <div class="history-name">${esc(w.planName || t('pokrok.workoutFallback'))}</div>
+      <div class="history-detail">${formatDate(w.date)} · ${tPlural('pokrok.setsCount', setsDone)} ${importTagHtml(w)}</div>
+      ${historyDurationLine(w)}
+      <div class="history-detail">${detail}</div>
+      ${w.note ? `<div class="history-note">“${esc(w.note)}”</div>` : ''}
+    </div>
+    <div class="history-side">
+      <div class="history-actions">
+        <button class="btn-icon-sm btn-icon-danger" data-action="delete" title="${esc(t('imp.deleteTitle'))}" aria-label="${esc(t('imp.deleteTitle'))}">🗑️</button>
+      </div>
+    </div>`;
+  row.querySelector('[data-action="delete"]').addEventListener('click', () => deleteImportedWorkout(w.id));
+  return row;
+}
+/* Blok v detaile dňa: ako skutočný tréning, ale bez XP, zdieľania a zdravia; s tlmenou značkou a zmazaním. */
+function importedWorkoutBlock(w) {
+  const div = workoutBlock(w);
+  for (const sel of ['.day-workout-xp', '.day-share', '.day-health']) { const el = div.querySelector(sel); if (el) el.remove(); }
+  const head = div.querySelector('.day-workout-head');
+  if (head) {
+    head.insertAdjacentHTML('beforeend', '<button type="button" class="btn-icon-sm btn-icon-danger" data-action="delete-imported" title="' + escAttr(t('imp.deleteTitle')) + '" aria-label="' + escAttr(t('imp.deleteTitle')) + '">🗑️</button>');
+    head.querySelector('[data-action="delete-imported"]').addEventListener('click', () => deleteImportedWorkout(w.id));
+  }
+  const date = div.querySelector('.day-workout-date');
+  if (date) date.insertAdjacentHTML('beforeend', ' ' + importTagHtml(w));
+  return div;
+}
+/* Po zmene importov: prekresli História, Kalendár aj otvorený detail dňa. */
+function afterImportedChange() {
+  renderPokrok();
+  if (activeTab === 'kalendar') renderKalendar();
+  const dayModal = document.getElementById('modal-day');
+  if (dayModal && !dayModal.hidden && selectedDayKey) renderDayDetail(selectedDayKey);
+}
+/* Zmazanie jedného importovaného tréningu po potvrdení; XP, séria ani rekordy sa nemenia (import sa nikdy nepočítal). */
+function deleteImportedWorkout(id) {
+  const w = (state.importedHistory || []).find((x) => x.id === id);
+  if (!w) return;
+  showGeneric(t('imp.deleteTitle'), t('common.delete'), () => {
+    state.importedHistory = state.importedHistory.filter((x) => x.id !== id);
+    saveState();
+    afterImportedChange();
+  }, esc(t('imp.deleteConfirm')), t('history.keepWorkout'));
+}
+/* Zmazanie všetkých importov jedného zdroja ('strong' | 'hevy' | 'csv'). Vráti počet záznamov zdroja;
+   bez `confirmed` najprv zobrazí potvrdenie (a zmaže až po ňom), s `confirmed` zmaže hneď. 0 = nič, bez dialógu. */
+function deleteImportedSource(source, confirmed) {
+  const n = (state.importedHistory || []).filter((x) => x.source === source).length;
+  if (!n) return 0;
+  const doIt = () => {
+    state.importedHistory = state.importedHistory.filter((x) => x.source !== source);
+    saveState();
+    afterImportedChange();
+  };
+  if (confirmed === true) { doIt(); return n; }
+  const label = importSourceLabel(source);
+  showGeneric(t('imp.deleteSourceTitle', { source: label }), t('common.delete'), doIt, esc(t('imp.deleteSourceConfirm', { n, source: label })), t('common.cancel'));
+  return n;
 }
 
 /* Platný čas ukončenia tréningu (ms), inak null. Pole `endedAt` zapisuje len nové ukončenie, nikdy sa nevyžaduje. */

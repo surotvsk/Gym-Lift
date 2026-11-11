@@ -5123,3 +5123,34 @@ button.record-row::after { content: '\203A'; flex: 0 0 auto; color: var(--text-f
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 .bt-hint[hidden] { display: none; }
+
+/* ===== Gym-basics: CSV ===== */
+/* Importované tréningy: jedna malá tlmená značka, neutrálny deň v kalendári (nikdy zelený). */
+.imp-tag {
+  display: inline-block;
+  margin-inline-start: var(--sp-2);
+  padding: 1px var(--sp-2);
+  border: 1px solid var(--border);
+  border-radius: var(--r-full);
+  color: var(--text-dim);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-med);
+  line-height: 1.5;
+  white-space: nowrap;
+}
+.history-imported .history-actions { margin-inline-start: auto; }
+.day-workout-head .btn-icon-sm { margin-inline-start: auto; }
+.cal-cell.cal-imp::after {
+  content: '';
+  position: absolute;
+  bottom: 6px;
+  left: 50%;
+  width: 6px;
+  height: 6px;
+  margin-left: -3px;
+  border: 1.5px solid var(--text-dim);
+  border-radius: 50%;
+  box-sizing: border-box;
+  pointer-events: none;
+}
+.day-status-imp { color: var(--text-dim); }
