@@ -167,6 +167,16 @@ const fx = (n) => fs.readFileSync(path.join(FIX, n), 'utf8');
     check('historyWorkingSets returns every working set of every exercise; drops valid', all.sets.every(Boolean) && all.drops.every(Boolean), all);
     check('historyWorkingSets of the first exercise: weights, reps, rpe, failure flag', J(all.ws) === '[[60,8,null,false],[70,6,null,false],[70,5,9,false]]', all.ws);
 
+    /* ---- Strong: záporná váha = asistencia (ruling C4) ---- */
+    const as = await run('strong-assisted.csv');
+    const ae = as.o.workouts[0].exercises;
+    check('assisted: library assisted exercise with negative weights -> abs weights, assisted true', ae[0].exId === 'assisted-pull-ups' && ae[0].assisted === true && J(ae[0].setWeights) === '[30,25]' && ae[0].weight === 25, ae[0]);
+    const dips = ae.find((e) => e.exId === 'dips');
+    check('assisted: all-negative sets on a non-assisted exercise (Dips) -> assisted true, weight 20', dips && dips.assisted === true && J(dips.setWeights) === '[20]', dips);
+    const mix = ae.find((e) => e.name === 'Zercher Squat');
+    check('assisted: mixed negative/positive -> positives kept as normal sets, not assisted, negatives skipped', mix && !mix.assisted && mix.sets === 1 && J(mix.setWeights) === '[20]' && as.o.skippedRows === 2, [mix, as.o.skippedRows]);
+    check('assisted: produced entries are valid working sets', ae.length === 3, ae.length);
+
     /* ---- Odpad ---- */
     const g = await ev(`(() => { const res = []; const junk = ['', ' ', '\\u0000\\u0001\\u0002,\\uFFFD\\n\\u0000;;"', 'PK\\u0003\\u0004\\u0014\\u0000\\u0006\\u0000', '"', ',,,,\\n,,,,', 'Date,Workout Name\\n1,2', 'a'.repeat(1e5)];
       for (const s of junk) { try { const r = parseCsv(s); const f = detectCsvFormat(r.rows[0] || []); const o = csvToWorkouts(r.rows, f, { unit: null }); res.push(Array.isArray(o.workouts) && o.workouts.length === 0 ? 'ok' : 'bad:' + JSON.stringify(o)); } catch (e) { res.push(e.name === 'CsvError' ? 'csverr' : 'THREW ' + e); } }

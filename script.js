@@ -26494,8 +26494,9 @@ function csvToWorkouts(rows, format, opts) {
       const secs0 = csvNumber(cell(r, cSecs), semicolon);
       const dist0 = csvNumber(cell(r, cDist), semicolon);
       let rpe = csvNumber(cell(r, cRpe), semicolon);
-      if ([w, reps0, secs0, dist0].some((x) => Number.isNaN(x) || (x !== null && x < 0)) || Number.isNaN(rpe)) { res.skippedRows++; continue; }
-      const kg = csvRoundKg(w === null ? 0 : w, useUnit);
+      if ([w, reps0, secs0, dist0].some((x, i) => Number.isNaN(x) || (x !== null && x < 0 && i !== 0)) || Number.isNaN(rpe)) { res.skippedRows++; continue; }
+      const neg = w !== null && w < 0;   // Strong ukladá asistenciu ako zápornú váhu
+      const kg = csvRoundKg(w === null ? 0 : Math.abs(w), useUnit);
       const reps = Math.round(reps0 === null ? 0 : reps0);
       const secs = Math.round(secs0 === null ? 0 : secs0);
       if (kg > 999 || reps > 999 || secs > 86400) { res.skippedRows++; continue; }
@@ -26523,7 +26524,7 @@ function csvToWorkouts(rows, format, opts) {
         wk.byEx.set(exKey, acc);
         wk.order.push(acc);
       }
-      acc.rows.push({ kind, kg, reps, rpe, secs });
+      acc.rows.push({ kind, kg, reps, rpe, secs, neg });
       acc.secs += secs;
     }
     /* Zostavenie záznamov */
@@ -26531,6 +26532,12 @@ function csvToWorkouts(rows, format, opts) {
     for (const wk of workouts.values()) {
       const exercises = [];
       for (const acc of wk.order) {
+        /* Záporná váha = asistencia (pomoc). Samé záporné pracovné série -> cvik je asistovaný; zmes so zápornými a kladnými:
+           kladné ostanú bežné série a záporné riadky sa vynechajú (počítajú sa do skippedRows). */
+        const workAll = acc.rows.filter((x) => x.kind === 'normal' || x.kind === 'failure');
+        const negWork = workAll.filter((x) => x.neg).length;
+        const allNeg = workAll.length > 0 && negWork === workAll.length;
+        if (negWork && !allNeg) { const before = acc.rows.length; acc.rows = acc.rows.filter((x) => !x.neg); res.skippedRows += before - acc.rows.length; }
         let working = acc.rows.filter((x) => x.kind === 'normal' || x.kind === 'failure');
         const warm = acc.rows.filter((x) => x.kind === 'warmup' && x.reps >= 1);
         let drops = acc.rows.filter((x) => x.kind === 'drop');
@@ -26541,7 +26548,7 @@ function csvToWorkouts(rows, format, opts) {
         if (working.length > 99) { res.skippedRows += working.length - 99; working = working.slice(0, 99); }
         const m = matchExercise(acc.name);
         const lib = m.exId ? libraryEntry(m.exId) : null;
-        const assisted = !!(lib && lib.assisted);
+        const assisted = !!(lib && lib.assisted) || allNeg;
         const weights = working.map((x) => x.kg);
         const entry = {
           name: m.exId ? ((I18N.en && I18N.en['exercise.' + m.exId]) || m.name) : m.name,
