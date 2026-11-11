@@ -26631,17 +26631,27 @@ function csvIdentitySet(exercises) {
   for (const e of exercises || []) { const id = entryIdentity(e); if (id) ids.add(id); }
   return Array.from(ids).sort().join('\u0001');
 }
-/* Index skutočnej histórie: dátum + identity cvikov -> množina názvov (malé písmená). Len pre formát Gym-Lift (ruling C3). */
+/* Počet pracovných sérií tréningu (rozlíši takmer rovnaké tréningy v ten istý deň). */
+function csvWorkingSetCount(exercises) {
+  let n = 0;
+  for (const e of exercises || []) { try { n += historyWorkingSets(e).length; } catch (err) { /* poškodený záznam sa nepočíta */ } }
+  return n;
+}
+function csvMatchKey(w) { return w.date + '|' + csvIdentitySet(w.exercises) + '|' + csvWorkingSetCount(w.exercises); }
+/* Index skutočnej histórie: kľúč (dátum, identity cvikov, počet sérií) -> zoznam tréningov s množinou názvov (malé písmená).
+   Zhoda sa spotrebúva jedna k jednej (ruling C3), takže jeden skutočný tréning nezahltí viac exportovaných. */
 function csvRealHistoryIndex() {
   const idx = new Map();
   for (const h of state.history || []) {
     if (!h || typeof h.date !== 'string' || !Array.isArray(h.exercises)) continue;
-    const k = h.date + '|' + csvIdentitySet(h.exercises);
-    let names = idx.get(k);
-    if (!names) idx.set(k, names = new Set());
+    const names = new Set();
     let pn = '';
     try { pn = historyPlanName(h); } catch (e) { /* názov sa nepodarilo zistiť */ }
     for (const n of [pn, h.planName]) if (typeof n === 'string' && n.trim()) names.add(n.trim().toLowerCase());
+    const k = csvMatchKey(h);
+    let list = idx.get(k);
+    if (!list) idx.set(k, list = []);
+    list.push({ names, used: false });
   }
   return idx;
 }
@@ -26664,8 +26674,8 @@ function csvBuildView(res, format) {
     for (const e of w.exercises) if (e.exId) matchedIds.add(e.exId);
     if (have.has(w.importKey)) { dup++; continue; }
     if (real) {
-      const names = real.get(w.date + '|' + csvIdentitySet(w.exercises));
-      if (names && names.has(String(w.planName || '').trim().toLowerCase())) { inHist++; continue; }
+      const hit = (real.get(csvMatchKey(w)) || []).find((r) => !r.used && r.names.has(String(w.planName || '').trim().toLowerCase()));
+      if (hit) { hit.used = true; inHist++; continue; }
     }
     fresh.push(w);
   }
@@ -26809,7 +26819,8 @@ function csvToastShow(text, undoable) {
   el.hidden = false;
 }
 
-/* Pripíše nové tréningy (jedno saveState), zatvorí list a ponúkne Späť na 10 s. Vracia počet pridaných. */
+/* Toast so Späť zámerne prežije zatvorenie listu aj prepnutie karty (je mimo listu); zmizne po 10 s alebo pri ďalšom importe.
+   Pripíše nové tréningy (jedno saveState), zatvorí list a ponúkne Späť na 10 s. Vracia počet pridaných. */
 function confirmCsvImport() {
   const imp = csvImp;
   if (!imp || !imp.view || (imp.needUnit && !imp.unit)) return 0;

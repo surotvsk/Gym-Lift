@@ -61,6 +61,7 @@ function bigHevy(n) {
     await p.eval(`(() => { const ok = document.getElementById('btn-setup-ok'); if (ok && !document.getElementById('modal-setup').hidden) ok.click(); setLang('en'); seedSampleData(); renderAll(); return true; })()`);
     const snap = `(() => (xpCacheClear(), { xp: totalXP(), streak: computeStreak(), wk: sessionsInWeek(currentWeekKey()), lb: leaderboardPayload(), pr: personalRecords(), real: J(state.history) }))()`.replace('J(', 'JSON.stringify(');
     const base = await ev(snap);
+    const histBefore = await ev(`JSON.stringify(state.history)`);
 
     console.log('== API + sheet markup');
     check('openCsvImport / confirmCsvImport exist', await ev(`[typeof openCsvImport, typeof confirmCsvImport]`).then((a) => J(a) === '["function","function"]'));
@@ -102,7 +103,7 @@ function bigHevy(n) {
     await open(fx('hevy.csv'), 'hevy.csv');
     const saves = await ev(`(() => { let n = 0; const o = window.saveState; window.saveState = function () { n++; return o.apply(this, arguments); }; confirmCsvImport(); window.saveState = o; return n; })()`);
     check('one saveState()', saves === 1, saves);
-    check('2 in importedHistory, history untouched', await ev(`[state.importedHistory.length, state.history.length === ${base ? 'state.history.length' : 0}]`).then((a) => a[0] === 2));
+    check('2 in importedHistory, state.history identical to the pre-import snapshot', await ev(`[state.importedHistory.length, JSON.stringify(state.history) === ${J(histBefore)}]`).then((a) => a[0] === 2 && a[1] === true));
     check('toast text "Imported 2 workouts"', /Imported 2 workouts/.test(await ev(`document.getElementById('csv-toast').textContent`)));
     await p.reload();
     check('survives reload', await ev(`state.importedHistory.length`) === 2);
@@ -142,6 +143,57 @@ function bigHevy(n) {
     await ev(`confirmCsvImport()`);
     check('stored as source csv', await ev(`state.importedHistory[0].source`) === 'csv');
     await ev(`(state.importedHistory = [], saveState(), true)`);
+
+
+    console.log('== C3 one-to-one');
+    await ev(`(state.importedHistory = [], true)`);
+    const twice = fx('gymquest-export.csv') + fx('gymquest-export.csv').split('\n').slice(1).filter(Boolean).map((l) => l.replace('12:00', '18:00').replace('12:55', '18:55')).join('\n') + '\n';
+    await ev(`(() => { state.history.push({ id: 'real-push', date: '2024-11-15', planId: 'x-none', planName: 'push', exercises: [{ name: 'Bench Press', exId: 'bench-press', sets: 2, reps: 8, weight: 60, setsDone: 2 }, { name: 'Overhead Press', exId: 'overhead-press', sets: 1, reps: 8, weight: 30, setsDone: 1 }] }); saveState(); return true; })()`);
+    await open(twice, 'twice.csv');
+    check('two same-day identical export workouts vs one real: 1 new, 1 already in history (case-insensitive name)', await q('#csv-counts') === '1 new · 0 already imported' && /1 already in your history/.test(await q('#csv-in-history') || ''), [await q('#csv-counts'), await q('#csv-in-history')]);
+    await closeSheet();
+    await ev(`(state.history[state.history.length - 1].exercises[0].setsDone = 3, state.history[state.history.length - 1].exercises[0].sets = 3, saveState(), true)`);
+    await open(fx('gymquest-export.csv'), 'e.csv');
+    check('different working-set count is not a match', await q('#csv-counts') === '1 new · 0 already imported' && !(await ev(`!${sheet}.querySelector('#csv-in-history').hidden`)), await q('#csv-in-history'));
+    await closeSheet();
+    await ev(`(state.history = state.history.filter((w) => w.id !== 'real-push'), saveState(), true)`);
+
+    console.log('== Undo after an unrelated change');
+    await open(fx('hevy.csv'), 'hevy.csv');
+    await ev(`(state.importedHistory.push({ id: 'other', date: '2020-01-01', planName: 'Old', source: 'strong', importKey: 'strong|2020-01-01 10:00|Old', exercises: [] }), true)`);
+    await ev(`confirmCsvImport()`);
+    await ev(`(state.importedHistory = state.importedHistory.filter((w) => w.id !== 'other'), true)`);
+    await ev(`document.getElementById('btn-csv-undo').click()`);
+    check('undo removes only the imported ids, keeps the unrelated deletion', await ev(`state.importedHistory.length`) === 0 && await ev(`state.importedHistory.every((w) => w.id !== 'other')`));
+    await ev(`(state.importedHistory.push({ id: 'keep', date: '2020-01-01', planName: 'Old', source: 'strong', importKey: 'strong|2020-01-01 10:00|Old', exercises: [] }), true)`);
+    await open(fx('hevy.csv'), 'hevy.csv');
+    await ev(`confirmCsvImport()`);
+    await ev(`(state.importedHistory = state.importedHistory.slice(), true)`);
+    await ev(`document.getElementById('btn-csv-undo').click()`);
+    check('undo after the array was replaced keeps the other workout', await ev(`state.importedHistory.map((w) => w.id).join()`) === 'keep');
+    await ev(`(state.importedHistory = [], saveState(), true)`);
+
+    console.log('== lb then kg');
+    await open(fx('strong-no-unit.csv'), 's.csv');
+    await p.eval(`(${sheet}.querySelector('#csv-unit .chip[data-unit="lb"]').click(), true)`); await wait(300);
+    const wLb = await ev(`JSON.stringify(csvImp.view.fresh.map((w) => w.exercises[0].weight))`);
+    await p.eval(`(${sheet}.querySelector('#csv-unit .chip[data-unit="kg"]').click(), true)`); await wait(300);
+    const wKg = await ev(`JSON.stringify(csvImp.view.fresh.map((w) => w.exercises[0].weight))`);
+    check('lb and kg map to different weights', wLb !== wKg && /45\.25/.test(wLb) && /100/.test(wKg), [wLb, wKg]);
+    check('kg chip pressed, lb not', await ev(`${sheet}.querySelector('#csv-unit .chip[data-unit="kg"]').getAttribute('aria-pressed') === 'true' && ${sheet}.querySelector('#csv-unit .chip[data-unit="lb"]').getAttribute('aria-pressed') === 'false'`));
+    await ev(`confirmCsvImport()`);
+    check('confirm stores the kg values (100, not 45.25)', await ev(`state.importedHistory.some((w) => w.exercises[0].weight === 100) && !state.importedHistory.some((w) => w.exercises[0].weight === 45.25)`));
+    await ev(`(state.importedHistory = [], saveState(), true)`);
+
+    console.log('== Storage warning');
+    await open(fx('hevy.csv'), 'hevy.csv');
+    check('no storage warning normally', await ev(`${sheet}.querySelector('#csv-storage').hidden`));
+    await closeSheet();
+    await ev(`(window.__sb = storageBytes, window.storageBytes = () => STORAGE_NOTICE_BYTES, true)`);
+    await open(fx('hevy.csv'), 'hevy.csv');
+    check('near the limit: the storage notice is shown', await ev(`!${sheet}.querySelector('#csv-storage').hidden`) && /getting large/.test(await q('#csv-storage') || ''), await q('#csv-storage'));
+    await closeSheet();
+    await ev(`(window.storageBytes = window.__sb, true)`);
 
     console.log('== Skipped line + unmatched list');
     await open(fx('hevy.csv') + 'x,"20 Nov 2024, 10:00",,,"Squat",,,0,normal,abc,5,,0,\n', 'skip.csv');
