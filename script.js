@@ -7613,6 +7613,36 @@ const BASICS_I18N = {
     'suggest.chipUp': "Skús {kg} kg", 'suggest.chipKeep': "Ostaň pri {kg} kg", 'suggest.chipReset': "Vráť sa na {kg} kg", 'suggest.chipLessHelp': "Menej pomoci {kg} kg", 'suggest.chipKeepHelp': "Pomoc {kg} kg", 'suggest.chipMoreHelp': "Viac pomoci {kg} kg",
     'suggest.sheetTitle': "Návrh", 'suggest.use': "Použiť {kg} kg", 'suggest.useShort': "Použiť", 'suggest.useAria': "Použiť {kg} kg", 'suggest.close': "Zavrieť", 'suggest.chipAria': "Návrh: {text}. Ťukni pre dôvod.", 'suggest.note': "Zmení sa len tento tréning, nie plán.",
     'settings.showSuggestions': "Zobrazovať návrhy", 'settings.showSuggestionsHint': "Pri cviku sa objaví malý čip s návrhom váhy podľa minulého tréningu. Nič sa nezmení, kým ho nepoužiješ.",
+    /* Koučing: programy (názvy, dni) */
+    "prog.beginner-full-body.name": "Celé telo pre začiatočníkov",
+    "prog.beginner-full-body.desc": "3 tréningy týždenne, 8 týždňov, striedanie A a B. Základné cviky na 3×8–10, váhu zvyšuješ postupne.",
+    "prog.push-pull-legs.name": "Tlaky / Ťahy / Nohy",
+    "prog.push-pull-legs.desc": "Tlaky, ťahy a nohy na samostatných tréningoch, 8 týždňov. V 8. týždni odľahčenie.",
+    "prog.variant.3day": "3 dni v týždni",
+    "prog.variant.6day": "6 dní v týždni",
+    "prog.upper-lower.name": "Horná / dolná časť tela",
+    "prog.upper-lower.desc": "4 tréningy týždenne: horná a dolná časť tela, každá dvakrát. 8 týždňov, v 8. týždni odľahčenie.",
+    "prog.strength-wave.name": "Silová vlna (5 / 3 / 1)",
+    "prog.strength-wave.desc": "4 tréningy týždenne, každý okolo jedného hlavného ťahu. Vlny po 4 týždňoch (5, 3, 1, odľahčenie) z tréningového maxima, spolu 8 týždňov.",
+    "prog.day.fullA": "Celé telo A",
+    "prog.day.fullB": "Celé telo B",
+    "prog.day.push": "Tlaky",
+    "prog.day.pull": "Ťahy",
+    "prog.day.legs": "Nohy",
+    "prog.day.pushA": "Tlaky A",
+    "prog.day.pullA": "Ťahy A",
+    "prog.day.legsA": "Nohy A",
+    "prog.day.pushB": "Tlaky B",
+    "prog.day.pullB": "Ťahy B",
+    "prog.day.legsB": "Nohy B",
+    "prog.day.upperA": "Horná časť A",
+    "prog.day.lowerA": "Dolná časť A",
+    "prog.day.upperB": "Horná časť B",
+    "prog.day.lowerB": "Dolná časť B",
+    "prog.day.squat": "Deň drepu",
+    "prog.day.bench": "Deň tlaku na lavičke",
+    "prog.day.deadlift": "Deň mŕtveho ťahu",
+    "prog.day.press": "Deň tlaku nad hlavu",
   },
   en: {
     'settings.autoRest': 'Start rest automatically', 'settings.autoRestHint': 'The rest timer starts by itself when you mark a set done. In a superset, after the last exercise.',
@@ -7649,6 +7679,36 @@ const BASICS_I18N = {
     'suggest.chipUp': "Try {kg} kg", 'suggest.chipKeep': "Keep {kg} kg", 'suggest.chipReset': "Reset {kg} kg", 'suggest.chipLessHelp': "Less help {kg} kg", 'suggest.chipKeepHelp': "Keep help {kg} kg", 'suggest.chipMoreHelp': "More help {kg} kg",
     'suggest.sheetTitle': "Suggestion", 'suggest.use': "Use {kg} kg", 'suggest.useShort': "Use", 'suggest.useAria': "Use {kg} kg", 'suggest.close': "Close", 'suggest.chipAria': "Suggestion: {text}. Tap for the reason.", 'suggest.note': "Only this workout changes, not your plan.",
     'settings.showSuggestions': "Show suggestions", 'settings.showSuggestionsHint': "A small chip on each exercise suggests a weight based on your last workout. Nothing changes until you tap Use.",
+    /* Koučing: programy (názvy, dni) */
+    "prog.beginner-full-body.name": "Beginner full body",
+    "prog.beginner-full-body.desc": "3 workouts a week for 8 weeks, alternating A and B. Basic lifts at 3×8–10, adding weight gradually.",
+    "prog.push-pull-legs.name": "Push / Pull / Legs",
+    "prog.push-pull-legs.desc": "Pushing, pulling and leg days kept separate, for 8 weeks. Week 8 is a lighter deload week.",
+    "prog.variant.3day": "3 days a week",
+    "prog.variant.6day": "6 days a week",
+    "prog.upper-lower.name": "Upper / Lower",
+    "prog.upper-lower.desc": "4 workouts a week: upper body and lower body, each twice. 8 weeks, with a lighter deload in week 8.",
+    "prog.strength-wave.name": "Strength wave (5s / 3s / 1s)",
+    "prog.strength-wave.desc": "4 workouts a week, each built around one main lift. Waves of 4 weeks (5s, 3s, 1s, deload) based on a training max, 8 weeks in total.",
+    "prog.day.fullA": "Full body A",
+    "prog.day.fullB": "Full body B",
+    "prog.day.push": "Push",
+    "prog.day.pull": "Pull",
+    "prog.day.legs": "Legs",
+    "prog.day.pushA": "Push A",
+    "prog.day.pullA": "Pull A",
+    "prog.day.legsA": "Legs A",
+    "prog.day.pushB": "Push B",
+    "prog.day.pullB": "Pull B",
+    "prog.day.legsB": "Legs B",
+    "prog.day.upperA": "Upper A",
+    "prog.day.lowerA": "Lower A",
+    "prog.day.upperB": "Upper B",
+    "prog.day.lowerB": "Lower B",
+    "prog.day.squat": "Squat day",
+    "prog.day.bench": "Bench day",
+    "prog.day.deadlift": "Deadlift day",
+    "prog.day.press": "Overhead press day",
   },
   es: {
     'settings.autoRest': 'Iniciar el descanso automáticamente', 'settings.autoRestHint': 'El temporizador de descanso empieza solo al marcar una serie. En una superserie, tras el último ejercicio.',
@@ -7685,6 +7745,36 @@ const BASICS_I18N = {
     'suggest.chipUp': "Prueba {kg} kg", 'suggest.chipKeep': "Mantén {kg} kg", 'suggest.chipReset': "Baja a {kg} kg", 'suggest.chipLessHelp': "Menos ayuda {kg} kg", 'suggest.chipKeepHelp': "Ayuda {kg} kg", 'suggest.chipMoreHelp': "Más ayuda {kg} kg",
     'suggest.sheetTitle': "Sugerencia", 'suggest.use': "Usar {kg} kg", 'suggest.useShort': "Usar", 'suggest.useAria': "Usar {kg} kg", 'suggest.close': "Cerrar", 'suggest.chipAria': "Sugerencia: {text}. Toca para ver el motivo.", 'suggest.note': "Solo cambia este entrenamiento, no tu plan.",
     'settings.showSuggestions': "Mostrar sugerencias", 'settings.showSuggestionsHint': "Un pequeño chip en cada ejercicio sugiere un peso según tu último entrenamiento. Nada cambia hasta que pulsas Usar.",
+    /* Koučing: programy (názvy, dni) */
+    "prog.beginner-full-body.name": "Cuerpo completo para principiantes",
+    "prog.beginner-full-body.desc": "3 entrenamientos por semana durante 8 semanas, alternando A y B. Ejercicios básicos de 3×8–10, subiendo el peso poco a poco.",
+    "prog.push-pull-legs.name": "Empuje / Tirón / Piernas",
+    "prog.push-pull-legs.desc": "Días separados de empuje, tirón y piernas durante 8 semanas. La semana 8 es de descarga.",
+    "prog.variant.3day": "3 días por semana",
+    "prog.variant.6day": "6 días por semana",
+    "prog.upper-lower.name": "Tren superior / inferior",
+    "prog.upper-lower.desc": "4 entrenamientos por semana: tren superior e inferior, dos veces cada uno. 8 semanas, con descarga en la semana 8.",
+    "prog.strength-wave.name": "Onda de fuerza (5 / 3 / 1)",
+    "prog.strength-wave.desc": "4 entrenamientos por semana, cada uno centrado en un ejercicio principal. Ondas de 4 semanas (5, 3, 1, descarga) según un máximo de entrenamiento, 8 semanas en total.",
+    "prog.day.fullA": "Cuerpo completo A",
+    "prog.day.fullB": "Cuerpo completo B",
+    "prog.day.push": "Empuje",
+    "prog.day.pull": "Tirón",
+    "prog.day.legs": "Piernas",
+    "prog.day.pushA": "Empuje A",
+    "prog.day.pullA": "Tirón A",
+    "prog.day.legsA": "Piernas A",
+    "prog.day.pushB": "Empuje B",
+    "prog.day.pullB": "Tirón B",
+    "prog.day.legsB": "Piernas B",
+    "prog.day.upperA": "Tren superior A",
+    "prog.day.lowerA": "Tren inferior A",
+    "prog.day.upperB": "Tren superior B",
+    "prog.day.lowerB": "Tren inferior B",
+    "prog.day.squat": "Día de sentadilla",
+    "prog.day.bench": "Día de press de banca",
+    "prog.day.deadlift": "Día de peso muerto",
+    "prog.day.press": "Día de press militar",
   },
   'pt-BR': {
     'settings.autoRest': 'Iniciar o descanso automaticamente', 'settings.autoRestHint': 'O cronômetro de descanso começa sozinho ao marcar uma série. Em um superset, após o último exercício.',
@@ -7721,6 +7811,36 @@ const BASICS_I18N = {
     'suggest.chipUp': "Tente {kg} kg", 'suggest.chipKeep': "Mantenha {kg} kg", 'suggest.chipReset': "Volte a {kg} kg", 'suggest.chipLessHelp': "Menos ajuda {kg} kg", 'suggest.chipKeepHelp': "Ajuda {kg} kg", 'suggest.chipMoreHelp': "Mais ajuda {kg} kg",
     'suggest.sheetTitle': "Sugestão", 'suggest.use': "Usar {kg} kg", 'suggest.useShort': "Usar", 'suggest.useAria': "Usar {kg} kg", 'suggest.close': "Fechar", 'suggest.chipAria': "Sugestão: {text}. Toque para ver o motivo.", 'suggest.note': "Só este treino muda, não o seu plano.",
     'settings.showSuggestions': "Mostrar sugestões", 'settings.showSuggestionsHint': "Um pequeno chip em cada exercício sugere uma carga com base no último treino. Nada muda até você tocar em Usar.",
+    /* Koučing: programy (názvy, dni) */
+    "prog.beginner-full-body.name": "Corpo inteiro para iniciantes",
+    "prog.beginner-full-body.desc": "3 treinos por semana durante 8 semanas, alternando A e B. Exercícios básicos de 3×8–10, aumentando a carga aos poucos.",
+    "prog.push-pull-legs.name": "Empurrar / Puxar / Pernas",
+    "prog.push-pull-legs.desc": "Dias separados de empurrar, puxar e pernas por 8 semanas. A semana 8 é de descarga.",
+    "prog.variant.3day": "3 dias por semana",
+    "prog.variant.6day": "6 dias por semana",
+    "prog.upper-lower.name": "Superior / Inferior",
+    "prog.upper-lower.desc": "4 treinos por semana: parte superior e inferior, duas vezes cada. 8 semanas, com descarga na semana 8.",
+    "prog.strength-wave.name": "Onda de força (5 / 3 / 1)",
+    "prog.strength-wave.desc": "4 treinos por semana, cada um em torno de um exercício principal. Ondas de 4 semanas (5, 3, 1, descarga) a partir de um máximo de treino, 8 semanas no total.",
+    "prog.day.fullA": "Corpo inteiro A",
+    "prog.day.fullB": "Corpo inteiro B",
+    "prog.day.push": "Empurrar",
+    "prog.day.pull": "Puxar",
+    "prog.day.legs": "Pernas",
+    "prog.day.pushA": "Empurrar A",
+    "prog.day.pullA": "Puxar A",
+    "prog.day.legsA": "Pernas A",
+    "prog.day.pushB": "Empurrar B",
+    "prog.day.pullB": "Puxar B",
+    "prog.day.legsB": "Pernas B",
+    "prog.day.upperA": "Superior A",
+    "prog.day.lowerA": "Inferior A",
+    "prog.day.upperB": "Superior B",
+    "prog.day.lowerB": "Inferior B",
+    "prog.day.squat": "Dia de agachamento",
+    "prog.day.bench": "Dia de supino",
+    "prog.day.deadlift": "Dia de levantamento terra",
+    "prog.day.press": "Dia de desenvolvimento",
   },
   fr: {
     'settings.autoRest': 'Démarrer le repos automatiquement', 'settings.autoRestHint': 'Le minuteur de repos démarre seul quand tu valides une série. Dans une superset, après le dernier exercice.',
@@ -7757,6 +7877,36 @@ const BASICS_I18N = {
     'suggest.chipUp': "Essaie {kg} kg", 'suggest.chipKeep': "Reste à {kg} kg", 'suggest.chipReset': "Reviens à {kg} kg", 'suggest.chipLessHelp': "Moins d'aide {kg} kg", 'suggest.chipKeepHelp': "Aide {kg} kg", 'suggest.chipMoreHelp': "Plus d'aide {kg} kg",
     'suggest.sheetTitle': "Suggestion", 'suggest.use': "Utiliser {kg} kg", 'suggest.useShort': "Utiliser", 'suggest.useAria': "Utiliser {kg} kg", 'suggest.close': "Fermer", 'suggest.chipAria': "Suggestion : {text}. Touche pour voir la raison.", 'suggest.note': "Seule cette séance change, pas ton plan.",
     'settings.showSuggestions': "Afficher les suggestions", 'settings.showSuggestionsHint': "Une petite pastille sur chaque exercice propose une charge d'après ta dernière séance. Rien ne change tant que tu ne touches pas Utiliser.",
+    /* Koučing: programy (názvy, dni) */
+    "prog.beginner-full-body.name": "Corps entier pour débutants",
+    "prog.beginner-full-body.desc": "3 séances par semaine pendant 8 semaines, en alternant A et B. Exercices de base en 3×8–10, avec une charge qui augmente progressivement.",
+    "prog.push-pull-legs.name": "Poussée / Tirage / Jambes",
+    "prog.push-pull-legs.desc": "Des séances séparées de poussée, de tirage et de jambes pendant 8 semaines. La semaine 8 est une semaine allégée.",
+    "prog.variant.3day": "3 jours par semaine",
+    "prog.variant.6day": "6 jours par semaine",
+    "prog.upper-lower.name": "Haut / Bas du corps",
+    "prog.upper-lower.desc": "4 séances par semaine : haut et bas du corps, deux fois chacun. 8 semaines, avec une semaine allégée en semaine 8.",
+    "prog.strength-wave.name": "Vague de force (5 / 3 / 1)",
+    "prog.strength-wave.desc": "4 séances par semaine, chacune autour d’un exercice principal. Des vagues de 4 semaines (5, 3, 1, allégement) à partir d’un maximum d’entraînement, 8 semaines au total.",
+    "prog.day.fullA": "Corps entier A",
+    "prog.day.fullB": "Corps entier B",
+    "prog.day.push": "Poussée",
+    "prog.day.pull": "Tirage",
+    "prog.day.legs": "Jambes",
+    "prog.day.pushA": "Poussée A",
+    "prog.day.pullA": "Tirage A",
+    "prog.day.legsA": "Jambes A",
+    "prog.day.pushB": "Poussée B",
+    "prog.day.pullB": "Tirage B",
+    "prog.day.legsB": "Jambes B",
+    "prog.day.upperA": "Haut du corps A",
+    "prog.day.lowerA": "Bas du corps A",
+    "prog.day.upperB": "Haut du corps B",
+    "prog.day.lowerB": "Bas du corps B",
+    "prog.day.squat": "Jour squat",
+    "prog.day.bench": "Jour développé couché",
+    "prog.day.deadlift": "Jour soulevé de terre",
+    "prog.day.press": "Jour développé militaire",
   },
   ar: {
     'settings.autoRest': 'بدء الراحة تلقائيًا', 'settings.autoRestHint': 'يبدأ مؤقت الراحة تلقائيًا عند تحديد مجموعة كمكتملة. في السوبرست، بعد آخر تمرين.',
@@ -7793,6 +7943,36 @@ const BASICS_I18N = {
     'suggest.chipUp': "جرّب {kg} كغ", 'suggest.chipKeep': "ابقَ عند {kg} كغ", 'suggest.chipReset': "ارجع إلى {kg} كغ", 'suggest.chipLessHelp': "مساعدة أقل {kg} كغ", 'suggest.chipKeepHelp': "المساعدة {kg} كغ", 'suggest.chipMoreHelp': "مساعدة أكثر {kg} كغ",
     'suggest.sheetTitle': "اقتراح", 'suggest.use': "استخدم {kg} كغ", 'suggest.useShort': "استخدم", 'suggest.useAria': "استخدم {kg} كغ", 'suggest.close': "إغلاق", 'suggest.chipAria': "اقتراح: {text}. اضغط لمعرفة السبب.", 'suggest.note': "يتغير هذا التمرين فقط، وليس خطتك.",
     'settings.showSuggestions': "إظهار الاقتراحات", 'settings.showSuggestionsHint': "تظهر شارة صغيرة عند كل تمرين تقترح وزنًا بناءً على تمرينك الأخير. لا يتغير شيء حتى تضغط على استخدم.",
+    /* Koučing: programy (názvy, dni) */
+    "prog.beginner-full-body.name": "الجسم كاملًا للمبتدئين",
+    "prog.beginner-full-body.desc": "3 تمارين أسبوعيًا لمدة 8 أسابيع بالتناوب بين أ و ب. تمارين أساسية 3×8–10 مع زيادة الوزن تدريجيًا.",
+    "prog.push-pull-legs.name": "دفع / سحب / أرجل",
+    "prog.push-pull-legs.desc": "أيام منفصلة للدفع والسحب والأرجل لمدة 8 أسابيع. الأسبوع 8 أخف عمدًا.",
+    "prog.variant.3day": "3 أيام أسبوعيًا",
+    "prog.variant.6day": "6 أيام أسبوعيًا",
+    "prog.upper-lower.name": "الجزء العلوي / السفلي",
+    "prog.upper-lower.desc": "4 تمارين أسبوعيًا: الجزء العلوي والسفلي، كل منهما مرتين. 8 أسابيع مع أسبوع أخف في الأسبوع 8.",
+    "prog.strength-wave.name": "موجة القوة (5 / 3 / 1)",
+    "prog.strength-wave.desc": "4 تمارين أسبوعيًا، كل منها حول تمرين رئيسي واحد. موجات من 4 أسابيع (5 و3 و1 ثم أسبوع أخف) بناءً على حد أقصى للتدريب، 8 أسابيع في المجموع.",
+    "prog.day.fullA": "الجسم كاملًا أ",
+    "prog.day.fullB": "الجسم كاملًا ب",
+    "prog.day.push": "دفع",
+    "prog.day.pull": "سحب",
+    "prog.day.legs": "أرجل",
+    "prog.day.pushA": "دفع أ",
+    "prog.day.pullA": "سحب أ",
+    "prog.day.legsA": "أرجل أ",
+    "prog.day.pushB": "دفع ب",
+    "prog.day.pullB": "سحب ب",
+    "prog.day.legsB": "أرجل ب",
+    "prog.day.upperA": "علوي أ",
+    "prog.day.lowerA": "سفلي أ",
+    "prog.day.upperB": "علوي ب",
+    "prog.day.lowerB": "سفلي ب",
+    "prog.day.squat": "يوم القرفصاء",
+    "prog.day.bench": "يوم ضغط البنش",
+    "prog.day.deadlift": "يوم الرفعة الميتة",
+    "prog.day.press": "يوم الضغط فوق الرأس",
   },
 };
 for (const lang of Object.keys(BASICS_I18N)) Object.assign(I18N[lang] || (I18N[lang] = {}), BASICS_I18N[lang]);
@@ -26335,6 +26515,252 @@ function initSuggestSheet() {
   });
   const modal = document.getElementById('modal-suggest');
   modal.addEventListener('click', (e) => { if (e.target === modal) closeSuggestSheet(); });
+}
+
+/* ---------- Koučing: programy (dáta a týždne) ----------
+   Statické dáta hotových programov (iba cviky z knižnice, generické názvy v BASICS_I18N) a čisté funkcie
+   týždňového motora. Nič tu nemení plány ani históriu: predpis platí len pre session (snapshot).
+   Riadok šablóny: { exId, sets, reps, progRow, main? }. progRow = <program>:<deň>:<index> (unikátny v programe).
+   Program má buď priamo `days` + `schedule`, alebo `variants` ([{ id, nameKey, daysPerWeek, schedule, days }]).
+   days = plány, ktoré sa vytvoria (jeden na šablónu dňa); schedule = poradie dní v týždni (dĺžka = daysPerWeek),
+   takže A/B striedanie (3 tréningy, 2 plány) aj „6 dní = 6 plánov“ vyjdú rovnako.
+   Knižnica nemá samostatný mŕtvy ťah; hlavný ťah vlny je rumunský mŕtvy ťah (romanian-deadlift). */
+function progDay(programId, id, rowsSpec) {
+  return {
+    id,
+    nameKey: 'prog.day.' + id,
+    rows: rowsSpec.map(([exId, sets, reps, main], i) => {
+      const row = { exId, sets, reps, progRow: programId + ':' + id + ':' + i };
+      if (main) row.main = true;
+      return row;
+    }),
+  };
+}
+
+const PROGRAMS = (() => {
+  const pplA = {
+    push: [['bench-press', 3, 8], ['overhead-press', 3, 10], ['incline-dumbbell-press', 3, 10], ['lateral-raises', 3, 12], ['single-arm-cable-triceps-extension', 3, 12]],
+    pull: [['lat-pulldown', 3, 10], ['bent-over-rows', 3, 8], ['cable-rows', 3, 10], ['hammer-curl', 3, 12], ['bicep-curls', 3, 12]],
+    legs: [['squats', 3, 8], ['romanian-deadlift', 3, 8], ['leg-press', 3, 10], ['leg-curls', 3, 12], ['calf-raises', 3, 12]],
+  };
+  const pplB = {
+    push: [['overhead-press', 3, 8], ['incline-dumbbell-press', 3, 10], ['machine-chest-press', 3, 10], ['lateral-raises', 3, 12], ['single-arm-dumbbell-triceps-extension', 3, 12]],
+    pull: [['cable-rows', 3, 8], ['lat-pulldown', 3, 10], ['dumbbell-row', 3, 10], ['cable-pullover', 3, 12], ['cable-curl', 3, 12]],
+    legs: [['hack-squat', 3, 10], ['hip-thrust', 3, 10], ['lunges', 3, 10], ['leg-extension', 3, 12], ['calf-raises', 3, 12]],
+  };
+  const ppl = 'push-pull-legs';
+  const wave = 'strength-wave';
+  return [
+    {
+      id: 'beginner-full-body', nameKey: 'prog.beginner-full-body.name', descKey: 'prog.beginner-full-body.desc',
+      level: 'beginner', daysPerWeek: 3, weeks: 8, deloadWeeks: [], kind: 'linear',
+      schedule: ['fullA', 'fullB', 'fullA'],
+      days: [
+        progDay('beginner-full-body', 'fullA', [['squats', 3, 8], ['bench-press', 3, 8], ['cable-rows', 3, 10], ['lateral-raises', 3, 10], ['dead-bug', 3, 10]]),
+        progDay('beginner-full-body', 'fullB', [['romanian-deadlift', 3, 8], ['overhead-press', 3, 8], ['lat-pulldown', 3, 10], ['bicep-curls', 3, 10], ['calf-raises', 3, 10]]),
+      ],
+    },
+    {
+      id: ppl, nameKey: 'prog.push-pull-legs.name', descKey: 'prog.push-pull-legs.desc',
+      level: 'intermediate', daysPerWeek: 3, weeks: 8, deloadWeeks: [8], kind: 'linear',
+      variants: [
+        { id: '3day', nameKey: 'prog.variant.3day', daysPerWeek: 3, schedule: ['push', 'pull', 'legs'],
+          days: [progDay(ppl, 'push', pplA.push), progDay(ppl, 'pull', pplA.pull), progDay(ppl, 'legs', pplA.legs)] },
+        { id: '6day', nameKey: 'prog.variant.6day', daysPerWeek: 6, schedule: ['pushA', 'pullA', 'legsA', 'pushB', 'pullB', 'legsB'],
+          days: [progDay(ppl, 'pushA', pplA.push), progDay(ppl, 'pullA', pplA.pull), progDay(ppl, 'legsA', pplA.legs),
+            progDay(ppl, 'pushB', pplB.push), progDay(ppl, 'pullB', pplB.pull), progDay(ppl, 'legsB', pplB.legs)] },
+      ],
+    },
+    {
+      id: 'upper-lower', nameKey: 'prog.upper-lower.name', descKey: 'prog.upper-lower.desc',
+      level: 'intermediate', daysPerWeek: 4, weeks: 8, deloadWeeks: [8], kind: 'linear',
+      schedule: ['upperA', 'lowerA', 'upperB', 'lowerB'],
+      days: [
+        progDay('upper-lower', 'upperA', [['bench-press', 3, 8], ['bent-over-rows', 3, 8], ['overhead-press', 3, 10], ['lat-pulldown', 3, 10], ['bicep-curls', 3, 12]]),
+        progDay('upper-lower', 'lowerA', [['squats', 3, 8], ['romanian-deadlift', 3, 8], ['leg-curls', 3, 10], ['calf-raises', 3, 12], ['dead-bug', 3, 10]]),
+        progDay('upper-lower', 'upperB', [['incline-dumbbell-press', 3, 10], ['cable-rows', 3, 10], ['lateral-raises', 3, 12], ['single-arm-dumbbell-triceps-extension', 3, 12], ['hammer-curl', 3, 12]]),
+        progDay('upper-lower', 'lowerB', [['leg-press', 3, 10], ['hip-thrust', 3, 10], ['lunges', 3, 10], ['leg-extension', 3, 12], ['calf-raises', 3, 12]]),
+      ],
+    },
+    {
+      id: wave, nameKey: 'prog.strength-wave.name', descKey: 'prog.strength-wave.desc',
+      level: 'intermediate', daysPerWeek: 4, weeks: 8, deloadWeeks: [4, 8], kind: 'wave',
+      schedule: ['squat', 'bench', 'deadlift', 'press'],
+      days: [
+        progDay(wave, 'squat', [['squats', 3, 5, true], ['leg-press', 3, 10], ['leg-curls', 3, 10], ['calf-raises', 3, 12]]),
+        progDay(wave, 'bench', [['bench-press', 3, 5, true], ['incline-dumbbell-press', 3, 10], ['bent-over-rows', 3, 8], ['single-arm-cable-triceps-extension', 3, 12]]),
+        progDay(wave, 'deadlift', [['romanian-deadlift', 3, 5, true], ['lat-pulldown', 3, 10], ['hip-thrust', 3, 10], ['hammer-curl', 3, 12]]),
+        progDay(wave, 'press', [['overhead-press', 3, 5, true], ['cable-rows', 3, 10], ['lateral-raises', 3, 12], ['bicep-curls', 3, 10]]),
+      ],
+    },
+  ];
+})();
+
+/* Percentá hlavného ťahu vlny podľa týždňa vlny (1–4): série a opakovania. */
+const WAVE_STEPS = [
+  { pct: [65, 75, 85], reps: [5, 5, 5] },
+  { pct: [70, 80, 90], reps: [3, 3, 3] },
+  { pct: [75, 85, 95], reps: [5, 3, 1] },
+  { pct: [40, 50, 60], reps: [5, 5, 5] },   // odľahčenie
+];
+const PROGRAM_SHIFT_MAX = 20;
+
+function programById(id) {
+  return PROGRAMS.find((p) => p.id === id) || null;
+}
+
+/* Varianty programu; program bez variantov dáva jeden syntetický (id = null). */
+function programVariants(prog) {
+  if (!prog) return [];
+  if (Array.isArray(prog.variants)) return prog.variants;
+  return [{ id: null, nameKey: null, daysPerWeek: prog.daysPerWeek, schedule: prog.schedule, days: prog.days }];
+}
+
+/* Variant podľa id; pri programe s variantmi chýbajúce id = prvý variant; neplatné id = null. */
+function programVariant(prog, variantId) {
+  const vs = programVariants(prog);
+  if (!Array.isArray(prog && prog.variants)) return vs[0] || null;
+  if (variantId == null) return vs[0];
+  return vs.find((v) => v.id === variantId) || null;
+}
+
+function validProgramDate(s) {
+  if (typeof s !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(s)) return false;
+  const d = parseDate(s);
+  return !Number.isNaN(d.getTime()) && localDateKey(d) === s;
+}
+
+function cleanProgramTm(raw, prog) {
+  if (!raw || typeof raw !== 'object' || Array.isArray(raw) || !prog || prog.kind !== 'wave') return undefined;
+  const mains = new Set();
+  for (const v of programVariants(prog)) for (const d of v.days) for (const r of d.rows) if (r.main) mains.add(r.exId);
+  const out = {};
+  for (const id of mains) {
+    const kg = Number(raw[id]);
+    if (Number.isFinite(kg) && kg > 0 && kg <= 1000) out[id] = Math.round(kg * 100) / 100;
+  }
+  return out;
+}
+
+/* Bezpečný state.program zo súboru / synchronizácie: nikdy nevyhodí, neplatné = null. */
+function cleanProgramState(raw) {
+  try {
+    if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return null;
+    const prog = programById(raw.id);
+    if (!prog) return null;
+    const variant = programVariant(prog, raw.variant);
+    if (!variant) return null;
+    if (!validProgramDate(raw.startedAt)) return null;
+    const shift = Math.round(Number(raw.weekShift));
+    const out = {
+      id: prog.id,
+      variant: variant.id,
+      startedAt: raw.startedAt,
+      weekShift: Number.isFinite(shift) ? Math.max(-PROGRAM_SHIFT_MAX, Math.min(PROGRAM_SHIFT_MAX, shift)) : 0,
+      plans: {},
+      endedAt: validProgramDate(raw.endedAt) ? raw.endedAt : null,
+    };
+    const plans = raw.plans && typeof raw.plans === 'object' && !Array.isArray(raw.plans) ? raw.plans : {};
+    for (const d of variant.days) {
+      if (typeof plans[d.id] === 'string' && plans[d.id]) out.plans[d.id] = plans[d.id];
+    }
+    const tm = cleanProgramTm(raw.tm, prog);
+    if (tm) out.tm = tm;
+    return out;
+  } catch (err) {
+    return null;
+  }
+}
+
+/* Nový state.program. tm = { [exId]: kg } (len pre vlnu), planIdsByDay = { [dayId]: planId }. Neplatný vstup = null. */
+function startProgramState(programId, variantId, tm, planIdsByDay) {
+  try {
+    const prog = programById(programId);
+    if (!prog) return null;
+    const variant = programVariant(prog, variantId);
+    if (!variant) return null;
+    return cleanProgramState({ id: prog.id, variant: variant.id, startedAt: todayISO(), weekShift: 0, plans: planIdsByDay, tm, endedAt: null });
+  } catch (err) {
+    return null;
+  }
+}
+
+/* Týždeň programu: kalendárne týždne (weekKey, pondelok) od štartu + posun (opakovať −1, preskočiť +1).
+   Týždne sa počítajú krokom po 7 dňoch (setDate), nie delením milisekúnd, takže zmena času nič neposunie.
+   Vráti { week 1..N, total, deload, finished } alebo null pre neplatný program. */
+function programWeek(prog, today = todayISO()) {
+  try {
+    const clean = cleanProgramState(prog);
+    if (!clean) return null;
+    const def = programById(clean.id);
+    const total = def.weeks;
+    const todayStr = validProgramDate(today) ? today : todayISO();
+    let offset = 0;
+    if (todayStr > clean.startedAt) {
+      const target = weekKey(parseDate(todayStr));
+      let d = parseDate(clean.startedAt);
+      while (weekKey(d) !== target && offset <= total + PROGRAM_SHIFT_MAX + 2) {
+        d = addDays(d, 7);
+        offset++;
+      }
+    }
+    const raw = 1 + offset + clean.weekShift;
+    const finished = raw > total;
+    const week = Math.max(1, Math.min(total, raw));
+    return { week, total, deload: !finished && def.deloadWeeks.includes(week), finished };
+  } catch (err) {
+    return null;
+  }
+}
+
+/* Zaokrúhlenie váhy programu: činka na zostaviteľnú váhu (nikdy pod tyčou), ostatné nadol na krok cviku. */
+function programRoundWeight(exId, kg) {
+  const ex = { id: exId, builtin: true, name: '' };
+  if (!(Number(kg) > 0)) return null;
+  if (isBarbellExercise(ex)) {
+    const cfg = plateSettings();
+    return Math.max(Number(cfg.bar) || 0, roundToPlates(kg, cfg));
+  }
+  const step = suggestStep(ex);
+  const r = Math.floor(kg / step + 1e-9) * step;
+  return Math.round(Math.max(step, r) * 100) / 100;
+}
+
+/* Predpis pre riadok plánu v aktuálnom týždni, alebo null (riadok bez progRow, iný plán, hotový program).
+   Lineárne: série a opakovania zo šablóny; v odľahčení série = max(1, ceil(série × 0,6)) a váha riadku × 0,6.
+   Hlavný ťah vlny: setWeights/setReps z tréningového maxima (prog.tm); bez maxima váha null (UI sa opýta). */
+function programPrescription(prog, planId, row, today = todayISO()) {
+  try {
+    const clean = cleanProgramState(prog);
+    if (!clean || !row || typeof row.progRow !== 'string' || typeof planId !== 'string') return null;
+    const [pid, dayId, idx] = row.progRow.split(':');
+    if (pid !== clean.id || clean.plans[dayId] !== planId) return null;
+    const def = programById(clean.id);
+    const variant = programVariant(def, clean.variant);
+    const day = variant && variant.days.find((d) => d.id === dayId);
+    const tpl = day && day.rows[Number(idx)];
+    if (!tpl || tpl.progRow !== row.progRow) return null;
+    const wk = programWeek(clean, today);
+    if (!wk || wk.finished) return null;
+    const deload = wk.deload;
+    if (def.kind === 'wave' && tpl.main) {
+      const step = WAVE_STEPS[(wk.week - 1) % 4];
+      const tm = clean.tm && clean.tm[tpl.exId];
+      const out = { sets: 3, reps: step.reps[0], deload, setReps: step.reps.slice(), pctLabel: step.pct.join('/') + '%' };
+      if (!(tm > 0)) return Object.assign(out, { weight: null, setWeights: null });
+      out.setWeights = step.pct.map((pc) => programRoundWeight(tpl.exId, tm * pc / 100));
+      out.weight = out.setWeights[out.setWeights.length - 1];
+      return out;
+    }
+    const out = { sets: deload ? Math.max(1, Math.ceil(tpl.sets * 0.6)) : tpl.sets, reps: tpl.reps, deload };
+    if (deload && !isAssisted({ id: tpl.exId, builtin: true })) {
+      const w = programRoundWeight(tpl.exId, Number(row.weight) * 0.6);
+      if (w !== null) out.weight = w;
+    }
+    return out;
+  } catch (err) {
+    return null;
+  }
 }
 
 /* ---------- Importované tréningy ---------- */
