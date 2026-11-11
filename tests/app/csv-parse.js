@@ -34,7 +34,7 @@ const fx = (n) => fs.readFileSync(path.join(FIX, n), 'utf8');
     await p.eval(`(() => { const ok = document.getElementById('btn-setup-ok'); if (ok && !document.getElementById('modal-setup').hidden) ok.click(); return true; })()`);
     const ev = (expr) => p.eval(`(() => { try { const v = ${expr}; return JSON.stringify(v === undefined ? null : v); } catch (e) { return JSON.stringify({ threw: String(e), code: e && e.code, line: e && e.line, name: e && e.name }); } })()`).then((s) => JSON.parse(s));
     /* Celý import cez fixture: parse -> detekcia -> mapovanie. */
-    const run = (name, opts) => ev(`(() => { const r = parseCsv(${J(fx(name))}); const f = detectCsvFormat(r.rows[0]); const o = csvToWorkouts(r.rows, f, ${J(opts || { unit: null })}); return { delimiter: r.delimiter, format: f, rows: r.rows.length, o }; })()`);
+    const run = (name, opts) => ev(`(() => { const r = parseCsv(${J(fx(name))}); const f = detectCsvFormat(r.rows[0]); const o = csvToWorkouts(r.rows, f, Object.assign({ delimiter: r.delimiter }, ${J(opts || { unit: null })})); return { delimiter: r.delimiter, format: f, rows: r.rows.length, o }; })()`);
 
     /* ---- parseCsv ---- */
     const q = await ev(`parseCsv('a,"b,c","d""e","f\\ng"\\nx,y,z,w\\n')`);
@@ -93,7 +93,7 @@ const fx = (n) => fs.readFileSync(path.join(FIX, n), 'utf8');
     check('Strong kg: Rest Timer row ignored; failure + drop mapped', row.exId === 'bent-over-rows' && row.sets === 3 && J(row.setWeights) === '[60,60,60]' && J(row.actualFailureSets) === '[3]'
       && J(row.drops) === J([{ weight: 40, reps: 8 }]) && J(row.setRpe) === '[null,null,10]', row);
     check('Strong kg: Zercher Squat unmatched and kept as a custom name', J(sk.o.unmatched) === '["Zercher Squat"]' && !w[0].exercises[2].exId && w[0].exercises[2].name === 'Zercher Squat', sk.o.unmatched);
-    check('Strong kg: skippedRows counts the Rest Timer row', sk.o.skippedRows === 1, sk.o.skippedRows);
+    check('Strong kg: Rest Timer row is ignoredRows, not skippedRows', sk.o.skippedRows === 0 && sk.o.ignoredRows === 1, [sk.o.skippedRows, sk.o.ignoredRows]);
 
     /* ---- Strong, lb, ; a desatinná čiarka ---- */
     const sl = await run('strong-lb-semicolon-decimal-comma.csv');
@@ -176,6 +176,25 @@ const fx = (n) => fs.readFileSync(path.join(FIX, n), 'utf8');
     const mix = ae.find((e) => e.name === 'Zercher Squat');
     check('assisted: mixed negative/positive -> positives kept as normal sets, not assisted, negatives skipped', mix && !mix.assisted && mix.sets === 1 && J(mix.setWeights) === '[20]' && as.o.skippedRows === 2, [mix, as.o.skippedRows]);
     check('assisted: produced entries are valid working sets', ae.length === 3, ae.length);
+
+    /* ---- Fix round 1 ---- */
+    const H = 'Date,Workout Name,Duration,Exercise Name,Set Order,Weight,Reps,Distance,Seconds,Notes,Workout Notes,RPE\n';
+    const HS = H.replace(/,/g, ';');
+    const conv = (head, body, delimiter) => ev(`(() => { const r = parseCsv(${J(head + body)}); const o = csvToWorkouts(r.rows, 'strong', { unit: 'kg', delimiter: r.delimiter }); return { d: r.delimiter, o }; })()`);
+    const dc = await conv(HS, '2024-01-02 10:00:00;X;1m;Bench Press;1;135,5;8;0;0;;;8,5\n2024-01-02 10:00:00;X;1m;Bench Press;2;1,234;8;0;0;;;\n');
+    check('decimal comma with ; delimiter: 135,5 -> 135.5, 1,234 -> 1.234, RPE 8,5 -> 8.5', dc.d === ';' && J(dc.o.workouts[0].exercises[0].setWeights) === '[135.5,1.234]' && J(dc.o.workouts[0].exercises[0].setRpe) === '[8.5,null]', dc.o.workouts[0] && dc.o.workouts[0].exercises[0]);
+    const tc = await conv(H, '2024-01-02 10:00:00,X,1m,Bench Press,1,"1,234",8,0,0,,,\n2024-01-02 10:00:00,X,1m,Bench Press,1,60,8,0,0,,,\n');
+    check('comma delimiter: quoted "1,234" is NOT 1.234 (row skipped as > 999 kg)', tc.d === ',' && tc.o.skippedRows === 1 && J(tc.o.workouts[0].exercises[0].setWeights) === '[60]', tc.o);
+    const longKey = await ev(`(() => { const junk = 'x'.repeat(100000); const r = parseCsv(${J(H)} + '2024-01-02 10:00:00' + junk + ',' + 'T'.repeat(100000) + ',1m,Bench Press,1,60,8,0,0,,,\\n'); const o = csvToWorkouts(r.rows, 'strong', { unit: 'kg', delimiter: r.delimiter }); return { n: o.workouts.length, len: o.workouts[0] && o.workouts[0].importKey.length }; })()`);
+    check('importKey is short even with 100 KB junk in the date and title cells', longKey.n === 1 && longKey.len <= 200, longKey);
+    const k2 = await ev(`(() => { const f = (t) => { const r = parseCsv(t); return csvToWorkouts(r.rows, detectCsvFormat(r.rows[0]), { unit: null, delimiter: r.delimiter }).workouts.map((w) => w.importKey + '/' + w.id); }; const t = ${J(fx('hevy.csv'))}; return [f(t), f(t)]; })()`);
+    check('same file parsed twice gives identical importKeys and ids', J(k2[0]) === J(k2[1]) && k2[0].length === 2 && k2[0][0].startsWith('hevy|15 Nov 2024, 18:02|Morning workout/'), k2);
+    const removed = await ev(`(() => { const names = ['Overhead Press (Dumbbell)', 'Bicep Curl (Barbell)', 'EZ Bar Biceps Curl', 'Lateral Raise (Cable)', 'Hip Thrust (Machine)', 'Seated Calf Raise (Machine)', 'Romanian Deadlift (Dumbbell)', 'Lunge (Barbell)', 'Walking Lunge (Dumbbell)', 'Walking Lunge', 'Bulgarian Split Squat', 'Bulgarian Split Squat (Dumbbell)', 'Chin Up']; return names.every((n) => { const m = matchExercise(n); return m.exId === null && m.name === n; }); })()`);
+    check('equipment/movement-crossing names stay unmatched (custom identity)', removed === true, removed);
+    const kept = await ev(`['Bench Press (Barbell)', 'Lunge (Dumbbell)', 'Bicep Curl (Dumbbell)', 'Romanian Deadlift (Barbell)'].map((n) => matchExercise(n).exId)`);
+    check('same-equipment aliases are kept', J(kept) === '["bench-press","lunges","bicep-curls","romanian-deadlift"]', kept);
+    const dist = await conv(H, '2024-01-02 10:00:00,X,1m,Running,1,0,0,5,0,,,\n2024-01-02 10:00:00,X,1m,Bench Press,1,60,5,0,0,,,\n');
+    check('distance-only cardio row is skipped and counted', dist.o.skippedRows === 1 && dist.o.workouts[0].exercises.length === 1, dist.o);
 
     /* ---- Odpad ---- */
     const g = await ev(`(() => { const res = []; const junk = ['', ' ', '\\u0000\\u0001\\u0002,\\uFFFD\\n\\u0000;;"', 'PK\\u0003\\u0004\\u0014\\u0000\\u0006\\u0000', '"', ',,,,\\n,,,,', 'Date,Workout Name\\n1,2', 'a'.repeat(1e5)];

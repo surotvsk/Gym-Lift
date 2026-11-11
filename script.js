@@ -26299,18 +26299,18 @@ function detectCsvFormat(header) {
 const CSV_EXERCISE_ALIASES = {
   'Bench Press (Barbell)': 'bench-press', 'Bench Press': 'bench-press', 'Barbell Bench Press': 'bench-press', 'Flat Bench Press (Barbell)': 'bench-press',
   'Overhead Press (Barbell)': 'overhead-press', 'Overhead Press': 'overhead-press', 'Standing Military Press (Barbell)': 'overhead-press', 'Military Press': 'overhead-press',
-  'Overhead Press (Dumbbell)': 'overhead-press', 'Shoulder Press (Barbell)': 'overhead-press',
+  'Shoulder Press (Barbell)': 'overhead-press',
   'Dips': 'dips', 'Dip': 'dips', 'Triceps Dip': 'dips', 'Chest Dip': 'dips',
-  'Lateral Raise (Dumbbell)': 'lateral-raises', 'Lateral Raise (Cable)': 'lateral-raises', 'Lateral Raise': 'lateral-raises', 'Side Lateral Raise (Dumbbell)': 'lateral-raises',
-  'Pull Up': 'pull-ups', 'Pull-Up': 'pull-ups', 'Pull Ups': 'pull-ups', 'Chin Up': 'pull-ups',
+  'Lateral Raise (Dumbbell)': 'lateral-raises', 'Lateral Raise': 'lateral-raises', 'Side Lateral Raise (Dumbbell)': 'lateral-raises',
+  'Pull Up': 'pull-ups', 'Pull-Up': 'pull-ups', 'Pull Ups': 'pull-ups',
   'Bent Over Row (Barbell)': 'bent-over-rows', 'Barbell Row': 'bent-over-rows', 'Bent Over Row': 'bent-over-rows',
   'Seated Cable Row': 'cable-rows', 'Seated Row (Cable)': 'cable-rows', 'Cable Row': 'cable-rows', 'Seated Cable Row - V Grip (Cable)': 'cable-rows', 'Seated Cable Row - Bar Grip': 'cable-rows',
-  'Bicep Curl (Dumbbell)': 'bicep-curls', 'Bicep Curl (Barbell)': 'bicep-curls', 'Bicep Curl': 'bicep-curls', 'EZ Bar Biceps Curl': 'bicep-curls', 'Biceps Curl (Dumbbell)': 'bicep-curls',
+  'Bicep Curl (Dumbbell)': 'bicep-curls', 'Bicep Curl': 'bicep-curls', 'Biceps Curl (Dumbbell)': 'bicep-curls',
   'Squat (Barbell)': 'squats', 'Squat': 'squats', 'Back Squat (Barbell)': 'squats', 'Barbell Squat': 'squats',
   'Leg Press': 'leg-press', 'Leg Press (Machine)': 'leg-press', 'Leg Press Horizontal (Machine)': 'leg-press',
-  'Lunge (Dumbbell)': 'lunges', 'Lunge (Barbell)': 'lunges', 'Lunge': 'lunges', 'Walking Lunge (Dumbbell)': 'lunges', 'Walking Lunge': 'lunges',
+  'Lunge (Dumbbell)': 'lunges', 'Lunge': 'lunges',
   'Leg Curl': 'leg-curls', 'Lying Leg Curl (Machine)': 'leg-curls', 'Seated Leg Curl (Machine)': 'leg-curls', 'Leg Curl (Machine)': 'leg-curls',
-  'Standing Calf Raise (Machine)': 'calf-raises', 'Standing Calf Raise (Barbell)': 'calf-raises', 'Standing Calf Raise (Dumbbell)': 'calf-raises', 'Seated Calf Raise (Machine)': 'calf-raises',
+  'Standing Calf Raise (Machine)': 'calf-raises', 'Standing Calf Raise (Barbell)': 'calf-raises', 'Standing Calf Raise (Dumbbell)': 'calf-raises',
   'Calf Raise': 'calf-raises', 'Calf Press (Machine)': 'calf-raises', 'Calf Raise (Machine)': 'calf-raises',
   'Push Up': 'push-up', 'Push-Up': 'push-up', 'Push Ups': 'push-up', 'Pushup': 'push-up',
   'Bicep Curl (Band)': 'band-bicep-curl', 'Bicep Curl (Resistance Band)': 'band-bicep-curl',
@@ -26320,10 +26320,10 @@ const CSV_EXERCISE_ALIASES = {
   'Hammer Curl (Dumbbell)': 'hammer-curl', 'Hammer Curl': 'hammer-curl', 'Dumbbell Hammer Curl': 'hammer-curl',
   'Diamond Push Up': 'diamond-push-up', 'Diamond Push-Up': 'diamond-push-up',
   'Bodyweight Squat': 'bodyweight-squat', 'Squat (Bodyweight)': 'bodyweight-squat', 'Air Squat': 'bodyweight-squat',
-  'Bulgarian Split Squat': 'split-squat', 'Bulgarian Split Squat (Dumbbell)': 'split-squat', 'Split Squat (Dumbbell)': 'split-squat', 'Split Squat': 'split-squat',
+  'Split Squat (Dumbbell)': 'split-squat', 'Split Squat': 'split-squat',
   'Step Up': 'step-up', 'Step-up': 'step-up', 'Step Up (Dumbbell)': 'step-up', 'Step-up (Dumbbell)': 'step-up',
   'Glute Bridge': 'glute-bridge', 'Bodyweight Glute Bridge': 'glute-bridge',
-  'Hip Thrust (Barbell)': 'hip-thrust', 'Hip Thrust': 'hip-thrust', 'Hip Thrust (Machine)': 'hip-thrust',
+  'Hip Thrust (Barbell)': 'hip-thrust', 'Hip Thrust': 'hip-thrust',
   'Single Leg Glute Bridge': 'single-leg-glute-bridge', 'Single Leg Bridge': 'single-leg-glute-bridge',
   'Plank': 'plank',
   'Dead Bug': 'dead-bug',
@@ -26339,7 +26339,7 @@ const CSV_EXERCISE_ALIASES = {
   'Single Arm Triceps Extension (Dumbbell)': 'single-arm-dumbbell-triceps-extension', 'Single Arm Tricep Extension (Dumbbell)': 'single-arm-dumbbell-triceps-extension',
   'Single Arm Triceps Pushdown (Cable)': 'single-arm-cable-triceps-extension', 'Single Arm Triceps Extension (Cable)': 'single-arm-cable-triceps-extension',
   'Hack Squat (Machine)': 'hack-squat', 'Hack Squat': 'hack-squat',
-  'Romanian Deadlift (Barbell)': 'romanian-deadlift', 'Romanian Deadlift': 'romanian-deadlift', 'Romanian Deadlift (Dumbbell)': 'romanian-deadlift',
+  'Romanian Deadlift (Barbell)': 'romanian-deadlift', 'Romanian Deadlift': 'romanian-deadlift',
   'Leg Extension (Machine)': 'leg-extension', 'Leg Extension': 'leg-extension',
   'Hip Adductor (Machine)': 'adductor-machine', 'Hip Adduction (Machine)': 'adductor-machine', 'Adductor Machine': 'adductor-machine', 'Hip Adductor': 'adductor-machine',
   'Hip Abductor (Machine)': 'abductor-machine', 'Hip Abduction (Machine)': 'abductor-machine', 'Abductor Machine': 'abductor-machine', 'Hip Abductor': 'abductor-machine',
@@ -26413,7 +26413,7 @@ function csvParseDateTime(raw) {
   const ts = Date.UTC(y, mo - 1, d, h, mi, sec);
   const chk = new Date(ts);
   if (chk.getUTCFullYear() !== y || chk.getUTCMonth() !== mo - 1 || chk.getUTCDate() !== d) return null;
-  return { date: String(y) + '-' + String(mo).padStart(2, '0') + '-' + String(d).padStart(2, '0'), ts };
+  return { date: String(y) + '-' + String(mo).padStart(2, '0') + '-' + String(d).padStart(2, '0'), ts, prefix: m[0].trim() };
 }
 /* Trvanie Strong: "1h 9m", "44m", "3h", "2h 38m 5s", "01:09:00" alebo sekundy; platné 1 s – 48 h, inak null. */
 function csvParseDuration(raw) {
@@ -26452,7 +26452,7 @@ function csvRoundKg(w, unit) {
    zvyšok a drop-only cvik idú medzi pracovné série); cvik bez pracovnej série sa vynechá. Váhy v kg (lb × 0.45359237 na 0.25).
    opts.delimiter (voliteľné, z parseCsv) = ';' berie čiarku vždy ako desatinnú. Jednotka: stĺpec Weight Unit / weight_kg / weight_lbs má prednosť, inak opts.unit, inak kg. Nikdy nevyhadzuje. */
 function csvToWorkouts(rows, format, opts) {
-  const res = { workouts: [], unitDetected: null, unmatched: [], skippedRows: 0 };
+  const res = { workouts: [], unitDetected: null, unmatched: [], skippedRows: 0, ignoredRows: 0 };
   try {
     if (!Array.isArray(rows) || rows.length < 2 || !Array.isArray(rows[0])) return res;
     if (format !== 'strong' && format !== 'hevy' && format !== 'gymquest') return res;
@@ -26482,6 +26482,7 @@ function csvToWorkouts(rows, format, opts) {
       const exName = String(cell(r, cEx)).trim().slice(0, 100);
       const kind = csvSetKind(isStrong ? 'strong' : 'hevy', cell(r, cKind));
       const when = csvParseDateTime(rawStart);
+      if (isStrong && /^rest\s*timer$/i.test(String(cell(r, cKind)).trim())) { res.ignoredRows++; continue; }   // pauza, nie séria
       if (!exName || !when || !kind) { res.skippedRows++; continue; }
       /* jednotka riadka */
       let unit = null;
@@ -26500,11 +26501,11 @@ function csvToWorkouts(rows, format, opts) {
       const reps = Math.round(reps0 === null ? 0 : reps0);
       const secs = Math.round(secs0 === null ? 0 : secs0);
       if (kg > 999 || reps > 999 || secs > 86400) { res.skippedRows++; continue; }
-      if (kg === 0 && reps === 0 && secs === 0 && !(dist0 > 0)) { res.skippedRows++; continue; }
+      if (kg === 0 && reps === 0 && secs === 0) { res.skippedRows++; continue; }   // prázdna séria aj kardio len so vzdialenosťou
       rpe = rpe === null ? null : Math.round(rpe * 2) / 2;
       if (rpe !== null && !validRpe(rpe)) rpe = null;
       const title = String(cell(r, cTitle)).trim().slice(0, 100);
-      const key = rawStart + '|' + title;
+      const key = when.prefix + '|' + title;   // len zhodnutá časť dátumu (krátka a stabilná), nie celá bunka
       let wk = workouts.get(key);
       if (!wk) {
         let dur = null;
@@ -26514,7 +26515,7 @@ function csvToWorkouts(rows, format, opts) {
           const diff = end ? Math.round((end.ts - when.ts) / 1000) : 0;
           dur = diff >= 1 && diff <= 48 * 3600 ? diff : null;
         }
-        wk = { rawStart, title, date: when.date, dur, byEx: new Map(), order: [] };
+        wk = { rawStart: when.prefix, title, date: when.date, dur, byEx: new Map(), order: [] };
         workouts.set(key, wk);
       }
       const exKey = csvNormName(exName);
@@ -26595,7 +26596,7 @@ function csvToWorkouts(rows, format, opts) {
     res.unmatched = unmatched;
     return res;
   } catch (err) {
-    return { workouts: [], unitDetected: null, unmatched: [], skippedRows: 0 };
+    return { workouts: [], unitDetected: null, unmatched: [], skippedRows: 0, ignoredRows: 0 };
   }
 }
 
