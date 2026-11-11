@@ -1023,18 +1023,6 @@
     </div>
   </div>
 
-  <!-- ============ MODAL: generické potvrdenie ============ -->
-  <div class="modal-backdrop" id="modal-generic" hidden>
-    <div class="modal">
-      <h3 id="generic-title">Potvrdenie</h3>
-      <p id="generic-text"></p>
-      <div class="modal-actions">
-        <button class="btn btn-secondary" id="btn-generic-cancel" data-i18n="common.cancel">Zrušiť</button>
-        <button class="btn btn-primary" id="btn-generic-ok" data-i18n="common.ok">OK</button>
-      </div>
-    </div>
-  </div>
-
   <!-- ============ MODAL: úprava tréningu z histórie ============ -->
   <div class="modal-backdrop" id="modal-history-edit" hidden>
     <div class="modal">
@@ -1319,6 +1307,18 @@
           <button type="button" class="btn btn-secondary" id="btn-csv-cancel" data-i18n="common.cancel">Zrušiť</button>
           <button type="button" class="btn btn-primary" id="btn-csv-confirm" disabled></button>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ MODAL: generické potvrdenie (musí byť v DOM POSLEDNÉ: rovnaký z-index, navrchu je posledný, takže potvrdenie je vždy nad každým listom) ============ -->
+  <div class="modal-backdrop" id="modal-generic" hidden>
+    <div class="modal">
+      <h3 id="generic-title">Potvrdenie</h3>
+      <p id="generic-text"></p>
+      <div class="modal-actions">
+        <button class="btn btn-secondary" id="btn-generic-cancel" data-i18n="common.cancel">Zrušiť</button>
+        <button class="btn btn-primary" id="btn-generic-ok" data-i18n="common.ok">OK</button>
       </div>
     </div>
   </div>

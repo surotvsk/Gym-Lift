@@ -7605,7 +7605,7 @@ const BASICS_I18N = {
     'xprog.close': 'Zavrieť', 'xprog.statE1rm': 'Najlepší odhad 1RM', 'xprog.statHeaviest': 'Najťažšie', 'xprog.statBestSet': 'Najlepšia séria', 'xprog.statSessions': 'Tréningy', 'xprog.statLeastHelp': 'Najmenej pomoci', 'xprog.metricE1rm': 'Odhad 1RM', 'xprog.metricHeaviest': 'Najťažšie', 'xprog.metricVolume': 'Objem', 'xprog.metricHelp': 'Pomoc', 'xprog.metricGroup': 'Čo ukázať v grafe', 'xprog.rangeGroup': 'Obdobie', 'xprog.r3m': '3 M', 'xprog.r1y': '1 R', 'xprog.rAll': 'Všetko', 'xprog.empty': 'Zapíš tento cvik aspoň dvakrát a objaví sa graf.', 'xprog.sessions': 'Tréningy', 'xprog.more': 'Zobraziť viac', 'xprog.estNote': 'Odhad podľa Epleya, nie otestované maximum.', 'xprog.open': 'Zobraziť pokrok: {name}', 'xprog.link': 'Pokrok', 'xprog.chartAria': '{label}, {unit}: od {from} do {to}',
     'muscles.title': 'Svaly', 'muscles.tile': 'Svaly', 'muscles.empty': 'Tento týždeň žiadne série', 'muscles.close': 'Zavrieť', 'muscles.weekGroup': 'Týždeň', 'muscles.prev': 'Predchádzajúci týždeň', 'muscles.next': 'Nasledujúci týždeň', 'muscles.thisWeek': 'Tento týždeň', 'muscles.lastWeek': 'Minulý týždeň', 'muscles.weekOf': 'Týždeň od {date}', 'muscles.volume': 'Celkový objem', 'muscles.other': 'Ostatné', 'muscles.note': 'Hlavný sval sa počíta ako 1 séria, pomocné svaly ako ½. Vlastné cviky patria do Ostatné. Bežné odporúčanie je asi 10–20 sérií na sval týždenne.', 'muscles.trend': '{name}: série za týždeň, posledných 8 týždňov',
     'recovery.hint': '{muscle}: zotavenie ešte prebieha — zváž {plan}', 'recovery.mapAria': 'Odhad zotavenia svalov, pohľad spredu a zozadu', 'recovery.note': 'Odhad z tvojich sérií za posledné 3 – 4 dni: výraznejšia farba = nedávnejšia záťaž. Nie je to lekárska rada.',
-    'csv.title': 'Import CSV', 'csv.close': 'Zavrieť', 'csv.reading': 'Číta sa súbor…', 'csv.counts': '{n} nových · {m} už importovaných', 'csv.inHistory': '{n} už je v tvojej histórii', 'csv.dates': 'Dátumy: {from} – {to}', 'csv.exercises': '{matched} cvikov nájdených v knižnici · {custom} nových vlastných', 'csv.unmatched': 'Nové vlastné cviky ({n})', 'csv.unitAsk': 'Jednotka váhy v tomto súbore', 'csv.unitHint': 'Súbor neuvádza, akú jednotku používa. Vyber tú, v ktorej si trénoval.', 'csv.unitKg': 'Váhy v kg', 'csv.unitLb': 'Váhy v lb, prepočítané na kg', 'csv.skipped': 'Preskočených riadkov: {n} (nie sú to série s váhou)', 'csv.note': 'Importované tréningy sa ukážu v histórii a grafoch. Nedávajú XP, série ani rekordy.', 'csv.confirm': 'Importovať tréningy: {n}', 'csv.nothingNew': 'Nič nové na import', 'csv.toast': 'Importované tréningy: {n}', 'csv.undo': 'Vrátiť import', 'csv.undone': 'Import vrátený', 'csv.errTitle': 'Tento súbor sa nedá importovať', 'csv.errBad': 'Riadok 1: názvy stĺpcov nie sú z exportu Strong, Hevy ani Gym-Lift.', 'csv.errQuote': 'Hodnota v úvodzovkách, ktorá začína na riadku {line}, sa nikdy neuzavrie.', 'csv.errBig': 'Súbor má viac ako 20 MB, čo je na import priveľa.', 'csv.errMany': 'Súbor má viac ako 5 000 tréningov. Rozdeľ ho na menšie súbory.', 'csv.errRows': 'Príliš veľa riadkov (najviac 200 000). Zastavené na riadku {line}.', 'csv.errCols': 'Príliš veľa stĺpcov (najviac 500) na riadku {line}.', 'csv.errEmpty': 'V súbore sa nenašli žiadne tréningy so sériami.', 'csv.errRead': 'Súbor sa nepodarilo prečítať.', 'csv.fmtGym': 'Gym-Lift',
+    'csv.title': 'Import CSV', 'csv.close': 'Zavrieť', 'csv.reading': 'Číta sa súbor…', 'csv.counts': '{n} nových · {m} už importovaných', 'csv.inHistory': '{n} už je v tvojej histórii', 'csv.dates': 'Dátumy: {from} – {to}', 'csv.exercises': '{matched} cvikov nájdených v knižnici · {custom} nových vlastných', 'csv.unmatched': 'Nové vlastné cviky ({n})', 'csv.unitAsk': 'Jednotka váhy v tomto súbore', 'csv.unitHint': 'Súbor neuvádza, akú jednotku používa. Vyber tú, v ktorej si trénoval.', 'csv.unitKg': 'Váhy v kg', 'csv.unitLb': 'Váhy v lb, prepočítané na kg', 'csv.skipped': 'Preskočených riadkov: {n} (nie sú to série s váhou)', 'csv.note': 'Importované tréningy sa ukážu v histórii a grafoch. Nedávajú XP, série ani rekordy.', 'csv.confirm': 'Importovať tréningy: {n}', 'csv.nothingNew': 'Nič nové na import', 'csv.toast': 'Importované tréningy: {n}', 'csv.undo': 'Vrátiť import', 'csv.undone': 'Import vrátený', 'csv.errTitle': 'Tento súbor sa nedá importovať', 'csv.errBad': 'Riadok 1: názvy stĺpcov nie sú z exportu Strong, Hevy ani Gym-Lift.', 'csv.errQuote': 'Hodnota v úvodzovkách, ktorá začína na riadku {line}, sa nikdy neuzavrie.', 'csv.errBig': 'Súbor má viac ako 20 MB, čo je na import priveľa.', 'csv.errMany': 'Súbor má viac ako 5 000 tréningov. Rozdeľ ho na menšie súbory.', 'csv.errRows': 'Príliš veľa riadkov (najviac 200 000). Zastavené na riadku {line}.', 'csv.errCols': 'Príliš veľa stĺpcov (najviac 500) na riadku {line}.', 'csv.errEmpty': 'V súbore sa nenašli žiadne tréningy so sériami.', 'csv.errRead': 'Súbor sa nepodarilo prečítať.', 'csv.fmtGym': 'Gym-Lift', 'history.showMore': 'Zobraziť viac', 'csv.errStorage': 'Na tomto zariadení nie je dosť úložiska na tento import. Nič sa neimportovalo.', 'csv.tooBig': 'Tento import je na úložisko zariadenia priveľký. Rozdeľ súbor na menšie časti.', 'csv.errUndoStorage': 'Zmenu sa nepodarilo uložiť. Import zostal.', 'imp.plus': '(+{m} importovaných)', 'imp.conflictExtra': 'Importy: účet {cloud}, toto zariadenie {local}.', 'imp.olderExtra': 'Importované tréningy: {old} → {new}.',
     'imp.tag': 'Importované · {source}', 'imp.deleteTitle': 'Vymazať importovaný tréning', 'imp.deleteConfirm': 'Tento importovaný tréning sa odstráni z histórie a grafov. Nikdy sa nepočítal do XP.', 'imp.deleteSourceTitle': 'Odstrániť importy zo zdroja {source}', 'imp.deleteSourceConfirm': 'Importované tréningy na odstránenie: {n} (zo zdroja {source}). Tvoje vlastné tréningy zostanú.', 'imp.status': 'Importovaný tréning',
     'csvx.open': 'CSV (Strong / Hevy)', 'csvx.exportLabel': 'Export', 'csvx.export': 'Exportovať CSV', 'csvx.include': 'Zahrnúť importované tréningy', 'csvx.importLabel': 'Import', 'csvx.pick': 'Importovať zo Strong alebo Hevy…', 'csvx.manage': 'Spravovať importy', 'csvx.srcRow': '{source} · tréningov: {n}', 'csvx.removeAll': 'Odstrániť všetky', 'csvx.removeAria': 'Odstrániť všetky importy zo zdroja {source}', 'csvx.help': 'Export nájdeš v nastaveniach aplikácie Strong alebo Hevy (hľadaj Export dát / CSV). Súbor .csv potom vyber tu.', 'csvx.exportEmpty': 'Zatiaľ nie je čo exportovať.',
     'csv.confirmOne': 'Importovať {n} tréning', 'csv.confirmFew': 'Importovať {n} tréningy', 'csv.confirmOther': 'Importovať {n} tréningov', 'csv.toastOne': 'Importovaný {n} tréning', 'csv.toastFew': 'Importované {n} tréningy', 'csv.toastOther': 'Importovaných {n} tréningov', 'csvx.srcRowOne': '{source} · {n} tréning', 'csvx.srcRowFew': '{source} · {n} tréningy', 'csvx.srcRowOther': '{source} · {n} tréningov', 'imp.deleteSourceConfirmOne': 'Odstráni sa {n} importovaný tréning zo zdroja {source}. Tvoje vlastné tréningy zostanú.', 'imp.deleteSourceConfirmFew': 'Odstránia sa {n} importované tréningy zo zdroja {source}. Tvoje vlastné tréningy zostanú.', 'imp.deleteSourceConfirmOther': 'Odstráni sa {n} importovaných tréningov zo zdroja {source}. Tvoje vlastné tréningy zostanú.', 'csv.skippedOne': 'Preskočený {n} riadok (nie je to séria s váhou)', 'csv.skippedFew': 'Preskočené {n} riadky (nie sú to série s váhou)', 'csv.skippedOther': 'Preskočených {n} riadkov (nie sú to série s váhou)',
@@ -7637,7 +7637,7 @@ const BASICS_I18N = {
     'xprog.close': 'Close', 'xprog.statE1rm': 'Best est. 1RM', 'xprog.statHeaviest': 'Heaviest', 'xprog.statBestSet': 'Best set', 'xprog.statSessions': 'Sessions', 'xprog.statLeastHelp': 'Least help', 'xprog.metricE1rm': 'Est. 1RM', 'xprog.metricHeaviest': 'Heaviest', 'xprog.metricVolume': 'Volume', 'xprog.metricHelp': 'Help', 'xprog.metricGroup': 'What to show in the chart', 'xprog.rangeGroup': 'Period', 'xprog.r3m': '3 M', 'xprog.r1y': '1 Y', 'xprog.rAll': 'All', 'xprog.empty': 'Log this exercise at least twice to see a chart.', 'xprog.sessions': 'Sessions', 'xprog.more': 'Show more', 'xprog.estNote': 'Epley estimate, not a tested max.', 'xprog.open': 'Show progress for {name}', 'xprog.link': 'Progress', 'xprog.chartAria': '{label}, {unit}: from {from} to {to}',
     'muscles.title': 'Muscles', 'muscles.tile': 'Muscles', 'muscles.empty': 'No sets this week', 'muscles.close': 'Close', 'muscles.weekGroup': 'Week', 'muscles.prev': 'Previous week', 'muscles.next': 'Next week', 'muscles.thisWeek': 'This week', 'muscles.lastWeek': 'Last week', 'muscles.weekOf': 'Week of {date}', 'muscles.volume': 'Total volume', 'muscles.other': 'Other', 'muscles.note': 'The main muscle counts as 1 set, helper muscles as ½. Custom exercises count as Other. Common guidance is about 10–20 sets per muscle per week.', 'muscles.trend': '{name}: sets per week, last 8 weeks',
     'recovery.hint': '{muscle} still recovering — consider {plan}', 'recovery.mapAria': 'Muscle recovery estimate, front and back view', 'recovery.note': 'Estimate from your sets in the last 3–4 days: stronger colour means worked more recently. Not medical advice.',
-    'csv.title': 'Import CSV', 'csv.close': 'Close', 'csv.reading': 'Reading file…', 'csv.counts': '{n} new · {m} already imported', 'csv.inHistory': '{n} already in your history', 'csv.dates': 'Dates: {from} – {to}', 'csv.exercises': '{matched} exercises matched to the library · {custom} new custom', 'csv.unmatched': 'New custom exercises ({n})', 'csv.unitAsk': 'Weight unit in this file', 'csv.unitHint': 'The file does not say which unit it uses. Pick the one you trained in.', 'csv.unitKg': 'Weights in kg', 'csv.unitLb': 'Weights in lb, converted to kg', 'csv.skipped': '{n} rows skipped (not lifting sets)', 'csv.note': 'Imported workouts appear in history and charts. They don\'t give XP, streaks or records.', 'csv.confirm': 'Import {n} workouts', 'csv.nothingNew': 'Nothing new to import', 'csv.toast': 'Imported {n} workouts', 'csv.undo': 'Undo import', 'csv.undone': 'Import undone', 'csv.errTitle': 'Can\'t import this file', 'csv.errBad': 'Line 1: the column names are not from a Strong, Hevy or Gym-Lift export.', 'csv.errQuote': 'A quoted value that starts on line {line} never closes.', 'csv.errBig': 'This file is larger than 20 MB, which is too big to import.', 'csv.errMany': 'This file has more than 5,000 workouts. Split it into smaller files.', 'csv.errRows': 'Too many rows (max 200,000). Stopped at line {line}.', 'csv.errCols': 'Too many columns (max 500) on line {line}.', 'csv.errEmpty': 'No workouts with lifting sets were found in this file.', 'csv.errRead': 'The file could not be read.', 'csv.fmtGym': 'Gym-Lift',
+    'csv.title': 'Import CSV', 'csv.close': 'Close', 'csv.reading': 'Reading file…', 'csv.counts': '{n} new · {m} already imported', 'csv.inHistory': '{n} already in your history', 'csv.dates': 'Dates: {from} – {to}', 'csv.exercises': '{matched} exercises matched to the library · {custom} new custom', 'csv.unmatched': 'New custom exercises ({n})', 'csv.unitAsk': 'Weight unit in this file', 'csv.unitHint': 'The file does not say which unit it uses. Pick the one you trained in.', 'csv.unitKg': 'Weights in kg', 'csv.unitLb': 'Weights in lb, converted to kg', 'csv.skipped': '{n} rows skipped (not lifting sets)', 'csv.note': 'Imported workouts appear in history and charts. They don\'t give XP, streaks or records.', 'csv.confirm': 'Import {n} workouts', 'csv.nothingNew': 'Nothing new to import', 'csv.toast': 'Imported {n} workouts', 'csv.undo': 'Undo import', 'csv.undone': 'Import undone', 'csv.errTitle': 'Can\'t import this file', 'csv.errBad': 'Line 1: the column names are not from a Strong, Hevy or Gym-Lift export.', 'csv.errQuote': 'A quoted value that starts on line {line} never closes.', 'csv.errBig': 'This file is larger than 20 MB, which is too big to import.', 'csv.errMany': 'This file has more than 5,000 workouts. Split it into smaller files.', 'csv.errRows': 'Too many rows (max 200,000). Stopped at line {line}.', 'csv.errCols': 'Too many columns (max 500) on line {line}.', 'csv.errEmpty': 'No workouts with lifting sets were found in this file.', 'csv.errRead': 'The file could not be read.', 'csv.fmtGym': 'Gym-Lift', 'history.showMore': 'Show more', 'csv.errStorage': 'Not enough storage on this device for this import. Nothing was imported.', 'csv.tooBig': 'This import is too large for this device\'s storage. Split the file into smaller parts.', 'csv.errUndoStorage': 'The change could not be saved. The import was kept.', 'imp.plus': '(+{m} imported)', 'imp.conflictExtra': 'Imports: account {cloud}, this device {local}.', 'imp.olderExtra': 'Imported workouts: {old} → {new}.',
     'imp.tag': 'Imported · {source}', 'imp.deleteTitle': 'Delete imported workout', 'imp.deleteConfirm': 'This imported workout will be removed from your history and charts. It never counted for XP.', 'imp.deleteSourceTitle': 'Remove imports from {source}', 'imp.deleteSourceConfirm': 'Imported workouts to remove: {n} (from {source}). Your own workouts stay.', 'imp.status': 'Imported workout',
     'csvx.open': 'CSV (Strong / Hevy)', 'csvx.exportLabel': 'Export', 'csvx.export': 'Export CSV', 'csvx.include': 'Include imported workouts', 'csvx.importLabel': 'Import', 'csvx.pick': 'Import from Strong or Hevy…', 'csvx.manage': 'Manage imported', 'csvx.srcRow': '{source} · {n} workouts', 'csvx.removeAll': 'Remove all', 'csvx.removeAria': 'Remove all imports from {source}', 'csvx.help': 'Look for Export data / CSV in the settings of the Strong or Hevy app, then pick the .csv file here.', 'csvx.exportEmpty': 'There is nothing to export yet.',
     'csv.confirmOne': 'Import {n} workout', 'csv.confirmOther': 'Import {n} workouts', 'csv.toastOne': 'Imported {n} workout', 'csv.toastOther': 'Imported {n} workouts', 'csvx.srcRowOne': '{source} · {n} workout', 'csvx.srcRowOther': '{source} · {n} workouts', 'imp.deleteSourceConfirmOne': '{n} imported workout from {source} will be removed. Your own workouts stay.', 'imp.deleteSourceConfirmOther': '{n} imported workouts from {source} will be removed. Your own workouts stay.', 'csv.skippedOne': '{n} row skipped (not a lifting set)', 'csv.skippedOther': '{n} rows skipped (not lifting sets)',
@@ -7669,7 +7669,7 @@ const BASICS_I18N = {
     'xprog.close': 'Cerrar', 'xprog.statE1rm': 'Mejor 1RM est.', 'xprog.statHeaviest': 'Más pesado', 'xprog.statBestSet': 'Mejor serie', 'xprog.statSessions': 'Sesiones', 'xprog.statLeastHelp': 'Menos ayuda', 'xprog.metricE1rm': '1RM est.', 'xprog.metricHeaviest': 'Más pesado', 'xprog.metricVolume': 'Volumen', 'xprog.metricHelp': 'Ayuda', 'xprog.metricGroup': 'Qué mostrar en el gráfico', 'xprog.rangeGroup': 'Periodo', 'xprog.r3m': '3 M', 'xprog.r1y': '1 A', 'xprog.rAll': 'Todo', 'xprog.empty': 'Registra este ejercicio al menos dos veces para ver un gráfico.', 'xprog.sessions': 'Sesiones', 'xprog.more': 'Mostrar más', 'xprog.estNote': 'Estimación de Epley, no un máximo medido.', 'xprog.open': 'Ver progreso de {name}', 'xprog.link': 'Progreso', 'xprog.chartAria': '{label}, {unit}: de {from} a {to}',
     'muscles.title': 'Músculos', 'muscles.tile': 'Músculos', 'muscles.empty': 'Sin series esta semana', 'muscles.close': 'Cerrar', 'muscles.weekGroup': 'Semana', 'muscles.prev': 'Semana anterior', 'muscles.next': 'Semana siguiente', 'muscles.thisWeek': 'Esta semana', 'muscles.lastWeek': 'Semana pasada', 'muscles.weekOf': 'Semana del {date}', 'muscles.volume': 'Volumen total', 'muscles.other': 'Otros', 'muscles.note': 'El músculo principal cuenta como 1 serie y los músculos auxiliares como ½. Los ejercicios propios cuentan como Otros. Una pauta habitual es de unas 10–20 series por músculo a la semana.', 'muscles.trend': '{name}: series por semana, últimas 8 semanas',
     'recovery.hint': '{muscle}: aún en recuperación — considera {plan}', 'recovery.mapAria': 'Estimación de la recuperación muscular, vista frontal y posterior', 'recovery.note': 'Estimación según tus series de los últimos 3–4 días: color más intenso = trabajado más recientemente. No es un consejo médico.',
-    'csv.title': 'Importar CSV', 'csv.close': 'Cerrar', 'csv.reading': 'Leyendo el archivo…', 'csv.counts': '{n} nuevos · {m} ya importados', 'csv.inHistory': '{n} ya están en tu historial', 'csv.dates': 'Fechas: {from} – {to}', 'csv.exercises': '{matched} ejercicios encontrados en la biblioteca · {custom} nuevos personalizados', 'csv.unmatched': 'Nuevos ejercicios personalizados ({n})', 'csv.unitAsk': 'Unidad de peso de este archivo', 'csv.unitHint': 'El archivo no indica qué unidad usa. Elige la que usaste al entrenar.', 'csv.unitKg': 'Pesos en kg', 'csv.unitLb': 'Pesos en lb, convertidos a kg', 'csv.skipped': '{n} filas omitidas (no son series con peso)', 'csv.note': 'Los entrenamientos importados aparecen en el historial y las gráficas. No dan XP, rachas ni récords.', 'csv.confirm': 'Importar {n} entrenamientos', 'csv.nothingNew': 'Nada nuevo que importar', 'csv.toast': 'Entrenamientos importados: {n}', 'csv.undo': 'Deshacer importación', 'csv.undone': 'Importación deshecha', 'csv.errTitle': 'No se puede importar este archivo', 'csv.errBad': 'Línea 1: los nombres de columna no son de una exportación de Strong, Hevy o Gym-Lift.', 'csv.errQuote': 'Un valor entre comillas que empieza en la línea {line} nunca se cierra.', 'csv.errBig': 'Este archivo supera los 20 MB, demasiado grande para importar.', 'csv.errMany': 'Este archivo tiene más de 5.000 entrenamientos. Divídelo en archivos más pequeños.', 'csv.errRows': 'Demasiadas filas (máximo 200.000). Detenido en la línea {line}.', 'csv.errCols': 'Demasiadas columnas (máximo 500) en la línea {line}.', 'csv.errEmpty': 'No se encontraron entrenamientos con series en este archivo.', 'csv.errRead': 'No se pudo leer el archivo.', 'csv.fmtGym': 'Gym-Lift',
+    'csv.title': 'Importar CSV', 'csv.close': 'Cerrar', 'csv.reading': 'Leyendo el archivo…', 'csv.counts': '{n} nuevos · {m} ya importados', 'csv.inHistory': '{n} ya están en tu historial', 'csv.dates': 'Fechas: {from} – {to}', 'csv.exercises': '{matched} ejercicios encontrados en la biblioteca · {custom} nuevos personalizados', 'csv.unmatched': 'Nuevos ejercicios personalizados ({n})', 'csv.unitAsk': 'Unidad de peso de este archivo', 'csv.unitHint': 'El archivo no indica qué unidad usa. Elige la que usaste al entrenar.', 'csv.unitKg': 'Pesos en kg', 'csv.unitLb': 'Pesos en lb, convertidos a kg', 'csv.skipped': '{n} filas omitidas (no son series con peso)', 'csv.note': 'Los entrenamientos importados aparecen en el historial y las gráficas. No dan XP, rachas ni récords.', 'csv.confirm': 'Importar {n} entrenamientos', 'csv.nothingNew': 'Nada nuevo que importar', 'csv.toast': 'Entrenamientos importados: {n}', 'csv.undo': 'Deshacer importación', 'csv.undone': 'Importación deshecha', 'csv.errTitle': 'No se puede importar este archivo', 'csv.errBad': 'Línea 1: los nombres de columna no son de una exportación de Strong, Hevy o Gym-Lift.', 'csv.errQuote': 'Un valor entre comillas que empieza en la línea {line} nunca se cierra.', 'csv.errBig': 'Este archivo supera los 20 MB, demasiado grande para importar.', 'csv.errMany': 'Este archivo tiene más de 5.000 entrenamientos. Divídelo en archivos más pequeños.', 'csv.errRows': 'Demasiadas filas (máximo 200.000). Detenido en la línea {line}.', 'csv.errCols': 'Demasiadas columnas (máximo 500) en la línea {line}.', 'csv.errEmpty': 'No se encontraron entrenamientos con series en este archivo.', 'csv.errRead': 'No se pudo leer el archivo.', 'csv.fmtGym': 'Gym-Lift', 'history.showMore': 'Mostrar más', 'csv.errStorage': 'No hay suficiente almacenamiento en este dispositivo para esta importación. No se importó nada.', 'csv.tooBig': 'Esta importación es demasiado grande para el almacenamiento de este dispositivo. Divide el archivo en partes más pequeñas.', 'csv.errUndoStorage': 'No se pudo guardar el cambio. La importación se mantuvo.', 'imp.plus': '(+{m} importados)', 'imp.conflictExtra': 'Importaciones: cuenta {cloud}, este dispositivo {local}.', 'imp.olderExtra': 'Entrenamientos importados: {old} → {new}.',
     'imp.tag': 'Importado · {source}', 'imp.deleteTitle': 'Eliminar entrenamiento importado', 'imp.deleteConfirm': 'Este entrenamiento importado se quitará de tu historial y de los gráficos. Nunca contó para el XP.', 'imp.deleteSourceTitle': 'Quitar importaciones de {source}', 'imp.deleteSourceConfirm': 'Entrenamientos importados que se quitarán: {n} (de {source}). Tus propios entrenamientos se quedan.', 'imp.status': 'Entrenamiento importado',
     'csvx.open': 'CSV (Strong / Hevy)', 'csvx.exportLabel': 'Exportar', 'csvx.export': 'Exportar CSV', 'csvx.include': 'Incluir entrenamientos importados', 'csvx.importLabel': 'Importar', 'csvx.pick': 'Importar desde Strong o Hevy…', 'csvx.manage': 'Gestionar importados', 'csvx.srcRow': '{source} · {n} entrenamientos', 'csvx.removeAll': 'Quitar todos', 'csvx.removeAria': 'Quitar todas las importaciones de {source}', 'csvx.help': 'Busca Exportar datos / CSV en los ajustes de la app Strong o Hevy y elige aquí el archivo .csv.', 'csvx.exportEmpty': 'Todavía no hay nada que exportar.',
     'csv.confirmOne': 'Importar {n} entrenamiento', 'csv.confirmOther': 'Importar {n} entrenamientos', 'csv.toastOne': 'Entrenamiento importado: {n}', 'csv.toastOther': 'Entrenamientos importados: {n}', 'csvx.srcRowOne': '{source} · {n} entrenamiento', 'csvx.srcRowOther': '{source} · {n} entrenamientos', 'imp.deleteSourceConfirmOne': 'Se quitará {n} entrenamiento importado de {source}. Tus propios entrenamientos se quedan.', 'imp.deleteSourceConfirmOther': 'Se quitarán {n} entrenamientos importados de {source}. Tus propios entrenamientos se quedan.', 'csv.skippedOne': '{n} fila omitida (no es una serie con peso)', 'csv.skippedOther': '{n} filas omitidas (no son series con peso)',
@@ -7701,7 +7701,7 @@ const BASICS_I18N = {
     'xprog.close': 'Fechar', 'xprog.statE1rm': 'Melhor 1RM est.', 'xprog.statHeaviest': 'Mais pesado', 'xprog.statBestSet': 'Melhor série', 'xprog.statSessions': 'Sessões', 'xprog.statLeastHelp': 'Menos ajuda', 'xprog.metricE1rm': '1RM est.', 'xprog.metricHeaviest': 'Mais pesado', 'xprog.metricVolume': 'Volume', 'xprog.metricHelp': 'Ajuda', 'xprog.metricGroup': 'O que mostrar no gráfico', 'xprog.rangeGroup': 'Período', 'xprog.r3m': '3 M', 'xprog.r1y': '1 A', 'xprog.rAll': 'Tudo', 'xprog.empty': 'Registre este exercício pelo menos duas vezes para ver um gráfico.', 'xprog.sessions': 'Sessões', 'xprog.more': 'Mostrar mais', 'xprog.estNote': 'Estimativa de Epley, não um máximo testado.', 'xprog.open': 'Ver progresso de {name}', 'xprog.link': 'Progresso', 'xprog.chartAria': '{label}, {unit}: de {from} a {to}',
     'muscles.title': 'Músculos', 'muscles.tile': 'Músculos', 'muscles.empty': 'Nenhuma série esta semana', 'muscles.close': 'Fechar', 'muscles.weekGroup': 'Semana', 'muscles.prev': 'Semana anterior', 'muscles.next': 'Próxima semana', 'muscles.thisWeek': 'Esta semana', 'muscles.lastWeek': 'Semana passada', 'muscles.weekOf': 'Semana de {date}', 'muscles.volume': 'Volume total', 'muscles.other': 'Outros', 'muscles.note': 'O músculo principal conta como 1 série e os músculos auxiliares como ½. Exercícios personalizados contam como Outros. Uma orientação comum é cerca de 10–20 séries por músculo por semana.', 'muscles.trend': '{name}: séries por semana, últimas 8 semanas',
     'recovery.hint': '{muscle}: ainda em recuperação — considere {plan}', 'recovery.mapAria': 'Estimativa de recuperação muscular, vista frontal e traseira', 'recovery.note': 'Estimativa com base nas suas séries dos últimos 3–4 dias: cor mais forte = trabalhado há menos tempo. Não é conselho médico.',
-    'csv.title': 'Importar CSV', 'csv.close': 'Fechar', 'csv.reading': 'Lendo o arquivo…', 'csv.counts': '{n} novos · {m} já importados', 'csv.inHistory': '{n} já estão no seu histórico', 'csv.dates': 'Datas: {from} – {to}', 'csv.exercises': '{matched} exercícios encontrados na biblioteca · {custom} novos personalizados', 'csv.unmatched': 'Novos exercícios personalizados ({n})', 'csv.unitAsk': 'Unidade de peso deste arquivo', 'csv.unitHint': 'O arquivo não informa qual unidade usa. Escolha a que você usou nos treinos.', 'csv.unitKg': 'Pesos em kg', 'csv.unitLb': 'Pesos em lb, convertidos para kg', 'csv.skipped': '{n} linhas ignoradas (não são séries com carga)', 'csv.note': 'Os treinos importados aparecem no histórico e nos gráficos. Não dão XP, sequências nem recordes.', 'csv.confirm': 'Importar {n} treinos', 'csv.nothingNew': 'Nada novo para importar', 'csv.toast': 'Treinos importados: {n}', 'csv.undo': 'Desfazer importação', 'csv.undone': 'Importação desfeita', 'csv.errTitle': 'Não é possível importar este arquivo', 'csv.errBad': 'Linha 1: os nomes das colunas não são de uma exportação do Strong, Hevy ou Gym-Lift.', 'csv.errQuote': 'Um valor entre aspas que começa na linha {line} nunca é fechado.', 'csv.errBig': 'Este arquivo tem mais de 20 MB, grande demais para importar.', 'csv.errMany': 'Este arquivo tem mais de 5.000 treinos. Divida em arquivos menores.', 'csv.errRows': 'Linhas demais (máximo 200.000). Parou na linha {line}.', 'csv.errCols': 'Colunas demais (máximo 500) na linha {line}.', 'csv.errEmpty': 'Nenhum treino com séries foi encontrado neste arquivo.', 'csv.errRead': 'Não foi possível ler o arquivo.', 'csv.fmtGym': 'Gym-Lift',
+    'csv.title': 'Importar CSV', 'csv.close': 'Fechar', 'csv.reading': 'Lendo o arquivo…', 'csv.counts': '{n} novos · {m} já importados', 'csv.inHistory': '{n} já estão no seu histórico', 'csv.dates': 'Datas: {from} – {to}', 'csv.exercises': '{matched} exercícios encontrados na biblioteca · {custom} novos personalizados', 'csv.unmatched': 'Novos exercícios personalizados ({n})', 'csv.unitAsk': 'Unidade de peso deste arquivo', 'csv.unitHint': 'O arquivo não informa qual unidade usa. Escolha a que você usou nos treinos.', 'csv.unitKg': 'Pesos em kg', 'csv.unitLb': 'Pesos em lb, convertidos para kg', 'csv.skipped': '{n} linhas ignoradas (não são séries com carga)', 'csv.note': 'Os treinos importados aparecem no histórico e nos gráficos. Não dão XP, sequências nem recordes.', 'csv.confirm': 'Importar {n} treinos', 'csv.nothingNew': 'Nada novo para importar', 'csv.toast': 'Treinos importados: {n}', 'csv.undo': 'Desfazer importação', 'csv.undone': 'Importação desfeita', 'csv.errTitle': 'Não é possível importar este arquivo', 'csv.errBad': 'Linha 1: os nomes das colunas não são de uma exportação do Strong, Hevy ou Gym-Lift.', 'csv.errQuote': 'Um valor entre aspas que começa na linha {line} nunca é fechado.', 'csv.errBig': 'Este arquivo tem mais de 20 MB, grande demais para importar.', 'csv.errMany': 'Este arquivo tem mais de 5.000 treinos. Divida em arquivos menores.', 'csv.errRows': 'Linhas demais (máximo 200.000). Parou na linha {line}.', 'csv.errCols': 'Colunas demais (máximo 500) na linha {line}.', 'csv.errEmpty': 'Nenhum treino com séries foi encontrado neste arquivo.', 'csv.errRead': 'Não foi possível ler o arquivo.', 'csv.fmtGym': 'Gym-Lift', 'history.showMore': 'Mostrar mais', 'csv.errStorage': 'Não há armazenamento suficiente neste dispositivo para esta importação. Nada foi importado.', 'csv.tooBig': 'Esta importação é grande demais para o armazenamento deste dispositivo. Divida o arquivo em partes menores.', 'csv.errUndoStorage': 'Não foi possível salvar a alteração. A importação foi mantida.', 'imp.plus': '(+{m} importados)', 'imp.conflictExtra': 'Importações: conta {cloud}, este dispositivo {local}.', 'imp.olderExtra': 'Treinos importados: {old} → {new}.',
     'imp.tag': 'Importado · {source}', 'imp.deleteTitle': 'Excluir treino importado', 'imp.deleteConfirm': 'Este treino importado será removido do seu histórico e dos gráficos. Ele nunca contou para o XP.', 'imp.deleteSourceTitle': 'Remover importações de {source}', 'imp.deleteSourceConfirm': 'Treinos importados a remover: {n} (de {source}). Seus próprios treinos ficam.', 'imp.status': 'Treino importado',
     'csvx.open': 'CSV (Strong / Hevy)', 'csvx.exportLabel': 'Exportar', 'csvx.export': 'Exportar CSV', 'csvx.include': 'Incluir treinos importados', 'csvx.importLabel': 'Importar', 'csvx.pick': 'Importar do Strong ou Hevy…', 'csvx.manage': 'Gerenciar importados', 'csvx.srcRow': '{source} · {n} treinos', 'csvx.removeAll': 'Remover todos', 'csvx.removeAria': 'Remover todas as importações de {source}', 'csvx.help': 'Procure Exportar dados / CSV nas configurações do app Strong ou Hevy e escolha o arquivo .csv aqui.', 'csvx.exportEmpty': 'Ainda não há nada para exportar.',
     'csv.confirmOne': 'Importar {n} treino', 'csv.confirmOther': 'Importar {n} treinos', 'csv.toastOne': 'Treino importado: {n}', 'csv.toastOther': 'Treinos importados: {n}', 'csvx.srcRowOne': '{source} · {n} treino', 'csvx.srcRowOther': '{source} · {n} treinos', 'imp.deleteSourceConfirmOne': 'Será removido {n} treino importado de {source}. Seus próprios treinos ficam.', 'imp.deleteSourceConfirmOther': 'Serão removidos {n} treinos importados de {source}. Seus próprios treinos ficam.', 'csv.skippedOne': '{n} linha ignorada (não é uma série com carga)', 'csv.skippedOther': '{n} linhas ignoradas (não são séries com carga)',
@@ -7733,7 +7733,7 @@ const BASICS_I18N = {
     'xprog.close': 'Fermer', 'xprog.statE1rm': 'Meilleur 1RM est.', 'xprog.statHeaviest': 'Plus lourd', 'xprog.statBestSet': 'Meilleure série', 'xprog.statSessions': 'Séances', 'xprog.statLeastHelp': 'Moins d’aide', 'xprog.metricE1rm': '1RM est.', 'xprog.metricHeaviest': 'Plus lourd', 'xprog.metricVolume': 'Volume', 'xprog.metricHelp': 'Aide', 'xprog.metricGroup': 'Quoi afficher dans le graphique', 'xprog.rangeGroup': 'Période', 'xprog.r3m': '3 M', 'xprog.r1y': '1 A', 'xprog.rAll': 'Tout', 'xprog.empty': 'Enregistre cet exercice au moins deux fois pour voir un graphique.', 'xprog.sessions': 'Séances', 'xprog.more': 'Afficher plus', 'xprog.estNote': 'Estimation d’Epley, pas un maximum testé.', 'xprog.open': 'Voir la progression de {name}', 'xprog.link': 'Progression', 'xprog.chartAria': '{label}, {unit} : du {from} au {to}',
     'muscles.title': 'Muscles', 'muscles.tile': 'Muscles', 'muscles.empty': 'Aucune série cette semaine', 'muscles.close': 'Fermer', 'muscles.weekGroup': 'Semaine', 'muscles.prev': 'Semaine précédente', 'muscles.next': 'Semaine suivante', 'muscles.thisWeek': 'Cette semaine', 'muscles.lastWeek': 'Semaine dernière', 'muscles.weekOf': 'Semaine du {date}', 'muscles.volume': 'Volume total', 'muscles.other': 'Autres', 'muscles.note': 'Le muscle principal compte pour 1 série, les muscles secondaires pour ½. Les exercices personnalisés comptent dans Autres. Une recommandation courante est d’environ 10 à 20 séries par muscle et par semaine.', 'muscles.trend': '{name} : séries par semaine, 8 dernières semaines',
     'recovery.hint': '{muscle} : récupération en cours — pense à {plan}', 'recovery.mapAria': 'Estimation de la récupération musculaire, vue de face et de dos', 'recovery.note': 'Estimation d’après tes séries des 3–4 derniers jours : couleur plus marquée = travaillé plus récemment. Ce n’est pas un avis médical.',
-    'csv.title': 'Importer un CSV', 'csv.close': 'Fermer', 'csv.reading': 'Lecture du fichier…', 'csv.counts': '{n} nouveaux · {m} déjà importés', 'csv.inHistory': '{n} déjà dans ton historique', 'csv.dates': 'Dates : {from} – {to}', 'csv.exercises': '{matched} exercices trouvés dans la bibliothèque · {custom} nouveaux personnalisés', 'csv.unmatched': 'Nouveaux exercices personnalisés ({n})', 'csv.unitAsk': 'Unité de poids de ce fichier', 'csv.unitHint': 'Le fichier n’indique pas quelle unité il utilise. Choisis celle que tu utilisais à l’entraînement.', 'csv.unitKg': 'Charges en kg', 'csv.unitLb': 'Charges en lb, converties en kg', 'csv.skipped': '{n} lignes ignorées (ce ne sont pas des séries avec charge)', 'csv.note': 'Les entraînements importés apparaissent dans l’historique et les graphiques. Ils ne donnent ni XP, ni séries, ni records.', 'csv.confirm': 'Importer {n} entraînements', 'csv.nothingNew': 'Rien de nouveau à importer', 'csv.toast': 'Entraînements importés : {n}', 'csv.undo': 'Annuler l’import', 'csv.undone': 'Import annulé', 'csv.errTitle': 'Impossible d’importer ce fichier', 'csv.errBad': 'Ligne 1 : les noms de colonnes ne viennent pas d’un export Strong, Hevy ou Gym-Lift.', 'csv.errQuote': 'Une valeur entre guillemets qui commence à la ligne {line} n’est jamais fermée.', 'csv.errBig': 'Ce fichier dépasse 20 Mo, c’est trop gros pour être importé.', 'csv.errMany': 'Ce fichier contient plus de 5 000 entraînements. Découpe-le en fichiers plus petits.', 'csv.errRows': 'Trop de lignes (maximum 200 000). Arrêt à la ligne {line}.', 'csv.errCols': 'Trop de colonnes (maximum 500) à la ligne {line}.', 'csv.errEmpty': 'Aucun entraînement avec des séries n’a été trouvé dans ce fichier.', 'csv.errRead': 'Le fichier n’a pas pu être lu.', 'csv.fmtGym': 'Gym-Lift',
+    'csv.title': 'Importer un CSV', 'csv.close': 'Fermer', 'csv.reading': 'Lecture du fichier…', 'csv.counts': '{n} nouveaux · {m} déjà importés', 'csv.inHistory': '{n} déjà dans ton historique', 'csv.dates': 'Dates : {from} – {to}', 'csv.exercises': '{matched} exercices trouvés dans la bibliothèque · {custom} nouveaux personnalisés', 'csv.unmatched': 'Nouveaux exercices personnalisés ({n})', 'csv.unitAsk': 'Unité de poids de ce fichier', 'csv.unitHint': 'Le fichier n’indique pas quelle unité il utilise. Choisis celle que tu utilisais à l’entraînement.', 'csv.unitKg': 'Charges en kg', 'csv.unitLb': 'Charges en lb, converties en kg', 'csv.skipped': '{n} lignes ignorées (ce ne sont pas des séries avec charge)', 'csv.note': 'Les entraînements importés apparaissent dans l’historique et les graphiques. Ils ne donnent ni XP, ni séries, ni records.', 'csv.confirm': 'Importer {n} entraînements', 'csv.nothingNew': 'Rien de nouveau à importer', 'csv.toast': 'Entraînements importés : {n}', 'csv.undo': 'Annuler l’import', 'csv.undone': 'Import annulé', 'csv.errTitle': 'Impossible d’importer ce fichier', 'csv.errBad': 'Ligne 1 : les noms de colonnes ne viennent pas d’un export Strong, Hevy ou Gym-Lift.', 'csv.errQuote': 'Une valeur entre guillemets qui commence à la ligne {line} n’est jamais fermée.', 'csv.errBig': 'Ce fichier dépasse 20 Mo, c’est trop gros pour être importé.', 'csv.errMany': 'Ce fichier contient plus de 5 000 entraînements. Découpe-le en fichiers plus petits.', 'csv.errRows': 'Trop de lignes (maximum 200 000). Arrêt à la ligne {line}.', 'csv.errCols': 'Trop de colonnes (maximum 500) à la ligne {line}.', 'csv.errEmpty': 'Aucun entraînement avec des séries n’a été trouvé dans ce fichier.', 'csv.errRead': 'Le fichier n’a pas pu être lu.', 'csv.fmtGym': 'Gym-Lift', 'history.showMore': 'Afficher plus', 'csv.errStorage': 'Pas assez de stockage sur cet appareil pour cet import. Rien n’a été importé.', 'csv.tooBig': 'Cet import est trop volumineux pour le stockage de cet appareil. Découpe le fichier en parties plus petites.', 'csv.errUndoStorage': 'La modification n’a pas pu être enregistrée. L’import a été conservé.', 'imp.plus': '(+{m} importés)', 'imp.conflictExtra': 'Imports : compte {cloud}, cet appareil {local}.', 'imp.olderExtra': 'Entraînements importés : {old} → {new}.',
     'imp.tag': 'Importé · {source}', 'imp.deleteTitle': 'Supprimer l’entraînement importé', 'imp.deleteConfirm': 'Cet entraînement importé sera retiré de ton historique et des graphiques. Il n’a jamais compté pour l’XP.', 'imp.deleteSourceTitle': 'Retirer les imports de {source}', 'imp.deleteSourceConfirm': 'Entraînements importés à retirer : {n} (de {source}). Tes propres entraînements restent.', 'imp.status': 'Entraînement importé',
     'csvx.open': 'CSV (Strong / Hevy)', 'csvx.exportLabel': 'Export', 'csvx.export': 'Exporter le CSV', 'csvx.include': 'Inclure les entraînements importés', 'csvx.importLabel': 'Import', 'csvx.pick': 'Importer depuis Strong ou Hevy…', 'csvx.manage': 'Gérer les imports', 'csvx.srcRow': '{source} · {n} entraînements', 'csvx.removeAll': 'Tout retirer', 'csvx.removeAria': 'Retirer tous les imports de {source}', 'csvx.help': 'Cherche Exporter les données / CSV dans les réglages de l’app Strong ou Hevy, puis choisis ici le fichier .csv.', 'csvx.exportEmpty': 'Il n’y a encore rien à exporter.',
     'csv.confirmOne': 'Importer {n} entraînement', 'csv.confirmOther': 'Importer {n} entraînements', 'csv.toastOne': 'Entraînement importé : {n}', 'csv.toastOther': 'Entraînements importés : {n}', 'csvx.srcRowOne': '{source} · {n} entraînement', 'csvx.srcRowOther': '{source} · {n} entraînements', 'imp.deleteSourceConfirmOne': '{n} entraînement importé de {source} sera retiré. Tes propres entraînements restent.', 'imp.deleteSourceConfirmOther': '{n} entraînements importés de {source} seront retirés. Tes propres entraînements restent.', 'csv.skippedOne': '{n} ligne ignorée (ce n’est pas une série avec charge)', 'csv.skippedOther': '{n} lignes ignorées (ce ne sont pas des séries avec charge)',
@@ -7765,7 +7765,7 @@ const BASICS_I18N = {
     'xprog.close': 'إغلاق', 'xprog.statE1rm': 'أفضل 1RM تقديري', 'xprog.statHeaviest': 'الأثقل', 'xprog.statBestSet': 'أفضل مجموعة', 'xprog.statSessions': 'التمارين', 'xprog.statLeastHelp': 'أقل مساعدة', 'xprog.metricE1rm': '1RM تقديري', 'xprog.metricHeaviest': 'الأثقل', 'xprog.metricVolume': 'الحجم', 'xprog.metricHelp': 'المساعدة', 'xprog.metricGroup': 'ما يُعرض في الرسم', 'xprog.rangeGroup': 'الفترة', 'xprog.r3m': '3 أشهر', 'xprog.r1y': 'سنة', 'xprog.rAll': 'الكل', 'xprog.empty': 'سجّل هذا التمرين مرتين على الأقل لتظهر الرسوم.', 'xprog.sessions': 'التمارين', 'xprog.more': 'عرض المزيد', 'xprog.estNote': 'تقدير إيبلي، وليس حدًا أقصى تم اختباره.', 'xprog.open': 'عرض تقدّم {name}', 'xprog.link': 'التقدّم', 'xprog.chartAria': '{label}، {unit}: من {from} إلى {to}',
     'muscles.title': 'العضلات', 'muscles.tile': 'العضلات', 'muscles.empty': 'لا توجد مجموعات هذا الأسبوع', 'muscles.close': 'إغلاق', 'muscles.weekGroup': 'الأسبوع', 'muscles.prev': 'الأسبوع السابق', 'muscles.next': 'الأسبوع التالي', 'muscles.thisWeek': 'هذا الأسبوع', 'muscles.lastWeek': 'الأسبوع الماضي', 'muscles.weekOf': 'أسبوع {date}', 'muscles.volume': 'الحجم الإجمالي', 'muscles.other': 'أخرى', 'muscles.note': 'تُحسب العضلة الرئيسية كمجموعة واحدة والعضلات المساعدة كنصف مجموعة. التمارين المخصصة تُحسب ضمن «أخرى». الإرشاد الشائع نحو 10–20 مجموعة لكل عضلة أسبوعيًا.', 'muscles.trend': '{name}: المجموعات في الأسبوع، آخر 8 أسابيع',
     'recovery.hint': '{muscle}: التعافي لم يكتمل بعد — فكّر في {plan}', 'recovery.mapAria': 'تقدير تعافي العضلات، منظر أمامي وخلفي', 'recovery.note': 'تقدير مبني على مجموعاتك في آخر 3–4 أيام: اللون الأقوى يعني تدريبًا أحدث. ليس نصيحة طبية.',
-    'csv.title': 'استيراد CSV', 'csv.close': 'إغلاق', 'csv.reading': 'جارٍ قراءة الملف…', 'csv.counts': '{n} جديد · {m} مستورد مسبقًا', 'csv.inHistory': '{n} موجود بالفعل في سجلّك', 'csv.dates': 'التواريخ: {from} – {to}', 'csv.exercises': '{matched} تمرين مطابق للمكتبة · {custom} مخصص جديد', 'csv.unmatched': 'تمارين مخصصة جديدة ({n})', 'csv.unitAsk': 'وحدة الوزن في هذا الملف', 'csv.unitHint': 'لا يذكر الملف الوحدة المستخدمة. اختر الوحدة التي تدرّبت بها.', 'csv.unitKg': 'الأوزان بالكيلوغرام', 'csv.unitLb': 'الأوزان بالباوند، محوَّلة إلى كيلوغرام', 'csv.skipped': 'تم تخطي {n} صفًا (ليست مجموعات رفع)', 'csv.note': 'تظهر التمارين المستوردة في السجل والرسوم البيانية. لا تمنح نقاط XP ولا سلاسل ولا أرقامًا قياسية.', 'csv.confirm': 'استيراد {n} تمرين', 'csv.nothingNew': 'لا جديد للاستيراد', 'csv.toast': 'تم استيراد {n} تمرين', 'csv.undo': 'تراجع عن الاستيراد', 'csv.undone': 'تم التراجع عن الاستيراد', 'csv.errTitle': 'تعذّر استيراد هذا الملف', 'csv.errBad': 'السطر 1: أسماء الأعمدة ليست من تصدير Strong أو Hevy أو Gym-Lift.', 'csv.errQuote': 'قيمة بين علامتي اقتباس تبدأ في السطر {line} ولا تُغلق أبدًا.', 'csv.errBig': 'حجم هذا الملف أكبر من 20 ميغابايت، وهو كبير جدًا للاستيراد.', 'csv.errMany': 'يحتوي هذا الملف على أكثر من 5000 تمرين. قسّمه إلى ملفات أصغر.', 'csv.errRows': 'عدد الصفوف كبير جدًا (الحد 200000). توقّف عند السطر {line}.', 'csv.errCols': 'عدد الأعمدة كبير جدًا (الحد 500) في السطر {line}.', 'csv.errEmpty': 'لم يُعثر على تمارين فيها مجموعات رفع في هذا الملف.', 'csv.errRead': 'تعذّرت قراءة الملف.', 'csv.fmtGym': 'Gym-Lift',
+    'csv.title': 'استيراد CSV', 'csv.close': 'إغلاق', 'csv.reading': 'جارٍ قراءة الملف…', 'csv.counts': '{n} جديد · {m} مستورد مسبقًا', 'csv.inHistory': '{n} موجود بالفعل في سجلّك', 'csv.dates': 'التواريخ: {from} – {to}', 'csv.exercises': '{matched} تمرين مطابق للمكتبة · {custom} مخصص جديد', 'csv.unmatched': 'تمارين مخصصة جديدة ({n})', 'csv.unitAsk': 'وحدة الوزن في هذا الملف', 'csv.unitHint': 'لا يذكر الملف الوحدة المستخدمة. اختر الوحدة التي تدرّبت بها.', 'csv.unitKg': 'الأوزان بالكيلوغرام', 'csv.unitLb': 'الأوزان بالباوند، محوَّلة إلى كيلوغرام', 'csv.skipped': 'تم تخطي {n} صفًا (ليست مجموعات رفع)', 'csv.note': 'تظهر التمارين المستوردة في السجل والرسوم البيانية. لا تمنح نقاط XP ولا سلاسل ولا أرقامًا قياسية.', 'csv.confirm': 'استيراد {n} تمرين', 'csv.nothingNew': 'لا جديد للاستيراد', 'csv.toast': 'تم استيراد {n} تمرين', 'csv.undo': 'تراجع عن الاستيراد', 'csv.undone': 'تم التراجع عن الاستيراد', 'csv.errTitle': 'تعذّر استيراد هذا الملف', 'csv.errBad': 'السطر 1: أسماء الأعمدة ليست من تصدير Strong أو Hevy أو Gym-Lift.', 'csv.errQuote': 'قيمة بين علامتي اقتباس تبدأ في السطر {line} ولا تُغلق أبدًا.', 'csv.errBig': 'حجم هذا الملف أكبر من 20 ميغابايت، وهو كبير جدًا للاستيراد.', 'csv.errMany': 'يحتوي هذا الملف على أكثر من 5000 تمرين. قسّمه إلى ملفات أصغر.', 'csv.errRows': 'عدد الصفوف كبير جدًا (الحد 200000). توقّف عند السطر {line}.', 'csv.errCols': 'عدد الأعمدة كبير جدًا (الحد 500) في السطر {line}.', 'csv.errEmpty': 'لم يُعثر على تمارين فيها مجموعات رفع في هذا الملف.', 'csv.errRead': 'تعذّرت قراءة الملف.', 'csv.fmtGym': 'Gym-Lift', 'history.showMore': 'عرض المزيد', 'csv.errStorage': 'لا توجد مساحة تخزين كافية على هذا الجهاز لهذا الاستيراد. لم يتم استيراد أي شيء.', 'csv.tooBig': 'هذا الاستيراد أكبر من مساحة تخزين هذا الجهاز. قسّم الملف إلى أجزاء أصغر.', 'csv.errUndoStorage': 'تعذّر حفظ التغيير. تم الاحتفاظ بالاستيراد.', 'imp.plus': '(+{m} مستورد)', 'imp.conflictExtra': 'المستورَد: الحساب {cloud}، هذا الجهاز {local}.', 'imp.olderExtra': 'التمارين المستوردة: {old} → {new}.',
     'imp.tag': 'مستورد · {source}', 'imp.deleteTitle': 'حذف التمرين المستورد', 'imp.deleteConfirm': 'سيُزال هذا التمرين المستورد من سجلّك والرسوم البيانية. لم يُحتسب أبدًا في نقاط الخبرة.', 'imp.deleteSourceTitle': 'إزالة المستورد من {source}', 'imp.deleteSourceConfirm': 'التمارين المستوردة التي ستُزال: {n} (من {source}). تمارينك الخاصة تبقى.', 'imp.status': 'تمرين مستورد',
     'csvx.open': 'CSV (Strong / Hevy)', 'csvx.exportLabel': 'تصدير', 'csvx.export': 'تصدير CSV', 'csvx.include': 'تضمين التمارين المستوردة', 'csvx.importLabel': 'استيراد', 'csvx.pick': 'استيراد من Strong أو Hevy…', 'csvx.manage': 'إدارة المستورد', 'csvx.srcRow': '{source} · {n} تمرين', 'csvx.removeAll': 'إزالة الكل', 'csvx.removeAria': 'إزالة كل ما استُورد من {source}', 'csvx.help': 'ابحث عن «تصدير البيانات / CSV» في إعدادات تطبيق Strong أو Hevy، ثم اختر ملف ‎.csv‎ هنا.', 'csvx.exportEmpty': 'لا يوجد ما يمكن تصديره بعد.',
     'csv.confirmOne': 'استيراد تمرين واحد', 'csv.confirmTwo': 'استيراد تمرينين', 'csv.confirmFew': 'استيراد {n} تمارين', 'csv.confirmMany': 'استيراد {n} تمرينًا', 'csv.confirmOther': 'استيراد {n} تمرين', 'csv.toastOne': 'تم استيراد تمرين واحد', 'csv.toastTwo': 'تم استيراد تمرينين', 'csv.toastFew': 'تم استيراد {n} تمارين', 'csv.toastMany': 'تم استيراد {n} تمرينًا', 'csv.toastOther': 'تم استيراد {n} تمرين', 'csvx.srcRowOne': '{source} · تمرين واحد', 'csvx.srcRowTwo': '{source} · تمرينان', 'csvx.srcRowFew': '{source} · {n} تمارين', 'csvx.srcRowMany': '{source} · {n} تمرينًا', 'csvx.srcRowOther': '{source} · {n} تمرين', 'imp.deleteSourceConfirmOne': 'سيُزال تمرين واحد مستورد من {source}. تمارينك الخاصة تبقى.', 'imp.deleteSourceConfirmTwo': 'سيُزال تمرينان مستوردان من {source}. تمارينك الخاصة تبقى.', 'imp.deleteSourceConfirmFew': 'سيُزال {n} تمارين مستوردة من {source}. تمارينك الخاصة تبقى.', 'imp.deleteSourceConfirmMany': 'سيُزال {n} تمرينًا مستوردًا من {source}. تمارينك الخاصة تبقى.', 'imp.deleteSourceConfirmOther': 'سيُزال {n} تمرين مستورد من {source}. تمارينك الخاصة تبقى.', 'csv.skippedOne': 'تم تخطي صف واحد (ليس مجموعة رفع)', 'csv.skippedTwo': 'تم تخطي صفين (ليسا مجموعتي رفع)', 'csv.skippedFew': 'تم تخطي {n} صفوف (ليست مجموعات رفع)', 'csv.skippedMany': 'تم تخطي {n} صفًا (ليست مجموعات رفع)', 'csv.skippedOther': 'تم تخطي {n} صفًا (ليست مجموعات رفع)',
@@ -10170,6 +10170,9 @@ function storageBytes() {
   try { return JSON.stringify(state).length; } catch (e) { return 0; }
 }
 const STORAGE_NOTICE_BYTES = 3500000;
+/* Pevný strop importu CSV: ak by uložené dáta spolu s novými importmi prekročili ~4,5 MB (localStorage má v prehliadačoch ~5 MB
+   na pôvod, v UTF-16 aj menej), Potvrdiť sa vypne a vysvetlí sa to; používateľ môže súbor rozdeliť. */
+const CSV_HARD_CEILING_BYTES = 4500000;
 
 /* Cvik, ktorým bol planovy cvik nahradený počas tréningu. Prísna normalizácia:
    poškodený krok sa zahodí, platný zostáva presne taký, aký bol. */
@@ -22473,6 +22476,8 @@ function renderFoodView() {
   renderStorageNotice('food-storage-notice');
 }
 
+const HISTORY_PAGE = 100;
+let historyLimit = HISTORY_PAGE;   // koľko riadkov Histórie je vykreslených (dlhá história po stránkach)
 function renderPokrok() {
   renderPokrokSubtabs();
   renderBody();
@@ -22523,8 +22528,9 @@ function renderPokrok() {
     history.innerHTML = `<p class="empty-state">${t('pokrok.historyEmpty')}</p>`;
   } else {
     /* Skutočné aj importované tréningy v jednom zozname podľa dátumu; import má vlastný riadok (bez XP a úpravy). */
-    const sorted = [...state.history, ...(state.importedHistory || [])].sort((a, b) => b.date.localeCompare(a.date));
-    for (const w of sorted) {
+    const sorted = [...state.history, ...(state.importedHistory || [])].sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0));
+    /* Dlhá história (napr. 5 000 importov): vykreslí sa prvých historyLimit riadkov a tlačidlo "Zobraziť viac" (+100). */
+    for (const w of sorted.slice(0, historyLimit)) {
       if (isImportedWorkout(w)) { history.appendChild(importedHistoryRow(w)); continue; }
       const setsDone = w.exercises.reduce((s, ex) => s + exerciseSlotCount(ex), 0);
       const row = document.createElement('div');
@@ -22549,6 +22555,20 @@ function renderPokrok() {
       row.querySelector('[data-action="edit"]').addEventListener('click', () => openHistoryEdit(w.id));
       row.querySelector('[data-action="delete"]').addEventListener('click', () => requestDeleteWorkout(w.id));
       history.appendChild(row);
+    }
+    if (sorted.length > historyLimit) {
+      const more = document.createElement('button');
+      more.type = 'button';
+      more.className = 'btn btn-secondary btn-block';
+      more.dataset.historyMore = '1';
+      more.textContent = t('history.showMore');
+      more.addEventListener('click', () => {
+        historyLimit += HISTORY_PAGE;
+        renderPokrok();
+        const nb = document.querySelector('#history-list [data-history-more]');
+        if (nb) { try { nb.focus({ preventScroll: true }); } catch (e) { /* bez fokusu */ } }
+      });
+      history.appendChild(more);
     }
   }
 
@@ -23834,6 +23854,14 @@ function themeChipsKey(e) {
 })();
 
 let tourHelpOpener = null;   // kto otvoril Nastavenia: tam sa vráti fokus po návode spustenom z Pomoci
+/* Zatvorenie Nastavení (uloží cieľ týždňa pre istotu; tlačidlo Zavrieť aj úspešný import CSV). */
+function closeSettingsSheet() {
+  const modal = document.getElementById('modal-settings');
+  if (!modal || modal.hidden) return;
+  saveSettingsGoal();
+  modal.hidden = true;
+  refreshUpdateBanner();   // čakajúca aktualizácia sa po zatvorení znova ponúkne
+}
 function openSettings() {
   tourHelpOpener = document.activeElement;
   renderTourHelp();
@@ -24144,12 +24172,7 @@ function importFile(file) {
       /* Ak je záloha menšia než to, čo je práve v appke, používateľ to musí
          vidieť ešte pred potvrdením – nikdy nesmie ticho prepísať novšie dáta
          starším súborom. Nič sa neblokuje, len sa to povie. */
-      const incomingCount = data.history.length;
-      const currentCount = state.history.length;
-      let confirmText = t('settings.importConfirm', { n: incomingCount });
-      if (incomingCount < currentCount) {
-        confirmText += '<br>' + t('settings.importOlder', { old: currentCount, new: incomingCount });
-      }
+      const confirmText = importConfirmText(data, state.history.length, impCount(state));
       // potvrdzujúce tlačidlo musí pomenovať deštruktívnu akciu, nie „Zrušiť" ako tlačidlo vľavo
       showGeneric(t('settings.importTitle'), t('settings.import'), () => {
         try {
@@ -24176,6 +24199,17 @@ function importFile(file) {
   reader.readAsText(file);
 }
 
+/* Text potvrdenia importu JSON: počet tréningov v zálohe, varovanie pri starej zálohe (menej tréningov alebo menej importov). */
+function importConfirmText(data, currentCount, currentImported) {
+  const incomingCount = data.history.length;
+  const incomingImported = impCount(data);
+  let txt = t('settings.importConfirm', { n: incomingCount });
+  const plus = impPlusLabel(incomingImported);
+  if (plus) txt += ' ' + plus;
+  if (incomingCount < currentCount) txt += '<br>' + t('settings.importOlder', { old: currentCount, new: incomingCount });
+  if (incomingImported < currentImported) txt += '<br>' + t('imp.olderExtra', { old: currentImported, new: incomingImported });
+  return txt;
+}
 function requestResetData() {
   showGeneric(t('settings.resetTitle'), t('settings.resetConfirmAction'), () => {
     showGeneric(t('settings.resetFinal'), t('settings.resetFinalAction'), async () => {
@@ -25992,9 +26026,20 @@ function cleanImportedHistory(raw) {
     return [];
   }
 }
+/* Množina importovaných záznamov (podľa identity), zapamätaná podľa poľa a jeho dĺžky ako insightHistory; O(1) na riadok namiesto indexOf. */
+const importedSetCache = { arr: null, len: -1, set: null };
 function isImportedWorkout(w) {
-  return !!w && typeof w === 'object' && Array.isArray(state && state.importedHistory) && state.importedHistory.indexOf(w) >= 0;
+  if (!w || typeof w !== 'object') return false;
+  const arr = state && state.importedHistory;
+  if (!Array.isArray(arr)) return false;
+  if (importedSetCache.arr !== arr || importedSetCache.len !== arr.length) {
+    importedSetCache.arr = arr; importedSetCache.len = arr.length; importedSetCache.set = new Set(arr);
+  }
+  return importedSetCache.set.has(w);
 }
+/* Počty pri porovnaní zariadení a záloh: importy sa ukazujú zvlášť ("(+3 imported)"), nikdy nie ako súčasť počtu tréningov. */
+function impCount(x) { return x && Array.isArray(x.importedHistory) ? x.importedHistory.length : 0; }
+function impPlusLabel(m) { m = Math.round(Number(m)) || 0; return m > 0 ? t('imp.plus', { m }) : ''; }
 /* História pre prehľady = skutočné + importované tréningy. Zapamätané podľa identity a dĺžky oboch polí (ako xpMaps). */
 const insightCache = { h: null, hlen: -1, i: null, ilen: -1, all: null };
 function insightHistory() {
@@ -26471,7 +26516,7 @@ function csvRoundKg(w, unit) {
    zvyšok a drop-only cvik idú medzi pracovné série); cvik bez pracovnej série sa vynechá. Váhy v kg (lb × 0.45359237 na 0.25). Výsledok má aj `ignoredRows` (riadky "Rest Timer" – pauzy, nie série); `skippedRows` sú nepoužiteľné riadky.
    opts.delimiter (voliteľné, z parseCsv) = ';' berie čiarku vždy ako desatinnú. Jednotka: stĺpec Weight Unit / weight_kg / weight_lbs má prednosť, inak opts.unit, inak kg. Nikdy nevyhadzuje. */
 /* Vlastný export (gymquest) pred text začínajúci na = + - @ dáva apostrof; pri čítaní sa odstráni len tu, takže Strong / Hevy sa nemenia. */
-function csvUnguard(s, format) { return format === 'gymquest' && /^'[=+\-@]/.test(s) ? s.slice(1) : s; }
+function csvUnguard(s, format) { return format === 'gymquest' && /^'[=+\-@\t\r]/.test(s) ? s.slice(1) : s; }
 function csvToWorkouts(rows, format, opts) {
   const res = { workouts: [], unitDetected: null, unmatched: [], skippedRows: 0, ignoredRows: 0 };
   try {
@@ -26672,7 +26717,8 @@ function csvRealHistoryIndex() {
     let pn = '';
     try { pn = historyPlanName(h); } catch (e) { /* názov sa nepodarilo zistiť */ }
     for (const n of [pn, h.planName]) if (typeof n === 'string' && n.trim()) names.add(n.trim().toLowerCase());
-    const k = csvMatchKey(h);
+    let k;
+    try { k = csvMatchKey(h); } catch (e) { continue; }   // poškodený skutočný záznam sa preskočí, nie je fatálny
     let list = idx.get(k);
     if (!list) idx.set(k, list = []);
     list.push({ names, used: false });
@@ -26756,11 +26802,11 @@ function csvRenderPreview() {
   sk.textContent = v.skipped > 0 ? tPlural('csv.skipped', v.skipped) : '';
   const st = csvEl('csv-storage');
   st.hidden = !v.nearLimit;
-  st.textContent = v.nearLimit ? t('body.storageNotice') : '';
+  st.textContent = v.overCeiling ? t('csv.tooBig') : v.nearLimit ? t('body.storageNotice') : '';
   const btn = csvEl('btn-csv-confirm');
   btn.hidden = false;
   btn.textContent = v.fresh.length ? tPlural('csv.confirm', v.fresh.length) : t('csv.nothingNew');
-  btn.disabled = !v.fresh.length || (imp.needUnit && !imp.unit);
+  btn.disabled = !v.fresh.length || (imp.needUnit && !imp.unit) || !!v.overCeiling;
   csvEl('btn-csv-cancel').textContent = t('common.cancel');
 }
 
@@ -26777,6 +26823,7 @@ async function csvMap(token) {
   let bytes = 0;
   try { bytes = JSON.stringify(view.fresh).length; } catch (e) { /* odhad veľkosti sa nepodarí */ }
   view.nearLimit = storageBytes() + bytes >= STORAGE_NOTICE_BYTES;
+  view.overCeiling = storageBytes() + bytes >= CSV_HARD_CEILING_BYTES;
   imp.view = view;
   csvRenderPreview();
 }
@@ -26847,7 +26894,7 @@ function csvToastShow(text, undoable) {
    Pripíše nové tréningy (jedno saveState), zatvorí list a ponúkne Späť na 10 s. Vracia počet pridaných. */
 function confirmCsvImport() {
   const imp = csvImp;
-  if (!imp || !imp.view || (imp.needUnit && !imp.unit)) return 0;
+  if (!imp || !imp.view || (imp.needUnit && !imp.unit) || imp.view.overCeiling) return 0;
   const fresh = imp.view.fresh;
   if (!fresh.length) return 0;
   const prev = Array.isArray(state.importedHistory) ? state.importedHistory : [];
@@ -26859,8 +26906,16 @@ function confirmCsvImport() {
     return id === w.id ? w : Object.assign({}, w, { id });
   });
   state.importedHistory = prev.concat(added);
-  saveState();
+  if (!saveState()) {
+    /* Zápis zlyhal (plné úložisko): späť na pôvodné pole, znova uložiť, jasná chyba, žiadny úspešný toast; list ostáva otvorený. */
+    state.importedHistory = prev;
+    saveState();
+    showGeneric(t('csv.errTitle'), t('common.ok'), null, esc(t('csv.errStorage')));
+    return 0;
+  }
   closeCsvImport();
+  closeCsvSheet();      // používateľ sa vráti tam, kde bol: zatvorí sa aj list CSV a Nastavenia, toast je nad všetkým
+  closeSettingsSheet();
   afterImportedChange();
   csvToastHide();
   csvUndo = { ids: new Set(added.map((w) => w.id)), prev, next: state.importedHistory, timer: setTimeout(csvToastHide, CSV_UNDO_MS) };
@@ -26868,13 +26923,20 @@ function confirmCsvImport() {
   return added.length;
 }
 
-/* Späť: vráti pôvodné pole (ak sa medzitým nezmenilo), inak odoberie len práve pridané tréningy. */
+/* Späť: vráti pôvodné pole (ak sa medzitým nezmenilo), inak odoberie len práve pridané tréningy. Pri zlyhaní zápisu zostáva stav ako bol. */
 function undoCsvImport() {
   const u = csvUndo;
   if (!u) return;
+  const before = state.importedHistory;
   if (state.importedHistory === u.next) state.importedHistory = u.prev;
   else state.importedHistory = (state.importedHistory || []).filter((w) => !u.ids.has(w.id));
-  saveState();
+  if (!saveState()) {
+    state.importedHistory = before;
+    saveState();
+    csvToastHide();
+    showGeneric(t('csv.errTitle'), t('common.ok'), null, esc(t('csv.errUndoStorage')));
+    return;
+  }
   afterImportedChange();
   csvToastHide();
   csvToastShow(t('csv.undone'), false);
@@ -26909,7 +26971,7 @@ const CSV_EXPORT_MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug
 /* Textové pole podľa RFC 4180: vždy v úvodzovkách, úvodzovka sa zdvojí (čiarka aj nový riadok zostanú v poli). */
 function csvQuote(v) {
   let s = String(v == null ? '' : v);
-  if (/^[=+\-@]/.test(s)) s = "'" + s;   // ochrana pred vzorcami v tabuľkách (=, +, -, @); pri re-importe vlastného exportu sa predpona odstráni
+  if (/^[=+\-@\t\r]/.test(s)) s = "'" + s;   // ochrana pred vzorcami v tabuľkách (=, +, -, @ aj úvodný TAB a CR); pri re-importe vlastného exportu sa predpona odstráni
   return '"' + s.replace(/"/g, '""') + '"';
 }
 function csvNum(n) { return Number.isFinite(n) ? String(Math.round(n * 100) / 100) : ''; }
@@ -26921,13 +26983,22 @@ function csvExerciseTitle(entry) {
   return String(entry && entry.name != null ? entry.name : '');
 }
 
-function csvWorkoutRows(w, imported) {
+/* `nth` = poradie tréningu v ten istý deň (0, 1, …): bez skutočného času štartu sa použije 00:00 + nth minút,
+   aby dva rovnaké tréningy v ten istý deň (rovnaký názov) mali rôzny štart a re-import ich nezlúčil. */
+function csvWorkoutRows(w, imported, nth) {
   const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(w && w.date));
   if (!m || !Array.isArray(w.exercises)) return [];
   const y = +m[1], mo = +m[2] - 1, d = +m[3];
-  const start = csvStamp(new Date(y, mo, d, 0, 0, 0));
   const dur = Math.round((Number(w.durationSeconds) || 0) / 60) * 60;
-  const end = dur >= 60 ? csvStamp(new Date(y, mo, d, 0, 0, dur)) : '';   // sekundy navyše sa pripočítajú podľa hodín na stene (bez posunu pri zmene času)
+  /* Skutočný štart = koniec − trvanie, ak sú obe platné a štart padne na ten istý miestny dátum; inak 00:00 + nth minút. */
+  const endedAt = imported ? null : historyEndedAt(w);
+  let base = new Date(y, mo, d, 0, Math.max(0, nth || 0), 0);
+  if (endedAt !== null && dur >= 60) {
+    const s0 = new Date(endedAt - (Number(w.durationSeconds) || 0) * 1000);
+    if (localDateKey(s0) === w.date) base = new Date(s0.getFullYear(), s0.getMonth(), s0.getDate(), s0.getHours(), s0.getMinutes(), 0);
+  }
+  const start = csvStamp(base);
+  const end = dur >= 60 ? csvStamp(new Date(base.getFullYear(), base.getMonth(), base.getDate(), base.getHours(), base.getMinutes(), dur)) : '';   // sekundy navyše sa pripočítajú podľa hodín na stene (bez posunu pri zmene času)
   const title = imported ? String(w.planName || '') : historyPlanName(w);
   const head = [csvQuote(title), csvQuote(start), csvQuote(end), csvQuote(w.note || '')];
   const groups = new Map();
@@ -26960,7 +27031,13 @@ function buildCsvExport(opts) {
   if (include) for (const w of (Array.isArray(state.importedHistory) ? state.importedHistory : [])) all.push({ w, imp: true });
   all.sort((a, b) => (a.w.date < b.w.date ? -1 : a.w.date > b.w.date ? 1 : 0));   // stabilné: vlastné pred importovanými v ten istý deň
   const lines = [CSV_EXPORT_HEADER.join(',')];
-  for (const x of all) { try { for (const r of csvWorkoutRows(x.w, x.imp)) lines.push(r); } catch (err) { /* poškodený záznam sa preskočí */ } }
+  const nthByDay = new Map();   // poradie v rámci dňa (skutočné a importované zvlášť), v stabilnom poradí
+  for (const x of all) {
+    const dk = (x.imp ? 'i' : 'r') + '|' + x.w.date;
+    const nth = nthByDay.get(dk) || 0;
+    nthByDay.set(dk, nth + 1);
+    try { for (const r of csvWorkoutRows(x.w, x.imp, nth)) lines.push(r); } catch (err) { /* poškodený záznam sa preskočí */ }
+  }
   return '﻿' + lines.join('\r\n') + '\r\n';
 }
 
@@ -28317,7 +28394,7 @@ function stateMeaningful(s) {
   const n = syncNormalize(s);   // rovnaká normalizácia ako pri porovnaní strán
   const demo = n.demo === true;
   if (!demo && n.history.length) return true;
-  if (!demo && Array.isArray(n.importedHistory) && n.importedHistory.length) return true;   // samé importy sú tiež dáta používateľa
+  if (Array.isArray(n.importedHistory) && n.importedHistory.length) return true;   // importy sú dáta používateľa aj pri príznaku demo (demo sa týka len ukážkovej histórie)
   if (n.activities.length || n.excusedWeeks.length) return true;
   if (n.measurements.length || n.foods.length || Object.keys(n.foodLog || {}).length) return true;
   const pr = n.profile || {};
@@ -28473,7 +28550,7 @@ async function syncRun(reason) {
     if (probe && cloudRev !== meta.conflict.rev) {
       const row = await syncFetchRow(sb, user.id);
       syncCheckpoint();
-      if (row) { const h = await syncRawHash(row.payload); syncMetaUpdate((m) => { if (m.conflict) { m.conflict.rev = Number(row.revision) || 0; m.conflict.hash = h; m.conflict.cloudCount = ((row.payload || {}).history || []).length; } }); }
+      if (row) { const h = await syncRawHash(row.payload); syncMetaUpdate((m) => { if (m.conflict) { m.conflict.rev = Number(row.revision) || 0; m.conflict.hash = h; m.conflict.cloudCount = ((row.payload || {}).history || []).length; m.conflict.cloudImported = impCount(row.payload || {}); } }); }
     }
     syncOpenConflictDialog(false);
     return;
@@ -28530,7 +28607,8 @@ function syncEnterConflict(row, rawHash, reason) {
   const payload = (row && row.payload) || {};
   syncMetaUpdate((m) => {
     m.conflict = { rev: row ? Number(row.revision) || 0 : 0, hash: rawHash || null, at: Date.now(), reason,
-      cloudCount: (payload.history || []).length, localCount: (state.history || []).length };
+      cloudCount: (payload.history || []).length, localCount: (state.history || []).length,
+      cloudImported: impCount(payload), localImported: impCount(state) };
   });
   syncConflictShown = false;
   syncOpenConflictDialog(true);
@@ -28769,7 +28847,7 @@ async function syncApply(payload, o) {
   const created = puts.filter((p) => !(p.store === 'p' ? localP : localM).has(p.id)).map((p) => ({ store: p.store, id: p.id }));
   const recovery = { id: rid, at: Date.now(), kind: o.recoveryKind || 'before-pull', keep: !!o.keepRecovery,
     state: JSON.stringify(state), prior, created,
-    counts: { history: (state.history || []).length, media: localP.size + localM.size } };
+    counts: { history: (state.history || []).length, imported: impCount(state), media: localP.size + localM.size } };
   const target = { rev: o.rev, hash: o.rawHash, published, missing, seq: o.seqAtDecision,
     cloudMeaningful: stateMeaningful(next) || want.p.size + want.m.size > 0 };
   syncCheckpoint();
@@ -28928,8 +29006,8 @@ function syncResolveConflict(choice) {
     /* Pred akoukoľvek voľbou sa uložia kópie OBOCH strán. Pri „ponechať účet“ kópiu
        zariadenia (stav + všetky dotknuté médiá) zapíše syncApply v jednej transakcii. */
     const ops = [];
-    if (choice !== 'cloud') ops.push({ store: 'recovery', put: { id: 'd-' + Date.now().toString(36), at: Date.now(), kind: 'device-copy', keep: true, state: JSON.stringify(state), prior: [], created: [], counts: { history: (state.history || []).length, media: await syncLocalMediaCount() } } });
-    if (row) ops.push({ store: 'recovery', put: { id: 'c-' + Date.now().toString(36), at: Date.now(), kind: 'cloud-copy', keep: true, payload: row.payload, rev: Number(row.revision) || 0, counts: { history: ((row.payload || {}).history || []).length, media: (((row.payload || {}).media || {}).progress || []).length + (((row.payload || {}).media || {}).personal || []).length } } });
+    if (choice !== 'cloud') ops.push({ store: 'recovery', put: { id: 'd-' + Date.now().toString(36), at: Date.now(), kind: 'device-copy', keep: true, state: JSON.stringify(state), prior: [], created: [], counts: { history: (state.history || []).length, imported: impCount(state), media: await syncLocalMediaCount() } } });
+    if (row) ops.push({ store: 'recovery', put: { id: 'c-' + Date.now().toString(36), at: Date.now(), kind: 'cloud-copy', keep: true, payload: row.payload, rev: Number(row.revision) || 0, counts: { history: ((row.payload || {}).history || []).length, imported: impCount(row.payload || {}), media: (((row.payload || {}).media || {}).progress || []).length + (((row.payload || {}).media || {}).personal || []).length } } });
     if (ops.length) await syncDbWrite(ops);
     await gqHook('resolve:copiesSaved', { choice });
     syncCheckpoint();
@@ -29049,11 +29127,24 @@ function syncOpenConflictDialog(force) {
   if (isOpen('modal-sync') || isOpen('modal-generic')) return;
   syncConflictShown = true;
   const c = meta.conflict;
-  const body = '<p class="card-note">' + esc(t(c.reason === 'empty-local' ? 'sync.conflictEmptyBody' : 'sync.conflictBody', { cloud: c.cloudCount, local: (state.history || []).length })) + '</p>'
+  const body = '<p class="card-note">' + esc(syncConflictBodyText(c, (state.history || []).length, impCount(state))) + '</p>'
     + '<p class="card-note">' + esc(t('sync.conflictCopies')) + '</p>'
     + '<div class="modal-actions">' + syncBtn('keep-device', 'sync.keepDevice', false) + syncBtn('keep-cloud', 'sync.keepCloud', true) + '</div>'
     + '<div class="modal-actions">' + syncBtn('later', 'sync.decideLater', false) + '</div>';
   openSyncModal(t('sync.conflictTitle'), body);
+}
+/* Text konfliktu: počty tréningov + (ak nejaké sú) jedna veta s importmi každej strany. */
+function syncConflictBodyText(c, localCount, localImported) {
+  let txt = t(c.reason === 'empty-local' ? 'sync.conflictEmptyBody' : 'sync.conflictBody', { cloud: c.cloudCount, local: localCount });
+  const ci = Number(c.cloudImported) || 0, li = Number(localImported) || 0;
+  if (ci > 0 || li > 0) txt += ' ' + t('imp.conflictExtra', { cloud: ci, local: li });
+  return txt;
+}
+/* Štítok kópie na obnovu: "Toto zariadenie (12 tréningov) (+5 importovaných)". */
+function syncRecoveryLabel(r) {
+  const base = t(r.kind === 'cloud-copy' ? 'sync.copyCloud' : r.kind === 'legacy-snapshot' ? 'sync.copyLegacy' : 'sync.copyDevice', { n: (r.counts && r.counts.history) || 0 });
+  const plus = impPlusLabel(r.counts && r.counts.imported);
+  return plus ? base + ' ' + plus : base;
 }
 function syncOpenLinkDialog() {
   if (!wsLinkUser) return;
@@ -29067,7 +29158,7 @@ async function syncOpenRecoveryList() {
   let list = [];
   try { list = (await syncDbAll('recovery')).filter((r) => r.keep); } catch (e) {}
   list.sort((a, b) => b.at - a.at);
-  const label = (r) => t(r.kind === 'cloud-copy' ? 'sync.copyCloud' : r.kind === 'legacy-snapshot' ? 'sync.copyLegacy' : 'sync.copyDevice', { n: (r.counts && r.counts.history) || 0 });
+  const label = syncRecoveryLabel;
   const rows = list.map((r) => '<div class="community-card"><p class="community-caption">' + esc(new Date(r.at).toLocaleString()) + ' — ' + esc(label(r)) + '</p>'
     + '<div class="plan-actions">' + syncBtn('recover', 'sync.restoreCopy', false, ' data-id="' + escAttr(r.id) + '"')
     + syncBtn('recover-delete', 'sync.deleteCopy', false, ' data-id="' + escAttr(r.id) + '"') + '</div></div>').join('');
@@ -29345,11 +29436,7 @@ function setupEvents() {
   on('btn-tour-later', tourInviteLater);
   on('btn-tour-help', tourHelpShow);
   // v80: cieľ sa uloží hneď po ťuknutí; Zavrieť ho pre istotu uloží ešte raz (zmena sa nikdy nestratí)
-  on('btn-settings-close', () => {
-    saveSettingsGoal();
-    document.getElementById('modal-settings').hidden = true;
-    refreshUpdateBanner();   // čakajúca aktualizácia sa po zatvorení znova ponúkne
-  });
+  on('btn-settings-close', closeSettingsSheet);
   on('btn-rest-sound', () => {
     state.settings.restSound = !restSoundOn();
     if (timerInterval !== null) nativeRestSync();
@@ -29413,7 +29500,7 @@ function setupEvents() {
   on('btn-reset-data', requestResetData);
 
   on('btn-load-demo', () => {
-    if (state.history.length > 0) {
+    if (state.history.length > 0 || (state.importedHistory || []).length > 0) {   // importy sú dáta: ukážka sa cez ne nikdy nenačíta
       showGeneric(t('settings.demoNone'), t('common.ok'), null);
       return;
     }
@@ -29465,6 +29552,9 @@ function setupEvents() {
   document.addEventListener('keydown', (e) => {
     if (e.key !== 'Escape') return;
     if (tourOpen()) { e.preventDefault(); closeTour('skipped'); return; }   // návod je navrchu, Esc zavrie len jeho
+    /* Generické potvrdenie je v DOM posledné (index.html), teda navrchu nad každým listom: Esc ho zavrie ako prvé */
+    const genModal = document.getElementById('modal-generic');
+    if (genModal && !genModal.hidden) { closeGeneric(); return; }
     const csvSheet = document.getElementById('modal-csv-import');
     if (csvSheet && !csvSheet.hidden) { closeCsvImport(); return; }   // list importu CSV
     const csvMenu = document.getElementById('modal-csv');
@@ -29497,9 +29587,6 @@ function setupEvents() {
     if (effortSheet && !effortSheet.hidden) { closeEffortSheet(); return; }
     const restSheet = document.getElementById('modal-rest');
     if (restSheet && !restSheet.hidden) { closeRestSheet(); return; }
-    /* v DOM je modal-generic nad modal-sync (napr. potvrdenie obnovy kópie nad zoznamom kópií) – najprv ten vrchný */
-    const genModal = document.getElementById('modal-generic');
-    if (genModal && !genModal.hidden) { closeGeneric(); return; }
     const syncModal = document.getElementById('modal-sync');
     if (syncModal && !syncModal.hidden) { const later = syncModal.querySelector('[data-sync-action="later"]'); if (later && !later.disabled) later.click(); return; }
     const confirmModal = document.getElementById('modal-confirm');

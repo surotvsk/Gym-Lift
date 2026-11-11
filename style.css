@@ -5170,7 +5170,7 @@ button.record-row::after { content: '\203A'; flex: 0 0 auto; color: var(--text-f
 .csv-error p { margin: var(--sp-2) 0 0; color: var(--text-dim); font-size: var(--fs-sm); overflow-wrap: anywhere; }
 #modal-csv-import .modal-actions { margin-top: var(--sp-4); }
 .csv-toast {
-  position: fixed; z-index: 15; left: 12px; right: 12px; margin: 0 auto; max-width: calc(var(--maxw) - 24px);
+  position: fixed; z-index: 30; left: 12px; right: 12px; margin: 0 auto; max-width: calc(var(--maxw) - 24px);   /* nad listami (20), pod návodom (40) */
   bottom: calc(92px + env(safe-area-inset-bottom, 0px));
   display: flex; align-items: center; justify-content: space-between; gap: var(--sp-3);
   padding: var(--sp-2) var(--sp-3) var(--sp-2) var(--sp-4); border-radius: 22px; background: var(--ink); color: var(--on-ink); font-size: var(--fs-md); box-shadow: var(--shadow-2);
