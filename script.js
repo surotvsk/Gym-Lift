@@ -7602,6 +7602,7 @@ const BASICS_I18N = {
     'superset.label': 'Supersérie {l}', 'superset.circuit': 'Okruh {l}',
     'superset.link': 'Spojiť s ďalším', 'superset.unlink': 'Zrušiť spojenie',
     'exactions.more': 'Ďalšie akcie pre {name}', 'exactions.close': 'Zavrieť', 'exactions.progress': 'Pokrok', 'exactions.moreOptions': 'Ďalšie možnosti',
+    'xprog.close': 'Zavrieť', 'xprog.statE1rm': 'Najlepší odhad 1RM', 'xprog.statHeaviest': 'Najťažšie', 'xprog.statBestSet': 'Najlepšia séria', 'xprog.statSessions': 'Tréningy', 'xprog.statLeastHelp': 'Najmenej pomoci', 'xprog.metricE1rm': 'Odhad 1RM', 'xprog.metricHeaviest': 'Najťažšie', 'xprog.metricVolume': 'Objem', 'xprog.metricHelp': 'Pomoc', 'xprog.metricGroup': 'Čo ukázať v grafe', 'xprog.rangeGroup': 'Obdobie', 'xprog.r3m': '3 M', 'xprog.r1y': '1 R', 'xprog.rAll': 'Všetko', 'xprog.empty': 'Zapíš tento cvik aspoň dvakrát a objaví sa graf.', 'xprog.sessions': 'Tréningy', 'xprog.more': 'Zobraziť viac', 'xprog.estNote': 'Odhad podľa Epleya, nie otestované maximum.', 'xprog.open': 'Zobraziť pokrok: {name}', 'xprog.link': 'Pokrok', 'xprog.chartAria': '{label}, {unit}: od {from} do {to}',
   },
   en: {
     'settings.autoRest': 'Start rest automatically', 'settings.autoRestHint': 'The rest timer starts by itself when you mark a set done. In a superset, after the last exercise.',
@@ -7627,6 +7628,7 @@ const BASICS_I18N = {
     'superset.label': 'Superset {l}', 'superset.circuit': 'Circuit {l}',
     'superset.link': 'Link with next', 'superset.unlink': 'Unlink',
     'exactions.more': 'More actions for {name}', 'exactions.close': 'Close', 'exactions.progress': 'Progress', 'exactions.moreOptions': 'More options',
+    'xprog.close': 'Close', 'xprog.statE1rm': 'Best est. 1RM', 'xprog.statHeaviest': 'Heaviest', 'xprog.statBestSet': 'Best set', 'xprog.statSessions': 'Sessions', 'xprog.statLeastHelp': 'Least help', 'xprog.metricE1rm': 'Est. 1RM', 'xprog.metricHeaviest': 'Heaviest', 'xprog.metricVolume': 'Volume', 'xprog.metricHelp': 'Help', 'xprog.metricGroup': 'What to show in the chart', 'xprog.rangeGroup': 'Period', 'xprog.r3m': '3 M', 'xprog.r1y': '1 Y', 'xprog.rAll': 'All', 'xprog.empty': 'Log this exercise at least twice to see a chart.', 'xprog.sessions': 'Sessions', 'xprog.more': 'Show more', 'xprog.estNote': 'Epley estimate, not a tested max.', 'xprog.open': 'Show progress for {name}', 'xprog.link': 'Progress', 'xprog.chartAria': '{label}, {unit}: from {from} to {to}',
   },
   es: {
     'settings.autoRest': 'Iniciar el descanso automáticamente', 'settings.autoRestHint': 'El temporizador de descanso empieza solo al marcar una serie. En una superserie, tras el último ejercicio.',
@@ -7652,6 +7654,7 @@ const BASICS_I18N = {
     'superset.label': 'Superserie {l}', 'superset.circuit': 'Circuito {l}',
     'superset.link': 'Unir con el siguiente', 'superset.unlink': 'Separar',
     'exactions.more': 'Más acciones para {name}', 'exactions.close': 'Cerrar', 'exactions.progress': 'Progreso', 'exactions.moreOptions': 'Más opciones',
+    'xprog.close': 'Cerrar', 'xprog.statE1rm': 'Mejor 1RM est.', 'xprog.statHeaviest': 'Más pesado', 'xprog.statBestSet': 'Mejor serie', 'xprog.statSessions': 'Sesiones', 'xprog.statLeastHelp': 'Menos ayuda', 'xprog.metricE1rm': '1RM est.', 'xprog.metricHeaviest': 'Más pesado', 'xprog.metricVolume': 'Volumen', 'xprog.metricHelp': 'Ayuda', 'xprog.metricGroup': 'Qué mostrar en el gráfico', 'xprog.rangeGroup': 'Periodo', 'xprog.r3m': '3 M', 'xprog.r1y': '1 A', 'xprog.rAll': 'Todo', 'xprog.empty': 'Registra este ejercicio al menos dos veces para ver un gráfico.', 'xprog.sessions': 'Sesiones', 'xprog.more': 'Mostrar más', 'xprog.estNote': 'Estimación de Epley, no un máximo medido.', 'xprog.open': 'Ver progreso de {name}', 'xprog.link': 'Progreso', 'xprog.chartAria': '{label}, {unit}: de {from} a {to}',
   },
   'pt-BR': {
     'settings.autoRest': 'Iniciar o descanso automaticamente', 'settings.autoRestHint': 'O cronômetro de descanso começa sozinho ao marcar uma série. Em um superset, após o último exercício.',
@@ -7677,6 +7680,7 @@ const BASICS_I18N = {
     'superset.label': 'Superset {l}', 'superset.circuit': 'Circuito {l}',
     'superset.link': 'Ligar ao próximo', 'superset.unlink': 'Desligar',
     'exactions.more': 'Mais ações para {name}', 'exactions.close': 'Fechar', 'exactions.progress': 'Progresso', 'exactions.moreOptions': 'Mais opções',
+    'xprog.close': 'Fechar', 'xprog.statE1rm': 'Melhor 1RM est.', 'xprog.statHeaviest': 'Mais pesado', 'xprog.statBestSet': 'Melhor série', 'xprog.statSessions': 'Sessões', 'xprog.statLeastHelp': 'Menos ajuda', 'xprog.metricE1rm': '1RM est.', 'xprog.metricHeaviest': 'Mais pesado', 'xprog.metricVolume': 'Volume', 'xprog.metricHelp': 'Ajuda', 'xprog.metricGroup': 'O que mostrar no gráfico', 'xprog.rangeGroup': 'Período', 'xprog.r3m': '3 M', 'xprog.r1y': '1 A', 'xprog.rAll': 'Tudo', 'xprog.empty': 'Registre este exercício pelo menos duas vezes para ver um gráfico.', 'xprog.sessions': 'Sessões', 'xprog.more': 'Mostrar mais', 'xprog.estNote': 'Estimativa de Epley, não um máximo testado.', 'xprog.open': 'Ver progresso de {name}', 'xprog.link': 'Progresso', 'xprog.chartAria': '{label}, {unit}: de {from} a {to}',
   },
   fr: {
     'settings.autoRest': 'Démarrer le repos automatiquement', 'settings.autoRestHint': 'Le minuteur de repos démarre seul quand tu valides une série. Dans une superset, après le dernier exercice.',
@@ -7702,6 +7706,7 @@ const BASICS_I18N = {
     'superset.label': 'Superset {l}', 'superset.circuit': 'Circuit {l}',
     'superset.link': 'Lier au suivant', 'superset.unlink': 'Délier',
     'exactions.more': 'Plus d’actions pour {name}', 'exactions.close': 'Fermer', 'exactions.progress': 'Progression', 'exactions.moreOptions': 'Plus d’options',
+    'xprog.close': 'Fermer', 'xprog.statE1rm': 'Meilleur 1RM est.', 'xprog.statHeaviest': 'Plus lourd', 'xprog.statBestSet': 'Meilleure série', 'xprog.statSessions': 'Séances', 'xprog.statLeastHelp': 'Moins d’aide', 'xprog.metricE1rm': '1RM est.', 'xprog.metricHeaviest': 'Plus lourd', 'xprog.metricVolume': 'Volume', 'xprog.metricHelp': 'Aide', 'xprog.metricGroup': 'Quoi afficher dans le graphique', 'xprog.rangeGroup': 'Période', 'xprog.r3m': '3 M', 'xprog.r1y': '1 A', 'xprog.rAll': 'Tout', 'xprog.empty': 'Enregistre cet exercice au moins deux fois pour voir un graphique.', 'xprog.sessions': 'Séances', 'xprog.more': 'Afficher plus', 'xprog.estNote': 'Estimation d’Epley, pas un maximum testé.', 'xprog.open': 'Voir la progression de {name}', 'xprog.link': 'Progression', 'xprog.chartAria': '{label}, {unit} : du {from} au {to}',
   },
   ar: {
     'settings.autoRest': 'بدء الراحة تلقائيًا', 'settings.autoRestHint': 'يبدأ مؤقت الراحة تلقائيًا عند تحديد مجموعة كمكتملة. في السوبرست، بعد آخر تمرين.',
@@ -7727,6 +7732,7 @@ const BASICS_I18N = {
     'superset.label': 'سوبرست {l}', 'superset.circuit': 'دائرة {l}',
     'superset.link': 'ربط بالتالي', 'superset.unlink': 'فك الربط',
     'exactions.more': 'المزيد من الإجراءات لـ {name}', 'exactions.close': 'إغلاق', 'exactions.progress': 'التقدّم', 'exactions.moreOptions': 'خيارات إضافية',
+    'xprog.close': 'إغلاق', 'xprog.statE1rm': 'أفضل 1RM تقديري', 'xprog.statHeaviest': 'الأثقل', 'xprog.statBestSet': 'أفضل مجموعة', 'xprog.statSessions': 'التمارين', 'xprog.statLeastHelp': 'أقل مساعدة', 'xprog.metricE1rm': '1RM تقديري', 'xprog.metricHeaviest': 'الأثقل', 'xprog.metricVolume': 'الحجم', 'xprog.metricHelp': 'المساعدة', 'xprog.metricGroup': 'ما يُعرض في الرسم', 'xprog.rangeGroup': 'الفترة', 'xprog.r3m': '3 أشهر', 'xprog.r1y': 'سنة', 'xprog.rAll': 'الكل', 'xprog.empty': 'سجّل هذا التمرين مرتين على الأقل لتظهر الرسوم.', 'xprog.sessions': 'التمارين', 'xprog.more': 'عرض المزيد', 'xprog.estNote': 'تقدير إيبلي، وليس حدًا أقصى تم اختباره.', 'xprog.open': 'عرض تقدّم {name}', 'xprog.link': 'التقدّم', 'xprog.chartAria': '{label}، {unit}: من {from} إلى {to}',
   },
 };
 for (const lang of Object.keys(BASICS_I18N)) Object.assign(I18N[lang] || (I18N[lang] = {}), BASICS_I18N[lang]);
@@ -13735,7 +13741,9 @@ function exerciseActionButtons(ex, info) {
   prog.type = 'button';
   prog.className = 'btn-ex-progress';
   prog.textContent = t('exactions.progress');
-  prog.hidden = true;
+  const xid = exerciseIdentity(ex);
+  if (xid) prog.addEventListener('click', () => openExerciseProgress(xid, exerciseDisplayName(ex)));
+  else prog.hidden = true;
   out.push(prog);
   return out;
 }
@@ -14384,6 +14392,7 @@ function buildPlatesButton(ex) {
 }
 function initPlateSheet() {
   initExerciseActions();
+  initExerciseProgress();
   on('btn-plates-close', closePlateCalc);
   on('plate-target', () => {
     const v = cleanSetWeightValue(document.getElementById('plate-target').value);
@@ -15970,6 +15979,12 @@ function closeExerciseSheet() {
   refreshUpdateBanner();
 }
 
+/* Riadok "Pokrok" v detaile cviku (nie plávajúce tlačidlo): otvorí list progresu toho istého cviku. */
+function progressLinkHtml(identity, name) {
+  if (!identity) return '';
+  return '<button type="button" class="progress-link" data-xid="' + escAttr(identity) + '" data-xname="' + escAttr(name) + '"><span>' + esc(t('xprog.link')) + '</span></button>';
+}
+
 function metaRow(label, value) {
   return '<div class="meta-row"><span class="meta-label">' + esc(label) + '</span>'
     + '<span class="meta-value">' + esc(value) + '</span></div>';
@@ -16000,6 +16015,7 @@ function renderExerciseSheet() {
     title.textContent = customNameFromKey(exerciseSheetId);
     const ch = [];
     ch.push(sessionSheetActionsHtml());   // hneď hore, aby nebolo schované pod médiami
+    ch.push(progressLinkHtml(exerciseIdentity({ name: customNameFromKey(exerciseSheetId) }), customNameFromKey(exerciseSheetId)));
     ch.push(mediaGalleryHtml());
     ch.push('<p class="sheet-note">' + esc(t('exercise.notInLibrary')) + '</p>');
     ch.push('<p class="sheet-note">' + esc(t('exercise.disclaimer')) + '</p>');
@@ -16018,6 +16034,7 @@ function renderExerciseSheet() {
 
   const h = [];
   h.push(sessionSheetActionsHtml());   // hneď hore, aby nebolo schované pod médiami
+  h.push(progressLinkHtml(entry.id, t('exercise.' + entry.id)));
   h.push(mediaGalleryHtml());
 
   h.push('<div class="meta-grid">');
@@ -22430,17 +22447,27 @@ function renderPokrok() {
   if (!recs.length) {
     records.innerHTML = `<p class="empty-state">${t('pokrok.recordsEmpty')}</p>`;
   } else {
+    /* Identita cviku pre každý rekord (jeden prechod históriou), aby riadok mohol otvoriť jeho progres. */
+    const idByName = new Map();
+    for (const w of state.history) for (const e of w.exercises) if (e && !idByName.has(e.name)) idByName.set(e.name, entryIdentity(e));
     for (const r of recs) {
       const next = Math.floor(r.weight / 5) * 5 + 5;
-      const row = document.createElement('div');
+      const xid = idByName.get(r.name) || null;
+      const row = document.createElement(xid ? 'button' : 'div');
       row.className = 'record-row';
+      if (xid) {
+        row.type = 'button';
+        row.dataset.xid = xid;
+        row.dataset.xname = r.name;
+        row.setAttribute('aria-label', t('xprog.open', { name: r.name }));
+      }
       row.innerHTML = `
-        <div>
-          <div class="record-name">${esc(r.name)}</div>
-          <div class="record-meta">${tPlural('pokrok.setsCount', r.reps)} · ${formatDate(r.date)}</div>
-          <div class="record-meta">${t('pokrok.nextMilestone', { kg: next })}</div>
-        </div>
-        <div class="record-weight">${r.weight} ${t('units.kg')}</div>`;
+        <span class="record-main">
+          <span class="record-name">${esc(r.name)}</span>
+          <span class="record-meta">${tPlural('pokrok.setsCount', r.reps)} · ${formatDate(r.date)}</span>
+          <span class="record-meta">${t('pokrok.nextMilestone', { kg: next })}</span>
+        </span>
+        <span class="record-weight">${r.weight} ${t('units.kg')}</span>`;
       records.appendChild(row);
     }
   }
@@ -22637,14 +22664,14 @@ function historyExerciseDetail(ex, displayName) {
     const sets = Math.round(Number(ex.sets)) || 0;
     const done = cleanSideSets(ex.sidesDone, sets);
     const fails = cleanSideSets(ex.sidesFailure, sets);
-    const head = `${esc(displayName !== undefined ? displayName : ex.name)} `
+    const head = `${exProgLinkHtml(ex, displayName !== undefined ? displayName : ex.name)} `
       + `${esc(tPlural('unilateral.setsPerSide', sets))} · ${esc(historyRepsValue(ex))} ${t('units.reps')} · ${historyWeightText(ex)}`;
     let out = head + `<div class="history-side-note">${esc(t('unilateral.completed', { sides: completedSidesLabel(done) }))}</div>`;
     const list = sideFailureList(fails);
     if (list) out += `<div class="failure-note">🔥 ${esc(t('unilateral.failureList', { list }))}</div>`;
     return out + historyWarmupsHtml(ex, 'div') + historyEffortHtml(ex, 'div') + historyDropsHtml(ex, 'div');
   }
-  const line = `${esc(displayName !== undefined ? displayName : ex.name)} ${ex.sets}×${esc(historyRepsValue(ex))} · ${historyWeightText(ex)}`;
+  const line = `${exProgLinkHtml(ex, displayName !== undefined ? displayName : ex.name)} ${ex.sets}×${esc(historyRepsValue(ex))} · ${historyWeightText(ex)}`;
   const fSets = cleanFailureSets(ex.actualFailureSets, ex.sets);
   /* Zlyhanie sa zobrazuje len vtedy, keď bolo naozaj zaznamenané – nikdy z plánu. */
   return (fSets.length
@@ -22780,7 +22807,7 @@ function workoutBlock(w) {
       const list = sideFailureList(fails);
       return `
     <div class="day-ex">
-      <span class="day-ex-name">${esc(historyExerciseName(ex))}</span>
+      <span class="day-ex-name">${exProgLinkHtml(ex, historyExerciseName(ex))}</span>
       <span class="day-ex-meta">${esc(tPlural('unilateral.setsPerSide', sets))} · ${esc(historyRepsValue(ex))} ${t('units.reps')} · ${historyWeightText(ex)} · ${ex.setsDone} ${t('history.setsDoneLabel')}</span>
       <span class="day-ex-completed">${esc(t('unilateral.completed', { sides: completedSidesLabel(done) }))}</span>
       ${list ? `<span class="day-ex-failure">🔥 ${esc(t('unilateral.failureList', { list }))}</span>` : ''}
@@ -22792,7 +22819,7 @@ function workoutBlock(w) {
     const fSets = cleanFailureSets(ex.actualFailureSets, ex.sets);
     return `
     <div class="day-ex">
-      <span class="day-ex-name">${esc(historyExerciseName(ex))}</span>
+      <span class="day-ex-name">${exProgLinkHtml(ex, historyExerciseName(ex))}</span>
       <span class="day-ex-meta">${ex.sets} × ${esc(historyRepsValue(ex))} · ${historyWeightText(ex)} · ${ex.setsDone} ${t('history.setsDoneLabel')}</span>
       ${fSets.length ? `<span class="day-ex-failure">🔥 ${esc(t('failure.sets', { sets: fSets.join(', ') }))}</span>` : ''}
       ${historyWarmupsHtml(ex, 'span')}
@@ -25957,6 +25984,240 @@ function exerciseSummary(identity) {
   return { bestE1rm, heaviest, bestSet, bestVolume: max(lifted.map((p) => p.volume).filter((v) => v !== null)), sessions: series.length };
 }
 
+/* ---------- Prehľad: progres cviku ---------- */
+/* List s progresom jedného cviku: 4 čísla, jeden graf (čipy), obdobie a zoznam tréningov. Len číta históriu;
+   nič nezapisuje a nemení XP, rekordy ani úspechy. Odhad 1RM je vždy označený ako odhad. */
+
+/* Číslo na max. 1 desatinné miesto bez zbytočných núl; null → pomlčka. */
+function xpNum(n) {
+  if (typeof n !== 'number' || !Number.isFinite(n)) return '—';
+  return String(Math.round(n * 10) / 10);
+}
+function xpSetText(s) { return xpNum(s.weight) + '×' + xpNum(s.reps); }
+
+/* Krátky dátum osi grafu (mesiac, rok) podľa jazyka appky. */
+function xpAxisDate(ms) {
+  try {
+    return new Date(ms).toLocaleDateString(activeLang(), { day: 'numeric', month: 'short', year: '2-digit' });
+  } catch (e) {
+    return '';
+  }
+}
+
+/* Čiarový graf ako vložené SVG. points = [{ x: ms, y: číslo }] podľa x vzostupne; opts = { label, unit, compact, emptyText }.
+   Menej než 2 body = pokojný prázdny stav (compact: prázdny reťazec). Žiadne NaN, ani pri rovnakých hodnotách.
+   compact (80×24, bez popisov) je pre malé grafy (sparkline) v prehľade. */
+function lineChartSvg(points, opts) {
+  const o = opts || {};
+  const pts = (Array.isArray(points) ? points : []).filter((q) => q && Number.isFinite(q.x) && Number.isFinite(q.y));
+  if (pts.length < 2) return o.compact ? '' : '<div class="xp-empty">' + esc(o.emptyText || t('xprog.empty')) + '</div>';
+  const W = o.compact ? 80 : 320, H = o.compact ? 24 : 140;
+  const L = o.compact ? 3 : 40, R = o.compact ? 3 : 10, T = o.compact ? 3 : 14, B = o.compact ? 3 : 34;
+  const xs = pts.map((q) => q.x), ys = pts.map((q) => q.y);
+  const x0 = Math.min.apply(null, xs), x1 = Math.max.apply(null, xs);
+  const y0 = Math.min.apply(null, ys), y1 = Math.max.apply(null, ys);
+  const px = (x) => (x1 === x0 ? (L + W - R) / 2 : L + ((x - x0) / (x1 - x0)) * (W - L - R));
+  const py = (y) => (y1 === y0 ? (T + H - B) / 2 : H - B - ((y - y0) / (y1 - y0)) * (H - T - B));
+  const fx = (n) => (Math.round(n * 10) / 10).toFixed(1);
+  const line = pts.map((q) => fx(px(q.x)) + ',' + fx(py(q.y))).join(' ');
+  const last = pts[pts.length - 1];
+  if (o.compact) {
+    return '<svg class="xp-svg xp-compact" viewBox="0 0 80 24" preserveAspectRatio="none" aria-hidden="true" focusable="false">'
+      + '<polyline class="xp-line" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" points="' + line + '"/>'
+      + '<circle class="xp-dot" cx="' + fx(px(last.x)) + '" cy="' + fx(py(last.y)) + '" r="2" fill="currentColor"/></svg>';
+  }
+  const aria = t('xprog.chartAria', { label: o.label || '', unit: o.unit || '', from: xpAxisDate(x0), to: xpAxisDate(x1) });
+  const yTxt = (v) => esc(xpNum(v));
+  let svg = '<svg class="xp-svg" viewBox="0 0 320 140" role="img" aria-label="' + esc(aria) + '">';
+  svg += '<line class="xp-grid" x1="' + L + '" x2="' + (W - R) + '" y1="' + fx(py(y1)) + '" y2="' + fx(py(y1)) + '"/>';
+  if (y1 !== y0) svg += '<line class="xp-grid" x1="' + L + '" x2="' + (W - R) + '" y1="' + fx(py(y0)) + '" y2="' + fx(py(y0)) + '"/>';
+  svg += '<text class="xp-axis" x="' + (L - 6) + '" y="' + fx(py(y1) + 3.5) + '" text-anchor="end">' + yTxt(y1) + '</text>';
+  if (y1 !== y0) svg += '<text class="xp-axis" x="' + (L - 6) + '" y="' + fx(py(y0) + 3.5) + '" text-anchor="end">' + yTxt(y0) + '</text>';
+  svg += '<polyline class="xp-line" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" points="' + line + '"/>';
+  pts.forEach((q, i) => {
+    svg += '<circle class="xp-dot" cx="' + fx(px(q.x)) + '" cy="' + fx(py(q.y)) + '" r="' + (i === pts.length - 1 ? 4 : 2.75) + '" fill="currentColor"/>';
+  });
+  svg += '<text class="xp-axis" x="' + L + '" y="' + (H - 10) + '" text-anchor="start">' + esc(xpAxisDate(x0)) + '</text>';
+  svg += '<text class="xp-axis" x="' + (W - R) + '" y="' + (H - 10) + '" text-anchor="end">' + esc(xpAxisDate(x1)) + '</text>';
+  return svg + '</svg>';
+}
+
+/* Tréningy cviku od najnovšieho: dátum, názov plánu, pracovné série ako "100×8 · 105×6". Jeden prechod históriou. */
+function exerciseSessionList(identity) {
+  const out = [];
+  try {
+    if (!identity || !Array.isArray(state.history)) return out;
+    state.history.forEach((w, idx) => {
+      if (!w || typeof w !== 'object' || typeof w.date !== 'string' || !Array.isArray(w.exercises)) return;
+      let sets = [], found = false;
+      for (const e of w.exercises) {
+        if (!e || entryIdentity(e) !== identity) continue;
+        const ws = historyWorkingSets(e);
+        if (!ws.length) continue;
+        found = true;
+        sets = sets.concat(ws);
+      }
+      if (found) out.push({ date: w.date, idx, plan: historyPlanName(w), text: sets.map(xpSetText).join(' · ') });
+    });
+    return out.sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : b.idx - a.idx));
+  } catch (err) {
+    return [];
+  }
+}
+
+const XP_SESSION_PAGE = 20;
+let xpState = null;          // { identity, name, series, summary, sessions, assisted, metric, range, shown, opener }
+
+/* Zobrazený názov: zabudovaný cvik sa prekladá, vlastný zostáva, ako ho používateľ pomenoval. */
+function xpDisplayName(identity, fallback) {
+  return (identity && BUILTIN_EXERCISE_IDS.has(identity)) ? t('exercise.' + identity) : String(fallback || '');
+}
+function xpMetricDefs(assisted) {
+  return assisted
+    ? [{ id: 'help', key: 'xprog.metricHelp', unit: true }]
+    : [{ id: 'e1rm', key: 'xprog.metricE1rm', unit: true }, { id: 'heaviest', key: 'xprog.metricHeaviest', unit: true }, { id: 'volume', key: 'xprog.metricVolume', unit: true }];
+}
+function xpRangeCutoff(range) {
+  if (range === 'all') return 0;
+  const d = new Date();
+  if (range === '3m') d.setMonth(d.getMonth() - 3); else d.setFullYear(d.getFullYear() - 1);
+  return d.getTime();
+}
+function xpPointValue(p, metric) {
+  if (metric === 'e1rm') return p.e1rm;
+  if (metric === 'volume') return p.volume;
+  return p.topWeight;
+}
+
+function renderExProgressStats() {
+  const s = xpState, kg = ' ' + t('units.kg');
+  const cell = (val, key, ltr) => '<div class="xp-stat"><span class="xp-stat-val">' + (ltr ? '<bdi dir="ltr">' + esc(val) + '</bdi>' : esc(val)) + '</span><span class="xp-stat-label">' + esc(t(key)) + '</span></div>';
+  let html;
+  if (s.assisted) {
+    const mine = s.series.filter((p) => p.assisted);
+    const least = mine.length ? Math.min.apply(null, mine.map((p) => p.topWeight)) : null;
+    const best = mine.length ? mine[mine.length - 1].bestSet : null;
+    let bestSet = null;
+    for (const p of mine) if (p.bestSet && (!bestSet || p.bestSet.weight < bestSet.weight || (p.bestSet.weight === bestSet.weight && p.bestSet.reps > bestSet.reps))) bestSet = p.bestSet;
+    html = cell(least === null ? '—' : xpNum(least) + kg, 'xprog.statLeastHelp') + cell(bestSet ? xpSetText(bestSet) : (best ? xpSetText(best) : '—'), 'xprog.statBestSet', true) + cell(String(mine.length), 'xprog.statSessions');
+  } else {
+    const m = s.summary;
+    html = cell(m.bestE1rm === null ? '—' : xpNum(m.bestE1rm) + kg, 'xprog.statE1rm') + cell(m.heaviest === null ? '—' : xpNum(m.heaviest) + kg, 'xprog.statHeaviest')
+      + cell(m.bestSet ? xpSetText(m.bestSet) : '—', 'xprog.statBestSet', true) + cell(String(m.sessions), 'xprog.statSessions');
+  }
+  document.getElementById('ex-progress-stats').innerHTML = html;
+}
+
+function renderExProgressChips() {
+  const s = xpState;
+  const defs = xpMetricDefs(s.assisted);
+  document.getElementById('ex-progress-metric').innerHTML = defs.map((d) =>
+    '<button type="button" class="chip" data-metric="' + d.id + '" aria-pressed="' + (d.id === s.metric) + '">' + esc(t(d.key)) + '</button>').join('');
+  const ranges = [['3m', 'xprog.r3m'], ['1y', 'xprog.r1y'], ['all', 'xprog.rAll']];
+  document.getElementById('ex-progress-range').innerHTML = ranges.map((r) =>
+    '<button type="button" class="chip" data-range="' + r[0] + '" aria-pressed="' + (r[0] === s.range) + '">' + esc(t(r[1])) + '</button>').join('');
+}
+
+/* Prekreslí len graf (čipy zostanú, aby sa nestratil fokus). */
+function renderExProgressChart() {
+  const s = xpState;
+  const cutoff = xpRangeCutoff(s.range);
+  const pts = [];
+  for (const p of s.series) {
+    if (p.assisted !== s.assisted) continue;
+    const y = xpPointValue(p, s.metric);
+    const x = parseDate(p.date).getTime() + 12 * 3600 * 1000;
+    if (y === null || y === undefined || !Number.isFinite(y) || x < cutoff) continue;
+    pts.push({ x, y });
+  }
+  const def = xpMetricDefs(s.assisted).find((d) => d.id === s.metric);
+  document.getElementById('ex-progress-chart').innerHTML = lineChartSvg(pts, { label: def ? t(def.key) : '', unit: t('units.kg') });
+  document.getElementById('ex-progress-note').hidden = s.metric !== 'e1rm' || pts.length < 2;
+  const all = document.getElementById('ex-progress-metric').querySelectorAll('button');
+  all.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.metric === s.metric)));
+  document.getElementById('ex-progress-range').querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.range === s.range)));
+}
+
+function renderExProgressSessions() {
+  const s = xpState;
+  const list = s.sessions.slice(0, s.shown);
+  document.getElementById('ex-progress-sessions').innerHTML = list.map((r) =>
+    '<div class="xp-session"><div class="xp-session-head"><span class="xp-session-date">' + esc(formatDate(r.date)) + '</span><span class="xp-session-plan">' + esc(r.plan) + '</span></div>'
+    + '<div class="xp-session-sets"><bdi dir="ltr">' + esc(r.text) + '</bdi></div></div>').join('');
+  document.getElementById('btn-ex-progress-more').hidden = s.shown >= s.sessions.length;
+  document.getElementById('ex-progress-sessions-head').hidden = !s.sessions.length;
+}
+
+function openExerciseProgress(identity, displayName) {
+  const modal = document.getElementById('modal-ex-progress');
+  if (!modal || !identity) return;
+  if (modal.hidden) xpState = { opener: document.activeElement };
+  const opener = xpState && xpState.opener;
+  /* Odvodené údaje sa počítajú raz pri otvorení – nie pri každom riadku. */
+  const series = exerciseSeries(identity);
+  const assisted = series.length > 0 && series[series.length - 1].assisted;
+  xpState = {
+    identity, name: xpDisplayName(identity, displayName), series, summary: exerciseSummary(identity), sessions: exerciseSessionList(identity),
+    assisted, metric: assisted ? 'help' : 'e1rm', range: 'all', shown: XP_SESSION_PAGE, opener,
+  };
+  document.getElementById('ex-progress-title').textContent = xpState.name;
+  renderExProgressStats();
+  renderExProgressChips();
+  renderExProgressChart();
+  renderExProgressSessions();
+  modal.hidden = false;
+  const body = document.getElementById('ex-progress-body');
+  if (body) body.scrollTop = 0;
+  const first = modal.querySelector('#ex-progress-metric button');
+  const target = first || document.getElementById('btn-ex-progress-close');
+  try { target.focus({ preventScroll: true }); } catch (e) { target.focus(); }
+  refreshUpdateBanner();
+}
+function closeExerciseProgress() {
+  const modal = document.getElementById('modal-ex-progress');
+  if (!modal || modal.hidden) return;
+  modal.hidden = true;
+  const opener = xpState && xpState.opener;
+  xpState = null;
+  restoreSheetFocus(opener);
+  refreshUpdateBanner();
+}
+function initExerciseProgress() {
+  on('btn-ex-progress-close', closeExerciseProgress);
+  const modal = document.getElementById('modal-ex-progress');
+  modal.addEventListener('click', (e) => { if (e.target === modal) closeExerciseProgress(); });
+  on('ex-progress-metric', (e) => {
+    const b = e.target.closest && e.target.closest('button[data-metric]');
+    if (!b || !xpState) return;
+    xpState.metric = b.dataset.metric;
+    renderExProgressChart();
+  });
+  on('ex-progress-range', (e) => {
+    const b = e.target.closest && e.target.closest('button[data-range]');
+    if (!b || !xpState) return;
+    xpState.range = b.dataset.range;
+    renderExProgressChart();
+  });
+  on('btn-ex-progress-more', () => {
+    if (!xpState) return;
+    xpState.shown = xpState.sessions.length;
+    renderExProgressSessions();
+  });
+  /* Ťuknutie na existujúci riadok (rekord, riadok histórie, kalendára) otvorí list; opener = ten riadok. */
+  document.addEventListener('click', (e) => {
+    const el = e.target.closest && e.target.closest('[data-xid]');
+    if (!el || !el.dataset.xid) return;
+    openExerciseProgress(el.dataset.xid, el.dataset.xname || el.textContent.trim());
+  });
+}
+
+/* Značka "otvorí progres cviku" pre riadok histórie / kalendára: tlačidlo s názvom cviku (alebo len názov bez identity). */
+function exProgLinkHtml(ex, label) {
+  const id = entryIdentity(ex);
+  if (!id) return esc(label);
+  return '<button type="button" class="ex-prog-link" data-xid="' + escAttr(id) + '" data-xname="' + escAttr(label) + '" aria-label="' + escAttr(t('xprog.open', { name: label })) + '">' + esc(label) + '</button>';
+}
+
 /* ---------- Prehľad aktivít (Pokrok) ---------- */
 function renderActivities() {
   const list = document.getElementById('activities-list');
@@ -27789,6 +28050,8 @@ function setupEvents() {
   document.addEventListener('keydown', (e) => {
     if (e.key !== 'Escape') return;
     if (tourOpen()) { e.preventDefault(); closeTour('skipped'); return; }   // návod je navrchu, Esc zavrie len jeho
+    const xpSheet = document.getElementById('modal-ex-progress');
+    if (xpSheet && !xpSheet.hidden) { closeExerciseProgress(); return; }   // list progresu je navrchu nad detailom, dňom aj knižnicou
     const inviteModal = document.getElementById('modal-community-invite');
     if (inviteModal && !inviteModal.hidden) { closeCommunityInvite(); return; }
     const langModal = document.getElementById('modal-lang');
@@ -28264,7 +28527,7 @@ function isBusy() {
   const forms = ['modal-confirm', 'modal-history-edit', 'modal-settings', 'modal-setup', 'modal-generic',
     'modal-planchoice', 'modal-fullbody', 'modal-lang', 'modal-measure', 'modal-food',
     'modal-library', 'modal-exercise', 'modal-photo-add', 'modal-photo', 'modal-photo-compare',
-    'modal-community-caption', 'modal-auth', 'modal-sync', 'modal-plates', 'modal-effort', 'modal-ex-actions'];
+    'modal-community-caption', 'modal-auth', 'modal-sync', 'modal-plates', 'modal-effort', 'modal-ex-actions', 'modal-ex-progress'];
   for (const id of forms) {
     const el = document.getElementById(id);
     if (el && !el.hidden) return true;                   // otvorený formulár / dialóg
@@ -28872,6 +29135,7 @@ function tourHelpShow() {
    žiadny dialóg z index.html. Všetky majú rovnaký z-index, navrchu je posledný v DOM. */
 const NATIVE_BACK_CLOSE = [
   ['modal-rest', '#btn-rest-close'],
+  ['modal-ex-progress', '#btn-ex-progress-close'],
   ['modal-ex-actions', '#btn-ex-actions-close'],
   ['modal-plates', '#btn-plates-close'],
   ['modal-effort', '#btn-effort-close'],

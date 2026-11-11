@@ -65,16 +65,16 @@ function check(name, ok, info) {
 
     console.log('== sheet items');
     await open(0);
-    check('bench: + Warm-up, ramp, + Drop set, Plates, Swap (in order)', J(await items()) === J(['btn-add-warmup', 'btn-warmup-ramp', 'btn-add-drop', 'btn-plates', 'exercise-swap']), await items());
-    check('the Progress item is hidden until wired', await p.eval(`(() => { const x = ${sheet}.querySelector('.btn-ex-progress'); return !x || x.hidden; })()`));
-    check('labels', J(await p.eval(`Array.from(${sheet}.querySelectorAll('#ex-actions-list button:not([hidden])')).map((x) => x.textContent.trim())`)) === J(['+ Warm-up', 'Warm-up ramp', '+ Drop set', 'Plates', 'Replace exercise']));
+    check('bench: + Warm-up, ramp, + Drop set, Plates, Swap (in order)', J(await items()) === J(['btn-add-warmup', 'btn-warmup-ramp', 'btn-add-drop', 'btn-plates', 'exercise-swap', 'btn-ex-progress']), await items());
+    check('the Progress item is visible and wired (task 3)', await p.eval(`(() => { const x = ${sheet}.querySelector('.btn-ex-progress'); return !!x && !x.hidden; })()`));
+    check('labels', J(await p.eval(`Array.from(${sheet}.querySelectorAll('#ex-actions-list button:not([hidden])')).map((x) => x.textContent.trim())`)) === J(['+ Warm-up', 'Warm-up ramp', '+ Drop set', 'Plates', 'Replace exercise', 'Progress']));
     check('sheet is in isBusy() and Back closes it', await p.eval(`(() => { const ok = isBusy(); return ok && nativeBack() === 'closed' && ${sheet}.hidden; })()`));
     check('NATIVE_BACK_CLOSE lists it', await p.eval(`NATIVE_BACK_CLOSE.some((e) => e[0] === 'modal-ex-actions' && !!document.querySelector(e[1]))`));
     await open(1);
-    check('dumbbell row: no Plates item', J(await items()) === J(['btn-add-warmup', 'btn-warmup-ramp', 'btn-add-drop', 'exercise-swap']), await items());
+    check('dumbbell row: no Plates item', J(await items()) === J(['btn-add-warmup', 'btn-warmup-ramp', 'btn-add-drop', 'exercise-swap', 'btn-ex-progress']), await items());
     await esc();
     await open(2);
-    check('assisted row: no ramp, no Plates', J(await items()) === J(['btn-add-warmup', 'btn-add-drop', 'exercise-swap']), await items());
+    check('assisted row: no ramp, no Plates', J(await items()) === J(['btn-add-warmup', 'btn-add-drop', 'exercise-swap', 'btn-ex-progress']), await items());
     await esc();
 
     console.log('== each item does what the old button did, then closes the sheet');
@@ -169,7 +169,7 @@ function check(name, ok, info) {
         n: ${sheet}.querySelectorAll('#ex-actions-list button:not([hidden])').length,
         over: ${sheet}.querySelector('.modal').scrollWidth <= ${sheet}.querySelector('.modal').clientWidth + 1,
         miss: Object.keys(I18N.en).filter((k) => k.startsWith('exactions.') && I18N[${J(lang)}][k] === undefined) })`);
-      check(lang + ': translated, 5 items, no raw key, no overflow, no missing exactions.* key', x.n === 5 && !/exactions\./.test(x.raw) && x.title.length > 0 && x.over && x.miss.length === 0 && x.aria.length > 5, x);
+      check(lang + ': translated, 6 items, no raw key, no overflow, no missing exactions.* key', x.n === 6 && !/exactions\./.test(x.raw) && x.title.length > 0 && x.over && x.miss.length === 0 && x.aria.length > 5, x);
       if (lang === 'ar') {
         check('ar: right-to-left', x.dir === 'rtl');
         const s = await p.c.send('Page.captureScreenshot', { format: 'png' });

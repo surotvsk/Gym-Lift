@@ -1215,6 +1215,26 @@
     </div>
   </div>
 
+  <!-- ============ MODAL: progres cviku ============ -->
+  <div class="modal-backdrop" id="modal-ex-progress" hidden>
+    <div class="modal modal-sheet modal-ex-progress" role="dialog" aria-modal="true" aria-labelledby="ex-progress-title">
+      <div class="sheet-head">
+        <h3 id="ex-progress-title"></h3>
+        <button type="button" class="btn-icon" id="btn-ex-progress-close" data-i18n-title="xprog.close" data-i18n-aria="xprog.close">✕</button>
+      </div>
+      <div class="sheet-scroll" id="ex-progress-body">
+        <div class="xp-stats" id="ex-progress-stats"></div>
+        <div class="xp-chips" id="ex-progress-metric" role="group" data-i18n-aria="xprog.metricGroup"></div>
+        <div class="xp-chips xp-ranges" id="ex-progress-range" role="group" data-i18n-aria="xprog.rangeGroup"></div>
+        <div class="xp-chart" id="ex-progress-chart"></div>
+        <p class="card-note xp-note" id="ex-progress-note" data-i18n="xprog.estNote" hidden></p>
+        <h4 class="sheet-label" id="ex-progress-sessions-head" data-i18n="xprog.sessions">Tréningy</h4>
+        <div class="xp-sessions" id="ex-progress-sessions"></div>
+        <button type="button" class="btn btn-secondary btn-block" id="btn-ex-progress-more" data-i18n="xprog.more" hidden>Zobraziť viac</button>
+      </div>
+    </div>
+  </div>
+
   <script src="community-config.js?v=112"></script>
   <script src="vendor/supabase-js.js?v=112"></script>
   <script src="script.js?v=112"></script>

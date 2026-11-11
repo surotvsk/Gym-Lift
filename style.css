@@ -4929,7 +4929,7 @@ html.ios .tour { --tour-top: max(34px, calc(env(safe-area-inset-top, 0px) + 34px
 .plate-row .plate-bar-custom { flex: 1 1 8rem; min-width: 0; max-width: 100%; }
 .modal-plates .chip { min-height: 44px; min-width: 44px; white-space: nowrap; }
 /* Vybraný čip v listoch kotúčov a námahy: pravidlo Bento `.chip:not(...)` (0,3,0) prebíja `.chip.active`, preto sa ide cez id + aria-pressed */
-#modal-plates .chip[aria-pressed="true"], #modal-effort .chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+#modal-plates .chip[aria-pressed="true"], #modal-effort .chip[aria-pressed="true"], #modal-ex-progress .chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
 /* Vypnutý kotúč: prerušovaný obrys, tlmený text, prečiarknutie */
 #modal-plates .plate-toggle[aria-pressed="false"] { border-style: dashed; color: var(--text-dim); text-decoration: line-through; opacity: .75; }
 /* Rozcvičky: ľahší vzhľad než pracovné série (text-dim, obrysový štvorec), rovnaké stĺpce ako riadok série */
@@ -5034,3 +5034,50 @@ html.ios .tour { --tour-top: max(34px, calc(env(safe-area-inset-top, 0px) + 34px
 }
 [dir="rtl"] .edit-more > summary::after { transform: rotate(135deg); }
 .edit-more[open] > summary::after, [dir="rtl"] .edit-more[open] > summary::after { transform: rotate(45deg); }
+
+/* Progres cviku: riadky, ktoré už existujú (rekord, história, kalendár, detail), sú teraz ťuknuteľné – bez nových tlačidiel na dlaždiciach */
+button.record-row {
+  width: 100%; margin: 0; background: none; color: inherit; font: inherit; text-align: start; cursor: pointer;
+  border-top: 0; border-inline: 0; border-radius: 0; box-shadow: none; -webkit-appearance: none; appearance: none; min-height: 44px;
+}
+button.record-row::after { content: '\203A'; flex: 0 0 auto; color: var(--text-faint); font-size: 1.25em; line-height: 1; }
+[dir="rtl"] button.record-row::after { transform: scaleX(-1); }
+.record-row > .record-main { display: block; min-width: 0; flex: 1 1 auto; }
+.record-row > .record-main > span { display: block; }
+.record-row > .record-main > .record-name { overflow-wrap: anywhere; }
+.ex-prog-link {
+  display: inline; margin: 0; padding: 0; border: 0; background: none; box-shadow: none; color: inherit; font: inherit; font-weight: inherit; line-height: inherit;
+  text-align: start; cursor: pointer; -webkit-appearance: none; appearance: none; overflow-wrap: anywhere;
+}
+/* Riadky histórie a kalendára vyzerajú rovnako ako predtým (bez šípky); ťuknutie na názov cviku otvorí progres. Tap oblasť rozširuje neviditeľný pás. */
+.ex-prog-link { position: relative; }
+.ex-prog-link::before { content: ''; position: absolute; inset: -12px -6px; }
+.ex-prog-link:focus-visible, button.record-row:focus-visible, .progress-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: var(--r-sm); }
+.progress-link {
+  display: flex; align-items: center; justify-content: space-between; width: 100%; min-height: 48px; margin-bottom: var(--sp-3); padding-block: 0; padding-inline: var(--sp-4);
+  background: var(--surface-2); color: var(--text); border: 1px solid var(--border); border-radius: 16px; font-family: inherit; font-size: var(--fs-md, 1rem); font-weight: 700; text-align: start; cursor: pointer;
+}
+.progress-link::after { content: '\203A'; color: var(--text-faint); font-size: 1.25em; }
+[dir="rtl"] .progress-link::after { transform: scaleX(-1); }
+.modal-ex-progress .sheet-scroll { padding: var(--sp-3) var(--sp-4) var(--sp-4); }
+.xp-stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--sp-2); }
+.xp-stat { display: flex; flex-direction: column; gap: 2px; padding: var(--sp-3); background: var(--surface-2); border-radius: 16px; min-width: 0; }
+.xp-stat-val { font-size: var(--fs-lg); font-weight: var(--fw-black); font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.xp-stat-label { font-size: var(--fs-xs); color: var(--text-dim); }
+.xp-chips { display: flex; flex-wrap: wrap; gap: var(--sp-2); margin-top: var(--sp-3); }
+#modal-ex-progress .xp-chips .chip { flex: 0 1 auto; min-width: 64px; min-height: 44px; box-sizing: border-box; padding: 8px 14px; border-radius: var(--r-full); }
+.xp-chart { margin-top: var(--sp-3); color: var(--accent); }
+.xp-svg { direction: ltr; display: block; width: 100%; height: auto; overflow: visible; }
+.xp-grid { stroke: var(--border); stroke-width: 1; stroke-dasharray: 3 4; }
+.xp-axis { fill: var(--text-faint); font-size: 10px; font-family: inherit; font-variant-numeric: tabular-nums; }
+.xp-compact { width: 80px; height: 24px; display: inline-block; vertical-align: middle; }
+.xp-empty { padding: var(--sp-5, 24px) var(--sp-3); text-align: center; color: var(--text-dim); font-size: var(--fs-sm); background: var(--surface-2); border-radius: 16px; }
+.xp-note { margin-top: var(--sp-1); }
+.xp-sessions { display: flex; flex-direction: column; }
+.xp-session { padding: var(--sp-3) 0; border-bottom: 1px solid var(--border); }
+.xp-session:last-child { border-bottom: 0; }
+.xp-session-head { display: flex; justify-content: space-between; gap: var(--sp-3); font-size: var(--fs-sm); }
+.xp-session-date { font-weight: var(--fw-bold); }
+.xp-session-plan { color: var(--text-dim); text-align: end; overflow-wrap: anywhere; }
+.xp-session-sets { margin-top: 2px; font-size: var(--fs-sm); color: var(--text-dim); font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+#btn-ex-progress-more { margin-top: var(--sp-2); }
