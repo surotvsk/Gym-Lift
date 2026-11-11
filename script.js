@@ -26022,21 +26022,26 @@ function suggestStep(ex) {
   }
 }
 
-/* Záznamy cviku z histórie toho istého plánu pred dňom `today`, od najnovšieho (rovnako ako previousWorkoutFor,
-   ale všetky; zhoda podľa stabilnej identity cviku). */
-function suggestSessionsFor(ex, planId, today) {
+/* Najnovšie (max. `limit`) záznamy cviku z histórie toho istého plánu pred dňom `today`, od najnovšieho.
+   Jeden prechod bez triedenia celej histórie; pri rovnakom dátume platí poradie v histórii (ako stabilné triedenie).
+   Zhoda podľa stabilnej identity cviku, rovnako ako previousWorkoutFor. */
+function suggestSessionsFor(ex, planId, today, limit = 2) {
   const plan = getPlan(planId);
   const id = exerciseIdentity(ex);
   if (!id) return [];
-  const out = [];
-  const sorted = [...state.history]
-    .filter((w) => w && typeof w.date === 'string' && w.date < today && Array.isArray(w.exercises) && samePlanAsHistory(w, plan, planId))
-    .sort((a, b) => b.date.localeCompare(a.date));
-  for (const w of sorted) {
+  const best = [];   // [{ date, entry }] zostupne podľa dátumu, najviac `limit`
+  for (const w of state.history) {
+    if (!w || typeof w.date !== 'string' || w.date >= today || !Array.isArray(w.exercises)) continue;
+    if (best.length >= limit && w.date <= best[best.length - 1].date) continue;
+    if (!samePlanAsHistory(w, plan, planId)) continue;
     const found = w.exercises.find((e) => entryIdentity(e) === id);
-    if (found) out.push(found);
+    if (!found) continue;
+    let i = best.length;
+    while (i > 0 && best[i - 1].date < w.date) i--;
+    best.splice(i, 0, { date: w.date, entry: found });
+    if (best.length > limit) best.pop();
   }
-  return out;
+  return best.map((x) => x.entry);
 }
 
 /* Zhrnutie session: top = najväčšia pracovná váha (pri asistovanom najmenšia pomoc), hit = splnené všetky
@@ -26055,49 +26060,80 @@ function suggestSummary(entry, plannedSets, plannedReps, assisted) {
   return { top, hit, rpeAvg };
 }
 
+/* Pamäť návrhov: platí len pre tú istú históriu (identita poľa + dĺžka), plán, cvik, plánované série/opakovania,
+   dnešný dátum a nastavenie kotúčov. Pri zmene niečoho z toho sa spočíta nanovo. */
+let suggestMemo = { hist: null, len: -1, map: new Map() };
+function suggestMemoReset() { suggestMemo = { hist: null, len: -1, map: new Map() }; }
+
 /* Návrh na ďalšiu session: null | { kind, weight, reps, reasonKey, vars }. Nikdy nehodí výnimku, nikdy NaN ani 0 kg. */
 function suggestNext(ex, planId, today = todayISO()) {
   try {
     if (!ex || typeof ex !== 'object' || !planId) return null;
-    const last = previousWorkoutFor(ex, today, planId);
-    if (!last || historyEntryAssisted(last) !== isAssisted(ex)) return null;
+    const hist = state.history;
+    if (suggestMemo.hist !== hist || suggestMemo.len !== hist.length) suggestMemo = { hist, len: hist.length, map: new Map() };
+    const key = [planId, exerciseIdentity(ex), ex.reps, ex.sets, isAssisted(ex), today, JSON.stringify(plateSettings())].join('|');
+    if (suggestMemo.map.has(key)) return suggestMemo.map.get(key);
+    const res = suggestCompute(ex, planId, today);
+    suggestMemo.map.set(key, res);
+    return res;
+  } catch (err) {
+    return null;
+  }
+}
+
+function suggestCompute(ex, planId, today) {
+  try {
     const assisted = isAssisted(ex);
     const planned = insightPosInt(ex.reps);
     if (planned === null || planned < 1) return null;
     const plannedSets = insightPosInt(ex.sets) || 0;
+    const list = suggestSessionsFor(ex, planId, today, 2);
+    const last = list[0];
+    if (!last || historyEntryAssisted(last) !== assisted) return null;
+    /* Posledná session sa posudzuje podľa dnešného riadku plánu; staršia podľa vlastných `reps`/`sets`
+       (plán, aký bol vtedy), inak by zvýšenie cieľa spätne „pokazilo“ staré tréningy. */
     const cur = suggestSummary(last, plannedSets, planned, assisted);
     if (!cur || !(cur.top > 0)) return null;
-    const list = suggestSessionsFor(ex, planId, today);
-    const at = list.indexOf(last);
-    const before = at >= 0 ? list[at + 1] : null;
-    const prev = before ? suggestSummary(before, plannedSets, planned, assisted) : null;
+    const before = list[1];
+    const prev = before ? suggestSummary(before, insightPosInt(before.sets) || 0, insightPosInt(before.reps) || planned, assisted) : null;
     const step = suggestStep(ex);
     const top = cur.top;
-    const barbell = isBarbellExercise(ex);
     const cfg = plateSettings();
     const bar = Number(cfg.bar) || 0;
+    /* Kotúče sa použijú len pre činkový cvik z knižnice, alebo keď vlastný cvik má aspoň váhu tyče;
+       ľahší vlastný cvik (napr. 10 kg veslovanie pri 20 kg tyči) sa zaokrúhľuje na krok. */
+    const plates = isBarbellExercise(ex) && (!!libraryEntry(builtinExerciseId(ex)) || top >= bar);
     const EPS = 1e-9;
-    /* mode: 'down' = nadol na krok / zostaviteľnú, 'up' = nahor, 'near' = na najbližší krok */
+    /* mode: 'down' = nadol na krok / zostaviteľnú, 'up' = nahor, 'near' = na najbližší krok (pri polovici nahor) */
     const fit = (w, mode) => {
       if (!Number.isFinite(w) || w < 0) return 0;
-      if (barbell) return Math.max(bar, roundToPlates(w, cfg));
+      if (plates) return Math.max(bar, roundToPlates(w, cfg));
       const q = w / step;
       const n = mode === 'down' ? Math.floor(q + EPS) : mode === 'up' ? Math.ceil(q - EPS) : Math.round(q);
       return Math.round(n * step * 100) / 100;
     };
     let kind, weight;
-    if (cur && !cur.hit && prev && !prev.hit) {
+    if (!cur.hit && prev && !prev.hit) {
       kind = assisted ? 'moreHelp' : 'reset';
       weight = assisted ? fit(top * 1.1, 'up') : fit(top * 0.9, 'down');
     } else if (!cur.hit || (cur.rpeAvg !== null && cur.rpeAvg >= 9.5)) {
+      /* Pozn.: reset má prednosť len keď boli OBE posledné session pod cieľom; splnená session s RPE ≥ 9,5 dá keep. */
       kind = assisted ? 'keepHelp' : 'keep';
-      weight = barbell ? fit(top, 'down') : top;
-    } else if (cur.rpeAvg !== null && cur.rpeAvg <= 7) {
-      kind = assisted ? 'lessHelp' : 'up2';
-      weight = assisted ? fit(Math.max(0, top - 2 * step), 'near') : fit(top + 2 * step, 'near');
+      weight = plates ? fit(top, 'down') : top;
     } else {
-      kind = assisted ? 'lessHelp' : 'up';
-      weight = assisted ? fit(Math.max(0, top - step), 'near') : fit(top + step, 'near');
+      const easy = cur.rpeAvg !== null && cur.rpeAvg <= 7;
+      /* Asistovaný: zrkadlo – menej pomoci; up2 (ľahké) znamená top − 2·krok, up top − krok. */
+      const mult = easy ? 2 : 1;
+      kind = assisted ? 'lessHelp' : (easy ? 'up2' : 'up');
+      weight = assisted ? fit(Math.max(0, top - mult * step), 'near') : fit(top + mult * step, 'near');
+      if (!assisted && plates && weight <= top) {
+        /* Zaokrúhlenie na kotúče vrátilo pôvodnú váhu: najbližšia zostaviteľná nad `top`, inak keep. */
+        let found = null;
+        for (let c = top + 0.25; c <= top + 4 * step + EPS; c += 0.25) {
+          if (roundToPlates(c, cfg) > top + EPS) { found = roundToPlates(c, cfg); break; }
+        }
+        if (found === null) { kind = 'keep'; weight = fit(top, 'down'); } else weight = found;
+      }
     }
     if (!Number.isFinite(weight) || weight < 0) return null;
     if (!assisted && !(weight > 0)) return null;

@@ -162,18 +162,82 @@ function check(name, ok, info) {
     console.log('== plates rounding');
     await p.eval(`(state.settings.plates = { bar: 15, plates: [25, 20, 15, 10, 5, 2.5, 1.25] }, true)`);
     await set([W('2026-11-01', bench({ weight: 16 }))]);
-    r = await S(`suggestNext(Object.assign(exBench(), { reps: 5 }), 'sp', T)`);
-    check('15 kg bar, odd 16 -> up rounds down to buildable (>= 15, multiple of 2.5 above bar)', r && r.weight >= 15 && ((r.weight - 15) / 2.5) % 1 === 0 && r.weight <= 18.5, r);
+    r = await next();
+    check('15 kg bar, top 16 -> up 17.5 exactly (15 + 2 x 1.25)', r && r.kind === 'up' && r.weight === 17.5, r);
     await set([W('2026-11-01', bench({ weight: 10 }))]);
     r = await next();
-    check('top below the bar -> never below the bar (15)', r && r.weight >= 15, r);
+    check('library barbell, top below the bar -> exactly the bar (15)', r && r.weight === 15, r);
     await set([W('2026-11-01', bench({ weight: 17, setReps: [5, 5, 4] }))]);
     r = await next();
-    check('keep at an unbuildable 17 -> buildable 15..17', r && r.kind === 'keep' && r.weight >= 15 && r.weight <= 17, r);
+    check('keep at an unbuildable 17 -> exactly 15', r && r.kind === 'keep' && r.weight === 15, r);
     await set([W('2026-11-01', bench({ weight: 16, setReps: [5, 5, 4] })), W('2026-11-04', bench({ weight: 16, setReps: [5, 4, 4] }))]);
     r = await next();
-    check('reset near the bar never below the bar', r && r.kind === 'reset' && r.weight >= 15, r);
+    check('reset near the bar -> exactly the bar (15)', r && r.kind === 'reset' && r.weight === 15, r);
     await p.eval(`(delete state.settings.plates, true)`);
+
+    console.log('== fix round 1');
+    await p.eval(`(state.settings.plates = { bar: 20, plates: [25, 20, 15, 10, 5, 2.5, 1.25] }, true)`);
+    const exCust = `{ name: 'Light row', sets: 3, reps: 8, weight: 10 }`;
+    await set([W('2026-11-01', { name: 'Light row', sets: 3, reps: 8, weight: 10 })]);
+    r = await S(`suggestNext(${exCust}, 'sp', T)`);
+    check('custom 10 kg row, 20 kg bar -> up 12.5 (step rounding, not the bar)', r && r.kind === 'up' && r.weight === 12.5, r);
+    await set([W('2026-11-01', { name: 'Light row', sets: 3, reps: 8, weight: 10, setReps: [8, 8, 7] })]);
+    r = await S(`suggestNext(${exCust}, 'sp', T)`);
+    check('custom 10 kg row, short -> keep 10', r && r.kind === 'keep' && r.weight === 10, r);
+    await set([W('2026-11-01', { name: 'Light row', sets: 3, reps: 8, weight: 30 })]);
+    r = await S(`suggestNext({ name: 'Light row', sets: 3, reps: 8, weight: 30 }, 'sp', T)`);
+    check('custom 30 kg (>= bar) still uses plates -> 32.5', r && r.weight === 32.5, r);
+    await p.eval(`(state.settings.plates = { bar: 20, plates: [25, 20, 15, 10, 5, 2.5] }, true)`);
+    await set([W('2026-11-01', bench())]);
+    r = await next();
+    check('no 1.25 plates, top 100 -> up 105 (next buildable above top)', r && r.kind === 'up' && r.weight === 105, r);
+    await p.eval(`(state.settings.plates = { bar: 20, plates: [25] }, true)`);
+    await set([W('2026-11-01', bench({ weight: 120 }))]);
+    r = await next();
+    check('plates [25] only, top 120: no buildable weight within reach -> keep 120', r && r.kind === 'keep' && r.weight === 120, r);
+    await p.eval(`(delete state.settings.plates, true)`);
+    // earlier sessions are judged against their own reps/sets
+    await set([W('2026-11-01', bench({ reps: 5, setReps: [5, 5, 5] })), W('2026-11-04', bench({ reps: 5, setReps: [6, 6, 6] }))]);
+    r = await S(`suggestNext({ id: 'bench-press', builtin: true, name: 'Bench press', sets: 3, reps: 8, weight: 100 }, 'sp', T)`);
+    check('plan reps raised 5 -> 8: latest misses 8, earlier hit its own 5 -> keep, not reset', r && r.kind === 'keep', r);
+    await set([W('2026-11-01', bench({ reps: 5, setReps: [5, 5, 4] })), W('2026-11-04', bench({ reps: 8, setReps: [7, 7, 7] }))]);
+    r = await S(`suggestNext({ id: 'bench-press', builtin: true, name: 'Bench press', sets: 3, reps: 8, weight: 100 }, 'sp', T)`);
+    check('both missed their own targets -> reset', r && r.kind === 'reset', r);
+    // precedence
+    await set([W('2026-11-01', bench({ setReps: [5, 5, 4] })), W('2026-11-04', bench({ setRpe: [10, 10, 9.5] }))]);
+    r = await next();
+    check('short, then HIT with RPE >= 9.5 -> keep (reset needs BOTH short; keep wins)', r && r.kind === 'keep' && r.weight === 100, r);
+    await set([W('2026-11-01', bench({ setReps: [5, 5, 4] })), W('2026-11-04', bench({ setReps: [5, 5, 4], setRpe: [6, 6, 6] }))]);
+    r = await next();
+    check('two short sessions beat low RPE -> reset', r && r.kind === 'reset', r);
+    // assisted mismatch
+    await set([W('2026-11-01', { name: 'Pull-ups assisted', sets: 3, reps: 5, weight: 30 })]);
+    check('plan row assisted, history entry not -> null', await S(`suggestNext({ name: 'Pull-ups assisted', assisted: true, sets: 3, reps: 5, weight: 30 }, 'sp', T)`) === null);
+    await set([W('2026-11-01', { name: 'Pull-ups assisted', assisted: true, sets: 3, reps: 5, weight: 30 })]);
+    check('history entry assisted, plan row not -> null', await S(`suggestNext({ name: 'Pull-ups assisted', sets: 3, reps: 5, weight: 30 }, 'sp', T)`) === null);
+    // empty earlier session
+    await set([W('2026-11-01', bench({ setsDone: 0 })), W('2026-11-04', bench({ setReps: [5, 5, 4] }))]);
+    r = await next();
+    check('empty earlier session + short latest -> keep, no reset', r && r.kind === 'keep', r);
+    // dumbbell nearest step (ties round up): 9 + 2 = 11 -> 12
+    await set([W('2026-11-01', { exId: 'lateral-raises', name: 'Lateral raises', sets: 3, reps: 12, weight: 9 })]);
+    r = await S(`suggestNext({ id: 'lateral-raises', builtin: true, name: 'Lateral raises', sets: 3, reps: 12, weight: 9 }, 'sp', T)`);
+    check('dumbbell top 9, step 2 -> nearest step 12 (11 is a tie and rounds up)', r && r.kind === 'up' && r.weight === 12, r);
+
+    console.log('== performance / memo');
+    const timing = await S(`(() => {
+      const hs = []; for (let i = 0; i < 1000; i++) { const d = new Date(Date.UTC(2024, 0, 1 + i)).toISOString().slice(0, 10); hs.push({ date: d, exercises: [{ exId: 'bench-press', name: 'Bench press', sets: 3, reps: 5, weight: 60 + (i % 20) }, { exId: 'squats', name: 'Squats', sets: 3, reps: 5, weight: 80 }] }); }
+      hist(hs);
+      const exs = []; for (let i = 0; i < 10; i++) exs.push({ id: i % 2 ? 'squats' : 'bench-press', builtin: true, name: 'x', sets: 3, reps: 5 + (i % 3), weight: 60 });
+      suggestMemoReset();
+      const t0 = performance.now(); const first = exs.map((e) => suggestNext(e, 'sp', '2030-01-01')); const t1 = performance.now();
+      const again = exs.map((e) => suggestNext(e, 'sp', '2030-01-01')); const t2 = performance.now();
+      return { cold: t1 - t0, warm: t2 - t1, same: JSON.stringify(first) === JSON.stringify(again), ok: first.every(Boolean) };
+    })()`);
+    check('1000-workout history, 10 tiles: cold < 30 ms', timing.cold < 30 && timing.ok, timing);
+    check('second pass is memoised and identical', timing.same && timing.warm < timing.cold + 1, timing);
+    await p.eval(`(state.history.push({ id: 'zz', date: '2029-12-30', planId: 'sp', planName: 'SP', exercises: [{ exId: 'bench-press', name: 'Bench press', sets: 3, reps: 5, weight: 200 }] }), true)`);
+    check('memo is invalidated when the history grows', await S(`suggestNext({ id: 'bench-press', builtin: true, name: 'x', sets: 3, reps: 5, weight: 60 }, 'sp', '2030-01-01').weight`) === 202.5);
 
     console.log('== reasons: 7 kinds, 6 languages');
     const kinds = ['up', 'up2', 'keep', 'reset', 'lessHelp', 'keepHelp', 'moreHelp'];
