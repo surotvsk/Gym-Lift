@@ -45,6 +45,9 @@ const TOKEN = 'h.' + b64u({ email: 'Nova.Osoba@Example.test', sub: '1' }) + '.s'
     await ev(`__ga.signinError = { code: 'unexpected_failure', message: 'Database error saving new user' }; communityGoogleSignIn(false)`);
     await new Promise(r => setTimeout(r, 200));
     t.check('unticked new user: the new age message, no ticket', (await msg()) === await ev(`t('google.ageFirst')`) && await ev(`!__ga.calls.some(c => c.startsWith('rpc'))`), await msg());
+    await ev(`__ga.calls = []; __ga.signinError = { status: 500, message: 'Database error saving new user' }; communityGoogleSignIn(false)`);
+    await new Promise((r) => setTimeout(r, 400));
+    t.check('unticked new user, error without a code (status 500 only): still the age message', (await msg()) === await ev(`t('google.ageFirst')`), await msg());
 
     t.check('signed-out v12: probe (not community_social_version) opens the gate, calls before sign-in', await ev(`communityVersion === 0 && googleAgeSupported === true`));
     await card(true, 12); await checkbox(true);

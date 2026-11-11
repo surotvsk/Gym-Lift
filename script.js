@@ -20107,11 +20107,14 @@ async function communityGoogleSignIn(link) {
     const result = link ? await sb.auth.linkIdentity(input) : await sb.auth.signInWithIdToken(input);
     if (result.error) {
       const code = String(result.error.code || '');
-      // Bez zaškrtnutého 16+ server nového používateľa odmietne (GoTrue to hlási ako unexpected_failure)
-      if (ageServer && !ageTicked && (code === 'unexpected_failure' || /age_confirmation_required/.test(String(result.error.message || '')))) {
+      /* Bez zaškrtnutého 16+ server nového používateľa odmietne. GoTrue to hlási ako unexpected_failure,
+         pribalená knižnica však kód nemusí preniesť – vtedy len stav 500 a "Database error saving new user". */
+      const refused = code === 'unexpected_failure' || Number(result.error.status) === 500
+        || /age_confirmation_required|database error saving new user/i.test(String(result.error.message || ''));
+      if (ageServer && !ageTicked && refused) {
         googleAuthMessage('google.ageFirst', link); return;
       }
-      googleAuthMessage(/identity|email.*confirm|user_already_exists|unexpected_failure/.test(code) ? 'google.passwordFirst' : 'google.error', link);
+      googleAuthMessage(refused || /identity|email.*confirm|user_already_exists/.test(code) ? 'google.passwordFirst' : 'google.error', link);
       return;
     }
     const current = await sb.auth.getSession();
