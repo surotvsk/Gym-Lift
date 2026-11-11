@@ -224,20 +224,40 @@ function check(name, ok, info) {
     r = await S(`suggestNext({ id: 'lateral-raises', builtin: true, name: 'Lateral raises', sets: 3, reps: 12, weight: 9 }, 'sp', T)`);
     check('dumbbell top 9, step 2 -> nearest step 12 (11 is a tie and rounds up)', r && r.kind === 'up' && r.weight === 12, r);
 
+    console.log('== same last session as the comparison hint');
+    await set([W('2026-11-01', { name: 'Row', sets: 3, reps: 8, weight: 20 }), W('2026-11-04', { name: 'row ', sets: 3, reps: 8, weight: 50 })]);
+    r = await S(`suggestNext({ name: 'Row', sets: 3, reps: 8, weight: 20 }, 'sp', T)`);
+    check('name differing in case/spacing is not the same entry: chip uses the exact-name session (20 -> 22.5), like previousWorkoutFor',
+      r && r.weight === 22.5 && await S(`previousWorkoutFor({ name: 'Row', sets: 3, reps: 8, weight: 20 }, T, 'sp').weight`) === 20, r);
+    const rowA = await S(`suggestNext({ name: 'ROW', sets: 3, reps: 8, weight: 20 }, 'sp', T)`), rowB = await S(`previousWorkoutFor({ name: 'ROW' }, T, 'sp')`);
+    check('no match for a differently written name -> null and previousWorkoutFor (the hint) agrees', rowA === null && rowB === null, [rowA, rowB]);
+    await set([W('2026-11-01', bench({ weight: 90 })), W('2026-11-04', bench({ weight: 100 }))]);
+    check('last = previousWorkoutFor for a library exercise (weight 100 -> 102.5)',
+      (await next()).weight === 102.5 && await S(`previousWorkoutFor(exBench(), T, 'sp').weight`) === 100);
+
     console.log('== performance / memo');
     const timing = await S(`(() => {
-      const hs = []; for (let i = 0; i < 1000; i++) { const d = new Date(Date.UTC(2024, 0, 1 + i)).toISOString().slice(0, 10); hs.push({ date: d, exercises: [{ exId: 'bench-press', name: 'Bench press', sets: 3, reps: 5, weight: 60 + (i % 20) }, { exId: 'squats', name: 'Squats', sets: 3, reps: 5, weight: 80 }] }); }
+      const hs = []; for (let i = 0; i < 1000; i++) { const d = new Date(Date.UTC(2024, 0, 1 + i)).toISOString().slice(0, 10); hs.push({ date: d, planId: 'sp', exercises: [{ exId: 'bench-press', name: 'Bench press', sets: 3, reps: 5, weight: 60 + (i % 20) }, { exId: 'squats', name: 'Squats', sets: 3, reps: 5, weight: 80 }] }); }
       hist(hs);
       const exs = []; for (let i = 0; i < 10; i++) exs.push({ id: i % 2 ? 'squats' : 'bench-press', builtin: true, name: 'x', sets: 3, reps: 5 + (i % 3), weight: 60 });
       suggestMemoReset();
       const t0 = performance.now(); const first = exs.map((e) => suggestNext(e, 'sp', '2030-01-01')); const t1 = performance.now();
-      const again = exs.map((e) => suggestNext(e, 'sp', '2030-01-01')); const t2 = performance.now();
-      return { cold: t1 - t0, warm: t2 - t1, same: JSON.stringify(first) === JSON.stringify(again), ok: first.every(Boolean) };
+      const h0 = suggestMemoHits;
+      const again = exs.map((e) => suggestNext(e, 'sp', '2030-01-01'));
+      return { cold: t1 - t0, nonNull: first.filter(Boolean).length, kinds: first.map((x) => x && x.kind).join(), hits: suggestMemoHits - h0, identical: first.every((x, i) => x === again[i]), frozen: Object.isFrozen(first[0]) && Object.isFrozen(first[0].vars) };
     })()`);
-    check('1000-workout history, 10 tiles: cold < 30 ms', timing.cold < 30 && timing.ok, timing);
-    check('second pass is memoised and identical', timing.same && timing.warm < timing.cold + 1, timing);
+    check('timing fixture yields 10 non-null suggestions (planId matches)', timing.nonNull === 10, timing);
+    check('1000 workouts, 10 tiles: cold < 30 ms', timing.cold < 30, timing);
+    check('second pass hits the memo 10 times and returns the identical frozen objects', timing.hits === 10 && timing.identical && timing.frozen, timing);
     await p.eval(`(state.history.push({ id: 'zz', date: '2029-12-30', planId: 'sp', planName: 'SP', exercises: [{ exId: 'bench-press', name: 'Bench press', sets: 3, reps: 5, weight: 200 }] }), true)`);
     check('memo is invalidated when the history grows', await S(`suggestNext({ id: 'bench-press', builtin: true, name: 'x', sets: 3, reps: 5, weight: 60 }, 'sp', '2030-01-01').weight`) === 202.5);
+    // in-place edit of a finished workout with the same length, through the real save path
+    await set([W('2026-11-01', bench({ weight: 100 }))]);
+    check('before the edit: up 102.5', (await next()).weight === 102.5);
+    await p.eval(`(() => { heWorkoutId = 'h0'; heOriginal = []; document.getElementById('he-date').value = '2026-11-01'; state.history[0].exercises[0].weight = 120; state.history[0].exercises[0].setsDone = 3; saveHistoryEdit(); return true; })()`);
+    check('after saveHistoryEdit (same length): the suggestion follows the edit -> 122.5', (await next()).weight === 122.5, await next());
+    check('after an in-place plate-settings edit via saveState the memo is dropped', await S(`(() => { state.settings.plates = { bar: 20, plates: [25, 20, 15, 10, 5, 2.5] }; saveState(); const w = suggestNext(exBench(), 'sp', T).weight; delete state.settings.plates; saveState(); return w; })()`) === 125);
+    check('a frozen result cannot be corrupted by the caller', await S(`(() => { const x = suggestNext(exBench(), 'sp', T); try { x.weight = 1; x.vars.kg = 1; } catch (e) {} return suggestNext(exBench(), 'sp', T).weight !== 1; })()`));
 
     console.log('== reasons: 7 kinds, 6 languages');
     const kinds = ['up', 'up2', 'keep', 'reset', 'lessHelp', 'keepHelp', 'moreHelp'];

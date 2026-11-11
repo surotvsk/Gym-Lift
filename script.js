@@ -10759,6 +10759,7 @@ function showStorageWarning(on) {
 
 /* Trvalý zápis stavu aktívneho priestoru na zariadenie (bez označenia zmeny). */
 function persistState() {
+  suggestMemoReset();   // návrhy váhy závisia od histórie, plánu aj nastavení
   xpCacheClear();   // odvodené XP sa po zmene stavu prepočíta
   if (appYielded) return false;   // aplikáciu prevzala iná karta – táto už nezapisuje
   try {
@@ -23705,6 +23706,7 @@ function saveHistoryEdit() {
 /* ---------- Rekalkulácia ---------- */
 
 function recalculateAll() {
+  suggestMemoReset();   // render pred uložením nesmie použiť starý návrh
   reconcileAchievements();
   renderAll();
 }
@@ -26024,17 +26026,18 @@ function suggestStep(ex) {
 
 /* Najnovšie (max. `limit`) záznamy cviku z histórie toho istého plánu pred dňom `today`, od najnovšieho.
    Jeden prechod bez triedenia celej histórie; pri rovnakom dátume platí poradie v histórii (ako stabilné triedenie).
-   Zhoda podľa stabilnej identity cviku, rovnako ako previousWorkoutFor. */
+   Zhoda cviku presne ako v previousWorkoutFor (id zabudovaného cviku, inak názov), takže návrh a porovnanie
+   (comparisonHint) vždy vychádzajú z tej istej „poslednej session“. */
 function suggestSessionsFor(ex, planId, today, limit = 2) {
   const plan = getPlan(planId);
-  const id = exerciseIdentity(ex);
-  if (!id) return [];
+  const bid = builtinExerciseId(ex);
+  const matches = (e) => !!e && ((bid && e.exId === bid) || (!bid && e.name === ex.name));
   const best = [];   // [{ date, entry }] zostupne podľa dátumu, najviac `limit`
   for (const w of state.history) {
     if (!w || typeof w.date !== 'string' || w.date >= today || !Array.isArray(w.exercises)) continue;
     if (best.length >= limit && w.date <= best[best.length - 1].date) continue;
     if (!samePlanAsHistory(w, plan, planId)) continue;
-    const found = w.exercises.find((e) => entryIdentity(e) === id);
+    const found = w.exercises.find(matches);
     if (!found) continue;
     let i = best.length;
     while (i > 0 && best[i - 1].date < w.date) i--;
@@ -26061,8 +26064,10 @@ function suggestSummary(entry, plannedSets, plannedReps, assisted) {
 }
 
 /* Pamäť návrhov: platí len pre tú istú históriu (identita poľa + dĺžka), plán, cvik, plánované série/opakovania,
-   dnešný dátum a nastavenie kotúčov. Pri zmene niečoho z toho sa spočíta nanovo. */
+   dnešný dátum a nastavenie kotúčov. Pri zmene niečoho z toho sa spočíta nanovo.
+   Volá sa aj z persistState/recalculateAll, takže úprava histórie, plánu či nastavení na mieste nikdy nenechá starý návrh. */
 let suggestMemo = { hist: null, len: -1, map: new Map() };
+let suggestMemoHits = 0;   // počet zásahov pamäte (pre test)
 function suggestMemoReset() { suggestMemo = { hist: null, len: -1, map: new Map() }; }
 
 /* Návrh na ďalšiu session: null | { kind, weight, reps, reasonKey, vars }. Nikdy nehodí výnimku, nikdy NaN ani 0 kg. */
@@ -26071,9 +26076,10 @@ function suggestNext(ex, planId, today = todayISO()) {
     if (!ex || typeof ex !== 'object' || !planId) return null;
     const hist = state.history;
     if (suggestMemo.hist !== hist || suggestMemo.len !== hist.length) suggestMemo = { hist, len: hist.length, map: new Map() };
-    const key = [planId, exerciseIdentity(ex), ex.reps, ex.sets, isAssisted(ex), today, JSON.stringify(plateSettings())].join('|');
-    if (suggestMemo.map.has(key)) return suggestMemo.map.get(key);
-    const res = suggestCompute(ex, planId, today);
+    const key = [planId, builtinExerciseId(ex) || ('n:' + ex.name), ex.reps, ex.sets, isAssisted(ex), isBarbellExercise(ex), suggestStep(ex), today, JSON.stringify(plateSettings())].join('|');
+    if (suggestMemo.map.has(key)) { suggestMemoHits++; return suggestMemo.map.get(key); }
+    let res = suggestCompute(ex, planId, today);
+    if (res) res = Object.freeze(Object.assign({}, res, { vars: Object.freeze(Object.assign({}, res.vars)) }));   // zmrazené: volajúci nepokazí pamäť
     suggestMemo.map.set(key, res);
     return res;
   } catch (err) {
@@ -26100,8 +26106,8 @@ function suggestCompute(ex, planId, today) {
     const top = cur.top;
     const cfg = plateSettings();
     const bar = Number(cfg.bar) || 0;
-    /* Kotúče sa použijú len pre činkový cvik z knižnice, alebo keď vlastný cvik má aspoň váhu tyče;
-       ľahší vlastný cvik (napr. 10 kg veslovanie pri 20 kg tyči) sa zaokrúhľuje na krok. */
+    /* Rozhodnutie: kotúče sa použijú len pre činkový cvik z knižnice, alebo keď vlastný cvik má aspoň váhu tyče.
+       Ľahší vlastný cvik (napr. 10 kg veslovanie pri 20 kg tyči) sa zaokrúhľuje na krok a smie byť pod tyčou. */
     const plates = isBarbellExercise(ex) && (!!libraryEntry(builtinExerciseId(ex)) || top >= bar);
     const EPS = 1e-9;
     /* mode: 'down' = nadol na krok / zostaviteľnú, 'up' = nahor, 'near' = na najbližší krok (pri polovici nahor) */
