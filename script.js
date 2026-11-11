@@ -11711,6 +11711,7 @@ function renderBento(info) {
   if (hintEl) {
     const hint = recoveryHintForToday();
     hintEl.textContent = hint || '';
+    if (hint) { hintEl.title = hint; hintEl.setAttribute('aria-label', hint); } else { hintEl.removeAttribute('title'); hintEl.removeAttribute('aria-label'); }
     hintEl.hidden = !hint;
   }
   const img = document.getElementById('bt-next-img');

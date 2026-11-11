@@ -216,15 +216,32 @@ const XSS = `<img src=x onerror=window.__xss=1>"'`;
       const h = document.getElementById('bt-recovery-hint'); const tile = document.getElementById('bt-next');
       let bg = parse(getComputedStyle(tile).backgroundColor); if (bg.a < 1) { const body = parse(getComputedStyle(document.body).backgroundColor); bg = { r: bg.r * bg.a + body.r * (1 - bg.a), g: bg.g * bg.a + body.g * (1 - bg.a), b: bg.b * bg.a + body.b * (1 - bg.a), a: 1 }; }
       if (${photo}) bg = { r: bg.r * .62 + 255 * .38, g: bg.g * .62 + 255 * .38, b: bg.b * .62 + 255 * .38, a: 1 };   // najhorší prípad: biela fotka pri krytí .38
-      const fgc = parse(getComputedStyle(h).color), op = parseFloat(getComputedStyle(h).opacity);
+      // scrim: the hint's own translucent background is composited over the tile (and photo) before measuring
+      const hs = getComputedStyle(h), sc = parse(hs.backgroundColor);
+      const plain = bg;   // tile only, no scrim: used for the "quieter than the plan line" comparison
+      bg = { r: bg.r * (1 - sc.a) + sc.r * sc.a, g: bg.g * (1 - sc.a) + sc.g * sc.a, b: bg.b * (1 - sc.a) + sc.b * sc.a, a: 1 };
+      const fgc = parse(hs.color), op = parseFloat(hs.opacity);
       const fg = { r: fgc.r * op + bg.r * (1 - op), g: fgc.g * op + bg.g * (1 - op), b: fgc.b * op + bg.b * (1 - op) };
-      const a = lum(fg) + 0.05, c = lum(bg) + 0.05; return Math.round(Math.max(a, c) / Math.min(a, c) * 100) / 100; })()`;
+      const a = lum(fg) + 0.05, c = lum(bg) + 0.05;
+      const ratio = Math.round(Math.max(a, c) / Math.min(a, c) * 100) / 100;
+      // hierarchy rule: against the same plain tile (no scrim, no photo) the hint's text contrast must be LOWER than the plan line's
+      // (plan line = .bt-line colour at its opacity), and the hint font must not be larger than the plan line's.
+      const pl = document.getElementById('dnes-next-plan'), ps = getComputedStyle(pl), pc = parse(ps.color), po = parseFloat(ps.opacity);
+      const pfg = { r: pc.r * po + plain.r * (1 - po), g: pc.g * po + plain.g * (1 - po), b: pc.b * po + plain.b * (1 - po) };
+      const cr = (x, y) => { const p = lum(x) + 0.05, q = lum(y) + 0.05; return Math.max(p, q) / Math.min(p, q); };
+      const hfg0 = { r: fgc.r * op + plain.r * (1 - op), g: fgc.g * op + plain.g * (1 - op), b: fgc.b * op + plain.b * (1 - op) };
+      const hr = Math.round(h.getBoundingClientRect().height * 100) / 100, lh = parseFloat(hs.lineHeight);
+      return { ratio, hintVsPlain: Math.round(cr(hfg0, plain) * 100) / 100, planVsPlain: Math.round(cr(pfg, plain) * 100) / 100,
+        hintPx: parseFloat(hs.fontSize), planPx: parseFloat(ps.fontSize), hintOpacity: op, scrimA: sc.a, hintH: hr, lineH: lh,
+        scrollW: h.scrollWidth, clientW: h.clientWidth, ws: hs.whiteSpace, tt: h.title }; })()`;
     for (const mode of ['light', 'dark']) {
       await ev(`(document.documentElement.setAttribute('data-theme', ${J(mode)}), switchTab('dnes'), renderDnes(), true)`); await wait(150);
       const shown = await ev(`!document.getElementById('bt-recovery-hint').hidden`);
-      const c = await ev(CON(false)), cw = await ev(CON(true));
-      check(mode + ': hint text contrast against the plain tile >= 4.5 (' + c + ')', shown && c >= 4.5, c);
-      check(mode + ': hint text contrast over the brightest possible photo (white at .38) >= 4.5 (' + cw + ')', cw >= 4.5, cw);
+      const R = await ev(CON(false)), RW = await ev(CON(true)); const c = R.ratio, cw = RW.ratio;
+      check(mode + ': hint text contrast (with its scrim) against the plain tile >= 4.5 (' + c + ')', shown && R.scrimA > 0 && c >= 4.5, R);
+      check(mode + ': hint text contrast (with its scrim) over the brightest possible photo (white at .38) >= 4.5 (' + cw + ')', cw >= 4.5, RW);
+      check(mode + ': hint is quieter than the plan line (contrast on the tile ' + R.hintVsPlain + ' < ' + R.planVsPlain + ', font ' + R.hintPx + ' <= ' + R.planPx + ', solid colour not opacity)', R.hintVsPlain < R.planVsPlain && R.hintPx <= R.planPx && R.hintOpacity === 1, R);
+      check(mode + ': hint is a single line (height ' + R.hintH + ' <= 1.5 x line-height ' + R.lineH + ') and the full text stays in title', R.hintH <= R.lineH * 1.5 && R.ws === 'nowrap' && R.tt.length > 10, R);
       await ev(`(document.getElementById('bt-next-img').hidden = false, true)`);
     }
 
