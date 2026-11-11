@@ -95,6 +95,9 @@ async function roundtrip({ ref, newSrv, oldSrv, A, obsA }) {
   check('[' + label + '] new device seeded: plan keeps group + warmupRamp, settings.plates.bar 15, effort rir', core0.plans.gb1[0].group === 'g1' && core0.plans.gb1[1].group === 'g1' && core0.plans.gb1[0].warmupRamp === true && core0.plates && core0.plates.bar === 15 && core0.effort === 'rir', core0);
   const p0 = c0 && c0.payload;
   check('[' + label + '] uploaded: payload carries the new fields', !!p0 && p0.plans.gb1.exercises[0].group === 'g1' && p0.plans.gb1.exercises[0].warmupRamp === true && canon(p0.history[0]) === canon(core0.hist[0]) && p0.settings.plates.bar === 15 && p0.settings.effort === 'rir', p0 && p0.settings);
+  /* Fáza 2: endedAt (záznam) a doneSets (cviky) zapísané novým ukončením musia prežiť staré buildy nezmenené. */
+  const END0 = h0.endedAt, DS0 = e0.map((x) => (x.doneSets === undefined ? null : x.doneSets));
+  check('[' + label + '] new device seeded: entry has a numeric endedAt and exact doneSets on the exercises', Number.isFinite(END0) && END0 > 0 && J(DS0[0]) === J([1, 2, 3]) && J(DS0[1]) === J([1, 2, 3]), { END0, DS0 });
   const s0 = await n.p.eval('__gq.snap()');
   check('[' + label + '] new device is synced with nothing pending', s0.status === 'sync.st.synced' && s0.dirty === false, s0.status);
 
@@ -145,6 +148,8 @@ async function roundtrip({ ref, newSrv, oldSrv, A, obsA }) {
   check('[' + label + '] old build uploaded exactly one new revision, synced, no conflict', c1.revision === c0.revision + 1 && so.status === 'sync.st.synced' && !(so.meta && so.meta.conflict), { rev: [c0.revision, c1.revision], st: so.status });
   const hx = c1.payload.history.find((h) => h.id === core0.hist[0].id);
   check('[' + label + '] cloud payload: the edited history entry is present with 4 sets for exercise 0 and the same exercises (names, count)', !!hx && hx.exercises[0].sets === 4 && J(hx.exercises.map((e) => e.name)) === J(core0.hist[0].exercises.map((e) => e.name)), hx);
+  const hx2 = hx || {};
+  check('[' + label + '] cloud payload after the old build: endedAt unchanged, doneSets unchanged on every exercise (old build kept them)', hx2.endedAt === END0 && J((hx2.exercises || []).map((x) => (x.doneSets === undefined ? null : x.doneSets))) === J(DS0), { endedAt: hx2.endedAt, END0, ds: (hx2.exercises || []).map((x) => x.doneSets) });
   check('[' + label + '] cloud payload: settings.plates + settings.effort intact', canon(c1.payload.settings.plates) === canon(core0.plates) && c1.payload.settings.effort === 'rir', c1.payload.settings);
   const gx = c1.payload.plans.gb1.exercises;
   check('[' + label + '] cloud payload: edited plan gb1 is valid (rows, sets, weights intact; reps edited; group/warmupRamp may be gone); the other old changes are present', gx.length === 3 && J(gx.map((e) => [e.name, e.sets, e.weight])) === J([['Bench Press', 3, 60], ['Rad s činkou', 3, 40], ['Jednoručný veslo', 2, 14]]) && gx[0].reps === 6 && gx[1].reps === 8 && gx[2].reps === 12 && c1.payload.plans.gb2.customName === 'GB Other (z mobilu)' && c1.payload.history.some((h) => h.id === 'old-w1'), gx);
@@ -157,6 +162,8 @@ async function roundtrip({ ref, newSrv, oldSrv, A, obsA }) {
   const core1 = JSON.parse(await n.p.eval(CORE));
   check('[' + label + '] new device pulled the old device change (plan name + the old workout), no conflict, synced', n1.hist.includes('old-w1') && (await n.p.eval(`state.plans.gb2.customName`)) === 'GB Other (z mobilu)' && n1.status === 'sync.st.synced' && !(n1.meta && n1.meta.conflict), { st: n1.status, hist: n1.hist });
   check('[' + label + '] new device: history equals the cloud (the edited entry came back unchanged by the pull)', canon(core1.hist.find((h) => h.id === core0.hist[0].id)) === canon(c1.payload.history.find((h) => h.id === core0.hist[0].id)), core1.hist);
+  const hn = core1.hist.find((h) => h.id === core0.hist[0].id) || {};
+  check('[' + label + '] new device after pulling: endedAt and doneSets unchanged', hn.endedAt === END0 && J((hn.exercises || []).map((x) => (x.doneSets === undefined ? null : x.doneSets))) === J(DS0), { endedAt: hn.endedAt, END0 });
   check('[' + label + '] new device: settings.plates and settings.effort intact', canon(core1.plates) === canon(core0.plates) && core1.effort === 'rir', { plates: core1.plates, effort: core1.effort });
   check('[' + label + '] new device: plan gb1 valid after the old edit (no conflict; reps 6, other rows unchanged)', core1.plans.gb1.length === 3 && core1.plans.gb1[0].reps === 6 && J(core1.plans.gb1.map((e) => [e.name, e.sets, e.weight])) === J([['Bench Press', 3, 60], ['Rad s činkou', 3, 40], ['Jednoručný veslo', 2, 14]]), core1.plans.gb1);
   /* upravený záznam sa na novom zariadení vykreslí (História + Kalendár) bez chýb stránky; setRpe zlej dĺžky nespadne */

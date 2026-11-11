@@ -51,15 +51,32 @@ everything on your own device.
 - **Start rest automatically** — an optional switch in ⚙️ Settings: ticking a set starts the rest timer
   with the preset you used last. In a superset or circuit it waits until the last exercise of the round.
   Off by default, and the setting stays on the device.
-- **Plate calculator** — tap the small plate button on a barbell exercise to see which plates to load
+- **Plate calculator** — open **Plates** in the exercise's **⋯** sheet to see which plates to load
   on each side of the bar for the set's weight. Set your bar weight and the plates you own in the sheet;
   the setting is saved with your account.
-- **Warm-up sets and warm-up ramp** — add warm-up sets to any exercise with **+ Warm-up**, or switch on
+- **Warm-up sets and warm-up ramp** — add warm-up sets to any exercise with **+ Warm-up** in its **⋯** sheet, or switch on
   the warm-up ramp in the plan editor to get a ready-made ramp every time. Warm-ups are saved in your
   history but never change your sets, XP, records or streak.
 - **Effort rating (RPE / RIR)** — an optional setting. When it is on, completed sets get a small chip
   where you rate how hard the set was, as RPE or as reps in reserve. Off by default; unilateral exercises
   are rated per side.
+- **One ⋯ sheet per exercise** — the secondary actions (**+ Warm-up**, **Warm-up ramp**, **+ Drop set**,
+  **Plates**, **Replace exercise** and **Progress**) live behind a single **⋯** button next to *Add set* and
+  *Remove last set*, so the exercise tile stays calm. In the plan editor the same sheet is behind
+  **More options** on each row.
+- **Exercise progress** — open **Progress** from the ⋯ sheet, or tap a record, an exercise in your history, or
+  the exercise library page. A chart shows the **estimated 1RM**, the heaviest weight, the volume, or (for
+  assisted exercises) the help you used, over 3 months, 1 year or all time, with your best sets and sessions
+  below. The 1RM is an **estimate** (the Epley formula from your working sets), not a tested max. Warm-ups
+  and assisted exercises never produce one. It is only a view of your history: it never changes XP,
+  records, streaks or achievements.
+- **Muscles** — one extra tile in Stats and a sheet with your sets and volume per muscle for each week
+  (this week, last week, or any earlier week). The main muscle counts as one set and helper muscles as a
+  half, and a small chart shows the last eight weeks. It is a guide, not a target.
+- **Recovery map** — in the Muscles tile and sheet a front and back body map is shaded by how recently each muscle
+  was worked. It is an **estimate** from your last three to four days of sets, not medical advice. At most
+  once a day the Today workout card adds one quiet line, for example *Legs still recovering — consider
+  Chest, Shoulders & Triceps*. There is no red or green, and no judging.
 - **Supersets and circuits** — group two or more neighbouring exercises in the plan editor. The workout
   shows them as one lettered block and moves you to the next exercise in the group after each set.
 - **Comparison with last time** — every exercise shows whether you went heavier or lighter than your
@@ -367,7 +384,7 @@ the right arm never rewrites the left arm. A set you have already ticked ✓ kee
 change an earlier row (this applies to every exercise). When the two sides differ, history, the Calendar
 and shared workouts show both: *Left 12/10 | Right 8/8 reps*.
 
-**Drop sets.** Under the sets of every exercise there is **+ Drop set**: after your last set, lower the
+**Drop sets.** The **⋯** sheet of every exercise has **+ Drop set**: after your last set, lower the
 weight and keep going without a rest. Each drop set is its own row (*Drop set 1*, *Drop set 2*, … up to
 5) with ✓, reps and weight; it starts about 20 % lighter than the set before it (rounded to 2.5 kg) with
 the same reps, and you can change both (only that drop set changes) or remove it with ✕. Your plan is
