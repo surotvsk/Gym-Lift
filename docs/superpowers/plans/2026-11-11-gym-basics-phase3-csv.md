@@ -121,7 +121,7 @@
 - Consumes: `state.importedHistory`, `isImportedWorkout` (Task 1).
 - Produces:
   - `deleteImportedWorkout(id)`.
-  - `deleteImportedSource(source) -> number` (count removed).
+  - `countImportedSource(source)`, `removeImportedSource(source) -> number` (immediate), `confirmRemoveImportedSource(source)` (UI confirm) — ruling C2.
   - Both go through the existing confirm-dialog pattern in the current language, and each calls `saveState()` once.
 - Decisions:
   - The history list merges real and imported workouts by date (newest first). Imported rows show a small muted tag `Imported · Strong` (or Hevy / CSV).
@@ -249,7 +249,7 @@
 - Test: new `tests/app/csv-export.js`.
 
 **Interfaces:**
-- Consumes: `openCsvImport` (Task 4); `deleteImportedSource` (Task 2); `historyWorkingSets` and `historyDropSets` (Phase 2).
+- Consumes: `openCsvImport` (Task 4); `confirmRemoveImportedSource` (Task 2); `historyWorkingSets` and `historyDropSets` (Phase 2).
 - Produces:
   - `buildCsvExport({ includeImported: boolean }) -> string`.
     - Uses the Hevy column layout (the exact header verified in Task 3), with the GymQuest marker chosen in Task 3.
@@ -260,7 +260,7 @@
 - The `#modal-csv` sheet contains:
   - "Export CSV", with a pressed-chip toggle "Include imported workouts", off by default;
   - "Import from Strong or Hevy…", which opens the file picker and leads into Task 4;
-  - when imports exist, a "Manage imported" list of sources with counts, each with "Remove all", confirmed via `deleteImportedSource`;
+  - when imports exist, a "Manage imported" list of sources with counts, each with "Remove all", confirmed via `confirmRemoveImportedSource`;
   - a short help line on where to find the export in Strong and in Hevy (wording based on the Task 3 research).
 - [ ] **Step 1: Write the failing test `tests/app/csv-export.js`.**
   - **Export:**
