@@ -5178,3 +5178,14 @@ button.record-row::after { content: '\203A'; flex: 0 0 auto; color: var(--text-f
 .csv-toast[hidden] { display: none; }
 .csv-toast .btn { background: transparent; color: var(--on-ink); border-color: var(--on-ink); flex: 0 0 auto; min-height: 44px; }
 .csv-unit .card-note { margin-top: var(--sp-2); }
+/* List CSV v Nastaveniach: jedna akcia exportu, jedna importu, zoznam importov so „Odstrániť všetky“ */
+#modal-csv .sheet-scroll > .btn-block { margin-top: var(--sp-2); }
+#modal-csv .card-note { margin: var(--sp-3) 0 0; }
+#csv-include-wrap .chip { flex: 0 1 auto; min-height: 44px; box-sizing: border-box; padding: 8px 14px; border-radius: var(--r-full); }
+#modal-csv .chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+#csv-manage { margin-top: var(--sp-5); }
+.csv-srcs { list-style: none; margin: 0; padding: 0; }
+.csv-src { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-3); min-height: 44px; padding: var(--sp-2) 0; border-bottom: 1px solid var(--border); color: var(--text); }
+.csv-src:last-child { border-bottom: 0; }
+.csv-src span { min-width: 0; overflow-wrap: anywhere; }
+.csv-src .btn { flex: 0 0 auto; min-height: 44px; }

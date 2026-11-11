@@ -874,6 +874,9 @@
           <button class="btn btn-secondary" id="btn-import" data-i18n="settings.import">Importovať dáta</button>
         </div>
         <div class="modal-actions">
+          <button class="btn btn-secondary" id="btn-csv" data-i18n="csvx.open">CSV (Strong / Hevy)</button>
+        </div>
+        <div class="modal-actions">
           <button class="btn btn-secondary" id="btn-cloud-restore" data-i18n="sync.loadOpen">Načítať z účtu…</button>
           <button class="btn btn-secondary" id="btn-sync-recovery" data-i18n="sync.recoveryOpen">Kópie na obnovu…</button>
         </div>
@@ -992,6 +995,31 @@
     <div class="modal">
       <h3 id="sync-modal-title"></h3>
       <div id="sync-modal-body"></div>
+    </div>
+  </div>
+
+  <!-- ============ MODAL: CSV (export a import) ============ -->
+  <div class="modal-backdrop" id="modal-csv" hidden>
+    <div class="modal modal-sheet modal-csv" role="dialog" aria-modal="true" aria-labelledby="csv-title">
+      <div class="sheet-head">
+        <h3 id="csv-title" data-i18n="csvx.open">CSV (Strong / Hevy)</h3>
+        <button type="button" class="btn-icon" id="btn-csv-close" data-i18n-title="csv.close" data-i18n-aria="csv.close">✕</button>
+      </div>
+      <div class="sheet-scroll">
+        <p class="sheet-label" data-i18n="csvx.exportLabel">Export</p>
+        <div class="xp-chips" role="group" id="csv-include-wrap" hidden>
+          <button type="button" class="chip" id="csv-include" aria-pressed="false" data-i18n="csvx.include">Include imported workouts</button>
+        </div>
+        <button type="button" class="btn btn-primary btn-block" id="btn-csv-export" data-i18n="csvx.export">Export CSV</button>
+        <p class="sheet-label" data-i18n="csvx.importLabel">Import</p>
+        <button type="button" class="btn btn-secondary btn-block" id="btn-csv-pick" data-i18n="csvx.pick">Import from Strong or Hevy…</button>
+        <p class="card-note" id="csv-help" data-i18n="csvx.help"></p>
+        <div id="csv-manage" hidden>
+          <p class="sheet-label" data-i18n="csvx.manage">Manage imported</p>
+          <ul class="csv-srcs" id="csv-srcs"></ul>
+        </div>
+        <input type="file" id="file-csv" accept=".csv,text/csv" hidden>
+      </div>
     </div>
   </div>
 
