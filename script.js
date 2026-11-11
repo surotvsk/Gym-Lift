@@ -20036,7 +20036,7 @@ async function googleAgeProbe() {
 function googleSignInHtml() {
   if (!isNativeApp()) return '';
   if (googleReady()) googleAgeProbe();
-  return '<div class="plan-actions"><button type="button" class="btn btn-secondary" data-community-action="google-signin"'
+  return '<div class="plan-actions"><button type="button" class="btn btn-primary" data-community-action="google-signin"'
     + (!googleReady() || googleAuthBusy ? ' disabled' : '') + '>' + esc(t('google.signin')) + '</button></div>'
     + '<p class="card-note">' + esc(t(googleReady() ? (googleAgeTicketOk() ? 'google.newAccountAge' : 'google.newAccount') : 'google.unavailable')) + '</p>';
 }
