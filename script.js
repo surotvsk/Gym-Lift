@@ -26728,7 +26728,8 @@ function programRoundWeight(exId, kg) {
 
 /* Predpis pre riadok plánu v aktuálnom týždni, alebo null (riadok bez progRow, iný plán, hotový program).
    Lineárne: série a opakovania zo šablóny; v odľahčení série = max(1, ceil(série × 0,6)) a váha riadku × 0,6.
-   Hlavný ťah vlny: setWeights/setReps z tréningového maxima (prog.tm); bez maxima váha null (UI sa opýta). */
+   Hlavný ťah vlny: setWeights/setReps z tréningového maxima (prog.tm); bez maxima váha null (UI sa opýta).
+   Poznámka: knižnica nemá klasický mŕtvy ťah, štvrtým hlavným ťahom je rumunský mŕtvy ťah (romanian-deadlift). */
 function programPrescription(prog, planId, row, today = todayISO()) {
   try {
     const clean = cleanProgramState(prog);
@@ -26748,7 +26749,13 @@ function programPrescription(prog, planId, row, today = todayISO()) {
       const tm = clean.tm && clean.tm[tpl.exId];
       const out = { sets: 3, reps: step.reps[0], deload, setReps: step.reps.slice(), pctLabel: step.pct.join('/') + '%' };
       if (!(tm > 0)) return Object.assign(out, { weight: null, setWeights: null });
-      out.setWeights = step.pct.map((pc) => programRoundWeight(tpl.exId, tm * pc / 100));
+      /* Druhá vlna (týždne 5–8): TM + 2,5 kg pre horné cviky, + 5 kg pre dolné (primary legs/glutes).
+         state.program.tm zostáva hodnota od používateľa; efektívne TM sa vráti ako tmUsed. */
+      const lib = libraryEntry(tpl.exId);
+      const lower = !!lib && (lib.primary === 'legs' || lib.primary === 'glutes');
+      const tmUsed = tm + (wk.week > 4 ? (lower ? 5 : 2.5) : 0);
+      out.tmUsed = tmUsed;
+      out.setWeights = step.pct.map((pc) => programRoundWeight(tpl.exId, tmUsed * pc / 100));
       out.weight = out.setWeights[out.setWeights.length - 1];
       return out;
     }

@@ -113,6 +113,13 @@ function check(name, ok, info) {
     check('wave week 1: 3x5 at 65/75/85', r && J(r.setWeights) === '[65,75,85]' && J(r.setReps) === '[5,5,5]', r);
     r = await PR(TM({ 'bench-press': 100 }), 'p-bn', `planRow(rowOf('strength-wave', null, 'bench', 0), 80)`, '2026-11-16');
     check('wave week 2: 3x3 at 70/80/90', r && J(r.setWeights) === '[70,80,90]' && J(r.setReps) === '[3,3,3]', r);
+    r = await PR(TM({ squats: 100 }), 'p-sq', `planRow(rowOf('strength-wave', null, 'squat', 0), 80)`, '2026-12-07');
+    const expSq = await S(`J([65, 75, 85].map((x) => roundToPlates(105 * x / 100)))`);
+    check('wave 2 week 1 squat TM 100 -> 105 x 65/75/85, tmUsed 105', r && J(r.setWeights) === expSq && r.tmUsed === 105, [r, expSq]);
+    r = await PR(TM({ 'bench-press': 100 }), 'p-bn', `planRow(rowOf('strength-wave', null, 'bench', 0), 80)`, '2026-12-07');
+    check('wave 2 bench TM 100 -> 102.5; wave 1 tmUsed 100', r && r.tmUsed === 102.5, r);
+    r = await PR(TM({ 'bench-press': 100 }), 'p-bn', `planRow(rowOf('strength-wave', null, 'bench', 0), 80)`, '2026-11-11');
+    check('wave 1 tmUsed equals entered TM', r && r.tmUsed === 100, r);
     r = await PR(TM({ 'bench-press': 100 }), 'p-bn', `planRow(rowOf('strength-wave', null, 'bench', 0), 80)`, '2026-11-30');
     check('wave week 4 deload: 40/50/60', r && J(r.setWeights) === '[40,50,60]' && r.deload === true, r);
     r = await PR(TM({ 'bench-press': 100 }), 'p-bn', `planRow(rowOf('strength-wave', null, 'bench', 0), 80)`, '2026-12-07');
