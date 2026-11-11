@@ -108,6 +108,21 @@ everything on your own device.
   finished stay recorded under the original exercise; the replacement is added for the rest of the
   session and your plan is never changed.
 - **Export and import** — back up or restore all of your data as a JSON file.
+- **CSV export and import (Strong / Hevy)** — ⚙️ Settings → Data → *CSV (Strong / Hevy)* opens one sheet.
+  *Export* writes your workouts as a CSV in the **Hevy layout** (other apps and spreadsheets read it);
+  imported workouts are included only if you tick that option. *Import* reads a Strong or Hevy CSV file
+  (or a GymQuest export) **locally** — nothing is uploaded — and shows a preview before anything is written.
+  The preview tells you how many workouts are new and how many are **already imported**; running the same
+  file again, or a newer export that overlaps, adds only what is new, and a workout you already logged here is
+  skipped too. A toast offers **Undo** right after the import, and each source can be removed later from the
+  same sheet. Weights are read as **kg or lb** (detected from the file; if the file does not say, you choose
+  in the preview) and stored in kg, rounded to 0.25 kg.
+  Imported workouts are **history, not training you did in GymQuest**. They **count for**: the history
+  list (marked *Imported · Strong* or *Hevy*), a neutral marker on the Calendar, exercise charts and
+  estimated 1RM, the Muscles view and recovery. They **never count for**: XP, level, streak or weekly goal,
+  achievements, personal records, the leaderboard, the Stats Week / Month / All counters, the Today *This
+  week* tile, the last-time comparison, plan rotation or remembered weights. Imports live in their own list
+  in your data and sync with your account like the rest.
 - **Automatic backups** — opt-in JSON backup files every five workouts (at most weekly), created
   automatically on desktop and Android, and with one honest tap on iPhone. See *Automatic backups*
   below for exactly what is and is not automatic.
@@ -1288,6 +1303,9 @@ another device.
 
 - **Export data** (⚙️ Settings) downloads all of your data as a JSON file.
 - **Import data** restores your data from a JSON backup, with validation and a confirmation prompt.
+- **JSON stays the full-fidelity backup.** The CSV is a convenience for moving workout history between apps
+  and cannot carry plans, settings, measurements, XP or achievements. Back up with **Export data** (JSON);
+  a JSON backup also contains your imported workouts, so restoring it brings them back.
 - **Reset data** erases everything after a double confirmation.
 
 ---

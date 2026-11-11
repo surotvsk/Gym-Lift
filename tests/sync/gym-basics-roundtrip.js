@@ -15,6 +15,10 @@
       histórie s warmups/setRpe/sideRpe (zmení počet sérií v úprave histórie). Po zosynchronizovaní nové zariadenie: žiadny konflikt,
       rovnaké celkové XP ako čerstvé zariadenie z rovnakých dát, plán gb1 platný (group/warmupRamp smú zmiznúť; riadky, série,
       opakovania a váhy ostanú), upravený záznam sa vykreslí bez chýb (cleanHistorySetRpe znesie zlú dĺžku setRpe).
+   5. (Fáza 3) NOVÉ zariadenie má navyše 50 importovaných tréningov (state.importedHistory, z CSV cez csvToWorkouts). Starý build ich
+      drží v pamäti, nechá ich nedotknuté pri úprave plánu/histórie aj pri nahraní; po zosynchronizovaní sú na cloude aj na novom
+      zariadení rovnaké (nové zariadenie: bajt po bajte, cloud: kanonicky, jsonb preusporiada kľúče) a XP sa importmi nezmení
+      (kontrola v starom builde odstráni aj importedHistory).
    Každé zariadenie má vlastný server/port (vlastný origin = vlastné úložisko = "iné zariadenie"). */
 'use strict';
 const fs = require('fs');
@@ -51,7 +55,7 @@ async function R(p) { await p.ready(); await p.eval(HELPERS); }
 const CORE = `(() => {
   const plans = {}; for (const id of Object.keys(state.plans)) { const pl = state.plans[id]; plans[id] = (pl.exercises || []).map((e) => ({ id: e.id || null, name: e.name, weight: e.weight, sets: e.sets, reps: e.reps, group: e.group === undefined ? null : e.group, warmupRamp: e.warmupRamp === true, unilateral: e.unilateral === true })); }
   const hist = state.history.filter((h) => h.id !== 'old-w1').map((h) => JSON.parse(JSON.stringify(h)));
-  return JSON.stringify({ plans, hist, plates: state.settings.plates === undefined ? null : state.settings.plates, effort: state.settings.effort === undefined ? null : state.settings.effort }); })()`;
+  return JSON.stringify({ plans, hist, imp: JSON.stringify(state.importedHistory || []), plates: state.settings.plates === undefined ? null : state.settings.plates, effort: state.settings.effort === undefined ? null : state.settings.effort }); })()`;
 
 const SEED_NEW = `(async () => {
   const ok = document.getElementById('btn-setup-ok'); if (ok && !document.getElementById('modal-setup').hidden) ok.click();
@@ -65,6 +69,19 @@ const SEED_NEW = `(async () => {
   state.settings.plates = { bar: 15, plates: [25, 20, 15, 10, 5, 2.5, 1.25] };
   setEffortMode('rir');
   backfillState(); saveState();
+  /* Fáza 3: 50 importovaných tréningov (Hevy CSV -> csvToWorkouts), pred ukončením tréningu, aby ich xp0 už obsahovalo. */
+  const xpBefore = totalXP();
+  const mon = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const lines = ['title,start_time,end_time,description,exercise_title,superset_id,exercise_notes,set_index,set_type,weight_kg,reps,distance_km,duration_seconds,rpe'];
+  for (let i = 0; i < 50; i++) {
+    const d = new Date(2024, 0, 1 + i * 3), ds = String(d.getDate()).padStart(2, '0') + ' ' + mon[d.getMonth()] + ' ' + d.getFullYear();
+    for (const [ex, w] of [['Bench Press (Barbell)', 60 + i % 7], ['Squat (Barbell)', 80 + i % 5]])
+      for (let s2 = 0; s2 < 3; s2++) lines.push('"Import ' + i + '","' + ds + ', 18:00","' + ds + ', 19:00","","' + ex + '",,"",' + s2 + ',normal,' + w + ',' + (8 + s2) + ',,0,');
+  }
+  const pc = parseCsv(lines.join('\\n') + '\\n'), conv = csvToWorkouts(pc.rows, 'hevy', { delimiter: pc.delimiter });
+  state.importedHistory = cleanImportedHistory(conv.workouts);
+  window.__impN = state.importedHistory.length; window.__impXpSame = totalXP() === xpBefore;
+  saveState();
   selectedPlan = 'gb1'; ensureSession(getPlan('gb1')); saveState(); switchTab('trening'); renderTrening();
   const [a, b, c] = state.plans.gb1.exercises;
   setSetWeight(a, 0, 60); setSetWeight(a, 1, 60); setSetWeight(a, 2, 62.5);
@@ -98,6 +115,9 @@ async function roundtrip({ ref, newSrv, oldSrv, A, obsA }) {
   /* Fáza 2: endedAt (záznam) a doneSets (cviky) zapísané novým ukončením musia prežiť staré buildy nezmenené. */
   const END0 = h0.endedAt, DS0 = e0.map((x) => (x.doneSets === undefined ? null : x.doneSets));
   check('[' + label + '] new device seeded: entry has a numeric endedAt and exact doneSets on the exercises', Number.isFinite(END0) && END0 > 0 && J(DS0[0]) === J([1, 2, 3]) && J(DS0[1]) === J([1, 2, 3]), { END0, DS0 });
+  const IMP0 = core0.imp, impN = await n.p.eval('window.__impN');
+  check('[' + label + '] new device seeded: 50 valid imported workouts in importedHistory, adding them left totalXP unchanged', impN === 50 && JSON.parse(IMP0).length === 50 && (await n.p.eval('window.__impXpSame')) === true && JSON.parse(IMP0).every((w) => w.source === 'hevy' && w.importKey), { impN });
+  check('[' + label + '] uploaded: payload carries importedHistory (50, canonical equal)', !!p0 && Array.isArray(p0.importedHistory) && p0.importedHistory.length === 50 && canon(p0.importedHistory) === canon(JSON.parse(IMP0)), p0 && p0.importedHistory && p0.importedHistory.length);
   const s0 = await n.p.eval('__gq.snap()');
   check('[' + label + '] new device is synced with nothing pending', s0.status === 'sync.st.synced' && s0.dirty === false, s0.status);
 
@@ -115,15 +135,18 @@ async function roundtrip({ ref, newSrv, oldSrv, A, obsA }) {
   check('[' + label + '] old build (' + oldVer + ') loaded the account: both plans + the workout present', oldSnap.plans.includes('gb1') && oldSnap.plans.includes('gb2') && oldSnap.hist.length === 1, { plans: oldSnap.plans, hist: oldSnap.hist });
   const oldSees = await o.p.eval(`(() => ({ h: JSON.parse(JSON.stringify(state.history[0])), plates: state.settings.plates || null, effort: state.settings.effort || null, g: state.plans.gb1.exercises.map((e) => [e.group || null, e.warmupRamp === true]) }))()`);
   check('[' + label + '] old build keeps the new fields in memory', canon(oldSees.h) === canon(core0.hist[0]) && canon(oldSees.plates) === canon(core0.plates) && oldSees.effort === 'rir' && J(oldSees.g) === J([['g1', true], ['g1', false], [null, false]]), oldSees);
+  const oldImp = await o.p.eval(`JSON.stringify(state.importedHistory || null)`);
+  check('[' + label + '] old build keeps importedHistory (50) untouched in memory (unknown top-level field survives load)', oldImp !== 'null' && JSON.parse(oldImp).length === 50 && canon(JSON.parse(oldImp)) === canon(JSON.parse(IMP0)), oldImp && oldImp.slice(0, 200));
   const oldXp = await o.p.eval(`typeof totalXP === 'function' ? totalXP() : null`);
   /* Kontrola v starom builde: bez nových polí (len v pamäti, bez uloženia; stav sa hneď vráti) je totalXP rovnaké. */
   const ctl = await o.p.eval(`(() => {
-    const hSave = JSON.stringify(state.history), pSave = JSON.stringify(state.plans);
+    const hSave = JSON.stringify(state.history), pSave = JSON.stringify(state.plans), iSave = state.importedHistory;
     const before = totalXP();
+    delete state.importedHistory;
     for (const h of state.history) for (const e of (h.exercises || [])) { delete e.warmups; delete e.setRpe; delete e.sideRpe; delete e.group; }
     for (const id of Object.keys(state.plans)) for (const e of (state.plans[id].exercises || [])) { delete e.group; delete e.warmupRamp; }
     const after = totalXP();
-    state.history = JSON.parse(hSave); state.plans = JSON.parse(pSave);
+    state.history = JSON.parse(hSave); state.plans = JSON.parse(pSave); if (iSave !== undefined) state.importedHistory = iSave;
     return { before, after, restored: JSON.stringify(state.history) === hSave }; })()`);
   check('[' + label + '] control inside the old build: totalXP is equal with and without the new fields (they never move XP)', ctl.before === ctl.after && ctl.restored && typeof ctl.before === 'number', ctl);
   if (/f9590a9/.test(label)) check('[' + label + '] v106: old build totalXP right after loading equals the new device (xp0)', oldXp === xp0, { oldXp, xp0 });
@@ -150,6 +173,7 @@ async function roundtrip({ ref, newSrv, oldSrv, A, obsA }) {
   check('[' + label + '] cloud payload: the edited history entry is present with 4 sets for exercise 0 and the same exercises (names, count)', !!hx && hx.exercises[0].sets === 4 && J(hx.exercises.map((e) => e.name)) === J(core0.hist[0].exercises.map((e) => e.name)), hx);
   const hx2 = hx || {};
   check('[' + label + '] cloud payload after the old build: endedAt unchanged, doneSets unchanged on every exercise (old build kept them)', hx2.endedAt === END0 && J((hx2.exercises || []).map((x) => (x.doneSets === undefined ? null : x.doneSets))) === J(DS0), { endedAt: hx2.endedAt, END0, ds: (hx2.exercises || []).map((x) => x.doneSets) });
+  check('[' + label + '] cloud payload after the old build: importedHistory byte-identical in content (50, canonical equal to the new device value)', Array.isArray(c1.payload.importedHistory) && c1.payload.importedHistory.length === 50 && canon(c1.payload.importedHistory) === canon(JSON.parse(IMP0)), c1.payload.importedHistory && c1.payload.importedHistory.length);
   check('[' + label + '] cloud payload: settings.plates + settings.effort intact', canon(c1.payload.settings.plates) === canon(core0.plates) && c1.payload.settings.effort === 'rir', c1.payload.settings);
   const gx = c1.payload.plans.gb1.exercises;
   check('[' + label + '] cloud payload: edited plan gb1 is valid (rows, sets, weights intact; reps edited; group/warmupRamp may be gone); the other old changes are present', gx.length === 3 && J(gx.map((e) => [e.name, e.sets, e.weight])) === J([['Bench Press', 3, 60], ['Rad s činkou', 3, 40], ['Jednoručný veslo', 2, 14]]) && gx[0].reps === 6 && gx[1].reps === 8 && gx[2].reps === 12 && c1.payload.plans.gb2.customName === 'GB Other (z mobilu)' && c1.payload.history.some((h) => h.id === 'old-w1'), gx);
@@ -178,6 +202,9 @@ async function roundtrip({ ref, newSrv, oldSrv, A, obsA }) {
   check('[' + label + '] new device: total XP is a finite number computed from the synced data (checked against a fresh device below)', Number.isFinite(xp1), { xp0, oldW, xp1 });
   n.p = await n.b.restart(true); await n.p.navigate('http://localhost:' + NEW_PORT + '/'); await R(n.p);
   await n.p.eval('__gq.syncNow()');
+  check('[' + label + '] new device after pulling: importedHistory content-identical to what it wrote (canonical equal, 50 entries), and equal to the cloud', canon(JSON.parse(core1.imp)) === canon(JSON.parse(IMP0)) && JSON.parse(core1.imp).length === 50 && canon(JSON.parse(core1.imp)) === canon(c1.payload.importedHistory), { len: JSON.parse(core1.imp).length, a: core1.imp.slice(0, 160), b: IMP0.slice(0, 160) });
+  console.log('  INFO [' + label + '] importedHistory raw string identical after pull: ' + (core1.imp === IMP0) + ' (the server stores jsonb, which may reorder keys; content is canonical-equal)');
+  check('[' + label + '] new device: imports never counted - history still has exactly the real entries (no imp- ids), XP finite', core1.hist.every((h) => !/^imp-/.test(h.id)) && JSON.parse(core1.imp).every((w) => /^imp-/.test(w.id)));
   check('[' + label + '] new device after restart: same data, synced, same XP', J(JSON.parse(await n.p.eval(CORE))) === J(core1) && (await n.p.eval('__gq.snap()')).status === 'sync.st.synced' && (await n.p.eval('totalXP()')) === xp1);
   const f = await launch('gb-fresh-' + label);
   await f.p.navigate('http://localhost:' + NEW_PORT + '/'); await R(f.p);
@@ -185,7 +212,7 @@ async function roundtrip({ ref, newSrv, oldSrv, A, obsA }) {
   await R(f.p);
   await waitFor(async () => (await f.p.eval('__gq.snap()')).hist.includes('old-w1'), 90000, 'fresh device loaded');
   const fresh = JSON.parse(await f.p.eval(CORE));
-  check('[' + label + '] a fresh new device gets identical history, plans and settings, and the same total XP', J(fresh.hist) === J(core1.hist) && J(fresh.plans.gb1) === J(core1.plans.gb1) && canon(fresh.plates) === canon(core1.plates) && fresh.effort === 'rir' && (await f.p.eval('totalXP()')) === xp1);
+  check('[' + label + '] a fresh new device gets identical history, plans and settings, and the same total XP', J(fresh.hist) === J(core1.hist) && J(fresh.plans.gb1) === J(core1.plans.gb1) && canon(fresh.plates) === canon(core1.plates) && fresh.effort === 'rir' && fresh.imp === core1.imp && (await f.p.eval('totalXP()')) === xp1);
   /* Starý build (pred v101) počíta XP inak (uložené xp, nie odvodené) — len informácia, nie chyba nových polí. */
   if (/f9590a9/.test(label)) check('[' + label + '] v106: after its upload the old build totalXP equals the new device (xp1)', oldXp1 === xp1, { oldXp1, xp1 });
   /* v95: absolútna hodnota XP sa líši, lebo vzorec XP v v95 je staršie než v101 (odvodené XP); kontrola vyššie dokazuje, že nové polia XP nehýbu. */
