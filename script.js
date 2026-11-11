@@ -23335,6 +23335,7 @@ function confirmFinish() {
     xp,
     note,
     exercises,
+    endedAt: Date.now(),   // čas ukončenia (ms) pre prehľad regenerácie; staré záznamy ho nemajú
   };
   /* Trvanie sa zapíše len ak naozaj existuje rozbehnutá session – nikdy nevymýšľame nulu. */
   if (sess) entry.durationSeconds = sessionElapsedSeconds(sess);
@@ -25769,6 +25770,176 @@ function addPlanAtLocation(loc) {
   closeLocationSheet();
   switchTab('trening');
   startEditPlan(id);
+}
+
+/* ---------- Prehľad: série z histórie ---------- */
+/* Čisté, odvodené funkcie: nič nezapisujú, nemenia XP, rekordy, úspechy ani rebríček a nikdy nevyhadzujú výnimku.
+   Rozcvičky (`warmups`) nie sú pracovné série. Asistovaný cvik nikdy nedáva 1RM ani objem záťaže. */
+
+/* Konečné číslo (typ number, nie reťazec) alebo null. */
+function insightNum(v) {
+  return typeof v === 'number' && Number.isFinite(v) ? v : null;
+}
+function insightPosInt(v) {
+  const n = insightNum(v);
+  return n !== null && Number.isInteger(n) && n >= 0 ? n : null;
+}
+
+/* Hotové čísla sérií obyčajného cviku. V histórii je len POČET `setsDone`, nie zoznam, preto sa čísla
+   odvodia: série so záznamom námahy alebo zlyhania sú iste hotové, zvyšok sa dopĺňa od prvej série.
+   Starý záznam bez `setsDone` = všetky série hotové. */
+function insightDoneNumbers(e, sets) {
+  const count = e.setsDone === undefined ? sets : Math.min(sets, insightPosInt(e.setsDone) === null ? 0 : e.setsDone);
+  if (count <= 0) return [];
+  const sure = new Set();
+  if (Array.isArray(e.setRpe)) e.setRpe.forEach((v, i) => { if (v !== null && v !== undefined && i < sets) sure.add(i + 1); });
+  if (Array.isArray(e.actualFailureSets)) e.actualFailureSets.forEach((n) => { if (Number.isInteger(n) && n >= 1 && n <= sets) sure.add(n); });
+  const picked = Array.from(sure).sort((a, b) => a - b).slice(0, count);
+  for (let n = 1; n <= sets && picked.length < count; n++) if (!sure.has(n)) picked.push(n);
+  return picked.sort((a, b) => a - b);
+}
+
+/* Hotové pracovné série záznamu cviku: [{ set, side, weight, reps, rpe, failure }].
+   Použije sa váha a opakovania jednotlivých sérií / strán, inak `weight` × `reps`. Zlý záznam = []. */
+function historyWorkingSets(entry) {
+  try {
+    const e = entry;
+    if (!e || typeof e !== 'object' || Array.isArray(e)) return [];
+    const sets = insightPosInt(e.sets);
+    if (sets === null || sets < 1) return [];
+    const baseW = insightNum(e.weight), baseR = insightNum(e.reps);
+    const lw = cleanHistorySetWeights(e), lr = cleanHistorySetReps(e);
+    const sw = cleanHistorySideValues(e, 'sideWeights', 'weight'), sr = cleanHistorySideValues(e, 'sideReps', 'reps');
+    const rpe = cleanHistorySetRpe(e);
+    const pickW = (n, side) => (sw && side ? sw[side][n - 1] : lw ? lw[n - 1] : baseW);
+    const pickR = (n, side) => (sr && side ? sr[side][n - 1] : lr ? lr[n - 1] : baseR);
+    const out = [];
+    const add = (n, side, failure, rpeVal) => {
+      const weight = insightNum(pickW(n, side)), reps = insightNum(pickR(n, side));
+      if (weight === null || reps === null || weight < 0 || reps < 0) return;
+      out.push({ set: n, side, weight, reps, rpe: rpeVal === undefined ? null : rpeVal, failure });
+    };
+    if (e.unilateral === true) {
+      const done = cleanSideSets(e.sidesDone, sets), fails = cleanSideSets(e.sidesFailure, sets);
+      for (const side of ['left', 'right']) {
+        for (const n of done[side]) {
+          const r = rpe && rpe.sides ? rpe.sides[side][n - 1] : null;
+          add(n, side, fails[side].includes(n), r);
+        }
+      }
+      return out;
+    }
+    const fails = cleanFailureSets(e.actualFailureSets, sets);
+    for (const n of insightDoneNumbers(e, sets)) add(n, null, fails.includes(n), rpe && rpe.list ? rpe.list[n - 1] : null);
+    return out;
+  } catch (err) {
+    return [];
+  }
+}
+
+/* Drop série záznamu: [{ weight, reps }] (platné cez cleanHistoryDrops), inak []. */
+function historyDropSets(entry) {
+  try {
+    const list = cleanHistoryDrops(entry);
+    return list ? list.map((d) => ({ weight: d.weight, reps: d.reps })) : [];
+  } catch (err) {
+    return [];
+  }
+}
+
+/* Odhad 1RM podľa Epleya: w × (1 + reps/30) na 0.5 kg; 1 opakovanie = váha; mimo 1–12 opakovaní alebo pri w <= 0 null. */
+function e1rm(weight, reps) {
+  const w = insightNum(weight), r = insightNum(reps);
+  if (w === null || r === null || w <= 0 || r < 1 || r > 12) return null;
+  if (r === 1) return w;
+  return Math.round(w * (1 + r / 30) * 2) / 2;
+}
+
+/* Identita záznamu cviku: id zabudovaného cviku, inak identita z normalizovaného názvu (rovnaká ako v pláne). */
+function entryIdentity(entry) {
+  try {
+    if (!entry || typeof entry !== 'object') return null;
+    if (typeof entry.exId === 'string' && BUILTIN_EXERCISE_IDS.has(entry.exId)) return entry.exId;
+    return typeof entry.name === 'string' ? exerciseIdentity({ name: entry.name }) : null;
+  } catch (err) {
+    return null;
+  }
+}
+
+/* Platný čas ukončenia tréningu (ms), inak null. Pole `endedAt` zapisuje len nové ukončenie, nikdy sa nevyžaduje. */
+function historyEndedAt(w) {
+  const v = w && w.endedAt;
+  return typeof v === 'number' && Number.isFinite(v) && v > 0 ? v : null;
+}
+
+/* Najlepšia séria: najvyšší odhad 1RM, inak najťažšia (pri zhode viac opakovaní). Asistované: najmenšia pomoc. */
+function insightBestSet(sets, assisted) {
+  let best = null, bestScore = null;
+  for (const s of sets) {
+    const score = assisted ? [-s.weight, s.reps] : [e1rm(s.weight, s.reps) === null ? -1 : e1rm(s.weight, s.reps), s.weight, s.reps];
+    let better = !bestScore;
+    for (let i = 0; !better && i < score.length; i++) {
+      if (score[i] !== bestScore[i]) { better = score[i] > bestScore[i]; break; }
+    }
+    if (better) { best = s; bestScore = score; }
+  }
+  return best ? { weight: best.weight, reps: best.reps } : null;
+}
+
+/* Rad jedného cviku cez všetky plány a tréningy: jeden bod na tréning (záznamy s rovnakou identitou sa spoja),
+   podľa dátumu vzostupne. Cvik bez hotovej série bod nemá. */
+function exerciseSeries(identity) {
+  const out = [];
+  try {
+    if (!identity || !Array.isArray(state.history)) return out;
+    for (const w of state.history) {
+      if (!w || typeof w !== 'object' || typeof w.date !== 'string' || !Array.isArray(w.exercises)) continue;
+      let sets = [], drops = [], assisted = false, found = false;
+      for (const e of w.exercises) {
+        if (!e || entryIdentity(e) !== identity) continue;
+        const ws = historyWorkingSets(e);
+        if (!ws.length) continue;
+        found = true;
+        sets = sets.concat(ws);
+        drops = drops.concat(historyDropSets(e));
+        if (historyEntryAssisted(e)) assisted = true;
+      }
+      if (!found) continue;
+      const weights = sets.map((s) => s.weight);
+      const ests = sets.map((s) => e1rm(s.weight, s.reps)).filter((v) => v !== null);
+      out.push({
+        date: w.date,
+        workoutId: w.id,
+        e1rm: assisted || !ests.length ? null : Math.max.apply(null, ests),
+        topWeight: assisted ? Math.min.apply(null, weights) : Math.max.apply(null, weights),
+        volume: assisted ? null : sets.concat(drops).reduce((a, s) => a + s.weight * s.reps, 0),
+        bestSet: insightBestSet(sets, assisted),
+        sets: sets.length,
+        assisted,
+      });
+    }
+    return out.map((p, i) => ({ p, i })).sort((a, b) => (a.p.date < b.p.date ? -1 : a.p.date > b.p.date ? 1 : a.i - b.i)).map((x) => x.p);
+  } catch (err) {
+    return [];
+  }
+}
+
+/* Súhrn cviku z radu: najlepší odhad 1RM, najťažšia váha, najlepšia séria, najväčší objem, počet tréningov. */
+function exerciseSummary(identity) {
+  const series = exerciseSeries(identity);
+  const max = (list) => (list.length ? Math.max.apply(null, list) : null);
+  const lifted = series.filter((p) => !p.assisted);
+  const bestE1rm = max(lifted.map((p) => p.e1rm).filter((v) => v !== null));
+  const heaviest = max(lifted.map((p) => p.topWeight));
+  let bestSet = null;
+  if (bestE1rm !== null) {
+    const p = lifted.find((x) => x.e1rm === bestE1rm);
+    bestSet = p ? p.bestSet : null;
+  } else if (lifted.length) {
+    const p = lifted.find((x) => x.topWeight === heaviest);
+    bestSet = p ? p.bestSet : null;
+  }
+  return { bestE1rm, heaviest, bestSet, bestVolume: max(lifted.map((p) => p.volume).filter((v) => v !== null)), sessions: series.length };
 }
 
 /* ---------- Prehľad aktivít (Pokrok) ---------- */
