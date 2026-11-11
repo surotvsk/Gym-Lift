@@ -5154,3 +5154,27 @@ button.record-row::after { content: '\203A'; flex: 0 0 auto; color: var(--text-f
   pointer-events: none;
 }
 .day-status-imp { color: var(--text-dim); }
+
+/* Import CSV: list s náhľadom (len čísla a jedna poznámka), tlmené riadky, pokojná chyba, toast so Späť */
+.csv-format { display: inline-block; margin: 0 0 var(--sp-2); padding: 2px var(--sp-3); border: 1px solid var(--border); border-radius: var(--r-full); color: var(--text-dim); font-size: var(--fs-sm); font-weight: var(--fw-med); }
+.csv-counts { margin: 0 0 var(--sp-2); font-size: var(--fs-lg); font-weight: var(--fw-black); overflow-wrap: anywhere; }
+#csv-preview .card-note { margin: 0 0 var(--sp-2); }
+.csv-skipped { color: var(--text-faint); }
+.csv-unmatched { margin: 0 0 var(--sp-3); color: var(--text-dim); font-size: var(--fs-sm); }
+.csv-unmatched summary { min-height: 44px; display: flex; align-items: center; cursor: pointer; }
+.csv-unmatched ul { margin: 0; padding-inline-start: var(--sp-5); max-height: 30vh; overflow-y: auto; }
+.csv-unit { margin: var(--sp-3) 0; }
+#csv-unit-chips .chip { flex: 0 1 auto; min-width: 64px; min-height: 44px; box-sizing: border-box; padding: 8px 14px; border-radius: var(--r-full); }
+#modal-csv-import .chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.csv-error { padding: var(--sp-4); background: var(--danger-soft); border: 1px solid var(--danger-line); border-radius: 16px; color: var(--text); }
+.csv-error p { margin: var(--sp-2) 0 0; color: var(--text-dim); font-size: var(--fs-sm); overflow-wrap: anywhere; }
+#modal-csv-import .modal-actions { margin-top: var(--sp-4); }
+.csv-toast {
+  position: fixed; z-index: 15; left: 12px; right: 12px; margin: 0 auto; max-width: calc(var(--maxw) - 24px);
+  bottom: calc(92px + env(safe-area-inset-bottom, 0px));
+  display: flex; align-items: center; justify-content: space-between; gap: var(--sp-3);
+  padding: var(--sp-2) var(--sp-3) var(--sp-2) var(--sp-4); border-radius: 22px; background: var(--ink); color: var(--on-ink); font-size: var(--fs-md); box-shadow: var(--shadow-2);
+}
+.csv-toast[hidden] { display: none; }
+.csv-toast .btn { background: transparent; color: var(--on-ink); border-color: var(--on-ink); flex: 0 0 auto; min-height: 44px; }
+.csv-unit .card-note { margin-top: var(--sp-2); }
