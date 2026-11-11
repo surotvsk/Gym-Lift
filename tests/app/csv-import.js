@@ -197,7 +197,7 @@ function bigHevy(n) {
 
     console.log('== Skipped line + unmatched list');
     await open(fx('hevy.csv') + 'x,"20 Nov 2024, 10:00",,,"Squat",,,0,normal,abc,5,,0,\n', 'skip.csv');
-    check('skipped line shown muted: "1 rows skipped (not lifting sets)"', /1 rows? skipped \(not lifting sets\)/.test(await q('#csv-skipped') || ''), await q('#csv-skipped'));
+    check('skipped line shown muted: "1 row skipped (not a lifting set)"', /1 row skipped \(not a lifting set\)/.test(await q('#csv-skipped') || ''), await q('#csv-skipped'));
     await closeSheet();
 
     console.log('== Errors: nothing written, state deep-equal');

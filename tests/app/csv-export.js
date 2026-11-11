@@ -19,7 +19,6 @@ function check(name, ok, info) {
   else { fail++; console.log('  FAIL ' + name + (info !== undefined ? '  -> ' + (typeof info === 'string' ? info : J(info)) : '')); }
 }
 const HEADER = 'title,start_time,end_time,description,exercise_title,superset_id,exercise_notes,set_index,set_type,weight_kg,reps,distance_km,duration_seconds,rpe,gymlift_version';
-const SETTINGS_BUTTONS_BASELINE = 33;   // tlačidlá v #modal-settings pred touto úlohou; pribudlo presne jedno (#btn-csv)
 
 (async () => {
   fs.mkdirSync(path.join(WORK, 'shots'), { recursive: true });
@@ -55,7 +54,12 @@ const SETTINGS_BUTTONS_BASELINE = 33;   // tlačidlá v #modal-settings pred tou
           { name: 'My curl, "special"\\nline', sets: 2, reps: 10, weight: 12, setsDone: 2 },
           { name: 'One-arm Row', sets: 2, reps: 10, weight: 20, setsDone: 2, unilateral: true, sidesDone: { left: [1, 2], right: [1, 2] }, sideWeights: { left: [20, 22], right: [20, 24] }, sideReps: { left: [10, 9], right: [10, 8] }, sideRpe: { left: [8, null], right: [null, 9] } }] },
         { id: 'w3', week: weekKey(new Date(2024, 10, 17)), date: '2024-11-17', planId: 'z', planName: 'Late', durationSeconds: 7200, exercises: [
-          { name: 'Squat', exId: 'squats', sets: 1, reps: 5, weight: 100, setsDone: 1 }] }];
+          { name: 'Squat', exId: 'squats', sets: 1, reps: 5, weight: 100, setsDone: 1 }] },
+        { id: 'w4', week: weekKey(new Date(2024, 10, 18)), date: '2024-11-18', planId: 'a', planName: 'Assisted', durationSeconds: 1500, exercises: [
+          { name: 'Assisted pull-ups', exId: 'assisted-pull-ups', assisted: true, sets: 2, reps: 8, weight: 25, setsDone: 2 }] },
+        { id: 'w5', week: weekKey(new Date(2024, 10, 19)), date: '2024-11-19', planId: 'b', planName: '+5 kg day', durationSeconds: 600, exercises: [
+          { name: '=SUM(A1)', sets: 2, reps: 5, weight: 10, setsDone: 2, setWeights: [0, 10], setReps: [0, 5] },
+          { name: 'Drops only', sets: 1, reps: 8, weight: 30, setsDone: 0, drops: [{ weight: 30, reps: 8 }, { weight: 20, reps: 10 }] }] }];
       state.importedHistory = [
         { id: 'imp-1', date: '2024-10-01', planName: 'Chest day', source: 'strong', importKey: 'strong|k1', durationSeconds: 1800, exercises: [{ name: 'Bench Press', exId: 'bench-press', sets: 2, reps: 5, weight: 80, setsDone: 2, doneSets: [1, 2] }] },
         { id: 'imp-2', date: '2024-10-02', planName: 'Pull', source: 'hevy', importKey: 'hevy|k2', exercises: [{ name: 'Pull-ups', exId: 'pull-ups', sets: 1, reps: 8, weight: 0, setsDone: 1, doneSets: [1] }] }];
@@ -95,19 +99,46 @@ const SETTINGS_BUTTONS_BASELINE = 33;   // tlačidlá v #modal-settings pred tou
       const parsed = parseCsv(${J(out)});
       const fmt = detectCsvFormat(parsed.rows[0]);
       const res = csvToWorkouts(parsed.rows, fmt, { delimiter: parsed.delimiter });
-      const keyOf = (e) => entryIdentity(e);
-      const sets = (list) => list.map((e) => [keyOf(e), historyWorkingSets(e).map((s) => [s.weight, s.reps, s.rpe, s.failure])]);
-      const mine = state.history.filter((w) => w.id !== 'w2');
-      const a = mine.map((w) => w.exercises.map((e) => JSON.stringify(sets([e])[0])).join('|'));
-      const b = res.workouts.filter((w) => w.date !== '2024-11-16').map((w) => w.exercises.map((e) => JSON.stringify(sets([e])[0])).join('|'));
-      return { fmt, n: res.workouts.length, eq: JSON.stringify(a) === JSON.stringify(b), a, b, dates: res.workouts.map((w) => w.date), durs: res.workouts.map((w) => w.durationSeconds || 0), g: res.workouts[0].exercises.map((e) => e.group || null), drops: res.workouts[0].exercises[0].drops, warm: res.workouts[0].exercises[0].warmups };
+      /* očakávaný tvar po re-importe: jednostranné série po sériách (L1 R1 L2 R2), prázdne 0 x 0 preč, cvik len s dropmi = jeho dropy */
+      const shape = (e) => {
+        let ws = historyWorkingSets(e).filter((s) => s.weight > 0 || s.reps > 0);
+        if (e.unilateral === true) ws.sort((a, b) => a.set - b.set || (a.side === b.side ? 0 : a.side === 'left' ? -1 : 1));
+        const arr = ws.map((s) => [s.weight, s.reps, s.rpe, s.failure]);
+        if (!arr.length) return historyDropSets(e).map((d) => [d.weight, d.reps, null, false]);
+        return arr;
+      };
+      const side = (list) => JSON.stringify(list.map((e) => [entryIdentity(e), shape(e)]).filter((x) => x[1].length));
+      const mine = state.history.slice().sort((a, b) => (a.date < b.date ? -1 : 1));
+      const a = mine.map((w) => side(w.exercises)), b = res.workouts.map((w) => side(w.exercises));
+      return { fmt, n: res.workouts.length, eq: JSON.stringify(a) === JSON.stringify(b), a, b, dates: res.workouts.map((w) => w.date), durs: res.workouts.map((w) => w.durationSeconds || 0), g: res.workouts[0].exercises.map((e) => e.group || null), drops: res.workouts[0].exercises[0].drops, warm: res.workouts[0].exercises[0].warmups, titles: res.workouts.map((w) => w.planName), names: res.workouts[4].exercises.map((e) => e.name) };
     })()`);
     check('detected as gymquest', rt && rt.fmt === 'gymquest', rt && rt.fmt);
-    check('3 workouts back, same dates (day-accurate)', rt && rt.n === 3 && rt.dates.join() === '2024-11-15,2024-11-16,2024-11-17', rt && rt.dates);
-    check('working sets equal per exercise (weight, reps, rpe, failure)', rt && rt.eq, rt && { a: rt.a, b: rt.b });
+    check('5 workouts back, same dates (day-accurate)', rt && rt.n === 5 && rt.dates.join() === '2024-11-15,2024-11-16,2024-11-17,2024-11-18,2024-11-19', rt && rt.dates);
+    check('working sets equal per exercise, w2 (unilateral + escaped names) included', rt && rt.eq, rt && { a: rt.a, b: rt.b });
     check('durations round-trip (55 min, 120 min)', rt && rt.durs[0] === 3300 && rt.durs[2] === 7200, rt && rt.durs);
-    check('superset restored, drops and warm-ups restored', rt && rt.g[1] === 'ss1' && rt.g[2] === 'ss1' && rt.g[0] === null, rt && rt.g);
+    check('superset restored, drops and warm-ups restored', rt && rt.g[1] === 'ss1' && rt.g[2] === 'ss1' && rt.g[0] === null);
     check('drops 2 and warm-ups 2 present after re-import', rt && rt.drops && rt.drops.length === 2 && rt.warm && rt.warm.length === 2);
+
+    console.log('== Re-import of your own export is recognised (end to end)');
+    const own = await ev(`(() => {
+      const parsed = parseCsv(buildCsvExport({ includeImported: false }));
+      const fmt = detectCsvFormat(parsed.rows[0]);
+      const res = csvToWorkouts(parsed.rows, fmt, { delimiter: parsed.delimiter });
+      const v = csvBuildView(res, fmt);
+      return { n: res.workouts.length, inHist: v.inHist, fresh: v.fresh.length, dup: v.dup };
+    })()`);
+    check('every workout is "already in your history" (inHist === n, nothing fresh)', own && own.n === 5 && own.inHist === own.n && own.fresh === 0 && own.dup === 0, own);
+    check('same after the app language changes (plan names are matched by recorded name too)', await ev(`(() => { setLang('sk'); const parsed = parseCsv(buildCsvExport()); const res = csvToWorkouts(parsed.rows, detectCsvFormat(parsed.rows[0]), { delimiter: parsed.delimiter }); const v = csvBuildView(res, 'gymquest'); setLang('en'); return v.inHist === 5 && v.fresh.length === 0; })()`));
+
+    console.log('== Count-drift cases and spreadsheet-formula guard');
+    const rows5 = await ev(`parseCsv(buildCsvExport()).rows.slice(1).filter((r) => r[0] === '+5 kg day' || r[0] === "'+5 kg day")`);
+    check('0 kg x 0 reps working set is not exported (only the 10 x 5 row of the custom exercise)', rows5.filter((r) => r[4] !== 'Drops only').length === 1 && rows5.filter((r) => r[4] !== 'Drops only')[0][9] === '10');
+    check('drops-only exercise: drops exported as dropset rows (importer reads them as working sets)', rows5.filter((r) => r[4] === 'Drops only').map((r) => r[8] + ':' + r[9] + 'x' + r[10]).join() === 'dropset:30x8,dropset:20x10', rows5.map((r) => r.slice(4, 11).join('/')));
+    check('csvWorkingSetCount equals on both sides for the 0x0 and drops-only workout', await ev(`(() => { const real = state.history.find((w) => w.id === 'w5'); const parsed = parseCsv(buildCsvExport()); const res = csvToWorkouts(parsed.rows, 'gymquest', {}); const imp = res.workouts.find((w) => w.date === '2024-11-19'); return [csvWorkingSetCount(real.exercises), csvWorkingSetCount(imp.exercises), csvMatchKey(real) === csvMatchKey(imp)]; })()`).then((a) => a[0] === a[1] && a[0] === 3 && a[2] === true));
+    const rawCsv = await ev(`buildCsvExport()`);
+    check("exported cells for =SUM(A1) and +5 kg day start with an apostrophe", rawCsv.includes('"\'=SUM(A1)"') && rawCsv.includes('"\'+5 kg day"'));
+    check('re-import gives the original names back', rt && rt.titles[4] === '+5 kg day' && rt.names[0] === '=SUM(A1)', rt && [rt.titles, rt.names]);
+    check('guard is stripped for the gymquest format only (Hevy keeps a leading apostrophe)', await ev(`(() => { const h = 'title,start_time,end_time,description,exercise_title,superset_id,exercise_notes,set_index,set_type,weight_kg,reps,distance_km,duration_seconds,rpe\\n"\\'+x","1 Jan 2024, 10:00","1 Jan 2024, 11:00","","\\'=y",,"",0,normal,10,5,,0,'; const p = parseCsv(h); const r = csvToWorkouts(p.rows, 'hevy', {}); return r.workouts[0].planName === "'+x" && r.workouts[0].exercises[0].name === "'=y"; })()`));
 
     console.log('== Imported workouts in the export');
     const off = await ev(`buildCsvExport({ includeImported: false })`);
@@ -130,8 +161,8 @@ const SETTINGS_BUTTONS_BASELINE = 33;   // tlačidlá v #modal-settings pred tou
     check('Blob holds the BOM (3 extra bytes) and is non-trivial', dl && dl.made[0].size > 400);
 
     console.log('== Settings: exactly one new button');
-    const sb = await ev(`(() => { const s = document.getElementById('modal-settings'); return { n: s.querySelectorAll('button').length, csv: !!s.querySelector('#btn-csv'), inMore: !!s.querySelector('#settings-more #btn-csv'), label: (document.getElementById('btn-csv') || {}).textContent }; })()`);
-    check('Settings has exactly one new button (#btn-csv, in the Data group)', sb.n === SETTINGS_BUTTONS_BASELINE + 1 && sb.csv && sb.inMore, sb);
+    const sb = await ev(`(() => { const s = document.getElementById('modal-settings'); const csvBtns = Array.from(s.querySelectorAll('button')).filter((x) => /csv/i.test(x.id) || /csv/i.test(x.getAttribute('data-i18n') || '')); const row = document.getElementById('btn-csv').parentElement; return { ids: csvBtns.map((x) => x.id), rowButtons: row.querySelectorAll('button').length, files: s.querySelectorAll('input[type=file]').length, inMore: !!s.querySelector('#settings-more #btn-csv'), label: (document.getElementById('btn-csv') || {}).textContent }; })()`);
+    check('#btn-csv is the only button the CSV feature adds to Settings (alone in its Data row)', sb.ids.join() === 'btn-csv' && sb.rowButtons === 1 && sb.inMore && sb.files === 1, sb);
     check('label "CSV (Strong / Hevy)"', sb.label === 'CSV (Strong / Hevy)', sb.label);
 
     console.log('== Sheet standard');
@@ -187,6 +218,16 @@ const SETTINGS_BUTTONS_BASELINE = 33;   // tlačidlá v #modal-settings pred tou
     await shot('csv-sheet-no-imports-' + (process.env.GQ_SHOT_SFX || 'x'));
     check('export with no imports and no workouts shows a message instead of a file', await ev(`(() => { const h = state.history; state.history = []; let made = 0; const ou = URL.createObjectURL; URL.createObjectURL = () => { made++; return 'blob:x'; }; exportCsv(); URL.createObjectURL = ou; state.history = h; const g = !document.getElementById('modal-generic').hidden; document.getElementById('btn-generic-cancel').click(); return made === 0 && g; })()`));
     await ev(`(document.getElementById('btn-csv-close').click(), true)`);
+
+    console.log('== Plurals');
+    const pl = await ev(`(() => {
+      const o = {}; const row = (lang) => { setLang(lang); return [1, 2, 5].map((n) => [tPlural('csv.confirm', n), tPlural('csv.toast', n), tPlural('csvx.srcRow', n).split('{source}').join('Strong'), tPlural('csv.skipped', n)]); };
+      for (const l of ['en', 'sk', 'ar']) o[l] = row(l);
+      setLang('en'); return o; })()`);
+    check('English: "1 workout" and "2 workouts" (confirm, toast, source row)', pl.en[0][0] === 'Import 1 workout' && pl.en[1][0] === 'Import 2 workouts' && pl.en[0][1] === 'Imported 1 workout' && pl.en[1][1] === 'Imported 2 workouts' && pl.en[0][2] === 'Strong · 1 workout' && pl.en[1][2] === 'Strong · 2 workouts' && pl.en[0][3] === '1 row skipped (not a lifting set)', pl.en);
+    check('Slovak: 1 tréning / 2 tréningy / 5 tréningov', pl.sk[0][0] === 'Importovať 1 tréning' && pl.sk[1][0] === 'Importovať 2 tréningy' && pl.sk[2][0] === 'Importovať 5 tréningov' && pl.sk[2][2] === 'Strong · 5 tréningov' && pl.sk[1][3] === 'Preskočené 2 riadky (nie sú to série s váhou)', pl.sk);
+    check('Arabic: dual and few forms differ from the generic one', pl.ar[0][0] !== pl.ar[1][0] && pl.ar[1][0] !== pl.ar[2][0] && !/\{|csv/.test(pl.ar[2][0]), pl.ar);
+    check('plural sheet row shows "1 workout" in the UI', await ev(`(() => { setLang('en'); state.importedHistory = [{ id: 'i9', date: '2024-10-01', planName: 'x', source: 'strong', importKey: 'strong|z', exercises: [{ name: 'Bench Press', exId: 'bench-press', sets: 1, reps: 5, weight: 80, setsDone: 1, doneSets: [1] }] }]; document.getElementById('btn-csv').click(); const txt = document.getElementById('csv-srcs').textContent; document.getElementById('btn-csv-close').click(); state.importedHistory = []; return /Strong · 1 workout$/.test(txt.replace(/\\s+/g, ' ').replace(/ ?Remove all/, '').trim()); })()`));
 
     console.log('== Languages, RTL, themes at 390 px');
     await p.c.send('Emulation.setDeviceMetricsOverride', { width: 390, height: 844, deviceScaleFactor: 2, mobile: true });
