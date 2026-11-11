@@ -41,14 +41,14 @@ function check(name, ok, info) {
       state.importedHistory = [
         { id: 'i-today', date: day(0), planName: 'Chest day', source: 'strong', importKey: 'k1', exercises: [ent(80)] },
         { id: 'i-old', date: day(5), planName: 'Pull', source: 'hevy', importKey: 'k2', exercises: [ent(70)] },
-        { id: 'i-mixed', date: day(1), planName: 'Legs', source: 'csv', importKey: 'k3', exercises: [ent(75)] }];
+        { id: 'i-mixed', date: day(1), planName: 'Legs', source: 'csv', importKey: 'k3', exercises: [ent(75)], health: { hrAvg: 120, start: new Date().toISOString(), end: new Date().toISOString(), readAt: new Date().toISOString() } }];
       recalculateAll(); saveState(); renderAll(); return true;
     })()`);
-    const snap = `(() => (xpCacheClear(), { xp: totalXP(), streak: computeStreak(), wk: sessionsInWeek(currentWeekKey()), pr: personalRecords(), real: state.history.length }))()`;
+    const snap = `(() => (xpCacheClear(), { xp: totalXP(), streak: computeStreak(), wk: sessionsInWeek(currentWeekKey()), lvl: levelForXp(totalXP()), ach: Object.keys(state.achievements || {}).sort(), lb: leaderboardPayload(), pr: personalRecords(), real: state.history.length }))()`;
     const base = await ev(snap);
 
     console.log('== History list');
-    check('API exists', await ev(`[typeof deleteImportedWorkout, typeof deleteImportedSource]`).then((a) => J(a) === '["function","function"]'));
+    check('API exists', await ev(`['deleteImportedWorkout', 'countImportedSource', 'removeImportedSource', 'confirmRemoveImportedSource'].map((n) => typeof window[n])`).then((a) => J(a) === '["function","function","function","function"]'));
     await p.eval(`(switchTab('pokrok'), setPokrokView('history'), renderPokrok(), true)`);
     const rows = await ev(`Array.from(document.querySelectorAll('#history-list .history-row')).map((r) => ({ name: r.querySelector('.history-name').textContent, imp: r.classList.contains('history-imported'), tag: (r.querySelector('.imp-tag') || {}).textContent || '', edit: !!r.querySelector('[data-action="edit"]'), del: !!r.querySelector('[data-action="delete"]'), xp: !!r.querySelector('.history-xp') }))`);
     check('4 rows (3 imported + 1 real)', rows.length === 4, rows);
@@ -88,9 +88,13 @@ function check(name, ok, info) {
     check('deleteImportedWorkout: one saveState()', saves === 1, saves);
     check('i-old gone', J(await ev(`state.importedHistory.map((w) => w.id)`)) === '["i-today","i-mixed"]');
     check('unknown id: no dialog, no crash', await ev(`(() => { deleteImportedWorkout('nope'); return document.getElementById('modal-generic').hidden; })()`) === true);
-    const cnt = await ev(`(() => { state.importedHistory.push({ id: 'i-h', date: '2025-01-01', planName: 'H', source: 'hevy', importKey: 'k9', exercises: [] }); const n = deleteImportedSource('hevy'); const asked = !document.getElementById('modal-generic').hidden; const stillThere = state.importedHistory.length; document.getElementById('btn-generic-ok').click(); return [n, asked, stillThere, state.importedHistory.map((w) => w.id)]; })()`);
-    check('deleteImportedSource asks first, returns count, then removes only that source', J(cnt) === '[1,true,3,["i-today","i-mixed"]]', cnt);
-    check('deleteImportedSource with nothing to remove returns 0, no dialog', await ev(`(() => { const n = deleteImportedSource('hevy'); return [n, document.getElementById('modal-generic').hidden]; })()`).then((a) => J(a) === '[0,true]'));
+    const cnt = await ev(`(() => { state.importedHistory.push({ id: 'i-h', date: '2025-01-01', planName: 'H', source: 'hevy', importKey: 'k9', exercises: [] }); const c = countImportedSource('hevy'); const hidden = document.getElementById('modal-generic').hidden; return [c, hidden, state.importedHistory.length]; })()`);
+    check('countImportedSource counts, no dialog, no change', J(cnt) === '[1,true,3]', cnt);
+    const cnf = await ev(`(() => { const n = confirmRemoveImportedSource('hevy'); const asked = !document.getElementById('modal-generic').hidden; const still = state.importedHistory.length; document.getElementById('btn-generic-cancel').click(); const kept = state.importedHistory.length; confirmRemoveImportedSource('hevy'); document.getElementById('btn-generic-ok').click(); return [n, asked, still, kept, state.importedHistory.map((w) => w.id)]; })()`);
+    check('confirmRemoveImportedSource asks; cancel keeps; ok removes only that source', J(cnf) === '[1,true,3,3,["i-today","i-mixed"]]', cnf);
+    const rm = await ev(`(() => { state.importedHistory.push({ id: 'i-h2', date: '2025-01-01', planName: 'H', source: 'hevy', importKey: 'k10', exercises: [] }); let n = 0; const o = window.saveState; window.saveState = function () { n++; return o.apply(this, arguments); }; const r = removeImportedSource('hevy'); window.saveState = o; return [r, n, document.getElementById('modal-generic').hidden, state.importedHistory.length]; })()`);
+    check('removeImportedSource: immediate, one saveState, returns count, no dialog', J(rm) === '[1,1,true,2]', rm);
+    check('nothing to remove: 0 and no dialog (count, remove, confirm)', await ev(`[countImportedSource('hevy'), removeImportedSource('hevy'), confirmRemoveImportedSource('hevy'), document.getElementById('modal-generic').hidden]`).then((a) => J(a) === '[0,0,0,true]'));
     check('real history untouched by deletes', await ev(`state.history.length`) === 1);
 
     console.log('== Calendar');
@@ -104,6 +108,8 @@ function check(name, ok, info) {
     const day = await ev(`Array.from(document.querySelectorAll('#day-body .day-workout')).map((d) => ({ name: d.querySelector('.day-workout-name').textContent, tag: (d.querySelector('.imp-tag') || {}).textContent || '', xp: !!d.querySelector('.day-workout-xp'), del: !!d.querySelector('[data-action="delete-imported"]'), link: !!d.querySelector('.ex-prog-link') }))`);
     check('day sheet lists both, only the imported one tagged', day.length === 2 && day.filter((d) => d.tag === 'Imported · CSV').length === 1 && day.filter((d) => !d.tag).length === 1, day);
     check('imported block: no XP, delete button, exercise link', day.every((d) => d.tag ? (!d.xp && d.del && d.link) : (d.xp && !d.del)), day);
+    check('imported block: no XP / share / health elements even with a health field', await ev(`(() => { const d = Array.from(document.querySelectorAll('#day-body .day-workout')).find((x) => x.querySelector('.imp-tag')); return ['.day-workout-xp', '.day-share', '.health-line', '.health-refresh'].map((s) => !!d.querySelector(s)); })()`).then((a) => J(a) === '[false,false,false,false]'));
+    check('imported-only day status is neutral, not "Workout completed"', await ev(`(() => { const c = document.querySelector('.cal-cell[data-day="' + localDateKey(addDays(new Date(), -5)) + '"]'); return [c.getAttribute('aria-label'), dayStatusText(localDateKey(addDays(new Date(), -5)), 0)]; })()`).then((a) => !/completed/i.test(a[0]) && /Imported workout/.test(a[0])), 1);
     await p.eval(`(document.querySelector('#day-body [data-action="delete-imported"]').click(), true)`);
     check('day-sheet delete asks first', await ev(`!document.getElementById('modal-generic').hidden && state.importedHistory.some((w) => w.id === 'i-mixed')`) === true);
     await p.eval(`(document.getElementById('btn-generic-ok').click(), true)`);
@@ -120,7 +126,7 @@ function check(name, ok, info) {
     for (const lang of ['sk', 'en', 'es', 'pt-BR', 'fr', 'ar']) {
       await p.eval(`(setLang('${lang}'), switchTab('pokrok'), setPokrokView('history'), renderPokrok(), true)`);
       const x = await ev(`(() => { const r = document.querySelector('#history-list .history-imported'); const tag = r.querySelector('.imp-tag').textContent; const d = document.querySelector('#history-list'); 
-        const miss = ['imp.tag', 'imp.deleteTitle', 'imp.deleteConfirm', 'imp.deleteSourceTitle', 'imp.deleteSourceConfirm'].filter((k) => !I18N['${lang}'][k]);
+        const miss = ['imp.tag', 'imp.deleteTitle', 'imp.deleteConfirm', 'imp.deleteSourceTitle', 'imp.deleteSourceConfirm', 'imp.status'].filter((k) => !I18N['${lang}'][k]);
         document.querySelector('#history-list .history-imported [data-action="delete"]').click();
         const dlg = document.getElementById('generic-title').textContent + ' | ' + document.getElementById('generic-text').textContent; document.getElementById('btn-generic-cancel').click();
         return { tag, dlg, miss, dir: document.documentElement.dir, over: document.documentElement.scrollWidth <= window.innerWidth }; })()`);
