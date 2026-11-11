@@ -7609,6 +7609,7 @@ const BASICS_I18N = {
     'imp.tag': 'Importované · {source}', 'imp.deleteTitle': 'Vymazať importovaný tréning', 'imp.deleteConfirm': 'Tento importovaný tréning sa odstráni z histórie a grafov. Nikdy sa nepočítal do XP.', 'imp.deleteSourceTitle': 'Odstrániť importy zo zdroja {source}', 'imp.deleteSourceConfirm': 'Importované tréningy na odstránenie: {n} (zo zdroja {source}). Tvoje vlastné tréningy zostanú.', 'imp.status': 'Importovaný tréning',
     'csvx.open': 'CSV (Strong / Hevy)', 'csvx.exportLabel': 'Export', 'csvx.export': 'Exportovať CSV', 'csvx.include': 'Zahrnúť importované tréningy', 'csvx.importLabel': 'Import', 'csvx.pick': 'Importovať zo Strong alebo Hevy…', 'csvx.manage': 'Spravovať importy', 'csvx.srcRow': '{source} · tréningov: {n}', 'csvx.removeAll': 'Odstrániť všetky', 'csvx.removeAria': 'Odstrániť všetky importy zo zdroja {source}', 'csvx.help': 'Export nájdeš v nastaveniach aplikácie Strong alebo Hevy (hľadaj Export dát / CSV). Súbor .csv potom vyber tu.', 'csvx.exportEmpty': 'Zatiaľ nie je čo exportovať.',
     'csv.confirmOne': 'Importovať {n} tréning', 'csv.confirmFew': 'Importovať {n} tréningy', 'csv.confirmOther': 'Importovať {n} tréningov', 'csv.toastOne': 'Importovaný {n} tréning', 'csv.toastFew': 'Importované {n} tréningy', 'csv.toastOther': 'Importovaných {n} tréningov', 'csvx.srcRowOne': '{source} · {n} tréning', 'csvx.srcRowFew': '{source} · {n} tréningy', 'csvx.srcRowOther': '{source} · {n} tréningov', 'imp.deleteSourceConfirmOne': 'Odstráni sa {n} importovaný tréning zo zdroja {source}. Tvoje vlastné tréningy zostanú.', 'imp.deleteSourceConfirmFew': 'Odstránia sa {n} importované tréningy zo zdroja {source}. Tvoje vlastné tréningy zostanú.', 'imp.deleteSourceConfirmOther': 'Odstráni sa {n} importovaných tréningov zo zdroja {source}. Tvoje vlastné tréningy zostanú.', 'csv.skippedOne': 'Preskočený {n} riadok (nie je to séria s váhou)', 'csv.skippedFew': 'Preskočené {n} riadky (nie sú to série s váhou)', 'csv.skippedOther': 'Preskočených {n} riadkov (nie sú to série s váhou)',
+    'suggest.up': 'Naposledy si zvládol všetky opakovania. Skús {kg} kg.', 'suggest.up2': 'Naposledy to išlo ľahko. Skús {kg} kg.', 'suggest.keep': 'Ešte to nešlo na všetky opakovania. Ostaň pri {kg} kg.', 'suggest.reset': 'Dva ťažké tréningy po sebe. Vráť sa na {kg} kg.', 'suggest.lessHelp': 'Naposledy si zvládol všetky opakovania. Skús s pomocou {kg} kg.', 'suggest.keepHelp': 'Ešte to nešlo na všetky opakovania. Ostaň pri pomoci {kg} kg.', 'suggest.moreHelp': 'Dva ťažké tréningy po sebe. Pridaj pomoc na {kg} kg.',
   },
   en: {
     'settings.autoRest': 'Start rest automatically', 'settings.autoRestHint': 'The rest timer starts by itself when you mark a set done. In a superset, after the last exercise.',
@@ -7641,6 +7642,7 @@ const BASICS_I18N = {
     'imp.tag': 'Imported · {source}', 'imp.deleteTitle': 'Delete imported workout', 'imp.deleteConfirm': 'This imported workout will be removed from your history and charts. It never counted for XP.', 'imp.deleteSourceTitle': 'Remove imports from {source}', 'imp.deleteSourceConfirm': 'Imported workouts to remove: {n} (from {source}). Your own workouts stay.', 'imp.status': 'Imported workout',
     'csvx.open': 'CSV (Strong / Hevy)', 'csvx.exportLabel': 'Export', 'csvx.export': 'Export CSV', 'csvx.include': 'Include imported workouts', 'csvx.importLabel': 'Import', 'csvx.pick': 'Import from Strong or Hevy…', 'csvx.manage': 'Manage imported', 'csvx.srcRow': '{source} · {n} workouts', 'csvx.removeAll': 'Remove all', 'csvx.removeAria': 'Remove all imports from {source}', 'csvx.help': 'Look for Export data / CSV in the settings of the Strong or Hevy app, then pick the .csv file here.', 'csvx.exportEmpty': 'There is nothing to export yet.',
     'csv.confirmOne': 'Import {n} workout', 'csv.confirmOther': 'Import {n} workouts', 'csv.toastOne': 'Imported {n} workout', 'csv.toastOther': 'Imported {n} workouts', 'csvx.srcRowOne': '{source} · {n} workout', 'csvx.srcRowOther': '{source} · {n} workouts', 'imp.deleteSourceConfirmOne': '{n} imported workout from {source} will be removed. Your own workouts stay.', 'imp.deleteSourceConfirmOther': '{n} imported workouts from {source} will be removed. Your own workouts stay.', 'csv.skippedOne': '{n} row skipped (not a lifting set)', 'csv.skippedOther': '{n} rows skipped (not lifting sets)',
+    'suggest.up': 'Last time you hit every rep. Try {kg} kg.', 'suggest.up2': 'Last time felt easy. Try {kg} kg.', 'suggest.keep': 'You did not hit every rep yet. Stay at {kg} kg.', 'suggest.reset': 'Two tough sessions in a row. Step back to {kg} kg.', 'suggest.lessHelp': 'Last time you hit every rep. Try {kg} kg of help.', 'suggest.keepHelp': 'You did not hit every rep yet. Stay at {kg} kg of help.', 'suggest.moreHelp': 'Two tough sessions in a row. Add help back up to {kg} kg.',
   },
   es: {
     'settings.autoRest': 'Iniciar el descanso automáticamente', 'settings.autoRestHint': 'El temporizador de descanso empieza solo al marcar una serie. En una superserie, tras el último ejercicio.',
@@ -7673,6 +7675,7 @@ const BASICS_I18N = {
     'imp.tag': 'Importado · {source}', 'imp.deleteTitle': 'Eliminar entrenamiento importado', 'imp.deleteConfirm': 'Este entrenamiento importado se quitará de tu historial y de los gráficos. Nunca contó para el XP.', 'imp.deleteSourceTitle': 'Quitar importaciones de {source}', 'imp.deleteSourceConfirm': 'Entrenamientos importados que se quitarán: {n} (de {source}). Tus propios entrenamientos se quedan.', 'imp.status': 'Entrenamiento importado',
     'csvx.open': 'CSV (Strong / Hevy)', 'csvx.exportLabel': 'Exportar', 'csvx.export': 'Exportar CSV', 'csvx.include': 'Incluir entrenamientos importados', 'csvx.importLabel': 'Importar', 'csvx.pick': 'Importar desde Strong o Hevy…', 'csvx.manage': 'Gestionar importados', 'csvx.srcRow': '{source} · {n} entrenamientos', 'csvx.removeAll': 'Quitar todos', 'csvx.removeAria': 'Quitar todas las importaciones de {source}', 'csvx.help': 'Busca Exportar datos / CSV en los ajustes de la app Strong o Hevy y elige aquí el archivo .csv.', 'csvx.exportEmpty': 'Todavía no hay nada que exportar.',
     'csv.confirmOne': 'Importar {n} entrenamiento', 'csv.confirmOther': 'Importar {n} entrenamientos', 'csv.toastOne': 'Entrenamiento importado: {n}', 'csv.toastOther': 'Entrenamientos importados: {n}', 'csvx.srcRowOne': '{source} · {n} entrenamiento', 'csvx.srcRowOther': '{source} · {n} entrenamientos', 'imp.deleteSourceConfirmOne': 'Se quitará {n} entrenamiento importado de {source}. Tus propios entrenamientos se quedan.', 'imp.deleteSourceConfirmOther': 'Se quitarán {n} entrenamientos importados de {source}. Tus propios entrenamientos se quedan.', 'csv.skippedOne': '{n} fila omitida (no es una serie con peso)', 'csv.skippedOther': '{n} filas omitidas (no son series con peso)',
+    'suggest.up': 'La última vez completaste todas las repeticiones. Prueba {kg} kg.', 'suggest.up2': 'La última vez fue fácil. Prueba {kg} kg.', 'suggest.keep': 'Aún no completaste todas las repeticiones. Quédate en {kg} kg.', 'suggest.reset': 'Dos sesiones difíciles seguidas. Baja a {kg} kg.', 'suggest.lessHelp': 'La última vez completaste todas las repeticiones. Prueba con {kg} kg de ayuda.', 'suggest.keepHelp': 'Aún no completaste todas las repeticiones. Quédate con {kg} kg de ayuda.', 'suggest.moreHelp': 'Dos sesiones difíciles seguidas. Sube la ayuda a {kg} kg.',
   },
   'pt-BR': {
     'settings.autoRest': 'Iniciar o descanso automaticamente', 'settings.autoRestHint': 'O cronômetro de descanso começa sozinho ao marcar uma série. Em um superset, após o último exercício.',
@@ -7705,6 +7708,7 @@ const BASICS_I18N = {
     'imp.tag': 'Importado · {source}', 'imp.deleteTitle': 'Excluir treino importado', 'imp.deleteConfirm': 'Este treino importado será removido do seu histórico e dos gráficos. Ele nunca contou para o XP.', 'imp.deleteSourceTitle': 'Remover importações de {source}', 'imp.deleteSourceConfirm': 'Treinos importados a remover: {n} (de {source}). Seus próprios treinos ficam.', 'imp.status': 'Treino importado',
     'csvx.open': 'CSV (Strong / Hevy)', 'csvx.exportLabel': 'Exportar', 'csvx.export': 'Exportar CSV', 'csvx.include': 'Incluir treinos importados', 'csvx.importLabel': 'Importar', 'csvx.pick': 'Importar do Strong ou Hevy…', 'csvx.manage': 'Gerenciar importados', 'csvx.srcRow': '{source} · {n} treinos', 'csvx.removeAll': 'Remover todos', 'csvx.removeAria': 'Remover todas as importações de {source}', 'csvx.help': 'Procure Exportar dados / CSV nas configurações do app Strong ou Hevy e escolha o arquivo .csv aqui.', 'csvx.exportEmpty': 'Ainda não há nada para exportar.',
     'csv.confirmOne': 'Importar {n} treino', 'csv.confirmOther': 'Importar {n} treinos', 'csv.toastOne': 'Treino importado: {n}', 'csv.toastOther': 'Treinos importados: {n}', 'csvx.srcRowOne': '{source} · {n} treino', 'csvx.srcRowOther': '{source} · {n} treinos', 'imp.deleteSourceConfirmOne': 'Será removido {n} treino importado de {source}. Seus próprios treinos ficam.', 'imp.deleteSourceConfirmOther': 'Serão removidos {n} treinos importados de {source}. Seus próprios treinos ficam.', 'csv.skippedOne': '{n} linha ignorada (não é uma série com carga)', 'csv.skippedOther': '{n} linhas ignoradas (não são séries com carga)',
+    'suggest.up': 'Da última vez você fez todas as repetições. Tente {kg} kg.', 'suggest.up2': 'Da última vez foi fácil. Tente {kg} kg.', 'suggest.keep': 'Você ainda não fez todas as repetições. Fique em {kg} kg.', 'suggest.reset': 'Dois treinos difíceis seguidos. Volte para {kg} kg.', 'suggest.lessHelp': 'Da última vez você fez todas as repetições. Tente com {kg} kg de ajuda.', 'suggest.keepHelp': 'Você ainda não fez todas as repetições. Fique com {kg} kg de ajuda.', 'suggest.moreHelp': 'Dois treinos difíceis seguidos. Aumente a ajuda para {kg} kg.',
   },
   fr: {
     'settings.autoRest': 'Démarrer le repos automatiquement', 'settings.autoRestHint': 'Le minuteur de repos démarre seul quand tu valides une série. Dans une superset, après le dernier exercice.',
@@ -7737,6 +7741,7 @@ const BASICS_I18N = {
     'imp.tag': 'Importé · {source}', 'imp.deleteTitle': 'Supprimer l’entraînement importé', 'imp.deleteConfirm': 'Cet entraînement importé sera retiré de ton historique et des graphiques. Il n’a jamais compté pour l’XP.', 'imp.deleteSourceTitle': 'Retirer les imports de {source}', 'imp.deleteSourceConfirm': 'Entraînements importés à retirer : {n} (de {source}). Tes propres entraînements restent.', 'imp.status': 'Entraînement importé',
     'csvx.open': 'CSV (Strong / Hevy)', 'csvx.exportLabel': 'Export', 'csvx.export': 'Exporter le CSV', 'csvx.include': 'Inclure les entraînements importés', 'csvx.importLabel': 'Import', 'csvx.pick': 'Importer depuis Strong ou Hevy…', 'csvx.manage': 'Gérer les imports', 'csvx.srcRow': '{source} · {n} entraînements', 'csvx.removeAll': 'Tout retirer', 'csvx.removeAria': 'Retirer tous les imports de {source}', 'csvx.help': 'Cherche Exporter les données / CSV dans les réglages de l’app Strong ou Hevy, puis choisis ici le fichier .csv.', 'csvx.exportEmpty': 'Il n’y a encore rien à exporter.',
     'csv.confirmOne': 'Importer {n} entraînement', 'csv.confirmOther': 'Importer {n} entraînements', 'csv.toastOne': 'Entraînement importé : {n}', 'csv.toastOther': 'Entraînements importés : {n}', 'csvx.srcRowOne': '{source} · {n} entraînement', 'csvx.srcRowOther': '{source} · {n} entraînements', 'imp.deleteSourceConfirmOne': '{n} entraînement importé de {source} sera retiré. Tes propres entraînements restent.', 'imp.deleteSourceConfirmOther': '{n} entraînements importés de {source} seront retirés. Tes propres entraînements restent.', 'csv.skippedOne': '{n} ligne ignorée (ce n’est pas une série avec charge)', 'csv.skippedOther': '{n} lignes ignorées (ce ne sont pas des séries avec charge)',
+    'suggest.up': 'La dernière fois, tu as fait toutes les répétitions. Essaie {kg} kg.', 'suggest.up2': "La dernière fois, c'était facile. Essaie {kg} kg.", 'suggest.keep': "Tu n'as pas encore fait toutes les répétitions. Reste à {kg} kg.", 'suggest.reset': 'Deux séances difficiles de suite. Redescends à {kg} kg.', 'suggest.lessHelp': "La dernière fois, tu as fait toutes les répétitions. Essaie avec {kg} kg d'aide.", 'suggest.keepHelp': "Tu n'as pas encore fait toutes les répétitions. Reste à {kg} kg d'aide.", 'suggest.moreHelp': "Deux séances difficiles de suite. Remonte l'aide à {kg} kg.",
   },
   ar: {
     'settings.autoRest': 'بدء الراحة تلقائيًا', 'settings.autoRestHint': 'يبدأ مؤقت الراحة تلقائيًا عند تحديد مجموعة كمكتملة. في السوبرست، بعد آخر تمرين.',
@@ -7769,6 +7774,7 @@ const BASICS_I18N = {
     'imp.tag': 'مستورد · {source}', 'imp.deleteTitle': 'حذف التمرين المستورد', 'imp.deleteConfirm': 'سيُزال هذا التمرين المستورد من سجلّك والرسوم البيانية. لم يُحتسب أبدًا في نقاط الخبرة.', 'imp.deleteSourceTitle': 'إزالة المستورد من {source}', 'imp.deleteSourceConfirm': 'التمارين المستوردة التي ستُزال: {n} (من {source}). تمارينك الخاصة تبقى.', 'imp.status': 'تمرين مستورد',
     'csvx.open': 'CSV (Strong / Hevy)', 'csvx.exportLabel': 'تصدير', 'csvx.export': 'تصدير CSV', 'csvx.include': 'تضمين التمارين المستوردة', 'csvx.importLabel': 'استيراد', 'csvx.pick': 'استيراد من Strong أو Hevy…', 'csvx.manage': 'إدارة المستورد', 'csvx.srcRow': '{source} · {n} تمرين', 'csvx.removeAll': 'إزالة الكل', 'csvx.removeAria': 'إزالة كل ما استُورد من {source}', 'csvx.help': 'ابحث عن «تصدير البيانات / CSV» في إعدادات تطبيق Strong أو Hevy، ثم اختر ملف ‎.csv‎ هنا.', 'csvx.exportEmpty': 'لا يوجد ما يمكن تصديره بعد.',
     'csv.confirmOne': 'استيراد تمرين واحد', 'csv.confirmTwo': 'استيراد تمرينين', 'csv.confirmFew': 'استيراد {n} تمارين', 'csv.confirmMany': 'استيراد {n} تمرينًا', 'csv.confirmOther': 'استيراد {n} تمرين', 'csv.toastOne': 'تم استيراد تمرين واحد', 'csv.toastTwo': 'تم استيراد تمرينين', 'csv.toastFew': 'تم استيراد {n} تمارين', 'csv.toastMany': 'تم استيراد {n} تمرينًا', 'csv.toastOther': 'تم استيراد {n} تمرين', 'csvx.srcRowOne': '{source} · تمرين واحد', 'csvx.srcRowTwo': '{source} · تمرينان', 'csvx.srcRowFew': '{source} · {n} تمارين', 'csvx.srcRowMany': '{source} · {n} تمرينًا', 'csvx.srcRowOther': '{source} · {n} تمرين', 'imp.deleteSourceConfirmOne': 'سيُزال تمرين واحد مستورد من {source}. تمارينك الخاصة تبقى.', 'imp.deleteSourceConfirmTwo': 'سيُزال تمرينان مستوردان من {source}. تمارينك الخاصة تبقى.', 'imp.deleteSourceConfirmFew': 'سيُزال {n} تمارين مستوردة من {source}. تمارينك الخاصة تبقى.', 'imp.deleteSourceConfirmMany': 'سيُزال {n} تمرينًا مستوردًا من {source}. تمارينك الخاصة تبقى.', 'imp.deleteSourceConfirmOther': 'سيُزال {n} تمرين مستورد من {source}. تمارينك الخاصة تبقى.', 'csv.skippedOne': 'تم تخطي صف واحد (ليس مجموعة رفع)', 'csv.skippedTwo': 'تم تخطي صفين (ليسا مجموعتي رفع)', 'csv.skippedFew': 'تم تخطي {n} صفوف (ليست مجموعات رفع)', 'csv.skippedMany': 'تم تخطي {n} صفًا (ليست مجموعات رفع)', 'csv.skippedOther': 'تم تخطي {n} صفًا (ليست مجموعات رفع)',
+    'suggest.up': 'في المرة السابقة أتممت كل التكرارات. جرّب {kg} كغ.', 'suggest.up2': 'في المرة السابقة كان الأمر سهلًا. جرّب {kg} كغ.', 'suggest.keep': 'لم تُتمّ كل التكرارات بعد. ابقَ عند {kg} كغ.', 'suggest.reset': 'جلستان صعبتان متتاليتان. ارجع إلى {kg} كغ.', 'suggest.lessHelp': 'في المرة السابقة أتممت كل التكرارات. جرّب مساعدة {kg} كغ.', 'suggest.keepHelp': 'لم تُتمّ كل التكرارات بعد. ابقَ عند مساعدة {kg} كغ.', 'suggest.moreHelp': 'جلستان صعبتان متتاليتان. ارفع المساعدة إلى {kg} كغ.',
   },
 };
 for (const lang of Object.keys(BASICS_I18N)) Object.assign(I18N[lang] || (I18N[lang] = {}), BASICS_I18N[lang]);
@@ -25994,6 +26000,108 @@ function entryIdentity(entry) {
     /* Starší záznam bez exId: názov zabudovaného cviku (aj preložený/starý) sa najprv premapuje na jeho id. */
     if (typeof entry.name === 'string' && BUILTIN_NAME_TO_ID[entry.name] && BUILTIN_EXERCISE_IDS.has(BUILTIN_NAME_TO_ID[entry.name])) return BUILTIN_NAME_TO_ID[entry.name];
     return typeof entry.name === 'string' ? exerciseIdentity({ name: entry.name }) : null;
+  } catch (err) {
+    return null;
+  }
+}
+
+/* ---------- Koučing: návrh váhy ---------- */
+/* Čistá funkcia: z poslednej session TOHO ISTÉHO plánu navrhne váhu a opakovania na dnes.
+   Nič nemení; návrh sa použije až ťuknutím používateľa. Importy (state.importedHistory) sa nečítajú. */
+
+/* Krok progresu: 5 kg pre nohy/zadok, 2 kg pre činky (jednoručky), inak 2,5 kg; vlastný cvik 2,5 kg. */
+function suggestStep(ex) {
+  try {
+    const lib = libraryEntry(builtinExerciseId(ex));
+    if (!lib) return 2.5;
+    if (lib.primary === 'legs' || lib.primary === 'glutes') return 5;
+    if (Array.isArray(lib.equipment) && lib.equipment.includes('dumbbells')) return 2;
+    return 2.5;
+  } catch (err) {
+    return 2.5;
+  }
+}
+
+/* Záznamy cviku z histórie toho istého plánu pred dňom `today`, od najnovšieho (rovnako ako previousWorkoutFor,
+   ale všetky; zhoda podľa stabilnej identity cviku). */
+function suggestSessionsFor(ex, planId, today) {
+  const plan = getPlan(planId);
+  const id = exerciseIdentity(ex);
+  if (!id) return [];
+  const out = [];
+  const sorted = [...state.history]
+    .filter((w) => w && typeof w.date === 'string' && w.date < today && Array.isArray(w.exercises) && samePlanAsHistory(w, plan, planId))
+    .sort((a, b) => b.date.localeCompare(a.date));
+  for (const w of sorted) {
+    const found = w.exercises.find((e) => entryIdentity(e) === id);
+    if (found) out.push(found);
+  }
+  return out;
+}
+
+/* Zhrnutie session: top = najväčšia pracovná váha (pri asistovanom najmenšia pomoc), hit = splnené všetky
+   plánované série so všetkými opakovaniami (pri jednostrannom na každej strane), rpeAvg = priemer hodnotených sérií. */
+function suggestSummary(entry, plannedSets, plannedReps, assisted) {
+  const sets = historyWorkingSets(entry);
+  if (!sets.length) return null;
+  const weights = sets.map((s) => s.weight);
+  const top = assisted ? Math.min(...weights) : Math.max(...weights);
+  const need = plannedSets > 0 ? plannedSets : (insightPosInt(entry.sets) || sets.length);
+  const sides = entry.unilateral === true ? ['left', 'right'] : [null];
+  const countOk = sides.every((side) => sets.filter((s) => s.side === side).length >= need);
+  const hit = countOk && sets.every((s) => s.reps >= plannedReps);
+  const rated = sets.filter((s) => typeof s.rpe === 'number' && Number.isFinite(s.rpe));
+  const rpeAvg = rated.length ? rated.reduce((a, s) => a + s.rpe, 0) / rated.length : null;
+  return { top, hit, rpeAvg };
+}
+
+/* Návrh na ďalšiu session: null | { kind, weight, reps, reasonKey, vars }. Nikdy nehodí výnimku, nikdy NaN ani 0 kg. */
+function suggestNext(ex, planId, today = todayISO()) {
+  try {
+    if (!ex || typeof ex !== 'object' || !planId) return null;
+    const last = previousWorkoutFor(ex, today, planId);
+    if (!last || historyEntryAssisted(last) !== isAssisted(ex)) return null;
+    const assisted = isAssisted(ex);
+    const planned = insightPosInt(ex.reps);
+    if (planned === null || planned < 1) return null;
+    const plannedSets = insightPosInt(ex.sets) || 0;
+    const cur = suggestSummary(last, plannedSets, planned, assisted);
+    if (!cur || !(cur.top > 0)) return null;
+    const list = suggestSessionsFor(ex, planId, today);
+    const at = list.indexOf(last);
+    const before = at >= 0 ? list[at + 1] : null;
+    const prev = before ? suggestSummary(before, plannedSets, planned, assisted) : null;
+    const step = suggestStep(ex);
+    const top = cur.top;
+    const barbell = isBarbellExercise(ex);
+    const cfg = plateSettings();
+    const bar = Number(cfg.bar) || 0;
+    const EPS = 1e-9;
+    /* mode: 'down' = nadol na krok / zostaviteľnú, 'up' = nahor, 'near' = na najbližší krok */
+    const fit = (w, mode) => {
+      if (!Number.isFinite(w) || w < 0) return 0;
+      if (barbell) return Math.max(bar, roundToPlates(w, cfg));
+      const q = w / step;
+      const n = mode === 'down' ? Math.floor(q + EPS) : mode === 'up' ? Math.ceil(q - EPS) : Math.round(q);
+      return Math.round(n * step * 100) / 100;
+    };
+    let kind, weight;
+    if (cur && !cur.hit && prev && !prev.hit) {
+      kind = assisted ? 'moreHelp' : 'reset';
+      weight = assisted ? fit(top * 1.1, 'up') : fit(top * 0.9, 'down');
+    } else if (!cur.hit || (cur.rpeAvg !== null && cur.rpeAvg >= 9.5)) {
+      kind = assisted ? 'keepHelp' : 'keep';
+      weight = barbell ? fit(top, 'down') : top;
+    } else if (cur.rpeAvg !== null && cur.rpeAvg <= 7) {
+      kind = assisted ? 'lessHelp' : 'up2';
+      weight = assisted ? fit(Math.max(0, top - 2 * step), 'near') : fit(top + 2 * step, 'near');
+    } else {
+      kind = assisted ? 'lessHelp' : 'up';
+      weight = assisted ? fit(Math.max(0, top - step), 'near') : fit(top + step, 'near');
+    }
+    if (!Number.isFinite(weight) || weight < 0) return null;
+    if (!assisted && !(weight > 0)) return null;
+    return { kind, weight, reps: planned, reasonKey: 'suggest.' + kind, vars: { kg: weight, reps: planned } };
   } catch (err) {
     return null;
   }
