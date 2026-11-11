@@ -22,7 +22,7 @@
 window.GYMQUEST_COMMUNITY = {
   // PUBLIC Web OAuth client ID (not an Android client ID). Never put its secret here.
   // Empty keeps Google sign-in unavailable until the owner's provider setup is complete.
-  googleWebClientId: '',
+  googleWebClientId: '666588049456-2g3vmu409calm6bcc9ngqtnj4ti9b4ob.apps.googleusercontent.com',
   supabaseUrl: 'https://mbjbtprkwvoqgqphgudq.supabase.co',
   supabaseAnonKey: 'sb_publishable_JjrKzkL8_uLpogHHjB1Y5g_4Lk1zAv-',
   vapidPublicKey: 'BEufgNF0ky0RK1M8EYhzsrJvt-wvYzoIgI-Xyvq4WZhb5E130D_3fHTJkTQo1LF6-RoMz4kYChbQ-Djg7C4c7vw',
