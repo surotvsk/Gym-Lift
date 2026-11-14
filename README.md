@@ -82,6 +82,27 @@ everything on your own device.
   shows them as one lettered block and moves you to the next exercise in the group after each set.
 - **Comparison with last time** — every exercise shows whether you went heavier or lighter than your
   previous session **of the same workout plan**.
+- **Weight and rep suggestions** — a small chip uses your last real session of the same plan:
+  increase after hitting the planned reps (a larger step after easy rated sets), keep after a hard or
+  incomplete session, and reset after two incomplete sessions; assisted exercises adjust help instead.
+  Warm-ups and imported workouts do not feed suggestions. Tap the chip for the reason, then **Use** to
+  change only unfinished working sets — never automatically, and never your plan or XP rules.
+  **Show suggestions** is on by default in Settings and stays on this device only.
+- **Multi-week programs** — open **Programs** in the Workout plan picker: Beginner full body
+  (3 days/week, alternating A/B), Push / Pull / Legs (3 or 6 days/week), Upper / Lower (4 days/week),
+  or Strength wave (4 days/week). Each lasts 8 weeks; PPL and Upper / Lower deload in week 8,
+  and Strength wave deloads in weeks 4 and 8. The wave asks for three training maxes (squat, bench,
+  overhead press); its fourth, hinge day uses Romanian deadlifts for ordinary 3×8 work, not max singles.
+  The second wave increases the working training max by 2.5 kg for upper-body lifts and 5 kg for squats.
+  Program plans stay ordinary editable plans: weekly sets, reps and any prescribed weights are captured
+  when you start a workout, without rewriting the plans or changing a running session after a week or
+  plan edit. Explicit wave/deload targets have an explanatory chip even when they already match;
+  **Use** reapplies targets only to unfinished sets. Normal training suggestions can still appear when
+  the program supplies no weight. Today and Workout quietly show the current week.
+  **Repeat this week**, **Skip ahead**, **Start again** after finishing, and **End program** live in the
+  program sheet; ending keeps your plans and history. Starting offers a confirmation before changing
+  a different weekly goal. Program workouts earn normal XP, records and streak credit; program data
+  syncs with your account, while the running session stays on this device.
 - **Six languages** — full **Slovak, English, Spanish, Brazilian Portuguese, French and Arabic**
   interfaces, chosen in ⚙️ Settings and switched instantly. Arabic is a complete right-to-left mode.
 - **Body measurements** — log body weight, waist, chest, both upper arms, both thighs and hips with
@@ -191,7 +212,7 @@ in the prototype.
 - **Today** — see below.
 - **Workout** — the plans as coloured tiles (*Next ✦* or *Plan N*, exercises and sets; the selected
   one is dark), a tile with the selected plan's exercises and **Start** / **Edit**, then *Manage plans*,
-  *New plan*, *Exercise library*, *Full Body builder* and — with Community — **Train with a friend**
+  *New plan*, *Exercise library*, *Full Body builder*, *Programs* and — with Community — **Train with a friend**
   (a lavender tile; tapping it opens the friend picker as a tile right below). During a workout a dark tile shows the plan
   (tap its name to switch plans), the running time and **Rest**, **Finish · +XP** and **Discard**; every
   exercise is a tile (the one you are on is lavender, a finished one lime) with square set buttons

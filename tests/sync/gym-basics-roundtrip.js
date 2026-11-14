@@ -1,4 +1,4 @@
-/* Gym-Lift — gym-basics fáza 1: spätná kompatibilita nových polí so staršími verziami cez účet.
+/* Gym-Lift — gym-basics fázy 1–4: spätná kompatibilita nových polí so staršími verziami cez účet.
    LOCAL stack only, disposable test account (GQ_CREDS_DIR cred-a, GQ_TEST_IDS).
 
      node tests/sync/gym-basics-roundtrip.js
@@ -19,6 +19,9 @@
       drží v pamäti, nechá ich nedotknuté pri úprave plánu/histórie aj pri nahraní; po zosynchronizovaní sú na cloude aj na novom
       zariadení rovnaké (nové zariadenie: bajt po bajte, cloud: kanonicky, jsonb preusporiada kľúče) a XP sa importmi nezmení
       (kontrola v starom builde odstráni aj importedHistory).
+   6. (Fáza 4) NOVÉ zariadenie spustí reálny Beginner full body. state.program a progRow jeho plánov ostanú kanonicky
+      rovnaké po načítaní, úprave nesúvisiacich plánov a synchronizácii starého buildu, aj po reštarte a na čerstvom zariadení.
+      showSuggestions = false ostáva len na novom zariadení; cloud ho nikdy neobsahuje. XP kontrola odstráni aj program/progRow.
    Každé zariadenie má vlastný server/port (vlastný origin = vlastné úložisko = "iné zariadenie"). */
 'use strict';
 const fs = require('fs');
@@ -41,6 +44,18 @@ function check(name, ok, info) {
   else { fail++; console.log('  FAIL ' + name + (info !== undefined ? '  -> ' + String(typeof info === 'string' ? info : J(info)).slice(0, 3000) : '')); }
   return ok;
 }
+/* Porovnáva aj väzbu značiek na riadky a plány, nielen množinu progRow. */
+function checkProgram(name, value, baseline) {
+  const ids = Object.values(baseline.program.plans);
+  const rows = (data) => ids.map((id) => {
+    const plan = data && data.plans && data.plans[id];
+    return (Array.isArray(plan) ? plan : (plan && plan.exercises) || []).map((e) => [e.id, e.progRow]);
+  });
+  check(name, canon(value && value.program) === canon(baseline.program) && canon(rows(value)) === canon(rows(baseline)));
+}
+function checkSuggestionsPrivate(name, payload) {
+  check(name, !!payload && !!payload.settings && !Object.prototype.hasOwnProperty.call(payload.settings, 'showSuggestions') && !Object.prototype.hasOwnProperty.call(payload, 'showSuggestions'));
+}
 const browsers = [];
 async function launch(name) {
   const b = new Browser(name + '-' + Date.now().toString(36), nextPort++, PROFILES);
@@ -53,9 +68,9 @@ async function R(p) { await p.ready(); await p.eval(HELPERS); }
 
 /* Nové polia, ktoré musia prežiť cestu cez starý build (kanonicky, bez poradia kľúčov). */
 const CORE = `(() => {
-  const plans = {}; for (const id of Object.keys(state.plans)) { const pl = state.plans[id]; plans[id] = (pl.exercises || []).map((e) => ({ id: e.id || null, name: e.name, weight: e.weight, sets: e.sets, reps: e.reps, group: e.group === undefined ? null : e.group, warmupRamp: e.warmupRamp === true, unilateral: e.unilateral === true })); }
+  const plans = {}; for (const id of Object.keys(state.plans)) { const pl = state.plans[id]; plans[id] = (pl.exercises || []).map((e) => ({ id: e.id || null, name: e.name, weight: e.weight, sets: e.sets, reps: e.reps, group: e.group === undefined ? null : e.group, warmupRamp: e.warmupRamp === true, unilateral: e.unilateral === true, progRow: e.progRow === undefined ? null : e.progRow })); }
   const hist = state.history.filter((h) => h.id !== 'old-w1').map((h) => JSON.parse(JSON.stringify(h)));
-  return JSON.stringify({ plans, hist, imp: JSON.stringify(state.importedHistory || []), plates: state.settings.plates === undefined ? null : state.settings.plates, effort: state.settings.effort === undefined ? null : state.settings.effort }); })()`;
+  return JSON.stringify({ plans, hist, program: state.program || null, imp: JSON.stringify(state.importedHistory || []), plates: state.settings.plates === undefined ? null : state.settings.plates, effort: state.settings.effort === undefined ? null : state.settings.effort }); })()`;
 
 const SEED_NEW = `(async () => {
   const ok = document.getElementById('btn-setup-ok'); if (ok && !document.getElementById('modal-setup').hidden) ok.click();
@@ -92,6 +107,12 @@ const SEED_NEW = `(async () => {
   setSetRpe(c, 0, 'left', 8.5); setSetRpe(c, 1, 'right', 9);
   saveState();
   document.getElementById('modal-confirm').hidden = false; confirmFinish();
+  /* Skutočný štart vytvorí plány aj značky; predchádzajúce fixture tréningy nemení. */
+  const xpBeforeProgram = totalXP(), historyBeforeProgram = JSON.stringify(state.history);
+  if (!startProgram('beginner-full-body', null, null)) throw new Error('Program fixture failed to start');
+  window.__programXpSame = totalXP() === xpBeforeProgram && JSON.stringify(state.history) === historyBeforeProgram;
+  state.settings.showSuggestions = false;
+  saveState();
   return true; })()`;
 
 async function roundtrip({ ref, newSrv, oldSrv, A, obsA }) {
@@ -118,6 +139,12 @@ async function roundtrip({ ref, newSrv, oldSrv, A, obsA }) {
   const IMP0 = core0.imp, impN = await n.p.eval('window.__impN');
   check('[' + label + '] new device seeded: 50 valid imported workouts in importedHistory, adding them left totalXP unchanged', impN === 50 && JSON.parse(IMP0).length === 50 && (await n.p.eval('window.__impXpSame')) === true && JSON.parse(IMP0).every((w) => w.source === 'hevy' && w.importKey), { impN });
   check('[' + label + '] uploaded: payload carries importedHistory (50, canonical equal)', !!p0 && Array.isArray(p0.importedHistory) && p0.importedHistory.length === 50 && canon(p0.importedHistory) === canon(JSON.parse(IMP0)), p0 && p0.importedHistory && p0.importedHistory.length);
+  const programPlans = core0.program && Object.values(core0.program.plans);
+  check('[' + label + '] real program start creates two tagged day plans without changing XP or history', !!programPlans && core0.program.id === 'beginner-full-body' && programPlans.length === 2 && programPlans.every((id) => core0.plans[id].length === 5 && core0.plans[id].every((e) => typeof e.progRow === 'string' && e.progRow.startsWith('beginner-full-body:'))) && (await n.p.eval('window.__programXpSame')) === true);
+  if (!programPlans || programPlans.length !== 2) throw new Error('Missing program fixture');
+  checkProgram('[' + label + '] uploaded: program and tagged rows equal the new device', p0, core0);
+  check('[' + label + '] suggestions explicitly disabled on the source device', (await n.p.eval('state.settings.showSuggestions')) === false);
+  checkSuggestionsPrivate('[' + label + '] new upload excludes showSuggestions', p0);
   const s0 = await n.p.eval('__gq.snap()');
   check('[' + label + '] new device is synced with nothing pending', s0.status === 'sync.st.synced' && s0.dirty === false, s0.status);
 
@@ -137,19 +164,22 @@ async function roundtrip({ ref, newSrv, oldSrv, A, obsA }) {
   check('[' + label + '] old build keeps the new fields in memory', canon(oldSees.h) === canon(core0.hist[0]) && canon(oldSees.plates) === canon(core0.plates) && oldSees.effort === 'rir' && J(oldSees.g) === J([['g1', true], ['g1', false], [null, false]]), oldSees);
   const oldImp = await o.p.eval(`JSON.stringify(state.importedHistory || null)`);
   check('[' + label + '] old build keeps importedHistory (50) untouched in memory (unknown top-level field survives load)', oldImp !== 'null' && JSON.parse(oldImp).length === 50 && canon(JSON.parse(oldImp)) === canon(JSON.parse(IMP0)), oldImp && oldImp.slice(0, 200));
+  checkProgram('[' + label + '] old build loads canonical program and every progRow unchanged', JSON.parse(await o.p.eval(CORE)), core0);
   const oldXp = await o.p.eval(`typeof totalXP === 'function' ? totalXP() : null`);
   /* Kontrola v starom builde: bez nových polí (len v pamäti, bez uloženia; stav sa hneď vráti) je totalXP rovnaké. */
   const ctl = await o.p.eval(`(() => {
-    const hSave = JSON.stringify(state.history), pSave = JSON.stringify(state.plans), iSave = state.importedHistory;
+    const hSave = JSON.stringify(state.history), pSave = JSON.stringify(state.plans), iSave = state.importedHistory, programSave = state.program;
     const before = totalXP();
     delete state.importedHistory;
+    delete state.program;
     for (const h of state.history) for (const e of (h.exercises || [])) { delete e.warmups; delete e.setRpe; delete e.sideRpe; delete e.group; }
-    for (const id of Object.keys(state.plans)) for (const e of (state.plans[id].exercises || [])) { delete e.group; delete e.warmupRamp; }
+    for (const id of Object.keys(state.plans)) for (const e of (state.plans[id].exercises || [])) { delete e.group; delete e.warmupRamp; delete e.progRow; }
     const after = totalXP();
     state.history = JSON.parse(hSave); state.plans = JSON.parse(pSave); if (iSave !== undefined) state.importedHistory = iSave;
-    return { before, after, restored: JSON.stringify(state.history) === hSave }; })()`);
+    if (programSave !== undefined) state.program = programSave;
+    return { before, after, restored: JSON.stringify(state.history) === hSave && JSON.stringify(state.plans) === pSave && state.program === programSave && state.importedHistory === iSave }; })()`);
   check('[' + label + '] control inside the old build: totalXP is equal with and without the new fields (they never move XP)', ctl.before === ctl.after && ctl.restored && typeof ctl.before === 'number', ctl);
-  if (/f9590a9/.test(label)) check('[' + label + '] v106: old build totalXP right after loading equals the new device (xp0)', oldXp === xp0, { oldXp, xp0 });
+  if (/\/v106$/.test(label)) check('[' + label + '] v106: old build totalXP right after loading equals the new device (xp0)', oldXp === xp0, { oldXp, xp0 });
   await o.p.eval(`(() => { state.plans.gb2.customName = 'GB Other (z mobilu)'; saveState(); return true; })()`);
   /* (a) staré uloženie plánu: zmena opakovaní prvého riadku plánu gb1 cez jeho vlastný editor */
   const planEdit = await o.p.eval(`(() => { startEditPlan('gb1'); editDraft[0].reps = 6; saveEditPlan(); const r = getPlan('gb1').exercises;
@@ -169,6 +199,9 @@ async function roundtrip({ ref, newSrv, oldSrv, A, obsA }) {
   const oldXp1 = await o.p.eval(`totalXP()`);
   const c1 = await obsA.row();
   check('[' + label + '] old build uploaded exactly one new revision, synced, no conflict', c1.revision === c0.revision + 1 && so.status === 'sync.st.synced' && !(so.meta && so.meta.conflict), { rev: [c0.revision, c1.revision], st: so.status });
+  checkProgram('[' + label + '] old build preserves program and progRow after unrelated edits and sync', JSON.parse(await o.p.eval(CORE)), core0);
+  checkProgram('[' + label + '] old upload preserves canonical program and progRow', c1.payload, core0);
+  checkSuggestionsPrivate('[' + label + '] old upload excludes showSuggestions', c1.payload);
   const hx = c1.payload.history.find((h) => h.id === core0.hist[0].id);
   check('[' + label + '] cloud payload: the edited history entry is present with 4 sets for exercise 0 and the same exercises (names, count)', !!hx && hx.exercises[0].sets === 4 && J(hx.exercises.map((e) => e.name)) === J(core0.hist[0].exercises.map((e) => e.name)), hx);
   const hx2 = hx || {};
@@ -184,6 +217,8 @@ async function roundtrip({ ref, newSrv, oldSrv, A, obsA }) {
   await n.p.eval('__gq.syncNow()');
   const n1 = await n.p.eval('__gq.snap()');
   const core1 = JSON.parse(await n.p.eval(CORE));
+  checkProgram('[' + label + '] new device pulls canonical program and progRow unchanged', core1, core0);
+  check('[' + label + '] pulling keeps source suggestions disabled', (await n.p.eval('state.settings.showSuggestions')) === false);
   check('[' + label + '] new device pulled the old device change (plan name + the old workout), no conflict, synced', n1.hist.includes('old-w1') && (await n.p.eval(`state.plans.gb2.customName`)) === 'GB Other (z mobilu)' && n1.status === 'sync.st.synced' && !(n1.meta && n1.meta.conflict), { st: n1.status, hist: n1.hist });
   check('[' + label + '] new device: history equals the cloud (the edited entry came back unchanged by the pull)', canon(core1.hist.find((h) => h.id === core0.hist[0].id)) === canon(c1.payload.history.find((h) => h.id === core0.hist[0].id)), core1.hist);
   const hn = core1.hist.find((h) => h.id === core0.hist[0].id) || {};
@@ -206,20 +241,26 @@ async function roundtrip({ ref, newSrv, oldSrv, A, obsA }) {
   console.log('  INFO [' + label + '] importedHistory raw string identical after pull: ' + (core1.imp === IMP0) + ' (the server stores jsonb, which may reorder keys; content is canonical-equal)');
   check('[' + label + '] new device: imports never counted - history still has exactly the real entries (no imp- ids), XP finite', core1.hist.every((h) => !/^imp-/.test(h.id)) && JSON.parse(core1.imp).every((w) => /^imp-/.test(w.id)));
   check('[' + label + '] new device after restart: same data, synced, same XP', J(JSON.parse(await n.p.eval(CORE))) === J(core1) && (await n.p.eval('__gq.snap()')).status === 'sync.st.synced' && (await n.p.eval('totalXP()')) === xp1);
+  checkProgram('[' + label + '] restarted new device retains canonical program and progRow', JSON.parse(await n.p.eval(CORE)), core0);
+  check('[' + label + '] restarted source retains its private suggestion setting', (await n.p.eval('state.settings.showSuggestions')) === false);
   const f = await launch('gb-fresh-' + label);
   await f.p.navigate('http://localhost:' + NEW_PORT + '/'); await R(f.p);
   try { await f.p.eval(`__gq.signIn(${J(A.email)}, ${J(A.password)})`, 120000); } catch (e) {}
   await R(f.p);
   await waitFor(async () => (await f.p.eval('__gq.snap()')).hist.includes('old-w1'), 90000, 'fresh device loaded');
   const fresh = JSON.parse(await f.p.eval(CORE));
+  checkProgram('[' + label + '] fresh device receives canonical program and progRow', fresh, core0);
+  check('[' + label + '] fresh device keeps default suggestions on, not the source setting', (await f.p.eval('suggestionsOn()')) === true);
   check('[' + label + '] a fresh new device gets identical history, plans and settings, and the same total XP', J(fresh.hist) === J(core1.hist) && J(fresh.plans.gb1) === J(core1.plans.gb1) && canon(fresh.plates) === canon(core1.plates) && fresh.effort === 'rir' && fresh.imp === core1.imp && (await f.p.eval('totalXP()')) === xp1);
   /* Starý build (pred v101) počíta XP inak (uložené xp, nie odvodené) — len informácia, nie chyba nových polí. */
-  if (/f9590a9/.test(label)) check('[' + label + '] v106: after its upload the old build totalXP equals the new device (xp1)', oldXp1 === xp1, { oldXp1, xp1 });
+  if (/\/v106$/.test(label)) check('[' + label + '] v106: after its upload the old build totalXP equals the new device (xp1)', oldXp1 === xp1, { oldXp1, xp1 });
   /* v95: absolútna hodnota XP sa líši, lebo vzorec XP v v95 je staršie než v101 (odvodené XP); kontrola vyššie dokazuje, že nové polia XP nehýbu. */
   console.log('  INFO [' + label + '] total XP: new device ' + xp0 + ', old build ' + oldXp + (oldXp === xp0 ? ' (equal)' : ' (older XP formula, not caused by the new fields)'));
   check('[' + label + '] new devices: no page errors', n.p.errors.length === 0 && f.p.errors.length === 0, [n.p.errors, f.p.errors]);
   const cEnd = await obsA.row();
   check('[' + label + '] new device pulling uploaded nothing (cloud revision unchanged since the old upload)', cEnd.revision === c1.revision, [c1.revision, cEnd.revision]);
+  checkSuggestionsPrivate('[' + label + '] final cloud payload excludes showSuggestions', cEnd.payload);
+  checkProgram('[' + label + '] final cloud payload retains canonical program and progRow', cEnd.payload, core0);
 }
 
 (async () => {

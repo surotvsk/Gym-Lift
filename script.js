@@ -7612,6 +7612,10 @@ const BASICS_I18N = {
     'suggest.up': 'Naposledy si zvládol všetky opakovania. Skús {kg} kg.', 'suggest.up2': 'Naposledy to išlo ľahko. Skús {kg} kg.', 'suggest.keep': 'Ešte to nešlo na všetky opakovania. Ostaň pri {kg} kg.', 'suggest.reset': 'Dva ťažké tréningy po sebe. Vráť sa na {kg} kg.', 'suggest.lessHelp': 'Naposledy si zvládol všetky opakovania. Skús s pomocou {kg} kg.', 'suggest.keepHelp': 'Ešte to nešlo na všetky opakovania. Ostaň pri pomoci {kg} kg.', 'suggest.moreHelp': 'Dva ťažké tréningy po sebe. Pridaj pomoc na {kg} kg.',
     'suggest.chipUp': "Skús {kg} kg", 'suggest.chipKeep': "Ostaň pri {kg} kg", 'suggest.chipReset': "Vráť sa na {kg} kg", 'suggest.chipLessHelp': "Menej pomoci {kg} kg", 'suggest.chipKeepHelp': "Pomoc {kg} kg", 'suggest.chipMoreHelp': "Viac pomoci {kg} kg",
     'suggest.sheetTitle': "Návrh", 'suggest.use': "Použiť {kg} kg", 'suggest.useShort': "Použiť", 'suggest.useAria': "Použiť {kg} kg", 'suggest.close': "Zavrieť", 'suggest.chipAria': "Návrh: {text}. Ťukni pre dôvod.", 'suggest.note': "Zmení sa len tento tréning, nie plán.",
+    'programSession.target': 'Program: {target} · {kg} kg', 'programSession.deload': 'Odľahčenie: {kg} kg', 'programSession.linear': 'Program: {target} · {suggestion}',
+    'programSession.waveWhy': 'Týždeň {n}/{total}: {target} pri {pct} tréningového maxima {tm} kg. Váhy sérií: {kg} kg.',
+    'programSession.deloadWhy': 'Odľahčený týždeň {n}/{total}: {target} pri {kg} kg, 60 % pôvodnej váhy zaokrúhlených na dostupné závažie.',
+    'programSession.linearWhy': 'Týždeň {n}/{total}: program predpisuje {target}.', 'programSession.use': 'Použiť predpis',
     'settings.showSuggestions': "Zobrazovať návrhy", 'settings.showSuggestionsHint': "Pri cviku sa objaví malý čip s návrhom váhy podľa minulého tréningu. Nič sa nezmení, kým ho nepoužiješ.",
     /* Koučing: programy (názvy, dni) */
     "prog.beginner-full-body.name": "Celé telo pre začiatočníkov",
@@ -7725,6 +7729,10 @@ const BASICS_I18N = {
     'suggest.up': 'Last time you hit every rep. Try {kg} kg.', 'suggest.up2': 'Last time felt easy. Try {kg} kg.', 'suggest.keep': 'You did not hit every rep yet. Stay at {kg} kg.', 'suggest.reset': 'Two tough sessions in a row. Step back to {kg} kg.', 'suggest.lessHelp': 'Last time you hit every rep. Try {kg} kg of help.', 'suggest.keepHelp': 'You did not hit every rep yet. Stay at {kg} kg of help.', 'suggest.moreHelp': 'Two tough sessions in a row. Add help back up to {kg} kg.',
     'suggest.chipUp': "Try {kg} kg", 'suggest.chipKeep': "Keep {kg} kg", 'suggest.chipReset': "Reset {kg} kg", 'suggest.chipLessHelp': "Less help {kg} kg", 'suggest.chipKeepHelp': "Keep help {kg} kg", 'suggest.chipMoreHelp': "More help {kg} kg",
     'suggest.sheetTitle': "Suggestion", 'suggest.use': "Use {kg} kg", 'suggest.useShort': "Use", 'suggest.useAria': "Use {kg} kg", 'suggest.close': "Close", 'suggest.chipAria': "Suggestion: {text}. Tap for the reason.", 'suggest.note': "Only this workout changes, not your plan.",
+    'programSession.target': 'Program: {target} · {kg} kg', 'programSession.deload': 'Deload: {kg} kg', 'programSession.linear': 'Program: {target} · {suggestion}',
+    'programSession.waveWhy': 'Week {n}/{total}: {target} at {pct} of your {tm} kg training max. Set weights: {kg} kg.',
+    'programSession.deloadWhy': 'Deload week {n}/{total}: {target} at {kg} kg, 60% of the starting weight rounded to available weights.',
+    'programSession.linearWhy': 'Week {n}/{total}: the program prescribes {target}.', 'programSession.use': 'Use prescription',
     'settings.showSuggestions': "Show suggestions", 'settings.showSuggestionsHint': "A small chip on each exercise suggests a weight based on your last workout. Nothing changes until you tap Use.",
     /* Koučing: programy (názvy, dni) */
     "prog.beginner-full-body.name": "Beginner full body",
@@ -7836,6 +7844,10 @@ const BASICS_I18N = {
     'suggest.up': 'La última vez completaste todas las repeticiones. Prueba {kg} kg.', 'suggest.up2': 'La última vez fue fácil. Prueba {kg} kg.', 'suggest.keep': 'Aún no completaste todas las repeticiones. Quédate en {kg} kg.', 'suggest.reset': 'Dos sesiones difíciles seguidas. Baja a {kg} kg.', 'suggest.lessHelp': 'La última vez completaste todas las repeticiones. Prueba con {kg} kg de ayuda.', 'suggest.keepHelp': 'Aún no completaste todas las repeticiones. Quédate con {kg} kg de ayuda.', 'suggest.moreHelp': 'Dos sesiones difíciles seguidas. Sube la ayuda a {kg} kg.',
     'suggest.chipUp': "Prueba {kg} kg", 'suggest.chipKeep': "Mantén {kg} kg", 'suggest.chipReset': "Baja a {kg} kg", 'suggest.chipLessHelp': "Menos ayuda {kg} kg", 'suggest.chipKeepHelp': "Ayuda {kg} kg", 'suggest.chipMoreHelp': "Más ayuda {kg} kg",
     'suggest.sheetTitle': "Sugerencia", 'suggest.use': "Usar {kg} kg", 'suggest.useShort': "Usar", 'suggest.useAria': "Usar {kg} kg", 'suggest.close': "Cerrar", 'suggest.chipAria': "Sugerencia: {text}. Toca para ver el motivo.", 'suggest.note': "Solo cambia este entrenamiento, no tu plan.",
+    'programSession.target': 'Programa: {target} · {kg} kg', 'programSession.deload': 'Descarga: {kg} kg', 'programSession.linear': 'Programa: {target} · {suggestion}',
+    'programSession.waveWhy': 'Semana {n}/{total}: {target} al {pct} de tu máximo de entrenamiento de {tm} kg. Pesos por serie: {kg} kg.',
+    'programSession.deloadWhy': 'Semana de descarga {n}/{total}: {target} con {kg} kg, el 60% del peso inicial redondeado a los pesos disponibles.',
+    'programSession.linearWhy': 'Semana {n}/{total}: el programa indica {target}.', 'programSession.use': 'Usar prescripción',
     'settings.showSuggestions': "Mostrar sugerencias", 'settings.showSuggestionsHint': "Un pequeño chip en cada ejercicio sugiere un peso según tu último entrenamiento. Nada cambia hasta que pulsas Usar.",
     /* Koučing: programy (názvy, dni) */
     "prog.beginner-full-body.name": "Cuerpo completo para principiantes",
@@ -7947,6 +7959,10 @@ const BASICS_I18N = {
     'suggest.up': 'Da última vez você fez todas as repetições. Tente {kg} kg.', 'suggest.up2': 'Da última vez foi fácil. Tente {kg} kg.', 'suggest.keep': 'Você ainda não fez todas as repetições. Fique em {kg} kg.', 'suggest.reset': 'Dois treinos difíceis seguidos. Volte para {kg} kg.', 'suggest.lessHelp': 'Da última vez você fez todas as repetições. Tente com {kg} kg de ajuda.', 'suggest.keepHelp': 'Você ainda não fez todas as repetições. Fique com {kg} kg de ajuda.', 'suggest.moreHelp': 'Dois treinos difíceis seguidos. Aumente a ajuda para {kg} kg.',
     'suggest.chipUp': "Tente {kg} kg", 'suggest.chipKeep': "Mantenha {kg} kg", 'suggest.chipReset': "Volte a {kg} kg", 'suggest.chipLessHelp': "Menos ajuda {kg} kg", 'suggest.chipKeepHelp': "Ajuda {kg} kg", 'suggest.chipMoreHelp': "Mais ajuda {kg} kg",
     'suggest.sheetTitle': "Sugestão", 'suggest.use': "Usar {kg} kg", 'suggest.useShort': "Usar", 'suggest.useAria': "Usar {kg} kg", 'suggest.close': "Fechar", 'suggest.chipAria': "Sugestão: {text}. Toque para ver o motivo.", 'suggest.note': "Só este treino muda, não o seu plano.",
+    'programSession.target': 'Programa: {target} · {kg} kg', 'programSession.deload': 'Descarga: {kg} kg', 'programSession.linear': 'Programa: {target} · {suggestion}',
+    'programSession.waveWhy': 'Semana {n}/{total}: {target} a {pct} do seu máximo de treino de {tm} kg. Cargas por série: {kg} kg.',
+    'programSession.deloadWhy': 'Semana de descarga {n}/{total}: {target} com {kg} kg, 60% da carga inicial arredondada para as cargas disponíveis.',
+    'programSession.linearWhy': 'Semana {n}/{total}: o programa indica {target}.', 'programSession.use': 'Usar prescrição',
     'settings.showSuggestions': "Mostrar sugestões", 'settings.showSuggestionsHint': "Um pequeno chip em cada exercício sugere uma carga com base no último treino. Nada muda até você tocar em Usar.",
     /* Koučing: programy (názvy, dni) */
     "prog.beginner-full-body.name": "Corpo inteiro para iniciantes",
@@ -8058,6 +8074,10 @@ const BASICS_I18N = {
     'suggest.up': 'La dernière fois, tu as fait toutes les répétitions. Essaie {kg} kg.', 'suggest.up2': "La dernière fois, c'était facile. Essaie {kg} kg.", 'suggest.keep': "Tu n'as pas encore fait toutes les répétitions. Reste à {kg} kg.", 'suggest.reset': 'Deux séances difficiles de suite. Redescends à {kg} kg.', 'suggest.lessHelp': "La dernière fois, tu as fait toutes les répétitions. Essaie avec {kg} kg d'aide.", 'suggest.keepHelp': "Tu n'as pas encore fait toutes les répétitions. Reste à {kg} kg d'aide.", 'suggest.moreHelp': "Deux séances difficiles de suite. Remonte l'aide à {kg} kg.",
     'suggest.chipUp': "Essaie {kg} kg", 'suggest.chipKeep': "Reste à {kg} kg", 'suggest.chipReset': "Reviens à {kg} kg", 'suggest.chipLessHelp': "Moins d'aide {kg} kg", 'suggest.chipKeepHelp': "Aide {kg} kg", 'suggest.chipMoreHelp': "Plus d'aide {kg} kg",
     'suggest.sheetTitle': "Suggestion", 'suggest.use': "Utiliser {kg} kg", 'suggest.useShort': "Utiliser", 'suggest.useAria': "Utiliser {kg} kg", 'suggest.close': "Fermer", 'suggest.chipAria': "Suggestion : {text}. Touche pour voir la raison.", 'suggest.note': "Seule cette séance change, pas ton plan.",
+    'programSession.target': 'Programme : {target} · {kg} kg', 'programSession.deload': 'Allègement : {kg} kg', 'programSession.linear': 'Programme : {target} · {suggestion}',
+    'programSession.waveWhy': 'Semaine {n}/{total} : {target} à {pct} de ton maximum d’entraînement de {tm} kg. Charges par série : {kg} kg.',
+    'programSession.deloadWhy': 'Semaine allégée {n}/{total} : {target} à {kg} kg, 60% de la charge initiale arrondis aux charges disponibles.',
+    'programSession.linearWhy': 'Semaine {n}/{total} : le programme prévoit {target}.', 'programSession.use': 'Appliquer la prescription',
     'settings.showSuggestions': "Afficher les suggestions", 'settings.showSuggestionsHint': "Une petite pastille sur chaque exercice propose une charge d'après ta dernière séance. Rien ne change tant que tu ne touches pas Utiliser.",
     /* Koučing: programy (názvy, dni) */
     "prog.beginner-full-body.name": "Corps entier pour débutants",
@@ -8169,6 +8189,10 @@ const BASICS_I18N = {
     'suggest.up': 'في المرة السابقة أتممت كل التكرارات. جرّب {kg} كغ.', 'suggest.up2': 'في المرة السابقة كان الأمر سهلًا. جرّب {kg} كغ.', 'suggest.keep': 'لم تُتمّ كل التكرارات بعد. ابقَ عند {kg} كغ.', 'suggest.reset': 'جلستان صعبتان متتاليتان. ارجع إلى {kg} كغ.', 'suggest.lessHelp': 'في المرة السابقة أتممت كل التكرارات. جرّب مساعدة {kg} كغ.', 'suggest.keepHelp': 'لم تُتمّ كل التكرارات بعد. ابقَ عند مساعدة {kg} كغ.', 'suggest.moreHelp': 'جلستان صعبتان متتاليتان. ارفع المساعدة إلى {kg} كغ.',
     'suggest.chipUp': "جرّب {kg} كغ", 'suggest.chipKeep': "ابقَ عند {kg} كغ", 'suggest.chipReset': "ارجع إلى {kg} كغ", 'suggest.chipLessHelp': "مساعدة أقل {kg} كغ", 'suggest.chipKeepHelp': "المساعدة {kg} كغ", 'suggest.chipMoreHelp': "مساعدة أكثر {kg} كغ",
     'suggest.sheetTitle': "اقتراح", 'suggest.use': "استخدم {kg} كغ", 'suggest.useShort': "استخدم", 'suggest.useAria': "استخدم {kg} كغ", 'suggest.close': "إغلاق", 'suggest.chipAria': "اقتراح: {text}. اضغط لمعرفة السبب.", 'suggest.note': "يتغير هذا التمرين فقط، وليس خطتك.",
+    'programSession.target': 'البرنامج: {target} · {kg} كغ', 'programSession.deload': 'تخفيف: {kg} كغ', 'programSession.linear': 'البرنامج: {target} · {suggestion}',
+    'programSession.waveWhy': 'الأسبوع {n}/{total}: {target} عند {pct} من أقصى وزن تدريبي لك البالغ {tm} كغ. أوزان المجموعات: {kg} كغ.',
+    'programSession.deloadWhy': 'أسبوع التخفيف {n}/{total}: {target} بوزن {kg} كغ، أي 60% من الوزن الأولي مع التقريب إلى الأوزان المتاحة.',
+    'programSession.linearWhy': 'الأسبوع {n}/{total}: يحدد البرنامج {target}.', 'programSession.use': 'استخدم وصفة البرنامج',
     'settings.showSuggestions': "إظهار الاقتراحات", 'settings.showSuggestionsHint': "تظهر شارة صغيرة عند كل تمرين تقترح وزنًا بناءً على تمرينك الأخير. لا يتغير شيء حتى تضغط على استخدم.",
     /* Koučing: programy (názvy, dni) */
     "prog.beginner-full-body.name": "الجسم كاملًا للمبتدئين",
@@ -10721,6 +10745,7 @@ function normalizeActiveSession(raw) {
       const e = { weight: w };
       if (v.unilateral === true) { e.unilateral = true; e.startSide = v.startSide === 'right' ? 'right' : 'left'; }
       if (v.assisted === true) e.assisted = true;
+      Object.assign(e, cleanSessionPrescription(v));
       snapshot[key] = e;
     }
   }
@@ -10835,6 +10860,8 @@ function normalizeActiveSession(raw) {
     .map(normalizeSubstituteExercise).filter(Boolean);
   const extras = cleanExercises(raw.extraExercises);
   if (extras.length) out.extraExercises = extras;
+  const programPlan = cleanProgramSessionPlan(raw.programPlan, planId, out.planName);
+  if (programPlan) out.programPlan = programPlan;
   if (planId === 'quick') {
     const quick = cleanExercises(raw.quick && raw.quick.exercises);
     if (!quick.length) return null;   // rýchly tréning bez cvikov nemá čo zobraziť
@@ -12722,12 +12749,12 @@ function openCalendarPage() {
    inak vybraný plán. Nič iné nesmie počas tréningu prepísať, ktorý plán sa zobrazuje a ukladá. */
 function currentPlan() {
   const sess = getSession();
-  return (sess && getPlan(sess.planId)) || getPlan(selectedPlan);
+  return (sess && (sess.programPlan || getPlan(sess.planId))) || getPlan(selectedPlan);
 }
 /* Rozbehnutá session drží výber plánu (nikdy ho neprepíše odporúčaný ani iný plán). */
 function keepSessionPlan() {
   const sess = getSession();
-  if (sess && getPlan(sess.planId)) { selectedPlan = sess.planId; return true; }
+  if (sess && (sess.programPlan || getPlan(sess.planId))) { selectedPlan = sess.planId; return true; }
   return false;
 }
 
@@ -12772,7 +12799,8 @@ function exerciseSlotCount(ex) {
    (sess.setDelta[kľúč cviku], môže byť záporná; výsledok je aspoň 1, najviac 99).
    Chýbajúce pole (staršia session) = 0. Plán sa nikdy nemení. Bez session platí plán. */
 function sessionSetCount(ex) {
-  const planned = Math.max(0, Math.round(Number(ex && ex.sets)) || 0);
+  const snap = sessionSnapshotFor(ex);
+  const planned = Math.max(0, Math.round(Number(snap && snap.sets !== undefined ? snap.sets : ex && ex.sets)) || 0);
   const sess = getSession();
   const d = sess && sess.setDelta && typeof sess.setDelta === 'object' ? Number(sess.setDelta[exerciseSessionKey(ex)]) : 0;
   return Math.min(99, Math.max(1, planned + (Number.isInteger(d) ? d : 0)));
@@ -12789,15 +12817,39 @@ function sessionSlotCount(ex) {
    Žije v state.activeSession.substituted, takže prežije prekreslenie, zmenu
    jazyka aj obnovenie stránky rovnako ako ostatné značky. */
 
-/* Plánový cvik s hodnotami zo snímky session (váha, jednostrannosť, asistencia); bez snímky (staršia
-   session) alebo bez záznamu pre cvik zostáva riadok plánu, ako bol. Sady, opakovania a poradie ostávajú z plánu. */
+/* Plánový cvik s hodnotami zo snímky session; predpísané série a opakovania sa nemenia úpravou plánu.
+   Staršia session bez nových polí si ponechá pôvodné správanie. */
 function sessionSnapshotExercise(ex, snap) {
   if (!snap) return ex;
   const out = Object.assign({}, ex, { weight: snap.weight });
+  if (snap.sets !== undefined) out.sets = snap.sets;
+  if (snap.reps !== undefined) out.reps = snap.reps;
+  Object.defineProperty(out, '_sessionSnapshot', { value: snap });
   delete out.unilateral; delete out.startSide; delete out.assisted;
   if (snap.unilateral === true) { out.unilateral = true; out.startSide = snap.startSide === 'right' ? 'right' : 'left'; }
   if (snap.assisted === true) out.assisted = true;
   return out;
+}
+
+/* Kópia slotu nesie snímku priamo; pôvodný riadok plánu ju nájde podľa poradia duplicity.
+   Náhrady ani pridané cviky nesmú zdediť predpis iného slotu. */
+function sessionSnapshotFor(ex) {
+  const sess = getSession();
+  if (!sess || !sess.snapshot || !ex) return null;
+  if (ex._sessionSnapshot) return ex._sessionSnapshot;
+  const plan = currentPlan();
+  let rows = plan && plan.exercises;
+  if (sess.programPlan && (!rows || !rows.includes(ex))) {
+    const live = getPlan(sess.planId);
+    rows = live && live.exercises;
+  }
+  if (!Array.isArray(rows)) return null;
+  const index = rows.indexOf(ex);
+  if (index < 0) return null;
+  const key = exerciseSessionKey(ex);
+  let occ = 0;
+  for (let i = 0; i < index; i++) if (exerciseSessionKey(rows[i]) === key) occ++;
+  return sess.snapshot[key + '#' + occ] || null;
 }
 
 /* Cviky tréningu = cviky plánu + cviky pridané počas tréningu (sess.extraExercises).
@@ -12805,6 +12857,7 @@ function sessionSnapshotExercise(ex, snap) {
 function sessionExercises(plan) {
   let base = plan && Array.isArray(plan.exercises) ? plan.exercises : [];
   const sess = getSession();
+  if (sess && sess.programPlan && plan && plan.id === sess.planId) base = sess.programPlan.exercises;
   if (sess && sess.snapshot) {
     /* Snímka je po slotoch (kľúč#poradie), takže zdvojený cvik v pláne (napr. 60 kg a 80 kg) drží každý riadok osobitne. */
     const seen = {};
@@ -12917,6 +12970,7 @@ function ensureSession(plan) {
   if (tourOpen()) closeTour('yield');   // začal tréning: návod mu nesmie zavadzať
   /* Snímka plánovaných hodnôt: rozbehnutý tréning nemenia zmeny plánu zvonka. */
   const snapshot = {}, seenKeys = {};
+  const program = state.program, week = programWeek(program);
   for (const ex of (p.exercises || [])) {
     const base = exerciseSessionKey(ex);
     if (!base) continue;
@@ -12925,9 +12979,26 @@ function ensureSession(plan) {
     const e = { weight: Number(ex.weight) || 0 };
     if (ex.unilateral === true) { e.unilateral = true; e.startSide = ex.startSide === 'right' ? 'right' : 'left'; }
     if (isAssisted(ex)) e.assisted = true;
+    const prescription = programPrescription(program, p.id, ex);
+    if (prescription && week) {
+      e.sets = prescription.sets;
+      e.reps = prescription.reps;
+      if (Number.isFinite(prescription.weight)) e.weight = prescription.weight;
+      if (Array.isArray(prescription.setWeights)) e.setWeights = prescription.setWeights.slice();
+      if (Array.isArray(prescription.setReps)) e.setReps = prescription.setReps.slice();
+      e.program = { week: week.week, total: week.total, deload: prescription.deload };
+      if (Number.isFinite(prescription.weight)) e.program.weight = prescription.weight;
+      if (prescription.pctLabel) e.program.pctLabel = prescription.pctLabel;
+      if (Number.isFinite(prescription.tmUsed)) e.program.tmUsed = prescription.tmUsed;
+    }
     snapshot[key] = e;
   }
   state.activeSession.snapshot = snapshot;
+  /* Program drží aj identity a poradie: premenovanie či zmazanie plánu nesmie zmeniť už odcvičený cvik.
+     Výmeny a pridané cviky zostávajú v pôvodných session mapách, nie v tejto snímke. */
+  if (Object.values(snapshot).some(e => e.program)) {
+    state.activeSession.programPlan = cleanProgramSessionPlan(p, p.id, state.activeSession.planName);
+  }
   return state.activeSession;
 }
 
@@ -12981,20 +13052,8 @@ function setValueRowPos(rows, index, side) {
   return pos;
 }
 function setValuePlanned(kind, ex) {
-  if (kind === 'reps') return Math.round(Number(ex.reps)) || 0;
-  /* Rozbehnutý tréning čerpá plánovanú váhu zo snímky (výnimky sérií ju stále prebíjajú). */
-  const sess = getSession();
-  let snap = null;
-  if (sess && sess.snapshot) {
-    /* Riadok priamo z plánu: nájde sa jeho slot (kľúč#poradie); kópia zo slotov už nesie hodnoty zo snímky. */
-    const plan = currentPlan();
-    const rows = plan && Array.isArray(plan.exercises) ? plan.exercises : [];
-    if (rows.indexOf(ex) >= 0) {
-      const key = exerciseSessionKey(ex);
-      const occ = rows.slice(0, rows.indexOf(ex)).filter((r) => exerciseSessionKey(r) === key).length;
-      snap = sess.snapshot[key + '#' + occ] || null;
-    }
-  }
+  const snap = sessionSnapshotFor(ex);
+  if (kind === 'reps') return Math.round(Number(snap && snap.reps !== undefined ? snap.reps : ex.reps)) || 0;
   return snap ? snap.weight : (Number(ex.weight) || 0);
 }
 function setValueValid(kind, v) { return kind === 'reps' ? Number.isInteger(v) : (typeof v === 'number' && Number.isFinite(v)); }
@@ -13023,6 +13082,9 @@ function effectiveSetValue(kind, ex, index, side) {
     const v = setValueOverride(kind, ex, rows[k].index, rows[k].side);
     if (v !== undefined) return v;
   }
+  /* Najprv výnimky používateľa a zámky; až potom nemenný predpis konkrétnej série. */
+  const snap = sessionSnapshotFor(ex), list = snap && snap[SET_VALUE_FIELDS[kind]];
+  if (Array.isArray(list) && list.length) return list[Math.min(index, list.length - 1)];
   return setValuePlanned(kind, ex);
 }
 function setSetValue(kind, ex, index, side, v) {
@@ -13137,7 +13199,8 @@ function historyRepsValue(ex) {
    Drop série zostávajú pripojené za POSLEDNOU sériou (addDrop berie sessionSetCount). */
 function sessionSetSides(ex) { return exerciseSideOrder(ex) || [null]; }
 function writeSetDelta(sess, ex, count) {
-  const planned = Math.max(0, Math.round(Number(ex.sets)) || 0);
+  const snap = sessionSnapshotFor(ex);
+  const planned = Math.max(0, Math.round(Number(snap && snap.sets !== undefined ? snap.sets : ex.sets)) || 0);
   const key = exerciseSessionKey(ex);
   if (!sess.setDelta || typeof sess.setDelta !== 'object') sess.setDelta = {};
   if (count - planned === 0) delete sess.setDelta[key]; else sess.setDelta[key] = count - planned;
@@ -13620,7 +13683,7 @@ function renderTrening() {
       + '<span class="chip-meta">' + esc(bentoCountsText(stats.exercises, stats.sets)) + '</span>';
     btn.setAttribute('aria-pressed', id === selectedPlan ? 'true' : 'false');
     btn.addEventListener('click', () => {
-      if (getSession() && getSession().quick) return;   // rýchly tréning sa na plán nikdy nepreväzuje (nezahodí sa)
+      if (getSession() && (getSession().quick || getSession().programPlan)) return;   // snímka tréningu sa nepreviaže na iný plán
       // výber iného plánu vždy zatvorí editor, aby meno v poli nepatrilo inému plánu
       if (editingPlan !== null && editingPlan !== id && closeEditor()) saveState();
       selectedPlan = id;
@@ -13994,6 +14057,7 @@ function buildSetItem(ex, index, plannedFailure, side, readOnly) {
     setBtn.disabled = true;
   } else {
     setBtn.addEventListener('click', () => {
+      const hadSession = !!getSession();
       toggleSetMark('done', ex, index, !setMark('done', ex, index, side), side);
       syncDone();
       setSessionNote(null, 0);
@@ -14007,6 +14071,7 @@ function buildSetItem(ex, index, plannedFailure, side, readOnly) {
           maybeAutoRest(getSession() ? currentPlan() : getPlan(selectedPlan), Number(blk.dataset.row));
         }
       }
+      if (!hadSession && sessionSnapshotFor(ex)?.program) renderTrening();
     });
   }
 
@@ -14029,9 +14094,11 @@ function buildSetItem(ex, index, plannedFailure, side, readOnly) {
     failBtn.disabled = true;
   } else {
     failBtn.addEventListener('click', () => {
+      const hadSession = !!getSession();
       toggleSetMark('failure', ex, index, !setMark('failure', ex, index, side), side);
       setSessionNote(null, 0);
       syncFail();
+      if (!hadSession && sessionSnapshotFor(ex)?.program) renderTrening();
     });
   }
 
@@ -15909,7 +15976,8 @@ function renderEditPanel() {
     const nameInput = row.querySelector('.edit-name');
     const numInputs = row.querySelectorAll('.edit-num');
     nameInput.addEventListener('input', () => {
-      // typing converts a built-in row into a custom exercise (keeps typed text as-is)
+      // Premenovaný cvik má vlastnú identitu a už nesmie dediť predpis pôvodného cviku.
+      delete ex.progRow;
       if (ex.id && BUILTIN_EXERCISE_IDS.has(ex.id)) {
         if (libraryAssistedId(ex.id)) ex.assisted = true;   // premenovaný asistovaný cvik zostane asistovaný
         delete ex.id;
@@ -16194,8 +16262,9 @@ function saveEditPlan() {
     if (ex.assisted === true) out.assisted = true;
     /* Rozcvičkový rad na začiatku tréningu: ukladá sa len keď je zapnutý. */
     if (ex.warmupRamp === true) out.warmupRamp = true;
-    /* Riadok programu si pri úprave plánu drží progRow, inak by sa prestal predpisovať. */
-    if (typeof ex.progRow === 'string' && ex.progRow) out.progRow = ex.progRow;
+    /* Série, váha či poradie značku nemenia; nová identita už nie je pôvodným riadkom programu. */
+    if (typeof ex.progRow === 'string' && ex.progRow && ex._base
+      && exerciseRowIdentity(out) === ex._base.identity) out.progRow = ex.progRow;
     /* Supersérie / okruh: skupina sa zachová (neplatné sa odstráni hneď nižšie). */
     if (groupIdOf(ex)) out.group = ex.group;
     return out;
@@ -23584,7 +23653,7 @@ function renderAll() {
   const fbModal = document.getElementById('modal-fullbody');
   if (fbModal && !fbModal.hidden) renderFullBodyBuilder();
   const progModal = document.getElementById('modal-programs');
-  if (progModal && !progModal.hidden && programsView.name !== 'tm') renderPrograms();   // jazyk / zmena týždňa
+  if (progModal && !progModal.hidden) renderPrograms();   // jazyk / zmena týždňa, aj rozpísané TM
   renderRestSoundSetting();   // stav Zapnuté/Vypnuté musí zareagovať na zmenu jazyka
   renderAutoRestSetting();
   renderEffortSetting();
@@ -26668,11 +26737,10 @@ function applySuggestion(ex, s) {
   for (const slot of openWorkingSlots(ex)) any = setSetWeight(ex, slot.i, kg, slot.side) || any;
   return any;
 }
-/* Háčik pre programy (úloha 5): (ex, info, plan) => { text, sheetText, apply, useText? } alebo null.
-   Null aj výnimka = použije sa predvolený návrh (ten sám skrýva čip pri hotových sériách a už nastavenej váhe).
-   Čip z poskytovateľa už nič nefiltruje: poskytovateľ MUSÍ sám skryť čip (vrátiť null) pri všetkých hotových sériách
-   aj pri už nastavenej váhe, inak sa zobrazí navždy. */
-let chipProgramProvider = null;
+/* Háčik pre programy: (ex, info, plan) => { text, sheetText, apply, useText? }, { hide: true } alebo null.
+   Null aj výnimka = predvolený návrh. { hide: true } ho výslovne potlačí (D5).
+   Poskytovateľ sám rieši hotové série; váhový predpis ostáva dostupný aj pri zhode, aby sa dal vysvetliť. */
+let chipProgramProvider = programSessionChip;
 const SUGGEST_CHIP_KEYS = { up: 'chipUp', up2: 'chipUp', keep: 'chipKeep', reset: 'chipReset', lessHelp: 'chipLessHelp', keepHelp: 'chipKeepHelp', moreHelp: 'chipMoreHelp' };
 /* Čo ukáže čip: { text, sheetText, useText, apply } alebo null (nič sa nezobrazí). */
 function chipInfo(ex, info, plan) {
@@ -26681,6 +26749,7 @@ function chipInfo(ex, info, plan) {
     if (typeof chipProgramProvider === 'function') {
       try {
         const o = chipProgramProvider(ex, info, plan);
+        if (o && o.hide === true) return null;
         if (o && typeof o.text === 'string' && o.text) return { text: o.text, sheetText: String(o.sheetText || ''), useText: o.useText || t('suggest.useShort'), apply: typeof o.apply === 'function' ? o.apply : () => {} };
       } catch (err) { /* chybný poskytovateľ = predvolený návrh, čip sa neskryje */ }
     }
@@ -27031,10 +27100,12 @@ function programPrescription(prog, planId, row, today = todayISO()) {
     const day = variant && variant.days.find((d) => d.id === dayId);
     const tpl = day && day.rows[Number(idx)];
     if (!tpl || tpl.progRow !== row.progRow) return null;
+    if (builtinExerciseId(row) !== tpl.exId) return null;
     const wk = programWeekOf(clean, today);
     if (!wk || wk.finished) return null;
     const deload = wk.deload;
     if (def.kind === 'wave' && tpl.main) {
+      if (isAssisted(row)) return null;   // percentá TM nie sú váhou asistencie
       const step = WAVE_STEPS[(wk.week - 1) % 4];
       const tm = clean.tm && clean.tm[tpl.exId];
       const out = { sets: 3, reps: step.reps[0], deload, setReps: step.reps.slice(), pctLabel: step.pct.join('/') + '%' };
@@ -27050,7 +27121,7 @@ function programPrescription(prog, planId, row, today = todayISO()) {
       return out;
     }
     const out = { sets: deload ? Math.max(1, Math.ceil(tpl.sets * 0.6)) : tpl.sets, reps: tpl.reps, deload };
-    if (deload && !isAssisted({ id: tpl.exId, builtin: true })) {
+    if (deload && !isAssisted(row)) {
       const w = programRoundWeight(tpl.exId, Number(row.weight) * 0.6);
       if (w !== null) out.weight = w;
     }
@@ -27058,6 +27129,105 @@ function programPrescription(prog, planId, row, today = todayISO()) {
   } catch (err) {
     return null;
   }
+}
+
+/* ---------- Koučing: nemenný predpis rozbehnutého tréningu ----------
+   Dáta aj vysvetlenie vznikajú len pri štarte. Zmena týždňa, TM či ukončenie programu ich neprepíše. */
+/* Kópia riadkov iba pre programovú session; žiadne zdieľané referencie do upraviteľného plánu.
+   Staršie a obyčajné session toto pole nemajú. Známe vlastnosti cviku sa zachovajú aj po obnovení. */
+function cleanProgramSessionPlan(raw, planId, planName) {
+  if (!raw || !Array.isArray(raw.exercises) || !raw.exercises.length) return null;
+  const exercises = [];
+  for (const r of raw.exercises.slice(0, 200)) {
+    if (!r || typeof r.name !== 'string' || !Number.isInteger(r.sets) || r.sets < 1 || r.sets > 99
+      || !Number.isInteger(r.reps) || r.reps < 1 || r.reps > 999
+      || !Number.isFinite(r.weight) || r.weight < 0 || r.weight > 999) return null;
+    const ex = { name: r.name, sets: r.sets, reps: r.reps, weight: r.weight,
+      plannedFailureSets: cleanFailureSets(r.plannedFailureSets, r.sets) };
+    if (typeof r.id === 'string') ex.id = r.id;
+    if (r.builtin === true) ex.builtin = true;
+    if (r.unilateral === true) { ex.unilateral = true; ex.startSide = r.startSide === 'right' ? 'right' : 'left'; }
+    if (r.assisted === true) ex.assisted = true;
+    if (r.warmupRamp === true) ex.warmupRamp = true;
+    if (groupIdOf(r)) ex.group = r.group;
+    if (typeof r.progRow === 'string') ex.progRow = r.progRow;
+    exercises.push(ex);
+  }
+  return { id: planId, builtin: false, customName: planName, location: raw.location || null, exercises };
+}
+
+function cleanSessionPrescription(raw) {
+  const out = {};
+  if (!Number.isInteger(raw.sets) || raw.sets < 1 || raw.sets > 99
+    || !Number.isInteger(raw.reps) || raw.reps < 1 || raw.reps > 999) return out;
+  out.sets = raw.sets;
+  out.reps = raw.reps;
+  for (const field of ['setWeights', 'setReps']) {
+    const list = raw[field];
+    if (Array.isArray(list) && list.length === raw.sets
+      && list.every(v => Number.isFinite(v) && v >= (field === 'setReps' ? 1 : 0) && v <= 999
+        && (field !== 'setReps' || Number.isInteger(v)))) out[field] = list.slice();
+  }
+  const p = raw.program;
+  if (p && Number.isInteger(p.week) && Number.isInteger(p.total) && p.week >= 1 && p.week <= p.total && p.total <= 99) {
+    out.program = { week: p.week, total: p.total, deload: p.deload === true };
+    if (Number.isFinite(p.weight) && p.weight >= 0 && p.weight <= 999) out.program.weight = p.weight;
+    if (typeof p.pctLabel === 'string' && /^\d+(?:\/\d+)*%$/.test(p.pctLabel) && p.pctLabel.length <= 40) out.program.pctLabel = p.pctLabel;
+    if (Number.isFinite(p.tmUsed) && p.tmUsed > 0 && p.tmUsed <= 1005) out.program.tmUsed = p.tmUsed;
+  }
+  return out;
+}
+
+/* Použiť je výslovná úprava používateľa: obnoví ciele iba nehotových sérií, po stranách.
+   Pridané série nad rámec predpisu zostávajú používateľovi; zámky chránia neskoršie hotové série. */
+function applyProgramPrescription(ex, snap, sessionId) {
+  const sess = getSession();
+  if (!sess || sess.id !== sessionId) return false;
+  /* Neskoršia pridaná séria nesmie zdediť obnovovaný cieľ cez poslednú predpísanú sériu. */
+  for (const slot of openWorkingSlots(ex)) {
+    if (slot.i < snap.sets) continue;
+    const weight = effectiveSetWeight(ex, slot.i, slot.side), reps = effectiveSetReps(ex, slot.i, slot.side);
+    setSetValue('weight', ex, slot.i, slot.side, weight);
+    setSetReps(ex, slot.i, reps, slot.side);
+  }
+  let any = false;
+  for (const slot of openWorkingSlots(ex)) {
+    if (slot.i >= snap.sets) continue;
+    const weight = snap.setWeights ? snap.setWeights[slot.i] : snap.program.weight;
+    const reps = snap.setReps ? snap.setReps[slot.i] : snap.reps;
+    if (Number.isFinite(weight)) any = setSetValue('weight', ex, slot.i, slot.side, weight) || any;
+    any = setSetReps(ex, slot.i, reps, slot.side) || any;
+  }
+  return any;
+}
+
+function programSessionChip(ex, info, plan) {
+  const snap = sessionSnapshotFor(ex), p = snap && snap.program;
+  if (!p) return null;
+  const open = openWorkingSlots(ex);
+  if (!open.length) return { hide: true };
+  const target = snap.setReps && new Set(snap.setReps).size > 1 ? snap.setReps.join('/') : snap.sets + '×' + snap.reps;
+  const vars = { n: p.week, total: p.total, target };
+  if (Number.isFinite(p.weight)) {
+    const weights = snap.setWeights ? snap.setWeights.join('/') : String(p.weight);
+    const text = t(p.deload ? 'programSession.deload' : 'programSession.target', { target, kg: weights });
+    const sheetText = p.pctLabel && p.tmUsed
+      ? t('programSession.waveWhy', { ...vars, pct: p.pctLabel, tm: p.tmUsed, kg: weights })
+      : t('programSession.deloadWhy', { ...vars, kg: weights });
+    const sessionId = getSession().id;
+    return { text, sheetText, useText: t('programSession.use'), apply: () => applyProgramPrescription(ex, snap, sessionId) };
+  }
+  /* Chýbajúce TM nie je pokyn z histórie; nesmie ho nahradiť bežný návrh váhy. */
+  if (p.pctLabel) return { hide: true };
+  const s = suggestNext(ex, plan.id), kg = suggestKg(s);
+  if (!s || kg === null || (!isAssisted(ex) && !(kg > 0)) || !SUGGEST_CHIP_KEYS[s.kind]
+    || effectiveSetWeight(ex, open[0].i, open[0].side) === kg) return { hide: true };
+  return {
+    text: t('programSession.linear', { target, suggestion: t('suggest.' + SUGGEST_CHIP_KEYS[s.kind], { kg }) }),
+    sheetText: t('programSession.linearWhy', vars) + ' ' + t(s.reasonKey, { kg, reps: snap.reps }),
+    useText: t('suggest.use', { kg }),
+    apply: () => applySuggestion(ex, { weight: kg }),
+  };
 }
 
 /* ---------- Koučing: programy (UI) ----------
@@ -27075,6 +27245,11 @@ function activeProgram() {
 /* " · Týždeň 3/8" / " · Odľahčený týždeň" pre plán aktívneho programu; inak ''. Dokončený program nepripája nič. */
 function programWeekSuffix(planId) {
   try {
+    const sess = getSession();
+    if (sess && sess.programPlan && sess.planId === planId) {
+      const snap = Object.values(sess.snapshot || {}).find(e => e.program);
+      if (snap) return ' · ' + (snap.program.deload ? t('programs.deloadWeek') : t('programs.weekShort', { n: snap.program.week, total: snap.program.total }));
+    }
     const cur = activeProgram();
     if (!cur || !planId || Object.values(cur.plans).indexOf(planId) < 0) return '';
     const wk = programWeekOf(cur, todayISO());
@@ -27115,6 +27290,7 @@ function programPlanRows(day) {
       progRow: r.progRow,
     };
     if (m && m.unilateral === true) { row.unilateral = true; row.startSide = m.startSide === 'right' ? 'right' : 'left'; }
+    if (m && m.assisted === true) row.assisted = true;
     return row;
   });
 }
@@ -27298,9 +27474,21 @@ function renderPrograms() {
   if (programsView.name === 'list' && activeProgram()) programsView = { name: 'active', programId: null, variantId: null, again: false };
   const v = programsView.name;
   const prog = programById(programsView.programId);
+  /* Pri zmene jazyka zachováme rozpísané hodnoty aj pozíciu kurzora; nový DOM dostane nové preklady a ARIA. */
+  const focused = document.activeElement;
+  const tmFocus = v === 'tm' && focused && modal.contains(focused) && focused.matches('input.programs-tm')
+    ? { ex: focused.dataset.ex, start: focused.selectionStart, end: focused.selectionEnd, direction: focused.selectionDirection } : null;
+  if (v === 'tm') modal.querySelectorAll('input.programs-tm').forEach(inp => { programsTm[inp.dataset.ex] = inp.value; });
   document.getElementById('programs-title').textContent = (v === 'detail' && prog) ? t(prog.nameKey) : (v === 'tm' ? t('programs.tmTitle') : t('programs.title'));
   document.getElementById('btn-programs-back').hidden = !(v === 'detail' || v === 'tm');
   document.getElementById('programs-body').innerHTML = v === 'detail' ? programsRenderDetail() : v === 'tm' ? programsRenderTm() : v === 'active' ? programsRenderActive() : programsRenderList();
+  if (tmFocus) {
+    const input = Array.from(modal.querySelectorAll('input.programs-tm')).find(inp => inp.dataset.ex === tmFocus.ex);
+    if (input) {
+      input.focus({ preventScroll: true });
+      if (tmFocus.start !== null) input.setSelectionRange(tmFocus.start, tmFocus.end, tmFocus.direction);
+    }
+  }
 }
 
 function openPrograms(opener) {
