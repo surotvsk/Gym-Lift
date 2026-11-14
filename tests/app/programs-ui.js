@@ -77,7 +77,7 @@ function check(name, ok, info) {
     await wait(100);
     check('detail has the description, outline and a Start button', /Pushing, pulling and leg days/.test(await body()) && /Weeks 1–7: build · Week 8: deload/.test(await body()) && !!(await ev(`document.getElementById('btn-programs-start')`)), await body());
     check('variant chips: 3 days (pressed) and 6 days, aria-pressed', await ev(`(() => { const c = Array.from(document.querySelectorAll('#programs-body [data-variant]')); return c.length === 2 && c[0].getAttribute('aria-pressed') === 'true' && c[1].getAttribute('aria-pressed') === 'false' && c.every((x) => x.getBoundingClientRect().height >= 44); })()`));
-    check('3-day detail lists 3 day plans with their exercises', await ev(`document.querySelectorAll('#programs-body .programs-day').length === 3 && /Bench press/i.test(document.getElementById('programs-body').innerText)`));
+    check('3-day detail lists 3 day plans with their exercises', await ev(`document.querySelectorAll('#programs-body .programs-day').length === 3 && /Machine chest press/i.test(document.getElementById('programs-body').innerText) && !/Bench press/i.test(document.getElementById('programs-body').innerText)`));
     await click('#programs-body [data-variant="6day"]');
     check('6-day chip shows 6 day plans', (await ev(`document.querySelectorAll('#programs-body .programs-day').length`)) === 6);
     await click('#programs-body [data-variant="3day"]');
@@ -94,7 +94,7 @@ function check(name, ok, info) {
     check('3 custom plans created, named "PPL · Push/Pull/Legs"', J(made.names) === JSON.stringify(['PPL · Push', 'PPL · Pull', 'PPL · Legs']) && made.custom, made);
     check('plans are in planOrder in day order', J(made.tail) === J(made.ids), made);
     check('rows carry progRow <program>:<day>:<index>', made.rows[0][0] === 'push-pull-legs:push:0' && made.rows[2][4] === 'push-pull-legs:legs:4' && made.rows.every((r) => r.length === 5 && r.every((x) => typeof x === 'string')), made.rows);
-    check('rows are library exercises with sets/reps, weight 0 without memory', await ev(`(() => { const r = state.plans[state.program.plans.push].exercises[0]; return r.id === 'bench-press' && r.builtin === true && r.sets === 3 && r.reps === 8 && r.weight === 0; })()`));
+    check('rows are library exercises with sets/reps, weight 0 without memory', await ev(`(() => { const r = state.plans[state.program.plans.push].exercises[0]; return r.id === 'machine-chest-press' && r.builtin === true && r.sets === 3 && r.reps === 8 && r.weight === 0; })()`));
     check('goal confirmation (generic) is shown above the sheet, mentions 3 and 4', await ev(`(() => { const g = document.getElementById('modal-generic'); return !g.hidden && /3/.test(document.getElementById('generic-text').textContent) && /4/.test(document.getElementById('generic-text').textContent); })()`));
     check('goal not changed until OK', (await ev(`weeklyGoal()`)) === 4);
     await click('#btn-generic-ok');
@@ -174,14 +174,14 @@ function check(name, ok, info) {
     check('after End the sheet shows the list again', (await ev(`document.querySelectorAll('#programs-body [data-program]').length`)) === 4);
 
     console.log('== strength wave: training maxes');
-    await ev(`(state.settings.exerciseMemory = { 'squats': { weight: 100 }, 'bench-press': { weight: 80 } }, state.settings.weeklyGoal = 3, saveState(), true)`);
+    await ev(`(state.settings.exerciseMemory = { 'squats': { weight: 100 }, 'machine-chest-press': { weight: 80 } }, state.settings.plates = { bar: 15, plates: [20, 10, 5, 2.5] }, state.settings.weeklyGoal = 3, saveState(), true)`);
     await click('#programs-body [data-program="strength-wave"]');
     check('wave detail has a Next button, no variant chips', await ev(`!!document.getElementById('btn-programs-start') && document.querySelectorAll('#programs-body [data-variant]').length === 0`));
     await click('#btn-programs-start');
     await wait(100);
     const tm = await ev(`JSON.stringify(Array.from(document.querySelectorAll('#programs-body input.programs-tm')).map((i) => [i.dataset.ex, i.value]))`);
-    const want = await ev(`JSON.stringify([['squats', String(roundToPlates(110, plateSettings()))], ['bench-press', String(roundToPlates(88, plateSettings()))], ['overhead-press', '']])`);
-    check('3 inputs prefilled 1.1 x remembered weight (plate-rounded) or empty', tm === want, [tm, want]);
+    const want = J([['squats', '110'], ['machine-chest-press', '87.5'], ['overhead-press', '']]);
+    check('TM prefill: machine 80 -> 87.5 ignores odd bar/plates; squat 100 -> 110 respects plates; no memory stays empty', tm === want, [tm, want]);
     check('Start is disabled until all 3 are > 0', await ev(`document.getElementById('btn-programs-start').disabled === true`));
     await ev(`(() => { const i = document.querySelector('#programs-body input.programs-tm[data-ex="overhead-press"]'); i.value = '0'; i.dispatchEvent(new Event('input', { bubbles: true })); return true; })()`);
     check('still disabled at 0', await ev(`document.getElementById('btn-programs-start').disabled === true`));
@@ -190,7 +190,7 @@ function check(name, ok, info) {
     check('inputs have accessible names and 44 px height', await ev(`Array.from(document.querySelectorAll('#programs-body input.programs-tm')).every((i) => (i.getAttribute('aria-label') || '').length > 5 && i.getBoundingClientRect().height >= 43.5)`));
     await click('#btn-programs-start');
     await wait(200);
-    check('wave started: tm has the 3 lifts, 4 plans created', await ev(`state.program.id === 'strength-wave' && state.program.tm['overhead-press'] === 50 && Object.keys(state.program.tm).length === 3 && Object.keys(state.program.plans).length === 4`), await ev(`JSON.stringify(state.program)`));
+    check('wave started: tm has the 3 lifts, 4 plans created', await ev(`state.program.id === 'strength-wave' && state.program.tm['machine-chest-press'] === 87.5 && state.program.tm.squats === 110 && state.program.tm['overhead-press'] === 50 && Object.keys(state.program.tm).length === 3 && Object.keys(state.program.plans).length === 4`), await ev(`JSON.stringify(state.program)`));
     check('goal 3 vs 4 workouts: confirm shown; declining leaves the goal', await ev(`!document.getElementById('modal-generic').hidden`) && (await click('#btn-generic-cancel'), (await ev(`weeklyGoal()`)) === 3 && !!(await ev(`state.program`))));
     check('wave plan rows have progRow and the main flag stays in the data, not the plan', await ev(`state.plans[state.program.plans.squat].exercises[0].progRow === 'strength-wave:squat:0'`));
     await click('#btn-programs-close');
@@ -209,6 +209,34 @@ function check(name, ok, info) {
     await boot();
     check('valid state.program survives load with unknown fields kept', await ev(`!!state.program && state.program.id === 'upper-lower' && state.program.future.a === 1`));
     await ev(`(state.program = null, saveState(), true)`);
+
+    console.log('== every program/variant creates machine chest press, never bench press');
+    await ev(`(() => {
+      state.history.push({ id: 'program-start-history', week: weekKey(new Date()), date: todayISO(), planId: 'push', planName: 'Push', note: '', durationSeconds: 100,
+        exercises: [{ exId: 'bench-press', name: 'Bench press', sets: 3, reps: 8, weight: 80, setsDone: 3 }] });
+      recalculateAll(); saveState(); renderAll(); return true;
+    })()`);
+    const protectedProgramState = () => ev(`JSON.stringify([state.history, state.importedHistory, state.achievements, workoutXP(), Object.values(state.plans).filter((p) => p.builtin), libraryEntry('bench-press')])`);
+    const beforeProgramStarts = await protectedProgramState();
+    const starts = await ev(`PROGRAMS.flatMap((pr) => programVariants(pr).map((v) => ({ id: pr.id, variant: v.id, days: v.days.length, weeklyGoal: v.daysPerWeek, wave: pr.kind === 'wave' })))`);
+    for (const fixture of starts) {
+      const label = fixture.id + (fixture.variant ? '/' + fixture.variant : '');
+      await ev(`(state.settings.weeklyGoal = ${fixture.weeklyGoal}, saveState(), renderAll(), switchTab('trening'), document.getElementById('btn-programs-tile').click(), true)`);
+      await click('#programs-body [data-program="' + fixture.id + '"]');
+      if (fixture.variant) await click('#programs-body [data-variant="' + fixture.variant + '"]');
+      await click('#btn-programs-start');
+      if (fixture.wave) {
+        await ev(`(() => { document.querySelectorAll('#programs-body input.programs-tm').forEach((i) => { i.value = '100'; i.dispatchEvent(new Event('input', { bubbles: true })); }); return true; })()`);
+        await click('#btn-programs-start');
+      }
+      const created = await ev(`(() => { const cur = state.program; if (!cur) return null; const ids = Object.values(cur.plans), plans = ids.map((id) => state.plans[id]); return { id: cur.id, variant: cur.variant, ids, plans: plans.length, custom: plans.every((p) => p && !p.builtin), rows: plans.flatMap((p) => p.exercises.map((r) => r.id)) }; })()`);
+      check(label + ': UI start creates every day with machine chest press and no bench press', created && created.id === fixture.id && created.variant === fixture.variant && created.plans === fixture.days && created.custom && created.rows.includes('machine-chest-press') && !created.rows.includes('bench-press'), created);
+      check(label + ': start preserves bench history, imported history, XP, achievements, default plans and library', await protectedProgramState() === beforeProgramStarts);
+      await click('#btn-programs-end');
+      await click('#btn-generic-ok');
+      check(label + ': End preserves history and leaves the created plans', created && await ev(`!state.program && ${J(created.ids)}.every((id) => !!state.plans[id]) && document.querySelectorAll('#programs-body [data-program]').length === 4`) && await protectedProgramState() === beforeProgramStarts);
+      await click('#btn-programs-close');
+    }
 
     console.log('== sheet standard');
     await ev(`(switchTab('trening'), true)`);

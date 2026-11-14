@@ -43,7 +43,7 @@ function check(name, ok, info) {
     check('upper-lower 4 days, wave 4 days, beginner 3/week', await S(`(() => { const g = (id) => PROGRAMS.find((x) => x.id === id); return g('upper-lower').daysPerWeek === 4 && g('upper-lower').days.length === 4 && g('strength-wave').daysPerWeek === 4 && g('strength-wave').days.length === 4 && g('beginner-full-body').daysPerWeek === 3; })()`));
     check('all programs 8 weeks; deloads per spec', await S(`(() => { const g = (id) => PROGRAMS.find((x) => x.id === id); return PROGRAMS.every((x) => x.weeks === 8) && g('beginner-full-body').deloadWeeks.length === 0 && J(g('push-pull-legs').deloadWeeks) === '[8]' && J(g('upper-lower').deloadWeeks) === '[8]' && J(g('strength-wave').deloadWeeks) === '[4,8]'; })()`));
     check('4-5 exercises per day (wave: 1 main + 2-3 assistance; hinge day 4 linear rows)', await S(`PROGRAMS.every((pr) => programVariants(pr).every((v) => v.days.every((d) => pr.kind === 'wave' ? (d.rows.filter((r) => r.main).length === (d.id === 'hinge' ? 0 : 1) && d.rows.length >= 3 && d.rows.length <= 4) : (d.rows.length >= 4 && d.rows.length <= 5))))`));
-    check('wave has 3 TM main lifts (squat, bench, overhead press); day 4 is a linear hinge day with RDL, no TM', await S(`J(PROGRAMS.find((x) => x.id === 'strength-wave').days.map((d) => [d.id, (d.rows.find((r) => r.main) || {}).exId || null]))`) === J([['squat', 'squats'], ['bench', 'bench-press'], ['hinge', null], ['press', 'overhead-press']]));
+    check('wave has 3 TM main lifts (squat, machine chest press, overhead press); stable bench day id, linear hinge day with RDL, no TM', await S(`J(PROGRAMS.find((x) => x.id === 'strength-wave').days.map((d) => [d.id, (d.rows.find((r) => r.main) || {}).exId || null]))`) === J([['squat', 'squats'], ['bench', 'machine-chest-press'], ['hinge', null], ['press', 'overhead-press']]));
     check('non-wave rows have 3 sets x 8-12 reps', await S(`PROGRAMS.filter((x) => x.kind === 'linear').every((pr) => programVariants(pr).every((v) => v.days.every((d) => d.rows.every((r) => r.sets === 3 && r.reps >= 8 && r.reps <= 12))))`));
     for (const l of langs) {
       const bad = await S(`(() => { const keys = []; for (const pr of PROGRAMS) { keys.push(pr.nameKey, pr.descKey); for (const v of programVariants(pr)) { if (v.nameKey) keys.push(v.nameKey); for (const d of v.days) keys.push(d.nameKey); } } return keys.filter((k) => !I18N[${J(l)}][k] || /Posted|undefined/.test(I18N[${J(l)}][k])); })()`);
@@ -88,12 +88,12 @@ function check(name, ok, info) {
     let r = await PR(`prog('push-pull-legs','3day')`, 'p-push', `planRow(rowOf('push-pull-legs','3day','push',0), 100)`, '2026-11-11');
     check('linear week 1: sets/reps from the template, no weight, no deload', r && r.sets === 3 && r.reps === 8 && r.weight === undefined && r.deload === false, r);
     r = await PR(`prog('push-pull-legs','3day')`, 'p-push', `planRow(rowOf('push-pull-legs','3day','push',0), 100)`, '2026-12-28');
-    check('PPL deload week 8: 3 sets -> 2, 100 kg (barbell) -> 60 kg', r && r.sets === 2 && r.weight === 60 && r.deload === true && r.reps === 8, r);
+    check('PPL deload week 8: 3 sets -> 2, 100 kg (machine) -> 60 kg', r && r.sets === 2 && r.weight === 60 && r.deload === true && r.reps === 8, r);
     r = await PR(`prog('push-pull-legs','3day')`, 'p-legs', `planRow(rowOf('push-pull-legs','3day','legs',2), 100)`, '2026-12-28');
     check('deload non-barbell leg press: 60 kg', r && r.weight === 60 && r.sets === 2, r);
     r = await PR(`prog('push-pull-legs','3day')`, 'p-legs', `planRow(rowOf('push-pull-legs','3day','legs',2), 47)`, '2026-12-28');
     check('deload rounds down to the step (47 -> 28.2 -> 25 for legs, step 5)', r && r.weight === 25, r);
-    r = await PR(`prog('push-pull-legs','3day')`, 'p-push', `planRow(rowOf('push-pull-legs','3day','push',0), 25)`, '2026-12-28');
+    r = await PR(`prog('push-pull-legs','3day')`, 'p-legs', `planRow(rowOf('push-pull-legs','3day','legs',0), 25)`, '2026-12-28');
     check('deload barbell never below the bar (25 kg -> bar 20)', r && r.weight === 20, r);
     r = await PR(`prog('push-pull-legs','3day')`, 'p-push', `planRow(rowOf('push-pull-legs','3day','push',0), 0)`, '2026-12-28');
     check('deload with no weight: sets only, weight undefined', r && r.sets === 2 && r.weight === undefined, r);
@@ -107,57 +107,61 @@ function check(name, ok, info) {
     check('progRow of another program -> null', r === null, r);
 
     const TM = (tm) => `prog('strength-wave', null, { tm: ${J(tm)} })`;
-    r = await PR(TM({ 'bench-press': 100 }), 'p-bn', `planRow(rowOf('strength-wave', null, 'bench', 0), 80)`, '2026-11-23');
+    r = await PR(TM({ 'machine-chest-press': 100 }), 'p-bn', `planRow(rowOf('strength-wave', null, 'bench', 0), 80)`, '2026-11-23');
     check('wave week 3 TM 100: weights [75,85,95], reps [5,3,1]', r && J(r.setWeights) === '[75,85,95]' && J(r.setReps) === '[5,3,1]' && r.sets === 3 && r.deload === false && r.pctLabel === '75/85/95%', r);
-    r = await PR(TM({ 'bench-press': 100 }), 'p-bn', `planRow(rowOf('strength-wave', null, 'bench', 0), 80)`, '2026-11-11');
+    r = await PR(TM({ 'machine-chest-press': 100 }), 'p-bn', `planRow(rowOf('strength-wave', null, 'bench', 0), 80)`, '2026-11-11');
     check('wave week 1: 3x5 at 65/75/85', r && J(r.setWeights) === '[65,75,85]' && J(r.setReps) === '[5,5,5]', r);
-    r = await PR(TM({ 'bench-press': 100 }), 'p-bn', `planRow(rowOf('strength-wave', null, 'bench', 0), 80)`, '2026-11-16');
+    r = await PR(TM({ 'machine-chest-press': 100 }), 'p-bn', `planRow(rowOf('strength-wave', null, 'bench', 0), 80)`, '2026-11-16');
     check('wave week 2: 3x3 at 70/80/90', r && J(r.setWeights) === '[70,80,90]' && J(r.setReps) === '[3,3,3]', r);
     r = await PR(TM({ squats: 100 }), 'p-sq', `planRow(rowOf('strength-wave', null, 'squat', 0), 80)`, '2026-12-07');
     const expSq = await S(`J([65, 75, 85].map((x) => roundToPlates(105 * x / 100)))`);
     check('wave 2 week 1 squat TM 100 -> 105 x 65/75/85, tmUsed 105', r && J(r.setWeights) === expSq && r.tmUsed === 105, [r, expSq]);
-    r = await PR(TM({ 'bench-press': 100 }), 'p-bn', `planRow(rowOf('strength-wave', null, 'bench', 0), 80)`, '2026-12-07');
-    check('wave 2 bench TM 100 -> 102.5; wave 1 tmUsed 100', r && r.tmUsed === 102.5, r);
-    r = await PR(TM({ 'bench-press': 100 }), 'p-bn', `planRow(rowOf('strength-wave', null, 'bench', 0), 80)`, '2026-11-11');
+    r = await PR(TM({ 'machine-chest-press': 100 }), 'p-bn', `planRow(rowOf('strength-wave', null, 'bench', 0), 80)`, '2026-12-07');
+    check('wave 2 machine chest press TM 100 -> 102.5; wave 1 tmUsed 100', r && r.tmUsed === 102.5, r);
+    r = await PR(TM({ 'machine-chest-press': 100 }), 'p-bn', `planRow(rowOf('strength-wave', null, 'bench', 0), 80)`, '2026-11-11');
     check('wave 1 tmUsed equals entered TM', r && r.tmUsed === 100, r);
-    r = await PR(TM({ 'bench-press': 100 }), 'p-bn', `planRow(rowOf('strength-wave', null, 'bench', 0), 80)`, '2026-11-30');
+    r = await PR(TM({ 'machine-chest-press': 100 }), 'p-bn', `planRow(rowOf('strength-wave', null, 'bench', 0), 80)`, '2026-11-30');
     check('wave week 4 deload: 40/50/60', r && J(r.setWeights) === '[40,50,60]' && r.deload === true, r);
-    r = await PR(TM({ 'bench-press': 100 }), 'p-bn', `planRow(rowOf('strength-wave', null, 'bench', 0), 80)`, '2026-12-07');
+    r = await PR(TM({ 'machine-chest-press': 100 }), 'p-bn', `planRow(rowOf('strength-wave', null, 'bench', 0), 80)`, '2026-12-07');
     check('wave week 5 restarts the wave (like week 1)', r && J(r.setWeights) === '[65,75,85]' && r.deload === false, r);
-    r = await PR(TM({ 'bench-press': 100 }), 'p-bn', `planRow(rowOf('strength-wave', null, 'bench', 0), 80)`, '2026-12-28');
+    r = await PR(TM({ 'machine-chest-press': 100 }), 'p-bn', `planRow(rowOf('strength-wave', null, 'bench', 0), 80)`, '2026-12-28');
     check('wave week 8 deload', r && J(r.setWeights) === '[40,50,60]' && r.deload === true, r);
-    r = await PR(TM({ 'bench-press': 101 }), 'p-bn', `planRow(rowOf('strength-wave', null, 'bench', 0), 80)`, '2026-11-23');
+    r = await PR(TM({ 'overhead-press': 101 }), 'p-op', `planRow(rowOf('strength-wave', null, 'press', 0), 80)`, '2026-11-23');
     const exp = await S(`J([0.75, 0.85, 0.95].map((x) => roundToPlates(101 * x)))`);
     check('wave weights go through roundToPlates (TM 101)', r && J(r.setWeights) === exp, [r && r.setWeights, exp]);
-    r = await PR(TM({ 'bench-press': 20 }), 'p-bn', `planRow(rowOf('strength-wave', null, 'bench', 0), 80)`, '2026-11-30');
+    r = await PR(TM({ 'overhead-press': 20 }), 'p-op', `planRow(rowOf('strength-wave', null, 'press', 0), 80)`, '2026-11-30');
     check('wave weights never below the bar (TM 20, deload)', r && Array.isArray(r.setWeights) && r.setWeights.every((w) => w >= 20), r);
+    r = await PR(TM({ 'machine-chest-press': 103 }), 'p-bn', `planRow(rowOf('strength-wave', null, 'bench', 0), 80)`, '2026-11-23');
+    check('machine wave weights round down to 2.5 kg steps', r && J(r.setWeights) === '[75,87.5,97.5]', r);
+    r = await PR(TM({ 'machine-chest-press': 20 }), 'p-bn', `planRow(rowOf('strength-wave', null, 'bench', 0), 80)`, '2026-11-30');
+    check('machine deload rounds 8/10/12 down to 7.5/10/10 without a bar minimum', r && J(r.setWeights) === '[7.5,10,10]', r);
     r = await PR(TM({}), 'p-bn', `planRow(rowOf('strength-wave', null, 'bench', 0), 80)`, '2026-11-23');
     check('TM missing -> null weights (caller asks for a TM), reps still given', r && r.weight === null && r.setWeights === null && J(r.setReps) === '[5,3,1]' && r.sets === 3, r);
-    r = await PR(TM({ 'bench-press': 0 }), 'p-bn', `planRow(rowOf('strength-wave', null, 'bench', 0), 80)`, '2026-11-23');
+    r = await PR(TM({ 'machine-chest-press': 0 }), 'p-bn', `planRow(rowOf('strength-wave', null, 'bench', 0), 80)`, '2026-11-23');
     check('TM 0 / NaN / negative -> null weights', r && r.weight === null && r.setWeights === null, r);
-    r = await PR(TM({ 'bench-press': 100 }), 'p-bn', `planRow(rowOf('strength-wave', null, 'bench', 1), 30)`, '2026-11-23');
+    r = await PR(TM({ 'machine-chest-press': 100 }), 'p-bn', `planRow(rowOf('strength-wave', null, 'bench', 1), 30)`, '2026-11-23');
     check('wave assistance row is linear (3 sets, no weight)', r && r.sets === 3 && r.setWeights === undefined && r.weight === undefined && r.deload === false, r);
-    r = await PR(TM({ 'bench-press': 100 }), 'p-bn', `planRow(rowOf('strength-wave', null, 'bench', 1), 30)`, '2026-11-30');
+    r = await PR(TM({ 'machine-chest-press': 100 }), 'p-bn', `planRow(rowOf('strength-wave', null, 'bench', 1), 30)`, '2026-11-30');
     check('wave assistance in deload week 4: 2 sets, 60 %', r && r.sets === 2 && r.weight === 18 && r.deload === true, r);
 
     r = await PR(TM({ 'romanian-deadlift': 100 }), 'p-hg', `planRow(rowOf('strength-wave', null, 'hinge', 0), 100)`, '2026-11-23');
     check('hinge day RDL is linear 3x8: no setWeights, no TM weight', r && r.sets === 3 && r.reps === 8 && r.setWeights === undefined && r.tmUsed === undefined && r.weight === undefined && r.deload === false, r);
     r = await PR(TM({}), 'p-hg', `planRow(rowOf('strength-wave', null, 'hinge', 0), 100)`, '2026-11-30');
     check('hinge day RDL deload week 4: 2 sets, 60 kg', r && r.sets === 2 && r.weight === 60 && r.deload === true, r);
-    r = await PR(`prog('push-pull-legs','3day')`, 'p-push', `planRow(rowOf('push-pull-legs','3day','push',0), 62.5)`, '2026-12-28');
+    r = await PR(`prog('push-pull-legs','3day')`, 'p-legs', `planRow(rowOf('push-pull-legs','3day','legs',0), 62.5)`, '2026-12-28');
     const exp375 = await S(`roundToPlates(62.5 * 0.6)`);
     check('barbell deload 62.5 -> 37.5 via plates, not below the bar', r && r.weight === exp375 && r.weight === 37.5 && r.weight >= 20, [r, exp375]);
 
     console.log('== state');
     let st = await S(`startProgramState('push-pull-legs', '6day', null, { pushA: 'p1', pullA: 'p2', bogus: 'x' })`);
     check('startProgramState shape', st && st.id === 'push-pull-legs' && st.variant === '6day' && /^\d{4}-\d{2}-\d{2}$/.test(st.startedAt) && st.weekShift === 0 && st.plans.pushA === 'p1' && st.plans.bogus === undefined && st.endedAt === null && st.tm === undefined, st);
-    st = await S(`startProgramState('strength-wave', null, { 'squats': 120, 'bench-press': 90, 'junk': 5, 'overhead-press': -5 }, {})`);
-    check('wave state keeps tm for its main lifts only', st && st.tm && st.tm.squats === 120 && st.tm['bench-press'] === 90 && st.tm.junk === undefined && st.tm['overhead-press'] === undefined && st.tm['romanian-deadlift'] === undefined, st);
+    st = await S(`startProgramState('strength-wave', null, { 'squats': 120, 'machine-chest-press': 90, 'junk': 5, 'overhead-press': -5 }, {})`);
+    check('wave state keeps tm for its main lifts only', st && st.tm && st.tm.squats === 120 && st.tm['machine-chest-press'] === 90 && st.tm.junk === undefined && st.tm['overhead-press'] === undefined && st.tm['romanian-deadlift'] === undefined, st);
     check('unknown program / bad variant -> null', await S(`startProgramState('nope', null, null, {})`) === null && await S(`startProgramState('push-pull-legs', 'nope', null, {})`) === null);
     check('PPL without variant defaults to 3day', await S(`startProgramState('push-pull-legs', null, null, {}).variant`) === '3day');
     for (const [label, expr] of [
       ['upper-lower fresh', `startProgramState('upper-lower', null, null, { upperA: 'x' })`],
-      ['wave with tm for the 3 lifts', `startProgramState('strength-wave', null, { squats: 120, 'bench-press': 90, 'overhead-press': 55 }, { squat: 'a', bench: 'b', hinge: 'c', press: 'd' })`],
+      ['wave with tm for the 3 lifts', `startProgramState('strength-wave', null, { squats: 120, 'machine-chest-press': 90, 'overhead-press': 55 }, { squat: 'a', bench: 'b', hinge: 'c', press: 'd' })`],
       ['PPL 6day with all plans', `startProgramState('push-pull-legs', '6day', null, { pushA: 'a', pullA: 'b', legsA: 'c', pushB: 'd', pullB: 'e', legsB: 'f' })`],
       ['weekShift -3 with endedAt', `Object.assign(startProgramState('push-pull-legs', '3day', null, { push: 'a' }), { weekShift: -3, endedAt: '2026-12-01' })`],
       ['future field pausedAt (and nested unknown)', `Object.assign(startProgramState('upper-lower', null, null, { upperA: 'x' }), { pausedAt: '2026-11-20', future: { a: [1, 2] } })`],
@@ -165,7 +169,7 @@ function check(name, ok, info) {
       check('round-trips byte-identically: ' + label, await S(`(() => { const s = ${expr}; const j = JSON.stringify(s); return JSON.stringify(cleanProgramState(JSON.parse(j))) === j && j.length > 20; })()`));
     }
     check('unknown top-level fields are kept, known fields still validated', await S(`(() => { const c = cleanProgramState({ id: 'upper-lower', startedAt: '2026-11-11', weekShift: 999, pausedAt: 'x', plans: { upperA: 'a', zzz: 'b' } }); return c.pausedAt === 'x' && c.weekShift === 20 && JSON.stringify(c.plans) === '{"upperA":"a"}'; })()`));
-    check('wave tm keeps only the 3 main lifts (RDL dropped)', await S(`J(cleanProgramState({ id: 'strength-wave', startedAt: '2026-11-11', tm: { squats: 100, 'bench-press': 80, 'overhead-press': 50, 'romanian-deadlift': 120 } }).tm)`) === J({ squats: 100, 'bench-press': 80, 'overhead-press': 50 }));
+    check('wave tm keeps only the 3 main lifts (RDL dropped)', await S(`J(cleanProgramState({ id: 'strength-wave', startedAt: '2026-11-11', tm: { squats: 100, 'machine-chest-press': 80, 'overhead-press': 50, 'romanian-deadlift': 120 } }).tm)`) === J({ squats: 100, 'machine-chest-press': 80, 'overhead-press': 50 }));
     const junk = [null, undefined, 5, 'x', [], {}, { id: 5 }, { id: 'nope' }, { id: 'push-pull-legs', variant: 'zzz', startedAt: '2026-11-11' }, { id: 'upper-lower', startedAt: 'nope' }, { id: 'upper-lower', startedAt: '2026-13-45' }, { id: 'upper-lower', startedAt: '2026-11-11', weekShift: 'a', plans: 5, tm: 'x' }];
     for (let i = 0; i < junk.length; i++) {
       const v = await S(`(() => { const c = cleanProgramState(${J(junk[i]) || 'undefined'}); return c === null ? 'null' : J(c); })()`);
@@ -174,7 +178,7 @@ function check(name, ok, info) {
     }
     check('weekShift clamped and rounded', await S(`cleanProgramState({ id: 'upper-lower', startedAt: '2026-11-11', weekShift: 999 }).weekShift`) === 20 && await S(`cleanProgramState({ id: 'upper-lower', startedAt: '2026-11-11', weekShift: -999 }).weekShift`) === -20);
     check('plans keep only known days with string ids', await S(`J(cleanProgramState({ id: 'upper-lower', startedAt: '2026-11-11', plans: { upperA: 'a', lowerA: 3, zzz: 'b' } }).plans)`) === J({ upperA: 'a' }));
-    check('programWeek / programPrescription never throw on junk', await S(`(() => { const bad = [null, undefined, 5, 'x', [], {}, { id: 'push-pull-legs' }, { id: 'x', startedAt: 'y' }, { id: 'strength-wave', startedAt: 'zz', tm: 5 }]; for (const j of bad) { programWeek(j); programWeek(j, 'junk'); programPrescription(j, 'p', null); programPrescription(j, null, {}); programPrescription(j, 'p', { progRow: 5 }); } programWeek(prog('push-pull-legs', '3day'), 5); programWeek(prog('push-pull-legs', '3day'), null); programPrescription(prog('strength-wave', null, { tm: { 'bench-press': 'abc' } }), 'p-bn', { progRow: 'strength-wave:bench:0', weight: 'x' }, 'bad'); return true; })()`) === true);
+    check('programWeek / programPrescription never throw on junk', await S(`(() => { const bad = [null, undefined, 5, 'x', [], {}, { id: 'push-pull-legs' }, { id: 'x', startedAt: 'y' }, { id: 'strength-wave', startedAt: 'zz', tm: 5 }]; for (const j of bad) { programWeek(j); programWeek(j, 'junk'); programPrescription(j, 'p', null); programPrescription(j, null, {}); programPrescription(j, 'p', { progRow: 5 }); } programWeek(prog('push-pull-legs', '3day'), 5); programWeek(prog('push-pull-legs', '3day'), null); programPrescription(prog('strength-wave', null, { tm: { 'machine-chest-press': 'abc' } }), 'p-bn', { progRow: 'strength-wave:bench:0', weight: 'x' }, 'bad'); return true; })()`) === true);
     check('programWeek on junk -> null', await S(`programWeek(5) === null && programWeek({ id: 'zz' }) === null`) === true);
     check('no exceptions on page', p.errors.length === 0, p.errors);
   } catch (e) {

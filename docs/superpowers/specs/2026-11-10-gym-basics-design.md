@@ -2,6 +2,12 @@
 
 Date: 2026-11-10 · Branch `gym-basics` (worktree `.claude/worktrees/gym-basics`, from v106 `f9590a9`)
 
+**Current owner approval (2026-11-14):** program content is accepted conditional on replacing bench press
+with machine chest press in every ready-made program (including the strength-wave training-max lift).
+The library, default plans and existing history remain unchanged. Local merge into `main` and one
+merge-time cache/version bump are authorized; no push, deployment or new screenshots. This supersedes
+the earlier pending-review/branch-only instructions for this integration; historical rulings below remain recorded.
+
 ## Why
 
 A comparison with the most used gym apps (Hevy, Strong, Fitbod, JEFIT, Boostcamp, Alpha Progression,
@@ -197,6 +203,14 @@ but never in the recovery map).
   - **Strength wave (5s / 3s / 1s)** — 4 days/week, 4-week waves (week 1: 3×5 at 65/75/85 %, week 2: 3×3 at
     70/80/90 %, week 3: 5/3/1 at 75/85/95 %, week 4 deload 40/50/60 %) of a training max = 90 % of the estimated
     1RM (item 2) or a user-entered number. (Named generically, not after a person/brand.)
+    The three training-max lifts are squat, machine chest press and overhead press. **Chest press day**
+    uses machine chest press; Hinge day uses ordinary Romanian deadlift 3×8, not a deadlift training max.
+    The second wave adds 5 kg to squat TM and 2.5 kg to machine chest press / overhead press TM.
+    TM prefills (remembered weight × 1.1) and targets use available-plate rounding only for barbells;
+    machine chest press rounds to 2.5 kg without a barbell minimum.
+  - Every ready-made template uses `machine-chest-press` instead of `bench-press`; the library, default
+    plans and existing history are unchanged. Translate **Chest press day** in all six languages while
+    retaining the internal day id `bench` and existing `progRow` tags for stored plan bindings.
 - Starting a program creates ordinary custom plans (one per training day, from library exercises only), sets the
   weekly goal to the program's days per week (with confirmation, since it changes streak targets going forward),
   and stores `state.program = { id, startedAt, week, … }` (synced). The plans stay ordinary: editable, deletable.

@@ -91,9 +91,13 @@ everything on your own device.
 - **Multi-week programs** — open **Programs** in the Workout plan picker: Beginner full body
   (3 days/week, alternating A/B), Push / Pull / Legs (3 or 6 days/week), Upper / Lower (4 days/week),
   or Strength wave (4 days/week). Each lasts 8 weeks; PPL and Upper / Lower deload in week 8,
-  and Strength wave deloads in weeks 4 and 8. The wave asks for three training maxes (squat, bench,
-  overhead press); its fourth, hinge day uses Romanian deadlifts for ordinary 3×8 work, not max singles.
+  and Strength wave deloads in weeks 4 and 8. Ready-made programs use machine chest press, not bench press;
+  the exercise library, default plans and existing history are unchanged. The wave asks for three training
+  maxes (squat, machine chest press, overhead press); **Chest press day** uses the machine lift, while its
+  fourth, hinge day uses Romanian deadlifts for ordinary 3×8 work, not max singles.
   The second wave increases the working training max by 2.5 kg for upper-body lifts and 5 kg for squats.
+  Training-max prefills (1.1 × remembered weight) and prescribed targets use available-plate rounding for
+  barbells; machine chest press rounds to 2.5 kg with no barbell minimum.
   Program plans stay ordinary editable plans: weekly sets, reps and any prescribed weights are captured
   when you start a workout, without rewriting the plans or changing a running session after a week or
   plan edit. Explicit wave/deload targets have an explanatory chip even when they already match;

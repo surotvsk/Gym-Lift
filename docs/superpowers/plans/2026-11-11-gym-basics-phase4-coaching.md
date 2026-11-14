@@ -14,6 +14,12 @@
 
 **Spec:** `docs/superpowers/specs/2026-11-10-gym-basics-design.md` (items 8 and 9). Owner rules: clean, uncluttered UI; all six languages.
 
+**Current owner approval (2026-11-14):** program content is accepted conditional on replacing bench press
+with machine chest press in every ready-made template, including the strength-wave training-max lift.
+Keep the library, default plans and existing history unchanged. Local merge into `main` and one
+merge-time cache/version bump are authorized; no push, deployment or new screenshots. This supersedes
+the earlier pending-review/branch-only instructions for this integration; historical workflow remains below.
+
 ## Global Constraints
 
 - **Never automatic.** A suggestion changes nothing until the user taps "Use". Program prescriptions change only the session (snapshot), never the plan rows. The user can still edit any set.
@@ -28,7 +34,7 @@
   - The plan-row field `progRow` (string) is additive.
   - Old versions keep `state.program`, but they may drop `progRow` when they edit a row. A row without `progRow` is simply not prescribed.
   - The session snapshot entry may gain `sets`/`reps` (the session is device-only).
-- **Content:** programs use library exercises only (the existing 50). Programs are named generically, never after a person or brand. The builder drafts the content in the plan's shape, and the owner reviews it via screenshots before the merge.
+- **Content:** programs use library exercises only (the existing 50), with machine chest press replacing bench press in every ready-made template. Programs are named generically, never after a person or brand. Content is owner-approved subject to this replacement (see current approval above).
 - **Repo and git:**
   - Work only in the worktree `/home/Surotvsk/Documents/gymquest-backup-2026-10-10/gymquest/.claude/worktrees/gym-basics` (branch `gym-basics`). Never touch `main`, never push.
   - Commit per task on `gym-basics`, ending with the attribution lines. Never `git add -f` anything under `.superpowers`.
@@ -59,7 +65,7 @@
 
    Expected: never crashes, and the week is clamped to 1..N. Pinned in Task 3.
 4. **A program workout started, then the plan edited mid-session, or a row without `progRow`:** expected: the session keeps its snapshot, and unprescribed rows behave as today. Pinned in Task 5.
-5. **Strength-wave weights:** training max missing or 0, rounding to the plate set, and assisted or dumbbell lifts in the wave. Expected: a TM is asked for at start (prefilled 1.1 × the plan weight), weights are rounded via `roundToPlates` (barbell) or 2.5 kg steps, and there is never a weight below the bar. Pinned in Tasks 3 and 5.
+5. **Strength-wave weights:** training max missing or 0, rounding to the plate set, and assisted or dumbbell lifts in the wave. Expected: a TM is asked for at start (prefilled 1.1 × remembered weight, rounded for the lift); barbell weights use `roundToPlates` and never fall below the bar, while machine chest press uses 2.5 kg steps without a barbell minimum. Pinned in Tasks 3 and 5.
 
 ---
 
@@ -152,11 +158,13 @@
 }
 ```
 
-  - Content: the builder drafts it, following spec item 9.
+  - Content: owner-approved with the requested machine chest press replacement, following spec item 9.
     - **Beginner full body:** 3 days a week for 8 weeks, alternating days A and B, with no deload.
     - **Push / Pull / Legs:** two variants. The 3-day variant does each day once a week; the 6-day variant does each twice. 8 weeks, deload in week 8.
     - **Upper / Lower:** 4 days a week for 8 weeks, deload in week 8.
-    - **Strength wave (5s / 3s / 1s):** 4 days a week, 4-week waves (8 weeks = 2 waves). Each day has 1 main lift (squat, bench, deadlift, overhead press) and 2–3 assistance exercises.
+    - **Strength wave (5s / 3s / 1s):** 4 days a week, 4-week waves (8 weeks = 2 waves). Squat, machine chest press and overhead press are the three training-max lifts, each with assistance work. Hinge day uses Romanian deadlift 3×8 as ordinary work, not a deadlift TM.
+    - **Chest press day** replaces the visible Bench day label in all six languages. Keep internal day id `bench` and existing `progRow` tags unchanged for stored plan bindings.
+    - Every program template replaces `bench-press` with `machine-chest-press`; the library, default plans and existing history remain unchanged.
   - `programWeek(prog: state.program, today = todayISO()) -> { week: 1..N, total: N, deload: boolean, finished: boolean }`.
     - The week is counted by local calendar weeks (`weekKey`) since `prog.startedAt`, plus `prog.weekShift` (repeat → −1, skip → +1). It is clamped to 1..N.
     - `finished` is true when the raw week is greater than N.
@@ -168,7 +176,8 @@
       - week 2: 3×3 at 70/80/90 %;
       - week 3: 5/3/1 at 75/85/95 %;
       - week 4: deload at 40/50/60 %.
-      - Per-set weights are returned as `setWeights: number[]` and `setReps: number[]`, rounded via `roundToPlates` (barbell), never below the bar.
+      - Per-set weights are returned as `setWeights: number[]` and `setReps: number[]`: barbell targets use `roundToPlates`, never below the bar; machine chest press targets use 2.5 kg steps without a barbell minimum.
+      - The second wave increases squat TM by 5 kg and machine chest press / overhead press TM by 2.5 kg.
     - Wave, assistance rows: as linear.
   - `startProgramState(programId, variantId, tm, planIdsByDay) -> state.program` object:
 
@@ -189,7 +198,7 @@
     - Week 9 of 8 is `finished`, and the week is clamped to 8.
   - **Prescriptions.**
     - Linear deload week 8 for PPL: 3 sets becomes 2 sets, and 100 kg becomes 60 kg.
-    - Wave week 3 main lift, TM 100: setWeights [75, 85, 95] and setReps [5, 3, 1], rounded to plates.
+    - Wave week 3 main lift, TM 100: setWeights [75, 85, 95] and setReps [5, 3, 1], rounded to plates for barbells or 2.5 kg steps for machine chest press.
     - TM missing → null weight (the caller asks for a TM).
     - Assistance rows in the wave are linear.
   - **Robustness:** junk `state.program` → `cleanProgramState` returns null, and `programWeek` / `programPrescription` never throw.
@@ -214,7 +223,7 @@
     - Rows are library exercises with sets, reps and `progRow`. The weight is taken from `settings.exerciseMemory` if known, else 0.
     - Adds the plans to `planOrder` in day order and sets `state.program`.
     - If the weekly goal differs from `daysPerWeek`, a confirmation in the current language offers to change it. Changing it affects the streak target from now on, so confirmation is required.
-    - Wave programs ask for the 4 training maxes. Each is prefilled with 1.1 × the remembered weight of that lift, or empty. Start is disabled until all are > 0.
+    - Wave programs ask for the 3 training maxes (squat, machine chest press, overhead press). Each is prefilled with 1.1 × the remembered weight of that lift, rounded to available plates for barbells or 2.5 kg steps for machine chest press (no barbell minimum), or empty. Start is disabled until all are > 0.
 - Decisions:
   - The "Programs" tile goes in the Workout plan-picker tiles (`.tr-tiles`), next to New plan / Exercise library / Full Body builder. One tile.
   - The sheet has three views:

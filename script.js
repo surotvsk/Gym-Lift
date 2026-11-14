@@ -7872,7 +7872,7 @@ const BASICS_I18N = {
     "prog.day.upperB": "Horná časť B",
     "prog.day.lowerB": "Dolná časť B",
     "prog.day.squat": "Deň drepu",
-    "prog.day.bench": "Deň tlaku na lavičke",
+    "prog.day.bench": "Deň tlaku na hrudník",
     "prog.day.hinge": "Deň rumunského ťahu",
     "prog.day.press": "Deň tlaku nad hlavu",
     /* Koučing: programy (UI) */
@@ -7989,7 +7989,7 @@ const BASICS_I18N = {
     "prog.day.upperB": "Upper B",
     "prog.day.lowerB": "Lower B",
     "prog.day.squat": "Squat day",
-    "prog.day.bench": "Bench day",
+    "prog.day.bench": "Chest press day",
     "prog.day.hinge": "Hinge day",
     "prog.day.press": "Overhead press day",
     /* Koučing: programy (UI) */
@@ -8104,7 +8104,7 @@ const BASICS_I18N = {
     "prog.day.upperB": "Tren superior B",
     "prog.day.lowerB": "Tren inferior B",
     "prog.day.squat": "Día de sentadilla",
-    "prog.day.bench": "Día de press de banca",
+    "prog.day.bench": "Día de press de pecho",
     "prog.day.hinge": "Día de bisagra de cadera",
     "prog.day.press": "Día de press militar",
     /* Koučing: programy (UI) */
@@ -8219,7 +8219,7 @@ const BASICS_I18N = {
     "prog.day.upperB": "Superior B",
     "prog.day.lowerB": "Inferior B",
     "prog.day.squat": "Dia de agachamento",
-    "prog.day.bench": "Dia de supino",
+    "prog.day.bench": "Dia de peitoral",
     "prog.day.hinge": "Dia de dobradiça de quadril",
     "prog.day.press": "Dia de desenvolvimento",
     /* Koučing: programy (UI) */
@@ -8334,7 +8334,7 @@ const BASICS_I18N = {
     "prog.day.upperB": "Haut du corps B",
     "prog.day.lowerB": "Bas du corps B",
     "prog.day.squat": "Jour squat",
-    "prog.day.bench": "Jour développé couché",
+    "prog.day.bench": "Jour presse pectorale",
     "prog.day.hinge": "Jour charnière de hanche",
     "prog.day.press": "Jour développé militaire",
     /* Koučing: programy (UI) */
@@ -8449,7 +8449,7 @@ const BASICS_I18N = {
     "prog.day.upperB": "علوي ب",
     "prog.day.lowerB": "سفلي ب",
     "prog.day.squat": "يوم القرفصاء",
-    "prog.day.bench": "يوم ضغط البنش",
+    "prog.day.bench": "يوم ضغط الصدر",
     "prog.day.hinge": "يوم مفصلة الورك",
     "prog.day.press": "يوم الضغط فوق الرأس",
     /* Koučing: programy (UI) */
@@ -27762,7 +27762,7 @@ function initSuggestSheet() {
    Program má buď priamo `days` + `schedule`, alebo `variants` ([{ id, nameKey, daysPerWeek, schedule, days }]).
    days = plány, ktoré sa vytvoria (jeden na šablónu dňa); schedule = poradie dní v týždni (dĺžka = daysPerWeek),
    takže A/B striedanie (3 tréningy, 2 plány) aj „6 dní = 6 plánov“ vyjdú rovnako.
-   Vlna má 3 hlavné ťahy s tréningovým maximom (squats, bench-press, overhead-press). Knižnica nemá klasický mŕtvy ťah
+   Vlna má 3 hlavné ťahy s tréningovým maximom (squats, machine-chest-press, overhead-press). Knižnica nemá klasický mŕtvy ťah
    a rumunský mŕtvy ťah (romanian-deadlift) sa nemaxuje, preto štvrtý deň („Hinge“) ho robí lineárne 3×8 bez TM. */
 function progDay(programId, id, rowsSpec) {
   return {
@@ -27778,7 +27778,7 @@ function progDay(programId, id, rowsSpec) {
 
 const PROGRAMS = (() => {
   const pplA = {
-    push: [['bench-press', 3, 8], ['overhead-press', 3, 10], ['incline-dumbbell-press', 3, 10], ['lateral-raises', 3, 12], ['single-arm-cable-triceps-extension', 3, 12]],
+    push: [['machine-chest-press', 3, 8], ['overhead-press', 3, 10], ['incline-dumbbell-press', 3, 10], ['lateral-raises', 3, 12], ['single-arm-cable-triceps-extension', 3, 12]],
     pull: [['lat-pulldown', 3, 10], ['bent-over-rows', 3, 8], ['cable-rows', 3, 10], ['hammer-curl', 3, 12], ['bicep-curls', 3, 12]],
     legs: [['squats', 3, 8], ['romanian-deadlift', 3, 8], ['leg-press', 3, 10], ['leg-curls', 3, 12], ['calf-raises', 3, 12]],
   };
@@ -27795,7 +27795,7 @@ const PROGRAMS = (() => {
       level: 'beginner', daysPerWeek: 3, weeks: 8, deloadWeeks: [], kind: 'linear',
       schedule: ['fullA', 'fullB', 'fullA'],
       days: [
-        progDay('beginner-full-body', 'fullA', [['squats', 3, 8], ['bench-press', 3, 8], ['cable-rows', 3, 10], ['lateral-raises', 3, 10], ['dead-bug', 3, 10]]),
+        progDay('beginner-full-body', 'fullA', [['squats', 3, 8], ['machine-chest-press', 3, 8], ['cable-rows', 3, 10], ['lateral-raises', 3, 10], ['dead-bug', 3, 10]]),
         progDay('beginner-full-body', 'fullB', [['romanian-deadlift', 3, 8], ['overhead-press', 3, 8], ['lat-pulldown', 3, 10], ['bicep-curls', 3, 10], ['calf-raises', 3, 10]]),
       ],
     },
@@ -27815,7 +27815,7 @@ const PROGRAMS = (() => {
       level: 'intermediate', daysPerWeek: 4, weeks: 8, deloadWeeks: [8], kind: 'linear',
       schedule: ['upperA', 'lowerA', 'upperB', 'lowerB'],
       days: [
-        progDay('upper-lower', 'upperA', [['bench-press', 3, 8], ['bent-over-rows', 3, 8], ['overhead-press', 3, 10], ['lat-pulldown', 3, 10], ['bicep-curls', 3, 12]]),
+        progDay('upper-lower', 'upperA', [['machine-chest-press', 3, 8], ['bent-over-rows', 3, 8], ['overhead-press', 3, 10], ['lat-pulldown', 3, 10], ['bicep-curls', 3, 12]]),
         progDay('upper-lower', 'lowerA', [['squats', 3, 8], ['romanian-deadlift', 3, 8], ['leg-curls', 3, 10], ['calf-raises', 3, 12], ['dead-bug', 3, 10]]),
         progDay('upper-lower', 'upperB', [['incline-dumbbell-press', 3, 10], ['cable-rows', 3, 10], ['lateral-raises', 3, 12], ['single-arm-dumbbell-triceps-extension', 3, 12], ['hammer-curl', 3, 12]]),
         progDay('upper-lower', 'lowerB', [['leg-press', 3, 10], ['hip-thrust', 3, 10], ['lunges', 3, 10], ['leg-extension', 3, 12], ['calf-raises', 3, 12]]),
@@ -27827,7 +27827,8 @@ const PROGRAMS = (() => {
       schedule: ['squat', 'bench', 'hinge', 'press'],
       days: [
         progDay(wave, 'squat', [['squats', 3, 5, true], ['leg-press', 3, 10], ['leg-curls', 3, 10], ['calf-raises', 3, 12]]),
-        progDay(wave, 'bench', [['bench-press', 3, 5, true], ['incline-dumbbell-press', 3, 10], ['bent-over-rows', 3, 8], ['single-arm-cable-triceps-extension', 3, 12]]),
+        /* Stabilné id dňa sa nemení vo väzbách uložených plánov; cvik je tlak na stroji. */
+        progDay(wave, 'bench', [['machine-chest-press', 3, 5, true], ['incline-dumbbell-press', 3, 10], ['bent-over-rows', 3, 8], ['single-arm-cable-triceps-extension', 3, 12]]),
         progDay(wave, 'hinge', [['romanian-deadlift', 3, 8], ['lat-pulldown', 3, 10], ['hammer-curl', 3, 12], ['dead-bug', 3, 10]]),
         progDay(wave, 'press', [['overhead-press', 3, 5, true], ['cable-rows', 3, 10], ['lateral-raises', 3, 12], ['bicep-curls', 3, 10]]),
       ],
@@ -28157,11 +28158,11 @@ function programMainIds(prog) {
   return ids;
 }
 
-/* Predvyplnené tréningové maximum: 1,1 × zapamätaná váha cviku, zaokrúhlené na kotúče; bez pamäte prázdne. */
+/* Predvyplnené tréningové maximum: 1,1 × zapamätaná váha, zaokrúhlené podľa náradia; bez pamäte prázdne. */
 function programTmPrefill(exId) {
   const m = exerciseMemoryEntry(exId);
   if (!m || !(Number(m.weight) > 0)) return '';
-  const w = roundToPlates(Number(m.weight) * 1.1, plateSettings());
+  const w = programRoundWeight(exId, Number(m.weight) * 1.1);
   return w > 0 ? String(Math.round(w * 100) / 100) : '';
 }
 

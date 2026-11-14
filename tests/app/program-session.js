@@ -28,17 +28,17 @@ function check(name, ok, info) {
   const tile = "document.querySelector('#exercise-list .exercise')";
   const values = () => ev(`({ weights: Array.from(${tile}.querySelectorAll('input.set-weight'), x => Number(x.value)), reps: Array.from(${tile}.querySelectorAll('input.set-reps'), x => Number(x.value)) })`);
   const chip = () => ev(`(${tile}.querySelector('.sugg-chip') || {}).textContent || null`);
-  const setup = (id = 'push-pull-legs', week = 1, extra = '') => ev(`(() => {
+  const setup = (id = 'push-pull-legs', week = 1, extra = '', dayId = id === 'strength-wave' ? 'bench' : 'push') => ev(`(() => {
     closeSuggestSheet(); document.getElementById('modal-result').hidden = true;
     state.activeSession = null; state.history = []; state.importedHistory = [];
     state.settings.showSuggestions = true; state.settings.autoRest = false;
     state.settings.plates = { bar: 20, plates: [20, 10, 5, 2.5, 1.25] };
     const def = programById(${J(id)}), variant = programVariants(def)[0];
-    const day = variant.days.find(d => d.id === ${J(id === 'strength-wave' ? 'bench' : 'push')});
+    const day = variant.days.find(d => d.id === ${J(dayId)});
     const rows = programPlanRows(day); rows.forEach(r => { r.weight = 100; });
     state.plans.ps = { id: 'ps', builtin: false, customName: 'Program session', location: null, exercises: rows };
     if (!state.planOrder.includes('ps')) state.planOrder.push('ps');
-    state.program = startProgramState(def.id, variant.id, { 'bench-press': 100, squats: 100, 'overhead-press': 100 }, { [day.id]: 'ps' });
+    state.program = startProgramState(def.id, variant.id, { 'machine-chest-press': 100, squats: 100, 'overhead-press': 100 }, { [day.id]: 'ps' });
     state.program.weekShift = ${week - 1}; selectedPlan = 'ps';
     ${extra}
     recalculateAll(); saveState(); switchTab('trening'); renderTrening(); return true;
@@ -52,7 +52,7 @@ function check(name, ok, info) {
     console.log('== capture once and linear suggestions');
     await setup('push-pull-legs', 1, `rows[0].sets = 5; rows[0].reps = 2;
       rows.push({ id: 'cx-plain', name: 'Plain', sets: 4, reps: 7, weight: 30 });
-      state.history = [{ id: 'previous', date: localDateKey(addDays(new Date(), -3)), week: weekKey(addDays(new Date(), -3)), planId: 'ps', exercises: [{ exId: 'bench-press', name: rows[0].name, sets: 3, reps: 8, weight: 100, setsDone: 3 }] }];`);
+      state.history = [{ id: 'previous', date: localDateKey(addDays(new Date(), -3)), week: weekKey(addDays(new Date(), -3)), planId: 'ps', exercises: [{ exId: 'machine-chest-press', name: rows[0].name, sets: 3, reps: 8, weight: 100, setsDone: 3 }] }];`);
     const plans = await ev('JSON.stringify(state.plans.ps)');
     await ev(`(window.__prescribe = programPrescription, window.__calls = 0, programPrescription = (...args) => { window.__calls++; return window.__prescribe(...args); }, true)`);
     await start();
@@ -108,7 +108,7 @@ function check(name, ok, info) {
 
     console.log('== second wave TM and malformed legacy states');
     await setup('strength-wave', 7); await start();
-    await ev(`(state.program.tm['bench-press'] = 250, state.program.weekShift = 0, renderTrening(), ${tile}.querySelector('.sugg-chip').click(), true)`);
+    await ev(`(state.program.tm['machine-chest-press'] = 250, state.program.weekShift = 0, renderTrening(), ${tile}.querySelector('.sugg-chip').click(), true)`);
     check('wave 2 explanation uses captured tmUsed 102.5, not current TM', await ev(`document.getElementById('suggest-text').textContent.includes('102.5 kg') && !document.getElementById('suggest-text').textContent.includes('250')`));
     await ev('(closeSuggestSheet(), saveState(), true)'); await p.reload(); await ev(`(switchTab('trening'), renderTrening(), ${tile}.querySelector('.sugg-chip').click(), true)`);
     check('wave 2 TM survives reload', await ev(`document.getElementById('suggest-text').textContent.includes('102.5 kg')`));
@@ -116,8 +116,10 @@ function check(name, ok, info) {
     await setup('strength-wave', 3, `state.program.tm = {};`); await start();
     check('missing TM never creates zero or NaN weights', (await values()).weights.every(w => w === 100));
     check('missing TM suppresses misleading ordinary suggestion', await chip() === null);
-    await setup('strength-wave', 3, `state.settings.plates = { bar: 15, plates: [20, 10, 5, 2.5] }; state.program.tm['bench-press'] = 10;`); await start();
-    check('small TM rounds to plates and never below bar', (await values()).weights.every(w => w === 15));
+    await setup('strength-wave', 3, `state.settings.plates = { bar: 15, plates: [20, 10, 5, 2.5] }; state.program.tm['overhead-press'] = 10;`, 'press'); await start();
+    check('small overhead-press TM rounds to plates and never below bar', (await values()).weights.every(w => w === 15));
+    await setup('strength-wave', 3, `state.settings.plates = { bar: 15, plates: [20, 10, 5, 2.5] }; state.program.tm['machine-chest-press'] = 10;`); await start();
+    check('small machine TM uses 2.5 kg steps without a bar minimum', J(await values()) === J({ weights: [7.5, 7.5, 7.5], reps: [5, 3, 1] }), await values());
     check('invalid snapshot fields are discarded without losing valid old weight', await ev(`(() => { const raw = JSON.parse(JSON.stringify(getSession())); const key = Object.keys(raw.snapshot)[0]; raw.snapshot[key] = { weight: 42, sets: -1, reps: 'oops', setWeights: [NaN], setReps: [-1], program: { week: NaN } }; const s = normalizeActiveSession(raw).snapshot[key]; return s.weight === 42 && s.sets === undefined && s.reps === undefined && s.setWeights === undefined && s.program === undefined; })()`));
     await setup('push-pull-legs', 8); await start();
     await ev(`(() => { const s = getSession(); Object.values(s.snapshot).forEach(v => { for (const k of Object.keys(v)) if (!['weight', 'unilateral', 'startSide', 'assisted'].includes(k)) delete v[k]; }); saveState(); return true; })()`);
@@ -146,10 +148,10 @@ function check(name, ok, info) {
     check('numeric edits and reorder preserve program tags', await ev(`state.plans.ps.exercises.every(r => typeof r.progRow === 'string') && state.plans.ps.exercises.at(-1).progRow === 'strength-wave:bench:0'`));
     await ev(`(() => { startEditPlan('ps'); const inp = document.querySelector('#edit-rows .edit-row:last-child .edit-name'); inp.value = 'Renamed lift'; inp.dispatchEvent(new Event('input', { bubbles: true })); inp.dispatchEvent(new Event('change', { bubbles: true })); saveEditPlan(); return true; })()`);
     check('renaming removes stale progRow and prevents TM prescription', await ev(`(() => { const row = state.plans.ps.exercises.at(-1); return row.name === 'Renamed lift' && row.progRow === undefined && programPrescription(state.program, 'ps', row) === null; })()`));
-    check('new program rows preserve assisted memory', await ev(`(() => { const old = state.settings.exerciseMemory; state.settings.exerciseMemory = { 'bench-press': { weight: 30, unilateral: true, startSide: 'right', assisted: true } }; const row = programPlanRows(programById('strength-wave').days[1])[0]; state.settings.exerciseMemory = old; return row.assisted === true && row.unilateral === true && row.startSide === 'right' && row.weight === 30; })()`));
+    check('new program rows preserve assisted memory', await ev(`(() => { const old = state.settings.exerciseMemory; state.settings.exerciseMemory = { 'machine-chest-press': { weight: 30, unilateral: true, startSide: 'right', assisted: true } }; const row = programPlanRows(programById('strength-wave').days[1])[0]; state.settings.exerciseMemory = old; return row.assisted === true && row.unilateral === true && row.startSide === 'right' && row.weight === 30; })()`));
     await ev(`(state.program = null, openPrograms(), programsGoTm('strength-wave', null, false), true)`);
     for (const lang of ['sk', 'en', 'es', 'pt-BR', 'fr', 'ar']) {
-      const form = await ev(`(() => { const inp = document.querySelector('input.programs-tm[data-ex="bench-press"]'); inp.value = '123.5'; inp.dispatchEvent(new Event('input', { bubbles: true })); inp.focus(); inp.setSelectionRange(1, 4); setLang(${J(lang)}); const next = document.querySelector('input.programs-tm[data-ex="bench-press"]'); return { value: next.value, focus: document.activeElement === next, start: next.selectionStart, end: next.selectionEnd, title: document.getElementById('programs-title').textContent === t('programs.tmTitle'), aria: next.getAttribute('aria-label') === t('programs.tmLabel', { name: exerciseDisplayName({ id: 'bench-press' }) }), note: document.querySelector('#programs-body .programs-desc').textContent === t('programs.tmNote') }; })()`);
+      const form = await ev(`(() => { const inp = document.querySelector('input.programs-tm[data-ex="machine-chest-press"]'); inp.value = '123.5'; inp.dispatchEvent(new Event('input', { bubbles: true })); inp.focus(); inp.setSelectionRange(1, 4); setLang(${J(lang)}); const next = document.querySelector('input.programs-tm[data-ex="machine-chest-press"]'); return { value: next.value, focus: document.activeElement === next, start: next.selectionStart, end: next.selectionEnd, title: document.getElementById('programs-title').textContent === t('programs.tmTitle'), aria: next.getAttribute('aria-label') === t('programs.tmLabel', { name: exerciseDisplayName({ id: 'machine-chest-press' }) }), note: document.querySelector('#programs-body .programs-desc').textContent === t('programs.tmNote') }; })()`);
       check(lang + ': TM translation keeps typed values, focus and selection', form.value === '123.5' && form.focus && form.start === 1 && form.end === 4 && form.title && form.aria && form.note, form);
     }
     await ev(`(closePrograms(), setLang('en'), true)`);
