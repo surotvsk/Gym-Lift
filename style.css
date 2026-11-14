@@ -5077,6 +5077,16 @@ html.ios .tour { --tour-top: max(34px, calc(env(safe-area-inset-top, 0px) + 34px
 .edit-muscles fieldset { border: 0; padding: 0; margin: var(--sp-2) 0 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--sp-1); }
 .edit-muscles legend { grid-column: 1 / -1; }
 .edit-muscles .edit-side-toggle { min-height: 44px; overflow-wrap: anywhere; }
+.edit-recognition { flex: 1 1 100%; min-width: 0; display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2); font-size: var(--fs-sm); color: var(--text-dim); overflow-wrap: anywhere; }
+.edit-recognition > [role="status"] { flex: 1 1 180px; min-width: 0; }
+.edit-recognition[hidden], .edit-muscle-action[hidden] { display: none; }
+.edit-muscle-action { min-height: 44px; white-space: normal; }
+.mu-unassigned { margin-block: var(--sp-2); min-width: 0; }
+.mu-unassigned[hidden] { display: none; }
+.mu-unassigned > summary { min-height: 44px; display: flex; align-items: center; cursor: pointer; font-weight: var(--fw-bold); overflow-wrap: anywhere; }
+.mu-unassigned-row { border-bottom: 1px solid var(--border); padding-block: var(--sp-3); min-width: 0; overflow-wrap: anywhere; }
+.mu-unassigned-row h4 { margin: 0 0 var(--sp-1); }
+.mu-assignment-save { min-height: 44px; margin-block-start: var(--sp-2); white-space: normal; }
 .mu-breakdown { margin-top: var(--sp-3); min-width: 0; }
 .mu-breakdown summary { min-height: 44px; padding-block: var(--sp-2); cursor: pointer; font-weight: var(--fw-bold); }
 .mu-trace-row { padding-block: var(--sp-3); border-bottom: 1px solid var(--border); overflow-wrap: anywhere; font-size: var(--fs-sm); }

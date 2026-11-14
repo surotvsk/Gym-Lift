@@ -83,6 +83,10 @@ everything on your own device.
   Missing weight/reps no longer erase completed sets (only their volume); old records without completion
   markers are explicitly labelled as using their saved set total. Legs includes thighs and calves;
   Glutes is separate. Separately logged sides count as half a paired set each, never an assumed pair.
+  If sets remain in Other, **Assign muscles to Other exercises** lists their actual saved names.
+  Choose main/helpers and save each exercise: the correction applies to its existing Other workouts
+  across weeks, without changing raw history, weights, XP, or already assigned snapshots. Corrections
+  survive backup/import and workout Undo; later deliberately-Other workouts are not retroactively included.
 - **Recovery map** — in the Muscles tile and sheet a front and back body map is shaded by how recently each muscle
   was worked. It is an **estimate** from your last three to four days of sets, not medical advice. At most
   once a day the Today workout card adds one quiet line, for example *Legs still recovering — consider
@@ -132,7 +136,7 @@ everything on your own device.
 - **Plain-language explanations** — short, non-judgemental notes on measuring body weight, why daily
   changes are not a trend, what duration / sets / reps / progressive overload mean, and what the
   calorie estimate and your own nutrition numbers can and cannot tell you.
-- **Exercise library** — 135 built-in exercises with primary and secondary muscles, movement pattern,
+- **Exercise library** — 173 built-in exercises with primary and secondary muscles, movement pattern,
   difficulty, equipment, gym/home/outdoor availability, how-to steps, common mistakes, similar exercises
   with the reason each was suggested, and a **demonstration gallery** (a licensed video or photograph
   where one is available, otherwise an original illustration or an honest *unavailable* state) you can swipe through.
@@ -824,10 +828,10 @@ names look the same.
 
 ## The exercise library
 
-GymQuest ships with **135 built-in exercises**: the existing 50 plus 85 distinct upper-body,
-lower-body and core variations. These include Bulgarian split squats, separate lying/seated leg curls,
-chest presses and flies, rows and pulldowns, curls and triceps work, hip and calf variations, and
-abdominal exercises. All have names, instructions and mistakes translated into all six languages.
+GymQuest ships with **173 built-in exercises**, including equipment-specific press, row, curl,
+lunge and hip variants, kettlebell movements, calf presses and assisted chin-ups. Names,
+instructions and common mistakes are available in all six languages. Common Strong/Hevy aliases
+recognize the actual variation rather than silently substituting different equipment or movements.
 Existing IDs, plans and history are preserved; a Bulgarian split squat is not silently substituted
 for an ordinary split squat. There is **no external catalogue service**: the content ships with the app,
 works offline from the first launch, and adds nothing to your stored workout data.
@@ -847,11 +851,14 @@ works offline from the first launch, and adds nothing to your stored workout dat
   illustration, or an honest *Demonstration unavailable* state (see the note below).
 - **Similar exercises**, each with the reason it was suggested.
 
-For an exercise you create yourself, open its **More options** in the plan editor and choose its main
-and helper muscles. **Automatic by name** uses an exact known library name/alias, otherwise Other.
-An explicit **Other** overrides name matching. Assignments are shared across plans for the same custom
-exercise; older history without an assignment is classified on read, not rewritten. New workout
-snapshots freeze the effective assignment, including Other, so later edits do not alter that session.
+While typing an exercise name in the plan editor, a small line immediately shows the recognized
+exercise's main and helper muscles. Matching accepts common aliases, punctuation and omitted
+diacritics, but does not guess unknown modifiers or change the custom exercise's identity or weight.
+Unknown names say so and offer **Assign muscles**, opening the main/helper picker directly;
+**Change muscles** is available for custom assignments. **Automatic by name** restores recognition,
+while explicit **Other** overrides it. Assignments are shared across plans for the same custom name.
+New workout snapshots freeze their effective assignment; existing Other records can be explicitly
+corrected from the Muscles review without rewriting those records.
 
 
 ### Opening it
@@ -1044,7 +1051,7 @@ notifications are blocked in the phone or browser settings, the app says so and 
 The notification goes through your browser's push service (Apple, Google, Mozilla or Microsoft),
 encrypted so that only your device can read it.
 
-**Reminders (on by default).** With notifications on, **Community → Profile → Reminders** reminds you to
+**Reminders (on by default).** With notifications on, **You → Edit profile → Reminders** reminds you to
 **drink water** (every 30 minutes to 3 hours between two times), to **eat** (up to six meal times) and
 to **work out** (chosen weekdays at a time). They use your phone's time zone, arrive even when the app
 is closed, and are sent by the server at most once per reminder (checked every 5 minutes, so a
@@ -1052,6 +1059,10 @@ reminder may come up to 5 minutes after its time). Turning notifications off, si
 Community stops them. They start **switched on** (water every 2 hours 08:00–21:00, meals at 08:00 · 12:30 · 18:30, workout
 Mon/Wed/Fri at 17:00, in your phone's time zone) as soon as notifications are on; every switch can be
 turned off and stays off.
+To enable or disable them, toggle **Drink water** or **Workouts**, choose the times/weekdays and tap
+**Save reminders**. These controls currently require signing in and turning on **Notifications**
+in the section above Reminders; they are not in the main workout Settings sheet.
+
 
 **Create an account with Google (v109, Android app, needs migration 0020 on the server).** A new user can tick
 "I am 16 or older" on the sign-in card and continue with Google; the server still refuses any account without

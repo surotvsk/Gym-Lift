@@ -193,12 +193,23 @@ const fx = (n) => fs.readFileSync(path.join(FIX, n), 'utf8');
     check('space-padded date cell: canonical key (<= 200, identical across parses)', pad[0].length === 1 && pad[0][0] === 'strong|2024-01-02 10:00|X' && J(pad[0]) === J(pad[1]), pad);
     const canon = await ev(`['15 Nov 2024, 18:02', 'Nov 15, 2024, 6:02 PM', '2024-11-15T18:02:00', '2024-11-15 18:02:00', '15.11.2024 18:02'].map((v) => csvParseDateTime(v).prefix)`);
     check('importKey prefix is canonical across format variants', canon.every((v) => v === '2024-11-15 18:02'), canon);
-    const removed = await ev(`(() => { const names = ['Overhead Press (Dumbbell)', 'Bicep Curl (Barbell)', 'EZ Bar Biceps Curl', 'Lateral Raise (Cable)', 'Romanian Deadlift (Dumbbell)', 'Lunge (Barbell)', 'Walking Lunge (Dumbbell)', 'Standing Calf Raise (Barbell)', 'Standing Calf Raise (Dumbbell)']; return names.every((n) => { const m = matchExercise(n); return m.exId === null && m.name === n; }); })()`);
+    const removed = await ev(`(() => { const names = ['Overhead Press (Dumbbell)', 'Lateral Raise (Cable)', 'Standing Calf Raise (Barbell)']; return names.every((n) => { const m = matchExercise(n); return m.exId === null && m.name === n; }); })()`);
     check('unsupported equipment/movement variants stay custom instead of matching a different lift', removed === true, removed);
     const variants = await ev(`['Hip Thrust (Machine)', 'Seated Calf Raise (Machine)', 'Walking Lunge', 'Bulgarian Split Squat', 'Bulgarian Split Squat (Dumbbell)', 'Chin Up'].map(n => matchExercise(n).exId)`);
-    check('newly supported variants map to their own IDs rather than old generic exercises', J(variants) === J(['machine-hip-thrust','seated-calf-raise','walking-lunge','bulgarian-split-squat','bulgarian-split-squat','chin-up']), variants);
+    check('newly supported variants map to their own IDs rather than old generic exercises', J(variants) === J(['machine-hip-thrust','seated-calf-raise','walking-lunge','bulgarian-split-squat','dumbbell-bulgarian-split-squat','chin-up']), variants);
     const kept = await ev(`['Bench Press (Barbell)', 'Lunge (Dumbbell)', 'Bicep Curl (Dumbbell)', 'Romanian Deadlift (Barbell)'].map((n) => matchExercise(n).exId)`);
     check('same-equipment aliases are kept', J(kept) === '["bench-press","lunges","bicep-curls","romanian-deadlift"]', kept);
+    for (const [name, id] of [
+      ['Bench Press (Dumbbell)', 'dumbbell-bench-press'], ['Bicep Curl (Barbell)', 'barbell-curl'],
+      ['EZ Bar Biceps Curl', 'ez-bar-curl'], ['Romanian Deadlift (Dumbbell)', 'dumbbell-romanian-deadlift'],
+      ['Lunge (Barbell)', 'barbell-lunge'], ['Walking Lunge (Dumbbell)', 'dumbbell-walking-lunge'],
+      ['Standing Calf Raise (Dumbbell)', 'dumbbell-calf-raise'], ['Split Squat (Dumbbell)', 'dumbbell-split-squat'],
+      ['Step Up (Dumbbell)', 'dumbbell-step-up'], ['Calf Press (Machine)', 'leg-press-calf-raise'],
+      ['Chin Up (Assisted)', 'assisted-chin-up'],
+    ]) check('specific equipment alias ' + name + ' -> ' + id, await ev(`matchExercise(${J(name)}).exId`) === id);
+    const distinctNames = await conv(H, '2024-01-02 10:00:00,X,1m,QA Entry-One,1,20,8,0,0,,,\n2024-01-02 10:00:00,X,1m,QA Entry One,1,30,10,0,0,,,\n');
+    check('tolerant recognition never merges distinct custom CSV exercise rows', distinctNames.o.workouts[0].exercises.length === 2
+      && J(distinctNames.o.workouts[0].exercises.map(e => [e.name, e.weight, e.reps])) === J([['QA Entry-One',20,8],['QA Entry One',30,10]]), distinctNames.o.workouts);
     const dist = await conv(H, '2024-01-02 10:00:00,X,1m,Running,1,0,0,5,0,,,\n2024-01-02 10:00:00,X,1m,Bench Press,1,60,5,0,0,,,\n');
     check('distance-only cardio row is skipped and counted', dist.o.skippedRows === 1 && dist.o.workouts[0].exercises.length === 1, dist.o);
 

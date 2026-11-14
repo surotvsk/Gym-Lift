@@ -145,7 +145,7 @@ const MUSCLE_CODES = ['chest', 'back', 'shoulders', 'arms', 'legs', 'glutes', 'c
 /* "Full body" je iba vyhľadávací kôš, NIE svalová skupina – pozri FULL_BODY_SPREAD. */
 const BODY_BUCKETS = ['fullBody'];
 
-const EQUIPMENT_CODES = ['none', 'bands', 'dumbbells', 'pullupBar', 'bench', 'barbell', 'cableMachine', 'abWheel'];
+const EQUIPMENT_CODES = ['none', 'bands', 'dumbbells', 'pullupBar', 'bench', 'barbell', 'cableMachine', 'abWheel', 'kettlebells'];
 /* Skratka "celá domáca posilňovňa" – rozbalí sa na tento viditeľný zoznam. */
 const HOME_GYM_SET = ['bands', 'dumbbells', 'pullupBar', 'bench', 'barbell'];
 
@@ -438,6 +438,83 @@ const EXERCISE_LIBRARY = [
     alternatives: [["bicycle-crunch","similarPurpose"],["plank","similarPurpose"]] },
   { id: "dumbbell-side-bend", primary: "core", secondary: [], pattern: "coreLateral", category: "core", difficulty: "beginner", equipment: ["dumbbells"], locations: ["gym","home"],
     alternatives: [["side-plank","similarPurpose"],["plank","similarPurpose"]] },
+  /* --- Ďalšie bežné varianty a presné náčinie pre rozpoznávanie názvov --- */
+  { id: "standing-dumbbell-overhead-press", primary: "shoulders", secondary: ["arms","core"], pattern: "pushV", category: "strength", difficulty: "intermediate", equipment: ["dumbbells"], locations: ["gym","home"],
+    alternatives: [["overhead-press","similarPurpose"],["seated-dumbbell-shoulder-press","similarPurpose"]] },
+  { id: "arnold-press", primary: "shoulders", secondary: ["arms"], pattern: "pushV", category: "strength", difficulty: "intermediate", equipment: ["dumbbells","bench"], locations: ["gym","home"],
+    alternatives: [["seated-dumbbell-shoulder-press","similarPurpose"],["machine-shoulder-press","similarPurpose"]] },
+  { id: "barbell-front-raise", primary: "shoulders", secondary: [], pattern: "lateralRaise", category: "strength", difficulty: "beginner", equipment: ["barbell"], locations: ["gym","home"],
+    alternatives: [["front-raise","similarPurpose"],["lateral-raises","similarPurpose"]] },
+  { id: "cable-front-raise", primary: "shoulders", secondary: [], pattern: "lateralRaise", category: "strength", difficulty: "beginner", equipment: ["cableMachine"], locations: ["gym"],
+    alternatives: [["front-raise","similarPurpose"],["overhead-press","similarPurpose"]] },
+  { id: "machine-lateral-raise", primary: "shoulders", secondary: [], pattern: "lateralRaise", category: "strength", difficulty: "beginner", equipment: ["cableMachine"], locations: ["gym"],
+    alternatives: [["lateral-raises","similarPurpose"],["seated-dumbbell-lateral-raise","similarPurpose"]] },
+  { id: "bilateral-cable-lateral-raise", primary: "shoulders", secondary: [], pattern: "lateralRaise", category: "strength", difficulty: "intermediate", equipment: ["cableMachine"], locations: ["gym"],
+    alternatives: [["lateral-raises","similarPurpose"],["single-arm-cable-lateral-raise","similarPurpose"]] },
+  { id: "incline-cable-chest-fly", primary: "chest", secondary: ["shoulders"], pattern: "pushH", category: "strength", difficulty: "intermediate", equipment: ["cableMachine","bench"], locations: ["gym"],
+    alternatives: [["incline-dumbbell-fly","similarPurpose"],["cable-chest-fly","similarPurpose"]] },
+  { id: "single-arm-machine-row", primary: "back", secondary: ["arms"], pattern: "pullH", category: "strength", difficulty: "beginner", equipment: ["cableMachine"], locations: ["gym"],
+    alternatives: [["machine-row","similarPurpose"],["dumbbell-row","similarPurpose"]] },
+  { id: "machine-high-row", primary: "back", secondary: ["arms"], pattern: "pullH", category: "strength", difficulty: "beginner", equipment: ["cableMachine"], locations: ["gym"],
+    alternatives: [["machine-row","similarPurpose"],["lat-pulldown","similarPurpose"]] },
+  { id: "pendlay-row", primary: "back", secondary: ["arms","core"], pattern: "pullH", category: "strength", difficulty: "intermediate", equipment: ["barbell"], locations: ["gym","home"],
+    alternatives: [["bent-over-rows","similarPurpose"],["chest-supported-dumbbell-row","similarPurpose"]] },
+  { id: "dumbbell-romanian-deadlift", primary: "legs", secondary: ["glutes","back"], pattern: "hinge", category: "strength", difficulty: "intermediate", equipment: ["dumbbells"], locations: ["gym","home"],
+    alternatives: [["romanian-deadlift","similarPurpose"],["single-leg-romanian-deadlift","similarPurpose"]] },
+  { id: "dumbbell-deadlift", primary: "legs", secondary: ["glutes","back"], pattern: "hinge", category: "strength", difficulty: "intermediate", equipment: ["dumbbells"], locations: ["gym","home"],
+    alternatives: [["barbell-deadlift","similarPurpose"],["romanian-deadlift","similarPurpose"]] },
+  { id: "kettlebell-swing", primary: "glutes", secondary: ["legs","core","back"], pattern: "hinge", category: "strength", difficulty: "intermediate", equipment: ["kettlebells"], locations: ["gym","home"],
+    alternatives: [["romanian-deadlift","similarPurpose"],["glute-bridge","similarPurpose"]] },
+  { id: "kettlebell-goblet-squat", primary: "legs", secondary: ["glutes","core"], pattern: "squat", category: "strength", difficulty: "beginner", equipment: ["kettlebells"], locations: ["gym","home"],
+    alternatives: [["goblet-squat","similarPurpose"],["bodyweight-squat","similarPurpose"]] },
+  { id: "smith-machine-hip-thrust", primary: "glutes", secondary: ["legs"], pattern: "hinge", category: "strength", difficulty: "intermediate", equipment: ["cableMachine","bench"], locations: ["gym"],
+    alternatives: [["machine-hip-thrust","similarPurpose"],["dumbbell-hip-thrust","similarPurpose"]] },
+  { id: "dumbbell-split-squat", primary: "legs", secondary: ["glutes"], pattern: "lunge", category: "strength", difficulty: "intermediate", equipment: ["dumbbells"], locations: ["gym","home"],
+    alternatives: [["split-squat","similarPurpose"],["lunges","similarPurpose"]] },
+  { id: "dumbbell-walking-lunge", primary: "legs", secondary: ["glutes"], pattern: "lunge", category: "strength", difficulty: "intermediate", equipment: ["dumbbells"], locations: ["gym","home"],
+    alternatives: [["walking-lunge","similarPurpose"],["lunges","similarPurpose"]] },
+  { id: "barbell-lunge", primary: "legs", secondary: ["glutes","core"], pattern: "lunge", category: "strength", difficulty: "intermediate", equipment: ["barbell"], locations: ["gym","home"],
+    alternatives: [["lunges","similarPurpose"],["split-squat","similarPurpose"]] },
+  { id: "smith-machine-bulgarian-split-squat", primary: "legs", secondary: ["glutes"], pattern: "lunge", category: "strength", difficulty: "intermediate", equipment: ["cableMachine","bench"], locations: ["gym"],
+    alternatives: [["bulgarian-split-squat","similarPurpose"],["split-squat","similarPurpose"]] },
+  { id: "dumbbell-step-up", primary: "legs", secondary: ["glutes"], pattern: "lunge", category: "strength", difficulty: "beginner", equipment: ["dumbbells","bench"], locations: ["gym","home"],
+    alternatives: [["step-up","similarPurpose"],["lunges","similarPurpose"]] },
+  { id: "standing-leg-curl", primary: "legs", secondary: [], pattern: "legIsolation", category: "strength", difficulty: "beginner", equipment: ["cableMachine"], locations: ["gym"],
+    alternatives: [["lying-leg-curl","similarPurpose"],["seated-leg-curl","similarPurpose"]] },
+  { id: "single-leg-machine-curl", primary: "legs", secondary: [], pattern: "legIsolation", category: "strength", difficulty: "beginner", equipment: ["cableMachine"], locations: ["gym"],
+    alternatives: [["lying-leg-curl","similarPurpose"],["seated-leg-curl","similarPurpose"]] },
+  { id: "single-arm-cable-reverse-fly", primary: "shoulders", secondary: ["back"], pattern: "lateralRaise", category: "strength", difficulty: "intermediate", equipment: ["cableMachine"], locations: ["gym"],
+    alternatives: [["cable-reverse-fly","similarPurpose"],["reverse-pec-deck","similarPurpose"]] },
+  { id: "single-arm-cable-curl", primary: "arms", secondary: [], pattern: "armIsolation", category: "strength", difficulty: "beginner", equipment: ["cableMachine"], locations: ["gym"],
+    alternatives: [["cable-curl","similarPurpose"],["bicep-curls","similarPurpose"]] },
+  { id: "machine-preacher-curl", primary: "arms", secondary: [], pattern: "armIsolation", category: "strength", difficulty: "beginner", equipment: ["cableMachine"], locations: ["gym"],
+    alternatives: [["preacher-curl","similarPurpose"],["single-arm-preacher-curl","similarPurpose"]] },
+  { id: "bayesian-cable-curl", primary: "arms", secondary: [], pattern: "armIsolation", category: "strength", difficulty: "intermediate", equipment: ["cableMachine"], locations: ["gym"],
+    alternatives: [["incline-dumbbell-curl","similarPurpose"],["single-arm-preacher-curl","similarPurpose"]] },
+  { id: "cable-hammer-curl", primary: "arms", secondary: [], pattern: "armIsolation", category: "strength", difficulty: "beginner", equipment: ["cableMachine"], locations: ["gym"],
+    alternatives: [["hammer-curl","similarPurpose"],["cable-curl","similarPurpose"]] },
+  { id: "cross-body-hammer-curl", primary: "arms", secondary: [], pattern: "armIsolation", category: "strength", difficulty: "beginner", equipment: ["dumbbells"], locations: ["gym","home"],
+    alternatives: [["hammer-curl","similarPurpose"],["bicep-curls","similarPurpose"]] },
+  { id: "dumbbell-skull-crusher", primary: "arms", secondary: [], pattern: "armIsolation", category: "strength", difficulty: "intermediate", equipment: ["dumbbells","bench"], locations: ["gym","home"],
+    alternatives: [["lying-triceps-extension","similarPurpose"],["overhead-cable-triceps-extension","similarPurpose"]] },
+  { id: "overhead-dumbbell-triceps-extension", primary: "arms", secondary: [], pattern: "armIsolation", category: "strength", difficulty: "intermediate", equipment: ["dumbbells"], locations: ["gym","home"],
+    alternatives: [["single-arm-dumbbell-triceps-extension","similarPurpose"],["overhead-cable-triceps-extension","similarPurpose"]] },
+  { id: "machine-triceps-extension", primary: "arms", secondary: [], pattern: "armIsolation", category: "strength", difficulty: "beginner", equipment: ["cableMachine"], locations: ["gym"],
+    alternatives: [["straight-bar-triceps-pushdown","similarPurpose"],["lying-triceps-extension","similarPurpose"]] },
+  { id: "decline-push-up", primary: "chest", secondary: ["arms","shoulders","core"], pattern: "pushH", category: "strength", difficulty: "intermediate", equipment: ["bench"], locations: ["gym","home"],
+    alternatives: [["push-up","similarPurpose"],["incline-dumbbell-press","similarPurpose"]] },
+  { id: "incline-push-up", primary: "chest", secondary: ["arms","shoulders","core"], pattern: "pushH", category: "strength", difficulty: "beginner", equipment: ["bench"], locations: ["gym","home"],
+    alternatives: [["push-up","similarPurpose"],["band-chest-press","similarPurpose"]] },
+  { id: "cable-pull-through", primary: "glutes", secondary: ["legs","back"], pattern: "hinge", category: "strength", difficulty: "beginner", equipment: ["cableMachine"], locations: ["gym"],
+    alternatives: [["romanian-deadlift","similarPurpose"],["glute-bridge","similarPurpose"]] },
+  { id: "crunch", primary: "core", secondary: [], pattern: "coreFlexion", category: "core", difficulty: "beginner", equipment: ["none"], locations: ["gym","home","outdoor"],
+    alternatives: [["reverse-crunch","similarPurpose"],["cable-crunch","similarPurpose"]] },
+  { id: "dumbbell-bulgarian-split-squat", primary: "legs", secondary: ["glutes"], pattern: "lunge", category: "strength", difficulty: "intermediate", equipment: ["dumbbells","bench"], locations: ["gym","home"],
+    alternatives: [["bulgarian-split-squat","similarPurpose"],["lunges","similarPurpose"]] },
+  { id: "leg-press-calf-raise", primary: "legs", secondary: [], pattern: "legIsolation", category: "strength", difficulty: "beginner", equipment: ["cableMachine"], locations: ["gym"],
+    alternatives: [["standing-machine-calf-raise","similarPurpose"],["seated-calf-raise","similarPurpose"]] },
+  { id: "assisted-chin-up", assisted: true, primary: "back", secondary: ["arms"], pattern: "pullV", category: "strength", difficulty: "beginner", equipment: ["cableMachine"], locations: ["gym"],
+    alternatives: [["chin-up","similarPurpose"],["lat-pulldown","similarPurpose"]] },
 ];
 
 /* Id zabudovaných cvikov = kľúče knižnice. Cvik označený `retired` zostáva
@@ -463,6 +540,55 @@ function cleanExerciseMuscles(raw) {
     primary: raw.primary,
     secondary: raw.primary === 'other' ? [] : MUSCLE_CODES.filter(m => m !== raw.primary && Array.isArray(raw.secondary) && raw.secondary.includes(m)),
   };
+}
+
+/* Jediný výber hlavných/pomocných svalov pre editor aj opravu nezaradených sérií. */
+function createExerciseMusclePicker(prefix, onChange) {
+  const box = document.createElement('div');
+  box.className = 'edit-muscles';
+  const label = document.createElement('label');
+  const primarySelect = document.createElement('select');
+  primarySelect.id = prefix;
+  primarySelect.name = 'primary';
+  primarySelect.className = 'edit-muscle-primary';
+  label.htmlFor = prefix;
+  label.textContent = t('exercise.primary');
+  for (const m of ['', ...MUSCLE_CODES, 'other']) {
+    const option = document.createElement('option');
+    option.value = m;
+    option.textContent = m ? muscleLabel(m) : t('muscles.unassigned');
+    primarySelect.appendChild(option);
+  }
+  const helpers = document.createElement('fieldset');
+  const legend = document.createElement('legend');
+  legend.textContent = t('exercise.secondary');
+  helpers.appendChild(legend);
+  for (const m of MUSCLE_CODES) {
+    const helper = document.createElement('label');
+    helper.className = 'edit-side-toggle';
+    const input = document.createElement('input');
+    input.type = 'checkbox';
+    input.name = 'secondary';
+    input.dataset.muscle = m;
+    helper.append(input, document.createTextNode(muscleLabel(m)));
+    helpers.appendChild(helper);
+  }
+  box.append(label, primarySelect, helpers);
+  const read = () => cleanExerciseMuscles({ primary: primarySelect.value,
+    secondary: Array.from(helpers.querySelectorAll('input:checked'), input => input.dataset.muscle) });
+  const setValue = (raw) => {
+    const meta = cleanExerciseMuscles(raw);
+    primarySelect.value = meta ? meta.primary : '';
+    helpers.querySelectorAll('input').forEach(input => {
+      input.disabled = !meta || meta.primary === 'other' || input.dataset.muscle === meta.primary;
+      input.checked = !!meta && meta.secondary.includes(input.dataset.muscle);
+    });
+  };
+  const change = () => { const meta = read(); setValue(meta); onChange(meta); };
+  primarySelect.addEventListener('change', change);
+  helpers.addEventListener('change', change);
+  setValue(null);
+  return { box, primarySelect, helpers, read, setValue };
 }
 
 /* Výslovná voľba má prednosť pred odhadom z názvu; staré záznamy sa nikdy neprepisujú. */
@@ -2707,12 +2833,138 @@ const I18N = {
     'exercise.dumbbell-side-bend': 'Úklon s jednoručkou',
     'exercise.dumbbell-side-bend.how': 'Stoj rovno s ľahkou jednoručkou v jednej ruke. Urob malý kontrolovaný úklon do strany a vráť sa do rovnej polohy bez otáčania alebo švihu.',
     'exercise.dumbbell-side-bend.mistakes': 'Švihanie namiesto práce trupu, zadržiavanie dychu a bolestivý rozsah.',
+    'exercise.standing-dumbbell-overhead-press': 'Tlaky s jednoručkami nad hlavou v stoji',
+    'exercise.standing-dumbbell-overhead-press.how': 'Stoj s chodidlami na šírku bokov a jednoručkami pri ramenách. Spevni brucho, vytlač činky nad hlavu a pomaly ich vráť k ramenám.',
+    'exercise.standing-dumbbell-overhead-press.mistakes': 'Záklon v krížoch, odraz nohami a nekontrolované spúšťanie činiek.',
+    'exercise.arnold-press': 'Arnoldove tlaky',
+    'exercise.arnold-press.how': 'Sadni si na lavicu s oporou chrbta a drž jednoručky pred ramenami dlaňami k sebe. Pri tlaku nahor plynulo otoč dlane dopredu; pri spúšťaní pohyb obráť.',
+    'exercise.arnold-press.mistakes': 'Násilné vytáčanie ramien, prehnutie krížov a príliš ťažké činky.',
+    'exercise.barbell-front-raise': 'Predpažovanie s veľkou činkou',
+    'exercise.barbell-front-raise.how': 'Stoj a drž os nadhmatom pred stehnami, ruky približne na šírku ramien. S mierne pokrčenými lakťami zdvihni os pred seba po úroveň ramien a pomaly spusti.',
+    'exercise.barbell-front-raise.mistakes': 'Švih trupu, krčenie ramien k ušiam a zdvíhanie nad pohodlný rozsah.',
+    'exercise.cable-front-raise': 'Predpažovanie na kladke',
+    'exercise.cable-front-raise.how': 'Postav sa čelom k spodnej kladke a uchop krátku tyč nadhmatom pred stehnami. S pevným trupom a mierne pokrčenými lakťami zdvihni tyč po úroveň ramien a kontrolovane vráť.',
+    'exercise.cable-front-raise.mistakes': 'Záklon, švih a zdvíhanie ramien namiesto pohybu paží.',
+    'exercise.machine-lateral-raise': 'Upažovanie na stroji',
+    'exercise.machine-lateral-raise.how': 'Nastav sedadlo tak, aby boli ramená v osi otáčania stroja, a opri paže o podložky. Zdvihni lakte do strán približne po úroveň ramien a pomaly vráť.',
+    'exercise.machine-lateral-raise.mistakes': 'Krčenie ramien, odrážanie závažia a nesprávna výška sedadla.',
+    'exercise.bilateral-cable-lateral-raise': 'Upažovanie oboma rukami na kladkách',
+    'exercise.bilateral-cable-lateral-raise.how': 'Stoj medzi dvoma spodnými kladkami a drž protiľahlé rukoväti, lanká skrížené pred bokmi. S mierne pokrčenými lakťami zdvihni obe paže do strán po úroveň ramien a pomaly spusti.',
+    'exercise.bilateral-cable-lateral-raise.mistakes': 'Švih trupu, krčenie ramien a nerovnomerné zdvíhanie paží.',
+    'exercise.incline-cable-chest-fly': 'Rozpažovanie na šikmej lavici s kladkami',
+    'exercise.incline-cable-chest-fly.how': 'Umiestni lavicu so sklonom približne 30° medzi spodné kladky. Ľahni si s rukoväťami po stranách hrudníka a mierne pokrčenými lakťami; oblúkom spoj ruky nad hornou časťou hrudníka a pomaly otvor.',
+    'exercise.incline-cable-chest-fly.mistakes': 'Hlboké spúšťanie za pohodlný rozsah ramien a zmena rozpažovania na tlak ohýbaním lakťov.',
+    'exercise.single-arm-machine-row': 'Príťahy na stroji jednou rukou',
+    'exercise.single-arm-machine-row.how': 'Nastav sedadlo a hrudnú oporu tak, aby si dosiahol na rukoväť s vystretou pažou bez hrbenia. Ťahaj jedným lakťom dozadu k boku, drž hrudník na opore a pomaly vráť; vymeň strany.',
+    'exercise.single-arm-machine-row.mistakes': 'Rotácia trupu, odlepovanie hrudníka od opory a krčenie ramena.',
+    'exercise.machine-high-row': 'Vysoké príťahy na stroji',
+    'exercise.machine-high-row.how': 'Nastav sedadlo a hrudnú oporu podľa stroja a uchop horné rukoväti. S hrudníkom na opore ťahaj lakte šikmo nadol a dozadu k trupu; pomaly nechaj paže znovu vystrieť.',
+    'exercise.machine-high-row.mistakes': 'Ťahanie za hlavu, švih trupu a odrážanie závažia.',
+    'exercise.pendlay-row': 'Pendlayove príťahy',
+    'exercise.pendlay-row.how': 'Polož os na zem, predkloň sa z bedier s pokrčenými kolenami a chrbtom takmer vodorovne. Spevni trup, pritiahni os k spodnej časti hrudníka a po každom opakovaní ju kontrolovane polož na zem.',
+    'exercise.pendlay-row.mistakes': 'Vystieranie trupu pri príťahu, guľatenie chrbta a odrážanie osi od zeme.',
+    'exercise.dumbbell-romanian-deadlift': 'Rumunský mŕtvy ťah s jednoručkami',
+    'exercise.dumbbell-romanian-deadlift.how': 'Stoj s jednoručkami pred stehnami a mierne pokrčenými kolenami. Tlač boky dozadu a veď činky tesne pri nohách, kým cítiš ťah zadných stehien bez guľatenia chrbta; vystretím bedier sa vráť do stoja.',
+    'exercise.dumbbell-romanian-deadlift.mistakes': 'Premena pohybu na drep, guľatenie chrbta a spúšťanie činiek ďaleko od nôh.',
+    'exercise.dumbbell-deadlift': 'Mŕtvy ťah s jednoručkami',
+    'exercise.dumbbell-deadlift.how': 'Polož jednoručky na zem vedľa chodidiel; ak sú príliš nízko, použi stabilné podložky. Pokrč bedrá aj kolená, uchop činky s neutrálnym chrbtom a odtlač zem chodidlami do stoja; rovnakou cestou polož činky späť.',
+    'exercise.dumbbell-deadlift.mistakes': 'Guľatenie chrbta pri dosahovaní na činky, trhanie zo zeme a záklon v hornej polohe.',
+    'exercise.kettlebell-swing': 'Švih s kettlebellom',
+    'exercise.kettlebell-swing.how': 'Postav kettlebell pred seba, predkloň sa z bedier a uchop ho oboma rukami. Rozhojdaj ho medzi stehná a prudko vystri bedrá, aby vyletel najviac po úroveň hrudníka; nechaj ho vrátiť medzi nohy s pevným chrbtom.',
+    'exercise.kettlebell-swing.mistakes': 'Drepovanie namiesto pohybu z bedier, zdvíhanie rukami a záklon v hornej polohe.',
+    'exercise.kettlebell-goblet-squat': 'Goblet drep s kettlebellom',
+    'exercise.kettlebell-goblet-squat.how': 'Drž kettlebell za boky rukoväti tesne pred hrudníkom a stoj približne na šírku ramien. Klesaj medzi boky s kolenami v smere špičiek, päty nechaj na zemi a postav sa.',
+    'exercise.kettlebell-goblet-squat.mistakes': 'Padanie kolien dovnútra, odlepovanie piat a držanie závažia ďaleko od tela.',
+    'exercise.smith-machine-hip-thrust': 'Hip thrust v Smithovom stroji',
+    'exercise.smith-machine-hip-thrust.how': 'Zabezpeč lavicu za osou, opri o ňu hornú časť chrbta a polož polstrovanú os cez bedrá. Nastav bezpečnostné dorazy a chodidlá tak, aby boli predkolenia hore zvislé; odisti os, zdvihni boky a kontrolovane spusti.',
+    'exercise.smith-machine-hip-thrust.mistakes': 'Posúvanie lavice, tlak osi na brucho, prehýbanie krížov a nenastavené dorazy.',
+    'exercise.dumbbell-split-squat': 'Delený drep s jednoručkami',
+    'exercise.dumbbell-split-squat.how': 'Drž jednoručky pri bokoch a zaujmi dlhý rozkročný postoj so zadnou pätou hore, obe chodidlá na zemi. Spusti zadné koleno smerom k zemi a vytlač sa cez predné chodidlo; chodidlá medzi opakovaniami neposúvaj.',
+    'exercise.dumbbell-split-squat.mistakes': 'Úzky postoj ako na lane, padanie predného kolena dovnútra a odrážanie zadnou nohou.',
+    'exercise.dumbbell-walking-lunge': 'Výpady v chôdzi s jednoručkami',
+    'exercise.dumbbell-walking-lunge.how': 'Drž jednoručky pri bokoch a vykroč do výpadu, zadné koleno spusti tesne nad zem. Odtlač sa predným chodidlom, prenes zadnú nohu dopredu do ďalšieho výpadu a striedaj strany na voľnej rovnej ploche.',
+    'exercise.dumbbell-walking-lunge.mistakes': 'Príliš krátke kroky, padanie kolien dovnútra a nekontrolované dopadanie.',
+    'exercise.barbell-lunge': 'Výpad s veľkou činkou',
+    'exercise.barbell-lunge.how': 'V stojane ulož os na hornú časť chrbta, nie na krk, a bezpečne odstúp. Vykroč dopredu, spusti zadné koleno smerom k zemi a odtlač sa predným chodidlom späť do stoja; striedaj nohy.',
+    'exercise.barbell-lunge.mistakes': 'Príliš ťažká os narúšajúca rovnováhu, koleno padajúce dovnútra a os položená na krku.',
+    'exercise.smith-machine-bulgarian-split-squat': 'Bulharský drep v Smithovom stroji',
+    'exercise.smith-machine-bulgarian-split-squat.how': 'Zabezpeč lavicu za sebou, polož na ňu zadné chodidlo a nastav os na hornú časť chrbta i bezpečnostné dorazy. Predné chodidlo umiestni tak, aby si mohol klesať bez krútenia panvy; odisti, klesni do pohodlnej hĺbky a vytlač sa prednou nohou.',
+    'exercise.smith-machine-bulgarian-split-squat.mistakes': 'Nestabilná lavica, odraz zadnou nohou, padanie kolena dovnútra a nevhodná poloha pod dráhou osi.',
+    'exercise.dumbbell-step-up': 'Výstup na lavičku s jednoručkami',
+    'exercise.dumbbell-step-up.how': 'Drž jednoručky pri bokoch a polož celé predné chodidlo na pevnú, nešmykľavú lavičku primeranej výšky. Vystúp silou hornej nohy a pomaly zostúp tou istou cestou; vymeň nohy.',
+    'exercise.dumbbell-step-up.mistakes': 'Odraz zo spodnej nohy, príliš vysoká lavička a padanie kolena dovnútra.',
+    'exercise.standing-leg-curl': 'Zakopávanie v stoji na stroji',
+    'exercise.standing-leg-curl.how': 'Nastav stojaci zakopávací stroj tak, aby bolo koleno v osi otáčania a valec nad zadnou časťou členka. Drž sa opôr, pokrč koleno smerom k sedaciemu svalu bez pohybu stehna a pomaly spusti; vymeň nohy.',
+    'exercise.standing-leg-curl.mistakes': 'Prehýbanie krížov, pohyb celým stehnom a nesprávne nastavený valec.',
+    'exercise.single-leg-machine-curl': 'Zakopávanie na stroji jednou nohou',
+    'exercise.single-leg-machine-curl.how': 'Na stroji umožňujúcom samostatný pohyb nôh nastav koleno do osi a valec nad členok. V sede zaisti stehná podložkou, v ľahu drž panvu na opore; pokrč iba pracovné koleno a pomaly vystri, potom vymeň strany.',
+    'exercise.single-leg-machine-curl.mistakes': 'Zdvíhanie panvy, pomoc druhou nohou a odrážanie závažia.',
+    'exercise.single-arm-cable-reverse-fly': 'Obrátené rozpažovanie na kladke jednou rukou',
+    'exercise.single-arm-cable-reverse-fly.how': 'Nastav kladku približne do výšky ramena a postav sa k nej bokom, vzdialenejšou rukou drž rukoväť pred hrudníkom. S mierne pokrčeným lakťom otvor pažu do strany bez otáčania trupu a pomaly vráť; vymeň strany.',
+    'exercise.single-arm-cable-reverse-fly.mistakes': 'Rotácia trupu, švih a výrazné ohýbanie lakťa do príťahu.',
+    'exercise.single-arm-cable-curl': 'Bicepsový zdvih na kladke jednou rukou',
+    'exercise.single-arm-cable-curl.how': 'Postav sa čelom k spodnej kladke a drž jednou rukou rukoväť dlaňou dopredu. Lakeť nechaj pri boku, pokrč ho bez pohybu ramena a pomaly vystri; vymeň ruky.',
+    'exercise.single-arm-cable-curl.mistakes': 'Švih trupu, posúvanie lakťa dopredu a zalamovanie zápästia.',
+    'exercise.machine-preacher-curl': 'Bicepsový zdvih na Scottovom stroji',
+    'exercise.machine-preacher-curl.how': 'Nastav sedadlo tak, aby nadlaktia ležali na opore a lakte boli v osi stroja. Uchop rukoväti, pokrč lakte bez dvíhania nadlaktí a pomaly spusti takmer do vystretia bez násilného prepínania.',
+    'exercise.machine-preacher-curl.mistakes': 'Odlepovanie paží od opory, trhanie zo spodnej polohy a tvrdé prepínanie lakťov.',
+    'exercise.bayesian-cable-curl': 'Bayesovský bicepsový zdvih na kladke',
+    'exercise.bayesian-cable-curl.how': 'Postav sa chrbtom k spodnej kladke, uchop rukoväť jednou rukou a vykroč tak, aby paža zostala mierne za trupom. S ramenom v pohodlnej polohe pokrč lakeť a pomaly vystri; vymeň strany.',
+    'exercise.bayesian-cable-curl.mistakes': 'Prílišné ťahanie ramena dozadu, posúvanie lakťa dopredu a otáčanie trupu.',
+    'exercise.cable-hammer-curl': 'Kladivový zdvih na kladke',
+    'exercise.cable-hammer-curl.how': 'Pripoj lano k spodnej kladke a uchop jeho konce dlaňami proti sebe. Drž lakte pri bokoch, pokrč ich s neutrálnymi zápästiami a pomaly vráť ruky dole.',
+    'exercise.cable-hammer-curl.mistakes': 'Švih trupu, dvíhanie lakťov a ohýbanie zápästí k predlaktiam.',
+    'exercise.cross-body-hammer-curl': 'Kladivový zdvih krížom cez telo',
+    'exercise.cross-body-hammer-curl.how': 'Stoj s jednoručkami pri bokoch a dlaňami k telu. Bez pohybu nadlaktia zdvihni jednu činku šikmo pred trup k opačnej strane hrudníka, drž zápästie rovno a pomaly spusti; striedaj ruky.',
+    'exercise.cross-body-hammer-curl.mistakes': 'Otáčanie trupu, švih a dvíhanie lakťa na dokončenie zdvihu.',
+    'exercise.dumbbell-skull-crusher': 'Francúzsky tlak s jednoručkami v ľahu',
+    'exercise.dumbbell-skull-crusher.how': 'Ľahni si na lavicu a drž jednoručky nad ramenami dlaňami k sebe. Nadlaktia nechaj takmer nehybné, pokrč lakte a spusti činky vedľa hlavy, potom lakte vystri.',
+    'exercise.dumbbell-skull-crusher.mistakes': 'Roztváranie lakťov, pohyb celými pažami a spúšťanie činiek na tvár.',
+    'exercise.overhead-dumbbell-triceps-extension': 'Tricepsové vystieranie s jednoručkou oboma rukami nad hlavou',
+    'exercise.overhead-dumbbell-triceps-extension.how': 'Stoj pevne a drž jednu jednoručku oboma rukami za vnútornú stranu horného kotúča nad hlavou. S lakťami smerujúcimi nahor spusti činku za hlavu pokrčením lakťov a pomaly vystri bez prehýbania chrbta.',
+    'exercise.overhead-dumbbell-triceps-extension.mistakes': 'Neistý úchop, veľké roztváranie lakťov a záklon v krížoch.',
+    'exercise.machine-triceps-extension': 'Tricepsové vystieranie na stroji',
+    'exercise.machine-triceps-extension.how': 'Nastav sedadlo a oporu paží tak, aby lakte sedeli v osi stroja, potom uchop rukoväti. Nadlaktia nechaj na opore, vystri lakte bez tvrdého prepnutia a pomaly vráť.',
+    'exercise.machine-triceps-extension.mistakes': 'Dvíhanie paží z opory, tlačenie celým trupom a prudké zamykanie lakťov.',
+    'exercise.decline-push-up': 'Kľuky s vyvýšenými nohami',
+    'exercise.decline-push-up.how': 'Polož chodidlá na nízku stabilnú lavičku a dlane na zem mierne širšie než ramená. Drž telo v jednej línii, spusti hrudník medzi ruky s lakťami šikmo dozadu a vytlač sa hore.',
+    'exercise.decline-push-up.mistakes': 'Prepadnuté boky, príliš vysoká opora a lakte otvorené priamo do strán.',
+    'exercise.incline-push-up': 'Kľuky s vyvýšenými rukami',
+    'exercise.incline-push-up.how': 'Opri dlane mierne širšie než ramená o pevnú lavicu a ustúp nohami do priamej línie tela. Spusti hrudník k hrane s lakťami šikmo dozadu a vytlač sa späť; vyššia opora pohyb uľahčí.',
+    'exercise.incline-push-up.mistakes': 'Pohyblivá opora, prepadnuté boky a približovanie len hlavy namiesto hrudníka.',
+    'exercise.cable-pull-through': 'Ťah lana pomedzi nohy na kladke',
+    'exercise.cable-pull-through.how': 'Postav sa chrbtom k spodnej kladke a uchop lano medzi nohami. Urob pár krokov dopredu, s mierne pokrčenými kolenami tlač boky dozadu a potom sa postav vystretím bedier; ruky nechaj voľne visieť.',
+    'exercise.cable-pull-through.mistakes': 'Drepovanie namiesto pohybu z bedier, ťahanie rukami a záklon pri dokončení.',
+    'exercise.crunch': 'Skracovačky',
+    'exercise.crunch.how': 'Ľahni si na chrbát s pokrčenými kolenami a chodidlami na zemi, ruky polož na hrudník. S výdychom priblíž rebrá k panve a zdvihni lopatky len pár centimetrov, potom pomaly spusti.',
+    'exercise.crunch.mistakes': 'Ťahanie za krk, švih a zdvíhanie celého trupu ako pri sede-ľahu.',
+    'exercise.dumbbell-bulgarian-split-squat': 'Bulharský drep s jednoručkami',
+    'exercise.dumbbell-bulgarian-split-squat.how': 'Drž jednoručky pri bokoch a polož zadné chodidlo na nízku, pevnú lavicu. Predné chodidlo posuň dostatočne dopredu, klesaj pokrčením predného kolena a bedra do pohodlnej hĺbky a vytlač sa prednou nohou; vymeň strany.',
+    'exercise.dumbbell-bulgarian-split-squat.mistakes': 'Nestabilná lavica, odraz zadnou nohou, padanie predného kolena dovnútra a krútenie panvy.',
+    'exercise.leg-press-calf-raise': 'Lýtkové výpony na leg presse',
+    'exercise.leg-press-calf-raise.how': 'Použi leg press, ktorý umožňuje bezpečné výpony, a nastav dorazy podľa stroja. Opri chrbát a panvu, polož predné časti chodidiel pevne na spodnú časť platformy s pätami voľnými a kolenami takmer vystretými; pohybom iba v členkoch vytlač platformu a pomaly spusti päty do pohodlného rozsahu.',
+    'exercise.leg-press-calf-raise.mistakes': 'Kĺzanie chodidiel z hrany, zamykanie kolien, odrážanie v členkoch a premena výponu na tlak nohami.',
+    'exercise.assisted-chin-up': 'Zhyb podhmatom s dopomocou na stroji',
+    'exercise.assisted-chin-up.how': 'Nastav protizávažie stroja a bezpečne nastúp na oporu kolien alebo chodidiel podľa jeho návodu. Uchop rukoväti podhmatom približne na šírku ramien, ťahaj lakte nadol, kým brada prejde nad úroveň úchopu, a pomaly klesni; menšia dopomoc znamená vyššiu náročnosť.',
+    'exercise.assisted-chin-up.mistakes': 'Zámena dopomoci za pridané závažie, švih, vyťahovanie brady krkom a nekontrolovaný zostup či zosadnutie z opory.',
     'pattern.coreFlexion': 'Ohýbanie trupu a zdvíhanie nôh',
     'pattern.coreRotation': 'Rotácia trupu',
     'pattern.coreAntiRotation': 'Odolávanie rotácii',
     'pattern.coreLateral': 'Bočná práca trupu',
     'equip.abWheel': 'Brušné koliesko',
     'muscles.unassigned': 'Automaticky podľa názvu',
+    'muscles.recognized': 'Rozpoznané: {name}. Hlavný sval: {primary}. Pomocné: {secondary}.',
+    'muscles.manual': 'Tvoje zaradenie. Hlavný sval: {primary}. Pomocné: {secondary}.',
+    'muscles.unknown': 'Tento názov nie je v knižnici cvikov. Vyber svaly, ktoré trénuje.',
+    'muscles.assign': 'Vybrať svaly',
+    'muscles.change': 'Zmeniť svaly',
+    'muscles.reviewOther': 'Zaradiť cviky zo skupiny Iné',
+    'muscles.correctOtherHint': 'Vyber svaly a ulož každý cvik zvlášť. Zaradia sa jeho existujúce série v skupine Iné zo všetkých týždňov. Už zaradená história, váhy aj pôvodné tréningové záznamy zostanú nezmenené.',
+    'muscles.applyOther': 'Uložiť svaly a zaradiť série Iné',
+    'muscles.assignmentSaved': 'Svaly uložené a existujúce série Iné prepočítané. Pôvodné tréningové záznamy sa nezmenili.',
+    'muscles.noOtherNames': 'V týchto záznamoch chýba názov cviku. Skontroluj ich v rozpise Ako sa série počítajú.',
+    'muscles.source.corrected': 'Tvoje zaradenie existujúcich sérií Iné',
+    'equip.kettlebells': 'Kettlebell',
     'muscles.customHint': 'Vyber hlavný sval a pomocné svaly. Voľba platí aj pre staršie záznamy tohto cviku bez uloženého zaradenia; samotné tréningy sa neprepisujú.',
     'muscles.breakdown': 'Ako sa série počítajú',
     'muscles.notRecorded': 'nezaznamenané',
@@ -3970,12 +4222,138 @@ const I18N = {
     'exercise.dumbbell-side-bend': 'Dumbbell side bend',
     'exercise.dumbbell-side-bend.how': 'Stand upright with a light dumbbell in one hand. Make a small controlled side bend and return upright without twisting or swinging.',
     'exercise.dumbbell-side-bend.mistakes': 'Using momentum instead of trunk control, holding the breath, or forcing a painful range.',
+    'exercise.standing-dumbbell-overhead-press': 'Standing dumbbell overhead press',
+    'exercise.standing-dumbbell-overhead-press.how': 'Stand hip-width apart with dumbbells at shoulder height. Brace your abdomen, press overhead and lower slowly to your shoulders.',
+    'exercise.standing-dumbbell-overhead-press.mistakes': 'Arching the lower back, driving with the legs and dropping the weights.',
+    'exercise.arnold-press': 'Arnold press',
+    'exercise.arnold-press.how': 'Sit against a bench backrest with dumbbells in front of your shoulders, palms facing you. Rotate your palms forward as you press overhead, then reverse the motion slowly.',
+    'exercise.arnold-press.mistakes': 'Forcing shoulder rotation, arching the lower back and using excessive weight.',
+    'exercise.barbell-front-raise': 'Barbell front raise',
+    'exercise.barbell-front-raise.how': 'Stand holding a bar overhand in front of your thighs, hands about shoulder-width apart. With softly bent elbows, raise it forward to shoulder height and lower slowly.',
+    'exercise.barbell-front-raise.mistakes': 'Swinging the torso, shrugging and lifting beyond a comfortable range.',
+    'exercise.cable-front-raise': 'Cable front raise',
+    'exercise.cable-front-raise.how': 'Face a low pulley and hold a short bar overhand in front of your thighs. Keep your torso still and elbows slightly bent; lift to shoulder height and return under control.',
+    'exercise.cable-front-raise.mistakes': 'Leaning back, using momentum and shrugging instead of lifting the arms.',
+    'exercise.machine-lateral-raise': 'Machine lateral raise',
+    'exercise.machine-lateral-raise.how': 'Adjust the seat so your shoulders align with the machine pivot and rest your arms against the pads. Raise your elbows sideways to about shoulder height, then lower slowly.',
+    'exercise.machine-lateral-raise.mistakes': 'Shrugging, bouncing the weight stack and using an incorrect seat height.',
+    'exercise.bilateral-cable-lateral-raise': 'Bilateral cable lateral raise',
+    'exercise.bilateral-cable-lateral-raise.how': 'Stand between two low pulleys holding the opposite handles, cables crossed in front of your hips. With slightly bent elbows, raise both arms sideways to shoulder height and lower slowly.',
+    'exercise.bilateral-cable-lateral-raise.mistakes': 'Swinging the torso, shrugging and raising the arms unevenly.',
+    'exercise.incline-cable-chest-fly': 'Incline cable chest fly',
+    'exercise.incline-cable-chest-fly.how': 'Set a bench at about 30° between two low pulleys. Lie back with handles beside your chest and elbows softly bent; bring your hands together over your upper chest in an arc, then open slowly.',
+    'exercise.incline-cable-chest-fly.mistakes': 'Lowering beyond comfortable shoulder range and bending the elbows to turn the fly into a press.',
+    'exercise.single-arm-machine-row': 'Single-arm machine row',
+    'exercise.single-arm-machine-row.how': 'Adjust the seat and chest pad so you can reach the handle with a straight arm without rounding your back. Pull one elbow back toward your side, keep your chest on the pad and return slowly; switch sides.',
+    'exercise.single-arm-machine-row.mistakes': 'Twisting the torso, lifting the chest off the pad and shrugging.',
+    'exercise.machine-high-row': 'Machine high row',
+    'exercise.machine-high-row.how': 'Adjust the seat and chest support to the machine and grasp the high handles. Keeping your chest supported, pull your elbows diagonally down and back toward your torso, then slowly extend your arms.',
+    'exercise.machine-high-row.mistakes': 'Pulling behind the head, rocking the torso and bouncing the weights.',
+    'exercise.pendlay-row': 'Pendlay row',
+    'exercise.pendlay-row.how': 'Start with the bar on the floor, hinge at your hips with bent knees and your back nearly horizontal. Brace, row to your lower chest and lower to a dead stop on the floor after each repetition.',
+    'exercise.pendlay-row.mistakes': 'Raising the torso to lift the bar, rounding the back and bouncing off the floor.',
+    'exercise.dumbbell-romanian-deadlift': 'Dumbbell Romanian deadlift',
+    'exercise.dumbbell-romanian-deadlift.how': 'Stand with dumbbells in front of your thighs and knees slightly bent. Push your hips back, keeping the weights close to your legs, until your hamstrings stretch without rounding your back; extend your hips to stand.',
+    'exercise.dumbbell-romanian-deadlift.mistakes': 'Turning the hinge into a squat, rounding the back and letting the weights drift away from the legs.',
+    'exercise.dumbbell-deadlift': 'Dumbbell deadlift',
+    'exercise.dumbbell-deadlift.how': 'Place dumbbells on the floor beside your feet; use stable blocks if the handles sit too low. Bend at your hips and knees, grip with a neutral back, push through your feet to stand and lower along the same path.',
+    'exercise.dumbbell-deadlift.mistakes': 'Rounding the back to reach the handles, jerking from the floor and leaning back at lockout.',
+    'exercise.kettlebell-swing': 'Kettlebell swing',
+    'exercise.kettlebell-swing.how': 'Set a kettlebell in front of you, hinge and grip it with both hands. Hike it between your thighs and snap your hips forward so it floats no higher than chest level; let it return between your legs with a braced back.',
+    'exercise.kettlebell-swing.mistakes': 'Squatting instead of hinging, lifting with the arms and leaning back at the top.',
+    'exercise.kettlebell-goblet-squat': 'Kettlebell goblet squat',
+    'exercise.kettlebell-goblet-squat.how': 'Hold a kettlebell by the sides of its handle close to your chest and stand about shoulder-width apart. Sit down between your hips with knees following your toes, keep your heels planted and stand up.',
+    'exercise.kettlebell-goblet-squat.mistakes': 'Letting the knees collapse inward, lifting the heels and holding the weight away from the body.',
+    'exercise.smith-machine-hip-thrust': 'Smith machine hip thrust',
+    'exercise.smith-machine-hip-thrust.how': 'Secure a bench behind the bar, rest your upper back on it and place the padded bar across your hip crease. Set the safety stops and position your feet so your shins are vertical at the top; unhook, raise your hips and lower under control.',
+    'exercise.smith-machine-hip-thrust.mistakes': 'An unsecured bench, bar pressure on the abdomen, lumbar overextension and unset safety stops.',
+    'exercise.dumbbell-split-squat': 'Dumbbell split squat',
+    'exercise.dumbbell-split-squat.how': 'Hold dumbbells at your sides in a staggered stance, rear heel raised and both feet on the floor. Lower your rear knee toward the floor and push through your front foot; keep your feet in place between repetitions.',
+    'exercise.dumbbell-split-squat.mistakes': 'A tightrope stance, letting the front knee collapse inward and pushing off the rear foot.',
+    'exercise.dumbbell-walking-lunge': 'Dumbbell walking lunge',
+    'exercise.dumbbell-walking-lunge.how': 'Hold dumbbells at your sides and step into a lunge, lowering your rear knee just above the floor. Push through your front foot and bring the rear leg forward into the next lunge, alternating on a clear, level path.',
+    'exercise.dumbbell-walking-lunge.mistakes': 'Taking overly short steps, letting the knees collapse inward and landing without control.',
+    'exercise.barbell-lunge': 'Barbell lunge',
+    'exercise.barbell-lunge.how': 'Position the bar on your upper back, not your neck, in a rack and step clear safely. Step forward, lower your rear knee toward the floor and push through your front foot to return to standing; alternate legs.',
+    'exercise.barbell-lunge.mistakes': 'Using more weight than you can balance, letting the knee collapse inward and resting the bar on the neck.',
+    'exercise.smith-machine-bulgarian-split-squat': 'Smith machine Bulgarian split squat',
+    'exercise.smith-machine-bulgarian-split-squat.how': 'Secure a bench behind you, rest your rear foot on it and set the bar on your upper back with the safety stops adjusted. Position your front foot for a comfortable descent without twisting your pelvis; unhook, lower and press up through the front leg.',
+    'exercise.smith-machine-bulgarian-split-squat.mistakes': 'An unstable bench, pushing off the rear leg, knee collapse and poor positioning under the fixed bar path.',
+    'exercise.dumbbell-step-up': 'Dumbbell step-up',
+    'exercise.dumbbell-step-up.how': 'Hold dumbbells at your sides and place your whole lead foot on a stable, nonslip platform of manageable height. Step up using the raised leg, then lower slowly along the same path; switch legs.',
+    'exercise.dumbbell-step-up.mistakes': 'Pushing off the floor leg, using an overly high platform and letting the knee collapse inward.',
+    'exercise.standing-leg-curl': 'Standing machine leg curl',
+    'exercise.standing-leg-curl.how': 'Adjust a standing leg-curl machine so your knee aligns with its pivot and the roller sits above the back of your ankle. Hold the supports, curl your heel toward your buttock without moving your thigh and lower slowly; switch legs.',
+    'exercise.standing-leg-curl.mistakes': 'Arching the lower back, moving the whole thigh and placing the roller incorrectly.',
+    'exercise.single-leg-machine-curl': 'Single-leg machine curl',
+    'exercise.single-leg-machine-curl.how': 'Use a leg-curl machine that allows independent leg movement, aligning your knee with the pivot and the roller above your ankle. Secure your thighs if seated or keep your pelvis on the pad if lying; curl one knee and return slowly, then switch sides.',
+    'exercise.single-leg-machine-curl.mistakes': 'Lifting the pelvis, assisting with the other leg and bouncing the weight stack.',
+    'exercise.single-arm-cable-reverse-fly': 'Single-arm cable reverse fly',
+    'exercise.single-arm-cable-reverse-fly.how': 'Set a pulley near shoulder height and stand sideways, holding its handle across your chest with the far hand. With a slightly bent elbow, open your arm sideways without rotating your torso, then return slowly; switch sides.',
+    'exercise.single-arm-cable-reverse-fly.mistakes': 'Twisting the torso, using momentum and bending the elbow into a row.',
+    'exercise.single-arm-cable-curl': 'Single-arm cable curl',
+    'exercise.single-arm-cable-curl.how': 'Face a low pulley and hold a handle in one hand with your palm forward. Keep your elbow by your side, curl without moving your upper arm and lower slowly; switch arms.',
+    'exercise.single-arm-cable-curl.mistakes': 'Swinging the torso, moving the elbow forward and bending the wrist.',
+    'exercise.machine-preacher-curl': 'Machine preacher curl',
+    'exercise.machine-preacher-curl.how': 'Adjust the seat so your upper arms rest on the pad and elbows align with the machine pivot. Grip the handles, curl without lifting your upper arms and lower nearly straight without forcing your elbows to lock.',
+    'exercise.machine-preacher-curl.mistakes': 'Lifting the arms off the pad, jerking from the bottom and forcefully locking the elbows.',
+    'exercise.bayesian-cable-curl': 'Bayesian cable curl',
+    'exercise.bayesian-cable-curl.how': 'Face away from a low pulley, hold its handle in one hand and step forward so your upper arm stays slightly behind your torso. Keep the shoulder comfortable, curl at the elbow and extend slowly; switch sides.',
+    'exercise.bayesian-cable-curl.mistakes': 'Pulling the shoulder too far back, moving the elbow forward and rotating the torso.',
+    'exercise.cable-hammer-curl': 'Cable hammer curl',
+    'exercise.cable-hammer-curl.how': 'Attach a rope to a low pulley and hold its ends with palms facing each other. Keep your elbows by your sides, curl with neutral wrists and lower slowly.',
+    'exercise.cable-hammer-curl.mistakes': 'Swinging the torso, lifting the elbows and bending the wrists toward the forearms.',
+    'exercise.cross-body-hammer-curl': 'Cross-body hammer curl',
+    'exercise.cross-body-hammer-curl.how': 'Stand with dumbbells by your sides, palms toward your body. Without moving your upper arm, curl one weight diagonally across toward the opposite side of your chest, keep your wrist straight and lower slowly; alternate arms.',
+    'exercise.cross-body-hammer-curl.mistakes': 'Rotating the torso, swinging and lifting the elbow to finish the curl.',
+    'exercise.dumbbell-skull-crusher': 'Dumbbell skull crusher',
+    'exercise.dumbbell-skull-crusher.how': 'Lie on a bench holding dumbbells above your shoulders with palms facing each other. Keep your upper arms nearly still, bend your elbows to lower the weights beside your head and extend them again.',
+    'exercise.dumbbell-skull-crusher.mistakes': 'Flaring the elbows, moving the whole arms and lowering the weights onto the face.',
+    'exercise.overhead-dumbbell-triceps-extension': 'Two-handed overhead dumbbell triceps extension',
+    'exercise.overhead-dumbbell-triceps-extension.how': 'Stand firmly and hold one dumbbell overhead with both hands under its upper end. Keep your elbows pointing up, bend them to lower the weight behind your head and extend slowly without arching your back.',
+    'exercise.overhead-dumbbell-triceps-extension.mistakes': 'An insecure grip, excessive elbow flare and arching the lower back.',
+    'exercise.machine-triceps-extension': 'Machine triceps extension',
+    'exercise.machine-triceps-extension.how': 'Adjust the seat and arm pad so your elbows align with the machine pivot, then grip the handles. Keep your upper arms supported, extend your elbows without forcing lockout and return slowly.',
+    'exercise.machine-triceps-extension.mistakes': 'Lifting the arms off the pad, pushing with the whole torso and snapping the elbows straight.',
+    'exercise.decline-push-up': 'Decline push-up',
+    'exercise.decline-push-up.how': 'Place your feet on a low, stable bench and hands on the floor slightly wider than your shoulders. Keep your body straight, lower your chest between your hands with elbows angled back and push up.',
+    'exercise.decline-push-up.mistakes': 'Sagging hips, an overly high foot support and flaring the elbows straight sideways.',
+    'exercise.incline-push-up': 'Incline push-up',
+    'exercise.incline-push-up.how': 'Place your hands slightly wider than shoulder-width on a secure bench and step back into a straight body line. Lower your chest toward the edge with elbows angled back and press away; a higher support makes it easier.',
+    'exercise.incline-push-up.mistakes': 'Using an unstable support, letting the hips sag and reaching with only the head instead of the chest.',
+    'exercise.cable-pull-through': 'Cable pull-through',
+    'exercise.cable-pull-through.how': 'Face away from a low pulley and hold a rope between your legs. Step forward for tension, soften your knees and push your hips back, then extend your hips to stand while your arms stay relaxed.',
+    'exercise.cable-pull-through.mistakes': 'Squatting instead of hinging, pulling with the arms and leaning back at the finish.',
+    'exercise.crunch': 'Crunch',
+    'exercise.crunch.how': 'Lie on your back with knees bent, feet on the floor and hands on your chest. Exhale as you draw your ribs toward your pelvis and lift your shoulder blades just a few inches, then lower slowly.',
+    'exercise.crunch.mistakes': 'Pulling on the neck, using momentum and lifting the whole torso as in a sit-up.',
+    'exercise.dumbbell-bulgarian-split-squat': 'Dumbbell Bulgarian split squat',
+    'exercise.dumbbell-bulgarian-split-squat.how': 'Hold dumbbells at your sides and rest your rear foot on a low, secure bench. Set your front foot far enough forward, bend the front knee and hip to lower to a comfortable depth and push up through the front leg; switch sides.',
+    'exercise.dumbbell-bulgarian-split-squat.mistakes': 'An unstable bench, pushing off the rear leg, letting the front knee collapse inward and twisting the pelvis.',
+    'exercise.leg-press-calf-raise': 'Leg press calf raise',
+    'exercise.leg-press-calf-raise.how': 'Use a leg press suitable for safe calf presses and set its safety stops as instructed. Keep your back and pelvis supported, plant the balls of your feet securely on the lower platform with heels free and knees nearly straight; move only at the ankles to press away, then lower your heels slowly through a comfortable range.',
+    'exercise.leg-press-calf-raise.mistakes': 'Letting the feet slip off the edge, locking the knees, bouncing at the ankles and turning the calf raise into a leg press.',
+    'exercise.assisted-chin-up': 'Machine-assisted chin-up',
+    'exercise.assisted-chin-up.how': 'Set the machine counterweight and mount its knee or foot support safely according to its instructions. Take a shoulder-width underhand grip, pull your elbows down until your chin clears grip level and lower slowly; less assistance makes the exercise harder.',
+    'exercise.assisted-chin-up.mistakes': 'Treating assistance as added resistance, swinging, craning the neck to clear the handles and lowering or dismounting without control.',
     'pattern.coreFlexion': 'Core flexion and leg raises',
     'pattern.coreRotation': 'Trunk rotation',
     'pattern.coreAntiRotation': 'Anti-rotation',
     'pattern.coreLateral': 'Lateral core work',
     'equip.abWheel': 'Ab wheel',
     'muscles.unassigned': 'Automatic by name',
+    'muscles.recognized': 'Recognized: {name}. Main muscle: {primary}. Helpers: {secondary}.',
+    'muscles.manual': 'Your assignment. Main muscle: {primary}. Helpers: {secondary}.',
+    'muscles.unknown': 'This name is not in the exercise library. Choose the muscles it trains.',
+    'muscles.assign': 'Assign muscles',
+    'muscles.change': 'Change muscles',
+    'muscles.reviewOther': 'Assign muscles to Other exercises',
+    'muscles.correctOtherHint': 'Choose muscles and save each exercise separately. Its existing Other sets across all weeks will be classified. Already assigned history, weights and original workout records stay unchanged.',
+    'muscles.applyOther': 'Save muscles and classify Other sets',
+    'muscles.assignmentSaved': 'Muscles saved and existing Other sets recalculated. Original workout records were not changed.',
+    'muscles.noOtherNames': 'These records have no saved exercise name. Inspect them in How sets are counted.',
+    'muscles.source.corrected': 'Your correction for existing Other sets',
+    'equip.kettlebells': 'Kettlebells',
     'muscles.customHint': 'Choose the main and helper muscles. This also classifies older records of this exercise without a saved assignment; the workouts themselves are not rewritten.',
     'muscles.breakdown': 'How sets are counted',
     'muscles.notRecorded': 'not recorded',
@@ -5223,12 +5601,138 @@ const I18N = {
     'exercise.dumbbell-side-bend': 'Inclinación lateral con mancuerna',
     'exercise.dumbbell-side-bend.how': 'Ponte erguido con una mancuerna ligera en una mano. Inclina un poco el tronco al lado con control y vuelve sin girarte ni balancearte.',
     'exercise.dumbbell-side-bend.mistakes': 'Usar impulso en vez de controlar el tronco, aguantar la respiración o forzar un recorrido doloroso.',
+    'exercise.standing-dumbbell-overhead-press': 'Press de hombros de pie con mancuernas',
+    'exercise.standing-dumbbell-overhead-press.how': 'De pie, separa los pies al ancho de las caderas y coloca las mancuernas junto a los hombros. Contrae el abdomen, empuja sobre la cabeza y baja despacio.',
+    'exercise.standing-dumbbell-overhead-press.mistakes': 'Arquear la zona lumbar, impulsarse con las piernas y dejar caer las pesas.',
+    'exercise.arnold-press': 'Press Arnold',
+    'exercise.arnold-press.how': 'Siéntate con la espalda apoyada y las mancuernas delante de los hombros, con las palmas hacia ti. Gira las palmas hacia delante al empujar arriba y deshaz el movimiento despacio.',
+    'exercise.arnold-press.mistakes': 'Forzar la rotación del hombro, arquear la zona lumbar y usar demasiado peso.',
+    'exercise.barbell-front-raise': 'Elevación frontal con barra',
+    'exercise.barbell-front-raise.how': 'De pie, sujeta la barra delante de los muslos con agarre prono al ancho de los hombros. Eleva hasta la altura de los hombros con los codos algo flexionados y baja despacio.',
+    'exercise.barbell-front-raise.mistakes': 'Balancear el tronco, encoger los hombros y superar un recorrido cómodo.',
+    'exercise.cable-front-raise': 'Elevación frontal en polea',
+    'exercise.cable-front-raise.how': 'Mira hacia una polea baja y sujeta una barra corta delante de los muslos con agarre prono. Mantén el tronco quieto y los codos algo flexionados; eleva hasta los hombros y vuelve con control.',
+    'exercise.cable-front-raise.mistakes': 'Echarse atrás, usar impulso y encoger los hombros en vez de elevar los brazos.',
+    'exercise.machine-lateral-raise': 'Elevación lateral en máquina',
+    'exercise.machine-lateral-raise.how': 'Ajusta el asiento para alinear los hombros con el eje de la máquina y apoya los brazos en las almohadillas. Eleva los codos a los lados hasta la altura de los hombros y baja despacio.',
+    'exercise.machine-lateral-raise.mistakes': 'Encoger los hombros, rebotar las placas y ajustar mal la altura del asiento.',
+    'exercise.bilateral-cable-lateral-raise': 'Elevación lateral bilateral en poleas',
+    'exercise.bilateral-cable-lateral-raise.how': 'Colócate entre dos poleas bajas sujetando las asas opuestas, con los cables cruzados delante de las caderas. Con los codos algo flexionados, eleva ambos brazos a los lados hasta los hombros y baja despacio.',
+    'exercise.bilateral-cable-lateral-raise.mistakes': 'Balancear el tronco, encoger los hombros y elevar los brazos de forma desigual.',
+    'exercise.incline-cable-chest-fly': 'Aperturas en banco inclinado con poleas',
+    'exercise.incline-cable-chest-fly.how': 'Coloca un banco a unos 30° entre dos poleas bajas. Túmbate con las asas a los lados del pecho y los codos algo flexionados; junta las manos en arco sobre la parte alta del pecho y abre despacio.',
+    'exercise.incline-cable-chest-fly.mistakes': 'Bajar más allá del rango cómodo del hombro y flexionar los codos para convertirlo en un press.',
+    'exercise.single-arm-machine-row': 'Remo unilateral en máquina',
+    'exercise.single-arm-machine-row.how': 'Ajusta el asiento y el apoyo de pecho para alcanzar el asa con el brazo estirado sin encorvarte. Lleva un codo hacia atrás junto al costado, mantén el pecho apoyado y vuelve despacio; cambia de lado.',
+    'exercise.single-arm-machine-row.mistakes': 'Girar el tronco, despegar el pecho del apoyo y encoger el hombro.',
+    'exercise.machine-high-row': 'Remo alto en máquina',
+    'exercise.machine-high-row.how': 'Ajusta el asiento y el apoyo de pecho y sujeta las asas superiores. Con el pecho apoyado, lleva los codos en diagonal hacia abajo y atrás junto al tronco; vuelve extendiendo los brazos despacio.',
+    'exercise.machine-high-row.mistakes': 'Tirar por detrás de la cabeza, balancear el tronco y rebotar el peso.',
+    'exercise.pendlay-row': 'Remo Pendlay',
+    'exercise.pendlay-row.how': 'Empieza con la barra en el suelo, flexiona las caderas y las rodillas y coloca la espalda casi horizontal. Contrae el abdomen, lleva la barra hacia la parte baja del pecho y apóyala por completo en el suelo en cada repetición.',
+    'exercise.pendlay-row.mistakes': 'Levantar el tronco para subir la barra, redondear la espalda y rebotar contra el suelo.',
+    'exercise.dumbbell-romanian-deadlift': 'Peso muerto rumano con mancuernas',
+    'exercise.dumbbell-romanian-deadlift.how': 'De pie con las mancuernas delante de los muslos y las rodillas algo flexionadas, lleva las caderas atrás. Mantén las pesas cerca de las piernas hasta notar tensión en los isquiotibiales sin redondear la espalda; extiende las caderas para subir.',
+    'exercise.dumbbell-romanian-deadlift.mistakes': 'Convertirlo en sentadilla, redondear la espalda y alejar las pesas de las piernas.',
+    'exercise.dumbbell-deadlift': 'Peso muerto con mancuernas',
+    'exercise.dumbbell-deadlift.how': 'Coloca las mancuernas en el suelo junto a los pies; usa soportes estables si las asas quedan demasiado bajas. Flexiona caderas y rodillas, agarra con la espalda neutra, empuja el suelo para levantarte y baja por el mismo recorrido.',
+    'exercise.dumbbell-deadlift.mistakes': 'Redondear la espalda para alcanzar las asas, dar tirones al despegar y echarse atrás al terminar.',
+    'exercise.kettlebell-swing': 'Balanceo con kettlebell',
+    'exercise.kettlebell-swing.how': 'Coloca la pesa rusa delante, flexiona las caderas y agárrala con ambas manos. Llévala entre los muslos y extiende las caderas con fuerza para que flote como máximo hasta el pecho; deja que vuelva entre las piernas con la espalda firme.',
+    'exercise.kettlebell-swing.mistakes': 'Hacer sentadilla en vez de bisagra de cadera, levantar con los brazos y echarse atrás arriba.',
+    'exercise.kettlebell-goblet-squat': 'Sentadilla goblet con kettlebell',
+    'exercise.kettlebell-goblet-squat.how': 'Sujeta la pesa rusa por los lados del asa junto al pecho y separa los pies al ancho de los hombros. Baja entre las caderas con las rodillas en la dirección de los pies, mantén los talones apoyados y levántate.',
+    'exercise.kettlebell-goblet-squat.mistakes': 'Meter las rodillas hacia dentro, levantar los talones y alejar la pesa del cuerpo.',
+    'exercise.smith-machine-hip-thrust': 'Hip thrust en máquina Smith',
+    'exercise.smith-machine-hip-thrust.how': 'Fija un banco detrás de la barra, apoya la parte alta de la espalda y coloca la barra acolchada sobre el pliegue de las caderas. Ajusta los topes y los pies para tener las tibias verticales arriba; desbloquea, eleva las caderas y baja con control.',
+    'exercise.smith-machine-hip-thrust.mistakes': 'Un banco que se desliza, apoyar la barra en el abdomen, arquear las lumbares y no ajustar los topes.',
+    'exercise.dumbbell-split-squat': 'Sentadilla dividida con mancuernas',
+    'exercise.dumbbell-split-squat.how': 'Sujeta las mancuernas a los lados y adopta una posición escalonada, con el talón trasero elevado y ambos pies en el suelo. Baja la rodilla trasera hacia el suelo y empuja con el pie delantero; no cambies la posición entre repeticiones.',
+    'exercise.dumbbell-split-squat.mistakes': 'Colocar los pies en una sola línea, meter la rodilla delantera hacia dentro e impulsarse con el pie trasero.',
+    'exercise.dumbbell-walking-lunge': 'Zancadas caminando con mancuernas',
+    'exercise.dumbbell-walking-lunge.how': 'Sujeta las mancuernas a los lados y da una zancada, bajando la rodilla trasera hasta cerca del suelo. Empuja con el pie delantero y lleva la pierna trasera hacia delante a la siguiente zancada, alternando en un camino llano y despejado.',
+    'exercise.dumbbell-walking-lunge.mistakes': 'Dar pasos demasiado cortos, meter las rodillas hacia dentro y caer sin control.',
+    'exercise.barbell-lunge': 'Zancada con barra',
+    'exercise.barbell-lunge.how': 'Coloca la barra sobre la parte alta de la espalda, no el cuello, en un soporte y sal con seguridad. Da un paso adelante, baja la rodilla trasera hacia el suelo y empuja con el pie delantero para volver de pie; alterna las piernas.',
+    'exercise.barbell-lunge.mistakes': 'Usar un peso que impide mantener el equilibrio, meter la rodilla hacia dentro y apoyar la barra en el cuello.',
+    'exercise.smith-machine-bulgarian-split-squat': 'Sentadilla búlgara en máquina Smith',
+    'exercise.smith-machine-bulgarian-split-squat.how': 'Fija un banco detrás, apoya el pie trasero y coloca la barra en la parte alta de la espalda con los topes ajustados. Sitúa el pie delantero para bajar sin girar la pelvis; desbloquea, baja hasta una profundidad cómoda y sube con la pierna delantera.',
+    'exercise.smith-machine-bulgarian-split-squat.mistakes': 'Banco inestable, empujarse con la pierna trasera, rodilla hacia dentro y mala posición bajo la trayectoria fija de la barra.',
+    'exercise.dumbbell-step-up': 'Subida al banco con mancuernas',
+    'exercise.dumbbell-step-up.how': 'Sujeta las mancuernas a los lados y apoya todo el pie delantero en una plataforma estable, antideslizante y de altura manejable. Sube con la pierna elevada y baja despacio por el mismo recorrido; cambia de pierna.',
+    'exercise.dumbbell-step-up.mistakes': 'Impulsarse con la pierna del suelo, usar un banco demasiado alto y meter la rodilla hacia dentro.',
+    'exercise.standing-leg-curl': 'Curl femoral de pie en máquina',
+    'exercise.standing-leg-curl.how': 'Ajusta la máquina para alinear la rodilla con el eje y colocar el rodillo por encima de la parte posterior del tobillo. Sujeta los apoyos, acerca el talón al glúteo sin mover el muslo y baja despacio; cambia de pierna.',
+    'exercise.standing-leg-curl.mistakes': 'Arquear la zona lumbar, mover todo el muslo y colocar mal el rodillo.',
+    'exercise.single-leg-machine-curl': 'Curl femoral unilateral en máquina',
+    'exercise.single-leg-machine-curl.how': 'Usa una máquina que permita mover cada pierna por separado, alineando la rodilla con el eje y el rodillo sobre el tobillo. Sentado, fija los muslos; tumbado, mantén la pelvis apoyada. Flexiona una sola rodilla, vuelve despacio y cambia de lado.',
+    'exercise.single-leg-machine-curl.mistakes': 'Levantar la pelvis, ayudar con la otra pierna y rebotar las placas.',
+    'exercise.single-arm-cable-reverse-fly': 'Apertura inversa unilateral en polea',
+    'exercise.single-arm-cable-reverse-fly.how': 'Ajusta la polea cerca de la altura del hombro y ponte de lado, sujetando el asa delante del pecho con la mano más alejada. Abre el brazo lateralmente con el codo algo flexionado sin girar el tronco, vuelve despacio y cambia de lado.',
+    'exercise.single-arm-cable-reverse-fly.mistakes': 'Girar el tronco, usar impulso y flexionar el codo hasta convertirlo en remo.',
+    'exercise.single-arm-cable-curl': 'Curl unilateral en polea',
+    'exercise.single-arm-cable-curl.how': 'Mira hacia una polea baja y sujeta el asa con una mano, palma hacia delante. Mantén el codo junto al costado, flexiona sin mover el brazo y baja despacio; cambia de mano.',
+    'exercise.single-arm-cable-curl.mistakes': 'Balancear el tronco, adelantar el codo y doblar la muñeca.',
+    'exercise.machine-preacher-curl': 'Curl predicador en máquina',
+    'exercise.machine-preacher-curl.how': 'Ajusta el asiento para apoyar los brazos y alinear los codos con el eje de la máquina. Sujeta las asas, flexiona sin levantar los brazos y baja hasta casi extenderlos sin forzar los codos.',
+    'exercise.machine-preacher-curl.mistakes': 'Despegar los brazos del apoyo, dar tirones desde abajo y bloquear los codos con fuerza.',
+    'exercise.bayesian-cable-curl': 'Curl bayesiano en polea',
+    'exercise.bayesian-cable-curl.how': 'Ponte de espaldas a una polea baja, sujeta el asa con una mano y avanza para dejar el brazo ligeramente detrás del tronco. Sin forzar el hombro, flexiona el codo y extiende despacio; cambia de lado.',
+    'exercise.bayesian-cable-curl.mistakes': 'Llevar el hombro demasiado atrás, adelantar el codo y girar el tronco.',
+    'exercise.cable-hammer-curl': 'Curl martillo en polea',
+    'exercise.cable-hammer-curl.how': 'Conecta una cuerda a la polea baja y sujeta sus extremos con las palmas enfrentadas. Mantén los codos junto al cuerpo, flexiona con las muñecas neutras y baja despacio.',
+    'exercise.cable-hammer-curl.mistakes': 'Balancear el tronco, elevar los codos y doblar las muñecas hacia los antebrazos.',
+    'exercise.cross-body-hammer-curl': 'Curl martillo cruzado',
+    'exercise.cross-body-hammer-curl.how': 'De pie, sujeta las mancuernas a los lados con las palmas hacia el cuerpo. Sin mover el brazo, eleva una pesa en diagonal hacia el lado opuesto del pecho, mantén la muñeca recta y baja despacio; alterna los brazos.',
+    'exercise.cross-body-hammer-curl.mistakes': 'Girar el tronco, balancearse y elevar el codo para completar el movimiento.',
+    'exercise.dumbbell-skull-crusher': 'Extensión de tríceps tumbado con mancuernas',
+    'exercise.dumbbell-skull-crusher.how': 'Túmbate en un banco con las mancuernas sobre los hombros y las palmas enfrentadas. Mantén los brazos casi inmóviles, flexiona los codos para bajar las pesas junto a la cabeza y vuelve a extender.',
+    'exercise.dumbbell-skull-crusher.mistakes': 'Abrir los codos, mover los brazos enteros y bajar las pesas sobre la cara.',
+    'exercise.overhead-dumbbell-triceps-extension': 'Extensión de tríceps sobre la cabeza con mancuerna a dos manos',
+    'exercise.overhead-dumbbell-triceps-extension.how': 'De pie con estabilidad, sujeta una mancuerna sobre la cabeza con ambas manos bajo el extremo superior. Mantén los codos hacia arriba, flexiona para bajar detrás de la cabeza y extiende despacio sin arquear la espalda.',
+    'exercise.overhead-dumbbell-triceps-extension.mistakes': 'Agarre inseguro, abrir demasiado los codos y arquear la zona lumbar.',
+    'exercise.machine-triceps-extension': 'Extensión de tríceps en máquina',
+    'exercise.machine-triceps-extension.how': 'Ajusta el asiento y el apoyo de brazos para alinear los codos con el eje y sujeta las asas. Mantén los brazos apoyados, extiende los codos sin forzar el bloqueo y vuelve despacio.',
+    'exercise.machine-triceps-extension.mistakes': 'Despegar los brazos del apoyo, empujar con todo el tronco y bloquear los codos bruscamente.',
+    'exercise.decline-push-up': 'Flexión con pies elevados',
+    'exercise.decline-push-up.how': 'Apoya los pies en un banco bajo y estable y las manos en el suelo algo más anchas que los hombros. Mantén el cuerpo alineado, baja el pecho entre las manos con los codos en diagonal hacia atrás y empuja arriba.',
+    'exercise.decline-push-up.mistakes': 'Hundir las caderas, usar un apoyo demasiado alto y abrir los codos del todo a los lados.',
+    'exercise.incline-push-up': 'Flexión con manos elevadas',
+    'exercise.incline-push-up.how': 'Apoya las manos algo más anchas que los hombros en un banco firme y lleva los pies atrás para alinear el cuerpo. Baja el pecho hacia el borde con los codos en diagonal hacia atrás y empuja; un apoyo más alto facilita el ejercicio.',
+    'exercise.incline-push-up.mistakes': 'Usar un apoyo inestable, hundir las caderas y acercar solo la cabeza en vez del pecho.',
+    'exercise.cable-pull-through': 'Pull-through en polea',
+    'exercise.cable-pull-through.how': 'Ponte de espaldas a una polea baja y sujeta una cuerda entre las piernas. Avanza para tensarla, flexiona ligeramente las rodillas y lleva las caderas atrás; extiéndelas para levantarte manteniendo los brazos relajados.',
+    'exercise.cable-pull-through.mistakes': 'Hacer sentadilla en vez de bisagra de cadera, tirar con los brazos y echarse atrás al terminar.',
+    'exercise.crunch': 'Encogimiento abdominal',
+    'exercise.crunch.how': 'Túmbate boca arriba con las rodillas flexionadas, los pies en el suelo y las manos sobre el pecho. Exhala acercando las costillas a la pelvis y eleva los omóplatos solo unos centímetros; baja despacio.',
+    'exercise.crunch.mistakes': 'Tirar del cuello, usar impulso y levantar todo el tronco como en una incorporación completa.',
+    'exercise.dumbbell-bulgarian-split-squat': 'Sentadilla búlgara con mancuernas',
+    'exercise.dumbbell-bulgarian-split-squat.how': 'Sujeta las mancuernas a los lados y apoya el pie trasero en un banco bajo y firme. Coloca el pie delantero lo bastante adelantado, flexiona la rodilla y la cadera delanteras hasta una profundidad cómoda y sube con esa pierna; cambia de lado.',
+    'exercise.dumbbell-bulgarian-split-squat.mistakes': 'Un banco inestable, impulsarse con la pierna trasera, meter la rodilla delantera hacia dentro y girar la pelvis.',
+    'exercise.leg-press-calf-raise': 'Elevación de gemelos en prensa de piernas',
+    'exercise.leg-press-calf-raise.how': 'Usa una prensa apta para trabajar los gemelos con seguridad y ajusta los topes según sus instrucciones. Mantén la espalda y la pelvis apoyadas, coloca los antepiés firmemente en la parte baja de la plataforma con los talones libres y las rodillas casi extendidas; empuja moviendo solo los tobillos y baja los talones despacio dentro de un rango cómodo.',
+    'exercise.leg-press-calf-raise.mistakes': 'Dejar resbalar los pies del borde, bloquear las rodillas, rebotar con los tobillos y convertir la elevación en una prensa de piernas.',
+    'exercise.assisted-chin-up': 'Dominada supina asistida en máquina',
+    'exercise.assisted-chin-up.how': 'Ajusta el contrapeso y sube de forma segura al apoyo de rodillas o pies según las instrucciones de la máquina. Agarra con las palmas hacia ti al ancho de los hombros, lleva los codos hacia abajo hasta superar la altura del agarre con la barbilla y baja despacio; menos asistencia aumenta la dificultad.',
+    'exercise.assisted-chin-up.mistakes': 'Confundir la asistencia con peso añadido, balancearse, estirar el cuello para superar las asas y bajar o salir del apoyo sin control.',
     'pattern.coreFlexion': 'Flexión del tronco y elevaciones',
     'pattern.coreRotation': 'Rotación del tronco',
     'pattern.coreAntiRotation': 'Antirrotación',
     'pattern.coreLateral': 'Trabajo lateral del tronco',
     'equip.abWheel': 'Rueda abdominal',
     'muscles.unassigned': 'Automático por nombre',
+    'muscles.recognized': 'Reconocido: {name}. Músculo principal: {primary}. Auxiliares: {secondary}.',
+    'muscles.manual': 'Tu clasificación. Músculo principal: {primary}. Auxiliares: {secondary}.',
+    'muscles.unknown': 'Este nombre no está en la biblioteca. Elige los músculos que entrena.',
+    'muscles.assign': 'Asignar músculos',
+    'muscles.change': 'Cambiar músculos',
+    'muscles.reviewOther': 'Asignar músculos a ejercicios de Otros',
+    'muscles.correctOtherHint': 'Elige músculos y guarda cada ejercicio por separado. Se clasificarán sus series existentes de Otros de todas las semanas. No cambian el historial ya clasificado, los pesos ni los registros originales.',
+    'muscles.applyOther': 'Guardar músculos y clasificar series de Otros',
+    'muscles.assignmentSaved': 'Músculos guardados y series existentes de Otros recalculadas. No se cambiaron los registros originales.',
+    'muscles.noOtherNames': 'Estos registros no tienen nombre de ejercicio guardado. Revísalos en Cómo se cuentan las series.',
+    'muscles.source.corrected': 'Tu corrección de series existentes en Otros',
+    'equip.kettlebells': 'Pesas rusas',
     'muscles.customHint': 'Elige el músculo principal y los auxiliares. También se aplica a registros anteriores de este ejercicio sin clasificación guardada; no se reescriben los entrenamientos.',
     'muscles.breakdown': 'Cómo se cuentan las series',
     'muscles.notRecorded': 'no registrado',
@@ -6476,12 +6980,138 @@ const I18N = {
     'exercise.dumbbell-side-bend': 'Flexão lateral com halter',
     'exercise.dumbbell-side-bend.how': 'Fique ereto com um halter leve numa mão. Faça uma pequena inclinação lateral controlada e volte sem girar nem balançar.',
     'exercise.dumbbell-side-bend.mistakes': 'Usar impulso em vez de controlar o tronco, prender a respiração ou forçar uma amplitude dolorosa.',
+    'exercise.standing-dumbbell-overhead-press': 'Desenvolvimento em pé com halteres',
+    'exercise.standing-dumbbell-overhead-press.how': 'Em pé, afaste os pés na largura do quadril e segure os halteres junto aos ombros. Firme o abdômen, empurre acima da cabeça e desça devagar.',
+    'exercise.standing-dumbbell-overhead-press.mistakes': 'Arquear a lombar, usar impulso das pernas e despencar os halteres.',
+    'exercise.arnold-press': 'Desenvolvimento Arnold',
+    'exercise.arnold-press.how': 'Sente com as costas apoiadas e os halteres diante dos ombros, palmas voltadas para você. Gire as palmas para a frente ao empurrar acima da cabeça e inverta devagar.',
+    'exercise.arnold-press.mistakes': 'Forçar a rotação dos ombros, arquear a lombar e exagerar na carga.',
+    'exercise.barbell-front-raise': 'Elevação frontal com barra',
+    'exercise.barbell-front-raise.how': 'Em pé, segure a barra à frente das coxas com as palmas para baixo e mãos na largura dos ombros. Eleve até a altura dos ombros com leve flexão dos cotovelos e desça devagar.',
+    'exercise.barbell-front-raise.mistakes': 'Balançar o tronco, encolher os ombros e ultrapassar uma amplitude confortável.',
+    'exercise.cable-front-raise': 'Elevação frontal na polia',
+    'exercise.cable-front-raise.how': 'Fique de frente para a polia baixa e segure uma barra curta diante das coxas, palmas para baixo. Mantenha o tronco firme e cotovelos levemente flexionados; eleve até os ombros e volte com controle.',
+    'exercise.cable-front-raise.mistakes': 'Inclinar-se para trás, usar embalo e encolher os ombros em vez de elevar os braços.',
+    'exercise.machine-lateral-raise': 'Elevação lateral na máquina',
+    'exercise.machine-lateral-raise.how': 'Ajuste o banco para alinhar os ombros ao eixo da máquina e apoie os braços nas almofadas. Eleve os cotovelos para os lados até perto da altura dos ombros e desça devagar.',
+    'exercise.machine-lateral-raise.mistakes': 'Encolher os ombros, quicar a pilha de pesos e regular mal a altura do banco.',
+    'exercise.bilateral-cable-lateral-raise': 'Elevação lateral bilateral na polia',
+    'exercise.bilateral-cable-lateral-raise.how': 'Fique entre duas polias baixas segurando os pegadores opostos, com os cabos cruzados diante do quadril. Com leve flexão dos cotovelos, eleve os dois braços lateralmente até os ombros e desça devagar.',
+    'exercise.bilateral-cable-lateral-raise.mistakes': 'Balançar o tronco, encolher os ombros e subir os braços de modo desigual.',
+    'exercise.incline-cable-chest-fly': 'Crucifixo inclinado na polia',
+    'exercise.incline-cable-chest-fly.how': 'Coloque um banco a cerca de 30° entre duas polias baixas. Deite com os pegadores ao lado do peito e cotovelos levemente flexionados; una as mãos em arco sobre a parte alta do peito e abra devagar.',
+    'exercise.incline-cable-chest-fly.mistakes': 'Descer além da amplitude confortável dos ombros e dobrar os cotovelos transformando o crucifixo em supino.',
+    'exercise.single-arm-machine-row': 'Remada unilateral na máquina',
+    'exercise.single-arm-machine-row.how': 'Ajuste o banco e o apoio do peito para alcançar o pegador com o braço estendido sem arredondar as costas. Puxe um cotovelo para trás junto ao corpo, mantenha o peito apoiado e volte devagar; troque de lado.',
+    'exercise.single-arm-machine-row.mistakes': 'Girar o tronco, tirar o peito do apoio e encolher o ombro.',
+    'exercise.machine-high-row': 'Remada alta articulada na máquina',
+    'exercise.machine-high-row.how': 'Ajuste o banco e o apoio do peito e segure os pegadores superiores. Com o peito apoiado, puxe os cotovelos na diagonal para baixo e para trás junto ao tronco; estenda os braços devagar.',
+    'exercise.machine-high-row.mistakes': 'Puxar atrás da cabeça, balançar o tronco e quicar os pesos.',
+    'exercise.pendlay-row': 'Remada Pendlay',
+    'exercise.pendlay-row.how': 'Comece com a barra no chão, flexione o quadril e os joelhos e deixe as costas quase horizontais. Firme o tronco, puxe até a parte baixa do peito e apoie a barra totalmente no chão a cada repetição.',
+    'exercise.pendlay-row.mistakes': 'Levantar o tronco para puxar, arredondar as costas e quicar a barra no chão.',
+    'exercise.dumbbell-romanian-deadlift': 'Levantamento terra romeno com halteres',
+    'exercise.dumbbell-romanian-deadlift.how': 'Em pé com os halteres à frente das coxas e joelhos levemente flexionados, leve o quadril para trás. Mantenha os pesos perto das pernas até alongar a parte posterior das coxas sem arredondar as costas; estenda o quadril para subir.',
+    'exercise.dumbbell-romanian-deadlift.mistakes': 'Transformar o movimento em agachamento, arredondar as costas e afastar os pesos das pernas.',
+    'exercise.dumbbell-deadlift': 'Levantamento terra com halteres',
+    'exercise.dumbbell-deadlift.how': 'Coloque os halteres no chão ao lado dos pés; use apoios estáveis se os pegadores ficarem baixos demais. Flexione quadril e joelhos, segure com a coluna neutra, empurre o chão para ficar em pé e desça pelo mesmo caminho.',
+    'exercise.dumbbell-deadlift.mistakes': 'Arredondar as costas para alcançar os pesos, arrancar com tranco e inclinar-se para trás no topo.',
+    'exercise.kettlebell-swing': 'Balanço com kettlebell',
+    'exercise.kettlebell-swing.how': 'Coloque o kettlebell à frente, flexione o quadril e segure com as duas mãos. Passe-o entre as coxas e estenda o quadril com força para que flutue no máximo até o peito; deixe voltar entre as pernas com as costas firmes.',
+    'exercise.kettlebell-swing.mistakes': 'Agachar em vez de mover o quadril, levantar com os braços e jogar o tronco para trás no topo.',
+    'exercise.kettlebell-goblet-squat': 'Agachamento goblet com kettlebell',
+    'exercise.kettlebell-goblet-squat.how': 'Segure o kettlebell pelas laterais da alça junto ao peito e afaste os pés na largura dos ombros. Desça entre os quadris com os joelhos seguindo a direção dos pés, mantenha os calcanhares apoiados e suba.',
+    'exercise.kettlebell-goblet-squat.mistakes': 'Deixar os joelhos caírem para dentro, levantar os calcanhares e afastar a carga do corpo.',
+    'exercise.smith-machine-hip-thrust': 'Elevação pélvica no Smith',
+    'exercise.smith-machine-hip-thrust.how': 'Fixe um banco atrás da barra, apoie a parte alta das costas e coloque a barra acolchoada na dobra do quadril. Regule as travas e os pés para deixar as canelas verticais no topo; destrave, eleve o quadril e desça com controle.',
+    'exercise.smith-machine-hip-thrust.mistakes': 'Banco solto, barra pressionando o abdômen, hiperextensão lombar e travas não ajustadas.',
+    'exercise.dumbbell-split-squat': 'Agachamento dividido com halteres',
+    'exercise.dumbbell-split-squat.how': 'Segure os halteres ao lado do corpo em uma base afastada à frente e atrás, com o calcanhar traseiro elevado e os dois pés no chão. Desça o joelho de trás em direção ao solo e empurre pelo pé da frente, sem mudar os pés entre repetições.',
+    'exercise.dumbbell-split-squat.mistakes': 'Pés em uma linha muito estreita, joelho da frente caindo para dentro e impulso excessivo da perna de trás.',
+    'exercise.dumbbell-walking-lunge': 'Avanço caminhando com halteres',
+    'exercise.dumbbell-walking-lunge.how': 'Segure os halteres ao lado do corpo e dê um passo em avanço, baixando o joelho de trás até perto do chão. Empurre pelo pé da frente e leve a perna de trás ao próximo avanço, alternando em um caminho plano e livre.',
+    'exercise.dumbbell-walking-lunge.mistakes': 'Passos curtos demais, joelhos caindo para dentro e aterrissar sem controle.',
+    'exercise.barbell-lunge': 'Avanço com barra',
+    'exercise.barbell-lunge.how': 'No suporte, posicione a barra na parte alta das costas, não no pescoço, e afaste-se com segurança. Dê um passo à frente, baixe o joelho de trás e empurre pelo pé da frente para voltar em pé; alterne as pernas.',
+    'exercise.barbell-lunge.mistakes': 'Usar carga que prejudica o equilíbrio, deixar o joelho cair para dentro e apoiar a barra no pescoço.',
+    'exercise.smith-machine-bulgarian-split-squat': 'Agachamento búlgaro no Smith',
+    'exercise.smith-machine-bulgarian-split-squat.how': 'Fixe um banco atrás, apoie o pé traseiro e coloque a barra na parte alta das costas com as travas ajustadas. Posicione o pé da frente para descer sem girar a pelve; destrave, baixe até uma profundidade confortável e suba pela perna da frente.',
+    'exercise.smith-machine-bulgarian-split-squat.mistakes': 'Banco instável, impulso da perna de trás, joelho caindo para dentro e posição ruim sob o trajeto fixo da barra.',
+    'exercise.dumbbell-step-up': 'Subida no banco com halteres',
+    'exercise.dumbbell-step-up.how': 'Segure os halteres ao lado do corpo e apoie todo o pé da frente em uma plataforma firme, antiderrapante e de altura adequada. Suba com a perna elevada e desça devagar pelo mesmo caminho; troque de perna.',
+    'exercise.dumbbell-step-up.mistakes': 'Impulsionar com a perna do chão, usar banco alto demais e deixar o joelho cair para dentro.',
+    'exercise.standing-leg-curl': 'Flexão de joelho em pé na máquina',
+    'exercise.standing-leg-curl.how': 'Ajuste a máquina para alinhar o joelho ao eixo e posicionar o rolo acima da parte de trás do tornozelo. Segure os apoios, leve o calcanhar ao glúteo sem mover a coxa e desça devagar; troque de perna.',
+    'exercise.standing-leg-curl.mistakes': 'Arquear a lombar, movimentar toda a coxa e posicionar mal o rolo.',
+    'exercise.single-leg-machine-curl': 'Flexão de joelho unilateral na máquina',
+    'exercise.single-leg-machine-curl.how': 'Use uma flexora que permita mover as pernas separadamente, alinhando o joelho ao eixo e o rolo acima do tornozelo. Sentado, prenda as coxas; deitado, mantenha a pelve apoiada. Flexione um joelho, volte devagar e troque de lado.',
+    'exercise.single-leg-machine-curl.mistakes': 'Levantar a pelve, ajudar com a outra perna e quicar a pilha de pesos.',
+    'exercise.single-arm-cable-reverse-fly': 'Crucifixo inverso unilateral na polia',
+    'exercise.single-arm-cable-reverse-fly.how': 'Ajuste a polia perto da altura do ombro e fique de lado, segurando o pegador diante do peito com a mão mais distante. Abra o braço lateralmente com leve flexão do cotovelo sem girar o tronco, volte devagar e troque de lado.',
+    'exercise.single-arm-cable-reverse-fly.mistakes': 'Girar o tronco, usar embalo e dobrar o cotovelo transformando o movimento em remada.',
+    'exercise.single-arm-cable-curl': 'Rosca unilateral na polia',
+    'exercise.single-arm-cable-curl.how': 'Fique de frente para a polia baixa e segure o pegador com uma mão e palma para a frente. Mantenha o cotovelo junto ao corpo, flexione sem mover o braço e desça devagar; troque de mão.',
+    'exercise.single-arm-cable-curl.mistakes': 'Balançar o tronco, levar o cotovelo para a frente e dobrar o punho.',
+    'exercise.machine-preacher-curl': 'Rosca Scott na máquina',
+    'exercise.machine-preacher-curl.how': 'Ajuste o banco para apoiar os braços e alinhar os cotovelos ao eixo da máquina. Segure os pegadores, flexione sem tirar os braços do apoio e desça até quase estender, sem forçar o bloqueio dos cotovelos.',
+    'exercise.machine-preacher-curl.mistakes': 'Tirar os braços do apoio, arrancar com tranco da posição baixa e travar os cotovelos com força.',
+    'exercise.bayesian-cable-curl': 'Rosca bayesiana na polia',
+    'exercise.bayesian-cable-curl.how': 'Fique de costas para a polia baixa, segure o pegador com uma mão e avance para deixar o braço um pouco atrás do tronco. Mantenha o ombro confortável, flexione o cotovelo e estenda devagar; troque de lado.',
+    'exercise.bayesian-cable-curl.mistakes': 'Puxar o ombro muito para trás, avançar o cotovelo e girar o tronco.',
+    'exercise.cable-hammer-curl': 'Rosca martelo na polia',
+    'exercise.cable-hammer-curl.how': 'Prenda uma corda na polia baixa e segure as pontas com as palmas voltadas uma para a outra. Mantenha os cotovelos junto ao corpo, flexione com os punhos neutros e desça devagar.',
+    'exercise.cable-hammer-curl.mistakes': 'Balançar o tronco, elevar os cotovelos e dobrar os punhos em direção aos antebraços.',
+    'exercise.cross-body-hammer-curl': 'Rosca martelo cruzada',
+    'exercise.cross-body-hammer-curl.how': 'Em pé, segure os halteres ao lado do corpo com as palmas para dentro. Sem mover o braço, flexione levando um peso na diagonal ao lado oposto do peito, mantenha o punho reto e desça devagar; alterne os braços.',
+    'exercise.cross-body-hammer-curl.mistakes': 'Girar o tronco, usar embalo e levantar o cotovelo para terminar a rosca.',
+    'exercise.dumbbell-skull-crusher': 'Tríceps testa com halteres',
+    'exercise.dumbbell-skull-crusher.how': 'Deite no banco com os halteres acima dos ombros e as palmas voltadas uma para a outra. Mantenha os braços quase imóveis, flexione os cotovelos para baixar os pesos ao lado da cabeça e estenda novamente.',
+    'exercise.dumbbell-skull-crusher.mistakes': 'Abrir os cotovelos, mover os braços inteiros e baixar os pesos sobre o rosto.',
+    'exercise.overhead-dumbbell-triceps-extension': 'Tríceps francês com um halter e duas mãos',
+    'exercise.overhead-dumbbell-triceps-extension.how': 'Em pé com firmeza, segure um halter acima da cabeça com as duas mãos sob a extremidade superior. Aponte os cotovelos para cima, flexione para baixar atrás da cabeça e estenda devagar sem arquear as costas.',
+    'exercise.overhead-dumbbell-triceps-extension.mistakes': 'Pegada insegura, abrir demais os cotovelos e arquear a lombar.',
+    'exercise.machine-triceps-extension': 'Extensão de tríceps na máquina',
+    'exercise.machine-triceps-extension.how': 'Ajuste o banco e o apoio dos braços para alinhar os cotovelos ao eixo e segure os pegadores. Mantenha os braços apoiados, estenda os cotovelos sem forçar o bloqueio e volte devagar.',
+    'exercise.machine-triceps-extension.mistakes': 'Tirar os braços do apoio, empurrar com todo o tronco e travar os cotovelos bruscamente.',
+    'exercise.decline-push-up': 'Flexão com pés elevados',
+    'exercise.decline-push-up.how': 'Apoie os pés em um banco baixo e firme e as mãos no chão um pouco além da largura dos ombros. Mantenha o corpo alinhado, desça o peito entre as mãos com os cotovelos na diagonal para trás e empurre para subir.',
+    'exercise.decline-push-up.mistakes': 'Deixar o quadril cair, elevar demais os pés e abrir os cotovelos totalmente para os lados.',
+    'exercise.incline-push-up': 'Flexão com mãos elevadas',
+    'exercise.incline-push-up.how': 'Apoie as mãos um pouco além da largura dos ombros em um banco firme e recue os pés para alinhar o corpo. Desça o peito em direção à borda com os cotovelos na diagonal para trás e empurre; apoio mais alto facilita.',
+    'exercise.incline-push-up.mistakes': 'Usar apoio instável, deixar o quadril cair e aproximar só a cabeça em vez do peito.',
+    'exercise.cable-pull-through': 'Pull-through na polia',
+    'exercise.cable-pull-through.how': 'Fique de costas para a polia baixa e segure uma corda entre as pernas. Avance para criar tensão, flexione levemente os joelhos e leve o quadril para trás; estenda o quadril para ficar em pé com os braços relaxados.',
+    'exercise.cable-pull-through.mistakes': 'Agachar em vez de mover o quadril, puxar com os braços e jogar o tronco para trás ao terminar.',
+    'exercise.crunch': 'Abdominal curto',
+    'exercise.crunch.how': 'Deite de costas com os joelhos flexionados, pés no chão e mãos no peito. Solte o ar aproximando as costelas da pelve e levante as escápulas apenas alguns centímetros; desça devagar.',
+    'exercise.crunch.mistakes': 'Puxar o pescoço, usar embalo e levantar todo o tronco como no abdominal completo.',
+    'exercise.dumbbell-bulgarian-split-squat': 'Agachamento búlgaro com halteres',
+    'exercise.dumbbell-bulgarian-split-squat.how': 'Segure os halteres ao lado do corpo e apoie o pé de trás em um banco baixo e firme. Posicione o pé da frente suficientemente adiante, flexione o joelho e o quadril da frente até uma profundidade confortável e suba com essa perna; troque de lado.',
+    'exercise.dumbbell-bulgarian-split-squat.mistakes': 'Banco instável, impulso da perna de trás, joelho da frente caindo para dentro e rotação da pelve.',
+    'exercise.leg-press-calf-raise': 'Elevação de panturrilha no leg press',
+    'exercise.leg-press-calf-raise.how': 'Use um leg press adequado para trabalhar panturrilhas com segurança e ajuste as travas conforme as instruções. Mantenha costas e pelve apoiadas, apoie firmemente a parte da frente dos pés na região inferior da plataforma com os calcanhares livres e joelhos quase estendidos; empurre movendo apenas os tornozelos e desça os calcanhares devagar numa amplitude confortável.',
+    'exercise.leg-press-calf-raise.mistakes': 'Deixar os pés escorregarem da borda, travar os joelhos, quicar nos tornozelos e transformar a elevação em pressão com as pernas.',
+    'exercise.assisted-chin-up': 'Barra fixa supinada assistida na máquina',
+    'exercise.assisted-chin-up.how': 'Ajuste o contrapeso e suba com segurança no apoio de joelhos ou pés conforme as instruções da máquina. Segure com as palmas para você na largura dos ombros, puxe os cotovelos para baixo até o queixo passar da altura da pegada e desça devagar; menos assistência aumenta a dificuldade.',
+    'exercise.assisted-chin-up.mistakes': 'Confundir assistência com carga adicional, balançar, esticar o pescoço para passar dos pegadores e descer ou sair do apoio sem controle.',
     'pattern.coreFlexion': 'Flexão do tronco e elevações',
     'pattern.coreRotation': 'Rotação do tronco',
     'pattern.coreAntiRotation': 'Antirrotação',
     'pattern.coreLateral': 'Trabalho lateral do tronco',
     'equip.abWheel': 'Roda abdominal',
     'muscles.unassigned': 'Automático pelo nome',
+    'muscles.recognized': 'Reconhecido: {name}. Músculo principal: {primary}. Auxiliares: {secondary}.',
+    'muscles.manual': 'Sua classificação. Músculo principal: {primary}. Auxiliares: {secondary}.',
+    'muscles.unknown': 'Este nome não está na biblioteca. Escolha os músculos trabalhados.',
+    'muscles.assign': 'Definir músculos',
+    'muscles.change': 'Alterar músculos',
+    'muscles.reviewOther': 'Definir músculos dos exercícios em Outros',
+    'muscles.correctOtherHint': 'Escolha os músculos e salve cada exercício separadamente. Suas séries existentes em Outros, de todas as semanas, serão classificadas. Histórico já classificado, pesos e registros originais não mudam.',
+    'muscles.applyOther': 'Salvar músculos e classificar séries em Outros',
+    'muscles.assignmentSaved': 'Músculos salvos e séries existentes em Outros recalculadas. Os registros originais não foram alterados.',
+    'muscles.noOtherNames': 'Estes registros não têm nome de exercício salvo. Confira em Como as séries são contadas.',
+    'muscles.source.corrected': 'Sua correção para séries existentes em Outros',
+    'equip.kettlebells': 'Kettlebells',
     'muscles.customHint': 'Escolha o músculo principal e os auxiliares. Isso também classifica registros anteriores deste exercício sem classificação salva; os treinos não são reescritos.',
     'muscles.breakdown': 'Como as séries são contadas',
     'muscles.notRecorded': 'não registrado',
@@ -7729,12 +8359,138 @@ const I18N = {
     'exercise.dumbbell-side-bend': 'Inclinaison latérale avec haltère',
     'exercise.dumbbell-side-bend.how': 'Tiens-toi droit avec un haltère léger dans une main. Incline légèrement le tronc sur le côté puis redresse-toi sans tourner ni te balancer.',
     'exercise.dumbbell-side-bend.mistakes': 'Utiliser l’élan au lieu du contrôle du tronc, bloquer la respiration ou forcer une amplitude douloureuse.',
+    'exercise.standing-dumbbell-overhead-press': 'Développé épaules debout avec haltères',
+    'exercise.standing-dumbbell-overhead-press.how': 'Debout, pieds à la largeur du bassin, place les haltères près des épaules. Gaine le ventre, pousse au-dessus de la tête puis redescends lentement.',
+    'exercise.standing-dumbbell-overhead-press.mistakes': 'Cambrer les lombaires, pousser avec les jambes et laisser tomber les haltères.',
+    'exercise.arnold-press': 'Développé Arnold',
+    'exercise.arnold-press.how': 'Assieds-toi contre le dossier, haltères devant les épaules et paumes vers toi. Tourne les paumes vers l\'avant en poussant au-dessus de la tête, puis inverse lentement le mouvement.',
+    'exercise.arnold-press.mistakes': 'Forcer la rotation des épaules, cambrer le dos et prendre trop lourd.',
+    'exercise.barbell-front-raise': 'Élévation frontale à la barre',
+    'exercise.barbell-front-raise.how': 'Debout, tiens la barre devant les cuisses en pronation, mains à la largeur des épaules. Garde les coudes légèrement fléchis, lève à hauteur d\'épaules puis redescends lentement.',
+    'exercise.barbell-front-raise.mistakes': 'Balancer le buste, hausser les épaules et dépasser une amplitude confortable.',
+    'exercise.cable-front-raise': 'Élévation frontale à la poulie',
+    'exercise.cable-front-raise.how': 'Face à une poulie basse, saisis une barre courte en pronation devant les cuisses. Garde le buste fixe et les coudes légèrement fléchis, lève à hauteur d\'épaules puis reviens avec contrôle.',
+    'exercise.cable-front-raise.mistakes': 'Se pencher en arrière, prendre de l\'élan et hausser les épaules.',
+    'exercise.machine-lateral-raise': 'Élévation latérale à la machine',
+    'exercise.machine-lateral-raise.how': 'Règle le siège pour aligner les épaules avec l\'axe de la machine et place les bras contre les coussins. Lève les coudes sur les côtés jusqu\'à hauteur d\'épaules environ, puis redescends lentement.',
+    'exercise.machine-lateral-raise.mistakes': 'Hausser les épaules, faire rebondir les plaques et mal régler le siège.',
+    'exercise.bilateral-cable-lateral-raise': 'Élévation latérale bilatérale aux poulies',
+    'exercise.bilateral-cable-lateral-raise.how': 'Place-toi entre deux poulies basses et tiens les poignées opposées, câbles croisés devant le bassin. Coudes légèrement fléchis, lève les deux bras sur les côtés à hauteur d\'épaules, puis redescends lentement.',
+    'exercise.bilateral-cable-lateral-raise.mistakes': 'Balancer le buste, hausser les épaules et lever les bras de façon asymétrique.',
+    'exercise.incline-cable-chest-fly': 'Écarté incliné aux poulies',
+    'exercise.incline-cable-chest-fly.how': 'Place un banc incliné à environ 30° entre deux poulies basses. Allonge-toi, poignées à côté du torse et coudes légèrement fléchis ; rapproche les mains en arc au-dessus du haut du torse, puis ouvre lentement.',
+    'exercise.incline-cable-chest-fly.mistakes': 'Descendre au-delà de l\'amplitude confortable des épaules et plier les coudes pour transformer l\'écarté en développé.',
+    'exercise.single-arm-machine-row': 'Rowing unilatéral à la machine',
+    'exercise.single-arm-machine-row.how': 'Règle le siège et l\'appui thoracique pour atteindre la poignée bras tendu sans arrondir le dos. Tire un coude vers l\'arrière près du flanc, garde le torse en appui puis reviens lentement ; change de côté.',
+    'exercise.single-arm-machine-row.mistakes': 'Tourner le buste, décoller la poitrine de l\'appui et hausser l\'épaule.',
+    'exercise.machine-high-row': 'Rowing haut à la machine',
+    'exercise.machine-high-row.how': 'Règle le siège et l\'appui thoracique, puis saisis les poignées hautes. Garde la poitrine en appui et tire les coudes en diagonale vers le bas et l\'arrière près du buste ; retends lentement les bras.',
+    'exercise.machine-high-row.mistakes': 'Tirer derrière la tête, balancer le buste et faire rebondir les poids.',
+    'exercise.pendlay-row': 'Rowing Pendlay',
+    'exercise.pendlay-row.how': 'Pars avec la barre au sol, fléchis les hanches et les genoux, dos presque horizontal. Gaine le tronc, tire vers le bas du torse puis repose complètement la barre au sol à chaque répétition.',
+    'exercise.pendlay-row.mistakes': 'Redresser le buste pour soulever, arrondir le dos et faire rebondir la barre au sol.',
+    'exercise.dumbbell-romanian-deadlift': 'Soulevé de terre roumain avec haltères',
+    'exercise.dumbbell-romanian-deadlift.how': 'Debout, haltères devant les cuisses et genoux légèrement fléchis, pousse les hanches vers l\'arrière. Garde les poids près des jambes jusqu\'à sentir les ischio-jambiers s\'étirer sans arrondir le dos, puis redresse-toi par les hanches.',
+    'exercise.dumbbell-romanian-deadlift.mistakes': 'Transformer le mouvement en squat, arrondir le dos et éloigner les poids des jambes.',
+    'exercise.dumbbell-deadlift': 'Soulevé de terre avec haltères',
+    'exercise.dumbbell-deadlift.how': 'Place les haltères au sol à côté des pieds ; utilise des supports stables si les poignées sont trop basses. Fléchis les hanches et les genoux, saisis-les dos neutre, pousse dans le sol pour te redresser puis redescends par le même trajet.',
+    'exercise.dumbbell-deadlift.mistakes': 'Arrondir le dos pour atteindre les poignées, arracher les poids du sol et se pencher en arrière en haut.',
+    'exercise.kettlebell-swing': 'Balancement avec kettlebell',
+    'exercise.kettlebell-swing.how': 'Place la kettlebell devant toi, fléchis les hanches et saisis-la à deux mains. Lance-la entre les cuisses puis tends vivement les hanches pour la faire flotter au maximum à hauteur du torse ; laisse-la revenir entre les jambes, dos gainé.',
+    'exercise.kettlebell-swing.mistakes': 'Faire un squat au lieu d\'une charnière de hanche, soulever avec les bras et se pencher en arrière en haut.',
+    'exercise.kettlebell-goblet-squat': 'Squat gobelet avec kettlebell',
+    'exercise.kettlebell-goblet-squat.how': 'Tiens la kettlebell par les côtés de la poignée près du torse, pieds à la largeur des épaules. Descends entre les hanches, genoux dans l\'axe des orteils et talons au sol, puis relève-toi.',
+    'exercise.kettlebell-goblet-squat.mistakes': 'Laisser les genoux rentrer, décoller les talons et éloigner la charge du corps.',
+    'exercise.smith-machine-hip-thrust': 'Poussée de hanches à la Smith machine',
+    'exercise.smith-machine-hip-thrust.how': 'Immobilise un banc derrière la barre, appuie le haut du dos dessus et place la barre rembourrée dans le pli des hanches. Règle les butées et les pieds pour avoir les tibias verticaux en haut ; décroche, lève le bassin puis redescends avec contrôle.',
+    'exercise.smith-machine-hip-thrust.mistakes': 'Un banc qui glisse, la barre sur l\'abdomen, une cambrure excessive et des butées non réglées.',
+    'exercise.dumbbell-split-squat': 'Fente statique avec haltères',
+    'exercise.dumbbell-split-squat.how': 'Tiens les haltères le long du corps, pieds décalés avant-arrière au sol et talon arrière levé. Descends le genou arrière vers le sol puis pousse dans le pied avant, sans déplacer les pieds entre les répétitions.',
+    'exercise.dumbbell-split-squat.mistakes': 'Placer les pieds sur une ligne trop étroite, laisser le genou avant rentrer et pousser avec le pied arrière.',
+    'exercise.dumbbell-walking-lunge': 'Fentes marchées avec haltères',
+    'exercise.dumbbell-walking-lunge.how': 'Tiens les haltères le long du corps et avance en fente, genou arrière juste au-dessus du sol. Pousse dans le pied avant et avance la jambe arrière dans la fente suivante, en alternant sur un trajet plat et dégagé.',
+    'exercise.dumbbell-walking-lunge.mistakes': 'Faire des pas trop courts, laisser les genoux rentrer et poser les pieds sans contrôle.',
+    'exercise.barbell-lunge': 'Fente avant à la barre',
+    'exercise.barbell-lunge.how': 'Dans un rack, place la barre sur le haut du dos, pas sur la nuque, puis dégage-toi en sécurité. Avance un pied, descends le genou arrière vers le sol et pousse dans le pied avant pour revenir debout ; alterne les jambes.',
+    'exercise.barbell-lunge.mistakes': 'Prendre une charge qui compromet l\'équilibre, laisser le genou rentrer et poser la barre sur la nuque.',
+    'exercise.smith-machine-bulgarian-split-squat': 'Fente bulgare à la Smith machine',
+    'exercise.smith-machine-bulgarian-split-squat.how': 'Immobilise un banc derrière toi, pose le pied arrière dessus et place la barre sur le haut du dos, butées réglées. Place le pied avant pour descendre sans tourner le bassin ; décroche, descends à une profondeur confortable puis pousse dans la jambe avant.',
+    'exercise.smith-machine-bulgarian-split-squat.mistakes': 'Un banc instable, pousser avec la jambe arrière, laisser le genou rentrer et mal se placer sous le trajet fixe de la barre.',
+    'exercise.dumbbell-step-up': 'Montée sur banc avec haltères',
+    'exercise.dumbbell-step-up.how': 'Tiens les haltères le long du corps et pose tout le pied avant sur une plateforme stable, antidérapante et de hauteur adaptée. Monte grâce à la jambe surélevée puis redescends lentement par le même trajet ; change de jambe.',
+    'exercise.dumbbell-step-up.mistakes': 'Pousser avec la jambe au sol, choisir une plateforme trop haute et laisser le genou rentrer.',
+    'exercise.standing-leg-curl': 'Leg curl debout à la machine',
+    'exercise.standing-leg-curl.how': 'Règle la machine pour aligner le genou avec l\'axe et placer le rouleau au-dessus de l\'arrière de la cheville. Tiens les appuis, ramène le talon vers la fesse sans bouger la cuisse puis redescends lentement ; change de jambe.',
+    'exercise.standing-leg-curl.mistakes': 'Cambrer les lombaires, déplacer toute la cuisse et mal positionner le rouleau.',
+    'exercise.single-leg-machine-curl': 'Leg curl unilatéral à la machine',
+    'exercise.single-leg-machine-curl.how': 'Utilise une machine permettant de bouger chaque jambe séparément, genou aligné sur l\'axe et rouleau au-dessus de la cheville. Assis, bloque les cuisses ; allongé, garde le bassin en appui. Fléchis un seul genou, reviens lentement puis change de côté.',
+    'exercise.single-leg-machine-curl.mistakes': 'Soulever le bassin, aider avec l\'autre jambe et faire rebondir les plaques.',
+    'exercise.single-arm-cable-reverse-fly': 'Écarté inversé unilatéral à la poulie',
+    'exercise.single-arm-cable-reverse-fly.how': 'Règle la poulie près de la hauteur d\'épaule et place-toi de côté, poignée devant le torse dans la main la plus éloignée. Ouvre le bras sur le côté, coude légèrement fléchi et buste fixe, puis reviens lentement ; change de côté.',
+    'exercise.single-arm-cable-reverse-fly.mistakes': 'Tourner le buste, prendre de l\'élan et plier le coude pour faire un rowing.',
+    'exercise.single-arm-cable-curl': 'Curl unilatéral à la poulie',
+    'exercise.single-arm-cable-curl.how': 'Face à une poulie basse, tiens une poignée d\'une main, paume vers l\'avant. Garde le coude près du flanc, fléchis sans déplacer le haut du bras puis redescends lentement ; change de bras.',
+    'exercise.single-arm-cable-curl.mistakes': 'Balancer le buste, avancer le coude et casser le poignet.',
+    'exercise.machine-preacher-curl': 'Curl pupitre à la machine',
+    'exercise.machine-preacher-curl.how': 'Règle le siège pour poser le haut des bras sur le coussin et aligner les coudes avec l\'axe de la machine. Saisis les poignées, fléchis sans décoller les bras puis redescends presque à l\'extension sans forcer les coudes.',
+    'exercise.machine-preacher-curl.mistakes': 'Décoller les bras du pupitre, tirer brusquement en bas et verrouiller les coudes avec force.',
+    'exercise.bayesian-cable-curl': 'Curl bayésien à la poulie',
+    'exercise.bayesian-cable-curl.how': 'Dos à une poulie basse, tiens la poignée d\'une main et avance pour garder le bras légèrement derrière le buste. Sans forcer l\'épaule, fléchis le coude puis tends lentement ; change de côté.',
+    'exercise.bayesian-cable-curl.mistakes': 'Tirer l\'épaule trop en arrière, avancer le coude et tourner le buste.',
+    'exercise.cable-hammer-curl': 'Curl marteau à la poulie',
+    'exercise.cable-hammer-curl.how': 'Fixe une corde à une poulie basse et tiens ses extrémités, paumes face à face. Garde les coudes près du corps, fléchis avec les poignets neutres puis redescends lentement.',
+    'exercise.cable-hammer-curl.mistakes': 'Balancer le buste, lever les coudes et plier les poignets vers les avant-bras.',
+    'exercise.cross-body-hammer-curl': 'Curl marteau croisé',
+    'exercise.cross-body-hammer-curl.how': 'Debout, haltères le long du corps et paumes vers toi, fléchis un coude en diagonale vers le côté opposé du torse sans déplacer le haut du bras. Garde le poignet droit, redescends lentement puis alterne.',
+    'exercise.cross-body-hammer-curl.mistakes': 'Tourner le buste, se balancer et lever le coude pour finir la flexion.',
+    'exercise.dumbbell-skull-crusher': 'Extension triceps couché avec haltères',
+    'exercise.dumbbell-skull-crusher.how': 'Allonge-toi sur un banc, haltères au-dessus des épaules et paumes face à face. Garde le haut des bras presque fixe, fléchis les coudes pour descendre les poids à côté de la tête puis tends-les de nouveau.',
+    'exercise.dumbbell-skull-crusher.mistakes': 'Écarter les coudes, déplacer les bras entiers et descendre les poids sur le visage.',
+    'exercise.overhead-dumbbell-triceps-extension': 'Extension triceps au-dessus de la tête avec un haltère à deux mains',
+    'exercise.overhead-dumbbell-triceps-extension.how': 'Debout en appui stable, tiens un haltère au-dessus de la tête, les deux mains sous son extrémité supérieure. Garde les coudes vers le haut, fléchis pour descendre derrière la tête puis tends lentement sans cambrer le dos.',
+    'exercise.overhead-dumbbell-triceps-extension.mistakes': 'Une prise peu sûre, des coudes trop écartés et une cambrure lombaire excessive.',
+    'exercise.machine-triceps-extension': 'Extension triceps à la machine',
+    'exercise.machine-triceps-extension.how': 'Règle le siège et l\'appui des bras pour aligner les coudes avec l\'axe, puis saisis les poignées. Garde le haut des bras en appui, tends les coudes sans forcer le verrouillage et reviens lentement.',
+    'exercise.machine-triceps-extension.mistakes': 'Décoller les bras du coussin, pousser avec tout le buste et tendre les coudes brusquement.',
+    'exercise.decline-push-up': 'Pompe avec pieds surélevés',
+    'exercise.decline-push-up.how': 'Pose les pieds sur un banc bas et stable, mains au sol un peu plus larges que les épaules. Garde le corps aligné, descends le torse entre les mains, coudes orientés en diagonale vers l\'arrière, puis repousse.',
+    'exercise.decline-push-up.mistakes': 'Laisser tomber le bassin, surélever excessivement les pieds et ouvrir les coudes complètement sur les côtés.',
+    'exercise.incline-push-up': 'Pompe avec mains surélevées',
+    'exercise.incline-push-up.how': 'Pose les mains un peu plus larges que les épaules sur un banc bien fixe et recule les pieds pour aligner le corps. Descends le torse vers le bord, coudes en diagonale vers l\'arrière, puis repousse ; un appui plus haut facilite l\'exercice.',
+    'exercise.incline-push-up.mistakes': 'Utiliser un appui instable, laisser tomber le bassin et avancer seulement la tête au lieu du torse.',
+    'exercise.cable-pull-through': 'Tirage entre les jambes à la poulie',
+    'exercise.cable-pull-through.how': 'Dos à une poulie basse, tiens une corde entre les jambes. Avance pour tendre le câble, fléchis légèrement les genoux et pousse les hanches en arrière, puis redresse-toi par les hanches en laissant les bras relâchés.',
+    'exercise.cable-pull-through.mistakes': 'Faire un squat au lieu d\'une charnière de hanche, tirer avec les bras et se pencher en arrière à la fin.',
+    'exercise.crunch': 'Enroulement abdominal',
+    'exercise.crunch.how': 'Allonge-toi sur le dos, genoux fléchis, pieds au sol et mains sur le torse. Expire en rapprochant les côtes du bassin et décolle les omoplates de quelques centimètres, puis redescends lentement.',
+    'exercise.crunch.mistakes': 'Tirer sur la nuque, prendre de l\'élan et relever tout le buste comme pour un redressement assis.',
+    'exercise.dumbbell-bulgarian-split-squat': 'Fente bulgare avec haltères',
+    'exercise.dumbbell-bulgarian-split-squat.how': 'Tiens les haltères le long du corps et pose le pied arrière sur un banc bas et bien fixe. Place le pied avant suffisamment loin, fléchis le genou et la hanche avant pour descendre à une profondeur confortable puis remonte grâce à cette jambe ; change de côté.',
+    'exercise.dumbbell-bulgarian-split-squat.mistakes': 'Un banc instable, pousser avec la jambe arrière, laisser le genou avant rentrer et tourner le bassin.',
+    'exercise.leg-press-calf-raise': 'Extension des mollets à la presse à cuisses',
+    'exercise.leg-press-calf-raise.how': 'Utilise une presse adaptée au travail des mollets en sécurité et règle les butées selon ses instructions. Garde le dos et le bassin en appui, place solidement l\'avant des pieds sur le bas de la plateforme, talons libres et genoux presque tendus ; pousse uniquement par les chevilles puis laisse les talons redescendre lentement dans une amplitude confortable.',
+    'exercise.leg-press-calf-raise.mistakes': 'Laisser les pieds glisser du bord, verrouiller les genoux, rebondir sur les chevilles et transformer le mouvement en presse à cuisses.',
+    'exercise.assisted-chin-up': 'Traction supination assistée à la machine',
+    'exercise.assisted-chin-up.how': 'Règle le contrepoids et monte prudemment sur l\'appui des genoux ou des pieds selon les instructions de la machine. Prends les poignées en supination à la largeur des épaules, tire les coudes vers le bas jusqu\'à dépasser le niveau de prise avec le menton puis redescends lentement ; moins d\'assistance rend l\'exercice plus difficile.',
+    'exercise.assisted-chin-up.mistakes': 'Confondre assistance et charge ajoutée, se balancer, tendre le cou pour dépasser les poignées et descendre ou quitter l\'appui sans contrôle.',
     'pattern.coreFlexion': 'Flexion du tronc et relevés de jambes',
     'pattern.coreRotation': 'Rotation du tronc',
     'pattern.coreAntiRotation': 'Anti-rotation',
     'pattern.coreLateral': 'Travail latéral du tronc',
     'equip.abWheel': 'Roue abdominale',
     'muscles.unassigned': 'Automatique selon le nom',
+    'muscles.recognized': 'Reconnu : {name}. Muscle principal : {primary}. Secondaires : {secondary}.',
+    'muscles.manual': 'Ton attribution. Muscle principal : {primary}. Secondaires : {secondary}.',
+    'muscles.unknown': 'Ce nom n’est pas dans la bibliothèque. Choisis les muscles travaillés.',
+    'muscles.assign': 'Attribuer des muscles',
+    'muscles.change': 'Modifier les muscles',
+    'muscles.reviewOther': 'Attribuer des muscles aux exercices dans Autres',
+    'muscles.correctOtherHint': 'Choisis les muscles et enregistre chaque exercice séparément. Ses séries existantes dans Autres, toutes semaines confondues, seront classées. Les séries déjà attribuées, les charges et les séances originales restent inchangées.',
+    'muscles.applyOther': 'Enregistrer et classer les séries dans Autres',
+    'muscles.assignmentSaved': 'Muscles enregistrés et séries existantes dans Autres recalculées. Les séances originales n’ont pas été modifiées.',
+    'muscles.noOtherNames': 'Ces enregistrements n’ont pas de nom d’exercice. Consulte Comment les séries sont comptées.',
+    'muscles.source.corrected': 'Ta correction des séries existantes dans Autres',
+    'equip.kettlebells': 'Kettlebells',
     'muscles.customHint': 'Choisis le muscle principal et les muscles secondaires. Cela classe aussi les anciens enregistrements sans attribution ; les séances ne sont pas réécrites.',
     'muscles.breakdown': 'Comment les séries sont comptées',
     'muscles.notRecorded': 'non enregistré',
@@ -9003,12 +9759,138 @@ const I18N = {
     'exercise.dumbbell-side-bend': 'الانحناء الجانبي بالدمبل',
     'exercise.dumbbell-side-bend.how': 'قف مستقيمًا مع دمبل خفيف في يد واحدة. انحنِ جانبًا بمدى صغير ومتحكم ثم عُد مستقيمًا دون لف أو تأرجح.',
     'exercise.dumbbell-side-bend.mistakes': 'استخدام الزخم بدل التحكم بالجذع أو حبس النفس أو فرض مدى مؤلم.',
+    'exercise.standing-dumbbell-overhead-press': 'ضغط الكتف بالدمبل واقفًا',
+    'exercise.standing-dumbbell-overhead-press.how': 'قف والقدمان بعرض الوركين والدمبلان عند الكتفين. شد البطن وادفعهما فوق الرأس ثم أنزلهما ببطء إلى الكتفين.',
+    'exercise.standing-dumbbell-overhead-press.mistakes': 'تقويس أسفل الظهر والدفع بالساقين وإسقاط الأوزان.',
+    'exercise.arnold-press': 'ضغط أرنولد',
+    'exercise.arnold-press.how': 'اجلس وظهرك مسنود والدمبلان أمام الكتفين وراحتا اليدين نحوك. أدر الراحتين إلى الأمام أثناء الدفع فوق الرأس، ثم اعكس الحركة ببطء.',
+    'exercise.arnold-press.mistakes': 'إجبار الكتفين على الدوران وتقويس أسفل الظهر واستخدام وزن مفرط.',
+    'exercise.barbell-front-raise': 'رفع أمامي بالبار',
+    'exercise.barbell-front-raise.how': 'قف ممسكًا بالبار أمام الفخذين بقبضة علوية بعرض الكتفين. اثنِ المرفقين قليلًا وارفعه أمامك إلى مستوى الكتفين ثم أنزله ببطء.',
+    'exercise.barbell-front-raise.mistakes': 'أرجحة الجذع ورفع الكتفين نحو الأذنين وتجاوز مدى مريح.',
+    'exercise.cable-front-raise': 'رفع أمامي بالكابل',
+    'exercise.cable-front-raise.how': 'قف مواجهًا لبكرة منخفضة وأمسك قضيبًا قصيرًا أمام الفخذين بقبضة علوية. ثبّت الجذع واثنِ المرفقين قليلًا وارفع إلى مستوى الكتفين ثم عد بتحكم.',
+    'exercise.cable-front-raise.mistakes': 'الميل للخلف واستخدام الزخم ورفع الكتفين بدلًا من تحريك الذراعين.',
+    'exercise.machine-lateral-raise': 'رفرفة جانبية على الجهاز',
+    'exercise.machine-lateral-raise.how': 'اضبط المقعد بحيث تصطف الكتفان مع محور الجهاز وضع الذراعين على الوسادتين. ارفع المرفقين جانبًا إلى قرب مستوى الكتفين ثم أنزلهما ببطء.',
+    'exercise.machine-lateral-raise.mistakes': 'هز الكتفين وإرتداد مجموعة الأوزان وضبط المقعد على ارتفاع غير مناسب.',
+    'exercise.bilateral-cable-lateral-raise': 'رفرفة جانبية بالكابل للذراعين',
+    'exercise.bilateral-cable-lateral-raise.how': 'قف بين بكرتين منخفضتين وأمسك المقبض المقابل بكل يد بحيث يتقاطع الكابلان أمام الوركين. اثنِ المرفقين قليلًا وارفع الذراعين جانبًا إلى مستوى الكتفين ثم أنزلهما ببطء.',
+    'exercise.bilateral-cable-lateral-raise.mistakes': 'أرجحة الجذع وهز الكتفين ورفع الذراعين بشكل غير متساوٍ.',
+    'exercise.incline-cable-chest-fly': 'تفتيح الصدر بالكابل على مقعد مائل',
+    'exercise.incline-cable-chest-fly.how': 'ضع مقعدًا بزاوية نحو 30 درجة بين بكرتين منخفضتين. استلقِ والمقبضان بجانبي الصدر والمرفقان مثنيان قليلًا، ثم اجمع اليدين بقوس فوق أعلى الصدر وافتح ببطء.',
+    'exercise.incline-cable-chest-fly.mistakes': 'النزول خارج مدى الكتف المريح وثني المرفقين لتحويل التفتيح إلى ضغط.',
+    'exercise.single-arm-machine-row': 'تجديف بذراع واحدة على الجهاز',
+    'exercise.single-arm-machine-row.how': 'اضبط المقعد ووسادة الصدر للوصول إلى المقبض بذراع ممدودة دون تقويس الظهر. اسحب مرفقًا واحدًا للخلف قرب جانبك مع إبقاء الصدر على الوسادة، ثم عد ببطء وبدّل الجانب.',
+    'exercise.single-arm-machine-row.mistakes': 'لف الجذع ورفع الصدر عن الوسادة وهز الكتف.',
+    'exercise.machine-high-row': 'تجديف علوي على الجهاز',
+    'exercise.machine-high-row.how': 'اضبط المقعد ودعامة الصدر وأمسك المقابض العلوية. أبقِ الصدر مسنودًا واسحب المرفقين قطريًا للأسفل والخلف نحو الجذع ثم مد الذراعين ببطء.',
+    'exercise.machine-high-row.mistakes': 'السحب خلف الرأس وأرجحة الجذع وارتداد الأوزان.',
+    'exercise.pendlay-row': 'تجديف بندلاي',
+    'exercise.pendlay-row.how': 'ابدأ والبار على الأرض، اثنِ الوركين والركبتين واجعل الظهر قريبًا من الأفقي. شد الجذع واسحب البار نحو أسفل الصدر ثم أعده بتحكم ليتوقف على الأرض بعد كل تكرار.',
+    'exercise.pendlay-row.mistakes': 'رفع الجذع للمساعدة في السحب وتدوير الظهر وارتداد البار عن الأرض.',
+    'exercise.dumbbell-romanian-deadlift': 'رفعة ميتة رومانية بالدمبل',
+    'exercise.dumbbell-romanian-deadlift.how': 'قف والدمبلان أمام الفخذين والركبتان مثنيتان قليلًا. ادفع الوركين للخلف وأبقِ الأوزان قرب الساقين حتى تشعر بتمدد خلف الفخذ دون تدوير الظهر، ثم مد الوركين للوقوف.',
+    'exercise.dumbbell-romanian-deadlift.mistakes': 'تحويل الحركة إلى قرفصاء وتدوير الظهر وإبعاد الأوزان عن الساقين.',
+    'exercise.dumbbell-deadlift': 'رفعة ميتة بالدمبل',
+    'exercise.dumbbell-deadlift.how': 'ضع الدمبلين على الأرض بجانب القدمين واستخدم دعامات ثابتة إن كان المقبضان منخفضين جدًا. اثنِ الوركين والركبتين وأمسكهما بظهر محايد، وادفع الأرض بقدميك للوقوف ثم أنزلهما في المسار نفسه.',
+    'exercise.dumbbell-deadlift.mistakes': 'تدوير الظهر للوصول للمقابض ونتر الأوزان من الأرض والميل للخلف في الأعلى.',
+    'exercise.kettlebell-swing': 'أرجحة الكيتلبيل',
+    'exercise.kettlebell-swing.how': 'ضع الكيتلبيل أمامك واثنِ الوركين وأمسكه باليدين. مرّره بين الفخذين ثم مد الوركين بقوة ليطفو حتى مستوى الصدر كحد أقصى، ودعه يعود بين الساقين مع تثبيت الظهر.',
+    'exercise.kettlebell-swing.mistakes': 'القرفصاء بدل حركة الورك ورفع الوزن بالذراعين والميل للخلف في الأعلى.',
+    'exercise.kettlebell-goblet-squat': 'قرفصاء الكأس بالكيتلبيل',
+    'exercise.kettlebell-goblet-squat.how': 'أمسك الكيتلبيل من جانبي المقبض قرب الصدر وقف والقدمان بعرض الكتفين تقريبًا. انزل بين الوركين مع توجيه الركبتين باتجاه أصابع القدمين، وثبّت الكعبين ثم قف.',
+    'exercise.kettlebell-goblet-squat.mistakes': 'انهيار الركبتين للداخل ورفع الكعبين وإبعاد الوزن عن الجسم.',
+    'exercise.smith-machine-hip-thrust': 'دفع الورك على جهاز سميث',
+    'exercise.smith-machine-hip-thrust.how': 'ثبّت مقعدًا خلف البار وأسند أعلى الظهر عليه وضع البار المبطن عند ثنية الوركين. اضبط محددات الأمان والقدمين لتكون الساقان عموديتين في الأعلى، ثم حرر البار وارفع الوركين وأنزلهما بتحكم.',
+    'exercise.smith-machine-hip-thrust.mistakes': 'انزلاق المقعد وضغط البار على البطن وفرط تقويس أسفل الظهر وعدم ضبط محددات الأمان.',
+    'exercise.dumbbell-split-squat': 'قرفصاء منقسمة بالدمبل',
+    'exercise.dumbbell-split-squat.how': 'أمسك الدمبلين بجانبيك وقف بقدم أمام الأخرى مع رفع الكعب الخلفي وبقاء القدمين على الأرض. أنزل الركبة الخلفية نحو الأرض وادفع بالقدم الأمامية للصعود دون تغيير موضع القدمين بين التكرارات.',
+    'exercise.dumbbell-split-squat.mistakes': 'وضع القدمين على خط ضيق وانهيار الركبة الأمامية للداخل والاندفاع بالقدم الخلفية.',
+    'exercise.dumbbell-walking-lunge': 'اندفاع مشي بالدمبل',
+    'exercise.dumbbell-walking-lunge.how': 'أمسك الدمبلين بجانبيك واخطُ للأمام في اندفاع مع خفض الركبة الخلفية إلى قرب الأرض. ادفع بالقدم الأمامية وقدم الساق الخلفية إلى الاندفاع التالي، بالتناوب على مسار مستوٍ وخالٍ.',
+    'exercise.dumbbell-walking-lunge.mistakes': 'خطوات قصيرة جدًا وانهيار الركبتين للداخل والهبوط دون تحكم.',
+    'exercise.barbell-lunge': 'اندفاع بالبار',
+    'exercise.barbell-lunge.how': 'ضع البار على أعلى الظهر لا الرقبة داخل الحامل ثم ابتعد بأمان. اخطُ للأمام وأنزل الركبة الخلفية نحو الأرض وادفع بالقدم الأمامية للعودة واقفًا، وبدّل الساقين.',
+    'exercise.barbell-lunge.mistakes': 'استخدام وزن يخل بالتوازن وانهيار الركبة للداخل ووضع البار على الرقبة.',
+    'exercise.smith-machine-bulgarian-split-squat': 'قرفصاء بلغارية على جهاز سميث',
+    'exercise.smith-machine-bulgarian-split-squat.how': 'ثبّت مقعدًا خلفك وضع القدم الخلفية عليه والبار على أعلى الظهر مع ضبط محددات الأمان. ضع القدم الأمامية بحيث تنزل دون لف الحوض، ثم حرر البار وانزل لعمق مريح وادفع بالساق الأمامية للصعود.',
+    'exercise.smith-machine-bulgarian-split-squat.mistakes': 'مقعد غير ثابت والدفع بالساق الخلفية وانهيار الركبة للداخل وسوء التموضع تحت المسار الثابت للبار.',
+    'exercise.dumbbell-step-up': 'صعود المقعد بالدمبل',
+    'exercise.dumbbell-step-up.how': 'أمسك الدمبلين بجانبيك وضع القدم الأمامية كاملة على منصة ثابتة غير زلقة وبارتفاع مناسب. اصعد بقوة الساق المرتفعة ثم انزل ببطء في المسار نفسه وبدّل الساقين.',
+    'exercise.dumbbell-step-up.mistakes': 'الدفع بالساق الموجودة على الأرض واستخدام منصة عالية جدًا وانهيار الركبة للداخل.',
+    'exercise.standing-leg-curl': 'ثني الركبة واقفًا على الجهاز',
+    'exercise.standing-leg-curl.how': 'اضبط جهاز الثني واقفًا ليصطف محور الركبة مع محور الجهاز وتكون الأسطوانة فوق خلف الكاحل. أمسك الدعامات وقرّب الكعب من الأرداف دون تحريك الفخذ ثم أنزله ببطء وبدّل الساقين.',
+    'exercise.standing-leg-curl.mistakes': 'تقويس أسفل الظهر وتحريك الفخذ كاملًا ووضع الأسطوانة بشكل خاطئ.',
+    'exercise.single-leg-machine-curl': 'ثني الركبة بساق واحدة على الجهاز',
+    'exercise.single-leg-machine-curl.how': 'استخدم جهازًا يسمح بتحريك كل ساق منفردة واضبط محور الركبة والأسطوانة فوق الكاحل. ثبّت الفخذين إن كنت جالسًا أو أبقِ الحوض على الوسادة إن كنت مستلقيًا؛ اثنِ ركبة واحدة ثم عد ببطء وبدّل الجانب.',
+    'exercise.single-leg-machine-curl.mistakes': 'رفع الحوض والمساعدة بالساق الأخرى وارتداد مجموعة الأوزان.',
+    'exercise.single-arm-cable-reverse-fly': 'رفرفة خلفية بالكابل بذراع واحدة',
+    'exercise.single-arm-cable-reverse-fly.how': 'اضبط البكرة قرب مستوى الكتف وقف بجانبها ممسكًا بالمقبض أمام الصدر باليد الأبعد. افتح الذراع جانبًا مع ثني المرفق قليلًا دون لف الجذع، ثم عد ببطء وبدّل الجانب.',
+    'exercise.single-arm-cable-reverse-fly.mistakes': 'لف الجذع واستخدام الزخم وثني المرفق لتحويل الحركة إلى تجديف.',
+    'exercise.single-arm-cable-curl': 'ثني البايسبس بالكابل بذراع واحدة',
+    'exercise.single-arm-cable-curl.how': 'قف مواجهًا لبكرة منخفضة وأمسك المقبض بيد واحدة وراحتها للأمام. أبقِ المرفق قرب جانبك واثنه دون تحريك أعلى الذراع ثم أنزل ببطء وبدّل الذراع.',
+    'exercise.single-arm-cable-curl.mistakes': 'أرجحة الجذع ودفع المرفق للأمام وثني الرسغ.',
+    'exercise.machine-preacher-curl': 'ثني البايسبس على جهاز بريتشر',
+    'exercise.machine-preacher-curl.how': 'اضبط المقعد ليستند أعلى الذراعين إلى الوسادة ويصطف المرفقان مع محور الجهاز. أمسك المقابض واثنِ المرفقين دون رفع الذراعين ثم أنزل إلى قرب الاستقامة دون إجبار المرفقين على القفل.',
+    'exercise.machine-preacher-curl.mistakes': 'رفع الذراعين عن الوسادة والنتر من الأسفل وقفل المرفقين بقوة.',
+    'exercise.bayesian-cable-curl': 'ثني بايزي بالكابل',
+    'exercise.bayesian-cable-curl.how': 'قف وظهرك لبكرة منخفضة وأمسك المقبض بيد واحدة وتقدم حتى يبقى أعلى الذراع خلف الجذع قليلًا. حافظ على راحة الكتف واثنِ المرفق ثم مده ببطء وبدّل الجانب.',
+    'exercise.bayesian-cable-curl.mistakes': 'سحب الكتف بعيدًا للخلف ودفع المرفق للأمام ولف الجذع.',
+    'exercise.cable-hammer-curl': 'ثني المطرقة بالكابل',
+    'exercise.cable-hammer-curl.how': 'ثبّت حبلًا ببكرة منخفضة وأمسك طرفيه وراحتا اليدين متقابلتان. أبقِ المرفقين قرب الجانبين واثنهما مع رسغين محايدين ثم أنزل ببطء.',
+    'exercise.cable-hammer-curl.mistakes': 'أرجحة الجذع ورفع المرفقين وثني الرسغين نحو الساعدين.',
+    'exercise.cross-body-hammer-curl': 'ثني المطرقة عبر الجسم',
+    'exercise.cross-body-hammer-curl.how': 'قف والدمبلان بجانبيك وراحتا اليدين نحو الجسم. دون تحريك أعلى الذراع اثنِ مرفقًا لرفع الوزن قطريًا نحو الجهة المقابلة من الصدر، وأبقِ الرسغ مستقيمًا ثم أنزل ببطء وبدّل الذراع.',
+    'exercise.cross-body-hammer-curl.mistakes': 'لف الجذع والأرجحة ورفع المرفق لإكمال الثني.',
+    'exercise.dumbbell-skull-crusher': 'تمديد الترايسبس بالدمبل مستلقيًا',
+    'exercise.dumbbell-skull-crusher.how': 'استلقِ على مقعد والدمبلان فوق الكتفين وراحتا اليدين متقابلتان. ثبّت أعلى الذراعين تقريبًا واثنِ المرفقين لإنزال الأوزان بجانب الرأس ثم مدهما مجددًا.',
+    'exercise.dumbbell-skull-crusher.mistakes': 'فتح المرفقين وتحريك الذراعين كاملتين وإنزال الأوزان على الوجه.',
+    'exercise.overhead-dumbbell-triceps-extension': 'تمديد الترايسبس فوق الرأس بدمبل بكلتا اليدين',
+    'exercise.overhead-dumbbell-triceps-extension.how': 'قف بثبات وأمسك دمبلًا واحدًا فوق الرأس بكلتا اليدين تحت طرفه العلوي. وجّه المرفقين للأعلى واثنهما لإنزال الوزن خلف الرأس ثم مدهما ببطء دون تقويس الظهر.',
+    'exercise.overhead-dumbbell-triceps-extension.mistakes': 'قبضة غير آمنة وفتح المرفقين كثيرًا وتقويس أسفل الظهر.',
+    'exercise.machine-triceps-extension': 'تمديد الترايسبس على الجهاز',
+    'exercise.machine-triceps-extension.how': 'اضبط المقعد ووسادة الذراعين ليصطف المرفقان مع محور الجهاز ثم أمسك المقابض. أبقِ أعلى الذراعين مسنودًا ومد المرفقين دون قفل قسري ثم عد ببطء.',
+    'exercise.machine-triceps-extension.mistakes': 'رفع الذراعين عن الوسادة والدفع بالجذع كاملًا ومد المرفقين بعنف.',
+    'exercise.decline-push-up': 'ضغط مع رفع القدمين',
+    'exercise.decline-push-up.how': 'ضع القدمين على مقعد منخفض ثابت واليدين على الأرض أوسع قليلًا من الكتفين. حافظ على استقامة الجسم وأنزل الصدر بين اليدين مع توجيه المرفقين قطريًا للخلف ثم ادفع للأعلى.',
+    'exercise.decline-push-up.mistakes': 'هبوط الوركين ورفع القدمين أكثر من اللازم وفتح المرفقين تمامًا للجانبين.',
+    'exercise.incline-push-up': 'ضغط مع رفع اليدين',
+    'exercise.incline-push-up.how': 'ضع اليدين أوسع قليلًا من الكتفين على مقعد ثابت وارجع بالقدمين ليصبح الجسم مستقيمًا. أنزل الصدر نحو الحافة والمرفقان مائلان للخلف ثم ادفع بعيدًا، وكلما ارتفع السند سهل التمرين.',
+    'exercise.incline-push-up.mistakes': 'استخدام سند غير ثابت وهبوط الوركين وتقريب الرأس وحده بدل الصدر.',
+    'exercise.cable-pull-through': 'سحب الكابل بين الساقين',
+    'exercise.cable-pull-through.how': 'قف وظهرك لبكرة منخفضة وأمسك حبلًا بين الساقين. تقدم لشد الكابل واثنِ الركبتين قليلًا وادفع الوركين للخلف، ثم مدهما للوقوف مع إبقاء الذراعين مرتخيتين.',
+    'exercise.cable-pull-through.mistakes': 'القرفصاء بدل حركة الورك والسحب بالذراعين والميل للخلف في النهاية.',
+    'exercise.crunch': 'كرنش البطن',
+    'exercise.crunch.how': 'استلقِ على ظهرك مع ثني الركبتين والقدمين على الأرض واليدين على الصدر. ازفر وقرّب الأضلاع من الحوض وارفع لوحي الكتف بضعة سنتيمترات فقط ثم انزل ببطء.',
+    'exercise.crunch.mistakes': 'شد الرقبة واستخدام الزخم ورفع الجذع كاملًا كما في الجلوس من الاستلقاء.',
+    'exercise.dumbbell-bulgarian-split-squat': 'قرفصاء بلغارية بالدمبل',
+    'exercise.dumbbell-bulgarian-split-squat.how': 'أمسك الدمبلين بجانبيك وضع القدم الخلفية على مقعد منخفض ثابت. قدّم القدم الأمامية مسافة كافية واثنِ ركبتها ووركها للنزول إلى عمق مريح، ثم ادفع بالساق الأمامية للصعود وبدّل الجانب.',
+    'exercise.dumbbell-bulgarian-split-squat.mistakes': 'مقعد غير ثابت والدفع بالساق الخلفية وانهيار الركبة الأمامية للداخل ولف الحوض.',
+    'exercise.leg-press-calf-raise': 'رفع السمانة على جهاز ضغط الأرجل',
+    'exercise.leg-press-calf-raise.how': 'استخدم جهاز ضغط أرجل مناسبًا لتدريب السمانة بأمان واضبط محدداته وفق التعليمات. أبقِ الظهر والحوض مسنودين وثبّت مقدمتي القدمين على الجزء السفلي من المنصة مع ترك الكعبين حرين والركبتين شبه مستقيمتين؛ ادفع بتحريك الكاحلين فقط ثم أنزل الكعبين ببطء ضمن مدى مريح.',
+    'exercise.leg-press-calf-raise.mistakes': 'انزلاق القدمين عن الحافة وقفل الركبتين والارتداد بالكاحلين وتحويل الحركة إلى دفع بالساقين.',
+    'exercise.assisted-chin-up': 'عقلة بقبضة سفلية بمساعدة الجهاز',
+    'exercise.assisted-chin-up.how': 'اضبط ثقل المساعدة واصعد بأمان إلى دعامة الركبتين أو القدمين وفق تعليمات الجهاز. أمسك بقبضة سفلية بعرض الكتفين وراحتا اليدين نحوك، واسحب المرفقين للأسفل حتى يتجاوز الذقن مستوى القبضة ثم انزل ببطء؛ تقليل المساعدة يزيد الصعوبة.',
+    'exercise.assisted-chin-up.mistakes': 'اعتبار وزن المساعدة مقاومة إضافية والأرجحة ومد الرقبة لتجاوز المقابض والنزول أو مغادرة الدعامة دون تحكم.',
     'pattern.coreFlexion': 'ثني الجذع ورفع الساقين',
     'pattern.coreRotation': 'تدوير الجذع',
     'pattern.coreAntiRotation': 'مقاومة الدوران',
     'pattern.coreLateral': 'تمارين الجذع الجانبية',
     'equip.abWheel': 'عجلة البطن',
     'muscles.unassigned': 'تلقائي حسب الاسم',
+    'muscles.recognized': 'تم التعرّف: {name}. العضلة الرئيسية: {primary}. المساعدة: {secondary}.',
+    'muscles.manual': 'تصنيفك. العضلة الرئيسية: {primary}. المساعدة: {secondary}.',
+    'muscles.unknown': 'هذا الاسم غير موجود في مكتبة التمارين. اختر العضلات التي يدرّبها.',
+    'muscles.assign': 'تحديد العضلات',
+    'muscles.change': 'تغيير العضلات',
+    'muscles.reviewOther': 'تحديد عضلات التمارين ضمن أخرى',
+    'muscles.correctOtherHint': 'اختر العضلات واحفظ كل تمرين على حدة. ستُصنّف مجموعاته الحالية ضمن أخرى في جميع الأسابيع. لن تتغير المجموعات المصنفة سابقًا أو الأوزان أو سجلات التمرين الأصلية.',
+    'muscles.applyOther': 'حفظ العضلات وتصنيف مجموعات أخرى',
+    'muscles.assignmentSaved': 'حُفظت العضلات وأُعيد حساب المجموعات الحالية ضمن أخرى. لم تتغير سجلات التمرين الأصلية.',
+    'muscles.noOtherNames': 'لا تتضمن هذه السجلات اسم تمرين محفوظًا. راجعها في كيف تُحسب المجموعات.',
+    'muscles.source.corrected': 'تصحيحك للمجموعات الحالية ضمن أخرى',
+    'equip.kettlebells': 'أوزان كيتلبيل',
     'muscles.customHint': 'اختر العضلة الرئيسية والمساعدة. يُطبّق الاختيار أيضًا على السجلات القديمة لهذا التمرين التي لا تتضمن تصنيفًا محفوظًا؛ لا تُعاد كتابة التمارين المحفوظة.',
     'muscles.breakdown': 'كيف تُحسب المجموعات',
     'muscles.notRecorded': 'غير مسجّل',
@@ -18004,6 +18886,17 @@ function renderEditPanel() {
     sharedNote.hidden = true;   // zobrazí ju refreshSharedNotes()
     row.appendChild(sharedNote);
 
+    const recognition = document.createElement('div');
+    recognition.className = 'edit-recognition';
+    const recognitionNote = document.createElement('span');
+    recognitionNote.setAttribute('role', 'status');
+    recognitionNote.setAttribute('aria-live', 'polite');
+    const recognitionAction = document.createElement('button');
+    recognitionAction.type = 'button';
+    recognitionAction.className = 'btn btn-secondary btn-sm edit-muscle-action';
+    recognition.append(recognitionNote, recognitionAction);
+    row.appendChild(recognition);
+
     /* Presun cviku – prístupné tlačidlá (ťahanie uchopovadlom je alternatíva). */
     row.querySelectorAll('.edit-move').forEach(btn => {
       btn.addEventListener('click', () => moveDraftExercise(idx, Number(btn.dataset.move)));
@@ -18103,63 +18996,54 @@ function renderEditPanel() {
     const moreOpts = document.createElement('details');
     moreOpts.className = 'edit-more';
     moreOpts.open = editMoreOpen.has(ex);
-    moreOpts.addEventListener('toggle', () => { if (moreOpts.open) editMoreOpen.add(ex); else editMoreOpen.delete(ex); });
+    moreOpts.addEventListener('toggle', () => {
+      if (moreOpts.open) editMoreOpen.add(ex); else editMoreOpen.delete(ex);
+      recognitionAction.setAttribute('aria-expanded', moreOpts.open ? 'true' : 'false');
+    });
     const moreSum = document.createElement('summary');
     moreSum.textContent = t('exactions.moreOptions');
     moreOpts.append(moreSum, warmBox);
     const syncMoreOpts = () => { moreOpts.hidden = Array.from(moreOpts.children).every((c) => c === moreSum || c.hidden); };
-    /* Svaly vlastného cviku sú za Ďalšími možnosťami, nie nové tlačidlá počas tréningu. */
-    const muscleBox = document.createElement('div');
-    muscleBox.className = 'edit-muscles';
-    const primaryLabel = document.createElement('label');
-    const primarySelect = document.createElement('select');
-    primarySelect.id = 'edit-muscle-primary-' + idx;
-    primarySelect.className = 'edit-muscle-primary';
-    primaryLabel.htmlFor = primarySelect.id;
-    primaryLabel.textContent = t('exercise.primary');
-    for (const m of ['', ...MUSCLE_CODES, 'other']) {
-      const option = document.createElement('option');
-      option.value = m;
-      option.textContent = m ? muscleLabel(m) : t('muscles.unassigned');
-      primarySelect.appendChild(option);
-    }
-    const helpers = document.createElement('fieldset');
-    const helperLegend = document.createElement('legend');
-    helperLegend.textContent = t('exercise.secondary');
-    helpers.appendChild(helperLegend);
-    for (const m of MUSCLE_CODES) {
-      const label = document.createElement('label');
-      label.className = 'edit-side-toggle';
-      const input = document.createElement('input');
-      input.type = 'checkbox';
-      input.dataset.muscle = m;
-      label.append(input, document.createTextNode(muscleLabel(m)));
-      helpers.appendChild(label);
-    }
-    const muscleHint = document.createElement('p');
-    muscleHint.className = 'card-note';
-    muscleHint.textContent = t('muscles.customHint');
-    muscleBox.append(primaryLabel, primarySelect, helpers, muscleHint);
-    moreOpts.appendChild(muscleBox);
-    const syncMuscles = () => {
-      const d = editDraft[idx], meta = cleanExerciseMuscles(d.muscles);
-      muscleBox.hidden = !!builtinExerciseId(d);
-      primarySelect.value = meta ? meta.primary : '';
-      helpers.querySelectorAll('input').forEach(input => {
-        input.disabled = !meta || meta.primary === 'other' || input.dataset.muscle === meta.primary;
-        input.checked = !!meta && meta.secondary.includes(input.dataset.muscle);
-      });
-      syncMoreOpts();
-    };
-    const updateMuscles = () => {
+    /* Rozpoznanie je hneď pri názve; vlastný výber sa otvorí priamou akciou bez hľadania v doplnkoch. */
+    const picker = createExerciseMusclePicker('edit-muscle-primary-' + idx, (meta) => {
       const d = editDraft[idx];
-      const meta = cleanExerciseMuscles({ primary: primarySelect.value, secondary: Array.from(helpers.querySelectorAll('input:checked'), input => input.dataset.muscle) });
       if (meta) d.muscles = meta; else delete d.muscles;
       markDraftEdited(d, 'muscles');
       syncMuscles();
+    });
+    const muscleBox = picker.box, primarySelect = picker.primarySelect;
+    muscleBox.id = 'edit-muscles-' + idx;
+    recognitionAction.setAttribute('aria-controls', muscleBox.id);
+    recognitionAction.setAttribute('aria-expanded', moreOpts.open ? 'true' : 'false');
+    const muscleHint = document.createElement('p');
+    muscleHint.className = 'card-note';
+    muscleHint.textContent = t('muscles.customHint');
+    muscleBox.appendChild(muscleHint);
+    moreOpts.appendChild(muscleBox);
+    const syncMuscles = () => {
+      const d = editDraft[idx], builtin = builtinExerciseId(d);
+      const own = cleanExerciseMuscles(d.muscles);
+      const assigned = own || (!(d._edited && d._edited.muscles) && assignedExerciseMuscles({ name: d.name }));
+      const matched = libraryEntry(builtin || matchExercise(d.name).exId);
+      const meta = builtin ? matched : assigned || matched;
+      const mode = !String(d.name || '').trim() ? 'empty' : builtin || (!assigned && matched) ? 'recognized' : assigned ? 'manual' : 'unknown';
+      muscleBox.hidden = !!builtin;
+      picker.setValue(own || assigned);
+      recognition.dataset.state = mode;
+      recognition.hidden = mode === 'empty';
+      recognitionNote.textContent = mode === 'empty' ? '' : mode === 'unknown' ? t('muscles.unknown')
+        : t('muscles.' + mode, { name: matched ? t('exercise.' + matched.id) : '',
+          primary: muscleLabel(meta.primary), secondary: meta.secondary.length ? meta.secondary.map(muscleLabel).join(' · ') : t('exercise.noneSecondary') });
+      recognitionAction.hidden = !!builtin || mode === 'empty';
+      recognitionAction.textContent = t(mode === 'unknown' ? 'muscles.assign' : 'muscles.change');
+      syncMoreOpts();
     };
-    primarySelect.addEventListener('change', updateMuscles);
-    helpers.addEventListener('change', updateMuscles);
+    recognitionAction.addEventListener('click', () => {
+      moreOpts.open = true;
+      recognitionAction.setAttribute('aria-expanded', 'true');
+      primarySelect.focus();
+      muscleBox.scrollIntoView({ block: 'nearest' });
+    });
     syncMuscles();
 
     /* Voliteľné "Asistovaný cvik": číslo je pomoc v kg a menej pomoci je pokrok. Asistovaný cvik z knižnice
@@ -18217,9 +19101,11 @@ function renderEditPanel() {
     const nameInput = row.querySelector('.edit-name');
     const numInputs = row.querySelectorAll('.edit-num');
     nameInput.addEventListener('input', () => {
+      if (!row.isConnected || !editDraft || editDraft[idx] !== ex) return;
+      const previousName = exerciseNormName(ex);
       // Premenovaný cvik má vlastnú identitu a už nesmie dediť predpis pôvodného cviku.
       delete ex.progRow;
-      if (ex.id) {
+      if (builtinExerciseId(ex) || previousName !== exerciseNormName({ name: nameInput.value })) {
         delete ex.muscles;
         if (ex._edited) delete ex._edited.muscles;
         if (ex._undo) delete ex._undo.muscles;
@@ -18244,6 +19130,7 @@ function renderEditPanel() {
     });
     /* Spoločné hodnoty sa preberú až po dokončení názvu (change/blur), nie pri každom písmene. */
     nameInput.addEventListener('change', () => {
+      if (!row.isConnected || !editDraft || editDraft[idx] !== ex) return;
       const d = editDraft[idx];
       if (exerciseRowIdentity(d) === (d._base && d._base.identity)) return;
       seedDraftRow(d);
@@ -18460,6 +19347,9 @@ function cleanSideSets(value, maxSets) {
 function saveEditPlan() {
   const plan = getPlan(editingPlan);
   if (!plan) return;
+  /* Uložiť (aj cez Enter) najprv dokončí názov; udalosti odstráneného editora už nesmú meniť nový koncept. */
+  const focused = document.activeElement;
+  if (focused && document.getElementById('edit-rows').contains(focused)) focused.blur();
   const errEl = document.getElementById('edit-error');
   const typed = document.getElementById('edit-plan-name').value.trim();
   if (!typed) {
@@ -30844,7 +31734,7 @@ const CSV_EXERCISE_ALIASES = {
   'Leg Press': 'leg-press', 'Leg Press (Machine)': 'leg-press', 'Leg Press Horizontal (Machine)': 'leg-press',
   'Lunge (Dumbbell)': 'lunges', 'Lunge': 'lunges',
   'Leg Curl': 'leg-curls', 'Leg Curl (Machine)': 'leg-curls',
-  'Calf Raise': 'calf-raises', 'Calf Press (Machine)': 'calf-raises', 'Calf Raise (Machine)': 'calf-raises',
+  'Calf Raise': 'calf-raises', 'Calf Press (Machine)': 'leg-press-calf-raise', 'Calf Raise (Machine)': 'calf-raises',
   'Push Up': 'push-up', 'Push-Up': 'push-up', 'Push Ups': 'push-up', 'Pushup': 'push-up',
   'Bicep Curl (Band)': 'band-bicep-curl', 'Bicep Curl (Resistance Band)': 'band-bicep-curl',
   'Dumbbell Row': 'dumbbell-row', 'One Arm Dumbbell Row': 'dumbbell-row', 'Single Arm Dumbbell Row': 'dumbbell-row', 'Bent Over One Arm Row (Dumbbell)': 'dumbbell-row',
@@ -30853,8 +31743,8 @@ const CSV_EXERCISE_ALIASES = {
   'Hammer Curl (Dumbbell)': 'hammer-curl', 'Hammer Curl': 'hammer-curl', 'Dumbbell Hammer Curl': 'hammer-curl',
   'Diamond Push Up': 'diamond-push-up', 'Diamond Push-Up': 'diamond-push-up',
   'Bodyweight Squat': 'bodyweight-squat', 'Squat (Bodyweight)': 'bodyweight-squat', 'Air Squat': 'bodyweight-squat',
-  'Split Squat (Dumbbell)': 'split-squat', 'Split Squat': 'split-squat',
-  'Step Up': 'step-up', 'Step-up': 'step-up', 'Step Up (Dumbbell)': 'step-up', 'Step-up (Dumbbell)': 'step-up',
+  'Split Squat (Dumbbell)': 'dumbbell-split-squat', 'Split Squat': 'split-squat',
+  'Step Up': 'step-up', 'Step-up': 'step-up', 'Step Up (Dumbbell)': 'dumbbell-step-up', 'Step-up (Dumbbell)': 'dumbbell-step-up',
   'Glute Bridge': 'glute-bridge', 'Bodyweight Glute Bridge': 'glute-bridge',
   'Hip Thrust (Barbell)': 'hip-thrust', 'Hip Thrust': 'hip-thrust',
   'Single Leg Glute Bridge': 'single-leg-glute-bridge', 'Single Leg Bridge': 'single-leg-glute-bridge',
@@ -30877,7 +31767,7 @@ const CSV_EXERCISE_ALIASES = {
   'Hip Adductor (Machine)': 'adductor-machine', 'Hip Adduction (Machine)': 'adductor-machine', 'Adductor Machine': 'adductor-machine', 'Hip Adductor': 'adductor-machine',
   'Hip Abductor (Machine)': 'abductor-machine', 'Hip Abduction (Machine)': 'abductor-machine', 'Abductor Machine': 'abductor-machine', 'Hip Abductor': 'abductor-machine',
   'Triceps Dip (Assisted)': 'assisted-dips', 'Chest Dip (Assisted)': 'assisted-dips', 'Dip (Assisted)': 'assisted-dips', 'Assisted Dip': 'assisted-dips', 'Dips (Assisted)': 'assisted-dips',
-  'Pull Up (Assisted)': 'assisted-pull-ups', 'Chin Up (Assisted)': 'assisted-pull-ups', 'Assisted Pull Up': 'assisted-pull-ups', 'Pull-Up (Assisted)': 'assisted-pull-ups',
+  'Pull Up (Assisted)': 'assisted-pull-ups', 'Chin Up (Assisted)': 'assisted-chin-up', 'Assisted Pull Up': 'assisted-pull-ups', 'Pull-Up (Assisted)': 'assisted-pull-ups',
   'Dumbbell bench press': 'dumbbell-bench-press',
   'Incline barbell press': 'incline-barbell-press',
   'Decline barbell press': 'decline-barbell-press',
@@ -30936,7 +31826,7 @@ const CSV_EXERCISE_ALIASES = {
   'Reverse wrist curl': 'reverse-wrist-curl',
   'Single-arm dumbbell preacher curl': 'single-arm-preacher-curl',
   'Bulgarian split squat': 'bulgarian-split-squat',
-  'Bulgarian Split Squat (Dumbbell)': 'bulgarian-split-squat',
+  'Bulgarian Split Squat (Dumbbell)': 'dumbbell-bulgarian-split-squat',
   'Bulgarian Split Squat (Bodyweight)': 'bulgarian-split-squat',
   'Lying leg curl': 'lying-leg-curl',
   'Lying Leg Curl (Machine)': 'lying-leg-curl',
@@ -30989,11 +31879,400 @@ const CSV_EXERCISE_ALIASES = {
   'Side plank': 'side-plank',
   'Cable woodchop': 'cable-woodchop',
   'Dumbbell side bend': 'dumbbell-side-bend',
+  'Standing Dumbbell Press': 'standing-dumbbell-overhead-press',
+  'Standing Shoulder Press (Dumbbell)': 'standing-dumbbell-overhead-press',
+  'Standing Overhead Press (Dumbbell)': 'standing-dumbbell-overhead-press',
+  'Arnold Press (Dumbbell)': 'arnold-press',
+  'Arnold Dumbbell Press': 'arnold-press',
+  'Seated Arnold Press': 'arnold-press',
+  'Front Raise (Barbell)': 'barbell-front-raise',
+  'Barbell Front Raise': 'barbell-front-raise',
+  'Front Raise (Cable)': 'cable-front-raise',
+  'Cable Front Raise': 'cable-front-raise',
+  'Lateral Raise (Machine)': 'machine-lateral-raise',
+  'Machine Lateral Raise': 'machine-lateral-raise',
+  'Lateral Raise Machine': 'machine-lateral-raise',
+  'Two Arm Cable Lateral Raise': 'bilateral-cable-lateral-raise',
+  'Bilateral Cable Lateral Raise': 'bilateral-cable-lateral-raise',
+  'Lateral Raise (Cable, Both Arms)': 'bilateral-cable-lateral-raise',
+  'Incline Chest Fly (Cable)': 'incline-cable-chest-fly',
+  'Incline Fly (Cable)': 'incline-cable-chest-fly',
+  'Incline Cable Fly': 'incline-cable-chest-fly',
+  'Single Arm Row (Machine)': 'single-arm-machine-row',
+  'Single Arm Machine Row': 'single-arm-machine-row',
+  'Iso Lateral Row (Single Arm)': 'single-arm-machine-row',
+  'High Row (Machine)': 'machine-high-row',
+  'Machine High Row': 'machine-high-row',
+  'Iso Lateral High Row': 'machine-high-row',
+  'Pendlay Row (Barbell)': 'pendlay-row',
+  'Barbell Pendlay Row': 'pendlay-row',
+  'Romanian Deadlift (Dumbbell)': 'dumbbell-romanian-deadlift',
+  'Dumbbell Romanian Deadlift': 'dumbbell-romanian-deadlift',
+  'RDL (Dumbbell)': 'dumbbell-romanian-deadlift',
+  'Deadlift (Dumbbell)': 'dumbbell-deadlift',
+  'Dumbbell Deadlift': 'dumbbell-deadlift',
+  'Kettlebell Swing': 'kettlebell-swing',
+  'Swing (Kettlebell)': 'kettlebell-swing',
+  'Russian Kettlebell Swing': 'kettlebell-swing',
+  'Goblet Squat (Kettlebell)': 'kettlebell-goblet-squat',
+  'Kettlebell Goblet Squat': 'kettlebell-goblet-squat',
+  'Hip Thrust (Smith Machine)': 'smith-machine-hip-thrust',
+  'Smith Machine Hip Thrust': 'smith-machine-hip-thrust',
+  'Smith Hip Thrust': 'smith-machine-hip-thrust',
+  'Dumbbell Split Squat': 'dumbbell-split-squat',
+  'Static Lunge (Dumbbell)': 'dumbbell-split-squat',
+  'Walking Lunge (Dumbbell)': 'dumbbell-walking-lunge',
+  'Dumbbell Walking Lunge': 'dumbbell-walking-lunge',
+  'Walking Lunges with Dumbbells': 'dumbbell-walking-lunge',
+  'Lunge (Barbell)': 'barbell-lunge',
+  'Barbell Forward Lunge': 'barbell-lunge',
+  'Barbell Lunge': 'barbell-lunge',
+  'Bulgarian Split Squat (Smith Machine)': 'smith-machine-bulgarian-split-squat',
+  'Smith Machine Bulgarian Split Squat': 'smith-machine-bulgarian-split-squat',
+  'Smith Bulgarian Split Squat': 'smith-machine-bulgarian-split-squat',
+  'Dumbbell Step Up': 'dumbbell-step-up',
+  'Standing Leg Curl (Machine)': 'standing-leg-curl',
+  'Standing Leg Curl': 'standing-leg-curl',
+  'Standing Leg Curls': 'standing-leg-curl',
+  'Single Leg Curl (Machine)': 'single-leg-machine-curl',
+  'Single Leg Machine Curl': 'single-leg-machine-curl',
+  'Unilateral Leg Curl (Machine)': 'single-leg-machine-curl',
+  'Single Arm Reverse Fly (Cable)': 'single-arm-cable-reverse-fly',
+  'Single Arm Cable Reverse Fly': 'single-arm-cable-reverse-fly',
+  'Single Arm Rear Delt Fly (Cable)': 'single-arm-cable-reverse-fly',
+  'Single Arm Curl (Cable)': 'single-arm-cable-curl',
+  'Single Arm Cable Curl': 'single-arm-cable-curl',
+  'Single Arm Bicep Curl (Cable)': 'single-arm-cable-curl',
+  'Preacher Curl (Machine)': 'machine-preacher-curl',
+  'Machine Preacher Curl': 'machine-preacher-curl',
+  'Machine Scott Curl': 'machine-preacher-curl',
+  'Bayesian Curl (Cable)': 'bayesian-cable-curl',
+  'Bayesian Cable Curl': 'bayesian-cable-curl',
+  'Behind the Back Cable Curl': 'bayesian-cable-curl',
+  'Hammer Curl (Cable)': 'cable-hammer-curl',
+  'Rope Hammer Curl (Cable)': 'cable-hammer-curl',
+  'Cable Rope Hammer Curl': 'cable-hammer-curl',
+  'Cross Body Hammer Curl': 'cross-body-hammer-curl',
+  'Cross Body Hammer Curl (Dumbbell)': 'cross-body-hammer-curl',
+  'Pinwheel Curl': 'cross-body-hammer-curl',
+  'Skullcrusher (Dumbbell)': 'dumbbell-skull-crusher',
+  'Skull Crusher (Dumbbell)': 'dumbbell-skull-crusher',
+  'Lying Triceps Extension (Dumbbell)': 'dumbbell-skull-crusher',
+  'Dumbbell Skullcrusher': 'dumbbell-skull-crusher',
+  'Triceps Extension (Dumbbell)': 'overhead-dumbbell-triceps-extension',
+  'Overhead Triceps Extension (Dumbbell)': 'overhead-dumbbell-triceps-extension',
+  'Two Hand Dumbbell Triceps Extension': 'overhead-dumbbell-triceps-extension',
+  'Standing Overhead Dumbbell Triceps Extension': 'overhead-dumbbell-triceps-extension',
+  'Triceps Extension (Machine)': 'machine-triceps-extension',
+  'Machine Triceps Extension': 'machine-triceps-extension',
+  'Decline Push Up': 'decline-push-up',
+  'Feet Elevated Push Up': 'decline-push-up',
+  'Incline Push Up': 'incline-push-up',
+  'Hands Elevated Push Up': 'incline-push-up',
+  'Elevated Push Up (Hands)': 'incline-push-up',
+  'Pull Through (Cable)': 'cable-pull-through',
+  'Cable Pull Through': 'cable-pull-through',
+  'Rope Pull Through': 'cable-pull-through',
+  'Crunch': 'crunch',
+  'Crunches': 'crunch',
+  'Abdominal Crunch': 'crunch',
+  'Crunch (Bodyweight)': 'crunch',
+  'Flat Barbell Bench Press': 'bench-press',
+  'Bench Press (Dumbbell)': 'dumbbell-bench-press',
+  'Flat Dumbbell Press': 'dumbbell-bench-press',
+  'Flat Bench Press (Dumbbell)': 'dumbbell-bench-press',
+  'Incline Bench Press (Barbell)': 'incline-barbell-press',
+  'Incline Barbell Bench Press': 'incline-barbell-press',
+  'Decline Bench Press (Barbell)': 'decline-barbell-press',
+  'Decline Barbell Bench Press': 'decline-barbell-press',
+  'Incline Dumbbell Bench Press': 'incline-dumbbell-press',
+  'Incline Bench Press (Machine)': 'incline-machine-press',
+  'Incline Chest Press (Machine)': 'incline-machine-press',
+  'Chest Press Incline (Machine)': 'incline-machine-press',
+  'Bench Press (Smith Machine)': 'smith-machine-bench-press',
+  'Smith Bench Press': 'smith-machine-bench-press',
+  'Incline Bench Press (Smith Machine)': 'smith-machine-incline-press',
+  'Smith Incline Bench Press': 'smith-machine-incline-press',
+  'Chest Fly (Dumbbell)': 'dumbbell-fly',
+  'Fly (Dumbbell)': 'dumbbell-fly',
+  'Dumbbell Flyes': 'dumbbell-fly',
+  'Incline Chest Fly (Dumbbell)': 'incline-dumbbell-fly',
+  'Incline Fly (Dumbbell)': 'incline-dumbbell-fly',
+  'Chest Fly (Cable)': 'cable-chest-fly',
+  'Cable Crossover': 'cable-chest-fly',
+  'Low Cable Fly': 'low-to-high-cable-fly',
+  'Low to High Fly (Cable)': 'low-to-high-cable-fly',
+  'High Cable Fly': 'high-to-low-cable-fly',
+  'High to Low Fly (Cable)': 'high-to-low-cable-fly',
+  'Floor Press (Dumbbell)': 'dumbbell-floor-press',
+  'Dumbbell Floor Chest Press': 'dumbbell-floor-press',
+  'Bench Press Close Grip (Barbell)': 'close-grip-bench-press',
+  'Close Grip Bench Press (Barbell)': 'close-grip-bench-press',
+  'Butterfly (Machine)': 'pec-deck',
+  'Pectoral Fly (Machine)': 'pec-deck',
+  'Chest Press (Selectorized Machine)': 'machine-chest-press',
+  'Seated Machine Chest Press': 'machine-chest-press',
+  'Military Press (Barbell)': 'overhead-press',
+  'Standing Barbell Shoulder Press': 'overhead-press',
+  'Seated Shoulder Press (Dumbbell)': 'seated-dumbbell-shoulder-press',
+  'Seated Overhead Press (Dumbbell)': 'seated-dumbbell-shoulder-press',
+  'Shoulder Press (Machine)': 'machine-shoulder-press',
+  'Overhead Press (Machine)': 'machine-shoulder-press',
+  'Dumbbell Side Raise': 'lateral-raises',
+  'Side Raise (Dumbbell)': 'lateral-raises',
+  'Seated Lateral Raise (Dumbbell)': 'seated-dumbbell-lateral-raise',
+  'Seated Side Lateral Raise': 'seated-dumbbell-lateral-raise',
+  'Leaning Lateral Raise (Dumbbell)': 'leaning-dumbbell-lateral-raise',
+  'Lean Away Lateral Raise (Dumbbell)': 'leaning-dumbbell-lateral-raise',
+  'Single Arm Lateral Raise (Cable)': 'single-arm-cable-lateral-raise',
+  'One Arm Cable Lateral Raise': 'single-arm-cable-lateral-raise',
+  'Dumbbell Front Raise': 'front-raise',
+  'Face Pull (Cable)': 'face-pull',
+  'Cable Rope Face Pull': 'face-pull',
+  'Reverse Fly (Machine)': 'reverse-pec-deck',
+  'Rear Delt Fly (Machine)': 'reverse-pec-deck',
+  'Reverse Pec Deck Fly': 'reverse-pec-deck',
+  'Reverse Fly (Dumbbell)': 'bent-over-dumbbell-reverse-fly',
+  'Bent Over Reverse Fly (Dumbbell)': 'bent-over-dumbbell-reverse-fly',
+  'Bent Over Rear Delt Fly (Dumbbell)': 'bent-over-dumbbell-reverse-fly',
+  'Reverse Fly (Cable)': 'cable-reverse-fly',
+  'Rear Delt Fly (Cable)': 'cable-reverse-fly',
+  'Bilateral Cable Reverse Fly': 'cable-reverse-fly',
+  'Bent Over Barbell Row': 'bent-over-rows',
+  'Bent Over Row (Overhand Barbell)': 'bent-over-rows',
+  'Single Arm Row (Dumbbell)': 'dumbbell-row',
+  'One Arm Row (Dumbbell)': 'dumbbell-row',
+  'Seated Cable Row (Close Grip)': 'cable-rows',
+  'Seated Cable Row V Bar': 'cable-rows',
+  'T Bar Row (Barbell)': 't-bar-row',
+  'Landmine Row': 't-bar-row',
+  'Landmine T Bar Row': 't-bar-row',
+  'Chest Supported Row (Dumbbell)': 'chest-supported-dumbbell-row',
+  'Incline Row (Dumbbell)': 'chest-supported-dumbbell-row',
+  'Seated Row (Machine)': 'machine-row',
+  'Chest Supported Row (Machine)': 'machine-row',
+  'Iso Lateral Row (Both Arms)': 'machine-row',
+  'Single Arm Row (Cable)': 'single-arm-cable-row',
+  'One Arm Cable Row': 'single-arm-cable-row',
+  'Bodyweight Row': 'inverted-row',
+  'Australian Pull Up': 'inverted-row',
+  'Pull Up (Bodyweight)': 'pull-ups',
+  'Bodyweight Pull Up': 'pull-ups',
+  'Chin Up (Bodyweight)': 'chin-up',
+  'Bodyweight Chin Up': 'chin-up',
+  'Pull Up (Neutral Grip)': 'neutral-grip-pull-up',
+  'Parallel Grip Pull Up': 'neutral-grip-pull-up',
+  'Lat Pull Down (Cable)': 'lat-pulldown',
+  'Wide Grip Lat Pulldown': 'lat-pulldown',
+  'Single Arm Pulldown (Cable)': 'single-arm-lat-pulldown',
+  'Unilateral Lat Pulldown': 'single-arm-lat-pulldown',
+  'Lat Pulldown (Neutral Grip)': 'neutral-grip-lat-pulldown',
+  'Close Grip Lat Pulldown (Neutral Grip)': 'neutral-grip-lat-pulldown',
+  'Bent Over Row (Underhand Barbell)': 'underhand-barbell-row',
+  'Reverse Grip Barbell Row': 'underhand-barbell-row',
+  'Seated Cable Row (Wide Grip)': 'wide-grip-cable-row',
+  'Wide Grip Seated Row (Cable)': 'wide-grip-cable-row',
+  'Shrug (Barbell)': 'barbell-shrug',
+  'Barbell Shoulder Shrug': 'barbell-shrug',
+  'Shrug (Dumbbell)': 'dumbbell-shrug',
+  'Dumbbell Shoulder Shrug': 'dumbbell-shrug',
+  'Straight Arm Pullover (Dumbbell)': 'dumbbell-pullover',
+  'Straight Arm Lat Pulldown (Cable)': 'cable-pullover',
+  'Straight Arm Pulldown': 'cable-pullover',
+  'Straight Arm Pulldown (Cable)': 'cable-pullover',
+  'Pull Up (Machine Assisted)': 'assisted-pull-ups',
+  'Machine Assisted Pull Up': 'assisted-pull-ups',
+  'Dip (Machine Assisted)': 'assisted-dips',
+  'Machine Assisted Dip': 'assisted-dips',
+  'Bicep Curl (Barbell)': 'barbell-curl',
+  'Biceps Curl (Barbell)': 'barbell-curl',
+  'Barbell Biceps Curl': 'barbell-curl',
+  'EZ Bar Biceps Curl': 'ez-bar-curl',
+  'EZ Bar Bicep Curl': 'ez-bar-curl',
+  'Bicep Curl (EZ Bar)': 'ez-bar-curl',
+  'Curl (EZ Bar)': 'ez-bar-curl',
+  'Dumbbell Biceps Curl': 'bicep-curls',
+  'Standing Bicep Curl (Dumbbell)': 'bicep-curls',
+  'Preacher Curl (EZ Bar)': 'preacher-curl',
+  'Scott Curl (Barbell)': 'preacher-curl',
+  'Incline Curl (Dumbbell)': 'incline-dumbbell-curl',
+  'Incline Bicep Curl (Dumbbell)': 'incline-dumbbell-curl',
+  'Concentration Curl (Dumbbell)': 'concentration-curl',
+  'Dumbbell Concentration Curl': 'concentration-curl',
+  'Spider Curl (Dumbbell)': 'spider-curl',
+  'Reverse Curl (Barbell)': 'reverse-curl',
+  'Reverse Grip Curl (Barbell)': 'reverse-curl',
+  'Standing Bicep Curl (Cable)': 'cable-curl',
+  'Cable Bar Curl': 'cable-curl',
+  'Preacher Curl (Dumbbell)': 'single-arm-preacher-curl',
+  'Single Arm Preacher Curl (Dumbbell)': 'single-arm-preacher-curl',
+  'Triceps Pushdown (Rope)': 'rope-triceps-pushdown',
+  'Triceps Rope Pushdown': 'rope-triceps-pushdown',
+  'Tricep Pushdown (Rope)': 'rope-triceps-pushdown',
+  'Triceps Pushdown (Straight Bar)': 'straight-bar-triceps-pushdown',
+  'Triceps Pushdown (Bar)': 'straight-bar-triceps-pushdown',
+  'Tricep Pushdown (Straight Bar)': 'straight-bar-triceps-pushdown',
+  'Triceps Extension (Cable, Overhead)': 'overhead-cable-triceps-extension',
+  'Overhead Triceps Extension (Cable)': 'overhead-cable-triceps-extension',
+  'Overhead Triceps Extension (Rope)': 'overhead-cable-triceps-extension',
+  'Skullcrusher (Barbell)': 'lying-triceps-extension',
+  'Skull Crusher (Barbell)': 'lying-triceps-extension',
+  'Lying Triceps Extension (Barbell)': 'lying-triceps-extension',
+  'Skullcrusher (EZ Bar)': 'lying-triceps-extension',
+  'One Arm Overhead Triceps Extension (Dumbbell)': 'single-arm-dumbbell-triceps-extension',
+  'Single Arm Overhead Triceps Extension (Dumbbell)': 'single-arm-dumbbell-triceps-extension',
+  'Single Arm Pushdown (Cable)': 'single-arm-cable-triceps-extension',
+  'One Arm Triceps Pushdown (Cable)': 'single-arm-cable-triceps-extension',
+  'Triceps Kickback (Dumbbell)': 'dumbbell-triceps-kickback',
+  'Tricep Kickback (Dumbbell)': 'dumbbell-triceps-kickback',
+  'Wrist Curl (Dumbbell)': 'wrist-curl',
+  'Palms Up Wrist Curl (Dumbbell)': 'wrist-curl',
+  'Reverse Wrist Curl (Dumbbell)': 'reverse-wrist-curl',
+  'Palms Down Wrist Curl (Dumbbell)': 'reverse-wrist-curl',
+  'Barbell Back Squat': 'squats',
+  'High Bar Squat (Barbell)': 'squats',
+  'Barbell Front Squat': 'front-squat',
+  'Goblet Squat (Dumbbell)': 'goblet-squat',
+  'Dumbbell Goblet Squat': 'goblet-squat',
+  'Conventional Deadlift': 'barbell-deadlift',
+  'Conventional Deadlift (Barbell)': 'barbell-deadlift',
+  'Barbell Romanian Deadlift': 'romanian-deadlift',
+  'RDL (Barbell)': 'romanian-deadlift',
+  'Barbell Sumo Deadlift': 'sumo-deadlift',
+  'Single Leg RDL (Dumbbell)': 'single-leg-romanian-deadlift',
+  'One Leg Romanian Deadlift (Dumbbell)': 'single-leg-romanian-deadlift',
+  'Sled Leg Press': 'leg-press',
+  '45 Degree Leg Press': 'leg-press',
+  'Hack Squat (Sled)': 'hack-squat',
+  'Sled Hack Squat': 'hack-squat',
+  'Leg Extensions': 'leg-extension',
+  'Seated Leg Extension': 'leg-extension',
+  'Lying Leg Curls': 'lying-leg-curl',
+  'Lying Leg Curls (Machine)': 'lying-leg-curl',
+  'Prone Leg Curl': 'lying-leg-curl',
+  'Seated Leg Curls': 'seated-leg-curl',
+  'Seated Hamstring Curl (Machine)': 'seated-leg-curl',
+  'Leg Press (Single Leg)': 'single-leg-press',
+  'Unilateral Leg Press': 'single-leg-press',
+  'Smith Squat': 'smith-machine-squat',
+  'Bodyweight Bulgarian Split Squat': 'bulgarian-split-squat',
+  'Rear Foot Elevated Split Squat (Bodyweight)': 'bulgarian-split-squat',
+  'Split Squat (Bodyweight)': 'split-squat',
+  'Bodyweight Split Squat': 'split-squat',
+  'Step Up (Bodyweight)': 'step-up',
+  'Bodyweight Step Up': 'step-up',
+  'Dumbbell Forward Lunge': 'lunges',
+  'Forward Lunge (Dumbbell)': 'lunges',
+  'Reverse Lunge (Bodyweight)': 'reverse-lunge',
+  'Bodyweight Reverse Lunge': 'reverse-lunge',
+  'Walking Lunge (Bodyweight)': 'walking-lunge',
+  'Bodyweight Walking Lunge': 'walking-lunge',
+  'Lateral Lunge (Bodyweight)': 'lateral-lunge',
+  'Side Lunge (Bodyweight)': 'lateral-lunge',
+  'Standing Calf Raise Machine': 'standing-machine-calf-raise',
+  'Standing Calf Raises (Machine)': 'standing-machine-calf-raise',
+  'Seated Calf Raises (Machine)': 'seated-calf-raise',
+  'Seated Calf Raise Machine': 'seated-calf-raise',
+  'Standing Calf Raise (Dumbbell)': 'dumbbell-calf-raise',
+  'Dumbbell Standing Calf Raise': 'dumbbell-calf-raise',
+  'Standing Calf Raise (Bodyweight)': 'calf-raises',
+  'Bodyweight Calf Raise': 'calf-raises',
+  'Seated Hip Adduction (Machine)': 'adductor-machine',
+  'Inner Thigh Machine': 'adductor-machine',
+  'Seated Hip Abduction (Machine)': 'abductor-machine',
+  'Outer Thigh Machine': 'abductor-machine',
+  'Hip Adduction (Cable)': 'cable-hip-adduction',
+  'Standing Hip Adduction (Cable)': 'cable-hip-adduction',
+  'Hip Abduction (Cable)': 'cable-hip-abduction',
+  'Standing Hip Abduction (Cable)': 'cable-hip-abduction',
+  'Cable Kickback': 'cable-glute-kickback',
+  'Standing Glute Kickback (Cable)': 'cable-glute-kickback',
+  'Glute Bridge (Barbell)': 'barbell-glute-bridge',
+  'Barbell Floor Glute Bridge': 'barbell-glute-bridge',
+  'Hip Thrust Machine': 'machine-hip-thrust',
+  'Glute Drive (Machine)': 'machine-hip-thrust',
+  'Dumbbell Bench Hip Thrust': 'dumbbell-hip-thrust',
+  'Glute Bridge (Bodyweight)': 'glute-bridge',
+  'Single Leg Glute Bridge (Bodyweight)': 'single-leg-glute-bridge',
+  'Hanging Knee Raises': 'hanging-knee-raise',
+  'Knee Raise (Hanging)': 'hanging-knee-raise',
+  'Hanging Leg Raises': 'hanging-leg-raise',
+  'Leg Raise (Hanging)': 'hanging-leg-raise',
+  'Lying Leg Raises': 'lying-leg-raise',
+  'Leg Raise (Lying)': 'lying-leg-raise',
+  'Reverse Crunches': 'reverse-crunch',
+  'Reverse Crunch (Bodyweight)': 'reverse-crunch',
+  'Crunch (Cable)': 'cable-crunch',
+  'Kneeling Cable Crunch': 'cable-crunch',
+  'Ab Crunch (Cable)': 'cable-crunch',
+  'Crunch (Machine)': 'machine-crunch',
+  'Seated Abdominal Crunch (Machine)': 'machine-crunch',
+  'Bicycle Crunches': 'bicycle-crunch',
+  'Bicycle (Ab Exercise)': 'bicycle-crunch',
+  'Ab Wheel': 'ab-wheel-rollout',
+  'Ab Rollout (Wheel)': 'ab-wheel-rollout',
+  'Kneeling Ab Wheel Rollout': 'ab-wheel-rollout',
+  'Pallof Press (Cable)': 'pallof-press',
+  'Cable Anti Rotation Press': 'pallof-press',
+  'Side Plank (Bodyweight)': 'side-plank',
+  'Woodchopper (Cable)': 'cable-woodchop',
+  'Cable Wood Chop': 'cable-woodchop',
+  'Side Bend (Dumbbell)': 'dumbbell-side-bend',
+  'Dumbbell Side Bends': 'dumbbell-side-bend',
+  'Dumbbell Bulgarian Split Squat': 'dumbbell-bulgarian-split-squat',
+  'Rear Foot Elevated Split Squat (Dumbbell)': 'dumbbell-bulgarian-split-squat',
+  'Calf Press on Leg Press': 'leg-press-calf-raise',
+  'Leg Press Calf Raise': 'leg-press-calf-raise',
+  'Calf Raise (Leg Press)': 'leg-press-calf-raise',
+  'Assisted Chin Up': 'assisted-chin-up',
+  'Chin Up (Machine Assisted)': 'assisted-chin-up',
+  'Machine Assisted Chin Up': 'assisted-chin-up',
+  'Standing dumbbell overhead press': 'standing-dumbbell-overhead-press',
+  'Arnold press': 'arnold-press',
+  'Barbell front raise': 'barbell-front-raise',
+  'Cable front raise': 'cable-front-raise',
+  'Machine lateral raise': 'machine-lateral-raise',
+  'Bilateral cable lateral raise': 'bilateral-cable-lateral-raise',
+  'Incline cable chest fly': 'incline-cable-chest-fly',
+  'Single-arm machine row': 'single-arm-machine-row',
+  'Machine high row': 'machine-high-row',
+  'Pendlay row': 'pendlay-row',
+  'Dumbbell Romanian deadlift': 'dumbbell-romanian-deadlift',
+  'Dumbbell deadlift': 'dumbbell-deadlift',
+  'Kettlebell swing': 'kettlebell-swing',
+  'Kettlebell goblet squat': 'kettlebell-goblet-squat',
+  'Smith machine hip thrust': 'smith-machine-hip-thrust',
+  'Dumbbell split squat': 'dumbbell-split-squat',
+  'Dumbbell walking lunge': 'dumbbell-walking-lunge',
+  'Barbell lunge': 'barbell-lunge',
+  'Smith machine Bulgarian split squat': 'smith-machine-bulgarian-split-squat',
+  'Dumbbell step-up': 'dumbbell-step-up',
+  'Standing machine leg curl': 'standing-leg-curl',
+  'Single-leg machine curl': 'single-leg-machine-curl',
+  'Single-arm cable reverse fly': 'single-arm-cable-reverse-fly',
+  'Single-arm cable curl': 'single-arm-cable-curl',
+  'Machine preacher curl': 'machine-preacher-curl',
+  'Bayesian cable curl': 'bayesian-cable-curl',
+  'Cable hammer curl': 'cable-hammer-curl',
+  'Cross-body hammer curl': 'cross-body-hammer-curl',
+  'Dumbbell skull crusher': 'dumbbell-skull-crusher',
+  'Two-handed overhead dumbbell triceps extension': 'overhead-dumbbell-triceps-extension',
+  'Machine triceps extension': 'machine-triceps-extension',
+  'Decline push-up': 'decline-push-up',
+  'Incline push-up': 'incline-push-up',
+  'Cable pull-through': 'cable-pull-through',
+  'Dumbbell Bulgarian split squat': 'dumbbell-bulgarian-split-squat',
+  'Leg press calf raise': 'leg-press-calf-raise',
+  'Machine-assisted chin-up': 'assisted-chin-up',
 };
 
-/* Normalizovaný názov: NFC, orezané, jedna medzera, malé písmená. */
+/* Zoskupovanie riadkov CSV zachováva pôvodnú identitu názvu; rozpoznávanie smie byť zhovievavejšie. */
 function csvNormName(s) {
   return String(s == null ? '' : s).normalize('NFC').trim().replace(/\s+/g, ' ').toLowerCase();
+}
+function exerciseMatchName(s) {
+  return String(s == null ? '' : s).normalize('NFKD').replace(/\p{M}/gu, '').toLowerCase()
+    .replace(/[^\p{L}\p{N}+]+/gu, ' ').trim().replace(/\s+/g, ' ');
 }
 let csvNameIndex = null;
 /* Index normalizovaný názov -> id: názvy knižnice vo VŠETKÝCH jazykoch, potom aliasy (knižnica má prednosť). */
@@ -31004,11 +32283,11 @@ function csvGetNameIndex() {
     for (const code of LANG_CODES) {
       const dict = I18N[code];
       const nm = dict && dict['exercise.' + e.id];
-      if (nm) { const k = csvNormName(nm); if (k && !m.has(k)) m.set(k, e.id); }
+      if (nm) { const k = exerciseMatchName(nm); if (k && !m.has(k)) m.set(k, e.id); }
     }
   }
   for (const [name, id] of Object.entries(CSV_EXERCISE_ALIASES)) {
-    const k = csvNormName(name);
+    const k = exerciseMatchName(name);
     if (k && BUILTIN_EXERCISE_IDS.has(id) && !m.has(k)) m.set(k, id);
   }
   csvNameIndex = m;
@@ -31018,7 +32297,7 @@ function csvGetNameIndex() {
 function matchExercise(name) {
   const original = String(name == null ? '' : name).trim();
   try {
-    const id = csvGetNameIndex().get(csvNormName(original));
+    const id = csvGetNameIndex().get(exerciseMatchName(original));
     return { exId: id || null, name: original };
   } catch (err) {
     return { exId: null, name: original };
@@ -31958,11 +33237,22 @@ const MUSCLE_KEYS = MUSCLE_CODES.concat(['other']);
 
 /* Pôvod zaradenia pre výpočet aj rozpis. Presné mená knižnice/aliasy sa používajú iba na čítanie svalov,
    nikdy nemenia identitu, históriu, spoločné váhy ani body. Žiadne približné hádanie názvov. */
-function muscleProfile(entry) {
+function muscleProfile(entry, workout) {
   const id = entry && (entry.exId || entry.id);
   const lib = id && BUILTIN_EXERCISE_IDS.has(id) ? libraryEntry(id) : null;
   if (lib) return { primary: lib.primary, secondary: lib.secondary, source: 'library', id: lib.id };
   const own = cleanExerciseMuscles(entry && entry.muscles);
+  if (own && own.primary !== 'other') return Object.assign({ source: 'saved', id: null }, own);
+  /* Iba výslovná oprava v prehľade môže zaradiť minulé Iné; bežiaca snímka sa tým nemení. */
+  if (workout) {
+    const corrections = state && state.settings && state.settings.exerciseMuscleCorrections;
+    const identity = exerciseIdentity({ name: entry && entry.name });
+    const correction = corrections && corrections[identity];
+    const corrected = cleanExerciseMuscles(correction);
+    if (corrected && corrected.primary !== 'other' && Array.isArray(correction.workoutIds) && correction.workoutIds.includes(workout.id)) {
+      return Object.assign({ source: 'corrected', id: null }, corrected);
+    }
+  }
   if (own) return Object.assign({ source: 'saved', id: null }, own);
   const assigned = assignedExerciseMuscles(entry);
   if (assigned) return Object.assign({ source: 'custom', id: null }, assigned);
@@ -31973,8 +33263,8 @@ function muscleProfile(entry) {
 }
 
 /* Hlavný sval = 1, pomocné = ½; neznámy alebo výslovne nezaradený cvik = Iné. */
-function muscleShare(entry) {
-  const meta = muscleProfile(entry);
+function muscleShare(entry, workout) {
+  const meta = muscleProfile(entry, workout);
   const out = { [meta.primary]: 1 };
   for (const m of meta.secondary) if (MUSCLE_CODES.includes(m) && !out[m]) out[m] = 0.5;
   return out;
@@ -32021,7 +33311,7 @@ function muscleBuckets(keys) {
       for (const e of w.exercises) {
         const count = muscleSetTotals(e);
         if (!count.sets) continue;
-        const share = muscleShare(e), nSets = count.sets, vol = count.volume;
+        const share = muscleShare(e, w), nSets = count.sets, vol = count.volume;
         for (const m of Object.keys(share)) {
           b.sets[m] = (b.sets[m] || 0) + nSets * share[m];
           if (vol) b.volume[m] = (b.volume[m] || 0) + vol * share[m];
@@ -32069,6 +33359,92 @@ function muscleWeekStart(off) {
   return addDays(d, -((d.getDay() + 6) % 7));
 }
 
+/* Oprava sa ukladá mimo histórie aj pamäte váh a platí iba pre existujúce záznamy Iné. */
+function correctOtherMuscles(identity, raw) {
+  const meta = cleanExerciseMuscles(raw);
+  if (!identity || !meta || meta.primary === 'other') return false;
+  const old = state.settings.exerciseMuscleCorrections;
+  const previous = old && typeof old === 'object' && !Array.isArray(old) ? old : {};
+  const ids = new Set(Array.isArray(previous[identity] && previous[identity].workoutIds) ? previous[identity].workoutIds : []);
+  for (const w of insightHistory()) {
+    if (!w || typeof w.id !== 'string' || !Array.isArray(w.exercises)) continue;
+    if (w.exercises.some(e => e && exerciseIdentity({ name: e.name }) === identity
+        && muscleProfile(e, w).primary === 'other' && muscleSetTotals(e).sets > 0)) ids.add(w.id);
+  }
+  if (!ids.size) return false;
+  state.settings.exerciseMuscleCorrections = Object.assign({}, previous, {
+    [identity]: { primary: meta.primary, secondary: meta.secondary, workoutIds: Array.from(ids) },
+  });
+  applyExerciseDefaults(identity, { muscles: meta }, Date.now());
+  saveState();
+  return true;
+}
+
+/* Zoznam vzniká až po otvorení sekcie; neuložený výber žije len v otvorenom liste. */
+function renderUnassignedMuscles() {
+  const body = document.getElementById('muscles-unassigned-body');
+  if (!body || !muState) return;
+  const key = weekKey(muscleWeekStart(muState.off)), groups = new Map();
+  for (const w of insightHistory()) {
+    if (!w || weekKey(parseDate(w.date)) !== key || !Array.isArray(w.exercises)) continue;
+    for (const e of w.exercises) {
+      if (!e || muscleProfile(e, w).primary !== 'other') continue;
+      const count = muscleSetTotals(e).sets, identity = exerciseIdentity({ name: e.name });
+      if (!identity || !count) continue;
+      const group = groups.get(identity);
+      if (group) group.sets += count; else groups.set(identity, { name: String(e.name), sets: count });
+    }
+  }
+  body.replaceChildren();
+  if (!groups.size) { body.textContent = t('muscles.noOtherNames'); return; }
+  let index = 0;
+  for (const [identity, group] of groups) {
+    const row = document.createElement('form');
+    row.className = 'mu-unassigned-row';
+    const title = document.createElement('h4');
+    title.textContent = group.name;
+    const count = document.createElement('p');
+    count.className = 'card-note';
+    count.textContent = xpNum(group.sets) + ' ' + t('units.sets');
+    const note = document.createElement('p');
+    note.className = 'card-note';
+    const matched = libraryEntry(matchExercise(group.name).exId);
+    note.textContent = matched ? t('muscles.recognized', { name: t('exercise.' + matched.id),
+      primary: muscleLabel(matched.primary), secondary: matched.secondary.length ? matched.secondary.map(muscleLabel).join(' · ') : t('exercise.noneSecondary') })
+      : t('muscles.unknown');
+    const save = document.createElement('button');
+    save.type = 'submit';
+    save.className = 'btn btn-secondary mu-assignment-save';
+    save.textContent = t('muscles.applyOther');
+    const picker = createExerciseMusclePicker('mu-primary-' + index++, (meta) => {
+      muState.muscleDrafts.set(identity, meta);
+      save.disabled = !meta || meta.primary === 'other';
+    });
+    const initial = muState.muscleDrafts.has(identity) ? muState.muscleDrafts.get(identity)
+      : matched ? { primary: matched.primary, secondary: matched.secondary } : null;
+    picker.setValue(initial);
+    save.disabled = !initial || initial.primary === 'other';
+    row.append(title, count, note, picker.box, save);
+    row.addEventListener('submit', (event) => {
+      event.preventDefault();
+      if (!muState || !correctOtherMuscles(identity, picker.read())) return;
+      muState.muscleDrafts.delete(identity);
+      muState.trend = muscleTrend(8);
+      const map = document.getElementById('muscles-map');
+      if (map) map.innerHTML = bodyMapSvg(muscleRecovery(Date.now()), { size: 'full' });
+      renderMuscles();
+      renderStatsGrid();
+      const status = document.getElementById('muscles-assignment-status');
+      status.textContent = t('muscles.assignmentSaved');
+      status.hidden = false;
+      const review = document.getElementById('muscles-unassigned');
+      const focus = review.hidden ? document.getElementById('btn-muscles-close') : review.querySelector('summary');
+      try { focus.focus({ preventScroll: true }); } catch (e) { focus.focus(); }
+    });
+    body.appendChild(row);
+  }
+}
+
 /* Rozpis vznikne až po otvorení podrobností. Číta tie isté dáta a pravidlá ako graf, nič neukladá. */
 function renderMuscleBreakdown() {
   const box = document.getElementById('muscles-breakdown-body');
@@ -32085,7 +33461,7 @@ function renderMuscleBreakdown() {
     }
     for (const e of w.exercises) {
       if (!e || typeof e !== 'object') continue;
-      const count = muscleSetTotals(e), meta = muscleProfile(e), share = muscleShare(e);
+      const count = muscleSetTotals(e), meta = muscleProfile(e, w), share = muscleShare(e, w);
       const contribution = Object.keys(share).map(m => esc(muscleLabel(m)) + ': <bdi>' + esc(xpNum(count.sets * share[m])) + '</bdi>').join(' · ');
       const helpers = meta.secondary.length ? meta.secondary.map(muscleLabel).join(' · ') : t('exercise.noneSecondary');
       const rawCount = e.setsDone === undefined ? t('muscles.notRecorded') : String(e.setsDone);
@@ -32148,6 +33524,10 @@ function renderMuscles() {
       + '<span class="mu-spark" role="img" aria-label="' + escAttr(t('muscles.trend', { name: muscleLabel(m) })) + '">' + lineChartSvg(pts, { compact: true }) + '</span></div></div>';
   }).join('') : '<div class="xp-empty">' + esc(t('muscles.empty')) + '</div>';
   document.getElementById('muscles-total').innerHTML = '<span>' + esc(t('muscles.volume')) + '</span><b><bdi dir="ltr">' + esc(xpNum(Math.round(wk.totalVolume))) + '</bdi> ' + esc(t('units.kg')) + '</b>';
+  const unassigned = document.getElementById('muscles-unassigned');
+  unassigned.hidden = !wk.sets.other;
+  if (unassigned.open && !unassigned.hidden) renderUnassignedMuscles();
+  else document.getElementById('muscles-unassigned-body').replaceChildren();
   renderMuscleBreakdown();
 }
 
@@ -32155,8 +33535,9 @@ function openMuscles() {
   const modal = document.getElementById('modal-muscles');
   if (!modal) return;
   const opener = modal.hidden ? document.activeElement : (muState && muState.opener);
+  document.getElementById('muscles-assignment-status').hidden = true;
   /* Odvodené údaje sa počítajú raz pri otvorení: trend 8 týždňov a najstarší týždeň histórie. */
-  muState = { off: 0, maxOff: muscleMaxOffset(), trend: muscleTrend(8), opener };
+  muState = { off: 0, maxOff: muscleMaxOffset(), trend: muscleTrend(8), opener, muscleDrafts: new Map() };
   const map = document.getElementById('muscles-map');
   if (map) map.innerHTML = bodyMapSvg(muscleRecovery(Date.now()), { size: 'full' });
   renderMuscles();
@@ -32191,6 +33572,9 @@ function stepMuscles(delta) {
 function initMuscles() {
   on('btn-muscles-close', closeMuscles);
   on('btn-muscles-prev', () => stepMuscles(1));
+  document.getElementById('muscles-unassigned').addEventListener('toggle', () => {
+    if (muState && document.getElementById('muscles-unassigned').open) renderUnassignedMuscles();
+  });
   on('muscles-breakdown', renderMuscleBreakdown, 'toggle');
   on('btn-muscles-next', () => stepMuscles(-1));
   const modal = document.getElementById('modal-muscles');
@@ -32235,7 +33619,7 @@ function muscleRecovery(now) {
         const ws = historyWorkingSets(e);
         const drops = historyDropSets(e);
         if (!ws.length && !drops.length) continue;
-        const share = muscleShare(e);
+        const share = muscleShare(e, w);
         /* jednostranný cvik: obe strany spolu = 1 séria */
         const side = e && e.unilateral === true ? 0.5 : 1;
         let sets = 0;

@@ -35,7 +35,7 @@
     }, 4000);
   </script>
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
-  <link rel="stylesheet" href="style.css?v=119">
+  <link rel="stylesheet" href="style.css?v=120">
 </head>
 <body data-tab="dnes">
 
@@ -1323,6 +1323,12 @@
           <span class="mu-week" id="muscles-week" aria-live="polite"></span>
           <button type="button" class="btn-icon mu-step" id="btn-muscles-next" data-i18n-title="muscles.next" data-i18n-aria="muscles.next">›</button>
         </div>
+        <details class="mu-unassigned" id="muscles-unassigned" hidden>
+          <summary data-i18n="muscles.reviewOther">Zaradiť cviky zo skupiny Iné</summary>
+          <p class="card-note" data-i18n="muscles.correctOtherHint"></p>
+          <div id="muscles-unassigned-body"></div>
+        </details>
+        <p class="card-note" id="muscles-assignment-status" role="status" hidden></p>
         <div class="mu-list" id="muscles-list"></div>
         <div class="mu-total" id="muscles-total"></div>
         <p class="card-note mu-note" data-i18n="muscles.note"></p>
@@ -1389,8 +1395,8 @@
     <button type="button" class="btn btn-sm" id="btn-csv-undo" data-i18n="csv.undo">Undo import</button>
   </div>
 
-  <script src="community-config.js?v=119"></script>
-  <script src="vendor/supabase-js.js?v=119"></script>
-  <script src="script.js?v=119"></script>
+  <script src="community-config.js?v=120"></script>
+  <script src="vendor/supabase-js.js?v=120"></script>
+  <script src="script.js?v=120"></script>
 </body>
 </html>
