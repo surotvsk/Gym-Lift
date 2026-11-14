@@ -138,4 +138,11 @@ target retention, rollback, and a timed deep cursor. It restores the initial mig
 `node tests/social/push-presence.js` checks the Apple exception and conservative delivery defaults.
 Deployment order is app → 0018 → push function; production execution requires owner approval.
 
+The UI push rollback scenario closes active chats and awaits lease cleanup before removing the RPCs,
+then reloads the app to verify older-server behavior. Queued lease cleanup also rechecks known server
+support before sending; this is covered by `tests/android/native-phase7.js`.
+
 2026-11-09 local Phase7 results: feed-presence38/38, push-presence10/10, FCM transport25/25, DB FCM34/34. Deep cursor985ms/1829 local posts; local schema restored.
+
+2026-11-14 screenshot-free rollback correction: `native-phase7` 29/29 and `ui-push` 61/61.
+The prior `chat_viewing` rollback-console failure is resolved without filtering console errors.

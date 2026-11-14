@@ -253,6 +253,7 @@ in the prototype.
 - **Chat alerts (0018 + updated push function):** while a chat is visible, a short viewing heartbeat suppresses
   redundant Android/browser alerts for that conversation. It expires after 30 seconds without renewal.
   Apple Web Push notifications are always delivered visibly. Leaving or hiding the chat clears the heartbeat.
+  Once the app detects an older server without viewing leases, it sends neither renewals nor cleanup requests.
 - **Community** (v83) opens straight into the feed, like X/Twitter in Bento shapes and colours: a compact header
   that stays on top while you scroll (*Community*, **New post**, search and **⋯** with Friends — and pending
   requests —, Top 20 with your rank, your profile, My posts and Moderation for moderators; on phones narrower

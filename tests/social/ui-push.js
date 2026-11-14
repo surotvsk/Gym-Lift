@@ -297,6 +297,9 @@ async function member(tag, name) {
     check('desktop browser without Push: "not supported" note', await pE.eval(`document.getElementById('community-push-card').innerText.includes(t('push.unsupported'))`));
 
     section('fallback when 0010 is rolled back');
+    /* Pred odstránením RPC zavrieme živé chaty a počkáme na uvoľnenie prenájmov.
+       Tento scenár overuje načítanie staršej schémy po obnovení appky. */
+    for (const [, p] of pages) await p.eval(`(switchTab('dnes'), communityViewingStop())`);
     const undone = L.rollbackFrom(10);
     reapplyLater = undone;
     sql(`notify pgrst, 'reload schema';`);

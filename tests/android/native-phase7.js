@@ -53,6 +53,7 @@ const fs=require('fs'),work='/tmp/gq-phase7';fs.mkdirSync(work,{recursive:true})
   await ev(`communityVersion=10;__p7.missing=true;communityViewingSync();communityViewingQueue`);
   t.check('missing presence RPC downgrades safely',await ev(`communityVersion===9`));
   await ev(`communityViewingStop();communityViewingQueue`);
+  t.check('known missing presence RPC is not called again for cleanup',await ev(`__p7.calls.length===1&&!communityViewingTarget&&!communityViewingTimer`));
   await ev(`communityVersion=10;__p7.missing=false;__p7.calls=[];__p7.uid='account-b';communityViewingSync();communityViewingQueue`);
   t.check('stale account cannot write lease',await ev(`__p7.calls.length===0`));
   await ev(`communityViewingStop();communityViewingQueue`);
@@ -61,6 +62,10 @@ const fs=require('fs'),work='/tmp/gq-phase7';fs.mkdirSync(work,{recursive:true})
     communityViewingQueue=new Promise(resolve=>{__p7release=resolve;});
     communityViewingSync();__p7.tick();__p7.tick();activeTab='dnes';communityViewingSync();__p7release();communityViewingQueue`);
   t.check('delayed and repeated heartbeat cannot renew chat after leaving',await ev(`__p7.calls.length===1&&__p7.calls[0].args.p_conversation===null`));
+  await ev(`communityVersion=10;__p7.calls=[];activeTab='komunita';communityViewingSync();communityViewingQueue`);
+  await ev(`communityViewingQueue=new Promise(resolve=>{__p7release=resolve;});
+    communityViewingStop();communityVersion=9;__p7release();communityViewingQueue`);
+  t.check('queued cleanup rechecks schema support before sending',await ev(`__p7.calls.length===1&&!!__p7.calls[0].args.p_conversation&&!communityViewingTarget&&!communityViewingTimer`));
   for(const lang of ['sk','en','es','pt-BR','fr','ar'])t.check(lang+' suggested translation',await ev(`!!I18N[${JSON.stringify(lang)}]['community.suggested']`));
   t.check('no browser errors',errors.length===0);
   console.log(`==== checks: ${t.pass} passed, ${t.fail} failed ====`);process.exitCode=t.fail?1:0;

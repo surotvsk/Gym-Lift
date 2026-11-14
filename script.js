@@ -19285,8 +19285,9 @@ function communityViewingWrite(target, conversation) {
   communityViewingQueue = communityViewingQueue.catch(() => {}).then(async () => {
     const controller = new AbortController();
     let timer;
-    const current = () => !controller.signal.aborted && (!conversation ||
-      (communityViewingTarget === target && communityChatVisible() && communityVersion >= 10));
+    /* Známa staršia schéma neprijíma ani uvoľnenie prenájmu; overí sa až pri vykonaní fronty. */
+    const current = () => !controller.signal.aborted && communityVersion >= 10 && (!conversation ||
+      (communityViewingTarget === target && communityChatVisible()));
     try {
       await Promise.race([(async () => {
         if (!current()) return;
