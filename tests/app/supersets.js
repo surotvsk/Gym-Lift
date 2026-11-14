@@ -249,8 +249,10 @@ function check(name, ok, info) {
     for (const theme of ['light', 'dark']) {
       await ev(`(document.documentElement.setAttribute('data-theme', ${J(theme)}), document.querySelector('#exercise-list .superset').scrollIntoView({ block: 'center' }), true)`); await wait(250);
       check(theme + ' 390 px: wrapper inside the screen, no overflow', await ev(`(() => { const r = document.querySelector('#exercise-list .superset').getBoundingClientRect(); return r.left >= 0 && r.right <= innerWidth + 1 && document.documentElement.scrollWidth <= innerWidth + 1; })()`));
+      if (process.env.GQ_SCREENSHOTS !== '0') {
       const s = await p.c.send('Page.captureScreenshot', { format: 'png' });
       fs.writeFileSync(path.join(WORK, 'shots', 'supersets-' + theme + '-390.png'), Buffer.from(s.data, 'base64'));
+      }
     }
     await ev(`(document.documentElement.removeAttribute('data-theme'), true)`);
     /* editor v arabčine: bracket je na pravej strane */

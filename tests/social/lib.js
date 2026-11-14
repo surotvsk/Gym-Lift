@@ -148,6 +148,9 @@ const STACK = [
   { n: 17, up: '0017_leaderboard_v2.sql', down: '0017_down.sql',
     present: "to_regprocedure('public.leaderboard_achievement_value_v2(text[],integer)') is not null" },
   { n: 18, up: '0018_feed_presence.sql', down: '0018_down.sql', present: "to_regclass('public.chat_presence') is not null" },
+  { n: 19, up: '0019_reminders_v2.sql', down: '0019_down.sql',
+    present: "exists (select 1 from information_schema.columns where table_schema = 'public' and table_name = 'push_reminders' and column_name = 'water_mode')" },
+  { n: 20, up: '0020_google_age_ticket.sql', down: '0020_down.sql', present: "to_regclass('public.age_tickets') is not null" },
 ];
 let lastRollback = null;   // posledný rollbackFrom: čo sa vrátilo a aká bola verzia predtým
 function rollbackFrom(n) {

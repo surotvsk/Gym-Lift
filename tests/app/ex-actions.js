@@ -156,8 +156,10 @@ function check(name, ok, info) {
         return { n: r.querySelectorAll('button').length, h: rr.height, after: after.map((c) => c.className), more: r.querySelector('.btn-ex-more').getBoundingClientRect().width,
           over: document.documentElement.scrollWidth <= innerWidth + 1, fits: r.scrollWidth <= r.clientWidth + 1 }; })()`);
       check(theme + ': set-count row has 3 buttons, ≤ 56 px, nothing after it, fits', g.n === 3 && g.h <= 56 && g.after.length === 0 && g.over && g.fits && g.more >= 44, g);
+      if (process.env.GQ_SCREENSHOTS !== '0') {
       const s = await p.c.send('Page.captureScreenshot', { format: 'png' });
       fs.writeFileSync(path.join(WORK, 'shots', 'tile-' + theme + '.png'), Buffer.from(s.data, 'base64'));
+      }
     }
 
     console.log('== languages / RTL');
@@ -172,8 +174,10 @@ function check(name, ok, info) {
       check(lang + ': translated, 6 items, no raw key, no overflow, no missing exactions.* key', x.n === 6 && !/exactions\./.test(x.raw) && x.title.length > 0 && x.over && x.miss.length === 0 && x.aria.length > 5, x);
       if (lang === 'ar') {
         check('ar: right-to-left', x.dir === 'rtl');
+        if (process.env.GQ_SCREENSHOTS !== '0') {
         const s = await p.c.send('Page.captureScreenshot', { format: 'png' });
         fs.writeFileSync(path.join(WORK, 'shots', 'sheet-ar.png'), Buffer.from(s.data, 'base64'));
+        }
       }
       await esc(); await wait(60);
     }
@@ -181,8 +185,10 @@ function check(name, ok, info) {
     for (const theme of ['light', 'dark']) {
       await p.eval(`(document.documentElement.setAttribute('data-theme', ${J(theme)}), renderTrening(), true)`); await wait(150);
       await open(0); await wait(150);
+      if (process.env.GQ_SCREENSHOTS !== '0') {
       const s = await p.c.send('Page.captureScreenshot', { format: 'png' });
       fs.writeFileSync(path.join(WORK, 'shots', 'sheet-' + theme + '.png'), Buffer.from(s.data, 'base64'));
+      }
       check(theme + ': sheet items are ≥ 44 px tall', await p.eval(`Array.from(${sheet}.querySelectorAll('#ex-actions-list button:not([hidden])')).every((x) => x.getBoundingClientRect().height >= 44)`));
       await esc(); await wait(60);
     }

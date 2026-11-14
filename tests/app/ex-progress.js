@@ -206,16 +206,20 @@ function check(name, ok, info) {
       check(lang + ': no raw key / NaN / undefined, no overflow, chart drawn, all xprog.* keys translated', !/xprog\.|NaN|undefined/.test(x.raw) && x.over && x.pts === 1 && x.miss.length === 0, x);
       if (lang === 'ar') {
         check('ar: right-to-left', x.dir === 'rtl');
+        if (process.env.GQ_SCREENSHOTS !== '0') {
         const s = await p.c.send('Page.captureScreenshot', { format: 'png' });
         fs.writeFileSync(path.join(WORK, 'shots', 'progress-ar.png'), Buffer.from(s.data, 'base64'));
+        }
       }
       await esc(); await wait(60);
     }
     await p.eval(`(setLang('en'), true)`);
     for (const theme of ['light', 'dark']) {
       await p.eval(`(document.documentElement.setAttribute('data-theme', ${J(theme)}), openExerciseProgress('bench-press', 'Bench press'), true)`); await wait(200);
+      if (process.env.GQ_SCREENSHOTS !== '0') {
       const s = await p.c.send('Page.captureScreenshot', { format: 'png' });
       fs.writeFileSync(path.join(WORK, 'shots', 'progress-' + theme + '.png'), Buffer.from(s.data, 'base64'));
+      }
       check(theme + ': sheet fits 390 px', await p.eval(`(() => { const m = ${sheet}.querySelector('.modal'); return m.scrollWidth <= m.clientWidth + 1 && m.getBoundingClientRect().width <= 390; })()`));
       await esc(); await wait(60);
     }

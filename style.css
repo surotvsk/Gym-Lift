@@ -2610,6 +2610,11 @@ body.has-backup-banner .app-main {
   padding-bottom: calc(var(--tabbar-h) + env(safe-area-inset-bottom, 0px) + var(--sp-6) + 96px);
 }
 
+/* Pri úzkom displeji je lišta vyššia (zalomený text) – rezerva musí byť väčšia. */
+@media (max-width: 360px) {
+  body.has-backup-banner .app-main { padding-bottom: calc(var(--tabbar-h) + env(safe-area-inset-bottom, 0px) + var(--sp-6) + 164px); }
+}
+
 @media (max-width: 430px) {
   .backup-banner { padding-inline: var(--sp-3); gap: var(--sp-2); }
   .backup-actions { flex-direction: column-reverse; align-items: stretch; }
@@ -2839,6 +2844,19 @@ body.has-backup-banner .app-main {
   margin: var(--sp-2) 0;
   overflow-wrap: break-word;
 }
+
+/* Kalkulačka telesného tuku: živý výsledok */
+.bf-result {
+  font-size: var(--fs-xl);
+  font-weight: var(--fw-black);
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+  margin: var(--sp-2) 0;
+  overflow-wrap: break-word;
+}
+.bf-result.bf-bad { color: var(--danger, var(--text)); font-size: var(--fs-md, 1rem); font-weight: var(--fw-bold, 700); }
+#bodyfat-box .field[hidden] { display: none; }
+#bodyfat-box .field input, #bodyfat-box .field select { font-size: 16px; }   /* iPhone nepriblíži pole */
 
 /* ===== Upozornenie na veľkosť uložených dát ===== */
 
@@ -3701,9 +3719,20 @@ button.cstat:hover { background: var(--surface-2); }
 .crem .community-check { margin-top: var(--sp-3); }
 .crem-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2); margin: var(--sp-2) 0 0; padding-inline-start: var(--sp-6); }
 .crem-lbl { font-size: var(--fs-sm); color: var(--text-dim); }
-.crem-time { width: auto; min-width: 6.5em; min-height: 40px; margin: 0; }
-.crem-select { width: auto; min-height: 40px; margin: 0; }
-.crem-days .goal-chip { min-width: 44px; min-height: 40px; padding: 0 10px; }
+.crem-time { width: auto; min-width: 6.5em; min-height: 44px; margin: 0; }
+.crem-select { width: auto; min-height: 44px; margin: 0; }
+.crem-days .goal-chip { min-width: 44px; min-height: 44px; padding: 0 10px; }
+/* Pripomienky v2 (0019): riadky času s tlačidlom odobrať, prepínač režimu vody, vlastné pripomienky. */
+.crem-slot { display: inline-flex; align-items: center; gap: var(--sp-1); }
+.crem-del { min-width: 44px; min-height: 44px; padding: 0 10px; }
+.crem-add, .crem .crem-mode { min-height: 44px; }
+.crem-slot .crem-time, .crem-own .crem-time, .crem-own-text { min-height: 44px; font-size: 16px; }
+.crem-sub { margin: var(--sp-4) 0 0; font-size: var(--fs-md); color: var(--text); }
+.crem-empty { margin-top: var(--sp-2); }
+.crem-own { display: flex; flex-direction: column; gap: var(--sp-2); margin-top: var(--sp-3); margin-inline-start: var(--sp-6); padding: var(--sp-3); background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--r-sm); }
+.crem-own .crem-row { margin: 0; padding-inline-start: 0; }
+.crem-own .crem-days .goal-chip { min-height: 44px; }
+.crem-own-text { width: 100%; }
 /* skrytý panel (odpoveď, výber zdieľania) musí byť naozaj skrytý – display:flex vyššie prekoná [hidden] */
 .creply-bar[hidden], .cshare-picker[hidden], .cmsg-actions[hidden] { display: none; }
 
@@ -4825,7 +4854,7 @@ html.ios .app-main { padding-top: max(34px, calc(env(safe-area-inset-top, 0px) +
 .finish-bar .finish-btn:disabled { background: color-mix(in srgb, var(--text) 14%, var(--bg)); color: color-mix(in srgb, var(--text) 62%, var(--bg)); box-shadow: none; cursor: default; }   /* tlmená, ale plná farba (nie opacity) */
 /* Koniec tréningu nad lepivými lištami: rezerva rastie s výškou lišty Dokončiť a karty Oddych
    (--sticky-bottom), takže posledný obsah sa dá vždy vyrolovať nad ne (.app-main už má 110 px na menu). */
-#screen-trening.in-session { padding-bottom: max(16px, calc(var(--sticky-bottom, 0px) - 94px - env(safe-area-inset-bottom, 0px))); }
+#screen-trening.in-session { padding-bottom: max(16px, calc(var(--sticky-bottom, 0px) - var(--bar-bottom) - 2px - env(safe-area-inset-bottom, 0px))); }
 .bt-session { position: relative; }
 .bt-session .mini > .sess-more { min-width: 44px; min-height: 44px; justify-content: center; }
 .sess-menu {
@@ -5249,3 +5278,51 @@ button.record-row::after { content: '\203A'; flex: 0 0 auto; color: var(--text-f
 .programs-actions { display: flex; flex-direction: column; gap: var(--sp-2); margin-top: var(--sp-4); }
 .programs-actions .btn { min-height: 48px; margin: 0; }
 .programs-end { color: var(--danger); }
+/* Android appka s 3-tlačidlovou navigáciou (html.nav-buttons nastavuje script.js cez GymBars.navMode):
+   tab bar je plná lišta na celú šírku tesne nad systémovými tlačidlami (WebView už končí nad nimi,
+   preto bottom: 0 bez env()). Všetko polohované od --tabbar-h / --bar-bottom ostáva nad ňou. */
+html.nav-buttons { --tabbar-h: 64px; --bar-bottom: 72px; }
+html.nav-buttons .tab-bar {
+  left: 0; right: 0; bottom: 0; transform: none; width: 100%; max-width: none; height: 64px; box-sizing: border-box;
+  margin: 0; padding: 0 4px; gap: 0; justify-content: space-around; align-items: center;
+  border-radius: 0; background: var(--b-nav); border-top: 1px solid var(--border); box-shadow: none;
+}
+html.nav-buttons .tab-bar .tab { flex: 1 1 0; width: auto; max-width: 72px; height: 48px; min-height: 48px; }
+html.nav-buttons .update-banner { bottom: 72px; }
+
+/* ===== Graf mier s dátumovou osou + porovnanie dvoch dátumov ===== */
+.chart-box { position: relative; direction: ltr; }   /* čas plynie vždy zľava doprava (aj v arabčine) */
+.chart-svg { height: auto; overflow: visible; font-size: var(--fs-xs); font-family: inherit; }
+.chart-grid { stroke: var(--border); stroke-width: 1; }
+.chart-axis { fill: var(--text-faint); font-size: var(--fs-xs); font-variant-numeric: tabular-nums; }
+.chart-pt { cursor: pointer; outline: none; }
+.chart-hit { fill: transparent; }
+.chart-dot { stroke: var(--surface); stroke-width: 2; }
+.chart-pt:focus-visible .chart-dot, .chart-dot.active { stroke: var(--text); stroke-width: 2.5; }
+.chart-tip {
+  position: absolute; z-index: 2; pointer-events: none; white-space: nowrap; max-width: 100%;
+  padding: 6px 10px; border-radius: var(--r-sm); background: var(--ink); color: var(--on-ink); border: 1px solid var(--border-strong);
+  font-size: var(--fs-xs); font-weight: var(--fw-bold); font-variant-numeric: tabular-nums; direction: ltr;
+}
+.chart-tip[hidden] { display: none; }
+#body-range-chips .metric-chip { min-height: 44px; }
+#body-metric-chips .metric-chip { min-height: 44px; }
+
+.cmp-table { width: 100%; table-layout: fixed; border-collapse: collapse; font-size: var(--fs-xs); font-variant-numeric: tabular-nums; }
+.cmp-table th, .cmp-table td { padding: var(--sp-2) 4px; text-align: start; border-bottom: 1px solid var(--border); overflow-wrap: anywhere; vertical-align: baseline; }
+.cmp-table thead th { color: var(--text-faint); font-weight: var(--fw-bold); }
+.cmp-table tbody th { color: var(--text-dim); font-weight: var(--fw-bold); }
+.cmp-table th:first-child { width: 31%; }
+.cmp-diff { font-weight: var(--fw-black); color: var(--text); }
+.cmp-good { color: var(--ok); }
+.cmp-bad { color: var(--danger); }
+
+/* ===== Graf tepu v detaile tréningu (Health Connect) ===== */
+.hr-chart { direction: ltr; position: relative; margin: var(--sp-1) 0; }
+.hr-chart .chart-box { margin: 0; }
+.hr-chart .hr-svg { width: 100%; height: auto; display: block; overflow: visible; font-size: var(--fs-xs); font-family: inherit; }
+.hr-note { margin: 0; }
+html[dir="rtl"] .hr-note { direction: rtl; }
+.hr-avg { stroke: var(--text-dim); stroke-width: 1; stroke-dasharray: 4 3; }
+.hr-avg-label, .hr-max-label { font-weight: var(--fw-bold); fill: var(--text-dim); paint-order: stroke; stroke: var(--surface-2); stroke-width: 3px; stroke-linejoin: round; }
+.hr-max { fill: var(--accent); }

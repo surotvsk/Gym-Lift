@@ -68,8 +68,10 @@ async function shot(p, name, selector) {
   await wait(400);
   if (selector) await p.eval(`(() => { const el = document.querySelector(${J(selector)}); if (el) el.scrollIntoView({ block: 'center' }); return true; })()`);
   await wait(300);
-  const r = await p.c.send('Page.captureScreenshot', { format: 'png' });
-  fs.writeFileSync(path.join(SHOTS, name + '.png'), Buffer.from(r.data, 'base64'));
+  if (process.env.GQ_SCREENSHOTS !== '0') {
+    const r = await p.c.send('Page.captureScreenshot', { format: 'png' });
+    fs.writeFileSync(path.join(SHOTS, name + '.png'), Buffer.from(r.data, 'base64'));
+  }
   await p.c.send('Emulation.clearDeviceMetricsOverride');
 }
 const bodyText = (p) => p.eval(`document.getElementById('community-body').innerText`);

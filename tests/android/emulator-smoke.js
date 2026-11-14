@@ -52,6 +52,7 @@ async function connectWebView() {
   return { c, ev };
 }
 function shot(name) {
+  if (process.env.GQ_SCREENSHOTS === '0') return;
   fs.mkdirSync(SHOTS, { recursive: true });
   fs.writeFileSync(path.join(SHOTS, name + '.png'), execFileSync(ADB, ['exec-out', 'screencap', '-p']));
 }
@@ -88,7 +89,7 @@ function shot(name) {
         shot(theme + '-' + tab);
       }
     }
-    check('all tabs rendered in light and dark (screenshots)', fs.readdirSync(SHOTS).length >= 10);
+    if (process.env.GQ_SCREENSHOTS !== '0') check('all tabs rendered in light and dark (screenshots)', fs.readdirSync(SHOTS).length >= 10);
 
     sh('cmd connectivity airplane-mode enable');
     await wait(1500);

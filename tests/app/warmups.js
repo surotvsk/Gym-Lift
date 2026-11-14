@@ -157,8 +157,10 @@ function check(name, ok, info) {
       await wait(250);
       check('390 px ' + theme + ': no horizontal overflow', await p.eval(`document.documentElement.scrollWidth <= innerWidth + 1`));
       check('390 px ' + theme + ': warm-up buttons are tappable (≥ 40 px) and inside the screen', await p.eval(`Array.from(${ex0}.querySelectorAll('.warmup-item button')).every((x) => { const r = x.getBoundingClientRect(); return r.height >= 40 && r.left >= 0 && r.right <= innerWidth + 1; })`));
+      if (process.env.GQ_SCREENSHOTS !== '0') {
       const s = await p.c.send('Page.captureScreenshot', { format: 'png' });
       fs.writeFileSync(path.join(WORK, 'shots', 'warmups-' + theme + '-390.png'), Buffer.from(s.data, 'base64'));
+      }
     }
     await p.eval(`(document.documentElement.removeAttribute('data-theme'), true)`);
     await p.c.send('Emulation.clearDeviceMetricsOverride');
@@ -253,8 +255,10 @@ function check(name, ok, info) {
       if (lang === 'ar') {
         check('ar: right-to-left', x.dir === 'rtl');
         await p.eval(`(${ex0}.querySelector('.warmups').scrollIntoView({ block: 'center' }), true)`);
+        if (process.env.GQ_SCREENSHOTS !== '0') {
         const s2 = await p.c.send('Page.captureScreenshot', { format: 'png' });
         fs.writeFileSync(path.join(WORK, 'shots', 'warmups-ar.png'), Buffer.from(s2.data, 'base64'));
+        }
       }
     }
     await p.eval(`(setLang('en'), true)`);

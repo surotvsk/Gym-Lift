@@ -44,7 +44,7 @@ const LANGS = ['sk', 'en', 'es', 'pt-BR', 'fr', 'ar'];
   p.c.on('Log.entryAdded', (e) => { if (e.entry.level === 'error' && !/favicon/.test(e.entry.url || '')) logs.push(e.entry.text); });
   p.c.on('Runtime.exceptionThrown', (e) => logs.push(String(e.exceptionDetails.exception && e.exceptionDetails.exception.description || e.exceptionDetails.text)));
   const shot = async (file) => {
-    if (!SHOTS) return;
+    if (process.env.GQ_SCREENSHOTS === '0' || !SHOTS) return;
     const s = await p.c.send('Page.captureScreenshot', { format: 'png' });
     fs.writeFileSync(path.join(SHOTS, file), Buffer.from(s.data, 'base64'));
   };

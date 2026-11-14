@@ -79,8 +79,10 @@ function check(name, ok, info) {
     await p.reload();
     await p.eval(`(switchTab('trening'), true)`); await wait(300);
     check('per-set weights survive a reload', J(await weights()) === J(['60', '65*', '65*', '62.5*']), await weights());
+    if (process.env.GQ_SCREENSHOTS !== '0') {
     const shot = await p.c.send('Page.captureScreenshot', { format: 'png' });
     fs.writeFileSync(path.join(WORK, 'shots', 'workout-en.png'), Buffer.from(shot.data, 'base64'));
+    }
 
     console.log('== saved history');
     await p.eval(`(finishWorkout(), confirmFinish(), true)`);
@@ -120,8 +122,10 @@ function check(name, ok, info) {
       check(lang + ': labels translated', r.cap === r.key && !/session\./.test(r.cap + r.aria), r);
       if (lang === 'ar') {
         check('ar: right-to-left', r.dir === 'rtl');
+        if (process.env.GQ_SCREENSHOTS !== '0') {
         const s2 = await p.c.send('Page.captureScreenshot', { format: 'png' });
         fs.writeFileSync(path.join(WORK, 'shots', 'workout-ar.png'), Buffer.from(s2.data, 'base64'));
+        }
       }
     }
     await p.eval(`(setLang('en'), true)`);
@@ -129,8 +133,10 @@ function check(name, ok, info) {
     await p.eval(`(() => { switchTab('trening'); renderTrening(); return true; })()`);
     await wait(300);
     check('390 px: no horizontal overflow', await p.eval(`document.documentElement.scrollWidth <= innerWidth + 1`));
+    if (process.env.GQ_SCREENSHOTS !== '0') {
     const s3 = await p.c.send('Page.captureScreenshot', { format: 'png' });
     fs.writeFileSync(path.join(WORK, 'shots', 'workout-390-editor.png'), Buffer.from(s3.data, 'base64'));
+    }
 
     check('no exceptions', p.errors.length === 0, p.errors);
     check('no console errors', logs.length === 0, logs);

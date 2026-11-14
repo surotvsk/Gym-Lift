@@ -123,8 +123,10 @@ function check(name, ok, info) {
       await p.eval(`(document.documentElement.setAttribute('data-theme', ${J(theme)}), openPlateCalc(187.5), true)`);
       await wait(250);
       check('390 px ' + theme + ': no horizontal overflow', await p.eval(`document.documentElement.scrollWidth <= innerWidth + 1 && (() => { const m = document.querySelector('#modal-plates .modal'); return m.scrollWidth <= m.clientWidth + 1; })()`));
+      if (process.env.GQ_SCREENSHOTS !== '0') {
       const s = await p.c.send('Page.captureScreenshot', { format: 'png' });
       fs.writeFileSync(path.join(WORK, 'shots', 'plates-' + theme + '.png'), Buffer.from(s.data, 'base64'));
+      }
       await p.eval(`(closePlateCalc(), true)`);
     }
     await p.eval(`(document.documentElement.removeAttribute('data-theme'), true)`);

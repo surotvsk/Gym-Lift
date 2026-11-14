@@ -257,13 +257,17 @@ function check(name, ok, info) {
       await wait(250);
       check('390 px ' + theme + ': no horizontal overflow', await p.eval(`document.documentElement.scrollWidth <= innerWidth + 1`));
       check('390 px ' + theme + ': chips are tappable (≥ 40 px) and inside the screen', await p.eval(`Array.from(document.querySelectorAll('.set-effort')).every((x) => { const r = x.getBoundingClientRect(); return r.height >= 40 && r.left >= 0 && r.right <= innerWidth + 1; })`));
+      if (process.env.GQ_SCREENSHOTS !== '0') {
       const s = await p.c.send('Page.captureScreenshot', { format: 'png' });
       fs.writeFileSync(path.join(WORK, 'shots', 'effort-' + theme + '-390.png'), Buffer.from(s.data, 'base64'));
+      }
       await p.eval(`(${ex0}.querySelector('.set-effort').click(), true)`);
       await wait(200);
       check('390 px ' + theme + ': picker fits the screen', await p.eval(`(() => { const m = document.querySelector('#modal-effort .modal'); const r = m.getBoundingClientRect(); return r.left >= 0 && r.right <= innerWidth + 1 && document.documentElement.scrollWidth <= innerWidth + 1; })()`));
+      if (process.env.GQ_SCREENSHOTS !== '0') {
       const s3 = await p.c.send('Page.captureScreenshot', { format: 'png' });
       fs.writeFileSync(path.join(WORK, 'shots', 'effort-picker-' + theme + '-390.png'), Buffer.from(s3.data, 'base64'));
+      }
       await p.eval(`(document.querySelector('#modal-effort .effort-opt').click(), true)`);
       await wait(100);
     }
@@ -283,8 +287,10 @@ function check(name, ok, info) {
       if (lang === 'ar') {
         check('ar: right-to-left', x.dir === 'rtl');
         await p.eval(`(${ex0}.querySelector('.set-effort').scrollIntoView({ block: 'center' }), true)`);
+        if (process.env.GQ_SCREENSHOTS !== '0') {
         const s2 = await p.c.send('Page.captureScreenshot', { format: 'png' });
         fs.writeFileSync(path.join(WORK, 'shots', 'effort-ar.png'), Buffer.from(s2.data, 'base64'));
+        }
       }
     }
     await p.eval(`(setLang('en'), true)`);

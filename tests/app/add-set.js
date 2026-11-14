@@ -179,8 +179,10 @@ function check(name, ok, info) {
       if (lang === 'ar') check('ar: rtl', r.dir === 'rtl');
     }
     await p.eval(`(setLang('en'), true)`);
+    if (process.env.GQ_SCREENSHOTS !== '0') {
     const shot = await p.c.send('Page.captureScreenshot', { format: 'png' });
     fs.writeFileSync(path.join(WORK, 'shots', 'add-set-en.png'), Buffer.from(shot.data, 'base64'));
+    }
 
     check('no exceptions', p.errors.length === 0, p.errors);
     check('no console errors', logs.length === 0, logs);

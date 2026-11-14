@@ -174,6 +174,17 @@ All six app languages, including Arabic right-to-left, are supported.
 message alerts, reminders scheduled on the phone and optional Health Connect (heart rate from a watch
 after a workout; workouts saved to Health Connect). The website does not change for it.
 
+**Android navigation bar.** With the system's 3-button navigation (back, home, recents) the tab bar is
+docked full-width above the system buttons instead of floating, so nothing is covered; with gesture
+navigation the floating bar is unchanged.
+
+**Heart-rate chart (Android, Health Connect).** When Health Connect is on, the detail of a finished workout
+(Calendar -> day) draws a heart-rate chart for the workout's time span, with the average and the maximum
+marked. The samples are read from Health Connect only when you open the detail; they are **private**: never
+stored in the app's data, never synced to the server and never shown in Community (only the average and
+maximum that already existed are stored). If the permission is missing or there is no data, a short note
+is shown instead.
+
 **Locally:** no installation, no build step and no dependencies. Just open `index.html` in a
 browser — double-click the file or drag it into a browser window. The app works completely offline.
 
@@ -1013,13 +1024,28 @@ The notification goes through your browser's push service (Apple, Google, Mozill
 encrypted so that only your device can read it.
 
 **Reminders (on by default).** With notifications on, **Community → Profile → Reminders** reminds you to
-**drink water** (every 30 minutes to 3 hours between two times), to **eat** (up to three meal times) and
+**drink water** (every 30 minutes to 3 hours between two times), to **eat** (up to six meal times) and
 to **work out** (chosen weekdays at a time). They use your phone's time zone, arrive even when the app
 is closed, and are sent by the server at most once per reminder (checked every 5 minutes, so a
 reminder may come up to 5 minutes after its time). Turning notifications off, signing out or leaving
 Community stops them. They start **switched on** (water every 2 hours 08:00–21:00, meals at 08:00 · 12:30 · 18:30, workout
 Mon/Wed/Fri at 17:00, in your phone's time zone) as soon as notifications are on; every switch can be
 turned off and stays off.
+
+**Create an account with Google (v109, Android app, needs migration 0020 on the server).** A new user can tick
+"I am 16 or older" on the sign-in card and continue with Google; the server still refuses any account without
+that confirmation (it accepts a Google sign-up only after the tick, for exactly that e-mail, once, within 10
+minutes, and stores only a hash of the e-mail for that). Existing users sign in with Google without ticking.
+Without the tick a new Google user sees "To create an account with Google, first tick I am 16 or older."
+Before the server has the migration the old flow stays (register by e-mail, then Connect Google in Settings).
+
+**Reminders v2 (v107, needs migration 0019 on the server).** Water can be sent either at an interval or
+at **set times** you choose (up to 12). **Meals** take up to **six** times (older apps keep showing and
+saving meals 4-6 untouched: their three inputs only change the first three times). You can also add up to
+**10 own reminders** (text up to 60 characters, a time and chosen weekdays). Each one is sent once per
+local date inside a 20-minute window after its time. The card appears only when the server answers
+version 11 or more; before that the old card is shown. On Android the same schedule is also set on the
+phone.
 
 **Opening a chat** always shows the newest messages, right above the input box (scroll up for older
 ones). A new message from your friend keeps you at the end if you were there, but never pulls you down
@@ -1207,6 +1233,22 @@ it. A value that *is* valid is stored exactly as you entered it — never silent
 empty entry is rejected, and a date that does not exist (say `2026-02-31`) is refused.
 
 Body measurements are kept in their own collection and are never mixed with the weights you lift.
+
+**Body fat calculator.** The Body screen has a *Body fat calculator* (US Navy tape method: height, neck,
+waist and, for women, hip). The result is an estimate, usually within ±3–4 %, shown live; impossible input
+(waist not larger than neck, a result outside 3–60 %) gets a clear message and cannot be saved. *Save as
+measurement* writes neck, waist, hip and the body fat % into the measurement of the chosen date (an existing
+measurement of that day is updated, not duplicated) and stores your height and sex in the profile, like the
+calorie estimate. Neck and body fat % appear in the history, the summary and the chart chips, and can also be
+edited by hand. There is no age gate: it gives no targets. Older app versions (v105 and earlier) drop
+the two new fields when they load a record, so they are also mirrored in `settings.measureExtra`, which old
+versions leave untouched; the current app restores them from there (`tests/sync/old-bodyfat-roundtrip.js`).
+
+**Dated body chart and comparing two dates.** The body trend chart now has a real date axis, so
+entries a month apart sit a month apart, and a range switch (*All*, *3 months*, *1 month*). *Compare two
+dates* picks any two dates and lists, for every measurement recorded on **both**, the value on each date,
+the change and the number of days between them. Only a lower waist and lower body fat are coloured green
+(and labelled *improvement*); every other change is neutral, with no judgement.
 
 **Nothing is inferred.** GymQuest does not guess your age, height, sex, weight or goals from your
 workout history, and it never prefills personal data.

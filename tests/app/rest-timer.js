@@ -43,7 +43,7 @@ function check(name, ok, info) {
   const click = (id) => ev(`(document.getElementById(${J(id)}).click(), true)`);
   const preset = (sec) => ev(`(startPreset(state.settings.restPresets.find((x) => x.seconds === ${sec}).id), true)`);
   const shot = async (name) => {
-    if (!SHOTS) return;
+    if (process.env.GQ_SCREENSHOTS === '0' || !SHOTS) return;
     const s = await p.c.send('Page.captureScreenshot', { format: 'png' });
     fs.writeFileSync(path.join(SHOTS, name + '.png'), Buffer.from(s.data, 'base64'));
   };

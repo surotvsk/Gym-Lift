@@ -50,7 +50,7 @@ const SHORT = { sk: ['Push', 'Pull'], en: ['Push', 'Pull'], es: ['Empuje', 'TirÃ
   p.c.on('Runtime.exceptionThrown', (e) => logs.push(String(e.exceptionDetails.exception && e.exceptionDetails.exception.description || e.exceptionDetails.text)));
   const tileNames = () => p.eval(`[...document.querySelectorAll('.plan-chips .chip-name')].map((n) => n.textContent)`);
   const shot = async (file) => {
-    if (!SHOTS) return;
+    if (process.env.GQ_SCREENSHOTS === '0' || !SHOTS) return;
     const s = await p.c.send('Page.captureScreenshot', { format: 'png' });
     fs.writeFileSync(path.join(SHOTS, file), Buffer.from(s.data, 'base64'));
   };

@@ -85,8 +85,10 @@ function check(name, ok, info) {
     await p.eval(`(() => { document.querySelectorAll('#exercise-list .exercise')[0].scrollIntoView({ block: 'start' }); return true; })()`);
     await wait(300);
     check('390 px: set rows fit (no horizontal overflow)', await p.eval(`document.documentElement.scrollWidth <= innerWidth + 1`));
+    if (process.env.GQ_SCREENSHOTS !== '0') {
     let s = await p.c.send('Page.captureScreenshot', { format: 'png' });
     fs.writeFileSync(path.join(WORK, 'shots', 'workout-390.png'), Buffer.from(s.data, 'base64'));
+    }
     await p.c.send('Emulation.clearDeviceMetricsOverride');
 
     console.log('== saved history');
@@ -144,8 +146,10 @@ function check(name, ok, info) {
       check(lang + ': per-side card text translated', per);
       if (lang === 'ar') {
         check('ar: right-to-left', r.dir === 'rtl');
+        if (process.env.GQ_SCREENSHOTS !== '0') {
         const s2 = await p.c.send('Page.captureScreenshot', { format: 'png' });
         fs.writeFileSync(path.join(WORK, 'shots', 'workout-ar.png'), Buffer.from(s2.data, 'base64'));
+        }
       }
     }
     await p.eval(`(setLang('en'), true)`);

@@ -99,8 +99,10 @@ function check(name, ok, info) {
     await p.eval(`(${ex0}.querySelector('.drops').scrollIntoView({ block: 'center' }), true)`);
     await wait(300);
     check('390 px: no horizontal overflow with drop sets', await p.eval(`document.documentElement.scrollWidth <= innerWidth + 1`));
+    if (process.env.GQ_SCREENSHOTS !== '0') {
     let s = await p.c.send('Page.captureScreenshot', { format: 'png' });
     fs.writeFileSync(path.join(WORK, 'shots', 'drops-390.png'), Buffer.from(s.data, 'base64'));
+    }
     await p.c.send('Emulation.clearDeviceMetricsOverride');
 
     console.log('== saved history');
@@ -165,8 +167,10 @@ function check(name, ok, info) {
       if (lang === 'ar') {
         check('ar: right-to-left', r.dir === 'rtl');
         await p.eval(`(${ex0}.querySelector('.drops').scrollIntoView({ block: 'center' }), true)`);
+        if (process.env.GQ_SCREENSHOTS !== '0') {
         const s2 = await p.c.send('Page.captureScreenshot', { format: 'png' });
         fs.writeFileSync(path.join(WORK, 'shots', 'drops-ar.png'), Buffer.from(s2.data, 'base64'));
+        }
       }
     }
     await p.eval(`(setLang('en'), true)`);

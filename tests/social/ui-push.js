@@ -97,8 +97,10 @@ async function shot(p, name, selector) {
   await wait(400);
   if (selector) await p.eval(`(() => { const el = document.querySelector(${J(selector)}); if (el) el.scrollIntoView({ block: 'center' }); return true; })()`);
   await wait(300);
-  const r = await p.c.send('Page.captureScreenshot', { format: 'png' });
-  fs.writeFileSync(path.join(SHOTS, name + '.png'), Buffer.from(r.data, 'base64'));
+  if (process.env.GQ_SCREENSHOTS !== '0') {
+    const r = await p.c.send('Page.captureScreenshot', { format: 'png' });
+    fs.writeFileSync(path.join(SHOTS, name + '.png'), Buffer.from(r.data, 'base64'));
+  }
   await p.c.send('Emulation.clearDeviceMetricsOverride');
 }
 const bodyText = (p) => p.eval(`document.getElementById('community-body').innerText`);
@@ -190,7 +192,7 @@ async function member(tag, name) {
         && document.getElementById('rem-workout-time').value === '18:30' && document.querySelector('.crem-day[data-day="2"]').classList.contains('active') && !document.querySelector('.crem-day[data-day="1"]').classList.contains('active')`));
       await pB.eval(`(document.getElementById('rem-water-from').value = '22:00', document.getElementById('rem-water-to').value = '06:00', true)`);
       await click(pB, '[data-community-action="rem-save"]');
-      check('"from" after "to" is refused with a clear message', (await bodyText(pB)).includes(await pB.eval(`t('rem.errInvalid')`))
+      check('"from" after "to" is refused with a clear message', (await bodyText(pB)).includes(await pB.eval(`t(remindersV2() ? 'rem.errInvalid2' : 'rem.errInvalid')`))
         && sqlVal(`select to_char(water_from, 'HH24:MI') from public.push_reminders where user_id = ${lit(B.id)}`) === '07:30');
       await view(pB, 'editprofile');
       await shot(pB, 'reminders-en', '#community-reminders');

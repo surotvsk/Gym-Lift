@@ -42,7 +42,7 @@ function expectLevel(xp) { let L = 0; while (cum(L + 1) <= xp) L++; return { lev
   p.c.on('Runtime.exceptionThrown', (e) => logs.push(String(e.exceptionDetails.exception && e.exceptionDetails.exception.description || e.exceptionDetails.text)));
   const E = (x) => p.eval(x);
   const txt = (id) => E(`(document.getElementById(${J(id)}) || {}).textContent || ''`);
-  const shot = async (name) => { if (!SHOTS) return; const s = await p.c.send('Page.captureScreenshot', { format: 'png' }); fs.writeFileSync(path.join(SHOTS, name + '.png'), Buffer.from(s.data, 'base64')); };
+  const shot = async (name) => { if (process.env.GQ_SCREENSHOTS === '0' || !SHOTS) return; const s = await p.c.send('Page.captureScreenshot', { format: 'png' }); fs.writeFileSync(path.join(SHOTS, name + '.png'), Buffer.from(s.data, 'base64')); };
   const wk = (i, sets) => ({ id: 'h' + String(i).padStart(5, '0'), date: new Date(Date.UTC(2025, 0, 1 + i)).toISOString().slice(0, 10), planId: 'push', planName: 'Push', xp: 0, note: '',
     exercises: [{ name: 'Bench', exId: 'bench-press', sets: sets, reps: 8, weight: 50, setsDone: sets }] });
   /* Nastaví stav (história spred verzie) a prekreslí. */

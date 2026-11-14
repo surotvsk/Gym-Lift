@@ -147,7 +147,7 @@ async function seedPosts(u, n) {
     check('my posts start right below the header (visible without scrolling on a phone)', await pA.eval(`document.querySelector('#ty-posts > *').getBoundingClientRect().top < innerHeight`));
     await pA.c.send('Emulation.setDeviceMetricsOverride', { width: 390, height: 844, deviceScaleFactor: 2, mobile: true });
     await pA.eval(`window.scrollTo(0, 0)`); await wait(300);
-    await (async () => { const r = await pA.c.send('Page.captureScreenshot', { format: 'png' }); fs.writeFileSync(path.join(SHOTS, 'you-light-390.png'), Buffer.from(r.data, 'base64')); })();
+    if (process.env.GQ_SCREENSHOTS !== '0') await (async () => { const r = await pA.c.send('Page.captureScreenshot', { format: 'png' }); fs.writeFileSync(path.join(SHOTS, 'you-light-390.png'), Buffer.from(r.data, 'base64')); })();
 
     section('history: newest first, every page, no duplicates');
     for (let i = 0; i < 20 && !(await pA.eval(`tyFeed.done`)); i++) { await pA.eval(`window.scrollTo(0, document.documentElement.scrollHeight)`); await wait(700); }
@@ -273,7 +273,9 @@ async function seedPosts(u, n) {
           overlap: (() => { const a = [...document.querySelectorAll('.ty-bar > *, .ty-bar-actions > *')].map((x) => x.getBoundingClientRect()).filter((r) => r.width);
             return a.some((x, i) => a.some((y, j) => j > i && !(x.right <= y.left + 1 || y.right <= x.left + 1 || x.bottom <= y.top + 1 || y.bottom <= x.top + 1) && !(x.left <= y.left && x.right >= y.right))); })() })`);
         check(w + ' px ' + theme + ': no horizontal overflow, header controls do not overlap', !r.over && !r.overlap && r.theme === theme, J(r));
-        const s = await pA.c.send('Page.captureScreenshot', { format: 'png' }); fs.writeFileSync(path.join(SHOTS, 'you-' + theme + '-' + w + '.png'), Buffer.from(s.data, 'base64'));
+        if (process.env.GQ_SCREENSHOTS !== '0') {
+          const s = await pA.c.send('Page.captureScreenshot', { format: 'png' }); fs.writeFileSync(path.join(SHOTS, 'you-' + theme + '-' + w + '.png'), Buffer.from(s.data, 'base64'));
+        }
       }
     }
     await pA.eval(`(setThemePref('light'), true)`);

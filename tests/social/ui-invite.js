@@ -166,8 +166,10 @@ const afterDelay = () => wait(5000);
         const bs = Array.from(document.querySelectorAll('#modal-community-invite button')).map((x) => x.getBoundingClientRect());
         return m.left >= 0 && m.right <= innerWidth && bs.every((r) => r.left >= m.left - 1 && r.right <= m.right + 1 && r.height >= 40); })()`);
       check(lang + ' @' + w + 'px: window and buttons fit, tap targets ≥ 40px', fits);
-      const shot = await p.c.send('Page.captureScreenshot', { format: 'png' });
-      fs.writeFileSync(path.join(SHOTS, 'invite-' + lang + '-' + w + '.png'), Buffer.from(shot.data, 'base64'));
+      if (process.env.GQ_SCREENSHOTS !== '0') {
+        const shot = await p.c.send('Page.captureScreenshot', { format: 'png' });
+        fs.writeFileSync(path.join(SHOTS, 'invite-' + lang + '-' + w + '.png'), Buffer.from(shot.data, 'base64'));
+      }
     }
     await p.c.send('Emulation.clearDeviceMetricsOverride');
     await p.eval(`(setLang('en'), true)`);

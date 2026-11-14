@@ -52,6 +52,7 @@ async function signIn(p, u) {
   await waitFor(() => p.eval(`!!communityProfile && communityVersion >= 4`), 30000, 'profile');
 }
 async function shot(p, name) {
+  if (process.env.GQ_SCREENSHOTS === '0') return;
   const r = await p.c.send('Page.captureScreenshot', { format: 'png' });
   fs.writeFileSync(path.join(SHOTS, name + '.png'), Buffer.from(r.data, 'base64'));
 }

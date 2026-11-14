@@ -90,7 +90,7 @@ async function feedShown(p) {
   await waitFor(() => p.eval(`activeTab === 'komunita' && communityView === 'feed' && communityFeed.items.length > 0 && !communityFeed.loading && !!document.querySelector('#community-feed .xpost')`), 30000, 'feed');
   await wait(300);
 }
-async function shot(p, name) { const r = await p.c.send('Page.captureScreenshot', { format: 'png' }); fs.writeFileSync(path.join(SHOTS, name + '.png'), Buffer.from(r.data, 'base64')); }
+async function shot(p, name) { if (process.env.GQ_SCREENSHOTS === '0') return; const r = await p.c.send('Page.captureScreenshot', { format: 'png' }); fs.writeFileSync(path.join(SHOTS, name + '.png'), Buffer.from(r.data, 'base64')); }
 
 (async () => {
   if (!process.env.GQ_COMMUNITY_CONFIG) throw new Error('GQ_COMMUNITY_CONFIG required');

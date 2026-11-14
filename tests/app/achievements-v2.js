@@ -40,7 +40,7 @@ function check(name, ok, info) {
   p.c.on('Runtime.exceptionThrown', (e) => logs.push(String(e.exceptionDetails.exception && e.exceptionDetails.exception.description || e.exceptionDetails.text)));
   const E = (x) => p.eval(x);
   const shot = async (file) => {
-    if (!SHOTS) return;
+    if (process.env.GQ_SCREENSHOTS === '0' || !SHOTS) return;
     const s = await p.c.send('Page.captureScreenshot', { format: 'png', captureBeyondViewport: false });
     fs.writeFileSync(path.join(SHOTS, file), Buffer.from(s.data, 'base64'));
   };

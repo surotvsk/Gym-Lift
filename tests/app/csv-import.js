@@ -55,7 +55,7 @@ function bigHevy(n) {
   const confirmBtn = `document.getElementById('btn-csv-confirm')`;
   const closeSheet = () => p.eval(`(document.getElementById('btn-csv-import-close').click(), true)`);
   const shotsOut = process.env.GQ_SHOTS_OUT;
-  const shot = async (name) => { if (!shotsOut) return; fs.mkdirSync(shotsOut, { recursive: true }); const s = await p.c.send('Page.captureScreenshot', { format: 'png' }); fs.writeFileSync(path.join(shotsOut, name + '.png'), Buffer.from(s.data, 'base64')); };
+  const shot = async (name) => { if (process.env.GQ_SCREENSHOTS === '0' || !shotsOut) return; fs.mkdirSync(shotsOut, { recursive: true }); const s = await p.c.send('Page.captureScreenshot', { format: 'png' }); fs.writeFileSync(path.join(shotsOut, name + '.png'), Buffer.from(s.data, 'base64')); };
   try {
     await p.navigate(BASE);
     await p.eval(`(() => { const ok = document.getElementById('btn-setup-ok'); if (ok && !document.getElementById('modal-setup').hidden) ok.click(); setLang('en'); seedSampleData(); renderAll(); return true; })()`);

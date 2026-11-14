@@ -44,6 +44,7 @@ function check(name, ok, info) {
   const sheetBtns = () => ev(`Array.from(document.querySelectorAll('#exercise-body [data-sheet-action^="quick"]')).map((b) => b.dataset.sheetAction)`);
   const blocks = () => ev(`Array.from(document.querySelectorAll('#exercise-list .exercise .exercise-name')).map((n) => n.textContent)`);
   const shot = async (name) => {
+    if (process.env.GQ_SCREENSHOTS === '0') return;
     const s = await p.c.send('Page.captureScreenshot', { format: 'png' });
     fs.writeFileSync(path.join(SHOTS, name + '.png'), Buffer.from(s.data, 'base64'));
   };

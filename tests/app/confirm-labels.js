@@ -58,8 +58,10 @@ function check(name, ok, info) {
     check('step 1 buttons: "Discard" / "Keep training" (not "Cancel" twice)', d.ok === 'Discard' && d.cancel === 'Keep training' && d.ok !== d.cancel, d);
     await p.c.send('Emulation.setDeviceMetricsOverride', { width: 390, height: 844, deviceScaleFactor: 2, mobile: true });
     await wait(300);
+    if (process.env.GQ_SCREENSHOTS !== '0') {
     let s = await p.c.send('Page.captureScreenshot', { format: 'png' });
     fs.writeFileSync(path.join(WORK, 'shots', 'reset-390.png'), Buffer.from(s.data, 'base64'));
+    }
     check('390 px: both buttons fit side by side without overflow', await p.eval(`(() => { const a = document.getElementById('btn-generic-ok'), c = document.getElementById('btn-generic-cancel'); const m = document.querySelector('#modal-generic .modal'); return a.scrollWidth <= a.clientWidth + 1 && c.scrollWidth <= c.clientWidth + 1 && m.scrollWidth <= m.clientWidth + 1; })()`));
     await p.c.send('Emulation.clearDeviceMetricsOverride');
     await p.eval(`(document.getElementById('btn-generic-cancel').click(), true)`);
@@ -139,8 +141,10 @@ function check(name, ok, info) {
       check(lang + ': discard dialog buttons translated and different', r1.ok === keys.ok && r1.cancel === keys.cancel && r1.ok !== r1.cancel && !/\./.test(r1.ok + r1.cancel), { r1, keys });
       if (lang === 'ar') {
         check('ar: right-to-left', keys.dir === 'rtl');
+        if (process.env.GQ_SCREENSHOTS !== '0') {
         const s2 = await p.c.send('Page.captureScreenshot', { format: 'png' });
         fs.writeFileSync(path.join(WORK, 'shots', 'reset-ar.png'), Buffer.from(s2.data, 'base64'));
+        }
       }
       await p.eval(`(document.getElementById('btn-generic-ok').click(), document.getElementById('btn-generic-ok').click(), true)`);
       check(lang + ': undo/delete labels translated', keys.keep !== 'history.keepWorkout' && keys.undo !== keys.keep && keys.del !== keys.keep);

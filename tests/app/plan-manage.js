@@ -36,7 +36,7 @@ function check(name, ok, info) {
   const errors = [];
   p.c.on('Runtime.exceptionThrown', (e) => errors.push(String(e.exceptionDetails.exception && e.exceptionDetails.exception.description || e.exceptionDetails.text)));
   const shot = async (file) => {
-    if (!SHOTS) return;
+    if (process.env.GQ_SCREENSHOTS === '0' || !SHOTS) return;
     const s = await p.c.send('Page.captureScreenshot', { format: 'png' });
     fs.writeFileSync(path.join(SHOTS, file), Buffer.from(s.data, 'base64'));
   };

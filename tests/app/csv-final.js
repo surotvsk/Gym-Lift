@@ -36,7 +36,7 @@ function check(name, ok, info) {
   await p.c.send('Runtime.enable');
   const ev = (expr) => p.eval(`(async () => { try { const v = await (${expr}); return JSON.stringify(v === undefined ? null : v); } catch (e) { return JSON.stringify({ threw: String(e) }); } })()`).then((s) => { const v = JSON.parse(s); if (v && v.threw) { console.log('    threw: ' + v.threw); return false; } return v; });
   const shotsOut = process.env.GQ_SHOTS_OUT;
-  const shot = async (name) => { if (!shotsOut) return; fs.mkdirSync(shotsOut, { recursive: true }); const s = await p.c.send('Page.captureScreenshot', { format: 'png' }); fs.writeFileSync(path.join(shotsOut, name + '.png'), Buffer.from(s.data, 'base64')); };
+  const shot = async (name) => { if (process.env.GQ_SCREENSHOTS === '0' || !shotsOut) return; fs.mkdirSync(shotsOut, { recursive: true }); const s = await p.c.send('Page.captureScreenshot', { format: 'png' }); fs.writeFileSync(path.join(shotsOut, name + '.png'), Buffer.from(s.data, 'base64')); };
 
   /* Skutočný klik: stred prvku -> elementFromPoint musí byť on sám (alebo jeho potomok) -> Input.dispatchMouseEvent. */
   const hit = (sel) => ev(`(() => { const el = document.querySelector(${J(sel)}); if (!el) return 'missing'; el.scrollIntoView({ block: 'center' }); const r = el.getBoundingClientRect(); const h = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2); return h === el || el.contains(h) ? 'ok' : 'covered by ' + (h ? (h.id ? '#' + h.id : h.className || h.tagName) : 'null') + ' / ' + (h && h.closest('.modal-backdrop, .csv-toast') ? (h.closest('.modal-backdrop, .csv-toast').id) : '?'); })()`);

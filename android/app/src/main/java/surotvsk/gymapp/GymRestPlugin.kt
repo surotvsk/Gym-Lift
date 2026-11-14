@@ -4,6 +4,8 @@ import android.app.*
 import android.content.*
 import android.content.pm.ServiceInfo
 import android.media.AudioAttributes
+import android.media.AudioFocusRequest
+import android.media.AudioManager
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.*
@@ -152,16 +154,23 @@ internal object GymRest {
         if (prefs(c).getBoolean("sound", false)) chime(c, done) else done()
     }
 
-    /** Hlasitosť budíka: hrá aj v režime vibrácií; Nerušiť riadi Android podľa povolenia budíkov. */
+    /** Hlasitosť médií (ako hudba / Bluetooth): v slúchadlách, ak sú pripojené, inak reproduktor; ovláda sa
+        tlačidlami hlasitosti a hrá aj v režime vibrácií (vlastník 2026-11-10: budík hral do reproduktora
+        aj so slúchadlami a nedal sa stíšiť). Bežiacu hudbu na chvíľu stíši (duck), nezastaví ju. */
     fun chime(c: Context, done: () -> Unit) {
         var once = false
-        val end = { if (!once) { once = true; done() } }
+        val am = c.getSystemService(AudioManager::class.java)
+        val attrs = AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_MEDIA)
+            .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION).build()
+        val focus = if (Build.VERSION.SDK_INT >= 26) AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK)
+            .setAudioAttributes(attrs).build() else null
+        val end = { if (!once) { once = true; if (focus != null) am.abandonAudioFocusRequest(focus); done() } }
+        if (focus != null) am.requestAudioFocus(focus)
         playing?.release() // nový koniec pauzy nahradí ešte znejúci starý
         try {
             val player = MediaPlayer()
             playing = player // silná referencia: GC by inak zvuk utíšil
-            player.setAudioAttributes(AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_ALARM)
-                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION).build())
+            player.setAudioAttributes(attrs)
             player.setWakeMode(c, PowerManager.PARTIAL_WAKE_LOCK) // obrazovka je zhasnutá
             player.setDataSource(c, Uri.parse("android.resource://${c.packageName}/${R.raw.rest_chime}"))
             player.setOnCompletionListener { stop(it); end() }

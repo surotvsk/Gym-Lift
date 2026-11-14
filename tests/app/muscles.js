@@ -198,16 +198,20 @@ const near = (a, b) => typeof a === 'number' && Math.abs(a - b) < 1e-9;
       check(lang + ': no raw key / NaN / undefined, no overflow, rows drawn, all muscles.* keys translated', !/muscles\.|NaN|undefined/.test(x.raw) && x.over && x.rows >= 4 && x.miss.length === 0, x);
       if (lang === 'ar') {
         check('ar: right-to-left', x.dir === 'rtl');
+        if (process.env.GQ_SCREENSHOTS !== '0') {
         const s = await p.c.send('Page.captureScreenshot', { format: 'png' });
         fs.writeFileSync(path.join(WORK, 'shots', 'muscles-ar.png'), Buffer.from(s.data, 'base64'));
+        }
       }
       await esc(); await wait(60);
     }
     await p.eval(`(setLang('en'), true)`);
     for (const theme of ['light', 'dark']) {
       await p.eval(`(document.documentElement.setAttribute('data-theme', ${J(theme)}), switchTab('pokrok'), setPokrokView('stats'), renderStatsGrid(), openMuscles(), true)`); await wait(200);
+      if (process.env.GQ_SCREENSHOTS !== '0') {
       const s = await p.c.send('Page.captureScreenshot', { format: 'png' });
       fs.writeFileSync(path.join(WORK, 'shots', 'muscles-' + theme + '.png'), Buffer.from(s.data, 'base64'));
+      }
       check(theme + ': sheet fits 390 px', await ev(`(() => { const m = ${sheet}.querySelector('.modal'); return m.scrollWidth <= m.clientWidth + 1 && m.getBoundingClientRect().width <= 390; })()`));
       await esc(); await wait(60);
     }

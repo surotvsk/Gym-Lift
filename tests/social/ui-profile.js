@@ -92,6 +92,7 @@ const frames = (p) => p.eval(`window.__frames`);
 const profileShown = (p, name) => waitFor(() => p.eval(`!!document.querySelector('#community-body .cprofile:not(.pf-skel)') && (document.querySelector('#community-body .csub-head .csub-title') || {}).textContent === ${J(name)}`), 30000, 'profile ' + name);
 const SC = `(communitySheetScroller() || document.scrollingElement)`;
 async function shot(p, name) {
+  if (process.env.GQ_SCREENSHOTS === '0') return;
   const r = await p.c.send('Page.captureScreenshot', { format: 'png' });
   fs.writeFileSync(path.join(SHOTS, name + '.png'), Buffer.from(r.data, 'base64'));
 }
