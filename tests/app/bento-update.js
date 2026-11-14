@@ -8,8 +8,8 @@
 
    Checks: plans, workout history (incl. per-set / per-side values, drop sets), calendar, measurements,
    food log, settings, rest timers, excused weeks, achievements, the workspace registry and sync
-   metadata, progress photos and personal exercise media (IndexedDB, byte-for-byte) are identical after
-   the update; the new design is active; nothing is lost after a second reload; no errors. */
+   metadata and progress/personal media (IndexedDB, byte-for-byte) survive the update. Derived
+   achievements are checked separately; an absent import list may become empty. Reload loses nothing. */
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
@@ -21,6 +21,7 @@ const BASE = 'http://localhost:' + PORT + '/';
 const WORK = process.env.GQ_WORK || path.join(os.tmpdir(), 'gq-app-bento-update');
 const J = JSON.stringify;
 const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+const canon = (v) => J(v, (k, x) => (x && typeof x === 'object' && !Array.isArray(x) ? Object.keys(x).sort().reduce((o, kk) => (o[kk] = x[kk], o), {}) : x));
 let pass = 0, fail = 0;
 function check(name, ok, info) {
   if (ok) { pass++; console.log('  PASS ' + name); }
@@ -100,13 +101,17 @@ function check(name, ok, info) {
     check('the new build runs from its own cache (' + newCache + '), the old cache is removed', (await runningQ()) === qOf(REPO) && keys.indexOf(newCache) >= 0 && keys.filter((k) => /^gymquest-v\d+$/.test(k)).length === 1, keys);
     check('the Bento design is active (light by default on a light phone)', (await p.eval(`document.documentElement.getAttribute('data-theme')`)) === 'light' && (await p.eval(`getComputedStyle(document.body).fontFamily`)).includes('Space Grotesk'));
     const after = await snapshot();
-    /* v101 odvodzuje úspechy z novej tabuľky: mení sa len state.achievements (id -> dátum), nič iné */
-    const noAch = (txt) => { try { const o = JSON.parse(txt); if (o && typeof o === 'object') delete o.achievements; return J(o); } catch (e) { return txt; } };
-    const diff = Object.keys(Object.assign({}, before.ls, after.ls)).filter((k) => before.ls[k] !== after.ls[k] && noAch(before.ls[k]) !== noAch(after.ls[k]));
+    /* Odvodené úspechy sa kontrolujú zvlášť; starý stav bez importov môže dostať prázdny zoznam.
+       Neprázdne importy ani žiadne iné pole sa z porovnania nevynechávajú. */
+    const storedData = (txt) => { try { const o = JSON.parse(txt); if (o && typeof o === 'object') {
+      delete o.achievements;
+      if (Array.isArray(o.history) && o.importedHistory === undefined) o.importedHistory = [];
+    } return canon(o); } catch (e) { return txt; } };
+    const diff = Object.keys(Object.assign({}, before.ls, after.ls)).filter((k) => storedData(before.ls[k]) !== storedData(after.ls[k]));
     const deepDiff = (a, b, pth, out) => { if (J(a) === J(b)) return out; if (a && b && typeof a === 'object' && typeof b === 'object') { for (const k of new Set([...Object.keys(a), ...Object.keys(b)])) deepDiff(a[k], b[k], pth + '.' + k, out); } else out.push(pth + ': ' + J(a) + ' → ' + J(b)); return out; };
     const paths = diff.map((k) => { try { return k + deepDiff(JSON.parse(before.ls[k]), JSON.parse(after.ls[k]), '', []).join(' | '); } catch (e) { return k; } });
     console.log('   changed:', J(paths).slice(0, 1500));
-    check('every stored value is exactly the same after the update (state, registry, sync metadata, settings)', diff.length === 0, paths);
+    check('all stored data survives the update (an absent import list may become empty)', diff.length === 0, paths);
     const achB = achOf(before), achA = achOf(after);
     const achLost = Object.keys(achB).filter((k) => achA[k] !== achB[k]);
     check('every earlier achievement is still there with the same date (' + Object.keys(achB).length + ')', achLost.length === 0, achLost.map((k) => k + ': ' + achB[k] + ' → ' + achA[k]));
@@ -118,7 +123,7 @@ function check(name, ok, info) {
     check('the calendar still marks the workout days (September: 9 days)', cal === 9, cal);
     await p.reload(); await p.eval(HELPERS);
     const again = await snapshot();
-    check('after another reload everything is still identical', Object.keys(before.ls).every((k) => before.ls[k] === again.ls[k] || noAch(before.ls[k]) === noAch(again.ls[k])) && J(again.media) === J(before.media));
+    check('after another reload all stored data is preserved', Object.keys(Object.assign({}, before.ls, again.ls)).every((k) => storedData(before.ls[k]) === storedData(again.ls[k])) && J(again.media) === J(before.media));
     check('after another reload achievements are identical to the first snapshot after the update (idempotent)', J(achOf(again)) === J(achA), { first: achA, now: achOf(again) });
     check('no exceptions', p.errors.length === 0, p.errors);
     check('no console errors', logs.length === 0, logs);

@@ -29,7 +29,8 @@ const ticketRows = (e) => Number(sqlVal(`select count(*) from public.age_tickets
 (async () => {
   try {
     section('0020 present');
-    check('version is 12', sqlVal('select public.community_social_version()') === '12');
+    const versionBefore = sqlVal('select public.community_social_version()');
+    check('version is 12 or later', Number(versionBefore) >= 12);
     const a = anon();
 
     section('anon surface');
@@ -121,7 +122,7 @@ const ticketRows = (e) => Number(sqlVal(`select count(*) from public.age_tickets
     check('after rollback google sign-up is refused (0005 rule)', refused(down), down.err);
     check('after rollback e-mail flag still works', insertUser(mail('down2'), { provider: 'email', meta: { age_16_confirmed: true } }).ok);
     L.reapply(list);
-    check('reapply restores version 12', sqlVal('select public.community_social_version()') === '12');
+    check('reapply restores version ' + versionBefore, sqlVal('select public.community_social_version()') === versionBefore);
     await a.rpc('age_ticket_create', { p_email: mail('after') });
     check('works again after reapply', insertUser(mail('after')).ok);
     let twice = '';

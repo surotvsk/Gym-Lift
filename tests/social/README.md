@@ -146,3 +146,19 @@ support before sending; this is covered by `tests/android/native-phase7.js`.
 
 2026-11-14 screenshot-free rollback correction: `native-phase7` 29/29 and `ui-push` 61/61.
 The prior `chat_viewing` rollback-console failure is resolved without filtering console errors.
+
+## Schema-version probe hardening (0021, local candidate)
+
+After applying 0021 to the local stack, run `node tests/social/version-probe.js` with the local loader environment.
+It checks authenticated RPC access, anonymous denial after the same prepared SQL query has been warmed under
+the authenticated role, anonymous Data API denial, the unchanged signed-out Google age-support probe,
+repeat-migration refusal, rollback to version 12 and reapplication to version 13.
+
+Local results: version-probe 13/13, Google-age server 41/41, extras 63/63, leaderboard 81/81. The latter two
+exercise older and partial migration rollback/reapply chains with 0021 present. Shared rollback helpers include
+0021, and the Google-age suite restores its starting supported schema version rather than pinning 12.
+
+The feed UI fixture also owns enough older posts for pagination on a clean local database. Its offline test
+moves the sentinel out of observer range before scrolling back; it does not force internal feed flags.
+Screenshot-free `ui-feed` passed 69/69, including Retry, Back/filter restoration and phone/desktop layouts.
+No production execution or deployment is included in these results.

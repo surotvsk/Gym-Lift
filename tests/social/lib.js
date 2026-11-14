@@ -151,6 +151,7 @@ const STACK = [
   { n: 19, up: '0019_reminders_v2.sql', down: '0019_down.sql',
     present: "exists (select 1 from information_schema.columns where table_schema = 'public' and table_name = 'push_reminders' and column_name = 'water_mode')" },
   { n: 20, up: '0020_google_age_ticket.sql', down: '0020_down.sql', present: "to_regclass('public.age_tickets') is not null" },
+  { n: 21, up: '0021_version_probe.sql', down: '0021_down.sql', present: 'public.community_social_version() >= 13' },
 ];
 let lastRollback = null;   // posledný rollbackFrom: čo sa vrátilo a aká bola verzia predtým
 function rollbackFrom(n) {

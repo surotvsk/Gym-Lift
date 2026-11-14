@@ -6,10 +6,10 @@
    The previous release (default: `git archive HEAD`, or GQ_OLD_ROOT / GQ_OLD_REF) is installed in a real
    headless Chrome profile and filled with synthetic data; the SAME profile and origin is then updated
    through its service worker to this build (and, for the rollback check, to a "revert" release: the
-   previous code under a newer cache version). Before/after comparisons use the stored values
-   themselves (every gymquest* localStorage key byte-for-byte, SHA-256 of every photo and media blob,
-   IndexedDB database list, sync metadata) and, for accounts, the cloud backup row (revision, payload
-   hash, history ids) and the stored files.
+   previous code under a newer cache version). Before/after comparisons preserve all stored values
+   (every gymquest* localStorage key, SHA-256 of every photo and media blob, IndexedDB database list,
+   sync metadata). Derived achievements are checked separately; an absent import list may become empty;
+   JSON object key order is immaterial. Accounts also compare the cloud revision, payload hash and files.
 
    Scenarios: guest with local data and an active workout (update, browser restart, offline start,
    rollback); signed-in with local + cloud data (update, no upload caused by the update, new edits sync,
@@ -126,12 +126,15 @@ function deepDiff(a, b, pth, out) {
   else out.push(pth + ': ' + String(J(a)).slice(0, 80) + ' → ' + String(J(b)).slice(0, 80));
   return out;
 }
-/* v101 odvodzuje úspechy z novej tabuľky: pri aktualizácii (aj návrate) pribudnú/ubudnú len kľúče state.achievements
-   (id -> dátum), nikdy sa nič iné nemení. Porovnanie ich preto vynecháva; hodnoty kontrolujú achievements-v2 / xp-recalc. */
-const noAch = (txt) => { try { const o = JSON.parse(txt); if (o && typeof o === 'object') delete o.achievements; return o; } catch (e) { return txt; } };
+/* Odvodené úspechy sa kontrolujú zvlášť; starý stav bez importov môže dostať prázdny zoznam.
+   Neprázdne importy ani žiadne iné pole sa z porovnania nevynechávajú. */
+const storedData = (txt) => { try { const o = JSON.parse(txt); if (o && typeof o === 'object') {
+  delete o.achievements;
+  if (Array.isArray(o.history) && o.importedHistory === undefined) o.importedHistory = [];
+} return o; } catch (e) { return txt; } };
 function lsDiff(before, after) {
-  const keys = [...new Set([...Object.keys(before.ls), ...Object.keys(after.ls)])].filter((k) => before.ls[k] !== after.ls[k] && J(noAch(before.ls[k])) !== J(noAch(after.ls[k])));
-  return keys.map((k) => { try { return k + deepDiff(noAch(before.ls[k]), noAch(after.ls[k]), '', []).join(' | '); } catch (e) { return k + ' (raw)'; } });
+  const keys = [...new Set([...Object.keys(before.ls), ...Object.keys(after.ls)])].filter((k) => canon(storedData(before.ls[k])) !== canon(storedData(after.ls[k])));
+  return keys.map((k) => { try { return k + deepDiff(storedData(before.ls[k]), storedData(after.ls[k]), '', []).join(' | '); } catch (e) { return k + ' (raw)'; } });
 }
 function fingerprint(s) {
   return { lsKeys: Object.keys(s.ls).length, lsHash: sha(J(Object.keys(s.ls).sort().map((k) => [k, s.ls[k]]))), media: Object.keys(s.media).length,
@@ -147,7 +150,7 @@ function compareSnaps(label, before, after, opts) {
   if (opts.sameAch) check(label + ': achievements identical to the first snapshot after the update (idempotent)', J(achOf(opts.sameAch)) === J(a), { first: achOf(opts.sameAch), now: a });
   const d = lsDiff(before, after);
   const allowed = opts.allow ? d.filter((x) => !opts.allow.some((re) => re.test(x))) : d;
-  check(label + ': every stored value is byte-identical (' + Object.keys(before.ls).length + ' localStorage keys)', allowed.length === 0, allowed);
+  check(label + ': all stored data preserved (an absent import list may become empty; ' + Object.keys(before.ls).length + ' localStorage keys)', allowed.length === 0, allowed);
   check(label + ': photos and personal media byte-identical (SHA-256 of ' + Object.keys(before.media).length + ' blobs) with the same metadata',
     J(before.media) === J(after.media) && J(before.progMeta) === J(after.progMeta) && J(before.mediaMeta) === J(after.mediaMeta), { b: before.media, a: after.media });
   check(label + ': counts, ids and the IndexedDB databases are the same', J(Object.assign({}, before.counts, { achievements: 0 })) === J(Object.assign({}, after.counts, { achievements: 0 })) && J(before.dbs) === J(after.dbs) && before.stateKey === after.stateKey, { b: [before.counts, before.dbs], a: [after.counts, after.dbs] });

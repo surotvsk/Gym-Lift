@@ -106,7 +106,8 @@ async function shot(p, name) { if (process.env.GQ_SCREENSHOTS === '0') return; c
   /* najnovšie príspevky (pár minút staré) – sú na začiatku feedu „Všetci" */
   const ids = await seed(B, [['text', 'text', 'FEED-TEXT long enough to read: squats, then a long walk home.', { minutes: 1 }], ['photo', 'photo', 'FEED-PHOTO', { minutes: 2 }],
     ['multi', 'multi', 'FEED-MULTI', { minutes: 3 }], ['workout', 'workout', 'FEED-WORKOUT shared', { minutes: 4 }], ['pend', 'text', 'FEED-PENDING-SECRET', { minutes: 5, status: 'pending' }]]);
-  const cIds = await seed(C, [['fo', 'text', 'FEED-FRIENDS-ONLY-SECRET', { minutes: 2, visibility: 'friends' }], ['pub', 'text', 'FEED-CYD-PUBLIC', { minutes: 6 }]]);
+  const cIds = await seed(C, [['fo', 'text', 'FEED-FRIENDS-ONLY-SECRET', { minutes: 2, visibility: 'friends' }], ['pub', 'text', 'FEED-CYD-PUBLIC', { minutes: 6 }],
+    ...Array.from({ length: 120 }, (_, i) => ['page-' + i, 'text', 'FEED-OLDER-' + i, { minutes: 120 + i }])]);
   const dIds = await seed(D, [['blk', 'text', 'FEED-BLOCKED-AUTHOR', { minutes: 1 }]]);
   const mine = await seed(A, [['own', 'text', 'FEED-ADA-OWN', { minutes: 7 }]]);
   const conv = (await A.c.rpc('open_chat', { p_friend: B.id })).data;
@@ -164,9 +165,14 @@ async function shot(p, name) { if (process.env.GQ_SCREENSHOTS === '0') return; c
     }
     check('loading more does not re-render what was already there', st.same && st.dom === st.n);
     check('… and leaves no stray text between appended posts', await pA.eval(`![...document.getElementById('community-feed').childNodes].some((n) => n.nodeType === 3 && n.textContent.trim())`));
+    /* Vlastné staršie príspevky zaručia ďalšiu stranu aj na čistej databáze. Pred odpojením
+       odíde značka mimo dosahu pozorovateľa; posun na rovnaký koniec nový vstup nevyvolá. */
+    await pA.eval(`window.scrollTo(0, 0)`);
+    await pA.eval(`new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)))`);
+    await waitFor(() => pA.eval(`!communityFeed.loading && !communityFeed.done && document.getElementById('community-foot').getBoundingClientRect().top > innerHeight + 800`), 20000, 'unloaded page below viewport');
     await pA.c.send('Network.enable');
     await pA.c.send('Network.emulateNetworkConditions', { offline: true, latency: 0, downloadThroughput: -1, uploadThroughput: -1 });
-    await pA.eval(`(communityFeed.done = false, window.scrollTo(0, document.documentElement.scrollHeight), true)`);
+    await pA.eval(`(document.getElementById('community-foot').scrollIntoView({ block: 'end' }), true)`);
     await waitFor(() => pA.eval(`!!document.querySelector('#community-foot [data-community-action="more"]') && communityFeed.error`), 20000, 'error foot');
     check('a failed page shows a short note with Try again', /offline/i.test(await pA.eval(`document.getElementById('community-foot').innerText`)));
     await pA.c.send('Network.emulateNetworkConditions', { offline: false, latency: 0, downloadThroughput: -1, uploadThroughput: -1 });

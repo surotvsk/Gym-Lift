@@ -86,11 +86,11 @@ the app shows an "update available" notice and never reloads during an active wo
   production. The test harness installs `window.__GQ_TEST__` to turn the hooks into deterministic
   barriers and failure injections.
 - **Single tab:** Web Locks allow only one active tab per device. Other tabs show "Use here".
-- **Supabase backend** (`supabase/`): migrations `0001`–`0020` (there is no `0007`; `0016` = phone tokens for the Android app's message alerts, it does not change the version; `0018` = feed ranking + chat presence, version 10; `0019` = reminders v2, version 11; `0020` = Google sign-up age ticket, version 12) and rollbacks in
+- **Supabase backend** (`supabase/`): migrations `0001`–`0021` (there is no `0007`; `0016` = phone tokens for the Android app's message alerts, it does not change the version; `0018` = feed ranking + chat presence, version 10; `0019` = reminders v2, version 11; `0020` = Google sign-up age ticket, version 12; `0021` = execution-time schema-probe permissions, version 13) and rollbacks in
   `supabase/rollback/`; never put rollbacks in `migrations/`. Production has no CLI migration history
   and "auto-expose new tables" is off. Apply each new migration once, as one transaction, never with
   `supabase db push`. Grants are explicit (see `0002` and `0006`). The app detects which schema
-  release is live (e.g. `community_social_version()`: 2 = 0008, 3 = 0009 leaderboard, 4 = 0010 push, 5 = 0011 replies/reactions/sharing/achievements, 6 = 0012 reminders, 7 = 0014 train together, 8 = 0015 chat Seen, 9 = 0017 leaderboard v2: new XP rules, `p_rules`, 11 = 0019 reminders v2, 12 = 0020 Google sign-up age ticket) and falls back, so the release order is app
+  release is live (e.g. `community_social_version()`: 2 = 0008, 3 = 0009 leaderboard, 4 = 0010 push, 5 = 0011 replies/reactions/sharing/achievements, 6 = 0012 reminders, 7 = 0014 train together, 8 = 0015 chat Seen, 9 = 0017 leaderboard v2: new XP rules, `p_rules`, 11 = 0019 reminders v2, 12 = 0020 Google sign-up age ticket, 13 = 0021 probe hardening) and falls back, so the release order is app
   first, then migration, then the `delete-account` Edge Function. `supabase/README.md` holds the
   authoritative release and rollback steps.
 - **`community-config.js`** holds only the public project URL, the publishable (anon) key and the
