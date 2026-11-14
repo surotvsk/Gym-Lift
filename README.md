@@ -57,14 +57,15 @@ everything on your own device.
 - **Warm-up sets and warm-up ramp** — add warm-up sets to any exercise with **+ Warm-up** in its **⋯** sheet, or switch on
   the warm-up ramp in the plan editor to get a ready-made ramp every time. Warm-ups are saved in your
   history but never change your sets, XP, records or streak.
-- **Effort rating (RPE / RIR)** — an optional setting. When it is on, completed sets get a small chip
-  where you rate how hard the set was, as RPE or as reps in reserve. Off by default; unilateral exercises
-  are rated per side.
+- **Effort rating (RPE / RIR)** — optional per-set ratings, with explanations beside all three Settings
+  choices. **Off** hides the rating chip. **RPE** rates effort from 6–10 (8 means roughly two good-form
+  reps left); **RIR** records reps in reserve (0 means none left, 2 means two). Off by default;
+  unilateral exercises are rated per side.
 - **One ⋯ sheet per exercise** — the secondary actions (**+ Warm-up**, **Warm-up ramp**, **+ Drop set**,
   **Plates**, **Replace exercise** and **Progress**) live behind a single **⋯** button next to *Add set* and
   *Remove last set*, so the exercise tile stays calm. **Plates** appears only for barbell (and custom)
-  exercises, and **Replace exercise** only during a workout. In the plan editor, **More options** on each
-  row holds only the warm-up ramp toggle and **Link / Unlink** (for supersets).
+  exercises, and **Replace exercise** only during a workout. In the plan editor, **More options** holds
+  the warm-up ramp, **Link / Unlink** for supersets, and main/helper muscle selection for custom exercises.
 - **Exercise progress** — open **Progress** from the ⋯ sheet, or tap a record, an exercise in your history, or
   the exercise library page. A chart shows the **estimated 1RM**, the heaviest weight, the volume, or (for
   assisted exercises) the help you used, over 3 months, 1 year or all time, with your best sets and sessions
@@ -74,6 +75,14 @@ everything on your own device.
 - **Muscles** — one extra tile in Stats and a sheet with your sets and volume per muscle for each week
   (this week, last week, or any earlier week). The main muscle counts as one set and helper muscles as a
   half, and a small chart shows the last eight weeks. It is a guide, not a target.
+  Exact library names and Strong/Hevy aliases in old name-only history now classify correctly without
+  rewriting records. Custom exercises can have one main muscle and optional helpers; unassigned,
+  unmatched exercises remain **Other**. New session/history snapshots preserve their classification.
+  **How sets are counted** expands a private, on-device breakdown: saved completion counts, mapping
+  source, left/right normalization, weighted contributions, included dates and excluded-week workouts.
+  Missing weight/reps no longer erase completed sets (only their volume); old records without completion
+  markers are explicitly labelled as using their saved set total. Legs includes thighs and calves;
+  Glutes is separate. Separately logged sides count as half a paired set each, never an assumed pair.
 - **Recovery map** — in the Muscles tile and sheet a front and back body map is shaded by how recently each muscle
   was worked. It is an **estimate** from your last three to four days of sets, not medical advice. At most
   once a day the Today workout card adds one quiet line, for example *Legs still recovering — consider
@@ -123,7 +132,7 @@ everything on your own device.
 - **Plain-language explanations** — short, non-judgemental notes on measuring body weight, why daily
   changes are not a trend, what duration / sets / reps / progressive overload mean, and what the
   calorie estimate and your own nutrition numbers can and cannot tell you.
-- **Exercise library** — 50 built-in exercises with primary and secondary muscles, movement pattern,
+- **Exercise library** — 135 built-in exercises with primary and secondary muscles, movement pattern,
   difficulty, equipment, gym/home/outdoor availability, how-to steps, common mistakes, similar exercises
   with the reason each was suggested, and a **demonstration gallery** (a licensed video or photograph
   where one is available, otherwise an original illustration or an honest *unavailable* state) you can swipe through.
@@ -815,13 +824,13 @@ names look the same.
 
 ## The exercise library
 
-GymQuest ships with a built-in catalogue of **50 exercises** — the 13 that have always powered the
-built-in plans, plus 20 added so the app is genuinely useful away from a gym, 15 further gym
-exercises (cable curl, machine chest press, pec deck, incline dumbbell press, front raise, wide-grip
-lat pulldown, dumbbell and cable pullover, dumbbell triceps extension, single-arm cable triceps extension, hack
-squat, Romanian deadlift, leg extension, adductor machine and abductor machine) and 2 assisted machine exercises (assisted dips and assisted pull-ups). There is
-**no server, no download and no external service**: the catalogue lives in the app's own code, so it
-works offline from the first launch and adds nothing at all to your stored data.
+GymQuest ships with **135 built-in exercises**: the existing 50 plus 85 distinct upper-body,
+lower-body and core variations. These include Bulgarian split squats, separate lying/seated leg curls,
+chest presses and flies, rows and pulldowns, curls and triceps work, hip and calf variations, and
+abdominal exercises. All have names, instructions and mistakes translated into all six languages.
+Existing IDs, plans and history are preserved; a Bulgarian split squat is not silently substituted
+for an ordinary split squat. There is **no external catalogue service**: the content ships with the app,
+works offline from the first launch, and adds nothing to your stored workout data.
 
 ### What each exercise tells you
 
@@ -837,6 +846,13 @@ works offline from the first launch and adds nothing at all to your stored data.
 - **A demonstration** — a licensed video or photograph where one is available, otherwise an original
   illustration, or an honest *Demonstration unavailable* state (see the note below).
 - **Similar exercises**, each with the reason it was suggested.
+
+For an exercise you create yourself, open its **More options** in the plan editor and choose its main
+and helper muscles. **Automatic by name** uses an exact known library name/alias, otherwise Other.
+An explicit **Other** overrides name matching. Assignments are shared across plans for the same custom
+exercise; older history without an assignment is classified on read, not rewritten. New workout
+snapshots freeze the effective assignment, including Other, so later edits do not alter that session.
+
 
 ### Opening it
 
@@ -1225,6 +1241,9 @@ delete 🗑️ (with a confirmation on delete), and a small **trend chart**.
 The chart is drawn with a few lines of inline SVG — there is no charting library, no CDN and no
 download. Pick which measurement to plot with the chips above it; it appears once that measurement has
 at least two entries.
+The Body sub-view scrolls vertically only, including diagonal one-finger swipes. Two-finger pinch
+zoom remains available; the restriction does not affect exercise galleries or other app screens.
+
 
 **Units.** Choose `kg · cm` or `lb · in` in the Body card. **Values are always stored in kilograms and
 centimetres**; the setting only changes what you type and read. Switching units therefore never
@@ -1537,9 +1556,8 @@ The whole app lives in a single `localStorage` value, and browsers allow roughly
 
 So the **food log is the only part that can realistically fill it up**, and only if you log a lot for
 many years. The exercise library adds **nothing here at all** — it lives in the app's code, not in your
-stored data, so a bigger library never costs you storage. It does make the app itself a little larger to
-download and cache (about 145 KB of code and translations, roughly a third more for `script.js`), which
-is a one-time cost and is cached offline like the rest of the app.
+stored data, so a bigger library never costs you workout-storage space. It makes the app download
+and offline cache larger once; the catalogue is cached with the rest of the app.
 
 GymQuest never deletes anything to make room. Instead:
 

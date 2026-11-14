@@ -99,6 +99,58 @@ const near = (a, b) => typeof a === 'number' && Math.abs(a - b) < 1e-9;
     check('trend last = current week, previous = last week; sets match', tr[7].week === curKey && tr[6].week === prevKey && near(tr[7].sets.chest, 3) && near(tr[6].sets.legs, 4), tr.slice(6));
     check('trend weeks are ascending', tr.every((x, i) => i === 0 || tr[i - 1].week < x.week), tr.map((x) => x.week));
 
+    console.log('== name-only history, completed counts and private breakdown');
+    const reported = await ev(`(() => { ${DAY}
+      const names = ['Hack squat', 'Leg press', 'Bulgarian split squat', 'Lying leg curl', 'Hip thrust', 'Hip abductor', 'Hip adductor', 'Calf raises'];
+      const completed = [3, 3, 2, 3, 3, 3, 3, 3];
+      state.history = [
+        { id: 'reported', date: day(0), planName: 'Reported names', exercises: names.map((name, i) => ({ name, sets: completed[i], setsDone: completed[i], reps: i === 0 || i === 1 ? 10 : 12, weight: [20,20,10,25,20,35,35,10][i] })) },
+        { id: 'excluded', date: day(7), planName: 'Outside selected week', exercises: [{ name: 'Hack squat', sets: 10, setsDone: 10, reps: 10, weight: 20 }] }
+      ];
+      const before = JSON.stringify(state.history);
+      window.__muscleHistoryBefore = before;
+      const week = muscleWeek(currentWeekKey());
+      return { week, ids: state.history[0].exercises.map(e => muscleProfile(e).id), completed: state.history[0].exercises.map(e => muscleSetTotals(e).completed),
+        unchanged: before === JSON.stringify(state.history) };
+    })()`);
+    check('all eight exact names resolve without rewriting names or adding IDs to history', reported.unchanged && J(reported.ids) === J(['hack-squat','leg-press','bulgarian-split-squat','lying-leg-curl','hip-thrust','abductor-machine','adductor-machine','calf-raises']), reported);
+    check('23 explicitly completed bilateral fixture sets produce 20 weighted Legs, not a forced 23', near(reported.week.sets.legs, 20) && near(reported.week.sets.glutes, 10) && !reported.week.sets.other && reported.completed.reduce((a,b) => a+b,0) === 23, reported);
+    const counts = await ev(`(() => {
+      const base = { name: 'Bulgarian split squat', sets: 3, setsDone: 6, reps: 12, weight: 10, unilateral: true };
+      return {
+        marked: muscleSetTotals(Object.assign({}, base, { sidesDone: { left: [1,2,2,9], right: [1] } })),
+        unmarked: muscleSetTotals(Object.assign({}, base, { setsDone: 3 })),
+        partial: muscleSetTotals({ name: 'Hack squat', sets: 3, setsDone: 1, reps: 10, weight: 20 }),
+        missing: muscleSetTotals({ name: 'Lying leg curl', sets: 3, setsDone: 2 })
+      };
+    })()`);
+    check('only actual valid side marks count: three completed sides become 1.5 paired sets', counts.marked.completed === 3 && near(counts.marked.working, 1.5), counts);
+    check('unilateral counter without side arrays is halved once, not assumed to contain both sides', counts.unmarked.completed === 3 && near(counts.unmarked.working, 1.5), counts);
+    check('planned sets do not inflate one completed set', counts.partial.completed === 1 && counts.partial.sets === 1, counts.partial);
+    check('completed sets without numeric metrics remain counted, with zero volume and a visible explanation', counts.missing.sets === 2 && counts.missing.volume === 0 && counts.missing.missingMetrics, counts.missing);
+    await ev(`(openMuscles(), document.querySelector('#muscles-breakdown > summary').click(), true)`);
+    await wait(120);
+    const trace = await ev(`(() => {
+      const body = document.getElementById('muscles-breakdown-body');
+      return { text: body.innerText, rows: [...body.querySelectorAll('.mu-trace-row')].map(r => r.innerText),
+        excluded: body.querySelector('.mu-excluded').textContent, unchanged: JSON.stringify(state.history) === window.__muscleHistoryBefore };
+    })()`);
+    check('expanded breakdown shows all eight included exercises and exact saved counts', trace.rows.length === 8 && trace.rows.every((r,i) => r.includes('Saved completed-set count: ' + [3,3,2,3,3,3,3,3][i])), trace);
+    check('breakdown makes helper weighting explicit for hip thrust and abductor', trace.rows[4].includes('Legs: 1.5') && trace.rows[4].includes('Glutes: 3') && trace.rows[5].includes('Legs: 1.5'), trace.rows.slice(4,6));
+    check('selected date range excludes the other-week workout without changing history', /Included dates:/.test(trace.text) && /Outside selected week/.test(trace.excluded) && trace.unchanged, trace);
+    await ev(`(() => {
+      state.history[0].exercises = [
+        { name: 'Bulgarian split squat', sets: 3, setsDone: 3, unilateral: true, reps: 12, weight: 10 },
+        { name: 'Lying leg curl', sets: 3, setsDone: 2 }
+      ];
+      renderMuscles(); return true;
+    })()`);
+    const fallbackTrace = await ev(`document.getElementById('muscles-breakdown-body').innerText`);
+    check('missing side arrays are labelled unknown rather than falsely reporting left 0 + right 0', /no side-by-side record/.test(fallbackTrace) && /3 completed sides ÷ 2 = 1.5/.test(fallbackTrace) && !/Left 0, right 0/.test(fallbackTrace), fallbackTrace);
+    check('missing metrics explanation is displayed for counted completed sets', /counted/.test(fallbackTrace) && await ev(`document.querySelectorAll('#muscles-breakdown-body .mu-trace-row .card-note').length >= 3`), fallbackTrace);
+    await ev(`(document.querySelector('#muscles-breakdown > summary').click(), true)`);
+    await esc(); await wait(60);
+
     console.log('== week boundary = weekKey (Sunday 23:00 workout)');
     const bd = (await ev(`(() => { ${DAY}
       const now = new Date(); const mon = new Date(now); mon.setDate(now.getDate() - ((now.getDay() + 6) % 7));

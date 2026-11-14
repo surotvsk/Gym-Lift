@@ -35,7 +35,7 @@
     }, 4000);
   </script>
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
-  <link rel="stylesheet" href="style.css?v=118">
+  <link rel="stylesheet" href="style.css?v=119">
 </head>
 <body data-tab="dnes">
 
@@ -825,10 +825,13 @@
         <div class="setting-block">
           <span class="card-sub" data-i18n="settings.effortHint">Zaznamenaj, ako ťažká bola každá séria. Pri hotových sériách sa objaví malé tlačidlo.</span>
           <div class="effort-chips" id="effort-chips" role="group" data-i18n-aria="settings.effort">
-            <button type="button" class="len-chip" data-effort="off" aria-pressed="true" data-i18n="settings.off">Vypnuté</button>
-            <button type="button" class="len-chip" data-effort="rpe" aria-pressed="false">RPE</button>
-            <button type="button" class="len-chip" data-effort="rir" aria-pressed="false">RIR</button>
+            <button type="button" class="len-chip" data-effort="off" aria-pressed="true" aria-describedby="effort-help-off" data-i18n="settings.off">Vypnuté</button>
+            <button type="button" class="len-chip" data-effort="rpe" aria-pressed="false" aria-describedby="effort-help-rpe">RPE</button>
+            <button type="button" class="len-chip" data-effort="rir" aria-pressed="false" aria-describedby="effort-help-rir">RIR</button>
           </div>
+          <span class="card-sub" id="effort-help-off" data-i18n="effort.noteOff">Vypnuté: námahu nemusíš hodnotiť. Už uložené hodnotenia zostanú zachované.</span>
+          <span class="card-sub" id="effort-help-rpe" data-i18n="effort.noteRpe">RPE (vnímaná námaha): ako ťažká bola séria, od 6 (ľahká) po 10 (už nezvládneš ďalšie opakovanie správnou technikou). RPE 8 znamená približne 2 opakovania v rezerve.</span>
+          <span class="card-sub" id="effort-help-rir" data-i18n="effort.noteRir">RIR (opakovania v rezerve): koľko ďalších opakovaní by si zvládol správnou technikou. 2 = ešte dve; 0 = žiadne; 4+ = aspoň štyri.</span>
         </div>
       </section>
 
@@ -1323,6 +1326,10 @@
         <div class="mu-list" id="muscles-list"></div>
         <div class="mu-total" id="muscles-total"></div>
         <p class="card-note mu-note" data-i18n="muscles.note"></p>
+        <details class="mu-breakdown" id="muscles-breakdown">
+          <summary data-i18n="muscles.breakdown">Ako sa série počítajú</summary>
+          <div id="muscles-breakdown-body"></div>
+        </details>
       </div>
     </div>
   </div>
@@ -1382,8 +1389,8 @@
     <button type="button" class="btn btn-sm" id="btn-csv-undo" data-i18n="csv.undo">Undo import</button>
   </div>
 
-  <script src="community-config.js?v=118"></script>
-  <script src="vendor/supabase-js.js?v=118"></script>
-  <script src="script.js?v=118"></script>
+  <script src="community-config.js?v=119"></script>
+  <script src="vendor/supabase-js.js?v=119"></script>
+  <script src="script.js?v=119"></script>
 </body>
 </html>

@@ -6,9 +6,10 @@
    Kontroluje: geometriu (body zoradené podľa dátumu, 3–5 značiek osi y, popisky osi x vnútri karty a bez
    prekrytia pri 320 px, ar/fr pri 130 % textu bez pretečenia), tooltip, rozsah (všetko / 3 / 1 mesiac),
    prázdne a jednobodové stavy, tabuľku porovnania (hodnoty, znamienka, farby, dni) a jednotky kg/lb, cm/in.
-   Snímky: SHOTS (predvolene ../claude-code/phase8/task3). */
+   Reálne dotykové gestá: diagonálne posúvanie Telo bez vodorovného úniku a zachované priblíženie. */
 const fs = require('fs');
 const path = require('path');
+const os = require('os');
 const { counter, startServerOnce, openApp, closeAll } = require('../android/lib-native');
 const wait = (ms) => new Promise((r) => setTimeout(r, ms));
 const t = counter();
@@ -16,10 +17,12 @@ const check = t.check;
 const SHOTS = process.env.SHOTS || path.resolve(__dirname, '../../../claude-code/phase8/task3');
 
 (async () => {
-  const server = await startServerOnce(require('os').tmpdir());
+  const work = fs.mkdtempSync(path.join(os.tmpdir(), 'gq-body-chart-'));
+  let server;
   try {
-    fs.mkdirSync(SHOTS, { recursive: true });
-    const { p, errors } = await openApp({ name: 'bodychart', debugPort: 9939, native: false, lang: 'en' });
+    server = await startServerOnce(work);
+    if (process.env.GQ_SCREENSHOTS !== '0') fs.mkdirSync(SHOTS, { recursive: true });
+    const { p, errors } = await openApp({ name: 'bodychart', debugPort: 9939, native: false, lang: 'en', work });
     const ev = (s) => p.eval(s);
     await ev(`(localStorage.setItem('gymquest_tutorial','{"v":1,"status":"done","at":0}'), true)`);
     const view = (w, h) => p.c.send('Emulation.setDeviceMetricsOverride', { width: w, height: h || 900, deviceScaleFactor: 2, mobile: true });
@@ -226,10 +229,119 @@ const SHOTS = process.env.SHOTS || path.resolve(__dirname, '../../../claude-code
       check(tag + ': dir ' + (lang === 'ar' ? 'rtl' : 'ltr') + ', chart time flows left to right', await ev(`document.documentElement.dir === ${JSON.stringify(lang === 'ar' ? 'rtl' : 'ltr')} && getComputedStyle(document.getElementById('body-chart')).direction === 'ltr'`));
       if (file) { await scrollTo(what === 'cmp' ? 'body-compare-card' : 'body-chart-card'); await wait(200); await shot(file); }
     }
+
+    /* --- Skutočné CDP dotyky pri 320 px: oba smery diagonály, vodorovný ťah aj pinch.
+       Snímame aj priebeh gesta: návrat na pôvodnú polohu nesmie zakryť dočasné ujdenie do strany. */
+    await view(320, 640);
+    await p.c.send('Emulation.setTouchEmulationEnabled', { enabled: true, maxTouchPoints: 5 });
+    const frames = () => ev(`new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => resolve(true))))`);
+    const observeGesture = async (xDistance, yDistance) => {
+      await ev(`(() => {
+        const body = document.getElementById('subview-body');
+        body.scrollTop = 0; body.scrollLeft = 0;
+        return true;
+      })()`);
+      await frames();
+      await ev(`(() => {
+        const body = document.getElementById('subview-body');
+        const chart = document.getElementById('body-chart-card');
+        const sample = () => {
+          const b = body.getBoundingClientRect(), c = chart.getBoundingClientRect(), v = visualViewport;
+          return { top: body.scrollTop, chartTop: c.top,
+            x: [body.scrollLeft, b.left, c.left, window.scrollX, window.scrollY,
+              document.documentElement.scrollLeft, document.getElementById('screen-pokrok').scrollLeft,
+              v.offsetLeft, v.pageLeft] };
+        };
+        const trace = window.__bodyGestureTrace = { samples: [sample()], frame: 0, sample };
+        const tick = () => { trace.samples.push(sample()); trace.frame = requestAnimationFrame(tick); };
+        trace.frame = requestAnimationFrame(tick);
+        return true;
+      })()`);
+      await p.c.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x: 160, y: 500, id: 1 }] });
+      for (let i = 1; i <= 12; i++) {
+        await p.c.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x: 160 + xDistance * i / 12, y: 500 + yDistance * i / 12, id: 1 }] });
+        await frames();
+      }
+      await wait(120);   // prst pred zdvihnutím zastaví, bez zotrvačného posúvania
+      await p.c.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
+      await frames();
+      return ev(`(() => {
+        const trace = window.__bodyGestureTrace;
+        cancelAnimationFrame(trace.frame); trace.samples.push(trace.sample());
+        const first = trace.samples[0], last = trace.samples[trace.samples.length - 1];
+        const drift = Math.max(...trace.samples.flatMap((s) => s.x.map((x, i) => Math.abs(x - first.x[i]))));
+        delete window.__bodyGestureTrace;
+        return { samples: trace.samples.length, dy: last.top - first.top,
+          contentDy: first.chartTop - last.chartTop, drift };
+      })()`);
+    };
+    for (const lang of ['en', 'ar']) {
+      await ev(`(document.documentElement.style.fontSize = '', setLang(${JSON.stringify(lang)}), switchTab('pokrok'), setPokrokView('body'), true)`);
+      await frames();
+      const tag = lang + '/320/touch';
+      check(tag + ': expected writing direction', await ev(`document.documentElement.dir === ${JSON.stringify(lang === 'ar' ? 'rtl' : 'ltr')}`));
+      const before = await ev(`JSON.stringify(state.measurements)`);
+      for (const dx of [-140, 140]) {
+        const trace = await observeGesture(dx, -240);
+        check(tag + ': diagonal ' + dx + ' advances Body and its content vertically',
+          trace.samples > 2 && trace.dy > 100 && trace.contentDy > 100 && Math.abs(trace.dy - trace.contentDy) <= 1, trace);
+        check(tag + ': diagonal ' + dx + ' never moves Body, content or viewport sideways', trace.drift <= 1, trace);
+      }
+      for (const dx of [-140, 140]) {
+        const trace = await observeGesture(dx, 0);
+        check(tag + ': horizontal ' + dx + ' cannot move the Body sheet',
+          trace.drift <= 1 && Math.abs(trace.dy) <= 1 && Math.abs(trace.contentDy) <= 1, trace);
+      }
+
+      /* Skryté pretečenie nesmie len odseknúť obsah: každý viditeľný ovládač je dostupný,
+         text aj graf/tabuľka ostávajú v liste. Overujeme geometriu a skutočný hit-test. */
+      const reachable = await ev(`(() => {
+        const body = document.getElementById('subview-body');
+        const controls = [...body.querySelectorAll('button, input, select, textarea')].filter((e) => e.getClientRects().length && !e.disabled);
+        const content = [...body.querySelectorAll('.card-title, .card-note, .measure-name, .measure-value, .measure-delta, .measure-entry-date, .measure-entry-values, .measure-entry-note, .field label, .field-hint, #body-chart svg, #cmp-table th, #cmp-table td')].filter((e) => e.getClientRects().length);
+        const clipped = [], blocked = [];
+        for (const e of [...controls, ...content]) {
+          e.scrollIntoView({ block: 'center', inline: 'nearest', behavior: 'instant' });
+          const r = e.getBoundingClientRect(), b = body.getBoundingClientRect();
+          const name = e.id || e.className || e.tagName;
+          if (r.left < b.left - 0.5 || r.right > b.right + 0.5 || Math.abs(body.scrollLeft) > 1) clipped.push(name);
+          if (controls.includes(e)) {
+            const hit = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2);
+            if (!hit || !e.contains(hit) || r.top < b.top || r.bottom > b.bottom) blocked.push(name);
+          }
+        }
+        const required = ['back-body', 'body-units', 'btn-add-measure', 'body-metric-chips', 'body-range-chips', 'cmp-a', 'cmp-b', 'bodyfat-box', 'btn-calorie-enable', 'body-history', 'btn-tips'];
+        return { controls: controls.length, content: content.length, clipped, blocked,
+          missing: required.filter((id) => !document.getElementById(id)?.getClientRects().length) };
+      })()`);
+      check(tag + ': controls and content remain unclipped and hit-testable',
+        reachable.controls > 20 && reachable.content > 20 && !reachable.clipped.length && !reachable.blocked.length && !reachable.missing.length, reachable);
+
+      await ev(`(document.getElementById('subview-body').scrollTop = 0, true)`);
+      await frames();
+      const scale = await ev(`visualViewport.scale`);
+      await p.c.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x: 120, y: 320, id: 1 }, { x: 200, y: 320, id: 2 }] });
+      for (let i = 1; i <= 12; i++) {
+        await p.c.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x: 120 - i * 5, y: 320, id: 1 }, { x: 200 + i * 5, y: 320, id: 2 }] });
+        await frames();
+      }
+      await p.c.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
+      await frames();
+      const zoomed = await ev(`visualViewport.scale`);
+      check(tag + ': real two-finger pinch still zooms the Body screen', zoomed > scale * 1.2, { scale, zoomed });
+      await p.c.send('Emulation.setPageScaleFactor', { pageScaleFactor: 1 });
+      await frames();
+      check(tag + ': gestures never rewrite measurement data', await ev(`JSON.stringify(state.measurements)`) === before);
+    }
+    await p.c.send('Emulation.setTouchEmulationEnabled', { enabled: false });
     await ev(`(document.documentElement.style.fontSize = '', true)`);
     check('no page errors', errors.length === 0, errors);
   } catch (e) { check('suite ran without exception', false, String(e && e.stack || e)); }
-  finally { closeAll(); server.close && server.close(); }
+  finally {
+    closeAll();
+    if (server) server.close && server.close();
+    fs.rmSync(work, { recursive: true, force: true });
+  }
   console.log('\nPASS ' + t.pass + '  FAIL ' + t.fail);
   process.exit(t.fail ? 1 : 0);
 })();

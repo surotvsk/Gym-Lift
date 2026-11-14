@@ -4273,6 +4273,13 @@ html[data-theme="dark"] .tr-detail #tr-start { background: #D6F35A; color: #1212
   position: fixed; inset: 0; z-index: 15; overflow-y: auto; background: var(--k-bg); color: var(--k-fg);
   padding: 0 16px max(26px, env(safe-area-inset-bottom, 0px)); -webkit-overflow-scrolling: touch;
 }
+/* Telo je zvislý list: diagonálny dotyk nesmie rozbehnúť vodorovné posúvanie.
+   Priblíženie dvoma prstami ostáva dostupné. */
+#screen-pokrok.sheet-open > #subview-body {
+  overflow-x: hidden;
+  overscroll-behavior-x: none;
+  touch-action: pan-y pinch-zoom;
+}
 #screen-kalendar[hidden] { display: none; }
 #screen-pokrok.sheet-open > .hd, #screen-pokrok.sheet-open > .subtabs { display: none; }
 .subtabs { display: none; }
@@ -5063,6 +5070,21 @@ html.ios .tour { --tour-top: max(34px, calc(env(safe-area-inset-top, 0px) + 34px
 }
 [dir="rtl"] .edit-more > summary::after { transform: rotate(135deg); }
 .edit-more[open] > summary::after, [dir="rtl"] .edit-more[open] > summary::after { transform: rotate(45deg); }
+.edit-muscles { margin-top: var(--sp-2); min-width: 0; }
+.edit-muscles[hidden] { display: none; }
+.edit-muscles > label, .edit-muscles legend { font-size: var(--fs-sm); font-weight: var(--fw-bold); }
+.edit-muscles select { width: 100%; min-height: 44px; margin-block: var(--sp-1); }
+.edit-muscles fieldset { border: 0; padding: 0; margin: var(--sp-2) 0 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--sp-1); }
+.edit-muscles legend { grid-column: 1 / -1; }
+.edit-muscles .edit-side-toggle { min-height: 44px; overflow-wrap: anywhere; }
+.mu-breakdown { margin-top: var(--sp-3); min-width: 0; }
+.mu-breakdown summary { min-height: 44px; padding-block: var(--sp-2); cursor: pointer; font-weight: var(--fw-bold); }
+.mu-trace-row { padding-block: var(--sp-3); border-bottom: 1px solid var(--border); overflow-wrap: anywhere; font-size: var(--fs-sm); }
+.mu-trace-row h4 { margin: 0 0 var(--sp-1); }
+.mu-trace-row p { margin-block: var(--sp-1); }
+.mu-trace-row pre { white-space: pre-wrap; overflow-wrap: anywhere; font-size: var(--fs-xs); }
+.mu-contribution { font-weight: var(--fw-bold); }
+.mu-excluded ul { padding-inline-start: var(--sp-4); font-size: var(--fs-sm); overflow-wrap: anywhere; }
 
 /* Progres cviku: riadky, ktoré už existujú (rekord, história, kalendár, detail), sú teraz ťuknuteľné – bez nových tlačidiel na dlaždiciach */
 button.record-row {
