@@ -141,7 +141,7 @@ function isBuiltinPlanLabel(id, value) {
    histórii, ale neponúka sa v knižnici ani medzi alternatívami. Vymazanie cviku
    z histórie nie je nikdy automatické. */
 
-const MUSCLE_CODES = ['chest', 'back', 'shoulders', 'arms', 'legs', 'glutes', 'core'];
+const MUSCLE_CODES = ['chest', 'back', 'shoulders', 'biceps', 'triceps', 'arms', 'legs', 'glutes', 'core'];
 /* "Full body" je iba vyhľadávací kôš, NIE svalová skupina – pozri FULL_BODY_SPREAD. */
 const BODY_BUCKETS = ['fullBody'];
 
@@ -163,21 +163,21 @@ const ALT_WHY_CODES = ['samePrimaryOtherEquipment', 'samePattern', 'similarPurpo
    sa nikdy nevydáva za rovnocennú náhradu. */
 const EXERCISE_LIBRARY = [
   /* --- Existujúce zabudované cviky (ich id sa nesmie zmeniť – je v histórii) --- */
-  { id: 'bench-press', primary: 'chest', secondary: ['arms', 'shoulders'], pattern: 'pushH', category: 'strength', difficulty: 'intermediate', equipment: ['barbell', 'bench'], locations: ['gym'], diagram: 'pushH',
+  { id: 'bench-press', primary: 'chest', secondary: ['triceps', 'shoulders'], pattern: 'pushH', category: 'strength', difficulty: 'intermediate', equipment: ['barbell', 'bench'], locations: ['gym'], diagram: 'pushH',
     alternatives: [['push-up', 'samePrimaryOtherEquipment'], ['band-chest-press', 'homeVersion'], ['dips', 'similarPurpose']] },
-  { id: 'overhead-press', primary: 'shoulders', secondary: ['arms'], pattern: 'pushV', category: 'strength', difficulty: 'intermediate', equipment: ['barbell'], locations: ['gym'], diagram: 'pushV',
+  { id: 'overhead-press', primary: 'shoulders', secondary: ['triceps'], pattern: 'pushV', category: 'strength', difficulty: 'intermediate', equipment: ['barbell'], locations: ['gym'], diagram: 'pushV',
     alternatives: [['band-shoulder-press', 'homeVersion'], ['pike-push-up', 'noEquipmentVersion'], ['lateral-raises', 'similarPurpose']] },
-  { id: 'dips', primary: 'chest', secondary: ['arms', 'shoulders'], pattern: 'pushV', category: 'strength', difficulty: 'intermediate', equipment: ['pullupBar'], locations: ['gym', 'home'], diagram: 'pushV',
+  { id: 'dips', primary: 'chest', secondary: ['triceps', 'shoulders'], pattern: 'pushV', category: 'strength', difficulty: 'intermediate', equipment: ['pullupBar'], locations: ['gym', 'home'], diagram: 'pushV',
     alternatives: [['push-up', 'samePrimaryOtherEquipment'], ['diamond-push-up', 'harderVariation'], ['bench-press', 'gymVersion']] },
   { id: 'lateral-raises', primary: 'shoulders', secondary: [], pattern: 'lateralRaise', category: 'strength', difficulty: 'beginner', equipment: ['dumbbells'], locations: ['gym', 'home'], diagram: 'lateralRaise',
     alternatives: [['band-shoulder-press', 'samePrimaryOtherEquipment'], ['pike-push-up', 'noEquipmentVersion'], ['pull-ups', 'similarPurpose']] },
-  { id: 'pull-ups', primary: 'back', secondary: ['arms'], pattern: 'pullV', category: 'strength', difficulty: 'intermediate', equipment: ['pullupBar'], locations: ['gym', 'home', 'outdoor'], diagram: 'pullV',
+  { id: 'pull-ups', primary: 'back', secondary: ['biceps'], pattern: 'pullV', category: 'strength', difficulty: 'intermediate', equipment: ['pullupBar'], locations: ['gym', 'home', 'outdoor'], diagram: 'pullV',
     alternatives: [['band-pulldown', 'homeVersion'], ['band-row', 'samePrimaryOtherEquipment'], ['superman', 'easierVariation']] },
-  { id: 'bent-over-rows', primary: 'back', secondary: ['arms'], pattern: 'pullH', category: 'strength', difficulty: 'intermediate', equipment: ['barbell'], locations: ['gym'], diagram: 'pullH',
+  { id: 'bent-over-rows', primary: 'back', secondary: ['biceps'], pattern: 'pullH', category: 'strength', difficulty: 'intermediate', equipment: ['barbell'], locations: ['gym'], diagram: 'pullH',
     alternatives: [['dumbbell-row', 'samePrimaryOtherEquipment'], ['band-row', 'homeVersion'], ['cable-rows', 'similarPurpose']] },
-  { id: 'cable-rows', primary: 'back', secondary: ['arms'], pattern: 'pullH', category: 'strength', difficulty: 'beginner', equipment: ['cableMachine'], locations: ['gym'], diagram: 'pullH',
+  { id: 'cable-rows', primary: 'back', secondary: ['biceps'], pattern: 'pullH', category: 'strength', difficulty: 'beginner', equipment: ['cableMachine'], locations: ['gym'], diagram: 'pullH',
     alternatives: [['band-row', 'homeVersion'], ['dumbbell-row', 'samePrimaryOtherEquipment'], ['superman', 'noEquipmentVersion']] },
-  { id: 'bicep-curls', primary: 'arms', secondary: [], pattern: 'armIsolation', category: 'strength', difficulty: 'beginner', equipment: ['dumbbells'], locations: ['gym', 'home'], diagram: 'armIsolation',
+  { id: 'bicep-curls', primary: 'biceps', secondary: [], pattern: 'armIsolation', category: 'strength', difficulty: 'beginner', equipment: ['dumbbells'], locations: ['gym', 'home'], diagram: 'armIsolation',
     alternatives: [['hammer-curl', 'similarPurpose'], ['band-bicep-curl', 'homeVersion'], ['band-row', 'similarPurpose']] },
   { id: 'squats', primary: 'legs', secondary: ['glutes', 'core'], pattern: 'squat', category: 'strength', difficulty: 'intermediate', equipment: ['barbell'], locations: ['gym'], diagram: 'squat',
     alternatives: [['bodyweight-squat', 'noEquipmentVersion'], ['leg-press', 'samePrimaryOtherEquipment'], ['split-squat', 'harderVariation']] },
@@ -191,27 +191,27 @@ const EXERCISE_LIBRARY = [
     alternatives: [['bodyweight-squat', 'samePrimaryOtherEquipment'], ['step-up', 'similarPurpose'], ['split-squat', 'similarPurpose']] },
 
   /* --- Domáce a outdoorové doplnenie (bez náčinia, s gumou, s jednoručkami) --- */
-  { id: 'push-up', primary: 'chest', secondary: ['arms', 'shoulders'], pattern: 'pushH', category: 'strength', difficulty: 'beginner', equipment: ['none'], locations: ['home', 'outdoor', 'gym'], diagram: 'pushH',
+  { id: 'push-up', primary: 'chest', secondary: ['triceps', 'shoulders'], pattern: 'pushH', category: 'strength', difficulty: 'beginner', equipment: ['none'], locations: ['home', 'outdoor', 'gym'], diagram: 'pushH',
     alternatives: [['band-chest-press', 'samePrimaryOtherEquipment'], ['bench-press', 'gymVersion'], ['diamond-push-up', 'harderVariation']] },
-  { id: 'band-chest-press', primary: 'chest', secondary: ['arms', 'shoulders'], pattern: 'pushH', category: 'strength', difficulty: 'beginner', equipment: ['bands'], locations: ['gym', 'home', 'outdoor'], diagram: 'pushH',
+  { id: 'band-chest-press', primary: 'chest', secondary: ['triceps', 'shoulders'], pattern: 'pushH', category: 'strength', difficulty: 'beginner', equipment: ['bands'], locations: ['gym', 'home', 'outdoor'], diagram: 'pushH',
     alternatives: [['push-up', 'noEquipmentVersion'], ['bench-press', 'gymVersion'], ['band-shoulder-press', 'similarPurpose']] },
-  { id: 'band-pulldown', primary: 'back', secondary: ['arms'], pattern: 'pullV', category: 'strength', difficulty: 'beginner', equipment: ['bands'], locations: ['gym', 'home', 'outdoor'], diagram: 'pullV',
+  { id: 'band-pulldown', primary: 'back', secondary: ['biceps'], pattern: 'pullV', category: 'strength', difficulty: 'beginner', equipment: ['bands'], locations: ['gym', 'home', 'outdoor'], diagram: 'pullV',
     alternatives: [['pull-ups', 'harderVariation'], ['band-row', 'samePrimaryOtherEquipment'], ['cable-rows', 'gymVersion']] },
-  { id: 'band-row', primary: 'back', secondary: ['arms'], pattern: 'pullH', category: 'strength', difficulty: 'beginner', equipment: ['bands'], locations: ['gym', 'home', 'outdoor'], diagram: 'pullH',
+  { id: 'band-row', primary: 'back', secondary: ['biceps'], pattern: 'pullH', category: 'strength', difficulty: 'beginner', equipment: ['bands'], locations: ['gym', 'home', 'outdoor'], diagram: 'pullH',
     alternatives: [['dumbbell-row', 'samePrimaryOtherEquipment'], ['superman', 'noEquipmentVersion'], ['cable-rows', 'gymVersion']] },
-  { id: 'dumbbell-row', primary: 'back', secondary: ['arms'], pattern: 'pullH', category: 'strength', difficulty: 'beginner', equipment: ['dumbbells'], locations: ['gym', 'home'], diagram: 'pullH',
+  { id: 'dumbbell-row', primary: 'back', secondary: ['biceps'], pattern: 'pullH', category: 'strength', difficulty: 'beginner', equipment: ['dumbbells'], locations: ['gym', 'home'], diagram: 'pullH',
     alternatives: [['band-row', 'samePrimaryOtherEquipment'], ['superman', 'noEquipmentVersion'], ['bent-over-rows', 'similarPurpose']] },
   { id: 'superman', primary: 'back', secondary: ['glutes'], pattern: 'backExtension', category: 'strength', difficulty: 'beginner', equipment: ['none'], locations: ['home', 'outdoor', 'gym'], diagram: 'backExtension',
     alternatives: [['dead-bug', 'samePattern'], ['glute-bridge', 'samePrimaryOtherEquipment'], ['band-row', 'similarPurpose']] },
-  { id: 'pike-push-up', primary: 'shoulders', secondary: ['arms'], pattern: 'pushV', category: 'strength', difficulty: 'intermediate', equipment: ['none'], locations: ['home', 'outdoor', 'gym'], diagram: 'pushV',
+  { id: 'pike-push-up', primary: 'shoulders', secondary: ['triceps'], pattern: 'pushV', category: 'strength', difficulty: 'intermediate', equipment: ['none'], locations: ['home', 'outdoor', 'gym'], diagram: 'pushV',
     alternatives: [['band-shoulder-press', 'samePrimaryOtherEquipment'], ['overhead-press', 'gymVersion'], ['push-up', 'easierVariation']] },
-  { id: 'band-shoulder-press', primary: 'shoulders', secondary: ['arms'], pattern: 'pushV', category: 'strength', difficulty: 'beginner', equipment: ['bands'], locations: ['gym', 'home', 'outdoor'], diagram: 'pushV',
+  { id: 'band-shoulder-press', primary: 'shoulders', secondary: ['triceps'], pattern: 'pushV', category: 'strength', difficulty: 'beginner', equipment: ['bands'], locations: ['gym', 'home', 'outdoor'], diagram: 'pushV',
     alternatives: [['pike-push-up', 'noEquipmentVersion'], ['overhead-press', 'gymVersion'], ['lateral-raises', 'similarPurpose']] },
-  { id: 'hammer-curl', primary: 'arms', secondary: [], pattern: 'armIsolation', category: 'strength', difficulty: 'beginner', equipment: ['dumbbells'], locations: ['gym', 'home'], diagram: 'armIsolation',
+  { id: 'hammer-curl', primary: 'biceps', secondary: [], pattern: 'armIsolation', category: 'strength', difficulty: 'beginner', equipment: ['dumbbells'], locations: ['gym', 'home'], diagram: 'armIsolation',
     alternatives: [['band-bicep-curl', 'samePrimaryOtherEquipment'], ['bicep-curls', 'similarPurpose'], ['band-row', 'similarPurpose']] },
-  { id: 'diamond-push-up', primary: 'arms', secondary: ['chest', 'shoulders'], pattern: 'pushH', category: 'strength', difficulty: 'intermediate', equipment: ['none'], locations: ['home', 'outdoor', 'gym'], diagram: 'pushH',
+  { id: 'diamond-push-up', primary: 'triceps', secondary: ['chest', 'shoulders'], pattern: 'pushH', category: 'strength', difficulty: 'intermediate', equipment: ['none'], locations: ['home', 'outdoor', 'gym'], diagram: 'pushH',
     alternatives: [['push-up', 'easierVariation'], ['band-bicep-curl', 'samePrimaryOtherEquipment'], ['dips', 'gymVersion']] },
-  { id: 'band-bicep-curl', primary: 'arms', secondary: [], pattern: 'armIsolation', category: 'strength', difficulty: 'beginner', equipment: ['bands'], locations: ['gym', 'home', 'outdoor'], diagram: 'armIsolation',
+  { id: 'band-bicep-curl', primary: 'biceps', secondary: [], pattern: 'armIsolation', category: 'strength', difficulty: 'beginner', equipment: ['bands'], locations: ['gym', 'home', 'outdoor'], diagram: 'armIsolation',
     alternatives: [['bicep-curls', 'gymVersion'], ['hammer-curl', 'samePrimaryOtherEquipment'], ['band-row', 'similarPurpose']] },
   { id: 'bodyweight-squat', primary: 'legs', secondary: ['glutes', 'core'], pattern: 'squat', category: 'strength', difficulty: 'beginner', equipment: ['none'], locations: ['home', 'outdoor', 'gym'], diagram: 'squat',
     alternatives: [['squats', 'gymVersion'], ['split-squat', 'harderVariation'], ['leg-press', 'gymVersion']] },
@@ -233,25 +233,25 @@ const EXERCISE_LIBRARY = [
     alternatives: [['push-up', 'similarPurpose'], ['bodyweight-squat', 'similarPurpose'], ['plank', 'samePrimaryOtherEquipment']] },
 
   /* --- Rozšírenie knižnice: stroje, kladka, jednoručky, osa (gym) --- */
-  { id: 'cable-curl', primary: 'arms', secondary: [], pattern: 'armIsolation', category: 'strength', difficulty: 'beginner', equipment: ['cableMachine'], locations: ['gym'], diagram: 'armIsolation',
+  { id: 'cable-curl', primary: 'biceps', secondary: [], pattern: 'armIsolation', category: 'strength', difficulty: 'beginner', equipment: ['cableMachine'], locations: ['gym'], diagram: 'armIsolation',
     alternatives: [['bicep-curls', 'samePrimaryOtherEquipment'], ['hammer-curl', 'similarPurpose'], ['band-bicep-curl', 'homeVersion']] },
-  { id: 'machine-chest-press', primary: 'chest', secondary: ['arms', 'shoulders'], pattern: 'pushH', category: 'strength', difficulty: 'beginner', equipment: ['cableMachine'], locations: ['gym'], diagram: 'pushH',
+  { id: 'machine-chest-press', primary: 'chest', secondary: ['triceps', 'shoulders'], pattern: 'pushH', category: 'strength', difficulty: 'beginner', equipment: ['cableMachine'], locations: ['gym'], diagram: 'pushH',
     alternatives: [['bench-press', 'samePrimaryOtherEquipment'], ['push-up', 'noEquipmentVersion'], ['incline-dumbbell-press', 'similarPurpose']] },
   { id: 'pec-deck', primary: 'chest', secondary: ['shoulders'], pattern: 'pushH', category: 'strength', difficulty: 'beginner', equipment: ['cableMachine'], locations: ['gym'], diagram: 'pushH',
     alternatives: [['bench-press', 'similarPurpose'], ['band-chest-press', 'homeVersion'], ['push-up', 'noEquipmentVersion']] },
-  { id: 'incline-dumbbell-press', primary: 'chest', secondary: ['shoulders', 'arms'], pattern: 'pushH', category: 'strength', difficulty: 'intermediate', equipment: ['dumbbells', 'bench'], locations: ['gym'], diagram: 'pushH',
+  { id: 'incline-dumbbell-press', primary: 'chest', secondary: ['shoulders', 'triceps'], pattern: 'pushH', category: 'strength', difficulty: 'intermediate', equipment: ['dumbbells', 'bench'], locations: ['gym'], diagram: 'pushH',
     alternatives: [['bench-press', 'samePrimaryOtherEquipment'], ['machine-chest-press', 'similarPurpose'], ['push-up', 'noEquipmentVersion']] },
-  { id: 'front-raise', primary: 'shoulders', secondary: ['arms'], pattern: 'lateralRaise', category: 'strength', difficulty: 'beginner', equipment: ['dumbbells'], locations: ['gym', 'home'], diagram: 'lateralRaise',
+  { id: 'front-raise', primary: 'shoulders', secondary: ['biceps'], pattern: 'lateralRaise', category: 'strength', difficulty: 'beginner', equipment: ['dumbbells'], locations: ['gym', 'home'], diagram: 'lateralRaise',
     alternatives: [['lateral-raises', 'samePrimaryOtherEquipment'], ['band-shoulder-press', 'similarPurpose'], ['pike-push-up', 'noEquipmentVersion']] },
-  { id: 'lat-pulldown', primary: 'back', secondary: ['arms'], pattern: 'pullV', category: 'strength', difficulty: 'beginner', equipment: ['cableMachine'], locations: ['gym'], diagram: 'pullV',
+  { id: 'lat-pulldown', primary: 'back', secondary: ['biceps'], pattern: 'pullV', category: 'strength', difficulty: 'beginner', equipment: ['cableMachine'], locations: ['gym'], diagram: 'pullV',
     alternatives: [['pull-ups', 'harderVariation'], ['band-pulldown', 'homeVersion'], ['cable-rows', 'samePrimaryOtherEquipment']] },
-  { id: 'dumbbell-pullover', primary: 'back', secondary: ['chest', 'arms'], pattern: 'pullV', category: 'strength', difficulty: 'intermediate', equipment: ['dumbbells', 'bench'], locations: ['gym'], diagram: 'pullV',
+  { id: 'dumbbell-pullover', primary: 'back', secondary: ['chest', 'triceps'], pattern: 'pullV', category: 'strength', difficulty: 'intermediate', equipment: ['dumbbells', 'bench'], locations: ['gym'], diagram: 'pullV',
     alternatives: [['cable-pullover', 'samePrimaryOtherEquipment'], ['cable-rows', 'similarPurpose'], ['superman', 'noEquipmentVersion']] },
-  { id: 'cable-pullover', primary: 'back', secondary: ['chest', 'arms'], pattern: 'pullV', category: 'strength', difficulty: 'intermediate', equipment: ['cableMachine'], locations: ['gym'], diagram: 'pullV',
+  { id: 'cable-pullover', primary: 'back', secondary: ['chest', 'triceps'], pattern: 'pullV', category: 'strength', difficulty: 'intermediate', equipment: ['cableMachine'], locations: ['gym'], diagram: 'pullV',
     alternatives: [['dumbbell-pullover', 'samePrimaryOtherEquipment'], ['lat-pulldown', 'samePrimaryOtherEquipment'], ['cable-rows', 'similarPurpose']] },
-  { id: 'single-arm-dumbbell-triceps-extension', primary: 'arms', secondary: [], pattern: 'armIsolation', category: 'strength', difficulty: 'beginner', equipment: ['dumbbells'], locations: ['gym', 'home'], diagram: 'armIsolation',
+  { id: 'single-arm-dumbbell-triceps-extension', primary: 'triceps', secondary: [], pattern: 'armIsolation', category: 'strength', difficulty: 'beginner', equipment: ['dumbbells'], locations: ['gym', 'home'], diagram: 'armIsolation',
     alternatives: [['single-arm-cable-triceps-extension', 'samePrimaryOtherEquipment'], ['dips', 'similarPurpose'], ['diamond-push-up', 'noEquipmentVersion']] },
-  { id: 'single-arm-cable-triceps-extension', primary: 'arms', secondary: [], pattern: 'armIsolation', category: 'strength', difficulty: 'beginner', equipment: ['cableMachine'], locations: ['gym'], diagram: 'armIsolation',
+  { id: 'single-arm-cable-triceps-extension', primary: 'triceps', secondary: [], pattern: 'armIsolation', category: 'strength', difficulty: 'beginner', equipment: ['cableMachine'], locations: ['gym'], diagram: 'armIsolation',
     alternatives: [['single-arm-dumbbell-triceps-extension', 'samePrimaryOtherEquipment'], ['dips', 'similarPurpose'], ['diamond-push-up', 'homeVersion']] },
   { id: 'hack-squat', primary: 'legs', secondary: ['glutes', 'core'], pattern: 'squat', category: 'strength', difficulty: 'intermediate', equipment: ['cableMachine'], locations: ['gym'], diagram: 'squat',
     alternatives: [['squats', 'samePrimaryOtherEquipment'], ['leg-press', 'similarPurpose'], ['bodyweight-squat', 'noEquipmentVersion']] },
@@ -263,22 +263,22 @@ const EXERCISE_LIBRARY = [
     alternatives: [['abductor-machine', 'similarPurpose'], ['bodyweight-squat', 'samePrimaryOtherEquipment'], ['split-squat', 'similarPurpose']] },
   { id: 'abductor-machine', primary: 'glutes', secondary: ['legs'], pattern: 'legIsolation', category: 'strength', difficulty: 'beginner', equipment: ['cableMachine'], locations: ['gym'], diagram: 'legIsolation',
     alternatives: [['adductor-machine', 'similarPurpose'], ['glute-bridge', 'samePrimaryOtherEquipment'], ['hip-thrust', 'similarPurpose']] },
-  { id: 'assisted-dips', assisted: true, primary: 'chest', secondary: ['arms', 'shoulders'], pattern: 'pushV', category: 'strength', difficulty: 'beginner', equipment: ['cableMachine'], locations: ['gym'], diagram: 'pushV',
+  { id: 'assisted-dips', assisted: true, primary: 'chest', secondary: ['triceps', 'shoulders'], pattern: 'pushV', category: 'strength', difficulty: 'beginner', equipment: ['cableMachine'], locations: ['gym'], diagram: 'pushV',
     alternatives: [['dips', 'harderVariation'], ['machine-chest-press', 'similarPurpose'], ['push-up', 'noEquipmentVersion']] },
-  { id: 'assisted-pull-ups', assisted: true, primary: 'back', secondary: ['arms'], pattern: 'pullV', category: 'strength', difficulty: 'beginner', equipment: ['cableMachine'], locations: ['gym'], diagram: 'pullV',
+  { id: 'assisted-pull-ups', assisted: true, primary: 'back', secondary: ['biceps'], pattern: 'pullV', category: 'strength', difficulty: 'beginner', equipment: ['cableMachine'], locations: ['gym'], diagram: 'pullV',
     alternatives: [['pull-ups', 'harderVariation'], ['lat-pulldown', 'similarPurpose'], ['band-pulldown', 'homeVersion']] },
   /* --- Rozšírené varianty: samostatné identity bez prepisu starých záznamov --- */
-  { id: "dumbbell-bench-press", primary: "chest", secondary: ["arms","shoulders"], pattern: "pushH", category: "strength", difficulty: "intermediate", equipment: ["dumbbells","bench"], locations: ["gym","home"], diagram: "pushH",
+  { id: "dumbbell-bench-press", primary: "chest", secondary: ["triceps","shoulders"], pattern: "pushH", category: "strength", difficulty: "intermediate", equipment: ["dumbbells","bench"], locations: ["gym","home"], diagram: "pushH",
     alternatives: [["bench-press","similarPurpose"],["push-up","similarPurpose"]] },
-  { id: "incline-barbell-press", primary: "chest", secondary: ["arms","shoulders"], pattern: "pushH", category: "strength", difficulty: "intermediate", equipment: ["barbell","bench"], locations: ["gym","home"], diagram: "pushH",
+  { id: "incline-barbell-press", primary: "chest", secondary: ["triceps","shoulders"], pattern: "pushH", category: "strength", difficulty: "intermediate", equipment: ["barbell","bench"], locations: ["gym","home"], diagram: "pushH",
     alternatives: [["bench-press","similarPurpose"],["push-up","similarPurpose"]] },
-  { id: "decline-barbell-press", primary: "chest", secondary: ["arms","shoulders"], pattern: "pushH", category: "strength", difficulty: "intermediate", equipment: ["barbell","bench"], locations: ["gym","home"], diagram: "pushH",
+  { id: "decline-barbell-press", primary: "chest", secondary: ["triceps","shoulders"], pattern: "pushH", category: "strength", difficulty: "intermediate", equipment: ["barbell","bench"], locations: ["gym","home"], diagram: "pushH",
     alternatives: [["bench-press","similarPurpose"],["push-up","similarPurpose"]] },
-  { id: "incline-machine-press", primary: "chest", secondary: ["arms","shoulders"], pattern: "pushH", category: "strength", difficulty: "intermediate", equipment: ["cableMachine"], locations: ["gym"], diagram: "pushH",
+  { id: "incline-machine-press", primary: "chest", secondary: ["triceps","shoulders"], pattern: "pushH", category: "strength", difficulty: "intermediate", equipment: ["cableMachine"], locations: ["gym"], diagram: "pushH",
     alternatives: [["bench-press","similarPurpose"],["push-up","similarPurpose"]] },
-  { id: "smith-machine-bench-press", primary: "chest", secondary: ["arms","shoulders"], pattern: "pushH", category: "strength", difficulty: "intermediate", equipment: ["cableMachine","bench"], locations: ["gym"], diagram: "pushH",
+  { id: "smith-machine-bench-press", primary: "chest", secondary: ["triceps","shoulders"], pattern: "pushH", category: "strength", difficulty: "intermediate", equipment: ["cableMachine","bench"], locations: ["gym"], diagram: "pushH",
     alternatives: [["bench-press","similarPurpose"],["push-up","similarPurpose"]] },
-  { id: "smith-machine-incline-press", primary: "chest", secondary: ["arms","shoulders"], pattern: "pushH", category: "strength", difficulty: "intermediate", equipment: ["cableMachine","bench"], locations: ["gym"], diagram: "pushH",
+  { id: "smith-machine-incline-press", primary: "chest", secondary: ["triceps","shoulders"], pattern: "pushH", category: "strength", difficulty: "intermediate", equipment: ["cableMachine","bench"], locations: ["gym"], diagram: "pushH",
     alternatives: [["bench-press","similarPurpose"],["push-up","similarPurpose"]] },
   { id: "dumbbell-fly", primary: "chest", secondary: ["shoulders"], pattern: "pushH", category: "strength", difficulty: "intermediate", equipment: ["dumbbells","bench"], locations: ["gym","home"], diagram: "pushH",
     alternatives: [["bench-press","similarPurpose"],["push-up","similarPurpose"]] },
@@ -290,31 +290,31 @@ const EXERCISE_LIBRARY = [
     alternatives: [["bench-press","similarPurpose"],["push-up","similarPurpose"]] },
   { id: "high-to-low-cable-fly", primary: "chest", secondary: ["shoulders"], pattern: "pushH", category: "strength", difficulty: "intermediate", equipment: ["cableMachine"], locations: ["gym"], diagram: "pushH",
     alternatives: [["bench-press","similarPurpose"],["push-up","similarPurpose"]] },
-  { id: "dumbbell-floor-press", primary: "chest", secondary: ["arms","shoulders"], pattern: "pushH", category: "strength", difficulty: "intermediate", equipment: ["dumbbells"], locations: ["gym","home"], diagram: "pushH",
+  { id: "dumbbell-floor-press", primary: "chest", secondary: ["triceps","shoulders"], pattern: "pushH", category: "strength", difficulty: "intermediate", equipment: ["dumbbells"], locations: ["gym","home"], diagram: "pushH",
     alternatives: [["bench-press","similarPurpose"],["push-up","similarPurpose"]] },
-  { id: "close-grip-bench-press", primary: "arms", secondary: ["chest","shoulders"], pattern: "pushH", category: "strength", difficulty: "intermediate", equipment: ["barbell","bench"], locations: ["gym","home"], diagram: "pushH",
+  { id: "close-grip-bench-press", primary: "triceps", secondary: ["chest","shoulders"], pattern: "pushH", category: "strength", difficulty: "intermediate", equipment: ["barbell","bench"], locations: ["gym","home"], diagram: "pushH",
     alternatives: [["diamond-push-up","similarPurpose"],["bicep-curls","similarPurpose"]] },
-  { id: "t-bar-row", primary: "back", secondary: ["arms"], pattern: "pullH", category: "strength", difficulty: "intermediate", equipment: ["barbell"], locations: ["gym"], diagram: "pullH",
+  { id: "t-bar-row", primary: "back", secondary: ["biceps"], pattern: "pullH", category: "strength", difficulty: "intermediate", equipment: ["barbell"], locations: ["gym"], diagram: "pullH",
     alternatives: [["bent-over-rows","similarPurpose"],["cable-rows","similarPurpose"]] },
-  { id: "chest-supported-dumbbell-row", primary: "back", secondary: ["arms"], pattern: "pullH", category: "strength", difficulty: "intermediate", equipment: ["dumbbells","bench"], locations: ["gym","home"], diagram: "pullH",
+  { id: "chest-supported-dumbbell-row", primary: "back", secondary: ["biceps"], pattern: "pullH", category: "strength", difficulty: "intermediate", equipment: ["dumbbells","bench"], locations: ["gym","home"], diagram: "pullH",
     alternatives: [["bent-over-rows","similarPurpose"],["cable-rows","similarPurpose"]] },
-  { id: "machine-row", primary: "back", secondary: ["arms"], pattern: "pullH", category: "strength", difficulty: "intermediate", equipment: ["cableMachine"], locations: ["gym"], diagram: "pullH",
+  { id: "machine-row", primary: "back", secondary: ["biceps"], pattern: "pullH", category: "strength", difficulty: "intermediate", equipment: ["cableMachine"], locations: ["gym"], diagram: "pullH",
     alternatives: [["bent-over-rows","similarPurpose"],["cable-rows","similarPurpose"]] },
-  { id: "single-arm-cable-row", primary: "back", secondary: ["arms"], pattern: "pullH", category: "strength", difficulty: "intermediate", equipment: ["cableMachine"], locations: ["gym"], diagram: "pullH",
+  { id: "single-arm-cable-row", primary: "back", secondary: ["biceps"], pattern: "pullH", category: "strength", difficulty: "intermediate", equipment: ["cableMachine"], locations: ["gym"], diagram: "pullH",
     alternatives: [["bent-over-rows","similarPurpose"],["cable-rows","similarPurpose"]] },
-  { id: "inverted-row", primary: "back", secondary: ["arms","core"], pattern: "pullH", category: "strength", difficulty: "intermediate", equipment: ["pullupBar"], locations: ["gym","home","outdoor"], diagram: "pullH",
+  { id: "inverted-row", primary: "back", secondary: ["biceps","core"], pattern: "pullH", category: "strength", difficulty: "intermediate", equipment: ["pullupBar"], locations: ["gym","home","outdoor"], diagram: "pullH",
     alternatives: [["bent-over-rows","similarPurpose"],["cable-rows","similarPurpose"]] },
-  { id: "chin-up", primary: "back", secondary: ["arms"], pattern: "pullV", category: "strength", difficulty: "intermediate", equipment: ["pullupBar"], locations: ["gym","home","outdoor"], diagram: "pullV",
+  { id: "chin-up", primary: "back", secondary: ["biceps"], pattern: "pullV", category: "strength", difficulty: "intermediate", equipment: ["pullupBar"], locations: ["gym","home","outdoor"], diagram: "pullV",
     alternatives: [["pull-ups","similarPurpose"],["band-pulldown","similarPurpose"]] },
-  { id: "neutral-grip-pull-up", primary: "back", secondary: ["arms"], pattern: "pullV", category: "strength", difficulty: "intermediate", equipment: ["pullupBar"], locations: ["gym","home","outdoor"], diagram: "pullV",
+  { id: "neutral-grip-pull-up", primary: "back", secondary: ["biceps"], pattern: "pullV", category: "strength", difficulty: "intermediate", equipment: ["pullupBar"], locations: ["gym","home","outdoor"], diagram: "pullV",
     alternatives: [["pull-ups","similarPurpose"],["band-pulldown","similarPurpose"]] },
-  { id: "single-arm-lat-pulldown", primary: "back", secondary: ["arms"], pattern: "pullV", category: "strength", difficulty: "intermediate", equipment: ["cableMachine"], locations: ["gym"], diagram: "pullV",
+  { id: "single-arm-lat-pulldown", primary: "back", secondary: ["biceps"], pattern: "pullV", category: "strength", difficulty: "intermediate", equipment: ["cableMachine"], locations: ["gym"], diagram: "pullV",
     alternatives: [["pull-ups","similarPurpose"],["band-pulldown","similarPurpose"]] },
-  { id: "neutral-grip-lat-pulldown", primary: "back", secondary: ["arms"], pattern: "pullV", category: "strength", difficulty: "intermediate", equipment: ["cableMachine"], locations: ["gym"], diagram: "pullV",
+  { id: "neutral-grip-lat-pulldown", primary: "back", secondary: ["biceps"], pattern: "pullV", category: "strength", difficulty: "intermediate", equipment: ["cableMachine"], locations: ["gym"], diagram: "pullV",
     alternatives: [["pull-ups","similarPurpose"],["band-pulldown","similarPurpose"]] },
-  { id: "underhand-barbell-row", primary: "back", secondary: ["arms"], pattern: "pullH", category: "strength", difficulty: "intermediate", equipment: ["barbell"], locations: ["gym","home"], diagram: "pullH",
+  { id: "underhand-barbell-row", primary: "back", secondary: ["biceps"], pattern: "pullH", category: "strength", difficulty: "intermediate", equipment: ["barbell"], locations: ["gym","home"], diagram: "pullH",
     alternatives: [["bent-over-rows","similarPurpose"],["cable-rows","similarPurpose"]] },
-  { id: "wide-grip-cable-row", primary: "back", secondary: ["arms"], pattern: "pullH", category: "strength", difficulty: "intermediate", equipment: ["cableMachine"], locations: ["gym"], diagram: "pullH",
+  { id: "wide-grip-cable-row", primary: "back", secondary: ["biceps"], pattern: "pullH", category: "strength", difficulty: "intermediate", equipment: ["cableMachine"], locations: ["gym"], diagram: "pullH",
     alternatives: [["bent-over-rows","similarPurpose"],["cable-rows","similarPurpose"]] },
   { id: "barbell-shrug", primary: "back", secondary: [], pattern: "pullH", category: "strength", difficulty: "intermediate", equipment: ["barbell"], locations: ["gym","home"], diagram: "pullH",
     alternatives: [["bent-over-rows","similarPurpose"],["cable-rows","similarPurpose"]] },
@@ -328,9 +328,9 @@ const EXERCISE_LIBRARY = [
     alternatives: [["lateral-raises","similarPurpose"],["front-raise","similarPurpose"]] },
   { id: "cable-reverse-fly", primary: "shoulders", secondary: ["back"], pattern: "lateralRaise", category: "strength", difficulty: "intermediate", equipment: ["cableMachine"], locations: ["gym"], diagram: "lateralRaise",
     alternatives: [["lateral-raises","similarPurpose"],["front-raise","similarPurpose"]] },
-  { id: "seated-dumbbell-shoulder-press", primary: "shoulders", secondary: ["arms"], pattern: "pushV", category: "strength", difficulty: "intermediate", equipment: ["dumbbells","bench"], locations: ["gym","home"], diagram: "pushV",
+  { id: "seated-dumbbell-shoulder-press", primary: "shoulders", secondary: ["triceps"], pattern: "pushV", category: "strength", difficulty: "intermediate", equipment: ["dumbbells","bench"], locations: ["gym","home"], diagram: "pushV",
     alternatives: [["overhead-press","similarPurpose"],["pike-push-up","similarPurpose"]] },
-  { id: "machine-shoulder-press", primary: "shoulders", secondary: ["arms"], pattern: "pushV", category: "strength", difficulty: "intermediate", equipment: ["cableMachine"], locations: ["gym"], diagram: "pushV",
+  { id: "machine-shoulder-press", primary: "shoulders", secondary: ["triceps"], pattern: "pushV", category: "strength", difficulty: "intermediate", equipment: ["cableMachine"], locations: ["gym"], diagram: "pushV",
     alternatives: [["overhead-press","similarPurpose"],["pike-push-up","similarPurpose"]] },
   { id: "single-arm-cable-lateral-raise", primary: "shoulders", secondary: [], pattern: "lateralRaise", category: "strength", difficulty: "intermediate", equipment: ["cableMachine"], locations: ["gym"], diagram: "lateralRaise",
     alternatives: [["lateral-raises","similarPurpose"],["front-raise","similarPurpose"]] },
@@ -338,35 +338,35 @@ const EXERCISE_LIBRARY = [
     alternatives: [["lateral-raises","similarPurpose"],["front-raise","similarPurpose"]] },
   { id: "leaning-dumbbell-lateral-raise", primary: "shoulders", secondary: [], pattern: "lateralRaise", category: "strength", difficulty: "intermediate", equipment: ["dumbbells"], locations: ["gym","home"], diagram: "lateralRaise",
     alternatives: [["lateral-raises","similarPurpose"],["front-raise","similarPurpose"]] },
-  { id: "barbell-curl", primary: "arms", secondary: [], pattern: "armIsolation", category: "strength", difficulty: "intermediate", equipment: ["barbell"], locations: ["gym","home"], diagram: "armIsolation",
+  { id: "barbell-curl", primary: "biceps", secondary: [], pattern: "armIsolation", category: "strength", difficulty: "intermediate", equipment: ["barbell"], locations: ["gym","home"], diagram: "armIsolation",
     alternatives: [["bicep-curls","similarPurpose"],["hammer-curl","similarPurpose"]] },
-  { id: "ez-bar-curl", primary: "arms", secondary: [], pattern: "armIsolation", category: "strength", difficulty: "intermediate", equipment: ["barbell"], locations: ["gym","home"], diagram: "armIsolation",
+  { id: "ez-bar-curl", primary: "biceps", secondary: [], pattern: "armIsolation", category: "strength", difficulty: "intermediate", equipment: ["barbell"], locations: ["gym","home"], diagram: "armIsolation",
     alternatives: [["bicep-curls","similarPurpose"],["hammer-curl","similarPurpose"]] },
-  { id: "preacher-curl", primary: "arms", secondary: [], pattern: "armIsolation", category: "strength", difficulty: "intermediate", equipment: ["barbell","bench"], locations: ["gym","home"], diagram: "armIsolation",
+  { id: "preacher-curl", primary: "biceps", secondary: [], pattern: "armIsolation", category: "strength", difficulty: "intermediate", equipment: ["barbell","bench"], locations: ["gym","home"], diagram: "armIsolation",
     alternatives: [["bicep-curls","similarPurpose"],["hammer-curl","similarPurpose"]] },
-  { id: "incline-dumbbell-curl", primary: "arms", secondary: [], pattern: "armIsolation", category: "strength", difficulty: "intermediate", equipment: ["dumbbells","bench"], locations: ["gym","home"], diagram: "armIsolation",
+  { id: "incline-dumbbell-curl", primary: "biceps", secondary: [], pattern: "armIsolation", category: "strength", difficulty: "intermediate", equipment: ["dumbbells","bench"], locations: ["gym","home"], diagram: "armIsolation",
     alternatives: [["bicep-curls","similarPurpose"],["hammer-curl","similarPurpose"]] },
-  { id: "concentration-curl", primary: "arms", secondary: [], pattern: "armIsolation", category: "strength", difficulty: "intermediate", equipment: ["dumbbells","bench"], locations: ["gym","home"], diagram: "armIsolation",
+  { id: "concentration-curl", primary: "biceps", secondary: [], pattern: "armIsolation", category: "strength", difficulty: "intermediate", equipment: ["dumbbells","bench"], locations: ["gym","home"], diagram: "armIsolation",
     alternatives: [["bicep-curls","similarPurpose"],["hammer-curl","similarPurpose"]] },
-  { id: "spider-curl", primary: "arms", secondary: [], pattern: "armIsolation", category: "strength", difficulty: "intermediate", equipment: ["dumbbells","bench"], locations: ["gym","home"], diagram: "armIsolation",
+  { id: "spider-curl", primary: "biceps", secondary: [], pattern: "armIsolation", category: "strength", difficulty: "intermediate", equipment: ["dumbbells","bench"], locations: ["gym","home"], diagram: "armIsolation",
     alternatives: [["bicep-curls","similarPurpose"],["hammer-curl","similarPurpose"]] },
   { id: "reverse-curl", primary: "arms", secondary: [], pattern: "armIsolation", category: "strength", difficulty: "intermediate", equipment: ["barbell"], locations: ["gym","home"], diagram: "armIsolation",
     alternatives: [["bicep-curls","similarPurpose"],["hammer-curl","similarPurpose"]] },
-  { id: "rope-triceps-pushdown", primary: "arms", secondary: [], pattern: "armIsolation", category: "strength", difficulty: "intermediate", equipment: ["cableMachine"], locations: ["gym"], diagram: "armIsolation",
+  { id: "rope-triceps-pushdown", primary: "triceps", secondary: [], pattern: "armIsolation", category: "strength", difficulty: "intermediate", equipment: ["cableMachine"], locations: ["gym"], diagram: "armIsolation",
     alternatives: [["bicep-curls","similarPurpose"],["hammer-curl","similarPurpose"]] },
-  { id: "straight-bar-triceps-pushdown", primary: "arms", secondary: [], pattern: "armIsolation", category: "strength", difficulty: "intermediate", equipment: ["cableMachine"], locations: ["gym"], diagram: "armIsolation",
+  { id: "straight-bar-triceps-pushdown", primary: "triceps", secondary: [], pattern: "armIsolation", category: "strength", difficulty: "intermediate", equipment: ["cableMachine"], locations: ["gym"], diagram: "armIsolation",
     alternatives: [["bicep-curls","similarPurpose"],["hammer-curl","similarPurpose"]] },
-  { id: "overhead-cable-triceps-extension", primary: "arms", secondary: [], pattern: "armIsolation", category: "strength", difficulty: "intermediate", equipment: ["cableMachine"], locations: ["gym"], diagram: "armIsolation",
+  { id: "overhead-cable-triceps-extension", primary: "triceps", secondary: [], pattern: "armIsolation", category: "strength", difficulty: "intermediate", equipment: ["cableMachine"], locations: ["gym"], diagram: "armIsolation",
     alternatives: [["bicep-curls","similarPurpose"],["hammer-curl","similarPurpose"]] },
-  { id: "lying-triceps-extension", primary: "arms", secondary: [], pattern: "armIsolation", category: "strength", difficulty: "intermediate", equipment: ["barbell","bench"], locations: ["gym","home"], diagram: "armIsolation",
+  { id: "lying-triceps-extension", primary: "triceps", secondary: [], pattern: "armIsolation", category: "strength", difficulty: "intermediate", equipment: ["barbell","bench"], locations: ["gym","home"], diagram: "armIsolation",
     alternatives: [["bicep-curls","similarPurpose"],["hammer-curl","similarPurpose"]] },
-  { id: "dumbbell-triceps-kickback", primary: "arms", secondary: [], pattern: "armIsolation", category: "strength", difficulty: "intermediate", equipment: ["dumbbells"], locations: ["gym","home"], diagram: "armIsolation",
+  { id: "dumbbell-triceps-kickback", primary: "triceps", secondary: [], pattern: "armIsolation", category: "strength", difficulty: "intermediate", equipment: ["dumbbells"], locations: ["gym","home"], diagram: "armIsolation",
     alternatives: [["bicep-curls","similarPurpose"],["hammer-curl","similarPurpose"]] },
   { id: "wrist-curl", primary: "arms", secondary: [], pattern: "armIsolation", category: "strength", difficulty: "intermediate", equipment: ["dumbbells"], locations: ["gym","home"], diagram: "armIsolation",
     alternatives: [["bicep-curls","similarPurpose"],["hammer-curl","similarPurpose"]] },
   { id: "reverse-wrist-curl", primary: "arms", secondary: [], pattern: "armIsolation", category: "strength", difficulty: "intermediate", equipment: ["dumbbells"], locations: ["gym","home"], diagram: "armIsolation",
     alternatives: [["bicep-curls","similarPurpose"],["hammer-curl","similarPurpose"]] },
-  { id: "single-arm-preacher-curl", primary: "arms", secondary: [], pattern: "armIsolation", category: "strength", difficulty: "intermediate", equipment: ["dumbbells","bench"], locations: ["gym","home"], diagram: "armIsolation",
+  { id: "single-arm-preacher-curl", primary: "biceps", secondary: [], pattern: "armIsolation", category: "strength", difficulty: "intermediate", equipment: ["dumbbells","bench"], locations: ["gym","home"], diagram: "armIsolation",
     alternatives: [["bicep-curls","similarPurpose"],["hammer-curl","similarPurpose"]] },
   { id: "bulgarian-split-squat", primary: "legs", secondary: ["glutes"], pattern: "lunge", category: "strength", difficulty: "intermediate", equipment: ["bench"], locations: ["gym","home"], diagram: "lunge",
     alternatives: [["lunges","similarPurpose"],["split-squat","similarPurpose"]] },
@@ -439,9 +439,9 @@ const EXERCISE_LIBRARY = [
   { id: "dumbbell-side-bend", primary: "core", secondary: [], pattern: "coreLateral", category: "core", difficulty: "beginner", equipment: ["dumbbells"], locations: ["gym","home"],
     alternatives: [["side-plank","similarPurpose"],["plank","similarPurpose"]] },
   /* --- Ďalšie bežné varianty a presné náčinie pre rozpoznávanie názvov --- */
-  { id: "standing-dumbbell-overhead-press", primary: "shoulders", secondary: ["arms","core"], pattern: "pushV", category: "strength", difficulty: "intermediate", equipment: ["dumbbells"], locations: ["gym","home"],
+  { id: "standing-dumbbell-overhead-press", primary: "shoulders", secondary: ["triceps","core"], pattern: "pushV", category: "strength", difficulty: "intermediate", equipment: ["dumbbells"], locations: ["gym","home"],
     alternatives: [["overhead-press","similarPurpose"],["seated-dumbbell-shoulder-press","similarPurpose"]] },
-  { id: "arnold-press", primary: "shoulders", secondary: ["arms"], pattern: "pushV", category: "strength", difficulty: "intermediate", equipment: ["dumbbells","bench"], locations: ["gym","home"],
+  { id: "arnold-press", primary: "shoulders", secondary: ["triceps"], pattern: "pushV", category: "strength", difficulty: "intermediate", equipment: ["dumbbells","bench"], locations: ["gym","home"],
     alternatives: [["seated-dumbbell-shoulder-press","similarPurpose"],["machine-shoulder-press","similarPurpose"]] },
   { id: "barbell-front-raise", primary: "shoulders", secondary: [], pattern: "lateralRaise", category: "strength", difficulty: "beginner", equipment: ["barbell"], locations: ["gym","home"],
     alternatives: [["front-raise","similarPurpose"],["lateral-raises","similarPurpose"]] },
@@ -453,11 +453,11 @@ const EXERCISE_LIBRARY = [
     alternatives: [["lateral-raises","similarPurpose"],["single-arm-cable-lateral-raise","similarPurpose"]] },
   { id: "incline-cable-chest-fly", primary: "chest", secondary: ["shoulders"], pattern: "pushH", category: "strength", difficulty: "intermediate", equipment: ["cableMachine","bench"], locations: ["gym"],
     alternatives: [["incline-dumbbell-fly","similarPurpose"],["cable-chest-fly","similarPurpose"]] },
-  { id: "single-arm-machine-row", primary: "back", secondary: ["arms"], pattern: "pullH", category: "strength", difficulty: "beginner", equipment: ["cableMachine"], locations: ["gym"],
+  { id: "single-arm-machine-row", primary: "back", secondary: ["biceps"], pattern: "pullH", category: "strength", difficulty: "beginner", equipment: ["cableMachine"], locations: ["gym"],
     alternatives: [["machine-row","similarPurpose"],["dumbbell-row","similarPurpose"]] },
-  { id: "machine-high-row", primary: "back", secondary: ["arms"], pattern: "pullH", category: "strength", difficulty: "beginner", equipment: ["cableMachine"], locations: ["gym"],
+  { id: "machine-high-row", primary: "back", secondary: ["biceps"], pattern: "pullH", category: "strength", difficulty: "beginner", equipment: ["cableMachine"], locations: ["gym"],
     alternatives: [["machine-row","similarPurpose"],["lat-pulldown","similarPurpose"]] },
-  { id: "pendlay-row", primary: "back", secondary: ["arms","core"], pattern: "pullH", category: "strength", difficulty: "intermediate", equipment: ["barbell"], locations: ["gym","home"],
+  { id: "pendlay-row", primary: "back", secondary: ["biceps","core"], pattern: "pullH", category: "strength", difficulty: "intermediate", equipment: ["barbell"], locations: ["gym","home"],
     alternatives: [["bent-over-rows","similarPurpose"],["chest-supported-dumbbell-row","similarPurpose"]] },
   { id: "dumbbell-romanian-deadlift", primary: "legs", secondary: ["glutes","back"], pattern: "hinge", category: "strength", difficulty: "intermediate", equipment: ["dumbbells"], locations: ["gym","home"],
     alternatives: [["romanian-deadlift","similarPurpose"],["single-leg-romanian-deadlift","similarPurpose"]] },
@@ -485,25 +485,25 @@ const EXERCISE_LIBRARY = [
     alternatives: [["lying-leg-curl","similarPurpose"],["seated-leg-curl","similarPurpose"]] },
   { id: "single-arm-cable-reverse-fly", primary: "shoulders", secondary: ["back"], pattern: "lateralRaise", category: "strength", difficulty: "intermediate", equipment: ["cableMachine"], locations: ["gym"],
     alternatives: [["cable-reverse-fly","similarPurpose"],["reverse-pec-deck","similarPurpose"]] },
-  { id: "single-arm-cable-curl", primary: "arms", secondary: [], pattern: "armIsolation", category: "strength", difficulty: "beginner", equipment: ["cableMachine"], locations: ["gym"],
+  { id: "single-arm-cable-curl", primary: "biceps", secondary: [], pattern: "armIsolation", category: "strength", difficulty: "beginner", equipment: ["cableMachine"], locations: ["gym"],
     alternatives: [["cable-curl","similarPurpose"],["bicep-curls","similarPurpose"]] },
-  { id: "machine-preacher-curl", primary: "arms", secondary: [], pattern: "armIsolation", category: "strength", difficulty: "beginner", equipment: ["cableMachine"], locations: ["gym"],
+  { id: "machine-preacher-curl", primary: "biceps", secondary: [], pattern: "armIsolation", category: "strength", difficulty: "beginner", equipment: ["cableMachine"], locations: ["gym"],
     alternatives: [["preacher-curl","similarPurpose"],["single-arm-preacher-curl","similarPurpose"]] },
-  { id: "bayesian-cable-curl", primary: "arms", secondary: [], pattern: "armIsolation", category: "strength", difficulty: "intermediate", equipment: ["cableMachine"], locations: ["gym"],
+  { id: "bayesian-cable-curl", primary: "biceps", secondary: [], pattern: "armIsolation", category: "strength", difficulty: "intermediate", equipment: ["cableMachine"], locations: ["gym"],
     alternatives: [["incline-dumbbell-curl","similarPurpose"],["single-arm-preacher-curl","similarPurpose"]] },
-  { id: "cable-hammer-curl", primary: "arms", secondary: [], pattern: "armIsolation", category: "strength", difficulty: "beginner", equipment: ["cableMachine"], locations: ["gym"],
+  { id: "cable-hammer-curl", primary: "biceps", secondary: [], pattern: "armIsolation", category: "strength", difficulty: "beginner", equipment: ["cableMachine"], locations: ["gym"],
     alternatives: [["hammer-curl","similarPurpose"],["cable-curl","similarPurpose"]] },
-  { id: "cross-body-hammer-curl", primary: "arms", secondary: [], pattern: "armIsolation", category: "strength", difficulty: "beginner", equipment: ["dumbbells"], locations: ["gym","home"],
+  { id: "cross-body-hammer-curl", primary: "biceps", secondary: [], pattern: "armIsolation", category: "strength", difficulty: "beginner", equipment: ["dumbbells"], locations: ["gym","home"],
     alternatives: [["hammer-curl","similarPurpose"],["bicep-curls","similarPurpose"]] },
-  { id: "dumbbell-skull-crusher", primary: "arms", secondary: [], pattern: "armIsolation", category: "strength", difficulty: "intermediate", equipment: ["dumbbells","bench"], locations: ["gym","home"],
+  { id: "dumbbell-skull-crusher", primary: "triceps", secondary: [], pattern: "armIsolation", category: "strength", difficulty: "intermediate", equipment: ["dumbbells","bench"], locations: ["gym","home"],
     alternatives: [["lying-triceps-extension","similarPurpose"],["overhead-cable-triceps-extension","similarPurpose"]] },
-  { id: "overhead-dumbbell-triceps-extension", primary: "arms", secondary: [], pattern: "armIsolation", category: "strength", difficulty: "intermediate", equipment: ["dumbbells"], locations: ["gym","home"],
+  { id: "overhead-dumbbell-triceps-extension", primary: "triceps", secondary: [], pattern: "armIsolation", category: "strength", difficulty: "intermediate", equipment: ["dumbbells"], locations: ["gym","home"],
     alternatives: [["single-arm-dumbbell-triceps-extension","similarPurpose"],["overhead-cable-triceps-extension","similarPurpose"]] },
-  { id: "machine-triceps-extension", primary: "arms", secondary: [], pattern: "armIsolation", category: "strength", difficulty: "beginner", equipment: ["cableMachine"], locations: ["gym"],
+  { id: "machine-triceps-extension", primary: "triceps", secondary: [], pattern: "armIsolation", category: "strength", difficulty: "beginner", equipment: ["cableMachine"], locations: ["gym"],
     alternatives: [["straight-bar-triceps-pushdown","similarPurpose"],["lying-triceps-extension","similarPurpose"]] },
-  { id: "decline-push-up", primary: "chest", secondary: ["arms","shoulders","core"], pattern: "pushH", category: "strength", difficulty: "intermediate", equipment: ["bench"], locations: ["gym","home"],
+  { id: "decline-push-up", primary: "chest", secondary: ["triceps","shoulders","core"], pattern: "pushH", category: "strength", difficulty: "intermediate", equipment: ["bench"], locations: ["gym","home"],
     alternatives: [["push-up","similarPurpose"],["incline-dumbbell-press","similarPurpose"]] },
-  { id: "incline-push-up", primary: "chest", secondary: ["arms","shoulders","core"], pattern: "pushH", category: "strength", difficulty: "beginner", equipment: ["bench"], locations: ["gym","home"],
+  { id: "incline-push-up", primary: "chest", secondary: ["triceps","shoulders","core"], pattern: "pushH", category: "strength", difficulty: "beginner", equipment: ["bench"], locations: ["gym","home"],
     alternatives: [["push-up","similarPurpose"],["band-chest-press","similarPurpose"]] },
   { id: "cable-pull-through", primary: "glutes", secondary: ["legs","back"], pattern: "hinge", category: "strength", difficulty: "beginner", equipment: ["cableMachine"], locations: ["gym"],
     alternatives: [["romanian-deadlift","similarPurpose"],["glute-bridge","similarPurpose"]] },
@@ -513,7 +513,7 @@ const EXERCISE_LIBRARY = [
     alternatives: [["bulgarian-split-squat","similarPurpose"],["lunges","similarPurpose"]] },
   { id: "leg-press-calf-raise", primary: "legs", secondary: [], pattern: "legIsolation", category: "strength", difficulty: "beginner", equipment: ["cableMachine"], locations: ["gym"],
     alternatives: [["standing-machine-calf-raise","similarPurpose"],["seated-calf-raise","similarPurpose"]] },
-  { id: "assisted-chin-up", assisted: true, primary: "back", secondary: ["arms"], pattern: "pullV", category: "strength", difficulty: "beginner", equipment: ["cableMachine"], locations: ["gym"],
+  { id: "assisted-chin-up", assisted: true, primary: "back", secondary: ["biceps"], pattern: "pullV", category: "strength", difficulty: "beginner", equipment: ["cableMachine"], locations: ["gym"],
     alternatives: [["chin-up","similarPurpose"],["lat-pulldown","similarPurpose"]] },
 ];
 
@@ -573,7 +573,11 @@ function createExerciseMusclePicker(prefix, onChange) {
     helper.append(input, document.createTextNode(muscleLabel(m)));
     helpers.appendChild(helper);
   }
-  box.append(label, primarySelect, helpers);
+  const guide = document.createElement('details');
+  guide.className = 'mu-guide';
+  guide.innerHTML = '<summary>' + esc(t('muscles.guide')) + '</summary><p class="card-note">'
+    + esc(t('muscles.anatomyHint')) + '</p><p class="card-note">' + esc(t('muscles.armsNote')) + '</p>';
+  box.append(label, primarySelect, helpers, guide);
   const read = () => cleanExerciseMuscles({ primary: primarySelect.value,
     secondary: Array.from(helpers.querySelectorAll('input:checked'), input => input.dataset.muscle) });
   const setValue = (raw) => {
@@ -2217,13 +2221,17 @@ const I18N = {
     'community.enable': 'Zapnúť Community', 'community.disable': 'Vypnúť Community',
     'community.inviteTitle': 'Pridaj sa ku GymQuest Community', 'community.inviteText': 'Zdieľaj svoj pokrok, sleduj priateľov, píš si s nimi a zabojuj o miesto v Top 20. Tvoje tréningy ostávajú súkromné – zverejní sa iba to, čo sa rozhodneš zdieľať.',
     'community.inviteJoin': 'Pridať sa', 'community.inviteLater': 'Teraz nie',
-    'push.title': 'Upozornenia', 'push.switch': 'Upozornenia na správy na tomto zariadení',
-    'push.note': 'Keď ti priateľ napíše, príde ti upozornenie. Ukáže iba jeho meno, nikdy text správy.', 'push.on': 'Upozornenia sú na tomto zariadení zapnuté.',
+    'push.title': 'Upozornenia', 'push.switch': 'Upozornenia na tomto zariadení',
+    'push.note': 'Povolí pripomienky aj upozornenia na správy. Správy ukážu iba meno priateľa, nikdy text.', 'push.on': 'Upozornenia sú na tomto zariadení zapnuté.',
     'push.off': 'Upozornenia sú na tomto zariadení vypnuté.', 'push.denied': 'Upozornenia sú zablokované. Povoľ ich pre GymQuest v nastaveniach telefónu alebo prehliadača.',
     'push.notAllowed': 'Upozornenia neboli povolené.', 'push.errFailed': 'Upozornenia sa nepodarilo zapnúť. Skontroluj pripojenie a skús to znova.',
     'push.homeScreen': 'Na iPhone a iPade fungujú upozornenia iba vtedy, keď je GymQuest pridaný na plochu (Zdieľať → Pridať na plochu) a otvorený odtiaľ. Potrebný je iOS 16.4 alebo novší.', 'push.unsupported': 'Tento prehliadač upozornenia nepodporuje.',
     'push.hint': 'Nech ti príde upozornenie, keď ti priateľ napíše.', 'push.turnOn': 'Zapnúť',
     'rem.title': 'Pripomienky', 'rem.needPush': 'Zapni vyššie upozornenia na tomto zariadení a môžeš si nastaviť pripomienky na vodu, jedlo a tréning.',
+    'rem.settingsHint': 'Upozornenia, voda, jedlo, tréning a vlastné pripomienky.',
+    'rem.accountRequired': 'Pripomienky patria účtu. Prihlás sa cez Community; ak je vypnutá, najprv ju zapni.',
+    'rem.unavailable': 'Pripomienky alebo upozornenia nie sú v tomto zostavení dostupné.',
+    'rem.offline': 'Si offline. Na načítanie a uloženie pripomienok účtu potrebuješ pripojenie.',
     'rem.water': 'Piť vodu', 'rem.every': 'každých',
     'rem.everyMin': '{n} min', 'rem.everyHours': '{n} h',
     'rem.from': 'od', 'rem.to': 'do',
@@ -2356,7 +2364,13 @@ const I18N = {
     'rest.errDuplicate': 'Predvoľba s týmto časom už existuje: {name}.',
 
     /* --- Knižnica cvikov: štítky, filtre, postup a technika --- */
-    'muscle.chest': 'Hrudník', 'muscle.back': 'Chrbát', 'muscle.shoulders': 'Ramená', 'muscle.arms': 'Ruky',
+    'muscle.chest': 'Hrudník', 'muscle.back': 'Chrbát', 'muscle.shoulders': "Ramená (deltové svaly)", 'muscle.arms': 'Ruky',
+    "muscle.biceps": "Biceps",
+    "muscle.triceps": "Triceps",
+    "muscles.guide": "Sprievodca svalmi",
+    "muscles.anatomyHint": "Biceps je vpredu na nadlaktí, triceps vzadu. Ramená (deltové svaly) tvoria zaoblený vrch ramena nad nimi.",
+    "muscles.armsNote": "Ruky zachovávajú všeobecné alebo staršie zaradenia bez rozlíšenia bicepsu a tricepsu. Série ostanú v zozname; mapa nehádá, ktorý sval pracoval.",
+    "muscles.frontNote": "Pohľad spredu. Chrbát a zadok sa na tomto obrázku nezobrazujú; ich tréning ostáva započítaný v zozname nižšie.",
     'muscle.legs': 'Nohy', 'muscle.glutes': 'Zadok', 'muscle.core': 'Stred tela', 'muscle.fullBody': 'Celé telo',
 
     'equip.none': 'Bez náčinia', 'equip.bands': 'Gumy', 'equip.dumbbells': 'Jednoručky',
@@ -3598,13 +3612,17 @@ const I18N = {
     'community.enable': 'Enable Community', 'community.disable': 'Turn off Community',
     'community.inviteTitle': 'Join the GymQuest Community', 'community.inviteText': 'Share your progress, follow friends, chat with them and compete for a spot in the Top 20. Your workouts stay private – only what you choose to share is posted.',
     'community.inviteJoin': 'Join', 'community.inviteLater': 'Not now',
-    'push.title': 'Notifications', 'push.switch': 'Message notifications on this device',
-    'push.note': 'When a friend writes to you, you get a notification. It shows only their name, never the message text.', 'push.on': 'Notifications are on for this device.',
+    'push.title': 'Notifications', 'push.switch': 'Notifications on this device',
+    'push.note': 'Enables reminders and message notifications. Messages show only your friend’s name, never the text.', 'push.on': 'Notifications are on for this device.',
     'push.off': 'Notifications are off for this device.', 'push.denied': 'Notifications are blocked. Allow them for GymQuest in your phone or browser settings.',
     'push.notAllowed': 'Notifications were not allowed.', 'push.errFailed': 'Notifications could not be turned on. Check your connection and try again.',
     'push.homeScreen': 'On iPhone and iPad, notifications work only when GymQuest is added to the Home Screen (Share → Add to Home Screen) and opened from there. iOS 16.4 or newer is required.', 'push.unsupported': 'This browser does not support notifications.',
     'push.hint': 'Get a notification when a friend writes to you.', 'push.turnOn': 'Turn on',
     'rem.title': 'Reminders', 'rem.needPush': 'Turn on notifications on this device above to set reminders for water, meals and workouts.',
+    'rem.settingsHint': 'Notifications, water, meals, workouts and custom reminders.',
+    'rem.accountRequired': 'Reminders belong to your account. Sign in through Community; enable it first if it is off.',
+    'rem.unavailable': 'Reminders or notifications are not available in this build.',
+    'rem.offline': 'You are offline. Connect to load and save your account reminders.',
     'rem.water': 'Drink water', 'rem.every': 'every',
     'rem.everyMin': '{n} min', 'rem.everyHours': '{n} h',
     'rem.from': 'from', 'rem.to': 'to',
@@ -3743,7 +3761,13 @@ const I18N = {
     'rest.errDuplicate': 'A preset with this time already exists: {name}.',
 
     /* --- Exercise library: labels, filters, flow and technique notes --- */
-    'muscle.chest': 'Chest', 'muscle.back': 'Back', 'muscle.shoulders': 'Shoulders', 'muscle.arms': 'Arms',
+    'muscle.chest': 'Chest', 'muscle.back': 'Back', 'muscle.shoulders': "Shoulders (deltoids)", 'muscle.arms': 'Arms',
+    "muscle.biceps": "Biceps",
+    "muscle.triceps": "Triceps",
+    "muscles.guide": "Muscle guide",
+    "muscles.anatomyHint": "Biceps are on the front of your upper arms; triceps are on the back. Shoulders (deltoids) are the rounded muscles above them.",
+    "muscles.armsNote": "Arms keeps general or older assignments that do not specify biceps or triceps. These sets stay in the list; the diagram does not guess which muscle they trained.",
+    "muscles.frontNote": "Front view. Back and glutes are not visible in this picture; their training is still counted in the list below.",
     'muscle.legs': 'Legs', 'muscle.glutes': 'Glutes', 'muscle.core': 'Core', 'muscle.fullBody': 'Full body',
 
     'equip.none': 'No equipment', 'equip.bands': 'Resistance bands', 'equip.dumbbells': 'Dumbbells',
@@ -4985,13 +5009,17 @@ const I18N = {
     'community.enable': 'Activar Comunidad', 'community.disable': 'Desactivar Comunidad',
     'community.inviteTitle': 'Únete a la Comunidad de GymQuest', 'community.inviteText': 'Comparte tu progreso, sigue a tus amigos, chatea con ellos y compite por un puesto en el Top 20. Tus entrenamientos siguen siendo privados: solo se publica lo que decidas compartir.',
     'community.inviteJoin': 'Unirme', 'community.inviteLater': 'Ahora no',
-    'push.title': 'Notificaciones', 'push.switch': 'Notificaciones de mensajes en este dispositivo',
-    'push.note': 'Cuando un amigo te escriba, recibirás una notificación. Solo muestra su nombre, nunca el texto del mensaje.', 'push.on': 'Las notificaciones están activadas en este dispositivo.',
+    'push.title': 'Notificaciones', 'push.switch': 'Notificaciones en este dispositivo',
+    'push.note': 'Permite recordatorios y notificaciones de mensajes. Los mensajes solo muestran el nombre de tu amigo, nunca el texto.', 'push.on': 'Las notificaciones están activadas en este dispositivo.',
     'push.off': 'Las notificaciones están desactivadas en este dispositivo.', 'push.denied': 'Las notificaciones están bloqueadas. Permítelas para GymQuest en los ajustes del teléfono o del navegador.',
     'push.notAllowed': 'No se permitieron las notificaciones.', 'push.errFailed': 'No se pudieron activar las notificaciones. Comprueba tu conexión e inténtalo de nuevo.',
     'push.homeScreen': 'En iPhone y iPad, las notificaciones solo funcionan si GymQuest está añadido a la pantalla de inicio (Compartir → Añadir a pantalla de inicio) y se abre desde allí. Se necesita iOS 16.4 o posterior.', 'push.unsupported': 'Este navegador no admite notificaciones.',
     'push.hint': 'Recibe una notificación cuando un amigo te escriba.', 'push.turnOn': 'Activar',
     'rem.title': 'Recordatorios', 'rem.needPush': 'Activa arriba las notificaciones en este dispositivo para crear recordatorios de agua, comidas y entrenamientos.',
+    'rem.settingsHint': 'Notificaciones, agua, comidas, entrenamientos y recordatorios personalizados.',
+    'rem.accountRequired': 'Los recordatorios pertenecen a tu cuenta. Inicia sesión desde Comunidad; actívala primero si está desactivada.',
+    'rem.unavailable': 'Los recordatorios o las notificaciones no están disponibles en esta versión.',
+    'rem.offline': 'Estás sin conexión. Conéctate para cargar y guardar los recordatorios de tu cuenta.',
     'rem.water': 'Beber agua', 'rem.every': 'cada',
     'rem.everyMin': '{n} min', 'rem.everyHours': '{n} h',
     'rem.from': 'de', 'rem.to': 'a',
@@ -5124,7 +5152,13 @@ const I18N = {
     'rest.errDuplicate': 'Ya existe un ajuste con este tiempo: {name}.',
 
     /* --- Biblioteca de ejercicios --- */
-    'muscle.chest': 'Pecho', 'muscle.back': 'Espalda', 'muscle.shoulders': 'Hombros', 'muscle.arms': 'Brazos',
+    'muscle.chest': 'Pecho', 'muscle.back': 'Espalda', 'muscle.shoulders': "Hombros (deltoides)", 'muscle.arms': 'Brazos',
+    "muscle.biceps": "Bíceps",
+    "muscle.triceps": "Tríceps",
+    "muscles.guide": "Guía muscular",
+    "muscles.anatomyHint": "Los bíceps están en la parte delantera del brazo y los tríceps detrás. Los hombros (deltoides) son los músculos redondeados situados por encima.",
+    "muscles.armsNote": "Brazos conserva las asignaciones generales o antiguas sin distinguir bíceps y tríceps. Las series siguen en la lista; el mapa no adivina qué músculo trabajaron.",
+    "muscles.frontNote": "Vista frontal. La espalda y los glúteos no se ven en esta imagen; su entrenamiento sigue contado en la lista inferior.",
     'muscle.legs': 'Piernas', 'muscle.glutes': 'Glúteos', 'muscle.core': 'Core', 'muscle.fullBody': 'Cuerpo completo',
 
     'equip.none': 'Sin equipo', 'equip.bands': 'Bandas elásticas', 'equip.dumbbells': 'Mancuernas',
@@ -6364,13 +6398,17 @@ const I18N = {
     'community.enable': 'Ativar Comunidade', 'community.disable': 'Desativar Comunidade',
     'community.inviteTitle': 'Participe da Comunidade GymQuest', 'community.inviteText': 'Compartilhe seu progresso, siga amigos, converse com eles e dispute um lugar no Top 20. Seus treinos continuam privados: só é publicado o que você decidir compartilhar.',
     'community.inviteJoin': 'Participar', 'community.inviteLater': 'Agora não',
-    'push.title': 'Notificações', 'push.switch': 'Notificações de mensagens neste dispositivo',
-    'push.note': 'Quando um amigo escrever para você, você recebe uma notificação. Ela mostra só o nome dele, nunca o texto da mensagem.', 'push.on': 'As notificações estão ativadas neste dispositivo.',
+    'push.title': 'Notificações', 'push.switch': 'Notificações neste dispositivo',
+    'push.note': 'Permite lembretes e notificações de mensagens. As mensagens mostram só o nome do amigo, nunca o texto.', 'push.on': 'As notificações estão ativadas neste dispositivo.',
     'push.off': 'As notificações estão desativadas neste dispositivo.', 'push.denied': 'As notificações estão bloqueadas. Permita-as para o GymQuest nas configurações do celular ou do navegador.',
     'push.notAllowed': 'As notificações não foram permitidas.', 'push.errFailed': 'Não foi possível ativar as notificações. Verifique sua conexão e tente de novo.',
     'push.homeScreen': 'No iPhone e no iPad, as notificações só funcionam quando o GymQuest está na Tela de Início (Compartilhar → Adicionar à Tela de Início) e é aberto por lá. É preciso iOS 16.4 ou mais recente.', 'push.unsupported': 'Este navegador não é compatível com notificações.',
     'push.hint': 'Receba uma notificação quando um amigo escrever para você.', 'push.turnOn': 'Ativar',
     'rem.title': 'Lembretes', 'rem.needPush': 'Ative acima as notificações neste dispositivo para criar lembretes de água, refeições e treinos.',
+    'rem.settingsHint': 'Notificações, água, refeições, treinos e lembretes personalizados.',
+    'rem.accountRequired': 'Os lembretes pertencem à sua conta. Entre pela Comunidade; ative-a primeiro se estiver desativada.',
+    'rem.unavailable': 'Os lembretes ou as notificações não estão disponíveis nesta versão.',
+    'rem.offline': 'Você está offline. Conecte-se para carregar e salvar os lembretes da sua conta.',
     'rem.water': 'Beber água', 'rem.every': 'a cada',
     'rem.everyMin': '{n} min', 'rem.everyHours': '{n} h',
     'rem.from': 'das', 'rem.to': 'às',
@@ -6503,7 +6541,13 @@ const I18N = {
     'rest.errDuplicate': 'Já existe uma predefinição com este tempo: {name}.',
 
     /* --- Biblioteca de exercícios --- */
-    'muscle.chest': 'Peito', 'muscle.back': 'Costas', 'muscle.shoulders': 'Ombros', 'muscle.arms': 'Braços',
+    'muscle.chest': 'Peito', 'muscle.back': 'Costas', 'muscle.shoulders': "Ombros (deltoides)", 'muscle.arms': 'Braços',
+    "muscle.biceps": "Bíceps",
+    "muscle.triceps": "Tríceps",
+    "muscles.guide": "Guia dos músculos",
+    "muscles.anatomyHint": "Os bíceps ficam na frente dos braços e os tríceps atrás. Os ombros (deltoides) são os músculos arredondados acima deles.",
+    "muscles.armsNote": "Braços mantém as classificações gerais ou antigas que não distinguem bíceps e tríceps. As séries ficam na lista; o mapa não adivinha qual músculo foi treinado.",
+    "muscles.frontNote": "Vista frontal. Costas e glúteos não aparecem nesta imagem; o treino deles continua contado na lista abaixo.",
     'muscle.legs': 'Pernas', 'muscle.glutes': 'Glúteos', 'muscle.core': 'Centro do corpo', 'muscle.fullBody': 'Corpo inteiro',
 
     'equip.none': 'Sem equipamento', 'equip.bands': 'Faixas elásticas', 'equip.dumbbells': 'Halteres',
@@ -7743,13 +7787,17 @@ const I18N = {
     'community.enable': 'Activer la Communauté', 'community.disable': 'Désactiver la Communauté',
     'community.inviteTitle': 'Rejoins la Communauté GymQuest', 'community.inviteText': 'Partage tes progrès, suis tes amis, discute avec eux et vise une place dans le Top 20. Tes entraînements restent privés : seul ce que tu choisis de partager est publié.',
     'community.inviteJoin': 'Rejoindre', 'community.inviteLater': 'Pas maintenant',
-    'push.title': 'Notifications', 'push.switch': 'Notifications de messages sur cet appareil',
-    'push.note': 'Quand un ami t’écrit, tu reçois une notification. Elle affiche seulement son nom, jamais le texte du message.', 'push.on': 'Les notifications sont activées sur cet appareil.',
+    'push.title': 'Notifications', 'push.switch': 'Notifications sur cet appareil',
+    'push.note': 'Active les rappels et les notifications de messages. Les messages affichent seulement le nom de ton ami, jamais le texte.', 'push.on': 'Les notifications sont activées sur cet appareil.',
     'push.off': 'Les notifications sont désactivées sur cet appareil.', 'push.denied': 'Les notifications sont bloquées. Autorise-les pour GymQuest dans les réglages du téléphone ou du navigateur.',
     'push.notAllowed': 'Les notifications n’ont pas été autorisées.', 'push.errFailed': 'Impossible d’activer les notifications. Vérifie ta connexion et réessaie.',
     'push.homeScreen': 'Sur iPhone et iPad, les notifications ne fonctionnent que si GymQuest est ajouté à l’écran d’accueil (Partager → Sur l’écran d’accueil) et ouvert depuis celui-ci. iOS 16.4 ou plus récent est requis.', 'push.unsupported': 'Ce navigateur ne prend pas en charge les notifications.',
     'push.hint': 'Reçois une notification quand un ami t’écrit.', 'push.turnOn': 'Activer',
     'rem.title': 'Rappels', 'rem.needPush': 'Active ci-dessus les notifications sur cet appareil pour créer des rappels d’eau, de repas et d’entraînement.',
+    'rem.settingsHint': 'Notifications, eau, repas, entraînements et rappels personnalisés.',
+    'rem.accountRequired': 'Les rappels sont liés à ton compte. Connecte-toi via Communauté ; active-la d’abord si elle est désactivée.',
+    'rem.unavailable': 'Les rappels ou les notifications ne sont pas disponibles dans cette version.',
+    'rem.offline': 'Tu es hors ligne. Connecte-toi pour charger et enregistrer les rappels de ton compte.',
     'rem.water': 'Boire de l’eau', 'rem.every': 'toutes les',
     'rem.everyMin': '{n} min', 'rem.everyHours': '{n} h',
     'rem.from': 'de', 'rem.to': 'à',
@@ -7882,7 +7930,13 @@ const I18N = {
     'rest.errDuplicate': 'Un préréglage avec ce temps existe déjà : {name}.',
 
     /* --- Bibliothèque d’exercices --- */
-    'muscle.chest': 'Pectoraux', 'muscle.back': 'Dos', 'muscle.shoulders': 'Épaules', 'muscle.arms': 'Bras',
+    'muscle.chest': 'Pectoraux', 'muscle.back': 'Dos', 'muscle.shoulders': "Épaules (deltoïdes)", 'muscle.arms': 'Bras',
+    "muscle.biceps": "Biceps",
+    "muscle.triceps": "Triceps",
+    "muscles.guide": "Guide des muscles",
+    "muscles.anatomyHint": "Les biceps sont à l’avant des bras, les triceps à l’arrière. Les épaules (deltoïdes) sont les muscles arrondis situés au-dessus.",
+    "muscles.armsNote": "Bras conserve les classements généraux ou anciens sans distinction entre biceps et triceps. Les séries restent dans la liste ; la carte ne devine pas quel muscle a travaillé.",
+    "muscles.frontNote": "Vue de face. Le dos et les fessiers ne sont pas visibles sur cette image ; leur travail reste comptabilisé dans la liste ci-dessous.",
     'muscle.legs': 'Jambes', 'muscle.glutes': 'Fessiers', 'muscle.core': 'Gainage', 'muscle.fullBody': 'Corps entier',
 
     'equip.none': 'Sans matériel', 'equip.bands': 'Élastiques', 'equip.dumbbells': 'Haltères',
@@ -9141,13 +9195,17 @@ const I18N = {
     'community.enable': 'تفعيل المجتمع', 'community.disable': 'إيقاف المجتمع',
     'community.inviteTitle': 'انضم إلى مجتمع GymQuest', 'community.inviteText': 'شارك تقدّمك، وتابع أصدقاءك، وتحدّث معهم، ونافس على مكان ضمن أفضل 20. تبقى تمارينك خاصة، ولا يُنشر إلا ما تختار مشاركته.',
     'community.inviteJoin': 'انضمام', 'community.inviteLater': 'ليس الآن',
-    'push.title': 'الإشعارات', 'push.switch': 'إشعارات الرسائل على هذا الجهاز',
-    'push.note': 'عندما يراسلك صديق، يصلك إشعار. يُظهر اسمه فقط، ولا يُظهر نص الرسالة أبدًا.', 'push.on': 'الإشعارات مُفعّلة على هذا الجهاز.',
+    'push.title': 'الإشعارات', 'push.switch': 'الإشعارات على هذا الجهاز',
+    'push.note': 'يتيح التذكيرات وإشعارات الرسائل. تُظهر الرسائل اسم صديقك فقط، ولا تُظهر النص أبدًا.', 'push.on': 'الإشعارات مُفعّلة على هذا الجهاز.',
     'push.off': 'الإشعارات مُعطّلة على هذا الجهاز.', 'push.denied': 'الإشعارات محظورة. اسمح بها لـ GymQuest من إعدادات الهاتف أو المتصفح.',
     'push.notAllowed': 'لم يتم السماح بالإشعارات.', 'push.errFailed': 'تعذّر تفعيل الإشعارات. تحقّق من الاتصال وحاول مرة أخرى.',
     'push.homeScreen': 'على iPhone وiPad، تعمل الإشعارات فقط عند إضافة GymQuest إلى الشاشة الرئيسية (مشاركة ← إضافة إلى الشاشة الرئيسية) وفتحه من هناك. يلزم iOS 16.4 أو أحدث.', 'push.unsupported': 'هذا المتصفح لا يدعم الإشعارات.',
     'push.hint': 'احصل على إشعار عندما يراسلك صديق.', 'push.turnOn': 'تفعيل',
     'rem.title': 'التذكيرات', 'rem.needPush': 'فعّل الإشعارات على هذا الجهاز في الأعلى لضبط تذكيرات شرب الماء والوجبات والتمرين.',
+    'rem.settingsHint': 'الإشعارات والماء والوجبات والتمارين والتذكيرات المخصصة.',
+    'rem.accountRequired': 'التذكيرات مرتبطة بحسابك. سجّل الدخول عبر المجتمع، وفعّله أولًا إن كان معطّلًا.',
+    'rem.unavailable': 'التذكيرات أو الإشعارات غير متاحة في هذه النسخة.',
+    'rem.offline': 'أنت غير متصل. اتصل بالإنترنت لتحميل تذكيرات حسابك وحفظها.',
     'rem.water': 'شرب الماء', 'rem.every': 'كل',
     'rem.everyMin': '{n} دقيقة', 'rem.everyHours': '{n} ساعة',
     'rem.from': 'من', 'rem.to': 'إلى',
@@ -9282,7 +9340,13 @@ const I18N = {
     'rest.errDuplicate': 'يوجد إعداد مسبق بهذا الوقت بالفعل: {name}.',
 
     /* --- مكتبة التمارين --- */
-    'muscle.chest': 'الصدر', 'muscle.back': 'الظهر', 'muscle.shoulders': 'الكتفان', 'muscle.arms': 'الذراعان',
+    'muscle.chest': 'الصدر', 'muscle.back': 'الظهر', 'muscle.shoulders': "الكتفان (العضلات الدالية)", 'muscle.arms': 'الذراعان',
+    "muscle.biceps": "البايسبس",
+    "muscle.triceps": "الترايسبس",
+    "muscles.guide": "دليل العضلات",
+    "muscles.anatomyHint": "تقع البايسبس في مقدمة أعلى الذراع والترايسبس في الخلف. الكتفان (العضلات الدالية) هما العضلتان المستديرتان فوقهما.",
+    "muscles.armsNote": "تحتفظ فئة الذراعين بالتصنيفات العامة أو القديمة التي لا تميّز البايسبس والترايسبس. تبقى المجموعات في القائمة، ولا تخمّن الخريطة العضلة التي تدربت.",
+    "muscles.frontNote": "منظر أمامي. لا تظهر عضلات الظهر والأرداف في هذه الصورة، لكن تدريبها يبقى محسوبًا في القائمة أدناه.",
     'muscle.legs': 'الساقان', 'muscle.glutes': 'الأرداف', 'muscle.core': 'منتصف الجسم', 'muscle.fullBody': 'الجسم كامل',
 
     'equip.none': 'بدون أدوات', 'equip.bands': 'أشرطة مقاومة', 'equip.dumbbells': 'دمبل',
@@ -10598,7 +10662,7 @@ const BASICS_I18N = {
     'exactions.more': 'Ďalšie akcie pre {name}', 'exactions.close': 'Zavrieť', 'exactions.progress': 'Pokrok', 'exactions.moreOptions': 'Ďalšie možnosti',
     'xprog.close': 'Zavrieť', 'xprog.statE1rm': 'Najlepší odhad 1RM', 'xprog.statHeaviest': 'Najťažšie', 'xprog.statBestSet': 'Najlepšia séria', 'xprog.statSessions': 'Tréningy', 'xprog.statLeastHelp': 'Najmenej pomoci', 'xprog.metricE1rm': 'Odhad 1RM', 'xprog.metricHeaviest': 'Najťažšie', 'xprog.metricVolume': 'Objem', 'xprog.metricHelp': 'Pomoc', 'xprog.metricGroup': 'Čo ukázať v grafe', 'xprog.rangeGroup': 'Obdobie', 'xprog.r3m': '3 M', 'xprog.r1y': '1 R', 'xprog.rAll': 'Všetko', 'xprog.empty': 'Zapíš tento cvik aspoň dvakrát a objaví sa graf.', 'xprog.sessions': 'Tréningy', 'xprog.more': 'Zobraziť viac', 'xprog.estNote': 'Odhad podľa Epleya, nie otestované maximum.', 'xprog.open': 'Zobraziť pokrok: {name}', 'xprog.link': 'Pokrok', 'xprog.chartAria': '{label}, {unit}: od {from} do {to}',
     'muscles.title': 'Svaly', 'muscles.tile': 'Svaly', 'muscles.empty': 'Tento týždeň žiadne série', 'muscles.close': 'Zavrieť', 'muscles.weekGroup': 'Týždeň', 'muscles.prev': 'Predchádzajúci týždeň', 'muscles.next': 'Nasledujúci týždeň', 'muscles.thisWeek': 'Tento týždeň', 'muscles.lastWeek': 'Minulý týždeň', 'muscles.weekOf': 'Týždeň od {date}', 'muscles.volume': 'Celkový objem', 'muscles.other': 'Ostatné', 'muscles.note': 'Hlavný sval sa počíta ako 1 séria, pomocné ako ½. Obe samostatne zaznamenané strany spolu = 1 pracovná séria. Neznáme alebo nezaradené cviky patria do Ostatné. Bežné odporúčanie je asi 10–20 sérií na sval týždenne.', 'muscles.trend': '{name}: série za týždeň, posledných 8 týždňov',
-    'recovery.hint': '{muscle}: zotavenie ešte prebieha — zváž {plan}', 'recovery.mapAria': 'Odhad zotavenia svalov, pohľad spredu a zozadu', 'recovery.note': 'Odhad z tvojich sérií za posledné 3 – 4 dni: výraznejšia farba = nedávnejšia záťaž. Nie je to lekárska rada.',
+    'recovery.hint': '{muscle}: zotavenie ešte prebieha — zváž {plan}', 'recovery.mapAria': "Odhad zotavenia svalov, pohľad spredu", 'recovery.note': 'Odhad z tvojich sérií za posledné 3 – 4 dni: výraznejšia farba = nedávnejšia záťaž. Nie je to lekárska rada.',
     'csv.title': 'Import CSV', 'csv.close': 'Zavrieť', 'csv.reading': 'Číta sa súbor…', 'csv.counts': '{n} nových · {m} už importovaných', 'csv.inHistory': '{n} už je v tvojej histórii', 'csv.dates': 'Dátumy: {from} – {to}', 'csv.exercises': '{matched} cvikov nájdených v knižnici · {custom} nových vlastných', 'csv.unmatched': 'Nové vlastné cviky ({n})', 'csv.unitAsk': 'Jednotka váhy v tomto súbore', 'csv.unitHint': 'Súbor neuvádza, akú jednotku používa. Vyber tú, v ktorej si trénoval.', 'csv.unitKg': 'Váhy v kg', 'csv.unitLb': 'Váhy v lb, prepočítané na kg', 'csv.skipped': 'Preskočených riadkov: {n} (nie sú to série s váhou)', 'csv.note': 'Importované tréningy sa ukážu v histórii a grafoch. Nedávajú XP, série ani rekordy.', 'csv.confirm': 'Importovať tréningy: {n}', 'csv.nothingNew': 'Nič nové na import', 'csv.toast': 'Importované tréningy: {n}', 'csv.undo': 'Vrátiť import', 'csv.undone': 'Import vrátený', 'csv.errTitle': 'Tento súbor sa nedá importovať', 'csv.errBad': 'Riadok 1: názvy stĺpcov nie sú z exportu Strong, Hevy ani Gym-Lift.', 'csv.errQuote': 'Hodnota v úvodzovkách, ktorá začína na riadku {line}, sa nikdy neuzavrie.', 'csv.errBig': 'Súbor má viac ako 20 MB, čo je na import priveľa.', 'csv.errMany': 'Súbor má viac ako 5 000 tréningov. Rozdeľ ho na menšie súbory.', 'csv.errRows': 'Príliš veľa riadkov (najviac 200 000). Zastavené na riadku {line}.', 'csv.errCols': 'Príliš veľa stĺpcov (najviac 500) na riadku {line}.', 'csv.errEmpty': 'V súbore sa nenašli žiadne tréningy so sériami.', 'csv.errRead': 'Súbor sa nepodarilo prečítať.', 'csv.fmtGym': 'Gym-Lift', 'history.showMore': 'Zobraziť viac', 'csv.errStorage': 'Na tomto zariadení nie je dosť úložiska na tento import. Nič sa neimportovalo.', 'csv.tooBig': 'Tento import je na úložisko zariadenia priveľký. Rozdeľ súbor na menšie časti.', 'csv.errUndoStorage': 'Zmenu sa nepodarilo uložiť. Import zostal.', 'imp.plus': '(+{m} importovaných)', 'imp.conflictExtra': 'Importy: účet {cloud}, toto zariadenie {local}.', 'imp.olderExtra': 'Importované tréningy: {old} → {new}.',
     'imp.tag': 'Importované · {source}', 'imp.deleteTitle': 'Vymazať importovaný tréning', 'imp.deleteConfirm': 'Tento importovaný tréning sa odstráni z histórie a grafov. Nikdy sa nepočítal do XP.', 'imp.deleteSourceTitle': 'Odstrániť importy zo zdroja {source}', 'imp.deleteSourceConfirm': 'Importované tréningy na odstránenie: {n} (zo zdroja {source}). Tvoje vlastné tréningy zostanú.', 'imp.status': 'Importovaný tréning',
     'csvx.open': 'CSV (Strong / Hevy)', 'csvx.exportLabel': 'Export', 'csvx.export': 'Exportovať CSV', 'csvx.include': 'Zahrnúť importované tréningy', 'csvx.importLabel': 'Import', 'csvx.pick': 'Importovať zo Strong alebo Hevy…', 'csvx.manage': 'Spravovať importy', 'csvx.srcRow': '{source} · tréningov: {n}', 'csvx.removeAll': 'Odstrániť všetky', 'csvx.removeAria': 'Odstrániť všetky importy zo zdroja {source}', 'csvx.help': 'Export nájdeš v nastaveniach aplikácie Strong alebo Hevy (hľadaj Export dát / CSV). Súbor .csv potom vyber tu.', 'csvx.exportEmpty': 'Zatiaľ nie je čo exportovať.',
@@ -10716,7 +10780,7 @@ const BASICS_I18N = {
     'exactions.more': 'More actions for {name}', 'exactions.close': 'Close', 'exactions.progress': 'Progress', 'exactions.moreOptions': 'More options',
     'xprog.close': 'Close', 'xprog.statE1rm': 'Best est. 1RM', 'xprog.statHeaviest': 'Heaviest', 'xprog.statBestSet': 'Best set', 'xprog.statSessions': 'Sessions', 'xprog.statLeastHelp': 'Least help', 'xprog.metricE1rm': 'Est. 1RM', 'xprog.metricHeaviest': 'Heaviest', 'xprog.metricVolume': 'Volume', 'xprog.metricHelp': 'Help', 'xprog.metricGroup': 'What to show in the chart', 'xprog.rangeGroup': 'Period', 'xprog.r3m': '3 M', 'xprog.r1y': '1 Y', 'xprog.rAll': 'All', 'xprog.empty': 'Log this exercise at least twice to see a chart.', 'xprog.sessions': 'Sessions', 'xprog.more': 'Show more', 'xprog.estNote': 'Epley estimate, not a tested max.', 'xprog.open': 'Show progress for {name}', 'xprog.link': 'Progress', 'xprog.chartAria': '{label}, {unit}: from {from} to {to}',
     'muscles.title': 'Muscles', 'muscles.tile': 'Muscles', 'muscles.empty': 'No sets this week', 'muscles.close': 'Close', 'muscles.weekGroup': 'Week', 'muscles.prev': 'Previous week', 'muscles.next': 'Next week', 'muscles.thisWeek': 'This week', 'muscles.lastWeek': 'Last week', 'muscles.weekOf': 'Week of {date}', 'muscles.volume': 'Total volume', 'muscles.other': 'Other', 'muscles.note': 'The main muscle counts as 1 set, helpers as ½. Two separately logged sides together = 1 working set. Unrecognized or unassigned exercises count as Other. Common guidance is about 10–20 sets per muscle per week.', 'muscles.trend': '{name}: sets per week, last 8 weeks',
-    'recovery.hint': '{muscle} still recovering — consider {plan}', 'recovery.mapAria': 'Muscle recovery estimate, front and back view', 'recovery.note': 'Estimate from your sets in the last 3–4 days: stronger colour means worked more recently. Not medical advice.',
+    'recovery.hint': '{muscle} still recovering — consider {plan}', 'recovery.mapAria': "Muscle recovery estimate, front view", 'recovery.note': 'Estimate from your sets in the last 3–4 days: stronger colour means worked more recently. Not medical advice.',
     'csv.title': 'Import CSV', 'csv.close': 'Close', 'csv.reading': 'Reading file…', 'csv.counts': '{n} new · {m} already imported', 'csv.inHistory': '{n} already in your history', 'csv.dates': 'Dates: {from} – {to}', 'csv.exercises': '{matched} exercises matched to the library · {custom} new custom', 'csv.unmatched': 'New custom exercises ({n})', 'csv.unitAsk': 'Weight unit in this file', 'csv.unitHint': 'The file does not say which unit it uses. Pick the one you trained in.', 'csv.unitKg': 'Weights in kg', 'csv.unitLb': 'Weights in lb, converted to kg', 'csv.skipped': '{n} rows skipped (not lifting sets)', 'csv.note': 'Imported workouts appear in history and charts. They don\'t give XP, streaks or records.', 'csv.confirm': 'Import {n} workouts', 'csv.nothingNew': 'Nothing new to import', 'csv.toast': 'Imported {n} workouts', 'csv.undo': 'Undo import', 'csv.undone': 'Import undone', 'csv.errTitle': 'Can\'t import this file', 'csv.errBad': 'Line 1: the column names are not from a Strong, Hevy or Gym-Lift export.', 'csv.errQuote': 'A quoted value that starts on line {line} never closes.', 'csv.errBig': 'This file is larger than 20 MB, which is too big to import.', 'csv.errMany': 'This file has more than 5,000 workouts. Split it into smaller files.', 'csv.errRows': 'Too many rows (max 200,000). Stopped at line {line}.', 'csv.errCols': 'Too many columns (max 500) on line {line}.', 'csv.errEmpty': 'No workouts with lifting sets were found in this file.', 'csv.errRead': 'The file could not be read.', 'csv.fmtGym': 'Gym-Lift', 'history.showMore': 'Show more', 'csv.errStorage': 'Not enough storage on this device for this import. Nothing was imported.', 'csv.tooBig': 'This import is too large for this device\'s storage. Split the file into smaller parts.', 'csv.errUndoStorage': 'The change could not be saved. The import was kept.', 'imp.plus': '(+{m} imported)', 'imp.conflictExtra': 'Imports: account {cloud}, this device {local}.', 'imp.olderExtra': 'Imported workouts: {old} → {new}.',
     'imp.tag': 'Imported · {source}', 'imp.deleteTitle': 'Delete imported workout', 'imp.deleteConfirm': 'This imported workout will be removed from your history and charts. It never counted for XP.', 'imp.deleteSourceTitle': 'Remove imports from {source}', 'imp.deleteSourceConfirm': 'Imported workouts to remove: {n} (from {source}). Your own workouts stay.', 'imp.status': 'Imported workout',
     'csvx.open': 'CSV (Strong / Hevy)', 'csvx.exportLabel': 'Export', 'csvx.export': 'Export CSV', 'csvx.include': 'Include imported workouts', 'csvx.importLabel': 'Import', 'csvx.pick': 'Import from Strong or Hevy…', 'csvx.manage': 'Manage imported', 'csvx.srcRow': '{source} · {n} workouts', 'csvx.removeAll': 'Remove all', 'csvx.removeAria': 'Remove all imports from {source}', 'csvx.help': 'Look for Export data / CSV in the settings of the Strong or Hevy app, then pick the .csv file here.', 'csvx.exportEmpty': 'There is nothing to export yet.',
@@ -10832,7 +10896,7 @@ const BASICS_I18N = {
     'exactions.more': 'Más acciones para {name}', 'exactions.close': 'Cerrar', 'exactions.progress': 'Progreso', 'exactions.moreOptions': 'Más opciones',
     'xprog.close': 'Cerrar', 'xprog.statE1rm': 'Mejor 1RM est.', 'xprog.statHeaviest': 'Más pesado', 'xprog.statBestSet': 'Mejor serie', 'xprog.statSessions': 'Sesiones', 'xprog.statLeastHelp': 'Menos ayuda', 'xprog.metricE1rm': '1RM est.', 'xprog.metricHeaviest': 'Más pesado', 'xprog.metricVolume': 'Volumen', 'xprog.metricHelp': 'Ayuda', 'xprog.metricGroup': 'Qué mostrar en el gráfico', 'xprog.rangeGroup': 'Periodo', 'xprog.r3m': '3 M', 'xprog.r1y': '1 A', 'xprog.rAll': 'Todo', 'xprog.empty': 'Registra este ejercicio al menos dos veces para ver un gráfico.', 'xprog.sessions': 'Sesiones', 'xprog.more': 'Mostrar más', 'xprog.estNote': 'Estimación de Epley, no un máximo medido.', 'xprog.open': 'Ver progreso de {name}', 'xprog.link': 'Progreso', 'xprog.chartAria': '{label}, {unit}: de {from} a {to}',
     'muscles.title': 'Músculos', 'muscles.tile': 'Músculos', 'muscles.empty': 'Sin series esta semana', 'muscles.close': 'Cerrar', 'muscles.weekGroup': 'Semana', 'muscles.prev': 'Semana anterior', 'muscles.next': 'Semana siguiente', 'muscles.thisWeek': 'Esta semana', 'muscles.lastWeek': 'Semana pasada', 'muscles.weekOf': 'Semana del {date}', 'muscles.volume': 'Volumen total', 'muscles.other': 'Otros', 'muscles.note': 'El músculo principal cuenta como 1 serie y los auxiliares como ½. Dos lados registrados por separado equivalen a 1 serie de trabajo. Los ejercicios desconocidos o sin clasificar van a Otros. Una pauta común es de 10–20 series por músculo a la semana.', 'muscles.trend': '{name}: series por semana, últimas 8 semanas',
-    'recovery.hint': '{muscle}: aún en recuperación — considera {plan}', 'recovery.mapAria': 'Estimación de la recuperación muscular, vista frontal y posterior', 'recovery.note': 'Estimación según tus series de los últimos 3–4 días: color más intenso = trabajado más recientemente. No es un consejo médico.',
+    'recovery.hint': '{muscle}: aún en recuperación — considera {plan}', 'recovery.mapAria': "Estimación de la recuperación muscular, vista frontal", 'recovery.note': 'Estimación según tus series de los últimos 3–4 días: color más intenso = trabajado más recientemente. No es un consejo médico.',
     'csv.title': 'Importar CSV', 'csv.close': 'Cerrar', 'csv.reading': 'Leyendo el archivo…', 'csv.counts': '{n} nuevos · {m} ya importados', 'csv.inHistory': '{n} ya están en tu historial', 'csv.dates': 'Fechas: {from} – {to}', 'csv.exercises': '{matched} ejercicios encontrados en la biblioteca · {custom} nuevos personalizados', 'csv.unmatched': 'Nuevos ejercicios personalizados ({n})', 'csv.unitAsk': 'Unidad de peso de este archivo', 'csv.unitHint': 'El archivo no indica qué unidad usa. Elige la que usaste al entrenar.', 'csv.unitKg': 'Pesos en kg', 'csv.unitLb': 'Pesos en lb, convertidos a kg', 'csv.skipped': '{n} filas omitidas (no son series con peso)', 'csv.note': 'Los entrenamientos importados aparecen en el historial y las gráficas. No dan XP, rachas ni récords.', 'csv.confirm': 'Importar {n} entrenamientos', 'csv.nothingNew': 'Nada nuevo que importar', 'csv.toast': 'Entrenamientos importados: {n}', 'csv.undo': 'Deshacer importación', 'csv.undone': 'Importación deshecha', 'csv.errTitle': 'No se puede importar este archivo', 'csv.errBad': 'Línea 1: los nombres de columna no son de una exportación de Strong, Hevy o Gym-Lift.', 'csv.errQuote': 'Un valor entre comillas que empieza en la línea {line} nunca se cierra.', 'csv.errBig': 'Este archivo supera los 20 MB, demasiado grande para importar.', 'csv.errMany': 'Este archivo tiene más de 5.000 entrenamientos. Divídelo en archivos más pequeños.', 'csv.errRows': 'Demasiadas filas (máximo 200.000). Detenido en la línea {line}.', 'csv.errCols': 'Demasiadas columnas (máximo 500) en la línea {line}.', 'csv.errEmpty': 'No se encontraron entrenamientos con series en este archivo.', 'csv.errRead': 'No se pudo leer el archivo.', 'csv.fmtGym': 'Gym-Lift', 'history.showMore': 'Mostrar más', 'csv.errStorage': 'No hay suficiente almacenamiento en este dispositivo para esta importación. No se importó nada.', 'csv.tooBig': 'Esta importación es demasiado grande para el almacenamiento de este dispositivo. Divide el archivo en partes más pequeñas.', 'csv.errUndoStorage': 'No se pudo guardar el cambio. La importación se mantuvo.', 'imp.plus': '(+{m} importados)', 'imp.conflictExtra': 'Importaciones: cuenta {cloud}, este dispositivo {local}.', 'imp.olderExtra': 'Entrenamientos importados: {old} → {new}.',
     'imp.tag': 'Importado · {source}', 'imp.deleteTitle': 'Eliminar entrenamiento importado', 'imp.deleteConfirm': 'Este entrenamiento importado se quitará de tu historial y de los gráficos. Nunca contó para el XP.', 'imp.deleteSourceTitle': 'Quitar importaciones de {source}', 'imp.deleteSourceConfirm': 'Entrenamientos importados que se quitarán: {n} (de {source}). Tus propios entrenamientos se quedan.', 'imp.status': 'Entrenamiento importado',
     'csvx.open': 'CSV (Strong / Hevy)', 'csvx.exportLabel': 'Exportar', 'csvx.export': 'Exportar CSV', 'csvx.include': 'Incluir entrenamientos importados', 'csvx.importLabel': 'Importar', 'csvx.pick': 'Importar desde Strong o Hevy…', 'csvx.manage': 'Gestionar importados', 'csvx.srcRow': '{source} · {n} entrenamientos', 'csvx.removeAll': 'Quitar todos', 'csvx.removeAria': 'Quitar todas las importaciones de {source}', 'csvx.help': 'Busca Exportar datos / CSV en los ajustes de la app Strong o Hevy y elige aquí el archivo .csv.', 'csvx.exportEmpty': 'Todavía no hay nada que exportar.',
@@ -10948,7 +11012,7 @@ const BASICS_I18N = {
     'exactions.more': 'Mais ações para {name}', 'exactions.close': 'Fechar', 'exactions.progress': 'Progresso', 'exactions.moreOptions': 'Mais opções',
     'xprog.close': 'Fechar', 'xprog.statE1rm': 'Melhor 1RM est.', 'xprog.statHeaviest': 'Mais pesado', 'xprog.statBestSet': 'Melhor série', 'xprog.statSessions': 'Sessões', 'xprog.statLeastHelp': 'Menos ajuda', 'xprog.metricE1rm': '1RM est.', 'xprog.metricHeaviest': 'Mais pesado', 'xprog.metricVolume': 'Volume', 'xprog.metricHelp': 'Ajuda', 'xprog.metricGroup': 'O que mostrar no gráfico', 'xprog.rangeGroup': 'Período', 'xprog.r3m': '3 M', 'xprog.r1y': '1 A', 'xprog.rAll': 'Tudo', 'xprog.empty': 'Registre este exercício pelo menos duas vezes para ver um gráfico.', 'xprog.sessions': 'Sessões', 'xprog.more': 'Mostrar mais', 'xprog.estNote': 'Estimativa de Epley, não um máximo testado.', 'xprog.open': 'Ver progresso de {name}', 'xprog.link': 'Progresso', 'xprog.chartAria': '{label}, {unit}: de {from} a {to}',
     'muscles.title': 'Músculos', 'muscles.tile': 'Músculos', 'muscles.empty': 'Nenhuma série esta semana', 'muscles.close': 'Fechar', 'muscles.weekGroup': 'Semana', 'muscles.prev': 'Semana anterior', 'muscles.next': 'Próxima semana', 'muscles.thisWeek': 'Esta semana', 'muscles.lastWeek': 'Semana passada', 'muscles.weekOf': 'Semana de {date}', 'muscles.volume': 'Volume total', 'muscles.other': 'Outros', 'muscles.note': 'O músculo principal conta como 1 série e os auxiliares como ½. Dois lados registrados separadamente equivalem a 1 série de trabalho. Exercícios desconhecidos ou sem classificação entram em Outros. Uma orientação comum é de 10–20 séries por músculo por semana.', 'muscles.trend': '{name}: séries por semana, últimas 8 semanas',
-    'recovery.hint': '{muscle}: ainda em recuperação — considere {plan}', 'recovery.mapAria': 'Estimativa de recuperação muscular, vista frontal e traseira', 'recovery.note': 'Estimativa com base nas suas séries dos últimos 3–4 dias: cor mais forte = trabalhado há menos tempo. Não é conselho médico.',
+    'recovery.hint': '{muscle}: ainda em recuperação — considere {plan}', 'recovery.mapAria': "Estimativa de recuperação muscular, vista frontal", 'recovery.note': 'Estimativa com base nas suas séries dos últimos 3–4 dias: cor mais forte = trabalhado há menos tempo. Não é conselho médico.',
     'csv.title': 'Importar CSV', 'csv.close': 'Fechar', 'csv.reading': 'Lendo o arquivo…', 'csv.counts': '{n} novos · {m} já importados', 'csv.inHistory': '{n} já estão no seu histórico', 'csv.dates': 'Datas: {from} – {to}', 'csv.exercises': '{matched} exercícios encontrados na biblioteca · {custom} novos personalizados', 'csv.unmatched': 'Novos exercícios personalizados ({n})', 'csv.unitAsk': 'Unidade de peso deste arquivo', 'csv.unitHint': 'O arquivo não informa qual unidade usa. Escolha a que você usou nos treinos.', 'csv.unitKg': 'Pesos em kg', 'csv.unitLb': 'Pesos em lb, convertidos para kg', 'csv.skipped': '{n} linhas ignoradas (não são séries com carga)', 'csv.note': 'Os treinos importados aparecem no histórico e nos gráficos. Não dão XP, sequências nem recordes.', 'csv.confirm': 'Importar {n} treinos', 'csv.nothingNew': 'Nada novo para importar', 'csv.toast': 'Treinos importados: {n}', 'csv.undo': 'Desfazer importação', 'csv.undone': 'Importação desfeita', 'csv.errTitle': 'Não é possível importar este arquivo', 'csv.errBad': 'Linha 1: os nomes das colunas não são de uma exportação do Strong, Hevy ou Gym-Lift.', 'csv.errQuote': 'Um valor entre aspas que começa na linha {line} nunca é fechado.', 'csv.errBig': 'Este arquivo tem mais de 20 MB, grande demais para importar.', 'csv.errMany': 'Este arquivo tem mais de 5.000 treinos. Divida em arquivos menores.', 'csv.errRows': 'Linhas demais (máximo 200.000). Parou na linha {line}.', 'csv.errCols': 'Colunas demais (máximo 500) na linha {line}.', 'csv.errEmpty': 'Nenhum treino com séries foi encontrado neste arquivo.', 'csv.errRead': 'Não foi possível ler o arquivo.', 'csv.fmtGym': 'Gym-Lift', 'history.showMore': 'Mostrar mais', 'csv.errStorage': 'Não há armazenamento suficiente neste dispositivo para esta importação. Nada foi importado.', 'csv.tooBig': 'Esta importação é grande demais para o armazenamento deste dispositivo. Divida o arquivo em partes menores.', 'csv.errUndoStorage': 'Não foi possível salvar a alteração. A importação foi mantida.', 'imp.plus': '(+{m} importados)', 'imp.conflictExtra': 'Importações: conta {cloud}, este dispositivo {local}.', 'imp.olderExtra': 'Treinos importados: {old} → {new}.',
     'imp.tag': 'Importado · {source}', 'imp.deleteTitle': 'Excluir treino importado', 'imp.deleteConfirm': 'Este treino importado será removido do seu histórico e dos gráficos. Ele nunca contou para o XP.', 'imp.deleteSourceTitle': 'Remover importações de {source}', 'imp.deleteSourceConfirm': 'Treinos importados a remover: {n} (de {source}). Seus próprios treinos ficam.', 'imp.status': 'Treino importado',
     'csvx.open': 'CSV (Strong / Hevy)', 'csvx.exportLabel': 'Exportar', 'csvx.export': 'Exportar CSV', 'csvx.include': 'Incluir treinos importados', 'csvx.importLabel': 'Importar', 'csvx.pick': 'Importar do Strong ou Hevy…', 'csvx.manage': 'Gerenciar importados', 'csvx.srcRow': '{source} · {n} treinos', 'csvx.removeAll': 'Remover todos', 'csvx.removeAria': 'Remover todas as importações de {source}', 'csvx.help': 'Procure Exportar dados / CSV nas configurações do app Strong ou Hevy e escolha o arquivo .csv aqui.', 'csvx.exportEmpty': 'Ainda não há nada para exportar.',
@@ -11064,7 +11128,7 @@ const BASICS_I18N = {
     'exactions.more': 'Plus d’actions pour {name}', 'exactions.close': 'Fermer', 'exactions.progress': 'Progression', 'exactions.moreOptions': 'Plus d’options',
     'xprog.close': 'Fermer', 'xprog.statE1rm': 'Meilleur 1RM est.', 'xprog.statHeaviest': 'Plus lourd', 'xprog.statBestSet': 'Meilleure série', 'xprog.statSessions': 'Séances', 'xprog.statLeastHelp': 'Moins d’aide', 'xprog.metricE1rm': '1RM est.', 'xprog.metricHeaviest': 'Plus lourd', 'xprog.metricVolume': 'Volume', 'xprog.metricHelp': 'Aide', 'xprog.metricGroup': 'Quoi afficher dans le graphique', 'xprog.rangeGroup': 'Période', 'xprog.r3m': '3 M', 'xprog.r1y': '1 A', 'xprog.rAll': 'Tout', 'xprog.empty': 'Enregistre cet exercice au moins deux fois pour voir un graphique.', 'xprog.sessions': 'Séances', 'xprog.more': 'Afficher plus', 'xprog.estNote': 'Estimation d’Epley, pas un maximum testé.', 'xprog.open': 'Voir la progression de {name}', 'xprog.link': 'Progression', 'xprog.chartAria': '{label}, {unit} : du {from} au {to}',
     'muscles.title': 'Muscles', 'muscles.tile': 'Muscles', 'muscles.empty': 'Aucune série cette semaine', 'muscles.close': 'Fermer', 'muscles.weekGroup': 'Semaine', 'muscles.prev': 'Semaine précédente', 'muscles.next': 'Semaine suivante', 'muscles.thisWeek': 'Cette semaine', 'muscles.lastWeek': 'Semaine dernière', 'muscles.weekOf': 'Semaine du {date}', 'muscles.volume': 'Volume total', 'muscles.other': 'Autres', 'muscles.note': 'Le muscle principal compte pour 1 série, les secondaires pour ½. Deux côtés enregistrés séparément font 1 série de travail. Les exercices inconnus ou sans attribution vont dans Autres. Un repère courant est de 10 à 20 séries par muscle et par semaine.', 'muscles.trend': '{name} : séries par semaine, 8 dernières semaines',
-    'recovery.hint': '{muscle} : récupération en cours — pense à {plan}', 'recovery.mapAria': 'Estimation de la récupération musculaire, vue de face et de dos', 'recovery.note': 'Estimation d’après tes séries des 3–4 derniers jours : couleur plus marquée = travaillé plus récemment. Ce n’est pas un avis médical.',
+    'recovery.hint': '{muscle} : récupération en cours — pense à {plan}', 'recovery.mapAria': "Estimation de la récupération musculaire, vue de face", 'recovery.note': 'Estimation d’après tes séries des 3–4 derniers jours : couleur plus marquée = travaillé plus récemment. Ce n’est pas un avis médical.',
     'csv.title': 'Importer un CSV', 'csv.close': 'Fermer', 'csv.reading': 'Lecture du fichier…', 'csv.counts': '{n} nouveaux · {m} déjà importés', 'csv.inHistory': '{n} déjà dans ton historique', 'csv.dates': 'Dates : {from} – {to}', 'csv.exercises': '{matched} exercices trouvés dans la bibliothèque · {custom} nouveaux personnalisés', 'csv.unmatched': 'Nouveaux exercices personnalisés ({n})', 'csv.unitAsk': 'Unité de poids de ce fichier', 'csv.unitHint': 'Le fichier n’indique pas quelle unité il utilise. Choisis celle que tu utilisais à l’entraînement.', 'csv.unitKg': 'Charges en kg', 'csv.unitLb': 'Charges en lb, converties en kg', 'csv.skipped': '{n} lignes ignorées (ce ne sont pas des séries avec charge)', 'csv.note': 'Les entraînements importés apparaissent dans l’historique et les graphiques. Ils ne donnent ni XP, ni séries, ni records.', 'csv.confirm': 'Importer {n} entraînements', 'csv.nothingNew': 'Rien de nouveau à importer', 'csv.toast': 'Entraînements importés : {n}', 'csv.undo': 'Annuler l’import', 'csv.undone': 'Import annulé', 'csv.errTitle': 'Impossible d’importer ce fichier', 'csv.errBad': 'Ligne 1 : les noms de colonnes ne viennent pas d’un export Strong, Hevy ou Gym-Lift.', 'csv.errQuote': 'Une valeur entre guillemets qui commence à la ligne {line} n’est jamais fermée.', 'csv.errBig': 'Ce fichier dépasse 20 Mo, c’est trop gros pour être importé.', 'csv.errMany': 'Ce fichier contient plus de 5 000 entraînements. Découpe-le en fichiers plus petits.', 'csv.errRows': 'Trop de lignes (maximum 200 000). Arrêt à la ligne {line}.', 'csv.errCols': 'Trop de colonnes (maximum 500) à la ligne {line}.', 'csv.errEmpty': 'Aucun entraînement avec des séries n’a été trouvé dans ce fichier.', 'csv.errRead': 'Le fichier n’a pas pu être lu.', 'csv.fmtGym': 'Gym-Lift', 'history.showMore': 'Afficher plus', 'csv.errStorage': 'Pas assez de stockage sur cet appareil pour cet import. Rien n’a été importé.', 'csv.tooBig': 'Cet import est trop volumineux pour le stockage de cet appareil. Découpe le fichier en parties plus petites.', 'csv.errUndoStorage': 'La modification n’a pas pu être enregistrée. L’import a été conservé.', 'imp.plus': '(+{m} importés)', 'imp.conflictExtra': 'Imports : compte {cloud}, cet appareil {local}.', 'imp.olderExtra': 'Entraînements importés : {old} → {new}.',
     'imp.tag': 'Importé · {source}', 'imp.deleteTitle': 'Supprimer l’entraînement importé', 'imp.deleteConfirm': 'Cet entraînement importé sera retiré de ton historique et des graphiques. Il n’a jamais compté pour l’XP.', 'imp.deleteSourceTitle': 'Retirer les imports de {source}', 'imp.deleteSourceConfirm': 'Entraînements importés à retirer : {n} (de {source}). Tes propres entraînements restent.', 'imp.status': 'Entraînement importé',
     'csvx.open': 'CSV (Strong / Hevy)', 'csvx.exportLabel': 'Export', 'csvx.export': 'Exporter le CSV', 'csvx.include': 'Inclure les entraînements importés', 'csvx.importLabel': 'Import', 'csvx.pick': 'Importer depuis Strong ou Hevy…', 'csvx.manage': 'Gérer les imports', 'csvx.srcRow': '{source} · {n} entraînements', 'csvx.removeAll': 'Tout retirer', 'csvx.removeAria': 'Retirer tous les imports de {source}', 'csvx.help': 'Cherche Exporter les données / CSV dans les réglages de l’app Strong ou Hevy, puis choisis ici le fichier .csv.', 'csvx.exportEmpty': 'Il n’y a encore rien à exporter.',
@@ -11180,7 +11244,7 @@ const BASICS_I18N = {
     'exactions.more': 'المزيد من الإجراءات لـ {name}', 'exactions.close': 'إغلاق', 'exactions.progress': 'التقدّم', 'exactions.moreOptions': 'خيارات إضافية',
     'xprog.close': 'إغلاق', 'xprog.statE1rm': 'أفضل 1RM تقديري', 'xprog.statHeaviest': 'الأثقل', 'xprog.statBestSet': 'أفضل مجموعة', 'xprog.statSessions': 'التمارين', 'xprog.statLeastHelp': 'أقل مساعدة', 'xprog.metricE1rm': '1RM تقديري', 'xprog.metricHeaviest': 'الأثقل', 'xprog.metricVolume': 'الحجم', 'xprog.metricHelp': 'المساعدة', 'xprog.metricGroup': 'ما يُعرض في الرسم', 'xprog.rangeGroup': 'الفترة', 'xprog.r3m': '3 أشهر', 'xprog.r1y': 'سنة', 'xprog.rAll': 'الكل', 'xprog.empty': 'سجّل هذا التمرين مرتين على الأقل لتظهر الرسوم.', 'xprog.sessions': 'التمارين', 'xprog.more': 'عرض المزيد', 'xprog.estNote': 'تقدير إيبلي، وليس حدًا أقصى تم اختباره.', 'xprog.open': 'عرض تقدّم {name}', 'xprog.link': 'التقدّم', 'xprog.chartAria': '{label}، {unit}: من {from} إلى {to}',
     'muscles.title': 'العضلات', 'muscles.tile': 'العضلات', 'muscles.empty': 'لا توجد مجموعات هذا الأسبوع', 'muscles.close': 'إغلاق', 'muscles.weekGroup': 'الأسبوع', 'muscles.prev': 'الأسبوع السابق', 'muscles.next': 'الأسبوع التالي', 'muscles.thisWeek': 'هذا الأسبوع', 'muscles.lastWeek': 'الأسبوع الماضي', 'muscles.weekOf': 'أسبوع {date}', 'muscles.volume': 'الحجم الإجمالي', 'muscles.other': 'أخرى', 'muscles.note': 'تُحسب العضلة الرئيسية كمجموعة واحدة والمساعدة كنصف مجموعة. الجهتان المسجلتان منفصلتين معًا = مجموعة عمل واحدة. التمارين غير المعروفة أو غير المصنّفة ضمن «أخرى». الإرشاد الشائع نحو 10–20 مجموعة لكل عضلة أسبوعيًا.', 'muscles.trend': '{name}: المجموعات في الأسبوع، آخر 8 أسابيع',
-    'recovery.hint': '{muscle}: التعافي لم يكتمل بعد — فكّر في {plan}', 'recovery.mapAria': 'تقدير تعافي العضلات، منظر أمامي وخلفي', 'recovery.note': 'تقدير مبني على مجموعاتك في آخر 3–4 أيام: اللون الأقوى يعني تدريبًا أحدث. ليس نصيحة طبية.',
+    'recovery.hint': '{muscle}: التعافي لم يكتمل بعد — فكّر في {plan}', 'recovery.mapAria': "تقدير تعافي العضلات، منظر أمامي", 'recovery.note': 'تقدير مبني على مجموعاتك في آخر 3–4 أيام: اللون الأقوى يعني تدريبًا أحدث. ليس نصيحة طبية.',
     'csv.title': 'استيراد CSV', 'csv.close': 'إغلاق', 'csv.reading': 'جارٍ قراءة الملف…', 'csv.counts': '{n} جديد · {m} مستورد مسبقًا', 'csv.inHistory': '{n} موجود بالفعل في سجلّك', 'csv.dates': 'التواريخ: {from} – {to}', 'csv.exercises': '{matched} تمرين مطابق للمكتبة · {custom} مخصص جديد', 'csv.unmatched': 'تمارين مخصصة جديدة ({n})', 'csv.unitAsk': 'وحدة الوزن في هذا الملف', 'csv.unitHint': 'لا يذكر الملف الوحدة المستخدمة. اختر الوحدة التي تدرّبت بها.', 'csv.unitKg': 'الأوزان بالكيلوغرام', 'csv.unitLb': 'الأوزان بالباوند، محوَّلة إلى كيلوغرام', 'csv.skipped': 'تم تخطي {n} صفًا (ليست مجموعات رفع)', 'csv.note': 'تظهر التمارين المستوردة في السجل والرسوم البيانية. لا تمنح نقاط XP ولا سلاسل ولا أرقامًا قياسية.', 'csv.confirm': 'استيراد {n} تمرين', 'csv.nothingNew': 'لا جديد للاستيراد', 'csv.toast': 'تم استيراد {n} تمرين', 'csv.undo': 'تراجع عن الاستيراد', 'csv.undone': 'تم التراجع عن الاستيراد', 'csv.errTitle': 'تعذّر استيراد هذا الملف', 'csv.errBad': 'السطر 1: أسماء الأعمدة ليست من تصدير Strong أو Hevy أو Gym-Lift.', 'csv.errQuote': 'قيمة بين علامتي اقتباس تبدأ في السطر {line} ولا تُغلق أبدًا.', 'csv.errBig': 'حجم هذا الملف أكبر من 20 ميغابايت، وهو كبير جدًا للاستيراد.', 'csv.errMany': 'يحتوي هذا الملف على أكثر من 5000 تمرين. قسّمه إلى ملفات أصغر.', 'csv.errRows': 'عدد الصفوف كبير جدًا (الحد 200000). توقّف عند السطر {line}.', 'csv.errCols': 'عدد الأعمدة كبير جدًا (الحد 500) في السطر {line}.', 'csv.errEmpty': 'لم يُعثر على تمارين فيها مجموعات رفع في هذا الملف.', 'csv.errRead': 'تعذّرت قراءة الملف.', 'csv.fmtGym': 'Gym-Lift', 'history.showMore': 'عرض المزيد', 'csv.errStorage': 'لا توجد مساحة تخزين كافية على هذا الجهاز لهذا الاستيراد. لم يتم استيراد أي شيء.', 'csv.tooBig': 'هذا الاستيراد أكبر من مساحة تخزين هذا الجهاز. قسّم الملف إلى أجزاء أصغر.', 'csv.errUndoStorage': 'تعذّر حفظ التغيير. تم الاحتفاظ بالاستيراد.', 'imp.plus': '(+{m} مستورد)', 'imp.conflictExtra': 'المستورَد: الحساب {cloud}، هذا الجهاز {local}.', 'imp.olderExtra': 'التمارين المستوردة: {old} → {new}.',
     'imp.tag': 'مستورد · {source}', 'imp.deleteTitle': 'حذف التمرين المستورد', 'imp.deleteConfirm': 'سيُزال هذا التمرين المستورد من سجلّك والرسوم البيانية. لم يُحتسب أبدًا في نقاط الخبرة.', 'imp.deleteSourceTitle': 'إزالة المستورد من {source}', 'imp.deleteSourceConfirm': 'التمارين المستوردة التي ستُزال: {n} (من {source}). تمارينك الخاصة تبقى.', 'imp.status': 'تمرين مستورد',
     'csvx.open': 'CSV (Strong / Hevy)', 'csvx.exportLabel': 'تصدير', 'csvx.export': 'تصدير CSV', 'csvx.include': 'تضمين التمارين المستوردة', 'csvx.importLabel': 'استيراد', 'csvx.pick': 'استيراد من Strong أو Hevy…', 'csvx.manage': 'إدارة المستورد', 'csvx.srcRow': '{source} · {n} تمرين', 'csvx.removeAll': 'إزالة الكل', 'csvx.removeAria': 'إزالة كل ما استُورد من {source}', 'csvx.help': 'ابحث عن «تصدير البيانات / CSV» في إعدادات تطبيق Strong أو Hevy، ثم اختر ملف ‎.csv‎ هنا.', 'csvx.exportEmpty': 'لا يوجد ما يمكن تصديره بعد.',
@@ -21761,7 +21825,9 @@ function communityResetSocial2() {
   communityPostId = null;
   communityReplyTo = null; communityMsgActions = null; communityReactions = {}; communitySharePickerOpen = false;
   profileAchSentSig = null;
-  remindersDefaultsTried = false; remindersData = null;
+  remindersDefaultsTried = false; remindersData = null; remindersDraft = null; remindersUid = null;
+  remindersSheetState = 'signedout'; remindersMessage = ''; ++remindersSheetSeq;
+  renderRemindersSheet();
   clearInterval(communityReactTimer); communityReactTimer = null;
 }
 async function communityRefreshBadges(sb, uid) {
@@ -22371,8 +22437,7 @@ async function pushEnable() {
     msg = 'push.errFailed';
   } finally {
     pushBusy = false;
-    communitySetMessage(msg);
-    renderCommunity();
+    remindersPushFeedback(msg);
   }
 }
 /* Vypnutie pre toto zariadenie (prepínač, odhlásenie, vypnutie Community). Server sa
@@ -22392,8 +22457,7 @@ async function pushSwitchOff() {
   if (pushBusy) return;
   pushBusy = true;
   try { await pushDisable(communityClient()); } finally { pushBusy = false; }
-  communitySetMessage('push.off');
-  renderCommunity();
+  remindersPushFeedback('push.off');
 }
 /* Po prihlásení a pri zmene jazyka: zapnuté zariadenie sa obnoví na serveri (kľúče, jazyk). */
 async function pushRefresh(sb, uid) {
@@ -22458,7 +22522,7 @@ function pushChatFromUrl() {
   return cid;
 }
 function pushCardHtml() {
-  if (!pushAvailable()) return '';
+  if (!pushAvailable()) return '<div class="card"><h3 class="card-title">' + esc(t('push.title')) + '</h3><p class="card-note">' + esc(t('rem.unavailable')) + '</p></div>';
   const st = pushState();
   let body;
   if (st === 'homescreen') body = '<p class="card-note">' + esc(t('push.homeScreen')) + '</p>';
@@ -22477,14 +22541,127 @@ function pushCardHtml() {
 const REMINDER_WATER_STEPS = [30, 45, 60, 90, 120, 180];
 let remindersData = null;
 let remindersBusy = false;
+let remindersSheetState = 'loading';
+let remindersSheetSeq = 0;
+let remindersUid = null;
+let remindersMessage = '';
+let remindersSheetOpener = null;
+function remindersSheetOpen() {
+  const modal = document.getElementById('modal-reminders');
+  return !!modal && !modal.hidden;
+}
+/* Vlastný stavový riadok: odpoveď na uloženie nikdy neostane skrytá v Community. */
+function remindersFeedback(text) {
+  remindersMessage = text;
+  const el = document.getElementById('reminders-status');
+  if (el) { el.textContent = text; el.hidden = !text; }
+}
+function remindersPushFeedback(key) {
+  if (remindersSheetOpen()) {
+    if (document.getElementById('rem-water-on')) remindersDraft = remindersFormRead();
+    remindersFeedback(t(key));
+    renderRemindersSheet();
+  } else { communitySetMessage(key); renderCommunity(); }
+}
+function renderRemindersSheet() {
+  if (!remindersSheetOpen()) return;
+  const body = document.getElementById('reminders-body');
+  const note = (key) => '<p class="card-note">' + esc(t(key)) + '</p>';
+  const route = '<button type="button" class="btn btn-primary btn-block" data-reminders-route="account">' + esc(t('community.open')) + '</button>';
+  const retry = '<button type="button" class="btn btn-secondary btn-block" data-reminders-route="retry">' + esc(t('cfeed.retry')) + '</button>';
+  if (remindersSheetState === 'loading') body.innerHTML = note('community.loading');
+  else if (remindersSheetState === 'signedout' || remindersSheetState === 'optin') body.innerHTML = note('rem.accountRequired') + route;
+  else if (remindersSheetState === 'unavailable') body.innerHTML = note('rem.unavailable');
+  else if (remindersSheetState === 'offline' || remindersSheetState === 'error') body.innerHTML = note(remindersSheetState === 'offline' ? 'rem.offline' : 'community.errUnavailable') + retry;
+  else {
+    body.innerHTML = pushCardHtml() + remindersCardHtml();
+    if (remindersBusy || pushBusy || navigator.onLine === false) body.querySelectorAll('input, select, button').forEach((el) => { el.disabled = true; });
+    if (navigator.onLine === false) body.insertAdjacentHTML('afterbegin', note('rem.offline') + retry);
+  }
+  remindersFeedback(remindersMessage);
+}
+async function openRemindersSheet() {
+  const modal = document.getElementById('modal-reminders');
+  if (!modal) return;
+  if (!modal.hidden) {
+    if (document.getElementById('rem-water-on')) remindersDraft = remindersFormRead();
+  } else remindersSheetOpener = document.activeElement;
+  modal.hidden = false;
+  if (remindersBusy || pushBusy) {
+    renderRemindersSheet();
+    restoreSheetFocus(document.getElementById('btn-reminders-close'));
+    refreshUpdateBanner();
+    return;
+  }
+  const seq = ++remindersSheetSeq;
+  const current = () => remindersSheetOpen() && seq === remindersSheetSeq;
+  remindersSheetState = 'loading';
+  remindersFeedback('');
+  renderRemindersSheet();
+  restoreSheetFocus(document.getElementById('btn-reminders-close'));
+  refreshUpdateBanner();
+  if (!communityConfigured()) { remindersSheetState = 'unavailable'; renderRemindersSheet(); return; }
+  if (!communityOptIn()) { remindersSheetState = 'optin'; renderRemindersSheet(); return; }
+  const sb = communityClient();
+  if (!sb) { remindersSheetState = 'unavailable'; renderRemindersSheet(); return; }
+  try {
+    const res = await sb.auth.getSession();
+    if (!current()) return;
+    if (res.error) throw res.error;
+    const user = res.data && res.data.session && res.data.session.user;
+    if (!user) { remindersSheetState = 'signedout'; renderRemindersSheet(); return; }
+    if (remindersUid !== user.id) {
+      remindersUid = user.id; remindersData = null; remindersDraft = null; remindersDefaultsTried = false;
+    }
+    if (navigator.onLine === false) { remindersSheetState = 'offline'; renderRemindersSheet(); return; }
+    await Promise.all([communityEnsureProfile(sb, user), communityDetectSocial(sb), isNativeApp() ? nativeRefreshPerm() : Promise.resolve()]);
+    if (!current()) return;
+    if (!communityProfile || communityProfile.id !== user.id) throw new Error(t('community.errUnavailable'));
+    if (communitySocial === null) throw new Error(t('community.errUnavailable'));
+    if (!remindersAvailable()) { remindersSheetState = 'unavailable'; renderRemindersSheet(); return; }
+    if (!(await remindersLoad(sb, current)) || !current()) return;
+    remindersSheetState = 'ready';
+  } catch (e) {
+    if (!current()) return;
+    remindersSheetState = navigator.onLine === false ? 'offline' : 'error';
+    remindersFeedback(communityErrText(e));
+  }
+  renderRemindersSheet();
+}
+function closeRemindersSheet() {
+  if (!remindersSheetOpen()) return;
+  if (document.getElementById('rem-water-on')) remindersDraft = remindersFormRead();
+  document.getElementById('modal-reminders').hidden = true;
+  ++remindersSheetSeq;
+  restoreSheetFocus(remindersSheetOpener); remindersSheetOpener = null;
+  refreshUpdateBanner();
+}
+/* Len ovládanie pripomienok má spoločnú delegáciu; ostatné akcie patria Community. */
+function remindersHandleAction(a) {
+  const act = a.dataset.communityAction;
+  if (act === 'push-on') { pushEnable(); return true; }
+  if (!/^rem-/.test(act)) return false;
+  if (remindersBusy || pushBusy) return true;
+  if (act === 'rem-save') remindersSave();
+  else if (/^rem-(wmode|wt-add|wt-del|meal-add|meal-del|own-add|own-del)$/.test(act)) remindersEdit(act, a);
+  else if (act === 'rem-day' || act === 'rem-own-day') {
+    const on = !a.classList.contains('active');
+    a.classList.toggle('active', on); a.setAttribute('aria-pressed', on ? 'true' : 'false');
+    remindersDraft = remindersFormRead();
+  }
+  return true;
+}
 function remindersAvailable() { return communityVersion >= 6; }
-async function remindersLoad(sb) {
-  remindersData = null;
-  remindersDraft = null;
-  if (!sb || !remindersAvailable()) return;
-  try { const r = await sb.rpc('reminders_get'); if (r && !r.error) remindersData = r.data; } catch (e) {}
+async function remindersLoad(sb, current) {
+  if (!sb || !remindersAvailable()) return false;
+  const r = await sb.rpc('reminders_get');
+  if (!current()) return false;
+  if (!r || r.error || !r.data) throw (r && r.error) || new Error(t('community.errUnavailable'));
+  remindersData = r.data;
   await remindersEnsureDefaults(sb);
+  if (!current()) return false;
   nativeRemindersApply();
+  return true;
 }
 /* Pripomienky sú predvolene zapnuté (migrácia 0013): kto ich nikdy neuložil a má zapnuté upozornenia,
    tomu sa predvolené nastavenie uloží raz – v časovom pásme telefónu –, aby ich server naozaj posielal.
@@ -22596,13 +22773,15 @@ function remindersEdit(act, a) {
   else if (act === 'rem-own-add') { if (f.custom.length < REMINDER_MAX.custom) f.custom.push({ id: remindersNewId(), text: '', time: '09:00', days: [1, 2, 3, 4, 5, 6, 7] }); }
   else if (act === 'rem-own-del') f.custom.splice(i, 1);
   remindersDraft = f;
-  renderCommunity();
+  renderRemindersSheet();
   if (act === 'rem-own-add') { const e = document.getElementById('rem-c-text-' + (f.custom.length - 1)); if (e) e.focus(); }
 }
 function remindersCardHtml() {
-  if (!remindersAvailable() || !pushAvailable()) return '';
+  if (!remindersAvailable()) return '<p class="card-note">' + esc(t('rem.unavailable')) + '</p>';
+  if (!pushAvailable()) return '';
   if (pushState() !== 'on') return '<div class="card crem" id="community-reminders"><h3 class="card-title">' + esc(t('rem.title')) + '</h3><p class="card-note">' + esc(t('rem.needPush')) + '</p></div>';
-  const d = remindersData || {};
+  if (!remindersData) return '<p class="card-note">' + esc(t('community.errUnavailable')) + '</p>';
+  const d = remindersDraft || remindersData;
   if (remindersV2()) return remindersCardHtmlV2(d);
   const meals = Array.isArray(d.meal_times) ? d.meal_times : ['08:00', '12:30', '18:30'];
   const days = Array.isArray(d.workout_days) ? d.workout_days.map(Number) : [1, 3, 5];
@@ -22625,7 +22804,10 @@ function remindersCardHtml() {
 }
 async function remindersSave() {
   const sb = communityClient();
-  if (!sb || remindersBusy) return;
+  if (!sb || remindersBusy || !remindersUid || remindersSheetState !== 'ready') return;
+  if (navigator.onLine === false) { remindersFeedback(t('rem.offline')); return; }
+  const uid = remindersUid;
+  remindersDraft = remindersFormRead();
   const val = (id) => { const el = document.getElementById(id); return el ? el.value : ''; };
   const on = (id) => { const el = document.getElementById(id); return !!(el && el.checked); };
   let tz = 'UTC';
@@ -22636,7 +22818,7 @@ async function remindersSave() {
     remindersDraft = f;   // pri chybe (alebo neplatnom texte) úpravy zostanú vo formulári
     const hhmm = (v) => /^\d{2}:\d{2}$/.test(v);
     const custom = f.custom.map((c) => ({ id: c.id, text: remindersCleanText(c.text), time: c.time, days: c.days.slice().sort((x, y) => x - y) }));
-    if (custom.some((c) => !c.text || !hhmm(c.time) || !c.days.length)) { communitySetMessageText(t('rem.errOwn')); renderCommunity(); return; }
+    if (custom.some((c) => !c.text || !hhmm(c.time) || !c.days.length)) { remindersFeedback(t('rem.errOwn')); return; }
     p = { tz, water_on: f.water_on, water_every: f.water_every, water_from: f.water_from, water_to: f.water_to,
       water_mode: f.water_mode, water_times: f.water_times.filter(hhmm),
       meals_on: f.meals_on, meal_times: f.meal_times.filter(hhmm), workout_on: f.workout_on, workout_time: f.workout_time, workout_days: f.workout_days, custom };
@@ -22647,12 +22829,15 @@ async function remindersSave() {
     workout_days: Array.from(document.querySelectorAll('#community-reminders .crem-day.active')).map((b) => Number(b.dataset.day)),
   };
   remindersBusy = true;
+  remindersFeedback('');
+  renderRemindersSheet();
   let res;
   try { res = await sb.rpc('reminders_set', { p }); } catch (e) { res = { error: e }; }
   remindersBusy = false;
-  if (res.error) { communitySetMessageText(/invalid_(reminders|timezone)/.test(String((res.error && res.error.message) || '')) ? t(remindersV2() ? 'rem.errInvalid2' : 'rem.errInvalid') : communityErrText(res.error)); }
-  else { remindersData = res.data; remindersDraft = null; communitySetMessage('rem.saved'); nativeRemindersApply(); }
-  renderCommunity();
+  if (uid !== remindersUid) return;
+  if (!res || res.error) { remindersFeedback(res && /invalid_(reminders|timezone)/.test(String((res.error && res.error.message) || '')) ? t(remindersV2() ? 'rem.errInvalid2' : 'rem.errInvalid') : communityErrText(res && res.error)); }
+  else { remindersData = res.data; remindersDraft = null; remindersFeedback(t('rem.saved')); nativeRemindersApply(); }
+  renderRemindersSheet();
 }
 
 /* Krátka ponuka v zozname chatov, kým upozornenia nie sú zapnuté. */
@@ -24199,9 +24384,8 @@ async function communityProfileHtml(sb, user) {
   if (communityVersion >= 3) { try { lbMe = await sb.rpc('leaderboard_me'); } catch (e) { lbMe = null; } }
   let achMe = null;
   if (communityV5()) { await profileAchievementsSend(false); achMe = await profileAchievementsGet(sb, user.id); }
-  if (remindersAvailable() && pushState() === 'on') await remindersLoad(sb);
   const masked = t('community.emailHidden');
-  /* v80: pri verzii 2+ je toto „Upraviť profil“ (meno, bio, avatar, súkromie, upozornenia, pripomienky, účet).
+  /* v80: pri verzii 2+ je toto „Upraviť profil“ (meno, bio, avatar, súkromie, účet).
      Hlavička profilu, úspechy a príspevky sú v novom profile (communityOwnProfileHtml). */
   if (communityV2() && card) {
     return communitySubHead(esc(t('community2.editProfile')))
@@ -24232,8 +24416,6 @@ async function communityProfileHtml(sb, user) {
       + (p.role === 'moderator' ? '<p class="card-note">' + esc(t('community.moderatorBadge')) + '</p>' : '')
       + (p.suspended ? '<p class="card-note">' + esc(t('community.suspendedBadge')) + '</p>' : '')
       + '</div>'
-      + pushCardHtml()
-      + remindersCardHtml()
       + '<div class="card"><div class="plan-actions community-danger-row">'
       + '<button type="button" class="btn btn-danger" data-community-action="delete-account">' + esc(t('community.deleteAccount')) + '</button>'
       + '</div><div class="plan-actions">'
@@ -33583,8 +33765,8 @@ function initMuscles() {
 
 /* ---------- Prehľad: zotavenie ---------- */
 /* Odhad zotavenia svalov z posledných sérií. Čisté čítanie histórie: nič nezapisuje a nemení XP, rekordy ani úspechy.
-   Okno zotavenia 72 h (core a arms 48 h); séria váži podiel svalu, RPE >= 9 váži 1.25 a záťaž klesá lineárne s vekom. */
-const RECOVERY_SHORT_WINDOW = ['core', 'arms'];
+   Okno zotavenia 72 h (core, biceps, triceps a všeobecné arms 48 h); séria váži podiel svalu, RPE >= 9 váži 1.25 a záťaž klesá lineárne s vekom. */
+const RECOVERY_SHORT_WINDOW = ['core', 'biceps', 'triceps', 'arms'];
 
 /* Čas tréningu (ms): platné `endedAt`, inak dátum záznamu o 12:00 miestneho času; nikdy neskôr ako `now`.
    Nepoužiteľný dátum = null (taký záznam sa preskočí). */
@@ -33645,27 +33827,22 @@ function recoveryClass(v) {
   return x >= 85 ? 'rec-0' : x >= 60 ? 'rec-1' : x >= 35 ? 'rec-2' : 'rec-3';
 }
 
-/* Vlastná jednoduchá kresba: postava spredu (vľavo) a zozadu (vpravo) zo zaoblených tvarov, 7 oblastí `data-muscle`.
-   Farba je len CSS trieda (rec-0..rec-3 so žetónmi motívu); ľavá a pravá strana sú súmerné, mapa sa v RTL nezrkadlí. */
+/* Obrázok dodaný používateľom ostáva nezmenený. Priesvitné oblasti sedia na jeho prednej anatómii;
+   chrbát a zadok sú iba v zozname, nikdy sa nekreslia na nesprávne miesto. */
 function bodyMapSvg(recovery, opts) {
   const rc = recovery && typeof recovery === 'object' ? recovery : {};
   const mini = !(opts && opts.size === 'full');
-  const rect = (x, y, w, h, r) => '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" rx="' + r + '"/>';
-  const ell = (cx, cy, rx, ry) => '<ellipse cx="' + cx + '" cy="' + cy + '" rx="' + rx + '" ry="' + ry + '"/>';
-  const both = (fn) => fn(28) + fn(84);   // spredu a zozadu
-  const g = (m, inner) => '<g data-muscle="' + m + '" class="' + recoveryClass(rc[m]) + '">' + inner + '</g>';
-  const body = both((c) => '<circle cx="' + c + '" cy="7" r="6"/>' + rect(c - 2.5, 12, 5, 5, 2))
-    + rect(18, 50, 20, 8, 4);   // panva spredu
-  return '<svg class="body-map ' + (mini ? 'mini' : 'full') + '" viewBox="0 0 112 100" xmlns="http://www.w3.org/2000/svg"'
+  const pair = (path) => '<path d="' + path + '"/><path d="' + path + '" transform="translate(548 0) scale(-1 1)"/>';
+  const group = (muscle, path) => '<g data-muscle="' + muscle + '" class="' + recoveryClass(rc[muscle]) + '">' + pair(path) + '</g>';
+  return '<svg class="body-map ' + (mini ? 'mini' : 'full') + '" viewBox="0 0 572 1024" xmlns="http://www.w3.org/2000/svg"'
     + (mini ? ' aria-hidden="true" focusable="false"' : ' role="img" aria-label="' + escAttr(t('recovery.mapAria')) + '"') + '>'
-    + '<g class="bm-base">' + body + '</g>'
-    + g('legs', both((c) => rect(c - 11, 56, 10, 22, 5) + rect(c + 1, 56, 10, 22, 5) + rect(c - 10, 79, 8, 18, 4) + rect(c + 2, 79, 8, 18, 4)))
-    + g('arms', both((c) => rect(c - 22, 27, 7, 15, 3.5) + rect(c + 15, 27, 7, 15, 3.5) + rect(c - 23, 43, 6, 15, 3) + rect(c + 17, 43, 6, 15, 3)))
-    + g('back', rect(73, 17, 22, 28, 7))
-    + g('shoulders', both((c) => ell(c - 17.5, 22, 4.5, 5.5) + ell(c + 17.5, 22, 4.5, 5.5)))
-    + g('chest', rect(17, 18, 10.5, 12, 4) + rect(28.5, 18, 10.5, 12, 4))
-    + g('core', rect(20, 32, 16, 20, 5))
-    + g('glutes', ell(78, 50.5, 6.5, 5.5) + ell(90, 50.5, 6.5, 5.5))
+    + '<image href="body-anatomy.webp" width="572" height="1024"/>'
+    + group('chest', 'M188 207 C211 199 249 204 268 217 L270 260 C265 279 245 288 222 285 C196 284 180 268 179 246 C177 231 180 216 188 207Z')
+    + group('shoulders', 'M180 182 C150 178 132 198 129 224 C126 244 130 262 142 273 L160 252 C163 232 169 215 187 205 L207 193Z')
+    + group('biceps', 'M159 257 C146 273 138 298 137 321 C138 333 145 343 153 346 C166 333 175 313 178 292 L178 266 L168 252Z')
+    + group('triceps', 'M128 265 C118 287 116 311 114 330 L122 350 L132 326 C131 303 138 282 145 272 L140 261Z')
+    + group('core', 'M267 290 C248 292 226 287 205 281 L192 304 L196 343 L191 381 C194 414 218 444 249 461 L270 478 L270 291Z')
+    + group('legs', 'M204 431 C177 459 164 504 160 554 C154 596 160 637 177 666 L185 688 L205 684 C229 642 236 596 237 552 C237 511 224 464 204 431Z M178 706 C156 737 146 774 149 805 C153 840 161 876 159 915 L176 926 C189 890 191 855 190 823 C191 785 181 746 178 706Z')
     + '</svg>';
 }
 
@@ -35482,6 +35659,34 @@ function setupEvents() {
   on('btn-tour-help', tourHelpShow);
   // v80: cieľ sa uloží hneď po ťuknutí; Zavrieť ho pre istotu uloží ešte raz (zmena sa nikdy nestratí)
   on('btn-settings-close', closeSettingsSheet);
+  on('btn-settings-reminders', openRemindersSheet);
+  on('btn-reminders-close', closeRemindersSheet);
+  on('modal-reminders', (e) => { if (e.target === e.currentTarget) closeRemindersSheet(); });
+  on('reminders-body', (e) => {
+    const route = e.target.closest ? e.target.closest('[data-reminders-route]') : null;
+    if (route) {
+      if (route.dataset.remindersRoute === 'retry') openRemindersSheet();
+      else { closeRemindersSheet(); closeSettingsSheet(); communityOpen(); }
+      return;
+    }
+    const a = e.target.closest ? e.target.closest('[data-community-action]') : null;
+    if (a) remindersHandleAction(a);
+  });
+  on('reminders-body', (e) => {
+    if (e.target.id === 'community-push') {
+      if (document.getElementById('rem-water-on')) remindersDraft = remindersFormRead();
+      if (e.target.checked) pushEnable(); else pushSwitchOff();
+      renderRemindersSheet();
+    } else if (e.target.closest && e.target.closest('#community-reminders')) remindersDraft = remindersFormRead();
+  }, 'change');
+  on('reminders-body', (e) => {
+    if (e.target.closest && e.target.closest('#community-reminders')) remindersDraft = remindersFormRead();
+  }, 'input');
+  for (const event of ['online', 'offline']) window.addEventListener(event, () => {
+    if (!remindersSheetOpen()) return;
+    if (document.getElementById('rem-water-on')) remindersDraft = remindersFormRead();
+    renderRemindersSheet();
+  });
   on('btn-rest-sound', () => {
     state.settings.restSound = !restSoundOn();
     if (timerInterval !== null) nativeRestSync();
@@ -35616,6 +35821,7 @@ function setupEvents() {
     if (inviteModal && !inviteModal.hidden) { closeCommunityInvite(); return; }
     const langModal = document.getElementById('modal-lang');
     if (langModal && !langModal.hidden) { hideLanguagePicker(); return; }
+    if (remindersSheetOpen()) { closeRemindersSheet(); return; }
     const measureModal = document.getElementById('modal-measure');
     if (measureModal && !measureModal.hidden) { measureModal.hidden = true; refreshUpdateBanner(); return; }
     const foodModal = document.getElementById('modal-food');
@@ -35673,10 +35879,7 @@ function setupEvents() {
     else if (act === 'google-signin') communityGoogleSignIn(false);
     else if (act === 'signup') communitySignUp();
     else if (act === 'signout') requestSignOut();
-    else if (act === 'push-on') pushEnable();
-    else if (act === 'rem-save') remindersSave();
-    else if (/^rem-(wmode|wt-add|wt-del|meal-add|meal-del|own-add|own-del)$/.test(act)) remindersEdit(act, a);
-    else if (act === 'rem-day' || act === 'rem-own-day') { const on = !a.classList.contains('active'); a.classList.toggle('active', on); a.setAttribute('aria-pressed', on ? 'true' : 'false'); }
+    else if (remindersHandleAction(a)) return;
     else if (act === 'save-profile') communitySaveProfile();
     else if (act === 'more') { const sb = communityClient(); if (sb) { communityFeed.error = false; communityLoadFeed(sb, false); } }
     else if (act === 'feed-retry') { const sb = communityClient(); if (sb) { communityFeed.error = false; communityLoadFeed(sb, true); } }
@@ -35760,7 +35963,6 @@ function setupEvents() {
     if (e.target && e.target.id === 'community-age16') communityAge16 = !!e.target.checked;
     if (e.target && e.target.id === 'community-searchable') communitySetSearchable(!!e.target.checked);
     if (e.target && e.target.id === 'community-leaderboard') communitySetLeaderboard(!!e.target.checked);
-    if (e.target && e.target.id === 'community-push') { if (e.target.checked) pushEnable(); else pushSwitchOff(); }
     if (e.target && e.target.id === 'community-profile-ach') communitySetProfileAchHidden(!e.target.checked);
     if (e.target && e.target.name === 'community-visibility') communityVisibility = e.target.value === 'friends' ? 'friends' : 'public';
   }, 'change');
@@ -36090,6 +36292,7 @@ function isBusy() {
   const ctPanel = document.getElementById('custom-timer');
   if (ctPanel && !ctPanel.hidden) return true;           // rozrobený vlastný čas pauzy
   const forms = ['modal-confirm', 'modal-history-edit', 'modal-settings', 'modal-setup', 'modal-generic',
+    'modal-reminders',
     'modal-planchoice', 'modal-fullbody', 'modal-lang', 'modal-measure', 'modal-food',
     'modal-library', 'modal-exercise', 'modal-photo-add', 'modal-photo', 'modal-photo-compare',
     'modal-community-caption', 'modal-auth', 'modal-sync', 'modal-plates', 'modal-effort', 'modal-suggest', 'modal-programs', 'modal-ex-actions', 'modal-ex-progress', 'modal-muscles', 'modal-csv', 'modal-csv-import'];
@@ -36713,6 +36916,7 @@ const NATIVE_BACK_CLOSE = [
   ['modal-result', '#btn-result-close'],
   ['modal-setup', null],
   ['modal-settings', '#btn-settings-close'],
+  ['modal-reminders', '#btn-reminders-close'],
   ['modal-lang', '#btn-lang-cancel'],
   ['modal-measure', '#btn-measure-cancel'],
   ['modal-food', '#btn-food-cancel'],
@@ -36928,8 +37132,7 @@ async function nativePushEnable() {
     msg = 'push.errFailed';
   } finally {
     pushBusy = false;
-    communitySetMessage(msg);
-    renderCommunity();
+    remindersPushFeedback(msg);
   }
 }
 /* Odhlásenie, vypnutie, opustenie Community: token preč zo servera aj z FCM, pripomienky zrušené. */

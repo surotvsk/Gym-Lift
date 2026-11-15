@@ -28,7 +28,7 @@ function walk(dir) {
   return out;
 }
 
-const WATCH = ['index.html', 'script.js', 'style.css', 'sw.js', 'community-config.js'];
+const WATCH = ['index.html', 'script.js', 'style.css', 'sw.js', 'community-config.js', 'body-anatomy.webp'];
 const before = Object.fromEntries(WATCH.map((f) => [f, sha(path.join(REPO, f))]));
 
 const script = path.join(REPO, 'tools', 'android', 'build-www.sh');
@@ -37,7 +37,7 @@ if (!fs.existsSync(script)) { console.log(`\n${pass} passed, ${fail} failed`); p
 execFileSync('bash', [script], { cwd: REPO, stdio: 'inherit' });
 
 const shell = ['index.html', 'script.js', 'style.css', 'community-config.js', 'manifest.json',
-  'icon-192.png', 'icon-512.png', 'apple-touch-icon.png', 'vendor/supabase-js.js'];
+  'body-anatomy.webp', 'icon-192.png', 'icon-512.png', 'apple-touch-icon.png', 'vendor/supabase-js.js'];
 for (const f of shell) {
   const a = path.join(REPO, f), b = path.join(WWW, f);
   check('copied ' + f, fs.existsSync(b) && sha(a) === sha(b));

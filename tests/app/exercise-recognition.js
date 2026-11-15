@@ -119,7 +119,7 @@ const FIT = `(el) => {
         primary: row.querySelector('.edit-muscle-primary').value,
         helpers: Array.from(row.querySelectorAll('[data-muscle]:checked'), x => x.dataset.muscle),
         weight: Number(row.querySelectorAll('.edit-num')[2].value),
-        labels: { chest: muscleLabel('chest'), arms: muscleLabel('arms'), shoulders: muscleLabel('shoulders'),
+        labels: { chest: muscleLabel('chest'), arms: muscleLabel('arms'), triceps: muscleLabel('triceps'), shoulders: muscleLabel('shoulders'),
           back: muscleLabel('back'), core: muscleLabel('core'), other: muscleLabel('other') } };
     })()`);
     const primary = (root, value) => E(`(() => {
@@ -141,7 +141,7 @@ const FIT = `(el) => {
     };
     const counts = () => E(`(() => { const out = {}; for (const row of document.querySelectorAll('#muscles-list .mu-row')) {
       const label = row.querySelector('.mu-name').textContent;
-      const code = ['chest','back','shoulders','arms','legs','glutes','core','other'].find(m => muscleLabel(m) === label);
+      const code = ['chest','back','shoulders','biceps','triceps','arms','legs','glutes','core','other'].find(m => muscleLabel(m) === label);
       out[code] = Number(row.querySelector('.mu-val bdi').textContent.replace(/\\s/g, ''));
     } return out; })()`);
 
@@ -156,12 +156,12 @@ const FIT = `(el) => {
     await open('live');
     await typeName('Bench Press');
     let s = await status();
-    check('known typed name immediately shows main and helper muscles while still focused', s.focused && s.visible && s.state === 'recognized' && ['chest','arms','shoulders'].every(m => s.text.includes(s.labels[m])), s);
+    check('known typed name immediately shows main and helper muscles while still focused', s.focused && s.visible && s.state === 'recognized' && ['chest','triceps','shoulders'].every(m => s.text.includes(s.labels[m])), s);
     check('recognition does not inherit prior manual muscles or replace the entered weight', s.primary === '' && s.helpers.length === 0 && s.weight === 37.5, s);
     check('typing has not changed saved identity, metadata, built-in ID, or weights', await E(`state.plans.live.exercises[0].id === ${J(initial.id)} && state.plans.live.exercises[0].name === 'Prior Manual Arc' && JSON.stringify(state.plans.live.exercises[1]) === ${J(J(initial.builtin))}`));
     await typeName('Bench Press (Barbell)');
     s = await status();
-    check('equipment-qualified alias is recognized immediately without taking over identity or weight', s.focused && s.visible && s.state === 'recognized' && s.text.includes(s.labels.chest) && s.text.includes(s.labels.arms) && s.weight === 37.5, s);
+    check('equipment-qualified alias is recognized immediately without taking over identity or weight', s.focused && s.visible && s.state === 'recognized' && s.text.includes(s.labels.chest) && s.text.includes(s.labels.triceps) && s.weight === 37.5, s);
     await save();
     check('saving a recognized alias does not silently convert its custom ID or replace its weight', await E(`(() => { const row = state.plans.live.exercises[0]; return /^cx-/.test(row.id) && row.id !== 'bench-press' && !row.builtin && row.weight === 37.5 && !row.muscles && state.plans.live.exercises[1].id === 'bench-press'; })()`));
     await p.reload(); await open('live');
@@ -223,7 +223,7 @@ const FIT = `(el) => {
     for (const lang of ['sk','en','es','pt-BR','fr','ar']) {
       await E(`(setLang(${J(lang)}), true)`); await open('live');
       await typeName('Dumbbell bench press'); s = await status();
-      check(lang + ': live main/helpers fit at 320px and increased text before blur', s.focused && s.visible && s.state === 'recognized' && ['chest','arms','shoulders'].every(m => s.text.includes(s.labels[m])), s);
+      check(lang + ': live main/helpers fit at 320px and increased text before blur', s.focused && s.visible && s.state === 'recognized' && ['chest','triceps','shoulders'].every(m => s.text.includes(s.labels[m])), s);
       await typeName('Locale Unmapped Orbit'); s = await status();
       localeTexts.push(s.text);
       check(lang + ': unknown message is visible and translated, with no raw keys', s.visible && s.state === 'unknown' && !!s.text && !/muscles\.|recognition\.|undefined|NaN/.test(s.text), s);

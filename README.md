@@ -83,14 +83,19 @@ everything on your own device.
   Missing weight/reps no longer erase completed sets (only their volume); old records without completion
   markers are explicitly labelled as using their saved set total. Legs includes thighs and calves;
   Glutes is separate. Separately logged sides count as half a paired set each, never an assumed pair.
+  Biceps and Triceps are separate groups: curls/rows/pulldowns load Biceps, while presses/extensions
+  load Triceps as appropriate. **Shoulders (deltoids)** means the rounded muscles above your upper arms.
+  **Muscle guide** explains these areas. General/older **Arms** assignments remain intact and are not
+  silently split into guessed biceps/triceps counts.
   If sets remain in Other, **Assign muscles to Other exercises** lists their actual saved names.
   Choose main/helpers and save each exercise: the correction applies to its existing Other workouts
   across weeks, without changing raw history, weights, XP, or already assigned snapshots. Corrections
   survive backup/import and workout Undo; later deliberately-Other workouts are not retroactively included.
-- **Recovery map** — in the Muscles tile and sheet a front and back body map is shaded by how recently each muscle
-  was worked. It is an **estimate** from your last three to four days of sets, not medical advice. At most
-  once a day the Today workout card adds one quiet line, for example *Legs still recovering — consider
-  Chest, Shoulders & Triceps*. There is no red or green, and no judging.
+- **Recovery map** — the Muscles tile and sheet use the owner's supplied detailed anatomical image,
+  unchanged, with straight empty arms. Translucent highlights retain the visible muscle definition.
+  This is a **front view**: Back and Glutes still count in the list, not on incorrect front-body regions.
+  It is an **estimate** from your last three to four days of sets, not medical advice or muscle-growth
+  measurement. At most once a day Today adds a quiet recovery hint; there is no red/green judging.
 - **Supersets and circuits** — group two or more neighbouring exercises in the plan editor. The workout
   shows them as one lettered block and moves you to the next exercise in the group after each set.
 - **Comparison with last time** — every exercise shows whether you went heavier or lighter than your
@@ -303,7 +308,8 @@ in the prototype.
   holds your profile photo (or its letter), your name and @username, your bio (or a motivational line), your real
   counts (posts · followers · following · friends; without Community: workouts · week streak · achievements) and
   small pills for **Level · XP** (achievements), **Goal** (Settings at the goal) and **Progress photos** (private),
-  plus **Edit profile** (name, bio, avatar, privacy, notifications, reminders, account) and **Friends**. The ⋯ menu
+  plus **Edit profile** (name, bio, avatar, privacy and account) and **Friends**. Notifications and reminders
+  now have their own **Settings → Reminders** sheet. The ⋯ menu
   has *Settings and privacy*, *My posts*, *Moderation* (moderators only) and *Sign out*.
   Below it is your published history, newest first: **All** (photos in a Bento mosaic — one wide, two halves or three
   in a row — text posts as readable cards, shared workouts and plans as summary cards with name, date, duration, XP and
@@ -1037,7 +1043,7 @@ the leaderboard** to hide yourself. The leaderboard shows only your username, av
 never your workouts. Moderators can remove a member from it. It needs internet and a Community
 account; your XP in the app never changes because of it.
 
-**Message notifications (optional).** Turn on **Community → Profile → Notifications** (or **Turn on**
+**Message notifications (optional).** Turn on **Settings → Reminders → Notifications** (or **Turn on**
 above the chat list) to get a notification on this device when a friend sends you a chat message,
 even when GymQuest is closed. Tapping it opens that chat. On the web (except iPhone, iPad and Mac Safari) no
 notification is shown for the chat you are currently reading. The notification shows only the friend's
@@ -1051,17 +1057,18 @@ notifications are blocked in the phone or browser settings, the app says so and 
 The notification goes through your browser's push service (Apple, Google, Mozilla or Microsoft),
 encrypted so that only your device can read it.
 
-**Reminders (on by default).** With notifications on, **You → Edit profile → Reminders** reminds you to
-**drink water** (every 30 minutes to 3 hours between two times), to **eat** (up to six meal times) and
-to **work out** (chosen weekdays at a time). They use your phone's time zone, arrive even when the app
-is closed, and are sent by the server at most once per reminder (checked every 5 minutes, so a
-reminder may come up to 5 minutes after its time). Turning notifications off, signing out or leaving
-Community stops them. They start **switched on** (water every 2 hours 08:00–21:00, meals at 08:00 · 12:30 · 18:30, workout
-Mon/Wed/Fri at 17:00, in your phone's time zone) as soon as notifications are on; every switch can be
-turned off and stays off.
-To enable or disable them, toggle **Drink water** or **Workouts**, choose the times/weekdays and tap
-**Save reminders**. These controls currently require signing in and turning on **Notifications**
-in the section above Reminders; they are not in the main workout Settings sheet.
+**Reminders (on by default).** Open **Settings → Reminders**, without going through Edit profile.
+Sign in through Community and turn on **Notifications** in that sheet. You can enable/disable
+**Drink water**, **Meals**, **Workouts** and custom reminders, choose their times/weekdays, then tap
+**Save reminders**. Existing account preferences are preserved; turning a switch off stays off.
+
+Water supports intervals from 30 minutes to 3 hours or selected times, meals up to six times, and
+workouts selected weekdays at a time. Android schedules saved reminders on-device, including offline;
+web reminders use the server's five-minute checks and may arrive up to five minutes after their time.
+Both use your phone's time zone. Turning notifications off, signing out or leaving Community stops them.
+Defaults start when notifications are enabled: water every 2 hours 08:00–21:00, meals at
+08:00 · 12:30 · 18:30, workouts Mon/Wed/Fri at 17:00. Loading/saving account preferences requires a connection;
+signed-out, offline and unavailable states are explained in the sheet rather than showing fake defaults.
 
 
 **Create an account with Google (v109, Android app, needs migration 0020 on the server).** A new user can tick

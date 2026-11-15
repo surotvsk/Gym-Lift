@@ -3,8 +3,8 @@
 
      node tests/app/recovery.js
 
-   Kontroluje: entryTime (endedAt, inak dátum o 12:00, nikdy po "teraz"), muscleRecovery (vzorec zo zadania: okno 72 h / 48 h pre core a arms,
-   RPE >= 9 váži 1.25, jednostranný cvik: obe strany = 1 séria), bodyMapSvg (7 oblastí data-muscle, triedy rec-0..rec-3, nikdy "other"),
+   Kontroluje: entryTime (endedAt, inak dátum o 12:00, nikdy po "teraz"), muscleRecovery (72 h / 48 h pre core a svaly rúk,
+   RPE >= 9 váži 1.25, jednostranný cvik: obe strany = 1 séria), oddelený biceps/triceps a prednú mapu na dodanom obrázku,
    mini mapu v dlaždici Svaly a plnú mapu nad stĺpcami v liste, tip na Dnes (raz za deň, uložený len v localStorage, nikdy počas tréningu,
    nikdy pre nového používateľa, nie je v synchronizovanom obsahu), slovo "odhad", 6 jazykov + RTL, svetlý/tmavý režim na 390 px, bez chýb v konzole. */
 const fs = require('fs');
@@ -58,17 +58,19 @@ const rec = (n, share, age, win, mult) => { if (age >= win) return 100; return M
 
     console.log('== muscleRecovery formula');
     let r = await R([wo('a', NOW - 1 * H, [bench(10)])]);
-    check('result has exactly the 7 muscles, no other, all 0..100 integers', J(Object.keys(r)) === J(['chest', 'back', 'shoulders', 'arms', 'legs', 'glutes', 'core']) && Object.values(r).every((v) => Number.isInteger(v) && v >= 0 && v <= 100), r);
+    check('recovery values are finite percentages, with separate biceps and triceps', Number.isInteger(r.biceps) && Number.isInteger(r.triceps) && Object.values(r).every((v) => Number.isInteger(v) && v >= 0 && v <= 100), r);
     check('10 chest sets 1 h ago: chest from the formula (' + rec(10, 1, 1, 72) + ')', r.chest === rec(10, 1, 1, 72), r);
-    check('same sets: shoulders (0.5 share, 72 h) and arms (0.5 share, 48 h window)', r.shoulders === rec(10, 0.5, 1, 72) && r.arms === rec(10, 0.5, 1, 48), r);
-    check('untouched muscles are 100', r.back === 100 && r.legs === 100 && r.glutes === 100 && r.core === 100, r);
+    check('bench loads deltoids and triceps but not biceps', r.shoulders === rec(10, 0.5, 1, 72) && r.triceps === rec(10, 0.5, 1, 48) && r.biceps === 100, r);
+    check('untouched muscles are 100', r.back === 100 && r.arms === 100 && r.legs === 100 && r.glutes === 100 && r.core === 100, r);
+    r = await R([wo('curl', NOW - H, [{ name: 'Bicep curls', exId: 'bicep-curls', sets: 5, setsDone: 5, reps: 10, weight: 12 }])]);
+    check('curl-only history changes biceps, never triceps or chest', r.biceps === rec(5, 1, 1, 48) && r.triceps === 100 && r.chest === 100, r);
     r = await R([wo('a', NOW - 80 * H, [bench(10)])]);
     check('same sets 80 h ago: everything 100 (outside the window)', Object.values(r).every((v) => v === 100), r);
     r = await R([wo('a', NOW - 47 * H, [bench(10)])]);
-    check('arms at 47 h (48 h window) nearly fresh: ' + rec(10, 0.5, 47, 48), r.arms === rec(10, 0.5, 47, 48) && r.arms >= 98, r);
+    check('triceps at 47 h (48 h window) nearly fresh', r.triceps === rec(10, 0.5, 47, 48) && r.triceps >= 98, r);
     check('chest at 47 h still loaded (72 h window): ' + rec(10, 1, 47, 72), r.chest === rec(10, 1, 47, 72), r);
     r = await R([wo('a', NOW - 49 * H, [bench(10)])]);
-    check('arms at 49 h are skipped (window 48 h): 100', r.arms === 100 && r.shoulders === rec(10, 0.5, 49, 72), r);
+    check('triceps at 49 h are fresh while deltoids still reflect their 72 h window', r.triceps === 100 && r.shoulders === rec(10, 0.5, 49, 72), r);
     r = await R([wo('a', NOW - 10 * H, [bench(4, { setRpe: [9.5, 9.5, 9.5, 9.5] })])]);
     check('RPE 9.5 sets weigh 1.25x: ' + rec(4, 1, 10, 72, 1.25), r.chest === rec(4, 1, 10, 72, 1.25), r);
     r = await R([wo('a', NOW - 10 * H, [bench(4, { setRpe: [8.5, 8.5, 8.5, 8.5] })])]);
@@ -106,19 +108,19 @@ const rec = (n, share, age, win, mult) => { if (age >= win) return 100; return M
     check('a future date is clamped to now; now defaults to Date.now()', et.future && et.def, et);
 
     console.log('== bodyMapSvg');
-    const svg = await ev(`bodyMapSvg({ chest: 100, back: 70, shoulders: 50, arms: 20, legs: 90, glutes: 40, core: 85 }, { size: 'full' })`);
-    const m = (await ev(`(() => { const d = document.createElement('div'); d.innerHTML = bodyMapSvg({ chest: 100, back: 70, shoulders: 50, arms: 20, legs: 90, glutes: 40, core: 85 }, { size: 'full' });
+    const svg = await ev(`bodyMapSvg({ chest: 100, shoulders: 50, biceps: 20, triceps: 70, legs: 90, core: 85 }, { size: 'full' })`);
+    const m = (await ev(`(() => { const d = document.createElement('div'); d.innerHTML = bodyMapSvg({ chest: 100, shoulders: 50, biceps: 20, triceps: 70, legs: 90, core: 85 }, { size: 'full' });
       const cls = {}; d.querySelectorAll('[data-muscle]').forEach((e) => { cls[e.dataset.muscle] = e.getAttribute('class'); });
       const s = d.querySelector('svg'); return { n: d.querySelectorAll('[data-muscle]').length, cls, hasOther: !!d.querySelector('[data-muscle="other"]'), role: s.getAttribute('role'), aria: s.getAttribute('aria-label'),
         mini: (() => { const e = document.createElement('div'); e.innerHTML = bodyMapSvg({}, { size: 'mini' }); return e.querySelector('svg').getAttribute('class'); })(),
-        shapes: Array.from(d.querySelectorAll('[data-muscle]')).every((g) => g.querySelectorAll('path, rect, ellipse, circle').length >= 1),
-        copy: /<image|href=|<style|<script/.test(${J('')} + d.innerHTML) }; })()`));
-    check('7 data-muscle regions, no other', m.n === 7 && !m.hasOther && J(Object.keys(m.cls).sort()) === J(['arms', 'back', 'chest', 'core', 'glutes', 'legs', 'shoulders']), m);
-    check('classes: 100 -> rec-0, 85 -> rec-0, 70 -> rec-1, 50 -> rec-2, 40 -> rec-2, 20 -> rec-3', /rec-0/.test(m.cls.chest) && /rec-0/.test(m.cls.core) && /rec-1/.test(m.cls.back) && /rec-2/.test(m.cls.shoulders) && /rec-2/.test(m.cls.glutes) && /rec-3/.test(m.cls.arms) && /rec-0/.test(m.cls.legs), m.cls);
+        image: s.querySelector('image').getAttribute('href') }; })()`));
+    check('front diagram represents visible muscles without inventing back/glute/unspecified-arm areas', !m.hasOther && J(Object.keys(m.cls).sort()) === J(['biceps', 'chest', 'core', 'legs', 'shoulders', 'triceps']), m);
+    check('biceps and triceps can show different recent loads on the same figure', /rec-0/.test(m.cls.chest) && /rec-0/.test(m.cls.core) && /rec-1/.test(m.cls.triceps) && /rec-2/.test(m.cls.shoulders) && /rec-3/.test(m.cls.biceps) && /rec-0/.test(m.cls.legs), m.cls);
     check('boundaries: 84 -> rec-1, 60 -> rec-1, 59 -> rec-2, 35 -> rec-2, 34 -> rec-3', await ev(`(() => { const c = (v) => { const d = document.createElement('div'); d.innerHTML = bodyMapSvg({ chest: v }, { size: 'mini' }); return d.querySelector('[data-muscle="chest"]').getAttribute('class'); };
       return /rec-1/.test(c(84)) && /rec-1/.test(c(60)) && /rec-2/.test(c(59)) && /rec-2/.test(c(35)) && /rec-3/.test(c(34)); })()`));
-    check('an svg with a text alternative, size classes mini/full, only simple shapes, no images', m.role === 'img' && !!m.aria && /mini/.test(m.mini) && /full/.test(svg) && m.shapes && !/<image|<script/.test(svg), m);
-    check('missing/garbage recovery values draw rec-0, never throw', await ev(`(() => { const d = document.createElement('div'); d.innerHTML = bodyMapSvg(null, { size: 'mini' }) + bodyMapSvg({ chest: NaN, back: 'x' }); return d.querySelectorAll('[data-muscle]').length === 14 && !/NaN|undefined/.test(d.innerHTML) && d.querySelectorAll('.rec-3').length === 0; })()`));
+    check('full diagram has a localized text alternative and mini is decorative', m.role === 'img' && !!m.aria && /mini/.test(m.mini), m);
+    check('supplied body image decodes in the browser at its original resolution', await ev(`(async () => { const image = new Image(); image.src = ${J(m.image)}; await image.decode(); return image.naturalWidth === 572 && image.naturalHeight === 1024; })()`));
+    check('missing recovery data leaves all visible regions neutral', await ev(`(() => { const d = document.createElement('div'); d.innerHTML = bodyMapSvg(null, { size: 'mini' }) + bodyMapSvg({ chest: NaN, biceps: 'x' }); return !/NaN|undefined/.test(d.innerHTML) && Array.from(d.querySelectorAll('[data-muscle]')).every(g => g.classList.contains('rec-0')); })()`));
 
     console.log('== tile and sheet');
     await p.eval(`(() => { ${DAY}
@@ -128,21 +130,20 @@ const rec = (n, share, age, win, mult) => { if (age >= win) return 100; return M
     const tile = (await ev(`(() => { const t = document.querySelector('#stats-grid [data-go="muscles"]'); const s = t.querySelector('svg.body-map');
       return { has: !!s, mini: !!s && s.classList.contains('mini'), n: t.querySelectorAll('[data-muscle]').length, h: s ? s.getBoundingClientRect().height : 0, tiles: document.querySelectorAll('#stats-grid .bt').length,
         text: t.innerText.replace(/\\s+/g, ' ').trim(), hidden: s ? s.getAttribute('aria-hidden') : null, role: s ? s.getAttribute('role') : null, chest: s ? s.querySelector('[data-muscle="chest"]').getAttribute('class') : '' }; })()`));
-    check('Muscles tile holds the mini map (7 regions, about 48 px tall)', tile.has && tile.mini && tile.n === 7 && tile.h >= 40 && tile.h <= 56, tile);
+    check('Muscles tile holds the decorative mini image at a readable tile height', tile.has && tile.mini && tile.h >= 40 && tile.h <= 56, tile);
     check('tile keeps its line and still has exactly one new tile (no extra tile)', /Chest · 4 sets/.test(tile.text), tile);
     check('chest drawn worked on the tile (not rec-0)', !/rec-0/.test(tile.chest), tile);
     await p.eval(`(document.querySelector('#stats-grid [data-go="muscles"]').click(), true)`); await wait(200);
     const sh = (await ev(`(() => { const s = ${sheet}; const map = s.querySelector('svg.body-map'); const list = document.getElementById('muscles-list'); const nav = s.querySelector('.mu-nav');
       return { has: !!map, full: !!map && map.classList.contains('full'), n: s.querySelectorAll('[data-muscle]').length, above: !!map && !!(map.compareDocumentPosition(list) & Node.DOCUMENT_POSITION_FOLLOWING),
         text: s.innerText, w: map ? map.getBoundingClientRect().width : 0 }; })()`));
-    check('sheet shows the full map above the bars (7 regions)', sh.has && sh.full && sh.n === 7 && sh.above, sh);
+    check('sheet shows the full anatomical image above the bars', sh.has && sh.full && sh.above, sh);
     check('sheet wording says "estimate"', /estimate/i.test(sh.text), sh.text);
     check('sheet text has no NaN / undefined / raw key', !/NaN|undefined|recovery\./.test(sh.text), sh.text);
-    check('map fills only token colours (accent with fill-opacity, surface-2); no judgemental red/green', await ev(`(() => { const cs = Array.from(${sheet}.querySelectorAll('[data-muscle]')).map((g) => getComputedStyle(g.querySelector('path, rect, ellipse, circle')).fill);
-      return cs.every((c) => !/rgb\\((\\d+), (\\d+), (\\d+)/.test(c) || (() => { const m = c.match(/rgb\\((\\d+), (\\d+), (\\d+)/); return !(+m[2] > +m[1] + 60 && +m[2] > +m[3] + 60); })()); })()`));
+    check('worked regions stay translucent so the supplied muscle detail remains visible', await ev(`Array.from(${sheet}.querySelectorAll('[data-muscle] path')).every(p => { const a = Number(getComputedStyle(p).fillOpacity); return a >= 0 && a <= 0.5; })`));
     await esc(); await wait(60);
     check('empty history: sheet map is all fresh (rec-0) and calm', await (async () => { await setHist([]); await p.eval(`(openMuscles(), true)`); await wait(100);
-      const ok = await ev(`${sheet}.querySelectorAll('svg.body-map [data-muscle]').length === 7 && ${sheet}.querySelectorAll('svg.body-map .rec-1, svg.body-map .rec-2, svg.body-map .rec-3').length === 0 && !/NaN|undefined/.test(${sheet}.innerText)`);
+      const ok = await ev(`Array.from(${sheet}.querySelectorAll('svg.body-map [data-muscle]')).every(g => g.classList.contains('rec-0')) && !/NaN|undefined/.test(${sheet}.innerText)`);
       await esc(); await wait(60); return ok; })());
 
     console.log('== Today hint');
@@ -206,10 +207,10 @@ const rec = (n, share, age, win, mult) => { if (age >= win) return 100; return M
     check('all recovery.* keys exist in 6 languages and are translated', miss.every((x) => x.n >= 3 && x.miss.length === 0 && x.same.length === 0), miss);
     for (const lang of ['sk', 'en', 'es', 'pt-BR', 'fr', 'ar']) {
       await p.eval(`(setLang(${J(lang)}), switchTab('pokrok'), setPokrokView('stats'), renderStatsGrid(), openMuscles(), true)`); await wait(120);
-      const x = JSON.parse(await ev(`JSON.stringify((() => { const m = ${sheet}.querySelector('.modal'); const s = ${sheet}.querySelector('svg.body-map'); const lr = (name) => { const e = s.querySelector('[data-muscle="' + name + '"]'); return e.getBoundingClientRect().left; };
-        return { dir: document.documentElement.dir, over: m.scrollWidth <= m.clientWidth + 1, txt: ${sheet}.innerText, shoulderL: lr('shoulders'), glutesL: lr('glutes'), mapL: s.getBoundingClientRect().left, mapR: s.getBoundingClientRect().right, aria: s.getAttribute('aria-label') }; })())`));
+      const x = JSON.parse(await ev(`JSON.stringify((() => { const m = ${sheet}.querySelector('.modal'); const s = ${sheet}.querySelector('svg.body-map');
+        return { dir: document.documentElement.dir, over: m.scrollWidth <= m.clientWidth + 1, txt: ${sheet}.innerText, transform: getComputedStyle(s).transform, aria: s.getAttribute('aria-label') }; })())`));
       check(lang + ': sheet has map + estimate caption, no raw key / NaN, no overflow', x.over && !/recovery\.|NaN|undefined/.test(x.txt) && !!x.aria && !/recovery\./.test(x.aria), x);
-      if (lang === 'ar') check('ar: the map keeps front on the left and back on the right (not mirrored)', x.shoulderL < x.glutesL, x);
+      if (lang === 'ar') check('ar: the supplied anatomical image is not mirrored', x.transform === 'none', x);
       await esc(); await wait(40);
     }
     await p.eval(`(setLang('en'), true)`);

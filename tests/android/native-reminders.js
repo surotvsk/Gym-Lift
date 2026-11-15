@@ -85,12 +85,18 @@ const DATA = { water_on: true, water_every: 60, water_from: '08:00', water_to: '
 
     /* uloženie karty pripomienok (falošný Supabase klient) */
     await p.eval(`(() => {
-      window.__fakeSb = { rpc: async (fn, args) => (fn === 'reminders_set' ? { data: Object.assign({}, args.p, { saved: true }) } : { data: null }) };
-      communityClient = () => window.__fakeSb;
-      communityVersion = 6;
-      const box = document.createElement('div'); box.id = 'rem-test-box'; document.body.appendChild(box);
+      window.__fakeSb = {
+        auth: { getSession: async () => ({ data: { session: { user: { id: ${JSON.stringify(ME)} } } } }) },
+        from: () => ({ select: () => ({ eq: () => ({ maybeSingle: async () => ({ data: { id: ${JSON.stringify(ME)}, username: 'native-reminder-test' } }) }) }) }),
+        rpc: async (fn, args) => fn === 'community_social_version' ? { data: 6 }
+          : fn === 'reminders_get' ? { data: ${JSON.stringify(DATA)} }
+          : fn === 'reminders_set' ? { data: Object.assign({}, args.p, { saved: true }) } : { data: null }
+      };
+      communityConfigured = () => true; state.settings.communityOptIn = true;
+      communityClient = () => window.__fakeSb; communitySocial = null;
+      openSettings();
       return true; })()`);
-    await p.eval(`(document.getElementById('rem-test-box').innerHTML = remindersCardHtml(), true)`);
+    await p.eval(`openRemindersSheet()`);
     check('reminders card shown when notifications are on', await p.eval(`!!document.getElementById('rem-water-on')`));
     await p.eval(`(document.getElementById('rem-water-on').checked = false, true)`);
     await clearNativeCalls(p);

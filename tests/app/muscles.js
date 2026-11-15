@@ -75,17 +75,16 @@ const near = (a, b) => typeof a === 'number' && Math.abs(a - b) < 1e-9;
       saveState(); return true; })()`);
     const share = await ev(`JSON.stringify({ bench: muscleShare({ name: 'Bench Press', exId: 'bench-press' }), custom: muscleShare({ name: 'Zottman curl' }), junk: muscleShare(null), keys: MUSCLE_KEYS })`);
     const sh = JSON.parse(share);
-    check('muscleShare bench: chest 1, arms 0.5, shoulders 0.5', (sh.bench.chest === 1 && sh.bench.arms === 0.5 && sh.bench.shoulders === 0.5 && Object.keys(sh.bench).length === 3), sh.bench);
+    check('bench loads chest and triceps, not biceps', sh.bench.chest === 1 && sh.bench.triceps === 0.5 && sh.bench.shoulders === 0.5 && !sh.bench.biceps && !sh.bench.arms, sh.bench);
     check('muscleShare custom / junk -> { other: 1 }', J(sh.custom) === '{"other":1}' && J(sh.junk) === '{"other":1}', sh);
-    check('MUSCLE_KEYS = MUSCLE_CODES + other', J(sh.keys) === J(['chest', 'back', 'shoulders', 'arms', 'legs', 'glutes', 'core', 'other']), sh.keys);
     const wk = JSON.parse(await ev(`JSON.stringify(muscleWeek(currentWeekKey()))`));
     check('this week: chest 3 (bench) , other 2 (custom curl)', near(wk.sets.chest, 3) && near(wk.sets.other, 2), wk.sets);
-    check('this week: arms 2.5 (bench helper 1.5 + assisted pull-ups helper 1)', near(wk.sets.arms, 2.5), wk.sets);
+    check('push and pull helpers stay separate: triceps 1.5, biceps 1', near(wk.sets.triceps, 1.5) && near(wk.sets.biceps, 1) && !wk.sets.arms, wk.sets);
     /* shoulders: bench 3×0.5 = 1.5; lateral raises (primary shoulders): 1 set + 1 drop = 2 */
     check('shoulders = 1.5 (bench helper) + 2 (lateral raise + its drop) = 3.5', near(wk.sets.shoulders, 3.5), wk.sets);
     check('assisted pull-ups add 2 sets to back (library primary), warm-ups never counted', near(wk.sets.back, 2) && near(wk.sets.chest, 3), wk.sets);
-    /* objem: bench 3×5×100 = 1500 → chest 1500, arms 750, shoulders 750; curl other 240; raises 10×10 + 6×12 = 172 → shoulders +172 */
-    check('volume: chest 1500, arms 750 (+0 curl is other), other 240', near(wk.volume.chest, 1500) && near(wk.volume.arms, 750) && near(wk.volume.other, 240), wk.volume);
+    /* Objem: bench 1500 → hrudník 1500, triceps 750, ramená 750; neznámy curl Other 240. */
+    check('volume keeps push helpers in triceps and unknown curls in Other', near(wk.volume.chest, 1500) && near(wk.volume.triceps, 750) && !wk.volume.biceps && !wk.volume.arms && near(wk.volume.other, 240), wk.volume);
     check('volume: shoulders = 750 + 172 (drop counted)', near(wk.volume.shoulders, 922), wk.volume);
     check('assisted: back volume 0 (sets only)', !wk.volume.back, wk.volume);
     check('total volume of the week = 1500 + 240 + 172', near(wk.totalVolume, 1912), wk.totalVolume);
@@ -98,6 +97,16 @@ const near = (a, b) => typeof a === 'number' && Math.abs(a - b) < 1e-9;
     const curKey = await ev(`currentWeekKey()`);
     check('trend last = current week, previous = last week; sets match', tr[7].week === curKey && tr[6].week === prevKey && near(tr[7].sets.chest, 3) && near(tr[6].sets.legs, 4), tr.slice(6));
     check('trend weeks are ascending', tr.every((x, i) => i === 0 || tr[i - 1].week < x.week), tr.map((x) => x.week));
+
+    const armProfiles = await ev(`({
+      curl: muscleShare({ name: 'Bicep curls', exId: 'bicep-curls' }),
+      extension: muscleShare({ name: 'Rope triceps pushdown', exId: 'rope-triceps-pushdown' }),
+      legacy: muscleShare({ name: 'Old custom arm exercise', muscles: { primary: 'arms', secondary: ['core'] } }),
+      manual: muscleShare({ name: 'My extension', muscles: { primary: 'triceps', secondary: ['biceps'] } })
+    })`);
+    check('known curls and extensions classify into different arm muscles', armProfiles.curl.biceps === 1 && !armProfiles.curl.triceps && armProfiles.extension.triceps === 1 && !armProfiles.extension.biceps, armProfiles);
+    check('legacy unspecified Arms is preserved, never silently split or doubled', J(armProfiles.legacy) === J({ arms: 1, core: 0.5 }), armProfiles.legacy);
+    check('custom assignments accept separate main/helper arm muscles', J(armProfiles.manual) === J({ triceps: 1, biceps: 0.5 }), armProfiles.manual);
 
     console.log('== name-only history, completed counts and private breakdown');
     const reported = await ev(`(() => { ${DAY}
@@ -192,9 +201,9 @@ const near = (a, b) => typeof a === 'number' && Math.abs(a - b) < 1e-9;
     check('focus moved into the sheet', await ev(`${sheet}.contains(document.activeElement)`));
     check('isBusy() is true while open', await ev(`isBusy()`));
     const rows = await ev(`Array.from(${sheet}.querySelectorAll('.mu-row')).map((r) => r.innerText.replace(/\\s+/g, ' ').trim())`);
-    check('rows sorted by sets: Chest 3, Other 2, then Shoulders / Arms 1.5', rows.length === 4 && /^Chest/.test(rows[0]) && /^Other/.test(rows[1]), rows);
+    check('rows sorted by sets: Chest 3, Other 2, then deltoids and triceps 1.5', rows.length === 4 && /^Chest/.test(rows[0]) && /^Other/.test(rows[1]), rows);
     check('zero muscles are hidden (no Back, Legs, Glutes, Core)', !rows.some((r) => /Back|Legs|Glutes|Core/.test(r)), rows);
-    check('one decimal where needed: Arms 1.5', rows.some((r) => /Arms 1\.5/.test(r)), rows);
+    check('helper contribution appears as 1.5 triceps sets', rows.some((r) => /Triceps 1\.5/.test(r)), rows);
     check('each row has a sparkline (8 weeks, 1 polyline) and a bar', await ev(`Array.from(${sheet}.querySelectorAll('.mu-row')).every((r) => r.querySelectorAll('svg.xp-compact polyline').length === 1 && !!r.querySelector('.mu-bar'))`));
     check('week label "This week"; next is disabled; no future weeks', /This week/.test(await ev(`document.getElementById('muscles-week').textContent`)) && await ev(`document.getElementById('btn-muscles-next').disabled`));
     check('total volume shown in kg: 1500 + 240 = 1740 kg', /1740 kg/.test(await text()), await text());

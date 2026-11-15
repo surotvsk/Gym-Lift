@@ -35,7 +35,7 @@
     }, 4000);
   </script>
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
-  <link rel="stylesheet" href="style.css?v=120">
+  <link rel="stylesheet" href="style.css?v=121">
 </head>
 <body data-tab="dnes">
 
@@ -745,6 +745,11 @@
     <div class="modal settings-sheet">
       <h3 data-i18n="settings.title">Nastavenia</h3>
 
+      <div class="setting-block">
+        <button type="button" class="btn btn-secondary btn-block" id="btn-settings-reminders" data-i18n="rem.title">Pripomienky</button>
+        <p class="card-sub" data-i18n="rem.settingsHint">Upozornenia, voda, jedlo, tréning a vlastné pripomienky.</p>
+      </div>
+
       <!-- v80: nastavenia v skupinách; zriedkavé dátové nástroje sú v „Ďalšie možnosti“ (nič neodstránené) -->
       <section class="set-group" aria-labelledby="set-general-t">
         <h4 class="set-label" id="set-general-t" data-i18n="set.general">Všeobecné</h4>
@@ -965,6 +970,18 @@
         <button class="btn btn-primary btn-block" id="btn-settings-close" data-i18n="common.close">Zavrieť</button>
       </div>
       <input type="file" id="file-import" accept="application/json,.json" hidden>
+    </div>
+  </div>
+
+  <!-- Pripomienky účtu sa otvárajú nad Nastaveniami; Späť sa vráti do nich. -->
+  <div class="modal-backdrop" id="modal-reminders" hidden>
+    <div class="modal settings-sheet" role="dialog" aria-modal="true" aria-labelledby="reminders-title">
+      <h3 id="reminders-title" data-i18n="rem.title">Pripomienky</h3>
+      <p class="media-status" id="reminders-status" role="status" hidden></p>
+      <div id="reminders-body"></div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-secondary btn-block" id="btn-reminders-close" data-i18n="community2.back">Späť</button>
+      </div>
     </div>
   </div>
 
@@ -1318,6 +1335,12 @@
       <div class="sheet-scroll" id="muscles-body">
         <div class="rec-map" id="muscles-map"></div>
         <p class="card-note rec-note" data-i18n="recovery.note"></p>
+        <p class="card-note rec-note" data-i18n="muscles.frontNote"></p>
+        <details class="mu-guide">
+          <summary data-i18n="muscles.guide"></summary>
+          <p class="card-note" data-i18n="muscles.anatomyHint"></p>
+          <p class="card-note" data-i18n="muscles.armsNote"></p>
+        </details>
         <div class="mu-nav" role="group" data-i18n-aria="muscles.weekGroup">
           <button type="button" class="btn-icon mu-step" id="btn-muscles-prev" data-i18n-title="muscles.prev" data-i18n-aria="muscles.prev">‹</button>
           <span class="mu-week" id="muscles-week" aria-live="polite"></span>
@@ -1395,8 +1418,8 @@
     <button type="button" class="btn btn-sm" id="btn-csv-undo" data-i18n="csv.undo">Undo import</button>
   </div>
 
-  <script src="community-config.js?v=120"></script>
-  <script src="vendor/supabase-js.js?v=120"></script>
-  <script src="script.js?v=120"></script>
+  <script src="community-config.js?v=121"></script>
+  <script src="vendor/supabase-js.js?v=121"></script>
+  <script src="script.js?v=121"></script>
 </body>
 </html>

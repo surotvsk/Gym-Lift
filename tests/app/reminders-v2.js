@@ -13,6 +13,7 @@
 const fs = require('fs');
 const path = require('path');
 const { counter, startServerOnce, openApp, closeAll, nativeCalls, clearNativeCalls } = require('../android/lib-native');
+const { waitFor } = require('../sync/lib');
 const wait = (ms) => new Promise((r) => setTimeout(r, ms));
 const t = counter();
 const check = t.check;
@@ -26,7 +27,8 @@ const SERVER = { water_on: true, water_every: 120, water_from: '08:00', water_to
   try {
     fs.mkdirSync(SHOTS, { recursive: true });
     const { p, errors } = await openApp({ name: 'remv2', debugPort: 9941, native: true, lang: 'en',
-      returns: { 'LocalNotifications.checkPermissions': { display: 'granted' }, 'LocalNotifications.getPending': { notifications: [] } } });
+      returns: { 'LocalNotifications.checkPermissions': { display: 'granted' }, 'LocalNotifications.getPending': { notifications: [] }, 'PushNotifications.checkPermissions': { receive: 'granted' } } });
+    /* Izolovaný sieťový namespace potrebuje aktívne virtuálne rozhranie; samotný loopback znamená navigator.onLine=false. */
     const ev = (s) => p.eval(s);
     const shot = async (name) => { if (process.env.GQ_SCREENSHOTS === '0') return; const r = await p.c.send('Page.captureScreenshot', { format: 'png' }); fs.writeFileSync(path.join(SHOTS, name), Buffer.from(r.data, 'base64')); };
     const view = (w, h) => p.c.send('Emulation.setDeviceMetricsOverride', { width: w, height: h || 900, deviceScaleFactor: 2, mobile: true });
@@ -36,28 +38,43 @@ const SERVER = { water_on: true, water_every: 120, water_from: '08:00', water_to
     await ev(`(() => {
       window.__rpc = [];
       window.__store = ${JSON.stringify(SERVER)};
-      window.__fakeSb = { rpc: async (fn, args) => {
+      window.__signedIn = false; window.__version = 10; window.__saveError = false;
+      window.__fakeSb = {
+        auth: { getSession: async () => ({ data: { session: window.__signedIn ? { user: { id: ${JSON.stringify(ME)} } } : null } }) },
+        from: (table) => ({ select: () => ({ eq: () => ({ maybeSingle: async () => ({ data: table === 'profiles' ? { id: ${JSON.stringify(ME)}, username: 'reminder-test' } : null }) }) }) }),
+        rpc: async (fn, args) => {
         window.__rpc.push({ fn, args: JSON.parse(JSON.stringify(args || {})) });
+        if (fn === 'community_social_version') return { data: window.__version };
+        if (fn === 'reminders_set' && window.__saveError) return { error: { message: 'invalid_reminders' } };
         if (fn === 'reminders_get') return { data: window.__store };
         if (fn === 'reminders_set') { window.__store = Object.assign({}, window.__store, args.p, { saved: true }); return { data: window.__store }; }
         return { data: null };
       } };
+      communityConfigured = () => true;
       communityClient = () => window.__fakeSb;
-      communityProfile = { id: ${JSON.stringify(ME)} };
+      state.settings.communityOptIn = true;
       pushDeviceWrite({ uid: ${JSON.stringify(ME)} });
       nativeNotifPerm = 'granted';
-      const scr = document.getElementById('screen-komunita');
-      const box = document.createElement('div'); box.id = 'rem-test-box'; box.className = 'community'; scr.appendChild(box);
-      renderCommunity = async () => { box.innerHTML = remindersCardHtml() + '<p id="rem-msg">' + esc(communityMessage || '') + '</p>'; };
       setThemePref('light');
-      switchTab('komunita');
-      Array.from(scr.children).forEach((c) => { if (c !== box) c.hidden = true; });
       return true; })()`);
-    const render = async () => { await ev(`(renderCommunity(), true)`); await wait(60); };
-    const click = async (sel) => { const r = await ev(`(() => { const e = document.querySelector(${JSON.stringify(sel)}); if (!e) return false; e.click(); return true; })()`); await wait(80); return r; };
+    const render = async () => { await ev(`(renderRemindersSheet(), true)`); };
+    const click = async (sel) => { const r = await ev(`(() => { const e = document.querySelector(${JSON.stringify(sel)}); if (!e) return false; e.focus(); e.click(); return true; })()`); await wait(80); return r; };
     const set = (sel, v) => ev(`(() => { const e = document.querySelector(${JSON.stringify(sel)}); e.value = ${JSON.stringify(v)}; return true; })()`);
     const count = (sel) => ev(`document.querySelectorAll(${JSON.stringify(sel)}).length`);
     const lastRpc = (fn) => ev(`(window.__rpc.filter((r) => r.fn === ${JSON.stringify(fn)}).pop() || {}).args`);
+
+    await click('#btn-settings'); await click('#btn-settings-reminders');
+    await waitFor(() => ev(`remindersSheetState === 'signedout'`), 5000, 'signed-out reminder sheet');
+    check('Settings-first signed-out access explains account requirement without editable fake reminders', await ev(`!document.getElementById('modal-reminders').hidden && !!document.querySelector('[data-reminders-route="account"]') && !document.getElementById('rem-water-on') && !window.__rpc.some(r => r.fn === 'reminders_set')`));
+    await click('#btn-reminders-close');
+    check('Back returns to Settings and its reminder entry', await ev(`document.getElementById('modal-reminders').hidden && !document.getElementById('modal-settings').hidden && document.activeElement.id === 'btn-settings-reminders'`));
+    await ev(`(window.__signedIn = true, communitySocial = null, true)`);
+    await click('#btn-settings-reminders');
+    await waitFor(() => ev(`remindersSheetState === 'ready' && !!document.getElementById('rem-water-on')`), 5000, 'account reminders loaded from Settings').catch(async error => {
+      error.message += ' ' + JSON.stringify(await ev(`({ state: remindersSheetState, uid: remindersUid, profile: communityProfile, version: communityVersion, push: pushState(), message: remindersMessage, body: document.getElementById('reminders-body').innerText })`));
+      throw error;
+    });
+    check('Settings loads saved account switches without opening Edit profile', await ev(`document.getElementById('rem-water-on').checked && document.getElementById('rem-workout-on').checked && document.querySelectorAll('#community-reminders').length === 1 && document.getElementById('modal-settings').hidden === false`));
 
     /* ---- starší server (verzia 10): dnešná karta ---- */
     await ev(`(communityVersion = 10, remindersData = ${JSON.stringify(SERVER)}, true)`);
@@ -117,8 +134,8 @@ const SERVER = { water_on: true, water_every: 120, water_from: '08:00', water_to
     await click('[data-community-action="rem-own-add"]');
     await ev(`(window.__rpc = [], true)`);
     await click('[data-community-action="rem-save"]'); await wait(100);
-    check('an own reminder without text is not sent; error shown; edits kept', (await ev(`window.__rpc.filter((r) => r.fn === 'reminders_set').length`)) === 0
-      && /text/i.test(await ev(`document.getElementById('rem-msg').textContent`)) && await count('.crem-own') === 3 && await ev(`document.getElementById('rem-c-text-0').value`) !== '');
+    check('an own reminder without text is not sent; visible feedback and edits remain', (await ev(`window.__rpc.filter((r) => r.fn === 'reminders_set').length`)) === 0
+      && await ev(`!document.getElementById('reminders-status').hidden && !!document.getElementById('reminders-status').textContent`) && await count('.crem-own') === 3 && await ev(`document.getElementById('rem-c-text-0').value`) !== '');
     await click('[data-community-action="rem-own-del"][data-i="2"]');
     await clearNativeCalls(p);
     await click('[data-community-action="rem-save"]'); await wait(300);
@@ -129,7 +146,7 @@ const SERVER = { water_on: true, water_every: 120, water_from: '08:00', water_to
     check('save: own reminders — ids kept, text trimmed and collapsed (plain, HTML untouched), days sorted',
       a.p.custom.length === 2 && /^[A-Za-z0-9_-]{1,40}$/.test(a.p.custom[0].id) && a.p.custom[0].text === 'Take creatine' && a.p.custom[0].time === '09:00' && a.p.custom[0].days.length === 7
       && a.p.custom[1].text === '<b>Stretch</b> "now" & <img src=x onerror=window.__pwned=1>'.slice(0, 60) && JSON.stringify(a.p.custom[1].days) === '[1,2,3,4,5]' && a.p.custom[1].time === '21:30', JSON.stringify(a.p.custom));
-    check('draft cleared after saving; message "saved"', await ev(`remindersDraft === null`) && /saved/i.test(await ev(`document.getElementById('rem-msg').textContent`)));
+    check('successful Save clears the draft and announces feedback in the reminder sheet', await ev(`remindersDraft === null && !document.getElementById('reminders-status').hidden && !!document.getElementById('reminders-status').textContent`));
     const sched = (await nativeCalls(p, 'LocalNotifications', 'schedule')).pop();
     const list = sched ? sched.args[0].notifications : [];
     const byKind = (lo, hi) => list.filter((n) => n.id >= lo && n.id < hi);
@@ -141,6 +158,25 @@ const SERVER = { water_on: true, water_every: 120, water_from: '08:00', water_to
       own.length === 6 && own[0].id === 3100 && !own[0].schedule.on.weekday && own[0].body === 'Take creatine' && own.slice(1).every((n) => n.body === '<b>Stretch</b> "now" & <img src=x onerror=window.__pwned=1>'.slice(0, 60))
       && JSON.stringify(own.slice(1).map((n) => n.id)) === '[3109,3110,3111,3112,3113]' && JSON.stringify(own.slice(1).map((n) => n.schedule.on.weekday)) === '[2,3,4,5,6]', JSON.stringify(own.map((n) => [n.id, n.schedule.on.weekday])));
     check('native: all ids unique and inside 1000–3999', new Set(list.map((n) => n.id)).size === list.length && list.every((n) => n.id >= 1000 && n.id < 4000));
+
+    await click('#rem-water-on'); await click('#rem-workout-on'); await click('[data-community-action="rem-save"]');
+    await waitFor(() => ev(`!remindersBusy && remindersDraft === null`), 5000, 'disabled reminders saved');
+    a = await lastRpc('reminders_set');
+    check('water and gym switches save explicit off values', a.p.water_on === false && a.p.workout_on === false, a.p);
+    const offSchedule = (await nativeCalls(p, 'LocalNotifications', 'schedule')).pop();
+    check('turning water and gym off removes their scheduled alerts but retains other kinds', offSchedule && offSchedule.args[0].notifications.length > 0 && offSchedule.args[0].notifications.every(n => n.id >= 2000 && (n.id < 3000 || n.id >= 3100)));
+    await ev(`(nativeBack(), true)`);
+    check('Android Back closes Reminders before Settings underneath it', await ev(`document.getElementById('modal-reminders').hidden && !document.getElementById('modal-settings').hidden`));
+    await click('#btn-settings-reminders');
+    await waitFor(() => ev(`remindersSheetState === 'ready' && !!document.getElementById('rem-water-on')`), 5000, 'saved account reminders reopened');
+    check('off choices survive closing and reloading account settings', await ev(`!document.getElementById('rem-water-on').checked && !document.getElementById('rem-workout-on').checked`));
+    await set('#rem-c-text-0', 'Keep this draft'); await ev(`(window.__saveError = true, true)`);
+    await click('[data-community-action="rem-save"]');
+    await waitFor(() => ev(`!remindersBusy`), 5000, 'failed reminder save');
+    check('failed Save keeps the typed draft and shows feedback without changing saved settings', await ev(`document.getElementById('rem-c-text-0').value === 'Keep this draft' && !!remindersDraft && !document.getElementById('reminders-status').hidden && window.__store.custom[0].text === 'Take creatine'`));
+    await ev(`(window.__saveError = false, true)`); await click('[data-community-action="rem-save"]');
+    await waitFor(() => ev(`!remindersBusy && remindersDraft === null`), 5000, 'draft retry saved');
+    check('retry saves the retained user draft', await ev(`window.__store.custom[0].text === 'Keep this draft'`));
 
     /* limity vlastných pripomienok */
     await ev(`(remindersDraft = null, remindersData = Object.assign({}, window.__store, { custom: Array.from({ length: 10 }, (_, i) => ({ id: 'q' + i, text: 'n' + i, time: '08:00', days: [1] })) }), true)`);

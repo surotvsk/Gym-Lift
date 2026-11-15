@@ -228,6 +228,17 @@ const SEED = `(() => {
     check('backup round trip preserves explicit Other and read-time reclassification', same(roundTrip.other, OTHER) && same(roundTrip.shares, { other: 1 }) && roundTrip.sets.chest === 2 && roundTrip.sets.back === 2 && roundTrip.sets.other === 2 && roundTrip.session === null, roundTrip);
     await p2.eval(`(switchTab('trening'), startEditPlan('ma'), true)`);
     check('imported assignment reopens in actual editor', await p2.eval(`document.querySelector('.edit-muscle-primary').value === 'chest' && document.querySelectorAll('#edit-rows .edit-row:first-child [data-muscle]:checked').length === 0`));
+
+    console.log('== separate arm assignments through editor, reload and completion');
+    await finishFirst();
+    await open('md'); await primary(0, 'biceps'); await helper(0, 'triceps'); await save();
+    await p.reload(); await open('md'); c = await controls(0);
+    check('biceps main and triceps helper survive editor Save and reload independently', c.primary === 'biceps' && same(c.helpers.filter(h => h.checked).map(h => h.muscle), ['triceps']), c);
+    await closeEditor();
+    const beforeArms = await week();
+    await start('md');
+    const armWorkout = await finishFirst(), afterArms = await week();
+    check('completed custom sets retain separate arm muscles and weighted totals', same(armWorkout.entry.muscles, { primary: 'biceps', secondary: ['triceps'] }) && afterArms.sets.biceps - (beforeArms.sets.biceps || 0) === 2 && afterArms.sets.triceps - (beforeArms.sets.triceps || 0) === 1, { entry: armWorkout.entry, sets: afterArms.sets });
     check('no browser exceptions in either isolated profile', p.errors.length === 0 && p2.errors.length === 0, { main: p.errors, imported: p2.errors });
   } catch (e) {
     check('no exception', false, String(e && e.stack || e));
