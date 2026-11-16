@@ -140,7 +140,6 @@ const rec = (n, share, age, win, mult) => { if (age >= win) return 100; return M
     check('sheet shows the full anatomical image above the bars', sh.has && sh.full && sh.above, sh);
     check('sheet wording says "estimate"', /estimate/i.test(sh.text), sh.text);
     check('sheet text has no NaN / undefined / raw key', !/NaN|undefined|recovery\./.test(sh.text), sh.text);
-    check('worked regions stay translucent so the supplied muscle detail remains visible', await ev(`Array.from(${sheet}.querySelectorAll('[data-muscle] path')).every(p => { const a = Number(getComputedStyle(p).fillOpacity); return a >= 0 && a <= 0.5; })`));
     await esc(); await wait(60);
     check('empty history: sheet map is all fresh (rec-0) and calm', await (async () => { await setHist([]); await p.eval(`(openMuscles(), true)`); await wait(100);
       const ok = await ev(`Array.from(${sheet}.querySelectorAll('svg.body-map [data-muscle]')).every(g => g.classList.contains('rec-0')) && !/NaN|undefined/.test(${sheet}.innerText)`);
@@ -218,6 +217,32 @@ const rec = (n, share, age, win, mult) => { if (age >= win) return 100; return M
     for (const theme of ['light', 'dark']) {
       await p.eval(`(document.documentElement.setAttribute('data-theme', ${J(theme)}), switchTab('pokrok'), setPokrokView('stats'), renderStatsGrid(), openMuscles(), true)`); await wait(200);
       check(theme + ': sheet fits 390 px, map fits', await ev(`(() => { const m = ${sheet}.querySelector('.modal'); const s = ${sheet}.querySelector('svg.body-map').getBoundingClientRect(); return m.scrollWidth <= m.clientWidth + 1 && s.right <= m.getBoundingClientRect().right && s.width > 100; })()`));
+      const colourLevels = await ev(`(async () => {
+        const keep = state.history;
+        try {
+          const row = (id, sets) => ({ exId: id, name: t('exercise.' + id), sets, setsDone: sets, reps: 8, weight: 20 });
+          state.history = [{ id: 'map-contrast-fixture', date: todayISO(), endedAt: Date.now(),
+            exercises: [row('bench-press', 3), row('bicep-curls', 5), row('rope-triceps-pushdown', 7)] }];
+          renderStatsGrid(); openMuscles();
+          const image = new Image(); image.src = ${sheet}.querySelector('svg.body-map image').getAttribute('href'); await image.decode();
+          const canvas = document.createElement('canvas'); canvas.width = image.naturalWidth; canvas.height = image.naturalHeight;
+          const ctx = canvas.getContext('2d'); ctx.drawImage(image, 0, 0);
+          const paper = Array.from(ctx.getImageData(210,245,1,1).data).slice(0,3);
+          const lum = c => c.map(v => v / 255).map(v => v <= .04045 ? v / 12.92 : ((v + .055) / 1.055) ** 2.4)
+            .reduce((n,v,i) => n + v * [.2126,.7152,.0722][i], 0);
+          const backdrop = lum(paper);
+          return ['chest','biceps','triceps'].map(m => {
+            const s = getComputedStyle(${sheet}.querySelector('[data-muscle="' + m + '"] path'));
+            const rgb = s.fill.match(/[\\d.]+/g).map(Number), a = Number(s.fillOpacity);
+            const painted = rgb.map((v,i) => a * v + (1-a) * paper[i]);
+            return { rgb, a, contrast: (backdrop + .05) / (lum(painted) + .05) };
+          });
+        } finally { state.history = keep; renderStatsGrid(); openMuscles(); }
+      })()`);
+      check(theme + ': every worked intensity is visibly green against the image, not washed-out yellow or grey',
+        colourLevels.every(v => v.rgb[1] > v.rgb[0] && v.rgb[1] > v.rgb[2] && v.contrast >= 1.5), colourLevels);
+      check(theme + ': stronger recent work darkens progressively while all anatomy overlays stay translucent',
+        colourLevels.every(v => v.a > 0 && v.a < 1) && colourLevels[0].contrast < colourLevels[1].contrast && colourLevels[1].contrast < colourLevels[2].contrast, colourLevels);
       await esc(); await wait(60);
     }
     check('no console errors', logs.length === 0, logs);

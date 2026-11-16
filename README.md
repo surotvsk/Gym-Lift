@@ -84,15 +84,16 @@ everything on your own device.
   markers are explicitly labelled as using their saved set total. Legs includes thighs and calves;
   Glutes is separate. Separately logged sides count as half a paired set each, never an assumed pair.
   Biceps and Triceps are separate groups: curls/rows/pulldowns load Biceps, while presses/extensions
-  load Triceps as appropriate. **Shoulders (deltoids)** means the rounded muscles above your upper arms.
-  **Muscle guide** explains these areas. General/older **Arms** assignments remain intact and are not
-  silently split into guessed biceps/triceps counts.
+  load Triceps as appropriate. **Shoulders** covers the deltoids and smaller shoulder-joint and
+  shoulder-blade stabilizers; the front-view highlight is approximate. **Muscle guide** explains these
+  areas. General/older **Arms** assignments remain intact and are not silently split into guessed counts.
   If sets remain in Other, **Assign muscles to Other exercises** lists their actual saved names.
   Choose main/helpers and save each exercise: the correction applies to its existing Other workouts
   across weeks, without changing raw history, weights, XP, or already assigned snapshots. Corrections
   survive backup/import and workout Undo; later deliberately-Other workouts are not retroactively included.
 - **Recovery map** — the Muscles tile and sheet use the owner's supplied detailed anatomical image,
-  unchanged, with straight empty arms. Translucent highlights retain the visible muscle definition.
+  unchanged, with straight empty arms. Dark green translucent highlights remain visible against its light
+  background in both themes; stronger recent work darkens progressively without hiding the muscle definition.
   This is a **front view**: Back and Glutes still count in the list, not on incorrect front-body regions.
   It is an **estimate** from your last three to four days of sets, not medical advice or muscle-growth
   measurement. At most once a day Today adds a quiet recovery hint; there is no red/green judging.
@@ -141,7 +142,7 @@ everything on your own device.
 - **Plain-language explanations** — short, non-judgemental notes on measuring body weight, why daily
   changes are not a trend, what duration / sets / reps / progressive overload mean, and what the
   calorie estimate and your own nutrition numbers can and cannot tell you.
-- **Exercise library** — 173 built-in exercises with primary and secondary muscles, movement pattern,
+- **Exercise library** — 500 distinct built-in exercises with primary and secondary muscles, movement pattern,
   difficulty, equipment, gym/home/outdoor availability, how-to steps, common mistakes, similar exercises
   with the reason each was suggested, and a **demonstration gallery** (a licensed video or photograph
   where one is available, otherwise an original illustration or an honest *unavailable* state) you can swipe through.
@@ -288,6 +289,10 @@ in the prototype.
   a profile, the composer or the menu targets open as sheets and **Back** returns to the same place and filter.
   There is no Messages shortcut here — Messages is its own tab. Without Community, signed out or offline the
   screen shows the usual short Enable / sign-in / offline note with *Try again*; nothing is switched on by itself.
+  In v116 the feed and sheets fit the viewport, including long unbroken names and links: the page scrolls
+  vertically, while photo galleries and wide leaderboard content retain their own horizontal scrolling.
+  Two-finger pinch zoom is preserved. Regression checks cover a regular Chromium tab and a genuinely
+  installed standalone PWA, all six languages and widths 320–1024px; physical iOS Home Screen remains untested.
 - **Profiles** (v81) are organised like Instagram, in Bento colours and shapes: a compact top bar (**Back**,
   the username, **⋯**), the avatar with *posts · followers · following* (and *friends* on your own), the name,
   bio and top achievements (small chips), the actions, and the posts right below as a grid of rounded squares
@@ -491,11 +496,13 @@ the weight was shared too; plans keep whatever weight they had when they updated
 A new row starts from the remembered values when you leave the name field; values you typed
 yourself are never overwritten.
 
-**Assisted exercises.** The library has **Assisted dips (machine)** and **Assisted pull-ups (machine)**, and
-any exercise can be marked with the **Assisted exercise** switch in the editor. For these the number is the
-**Assistance kg** the machine gives you, so less assistance is progress: the "last time" comparison says
-*Same assistance as last time* when it did not change, and the working weight is the lowest assistance used
-in at least two sets. Assistance never creates personal records, milestones or a "best lift". An assisted
+**Assisted exercises.** The library includes machine-assisted dips, pull-ups and chin-ups, plus band-assisted
+bodyweight pull-ups and high step-ups. Any exercise can also be marked with the **Assisted exercise**
+switch. For these, **Assistance kg** means help, not weight lifted: less assistance is progress, and the
+working value is the lowest assistance used in at least two sets. Band assistance is only an estimate
+because it changes with stretch; band colours are not standardized kilograms. A band-assisted **barbell**
+bench press or deadlift still records ordinary barbell load, not bodyweight assistance. Assistance never
+creates personal records, milestones or a "best lift". An assisted
 row has its own identity, even when it is named like an ordinary exercise (assisted *Dips* is not *Dips*).
 Syncing with older app versions keeps these values (checked against v90 and v95), but *editing* a plan that has assisted exercises in an older version (for example the Android app before this update) removes the assisted mark.
 
@@ -834,13 +841,20 @@ names look the same.
 
 ## The exercise library
 
-GymQuest ships with **173 built-in exercises**, including equipment-specific press, row, curl,
-lunge and hip variants, kettlebell movements, calf presses and assisted chin-ups. Names,
-instructions and common mistakes are available in all six languages. Common Strong/Hevy aliases
-recognize the actual variation rather than silently substituting different equipment or movements.
-Existing IDs, plans and history are preserved; a Bulgarian split squat is not silently substituted
-for an ordinary split squat. There is **no external catalogue service**: the content ships with the app,
-works offline from the first launch, and adds nothing to your stored workout data.
+GymQuest ships with **500 distinct built-in exercises**: the original 173 stable records plus 327 additions,
+not 500 aliases. Names, instructions and common mistakes are available in all six languages. Common
+Strong/Hevy aliases recognize the actual variation rather than silently substituting different equipment
+or movements. All 627 original aliases and 1,448 historical name resolutions are preserved; six additional
+equipment-qualified English aliases extend recognition without overwriting older names.
+
+The additions include 317 source-informed entries from the public-domain
+[free-exercise-db](https://github.com/yuhonas/free-exercise-db/tree/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5)
+([Unlicense](https://unlicense.org/)) and 10 original entries. Source IDs are retained in code comments;
+technique, safety notes and translations
+are adapted for this app. Apparatus-specific movements require the actual apparatus in equipment filters.
+Existing IDs, plans and history are preserved; a Bulgarian split squat is not silently substituted for an
+ordinary split squat. There is **no external catalogue service**: content ships with the app, works offline
+from the first launch, and adds nothing to your stored workout data.
 
 ### What each exercise tells you
 
@@ -879,7 +893,7 @@ opens from places you are already working in:
 
 ### Finding something to train
 
-1. **What do you want to train?** — Chest, Back, Shoulders, Arms, Legs, Glutes, Core, or Full body.
+1. **What do you want to train?** — Chest, Back, Shoulders, Biceps, Triceps, Arms, Legs, Glutes, Core, or Full body.
 2. **Where are you training?** — Gym, Home or Outdoors.
 3. **Search** by name, and open **Filters** for difficulty, movement pattern and exercise type.
 

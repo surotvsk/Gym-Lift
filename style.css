@@ -42,6 +42,9 @@
   --miss-soft: rgba(199, 126, 134, 0.10);
   --miss-line: rgba(199, 126, 134, 0.34);
 
+  /* The anatomical bitmap stays cream in both themes; its overlay is not a UI accent. */
+  --body-map-green: #14532D;
+
   /* ---- elevation ---- */
   --shadow-1: 0 1px 2px rgba(0, 0, 0, 0.35), 0 1px 3px rgba(0, 0, 0, 0.25);
   --shadow-2: 0 6px 20px rgba(0, 0, 0, 0.45);
@@ -3347,7 +3350,7 @@ button.community-count-btn:hover { border-color: var(--border-strong); }
    .sheet-scroll (also used by the exercise library) are left untouched. */
 #modal-community .modal-sheet { max-height: calc(100dvh - var(--sp-5) * 2); }
 #modal-community .sheet-head { padding: var(--sp-3) var(--sp-4); }
-#community-body { overflow-wrap: break-word; }
+#community-body { min-inline-size: 0; max-inline-size: 100%; overflow-wrap: anywhere; }
 
 /* Center label-buttons (e.g. Change avatar) like real buttons instead of
    top-aligning their text. Scoped to the Community modal so no other screen
@@ -3552,8 +3555,9 @@ button.community-count-btn:hover { border-color: var(--border-strong); }
   display: flex; gap: var(--sp-2); align-items: flex-end; padding: var(--sp-2) 0;
   background: linear-gradient(to top, var(--bg) 75%, rgba(12, 13, 16, 0));
 }
-.ccomposer-input { flex: 1 1 auto; min-height: 44px; max-height: 140px; resize: none; font: inherit; line-height: 1.35; margin: 0; }
+.ccomposer-input { flex: 1 1 8rem; min-width: 0; min-height: 44px; max-height: 140px; resize: none; font: inherit; line-height: 1.35; margin: 0; }
 .ccomposer-send { flex: none; min-height: 44px; display: inline-flex; align-items: center; gap: 6px; }
+.ccomposer { flex-wrap: wrap; }
 .ccomposer-send svg { width: 18px; height: 18px; }
 @media (max-width: 430px) { .ccomposer-send-label { display: none; } }
 
@@ -4553,10 +4557,9 @@ html[data-theme="dark"] .pf-menu-item.pf-danger { color: #FF8A7A; }
 #community-body .cprofile-ach-item { display: inline-flex; flex-direction: row; align-items: center; gap: 6px; padding: 6px 12px 6px 8px; border-radius: 999px; background: var(--k-card); border: 0; min-height: 0; }
 #community-body .cprofile-ach-icon { font-size: 18px; }
 #community-body .cprofile-ach-name { font-size: 12px; font-weight: 600; }
-#community-body .pf-actions { margin: 10px 0 6px; gap: 8px; flex-wrap: nowrap; }
-#community-body .pf-actions .btn { flex: 1 1 0; min-width: 0; min-height: 40px; padding: 8px 10px; border-radius: 12px; font-size: 14px; overflow: hidden; text-overflow: ellipsis; }
+#community-body .pf-actions { margin: 10px 0 6px; gap: 8px; flex-wrap: wrap; }
+#community-body .pf-actions .btn { flex: 1 1 8rem; min-width: 0; min-height: 40px; padding: 8px 10px; border-radius: 12px; font-size: 14px; white-space: normal; overflow-wrap: anywhere; }
 #community-body .pf-actions .btn-secondary { background: var(--k-card); }
-@media (max-width: 340px) { #community-body .pf-actions { flex-wrap: wrap; } }
 
 /* kostra počas načítania */
 .pf-skel-av { background: var(--k-card) !important; }
@@ -4702,11 +4705,10 @@ html[data-theme="dark"] .ty-hist-date { color: #F4F3EF; }
 
 /* ===== Community = feed (v83): kompaktná prilepená hlavička, príspevky v jednom stĺpci ako na X, vzhľad Bento ===== */
 #screen-komunita > .chd { position: sticky; top: 0; z-index: 6; display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
-  margin: -8px -16px 8px; padding: max(8px, env(safe-area-inset-top, 0px)) 16px 8px; background: var(--b-bg, var(--k-bg)); }
-/* Nadpis sa nikdy nezalomí uprostred slova („Communit / y“ na 360–375 px alebo pri väčšom písme v systéme):
-   keď sa nezmestí vedľa tlačidiel, tlačidlá prejdú do druhého riadku vpravo. */
-#screen-komunita > .chd .screen-title { flex: 1; min-width: min-content; margin: 0; overflow-wrap: normal; }
-.chd-actions { display: flex; align-items: center; gap: 4px; margin-inline-start: auto; }
+  margin: -8px -12px 8px; padding: max(8px, env(safe-area-inset-top, 0px)) 12px 8px; background: var(--b-bg, var(--k-bg)); }
+/* Keep the title whole beside actions when possible; move actions to the next row first. */
+#screen-komunita > .chd .screen-title { flex: 1 0 auto; min-width: 0; max-width: 100%; margin: 0; overflow-wrap: anywhere; }
+.chd-actions { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; max-width: 100%; margin-inline-start: auto; }
 .chd-actions [hidden] { display: none !important; }
 .chd-more { position: relative; }
 .chd-dot { position: absolute; top: 8px; inset-inline-end: 8px; width: 9px; height: 9px; border-radius: 50%; background: var(--b-lime); box-shadow: 0 0 0 2px var(--b-bg, var(--k-bg)); }
@@ -4762,6 +4764,49 @@ html[data-theme="dark"] .ty-hist-date { color: #F4F3EF; }
 @media (min-width: 700px) { #screen-komunita > .chd { margin-inline: 0; padding-inline: 0; } .cmenu { inset-inline-end: 0; } }
 .chd-new { background: #D6F35A; color: #121212; }
 @media (min-width: 900px) { #screen-komunita:not(.msg-mode) { max-width: 680px; margin-inline: auto; } }
+
+/* Community: fit the page, not a clipped wrapper. The header bleeds by the actual
+   12px main padding; 16px sheet headers still bleed only inside their own sheet.
+   Flex auto-minima, textarea intrinsic width and unwrapped actions must not
+   turn the document (or a fixed subview) into a horizontal scroll surface. */
+#screen-komunita { min-inline-size: 0; width: 100%; }
+#community-body > *,
+#community-body :is(.card, .community-card, .cfeed, .xp-row, .xp-main, .cpost-who,
+  .ccomments, .ccomment-body, .cpeople, .cperson-main, .cchat-list, .cchat-msgs,
+  .ccomposer, .cprofile, .cprofile-stats, .cvis, .cshare-picker, .cshare-draft) {
+  min-inline-size: 0;
+}
+#community-body :is(.community-card, .cfeed, .xp-main, .community-photos,
+  .community-photo, .community-photo-btn, .modal-input, .cvis, .lb-scroll) {
+  max-inline-size: 100%;
+}
+#community-body :is(.community-name, .community-caption, .ccomment-text, .cprofile-bio) {
+  overflow-wrap: anywhere;
+}
+#community-body :is(.btn, .goal-chip, .community-count-btn, .community-badge, .cvis-opt) {
+  max-inline-size: 100%; white-space: normal; overflow-wrap: anywhere;
+}
+#community-body :is(.community-head, .community-list-row, .cperson, .cperson-actions,
+  .cprofile-top, .cprofile-stats, .ccomment-meta, .cpost-shared, .creply-bar) {
+  flex-wrap: wrap;
+}
+#community-body .cperson-main { flex-basis: 10rem; }
+#community-body .cperson-actions { min-inline-size: 0; max-inline-size: 100%; margin-inline-start: auto; }
+#community-body .cprofile-stats { flex-basis: 12rem; }
+#community-body .cstat { flex: 1 1 56px; min-inline-size: 0; }
+#community-body .community-avatar { flex-shrink: 0; }
+#community-body .community-check > span,
+#community-body .cvis-opt > span { min-inline-size: 0; }
+#community-body .cpost-more { flex-shrink: 0; }
+#community-body .cpost-act { min-inline-size: 0; max-inline-size: 100%; flex-wrap: wrap; overflow-wrap: anywhere; }
+#screen-komunita .chd-new { max-inline-size: 100%; white-space: normal; overflow-wrap: anywhere; }
+/* Only genuine horizontal scrollers retain X overflow. Do not restrict ancestor
+   touch-action: galleries must accept horizontal swipes as well as pinch zoom. */
+#community-body :is(.community-photos, .lb-scroll) {
+  min-inline-size: 0; overscroll-behavior-x: contain; -webkit-overflow-scrolling: touch;
+}
+#screen-komunita.sheet-open #community-body { overscroll-behavior-x: none; }
+html:has(#screen-komunita:not([hidden])) { overscroll-behavior-x: none; }
 
 /* v91: rozostupy – horný okraj, Nastavenia, Stats (hodnoty z rozstupov --sp-*, bez záporných okrajov) */
 /* Hlavička hlavných obrazoviek (hlásenie majiteľa 2026-11-03: dátum a týždeň pri výreze / Dynamic Island).
@@ -5167,10 +5212,10 @@ button.record-row::after { content: '\203A'; flex: 0 0 auto; color: var(--text-f
 .body-map { display: block; max-width: 100%; border-radius: 16px; overflow: hidden; }
 .body-map.mini { height: 48px; width: auto; border-radius: 4px; }
 .body-map.full { width: min(100%, 300px); height: auto; margin: 0 auto; }
-.body-map [data-muscle] > path { fill: var(--accent); fill-opacity: 0; stroke: none; }
-.body-map .rec-1 > path { fill-opacity: .16; }
-.body-map .rec-2 > path { fill-opacity: .32; }
-.body-map .rec-3 > path { fill-opacity: .5; }
+.body-map [data-muscle] > path { fill: var(--body-map-green); fill-opacity: 0; stroke: none; }
+.body-map .rec-1 > path { fill-opacity: .32; }
+.body-map .rec-2 > path { fill-opacity: .52; }
+.body-map .rec-3 > path { fill-opacity: .7; }
 .mu-guide { margin-block: var(--sp-2); min-width: 0; }
 .mu-guide > summary { min-height: 44px; display: flex; align-items: center; cursor: pointer; font-weight: var(--fw-bold); overflow-wrap: anywhere; }
 .mu-guide .card-note { margin-block: var(--sp-2); }

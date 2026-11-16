@@ -332,4 +332,4 @@ class Observer {
   }
 }
 
-module.exports = { startServer, Browser, Observer, loadCreds, readPublicConfig, waitFor, cdpConnect, ALLOWED_TEST_IDS };
+module.exports = { startServer, Browser, Page, Observer, loadCreds, readPublicConfig, waitFor, cdpConnect, ALLOWED_TEST_IDS };
