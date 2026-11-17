@@ -49,6 +49,12 @@ exception. Music playing at the same time ducks briefly (transient audio focus) 
 sound never plays twice. A sound timer counts as native even without notification permission,
 which keeps the web gong silent. With the switch off, the `rest-silent` channel shows the alert
 without sound or vibration. The web sound-length preference applies only to the browser gong.
+Android 15+ (target 35+) denies audio focus to a backgrounded app without a foreground service. For a
+sounding long Rest the due **exact** alarm therefore starts `GymRestService` once (the existing
+`shortService`, no chained resets) only to play the single chime (≤5 s) and release focus; that start relies
+on Android's exact-alarm foreground-start exemption. Without Alarms & reminders access (inexact alarm) or if
+Android refuses the start, the alert notification still posts but the background chime may be silent: the
+Rest API has no failure channel, so this limit is not reported to JavaScript.
 Owner device check 2026-11-10 (Samsung A21s, v105): the old notification-volume chime was silent
 in vibrate mode and too quiet. That is why Android versionCode 5 has the alarm stream and a louder chime (≈ −11 dBFS RMS, was −23).
 Second owner check (vc6): the alarm stream played on the speaker even with headphones and could not be
@@ -70,6 +76,41 @@ wired/Bluetooth sound routing remains a manual check.
 On this machine SwiftShader crashes during boot. Use an ephemeral AVD with
 `-read-only -no-window -no-audio -no-snapshot -gpu lavapipe -camera-back none -camera-front none -port 5554`.
 Both `GymQuest_Android15` and `Medium_Phone_API_37.0` boot successfully with these flags.
+
+### Native workout phases (`GymPhase`)
+
+Warm-up and Stretching use a separate finite, user-started `specialUse` foreground service,
+not chained Rest alarms or the three-minute `shortService`. N work periods contain N−1 rests;
+zero-rest configurations have no rest stage or rest gong. Native monotonic deadlines drive
+screen-off progression and media-volume gongs. The WebView only renders authoritative
+run/owner/revision snapshots; a failed Android start must show an actionable error, not
+silently fall back to a JavaScript timer. Rest and phases replace each other on the native
+serialized path, so only one owns audio.
+
+The silent ongoing notification shows stage/round and Pause/Stop. Notification denial
+does not prohibit FGS startup, but hides drawer controls; `notificationsAllowed` reports
+actual app/channel availability separately from native sound ownership. Pausing removes
+the service/wake lock; Resume is an explicit visible-app action. The existing Rest sound
+preference updates the current phase through `setSound` without resetting time or replaying
+a gong. Focus denial/loss and playback failures are exposed as `audioError`, not claimed
+as delivered audio. Terminal snapshots persist for reload reconciliation.
+
+**Power limitations:** a foreground service plus an ordinary bounded partial wake lock is
+not a deep-Doze exemption. For strict screen-off/deep-idle timing, users must review Android
+battery optimization and background restrictions. `openBatterySettings` opens the general
+battery-optimization settings without requesting direct exemption permission; recheck actual
+capabilities after returning. Manual exemption is not protection against force-stop, Android
+Task Manager Stop, reboot or every OEM restriction. Orphaned/rebooted/user-stopped runs become
+interrupted and never resume or award completion automatically. Same-boot sticky service
+recovery coalesces missed stages without replaying old gongs; a final boundary missed during
+a known process gap is interrupted, not completed. There are no phase backup alarms.
+
+Release acceptance still requires actual authorized emulator/fixture evidence: a sequence
+longer than 170 seconds; repeated screen-off boundaries; forced Doze with/without exemption;
+notification denial and actions; failed startup; process recreation/reboot/user stop;
+stale commands/replacement; audio focus and media/headphone routing. New JVM sources cover
+finite sequence arithmetic and recovery rules, but source inspection or compilation alone
+does not establish background reliability. No new runtime results are claimed here.
 
 ### Google sign-in (Phase 6b)
 

@@ -106,6 +106,9 @@ function check(name, ok, info) {
     const storedData = (txt) => { try { const o = JSON.parse(txt); if (o && typeof o === 'object') {
       delete o.achievements;
       if (Array.isArray(o.history) && o.importedHistory === undefined) o.importedHistory = [];
+      /* v117: nové nastavenie fáz sa pri aktualizácii doplní len ako nezapnutý predvolený objekt; zapnutá/zmenená hodnota sa neskrýva. */
+      const pd = { enabled: false, workSeconds: 60, restSeconds: 30, rounds: 10, activityIds: [] };
+      if (o.settings && J(o.settings.workoutPhases) === J({ v: 1, warmup: pd, stretching: pd })) delete o.settings.workoutPhases;
     } return canon(o); } catch (e) { return txt; } };
     const diff = Object.keys(Object.assign({}, before.ls, after.ls)).filter((k) => storedData(before.ls[k]) !== storedData(after.ls[k]));
     const deepDiff = (a, b, pth, out) => { if (J(a) === J(b)) return out; if (a && b && typeof a === 'object' && typeof b === 'object') { for (const k of new Set([...Object.keys(a), ...Object.keys(b)])) deepDiff(a[k], b[k], pth + '.' + k, out); } else out.push(pth + ': ' + J(a) + ' → ' + J(b)); return out; };

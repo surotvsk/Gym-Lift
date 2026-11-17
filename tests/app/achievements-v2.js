@@ -70,8 +70,8 @@ function check(name, ok, info) {
     const defs = JSON.parse(await E(`JSON.stringify(staticAchievementDefs().map((d) => [d.id, d.xp]))`));
     const want = { first: 25, start3: 50, goal1: 50, goal4: 100, goal12: 250, goal26: 400, streak4: 150, streak8: 300, streak12: 450, streak26: 800,
       w10: 100, w25: 200, w50: 350, w100: 600, w250: 1000, pr1: 50, pr10: 150, pr25: 300, steady5: 100, back: 50, rest5: 25, ownplan: 25,
-      fullbody: 25, explorer10: 50, body4: 50, together: 50, balanced10: 25 };
-    check('27 ids with exactly the spec XP', defs.length === 27 && defs.every(([id, xp]) => want[id] === xp), defs);
+      fullbody: 25, explorer10: 50, body4: 50, together: 50, balanced10: 25, phaseWarmup1: 25, phaseStretch1: 25 };
+    check('29 ids (27 v101 + 2 workout-phase badges) with exactly the spec XP', defs.length === 29 && defs.every(([id, xp]) => want[id] === xp), defs);
     const v1 = JSON.parse(await E(`JSON.stringify(ACHIEVEMENTS_V1_XP)`));
     check('ACHIEVEMENTS_V1_XP = old table (25 ids, key values)', Object.keys(v1).length === 25 && v1.first === 25 && v1.hundred === 750 && v1.pr10 === 300 && v1.fourplans === 100 && v1.xp200 === 0 && v1.missedweek === 150 && v1.weeklygoal1 === 75, v1);
     check('fresh install unlocks nothing', Object.keys(await run([])).length === 0);
@@ -264,7 +264,7 @@ function check(name, ok, info) {
       firstUnlocked: document.querySelector('#achievements-list [data-achievement-id="first"]').classList.contains('unlocked'),
       overflow: document.documentElement.scrollWidth > window.innerWidth + 1 }))()`));
     check('fourplans shown under "Earlier badges" with no XP', scr.head === 'Earlier badges' && scr.earlier.length === 1 && scr.earlier[0].id === 'fourplans' && !scr.earlier[0].xp, scr);
-    check('new table shows 27 achievements, first unlocked with XP', scr.news === 27 && scr.firstXp && scr.firstUnlocked, scr);
+    check('new table shows every static achievement, first unlocked with XP', scr.news === defs.length && defs.length === 29 && scr.firstXp && scr.firstUnlocked, scr);
     check('no horizontal overflow', !scr.overflow);
     await E(`(() => { const l = document.getElementById('achievements-list'); l.scrollIntoView(); return true; })()`);
     for (const [lang, theme] of [['en', 'light'], ['en', 'dark'], ['ar', 'light'], ['ar', 'dark']]) {

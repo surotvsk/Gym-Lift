@@ -90,6 +90,32 @@ GQ_SKIP_BUILD=1 node tests/android/release-check.js
 5. After 14 days: *Apply for production access* → answer the questions → when approved, promote the
    build to **Production**.
 
+### Workout interval foreground-service declaration (release gate)
+
+`GymPhaseService` declares `specialUse`, `FOREGROUND_SERVICE_SPECIAL_USE`, and the
+`android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE` rationale in the manifest. It executes a
+finite workout warm-up/stretching sequence explicitly started by the user, with timely
+work/rest screen-off gongs and ongoing Pause/Stop controls. Deferring its boundaries
+defeats the requested timer. It uses no sensor/Health Connect prerequisite, pretend
+continuous media playback, `systemExempted` classification or chained idle alarms.
+Existing exact-alarm access remains only for legacy Rest.
+
+**(you, separately authorized)** Complete the Play Console foreground-service declaration
+with the feature explanation, why interruption/deferment harms the user, and a real
+demonstration-video link. `specialUse` is subject to Play review: the implementation choice,
+a signed AAB and this checklist are not external approval. No declaration submission or
+Play upload is authorized merely by preparing source/build artifacts.
+
+Before claiming this release's background support, record actual fixture/emulator results
+for >170-second sequences, screen off, repeated boundaries, forced Doze with/without manual
+battery exemption, permission denial, lifecycle/user-stop/reboot, notification controls,
+focus denial/loss and media/headphone routing. Explain that ordinary wake locks do not
+exempt Doze and OEM restrictions remain possible. The UI must report optimized/restricted
+devices honestly and offer general battery settings; it must not silently switch a failed
+native run to JavaScript. No direct battery-exemption permission is declared.
+
+See [Android native phase guidance](README.md#native-workout-phases-gymphase).
+
 ## 6. Every later update
 
 1. Web changes are released to the website as usual.

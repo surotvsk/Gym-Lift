@@ -1,5 +1,5 @@
 'use strict';
-/* GymQuest leaderboard (migration 0009 + 0017 v2): limits, achievements, privacy, ranking, cleanup.
+/* GymQuest leaderboard (migration 0009 + 0017 v2 + 0022 phase badges): limits, achievements, privacy, ranking, cleanup.
    LOCAL test stack only (lib.js refuses anything else); disposable local accounts.
    Usage: node tests/social/leaderboard.js [filter] */
 const L = require('./lib');
@@ -12,6 +12,9 @@ const OLD_WEEK = '2000-W01';
 const ALL_V2 = ['first', 'start3', 'goal1', 'goal4', 'goal12', 'goal26', 'streak4', 'streak8', 'streak12', 'streak26',
   'w10', 'w25', 'w50', 'w100', 'w250', 'pr1', 'pr10', 'pr25', 'steady5', 'back', 'rest5', 'ownplan', 'fullbody',
   'explorer10', 'body4', 'together', 'balanced10'];
+/* 0022 (v117): two phase badges, 25 XP each with one claimed workout; all 29 ids = 5 775 XP. ALL_V2 alone stays 5 725. */
+const PHASE = ['phaseWarmup1', 'phaseStretch1'];
+const ALL_V3 = ALL_V2.concat(PHASE);
 const OLD25 = ['five', 'ten', 'twentyfive', 'fifty', 'hundred', 'weeklygoal1', 'consistent2', 'consistent4',
   'consistent8', 'consistent12', 'solid2', 'solid4', 'fullweek', 'newpr', 'pr5', 'improve', 'xp200',
   'customplan', 'fourplans', 'customex5', 'variety4', 'comeback', 'missedweek'];
@@ -42,7 +45,7 @@ const scenarios = [];
 const scenario = (name, fn) => scenarios.push({ name, fn });
 
 scenario('version and access', async () => {
-  check('community_social_version() is 9 or later (9 = 0017)', Number(sqlVal('select public.community_social_version()')) >= 9);
+  check('community_social_version() is 14 or later (14 = 0022 phase badges; tests/social/phase-badges.js runs first on 13)', Number(sqlVal('select public.community_social_version()')) >= 14);
   const a = await member('acc');
   const anon = await L.anon().rpc('leaderboard_top', { p_period: 'all' });
   check('anon cannot read the leaderboard', !!anon.error, J(anon));
@@ -88,6 +91,14 @@ scenario('achievements computed on the server', async () => {
   check('old achievement ids give 0 XP (only first counts)', row(a).achievement === 25, J(row(a)));
   await submit(a, 0, 0, 0, ['body4', 'first', 'w10', 'start3']);
   check('guards: body4 needs no workouts, first/w10/start3 need 1/10/3', row(a).achievement === 50, J(row(a)));
+  await submit(a, 0, 0, 300, ALL_V3);
+  check('0022: both phase badges join the 27 = 5775, still never limited by the daily cap', row(a).achievement === 5775 && row(a).level === levelOf(5775), J(row(a)));
+  await submit(a, 0, 0, 0, PHASE.concat(['body4']));
+  check('0022: phase badges need one claimed workout (body4 still needs none)', row(a).achievement === 50, J(row(a)));
+  await submit(a, 0, 0, 1, PHASE.concat(['phaseWarmup1', 'made-up-phase']));
+  check('0022: each phase badge is worth 25 once; duplicates and unknown ids ignored', row(a).achievement === 50, J(row(a)));
+  await submit(a, 0, 0, 300, ALL_V2);
+  check('0022: the 27 earlier ids alone still total 5725 (payload of an updated client without phase badges)', row(a).achievement === 5725, J(row(a)));
 });
 
 scenario('level formula boundaries (0017)', async () => {
@@ -100,9 +111,13 @@ scenario('level formula boundaries (0017)', async () => {
   }
   sql(`update public.leaderboard_entries set training_xp = 3000, achievement_xp = 150 where user_id = ${lit(a.id)};`);
   check('level uses training + achievement XP (3150 = L14, L15 starts at 3300)', row(a).total === 3150 && row(a).level === 14, J(row(a)));
-  let refused = false;
-  try { sql(`update public.leaderboard_entries set achievement_xp = 5726 where user_id = ${lit(a.id)};`); } catch (e) { refused = true; }
-  check('achievement_xp above 5725 is refused by the check', refused && row(a).achievement === 150, J(row(a)));
+  let accepted = true, refused = false;
+  try { sql(`update public.leaderboard_entries set achievement_xp = 5726 where user_id = ${lit(a.id)};`); } catch (e) { accepted = false; }
+  check('0022: achievement_xp 5726 (above the old 5725 ceiling) is accepted', accepted && row(a).achievement === 5726, J(row(a)));
+  try { sql(`update public.leaderboard_entries set achievement_xp = 5775 where user_id = ${lit(a.id)};`); } catch (e) { accepted = false; }
+  check('0022: achievement_xp 5775 (all 29 ids) is accepted by the check', accepted && row(a).achievement === 5775, J(row(a)));
+  try { sql(`update public.leaderboard_entries set achievement_xp = 5776 where user_id = ${lit(a.id)};`); } catch (e) { refused = true; }
+  check('achievement_xp above 5775 is refused by the check', refused && row(a).achievement === 5775, J(row(a)));
 });
 
 scenario('older app (no p_rules) cannot overwrite recalculated XP (0017)', async () => {
@@ -236,6 +251,39 @@ scenario('review fixes: stale device, early row, rejoin, RLS', async () => {
   const me = await c.c.rpc('leaderboard_me');
   check('leave and rejoin does not undo a moderator removal', !me.error && me.data.removed === true, J(me));
   check('first submission is bounded (at most 1,000,000 training XP)', row(c).training <= 1000000, J(row(c)));
+});
+
+scenario('capability 13 fallback: 0022_down keeps the old catalog and the 5725 ceiling; re-apply restores 14 (v117)', async () => {
+  const hi = await member('c13-hi'), low = await member('c13-low');
+  const both = ['first'].concat(PHASE);
+  const profileIds = (u) => sqlVal(`select coalesce(array_to_string(ids, ','), '') from public.profile_achievements where user_id = ${lit(u.id)}`).split(',').filter(Boolean).sort().join();
+  const refuses = (xp) => { try { sql(`update public.leaderboard_entries set achievement_xp = ${xp} where user_id = ${lit(hi.id)};`); return false; } catch (e) { return true; } };
+  await submit(hi, 0, 0, 300, ALL_V3);
+  await submit(low, 0, 0, 5, both);
+  let r = await low.c.rpc('profile_achievements_set', { p_ids: both, p_workouts: 5 });
+  check('capability 14: 5775 for all 29 ids, 75 for first + both phase badges, profile keeps all three', !r.error && row(hi).achievement === 5775 && row(low).achievement === 75 && profileIds(low) === both.slice().sort().join(), J(row(hi)) + J(row(low)) + profileIds(low));
+  const undone = L.rollbackFrom(22);
+  try {
+    check('only 0022 rolled back; capability returns to 13 (from ' + undone.versionBefore + ')', undone.length === 1 && undone[0].n === 22 && undone.versionBefore === '14' && sqlVal('select public.community_social_version()') === '13');
+    check('rollback clamps only the row above 5725; generated total/level follow; sub-ceiling phase XP stays until the next submit', row(hi).achievement === 5725 && row(hi).total === row(hi).training + 5725 && row(hi).level === levelOf(row(hi).total) && row(low).achievement === 75, J(row(hi)) + J(row(low)));
+    check('5726 is refused again at capability 13', refuses(5726) && row(hi).achievement === 5725, J(row(hi)));
+    await submit(hi, 0, 0, 300, ALL_V3);
+    check('old catalog: both phase ids are worth 0, the 27 earlier ids still 5725', row(hi).achievement === 5725, J(row(hi)));
+    await submit(hi, 0, 0, 300, ALL_V2);
+    check('old catalog: payload without phase ids is unchanged at 5725', row(hi).achievement === 5725, J(row(hi)));
+    await submit(low, 0, 0, 5, both);
+    check('old catalog: next submit recalculates the sub-ceiling row to first = 25', row(low).achievement === 25, J(row(low)));
+    r = await low.c.rpc('profile_achievements_set', { p_ids: both, p_workouts: 5 });
+    check('old profile catalog keeps only first; phase ids are dropped', !r.error && r.data.count === 1 && profileIds(low) === 'first', J(r.data) + profileIds(low));
+  } finally {
+    L.reapply(undone);
+  }
+  check('re-applied: capability 14; re-apply alone refunds nothing', sqlVal('select public.community_social_version()') === '14' && row(hi).achievement === 5725 && row(low).achievement === 25, J(row(hi)) + J(row(low)));
+  await submit(hi, 0, 0, 300, ALL_V3);
+  await submit(low, 0, 0, 5, both);
+  r = await low.c.rpc('profile_achievements_set', { p_ids: both, p_workouts: 5 });
+  check('updated clients resubmit: 5775 and 75 return, both profile ids published again', !r.error && row(hi).achievement === 5775 && row(low).achievement === 75 && profileIds(low) === both.slice().sort().join(), J(row(hi)) + J(row(low)) + profileIds(low));
+  check('5776 is refused again at capability 14', refuses(5776) && row(hi).achievement === 5775, J(row(hi)));
 });
 
 scenario('rollback 0017_down and re-apply', async () => {

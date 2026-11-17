@@ -161,10 +161,10 @@ function check(name, ok, info) {
     for (let i = 0; i < 2; i++) {
       await ev(`startTour([__t.s1, __t.s2, __t.s3], {})`); await wait(200);
       await click('tour-next'); await wait(100); await click('tour-next'); await wait(200);
-      check('run ' + (i + 1) + ': tab step switched the tab', (await ev(`activeTab`)) === 'trening');
+      check('run ' + (i + 1) + ': tab step showed the Training screen', J(await ev(`['dnes', 'trening', 'pokrok', 'kalendar', 'komunita', 'ty'].filter((s) => !document.getElementById('screen-' + s).hidden)`)) === J(['trening']));
       await click('tour-back'); await click('tour-next'); await wait(100);
       await click('tour-close'); await wait(150);
-      check('run ' + (i + 1) + ': original tab restored', (await ev(`activeTab`)) === 'dnes');
+      check('run ' + (i + 1) + ': original screen restored', J(await ev(`['dnes', 'trening', 'pokrok', 'kalendar', 'komunita', 'ty'].filter((s) => !document.getElementById('screen-' + s).hidden)`)) === J(['dnes']) && (await ev(`activeTab`)) === 'dnes');
       check('run ' + (i + 1) + ': state + app localStorage byte-identical', (await snap()) === s0);
     }
     check('state not changed vs. before the first tour either', (await snap()) === before, 'differs from the very first snapshot (render side effects?)');
@@ -226,7 +226,7 @@ function check(name, ok, info) {
     await ev(`(() => { const far = document.createElement('div'); far.id = 'far2'; far.style.cssText = 'height:48px;margin-top:2400px;background:#888'; document.getElementById('screen-dnes').appendChild(far);
       window.__t.far2 = { id: 'far2', title: 'Far2', body: 'x', target: () => document.getElementById('far2') };
       window.__t.vis = { id: 'vis', title: 'Vis', body: 'x', target: () => document.querySelector('.tab-bar') };
-      window.__t.bad = { id: 'bad', title: 'Bad', body: 'x', tab: 'komunita', target: () => null }; document.getElementById('far2').style.marginBottom = '1500px'; window.scrollTo(0, 120); return true; })()`);
+      window.__t.bad = { id: 'bad', title: 'Bad', body: 'x', tab: 'kalendar', target: () => null }; document.getElementById('far2').style.marginBottom = '1500px'; window.scrollTo(0, 120); return true; })()`);
     await wait(100);
     await ev(`startTour([__t.vis], {})`); await wait(250);
     check('target already inside the safe area: page is not scrolled', (await ev(`Math.round(scrollY)`)) === 120);
@@ -237,7 +237,7 @@ function check(name, ok, info) {
     check('scroll position restored on close', (await ev(`Math.round(scrollY)`)) === 120, await ev(`scrollY`));
     await ev(`(document.getElementById('far2').remove(), window.scrollTo(0, 0), true)`);
     await ev(`startTour([__t.bad], {})`); await wait(200);
-    check('a step with a tab outside dnes/trening/pokrok does not switch tabs', (await ev(`activeTab`)) === 'dnes');
+    check('a step with a tab outside the six tour tabs does not switch tabs', J(await ev(`['dnes', 'trening', 'pokrok', 'kalendar', 'komunita', 'ty'].filter((s) => !document.getElementById('screen-' + s).hidden)`)) === J(['dnes']));
     await ev(`closeTour('yield')`);
     await ev(`startTour([__t.s1, __t.s2], {})`); await wait(200);
     await ev(`setLang('sk')`); await wait(100);
@@ -261,9 +261,11 @@ function check(name, ok, info) {
         await click('tour-next'); await wait(100);
       }
     }
-    console.log('== skutočných 6 krokov: 6 jazykov, svetlá/tmavá, 393 px; 320 px (fr, ar, 130 %)');
-    const KEYS = ['plan', 'start', 'sets', 'rest', 'finish', 'tabs'];
-    check('TOUR_STEPS has the 6 steps in order', (await ev(`TOUR_STEPS.map((x) => x.id).join()`)) === 'plan,start,sets,rest,finish,tabs');
+    console.log('== skutočných 22 krokov: 6 jazykov, svetlá/tmavá, 393 px; 320 px (fr, ar, 130 %)');
+    const KEYS = ['plan', 'warmup', 'library', 'custom', 'plans', 'programs', 'start', 'sets', 'effort', 'sides', 'advancedSets', 'rest', 'stretching', 'finish', 'history', 'muscles', 'body', 'activityFood', 'community', 'messages', 'reminders', 'backup'];
+    const EXPLAIN_ONLY = ['warmup', 'sets', 'sides', 'advancedSets', 'stretching', 'finish', 'history', 'muscles'];   // bez ovládača na obrazovke: dimmed vysvetlenie
+    const ILLUS_STEPS = ['sets', 'rest', 'finish'];
+    check('TOUR_STEPS has the 22 steps in order', (await ev(`TOUR_STEPS.map((x) => x.id).join()`)) === KEYS.join());
     check('all step keys exist in all 6 languages', await ev(`['sk','en','es','pt-BR','fr','ar'].every((l) => ${J(KEYS)}.every((k) => ['title','body'].every((f) => typeof I18N[l]['tour.' + k + '.' + f] === 'string' && I18N[l]['tour.' + k + '.' + f].length)))`));
     await ev(`(setLang('en'), setThemePref('light'), switchTab('dnes'), true)`); await wait(150);
     const sTour = await snap();
@@ -272,22 +274,25 @@ function check(name, ok, info) {
       await ev(`(setLang(${J(lang)}), setThemePref(${J(theme)}), document.documentElement.style.fontSize = ${J(zoom || '')}, switchTab('dnes'), window.scrollTo(0, 0), true)`); await wait(200);
       const sh0 = await ev(`document.documentElement.scrollHeight`), kids0 = await ev(`document.body.children.length`);
       await ev(`startTour(TOUR_STEPS, {})`);
-      for (let i = 0; i < 6; i++) {
+      for (let i = 0; i < KEYS.length; i++) {
         await wait(260);
-        const r = await ev(`(() => { const r = document.getElementById('tour'), c = document.getElementById('tour-card');
+        const r = await ev(`(() => { const r = document.getElementById('tour'), c = document.getElementById('tour-card'), tx = document.querySelector('.tour-text');
           const txt = document.getElementById('tour-title').textContent + ' ' + document.getElementById('tour-body').textContent;
           const il = document.querySelector('.tour-illus');
-          return { id: r.dataset.step, txt, bad: /\{|tour\.|undefined/.test(txt) || txt.length < 20, illus: !il.hidden && il.querySelectorAll('[id]').length === 0 && il.getAttribute('aria-hidden') === 'true',
-            illH: !il.hidden ? il.getBoundingClientRect().height : 0, cardScroll: c.style.overflowY === 'auto' }; })()`);
+          return { id: r.dataset.step, txt, bad: /\\{|\\btour\\.[a-z]|undefined/.test(txt) || txt.length < 20, illus: !il.hidden && il.querySelectorAll('[id]').length === 0 && il.getAttribute('aria-hidden') === 'true',
+            illH: !il.hidden ? il.getBoundingClientRect().height : 0, st: tx.scrollTop, over: tx.scrollHeight > tx.clientHeight + 1, tab: tx.getAttribute('tabindex'), ov: getComputedStyle(tx).overflowY,
+            ctl: Array.from(document.querySelectorAll('#tour .tour-foot button, #tour-close')).filter((b) => b.getClientRects().length).every((b) => { const q = b.getBoundingClientRect(); return q.top >= 0 && q.bottom <= innerHeight && q.left >= 0 && q.right <= innerWidth && q.width >= 44 && q.height >= 44; }) }; })()`);
         const g = await geo();
         const inView = g.k[0] >= 0 && g.k[1] >= 0 && g.k[2] <= g.W && g.k[3] <= g.H;
         const noCover = g.spotHidden || g.k[3] <= g.s[1] + 1 || g.k[1] >= g.s[3] - 1;
-        const real = [0, 1, 3, 4, 5].includes(i);
         const info = { tag, i, r, g };
-        check(tag + ' step ' + (i + 1) + ' ' + KEYS[i] + ': text ok, card in view, no overflow, does not cover target', r.id === KEYS[i] && !r.bad && inView && !g.over && noCover && !r.cardScroll, info);
-        if (real) check(tag + ' step ' + (i + 1) + ': real element spotlighted', !g.spotHidden && g.s[2] - g.s[0] > 20 && g.s[3] - g.s[1] > 20, g);
-        if ([2, 3, 4].includes(i)) check(tag + ' step ' + (i + 1) + ': illustration shown (aria-hidden, no ids)', r.illus, r);
-        if (i === 2) check(tag + ' step 3: dimmed screen, no spotlight', g.spotHidden);
+        check(tag + ' step ' + (i + 1) + ' ' + KEYS[i] + ': text ok, card in view, no overflow, does not cover target', r.id === KEYS[i] && !r.bad && inView && !g.over && noCover, info);
+        check(tag + ' step ' + (i + 1) + ': text starts at the top, a clipped text is a focusable scroller, all controls (44 px) stay in view', r.st === 0 && (!r.over || (r.tab === '0' && r.ov === 'auto')) && r.ctl, info);
+        if (!EXPLAIN_ONLY.includes(KEYS[i]) && !ILLUS_STEPS.includes(KEYS[i])) check(tag + ' step ' + (i + 1) + ': real element spotlighted', !g.spotHidden && g.s[2] - g.s[0] > 20 && g.s[3] - g.s[1] > 20, g);
+        if (ILLUS_STEPS.includes(KEYS[i])) check(tag + ' step ' + (i + 1) + ': illustration shown (aria-hidden, no ids)', r.illus, r);
+        if (KEYS[i] === 'rest') check(tag + ' step ' + (i + 1) + ': rest illustration beside a real spotlight', !g.spotHidden, g);
+        if (EXPLAIN_ONLY.includes(KEYS[i])) check(tag + ' step ' + (i + 1) + ': dimmed screen, no spotlight', g.spotHidden);
+        await ev(`(() => { const t = document.querySelector('.tour-text'); t.scrollTop = t.scrollHeight; return true; })()`);   // ďalší krok musí začať od začiatku textu
         await click('tour-next');
       }
       await wait(100);
@@ -297,6 +302,39 @@ function check(name, ok, info) {
     };
     for (const lang of ['sk', 'en', 'es', 'pt-BR', 'fr', 'ar']) for (const theme of ['light', 'dark']) await RUN(lang, theme, 393, 852, '', lang + '/' + theme + '/393');
     for (const lang of ['fr', 'ar']) for (const zoom of ['', '130%']) await RUN(lang, 'light', 320, 568, zoom, lang + '/320' + (zoom ? '/' + zoom : ''));
+
+    console.log('== 320 px / 130 %: dlhý text sa dá prečítať dotykom aj klávesnicou, päta ostáva na očiach, nový krok začína od začiatku');
+    await metrics(320, 568);
+    await ev(`(setLang('fr'), setThemePref('light'), document.documentElement.style.fontSize = '130%', switchTab('dnes'), window.scrollTo(0, 0), startTour(TOUR_STEPS, {}), tourGo(${KEYS.indexOf('rest')}), true)`); await wait(400);
+    const tx = () => ev(`(() => { const t = document.querySelector('.tour-text'), n = document.getElementById('tour-next').getBoundingClientRect(); return { over: t.scrollHeight > t.clientHeight + 1, top: Math.round(t.scrollTop), max: Math.round(t.scrollHeight - t.clientHeight), tab: t.getAttribute('tabindex'), nextIn: n.top >= 0 && n.bottom <= innerHeight, page: Math.round(scrollY) }; })()`);
+    const t0 = await tx();
+    check('long step: text region scrolls (focusable) and the buttons stay in view', t0.over && t0.tab === '0' && t0.nextIn && t0.top === 0, t0);
+    await ev(`(document.querySelector('.tour-text').focus(), true)`);
+    await key('ArrowDown', 'ArrowDown', 40); await wait(200);
+    const t1 = await tx();
+    check('keyboard: Arrow Down scrolls the text', t1.top > 0, t1);
+    await key('End', 'End', 35); await wait(250);
+    const t2 = await tx();
+    check('keyboard: End reaches the last line of the text while the buttons stay in view', t2.top >= t2.max - 1 && t2.nextIn, t2);
+    await key('Tab', 'Tab', 9); await wait(100);
+    check('Tab from the text moves to the tour buttons (focus never leaves the tour)', await ev(`['tour-back', 'tour-skip', 'tour-next'].includes(document.activeElement.id)`));
+    await ev(`(document.querySelector('.tour-text').scrollTop = 0, true)`);
+    const tc = await ev(`(() => { const r = document.querySelector('.tour-text').getBoundingClientRect(); return { x: r.left + r.width / 2, y: r.top + r.height / 2 }; })()`);
+    /* Skutočné touch udalosti (synthesizeScrollGesture v headless režime po texte neroluje). */
+    await p.c.send('Emulation.setTouchEmulationEnabled', { enabled: true, maxTouchPoints: 2 });
+    await p.c.send('Page.bringToFront'); await p.c.send('Emulation.setFocusEmulationEnabled', { enabled: true });
+    const sx = Math.round(tc.x), sy = Math.round(tc.y + 60);
+    await p.c.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x: sx, y: sy, id: 1 }] });
+    for (let i = 1; i <= 12; i++) { await p.c.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x: sx, y: sy - i * 8, id: 1 }] }); await wait(16); }
+    await p.c.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] }); await wait(400);
+    const t3 = await tx();
+    check('touch: a swipe scrolls the text, not the page', t3.top > 0 && t3.page === t2.page, { before: t2, after: t3 });
+    await click('tour-back'); await wait(250);
+    check('Back starts the previous step at the top of its text', await ev(`document.querySelector('.tour-text').scrollTop === 0`));
+    await ev(`(document.querySelector('.tour-text').scrollTop = 1e6, true)`);
+    await click('tour-next'); await wait(250);
+    check('Next starts the next step at the top of its text', await ev(`document.querySelector('.tour-text').scrollTop === 0`));
+    await ev(`(closeTour('yield'), true)`);
     await ev(`(document.documentElement.style.fontSize = '', true)`);
     await metrics(393, 852);
     await ev(`(setLang('en'), setThemePref('light'), switchTab('dnes'), true)`); await wait(150);
@@ -309,6 +347,113 @@ function check(name, ok, info) {
     /* setLang/setThemePref v teste samy zapisujú gymquest_theme a synchronizačné metadáta – tie nie sú dielo návodu */
     const strip = (x) => { const o = JSON.parse(x); o.ls = o.ls.filter((e) => e[0] !== 'gymquest_theme' && !/^gymquest_sync/.test(e[0])); return J(o); };
     check('state + app localStorage identical after 12 full tours in 6 languages (language restored; theme/sync meta of the test own setLang excluded)', strip(await snap()) === strip(sA));
+
+    console.log('== trasa 22 krokov: každá karta sa len zobrazí (bez switchTab/načítania/zápisov), pôvodné zobrazenie sa vráti priamo');
+    const ROUTE = { plan: 'trening', warmup: 'trening', library: 'trening', custom: 'trening', plans: 'trening', programs: 'trening', start: 'trening', sets: 'trening', effort: 'dnes', sides: 'trening', advancedSets: 'trening', rest: 'dnes', stretching: 'trening', finish: 'pokrok', history: 'pokrok', muscles: 'pokrok', body: 'dnes', activityFood: 'dnes', community: 'komunita', messages: 'spravy', reminders: 'ty', backup: 'ty' };
+    const SCREEN = (k) => (k === 'spravy' ? 'komunita' : k);
+    const navState = () => ev(`(() => ({ tab: activeTab, body: document.body.dataset.tab, nav: (document.querySelector('.tab-bar .tab.active') || {}).dataset.tab, cur: (document.querySelector('.tab-bar [aria-current="page"]') || {}).dataset.tab,
+      curAll: Array.from(document.querySelectorAll('.tab')).map((e) => e.getAttribute('aria-current')).join(), activeAll: Array.from(document.querySelectorAll('.tab')).map((e) => e.classList.contains('active') ? 1 : 0).join(),
+      screens: ['dnes', 'trening', 'pokrok', 'kalendar', 'komunita', 'ty'].filter((s) => !document.getElementById('screen-' + s).hidden), msg: document.getElementById('screen-komunita').hidden ? null : document.getElementById('screen-komunita').classList.contains('msg-mode'),
+      msgRaw: document.getElementById('screen-komunita').classList.contains('msg-mode'), mode: communityMode, ret: communityReturnTab, view: communityView, back: communityBack.length, backRef: communityBack === window.__navBack }))()`);
+    await ev(`(setLang('en'), setThemePref('light'), switchTab('dnes'), window.scrollTo(0, 0), true)`); await wait(150);
+    await ev(`(startTour(TOUR_STEPS, {}), true)`); await wait(250);
+    let routeOk = true; const routeBad = [];
+    for (let i = 0; i < KEYS.length; i++) {
+      await ev(`(tourGo(${i}), true)`); await wait(120);
+      const n = await navState();
+      const want = ROUTE[KEYS[i]];
+      if (!(n.nav === want && n.cur === want && n.body === SCREEN(want) && n.screens.join() === SCREEN(want) && n.msg === (want === 'spravy' ? true : want === 'komunita' ? false : null) && n.tab === 'dnes')) { routeOk = false; routeBad.push([KEYS[i], n]); }
+    }
+    check('every one of the 22 steps shows its own screen (single visible screen, tab bar, body[data-tab], Messages mode class) and never changes activeTab', routeOk, routeBad);
+    await ev(`closeTour('yield')`); await wait(100);
+    check('closing from the last step returns to Today', J((await navState()).screens) === J(['dnes']));
+    /* Community zapnuté: žiadne prepnutie, vykreslenie, načítanie ani publikovanie počas celého návodu vrátane zatvorenia; stránkovanie Ty sa nespustí */
+    const sNet = await snap();
+    await ev(`(() => { window.__spy = []; window.__orig = {};
+      for (const f of ['switchTab', 'renderCommunity', 'openMessagesTab', 'tyLoad', 'leaderboardSend', 'profileAchievementsSend', 'communityAfterSignIn', 'pushRefresh', 'communityRefreshBadges', 'communityLoadFeed', 'communityMarkChatRead', 'communityAddChatMsg']) {
+        window.__orig[f] = window[f]; window[f] = function () { window.__spy.push(f); return window.__orig[f].apply(this, arguments); };
+      }
+      window.__orig.communityConfigured = communityConfigured; window.__orig.communityOptIn = communityOptIn; window.__orig.communityClient = communityClient;
+      window.communityConfigured = () => true; window.communityOptIn = () => true;
+      window.communityClient = () => ({ rpc: function () { window.__spy.push('rpc'); return Promise.resolve({ data: [], error: null }); } });
+      window.__tyFeed = tyFeed; tyFeed = { uid: 'u1', items: [], extra: [], done: false, loading: false, error: false, card: null };
+      window.__spy.length = 0; return true; })()`);
+    await ev(`(startTour(TOUR_STEPS, {}), true)`); await wait(200);
+    for (let i = 0; i < KEYS.length; i++) { await ev(`(tourGo(${i}), true)`); await wait(60); }
+    await ev(`(tyLoadMore(), true)`); await wait(100);
+    const spied = await ev(`window.__spy.slice()`);
+    check('Community on, all 22 steps: no tab switch, render, load, pagination, publish or RPC call', spied.length === 0, spied);
+    await ev(`(closeTour('yield'), true)`); await wait(150);
+    const spiedClose = await ev(`window.__spy.slice()`);
+    check('Community on: closing restores the screen directly (no switchTab / render / load / RPC)', spiedClose.length === 0, spiedClose);
+    await ev(`(tyLoadMore(), true)`); await wait(150);
+    check('control: the same pagination call does run once the tour is closed (the guard is tour-only)', (await ev(`window.__spy.includes('rpc')`)) === true);
+    await ev(`(() => { for (const f of Object.keys(window.__orig)) window[f] = window.__orig[f]; tyFeed = window.__tyFeed; delete window.__orig; delete window.__spy; delete window.__tyFeed; return true; })()`);
+    check('state + app localStorage untouched by the Community-on pass', (await snap()) === sNet);
+    /* chat / zoznam rozhovorov pod návodom: zatvorenie je len prezentácia (žiadny resume, fetch, prítomnosť, mark_read, push clear, render ani RPC); správa počas návodu sa len lokálne zachová */
+    await ev(`(() => { window.__spy = []; window.__orig = {};
+      for (const f of ['communityMarkChatRead', 'communityRefreshBadges', 'communityChatResume', 'communityFetchChat', 'communityViewingSync', 'pushClearChat', 'renderCommunity']) {
+        window.__orig[f] = window[f]; window[f] = function () { window.__spy.push(f); return f === 'renderCommunity' ? window.__orig[f].apply(this, arguments) : undefined; };
+      }
+      window.__orig.communityClient = communityClient;
+      window.communityClient = () => ({ rpc: function () { window.__spy.push('rpc'); return Promise.resolve({ data: [], error: null }); } });
+      window.__chat = { v: communityView, id: communityChatId, tab: activeTab, msgs: communityChatMsgs };
+      communityChatMsgs = []; communityView = 'chat'; communityChatId = 'c1'; activeTab = 'komunita'; return true; })()`);
+    const chatBefore = await ev(`communityChatVisible()`);
+    await ev(`(startTour(TOUR_STEPS, {}), tourGo(${KEYS.indexOf('community')}), window.__spy.length = 0, communityOnMessage({ id: 9, conversation_id: 'c1', sender_id: 'other' }), communityOnMessage({ id: 9, conversation_id: 'c1', sender_id: 'other' }), true)`); await wait(150);
+    const chatDuring = await ev(`communityChatVisible()`), chatSpy = await ev(`window.__spy.slice()`), chatMsgs = await ev(`communityChatMsgs.length`);
+    check('chat open under the tour: not "visible", a live message is kept locally once (dedupe), no read receipt, no re-render, no RPC', chatBefore === true && chatDuring === false && chatMsgs === 1 && !chatSpy.includes('communityMarkChatRead') && !chatSpy.includes('renderCommunity') && !chatSpy.includes('rpc'), { chatBefore, chatDuring, chatMsgs, chatSpy });
+    await ev(`(window.__spy.length = 0, closeTour('yield'), true)`); await wait(150);
+    const chatClose = await ev(`window.__spy.slice()`);
+    check('closing over an open chat is presentation only (no resume, fetch, presence, mark_read, push clear, render or RPC); the chat is visible again with the kept message', chatClose.length === 0 && (await ev(`communityChatVisible()`)) === true && (await ev(`communityChatMsgs.length`)) === 1, chatClose);
+    await ev(`(communityView = 'chats', communityChatMsgs = [], true)`);
+    await ev(`(startTour(TOUR_STEPS, {}), tourGo(${KEYS.indexOf('messages')}), window.__spy.length = 0, communityOnMessage({ id: 5, conversation_id: 'c2', sender_id: 'other' }), true)`); await wait(150);
+    const listSpy = await ev(`window.__spy.slice()`);
+    check('Messages list under the tour: the badge refresh is kept, the list is not re-rendered, no RPC', listSpy.includes('communityRefreshBadges') && !listSpy.includes('renderCommunity') && !listSpy.includes('rpc'), listSpy);
+    await ev(`(window.__spy.length = 0, closeTour('yield'), true)`); await wait(150);
+    check('closing over the Messages list is presentation only', (await ev(`window.__spy.length`)) === 0);
+    await ev(`(communityOnMessage({ id: 6, conversation_id: 'c2', sender_id: 'other' }), true)`); await wait(100);
+    check('control: without the tour the same message re-renders the list', (await ev(`window.__spy.includes('renderCommunity')`)) === true);
+    await ev(`(() => { for (const f of Object.keys(window.__orig)) window[f] = window.__orig[f]; communityView = window.__chat.v; communityChatId = window.__chat.id; activeTab = window.__chat.tab; communityChatMsgs = window.__chat.msgs; history.replaceState(null, '', location.pathname + location.search); delete window.__orig; delete window.__spy; delete window.__chat; return true; })()`);
+    /* ťuknutie na upozornenie (pushOpenChat → switchTab('komunita')) počas návodu: po zatvorení sa ukáže AKTUÁLNA karta, nie zastaraný odtlačok */
+    await ev(`(() => { window.__orig = { communityConfigured, communityOptIn, renderCommunity, communityChatId, communityView, communityMode, communityBack }; window.__spy = [];
+      window.communityConfigured = () => true; window.communityOptIn = () => true; window.renderCommunity = function () { window.__spy.push('renderCommunity'); };
+      switchTab('dnes'); window.scrollTo(0, 0); return true; })()`); await wait(150);
+    await ev(`(startTour(TOUR_STEPS, {}), tourGo(0), pushOpenChat('11111111-1111-1111-1111-111111111111'), true)`); await wait(150);
+    const pushNow = await ev(`[activeTab, communityView]`);
+    await ev(`(closeTour('skipped'), true)`); await wait(100);
+    const pushNav = await navState();
+    check('notification tap while the tour is open: after close the tapped chat screen is shown (screen, tab bar, body[data-tab]) and matches activeTab', J(pushNow) === J(['komunita', 'chat']) && pushNav.tab === 'komunita' && J(pushNav.screens) === J(['komunita']) && pushNav.body === 'komunita' && pushNav.nav === 'komunita' && pushNav.cur === 'komunita', { pushNow, pushNav });
+    await ev(`(() => { const o = window.__orig; window.communityConfigured = o.communityConfigured; window.communityOptIn = o.communityOptIn; window.renderCommunity = o.renderCommunity; communityChatId = o.communityChatId; communityView = o.communityView; communityMode = o.communityMode; communityBack = o.communityBack; delete window.__orig; delete window.__spy; switchTab('dnes'); window.scrollTo(0, 0); return true; })()`); await wait(100);
+    /* tour spustený z Ty a ukončený: znovu zobrazená obrazovka Ty nesmie hneď spustiť stránkovanie (observer #ty-sentinel pretrváva) */
+    await ev(`(() => { window.__orig = { communityConfigured, communityOptIn, communityClient, tyLoad, communityProfile, communitySocial, communityVersion, tyFeed, tyFilter }; window.__spy = [];
+      window.communityConfigured = () => true; window.communityOptIn = () => true; window.tyLoad = function () {};
+      window.communityClient = () => ({ rpc: function (n) { window.__spy.push(n); return Promise.resolve({ data: [], error: null }); } });
+      communityProfile = { id: 'u1', username: 'x' }; communitySocial = true; communityVersion = 2; tyFilter = 'all';
+      tyFeed = { uid: 'u1', items: [], extra: [], done: false, loading: false, error: false, card: null };
+      switchTab('ty'); return true; })()`); await wait(400);
+    await ev(`(window.__spy.length = 0, startTour(TOUR_STEPS, {}), tourGo(${KEYS.indexOf('reminders')}), tourGo(0), true)`); await wait(200);
+    await ev(`(closeTour('skipped'), true)`); await wait(250);
+    const tyAfter = await ev(`({ spy: window.__spy.slice(), quiet: tourSuppressed(), ty: !document.getElementById('screen-ty').hidden })`);
+    check('tour started on You and closed: the re-shown You screen does not trigger feed pagination (suppressed right after close)', tyAfter.ty && tyAfter.quiet && tyAfter.spy.length === 0, tyAfter);
+    await wait(500);
+    check('the post-close suppression ends on its own (pagination is not disabled for good)', (await ev(`tourSuppressed()`)) === false);
+    await ev(`(() => { const o = window.__orig; window.communityConfigured = o.communityConfigured; window.communityOptIn = o.communityOptIn; window.communityClient = o.communityClient; window.tyLoad = o.tyLoad; communityProfile = o.communityProfile; communitySocial = o.communitySocial; communityVersion = o.communityVersion; tyFeed = o.tyFeed; tyFilter = o.tyFilter; delete window.__orig; delete window.__spy; switchTab('dnes'); window.scrollTo(0, 0); return true; })()`); await wait(100);
+    /* režim Správy / Community, menu a skryté triedy sa po zatvorení vrátia presne */
+    const modeCase = async (name, setup) => {
+      await ev(`(communityBack = [], ${setup}, window.__navBack = communityBack, true)`); await wait(150);
+      const b0 = await navState();
+      await ev(`(startTour(TOUR_STEPS, {}), true)`); await wait(200);
+      for (const i of [18, 19, 20, 0, 21, 19]) { await ev(`(tourGo(${i}), true)`); await wait(80); }
+      await ev(`closeTour('skipped')`); await wait(150);
+      const b1 = await navState();
+      check(name + ': screen, tab bar, aria-current, body[data-tab], Messages-mode class, mode, return tab, view and back stack restored', J(b0) === J(b1) && b1.backRef, { b0, b1 });
+    };
+    await modeCase('started in Messages mode with a return tab', `communityMode = 'messages', communityReturnTab = 'ty', communityView = 'chats', switchTab('komunita')`);
+    await modeCase('started in Community mode', `communityMode = 'community', communityReturnTab = null, communityView = 'feed', switchTab('komunita')`);
+    await modeCase('started on You', `communityMode = 'community', communityReturnTab = null, communityView = 'feed', switchTab('ty')`);
+    await modeCase('started on Today with a stale hidden Messages class', `communityMode = 'community', communityReturnTab = null, communityView = 'feed', switchTab('dnes'), document.getElementById('screen-komunita').classList.add('msg-mode')`);
+    await ev(`(document.getElementById('screen-komunita').classList.remove('msg-mode'), communityMode = 'community', communityReturnTab = null, communityView = 'feed', communityBack = [], delete window.__navBack, setLang('en'), setThemePref('light'), switchTab('dnes'), window.scrollTo(0, 0), true)`); await wait(150);
 
     console.log('== úloha 3: kedy sa ukáže (prvé spustenie, pozvánka, opakovanie, ustúpenie)');
     check('first setup of a fresh device auto-started the tour', autoOnFirstSetup === true);
@@ -332,7 +477,7 @@ function check(name, ok, info) {
     check('fresh guest on a device that already finished the tour: no auto-start', !(await open()) && await ev(`JSON.parse(localStorage.gymquest_tutorial).status === 'done'`));
     await fresh(false);
     await click('btn-setup-ok'); await wait(400);
-    for (let i = 0; i < 6; i++) { await click('tour-next'); await wait(120); }
+    for (let i = 0; i < KEYS.length; i++) { await click('tour-next'); await wait(120); }
     check('fresh guest: finishing stores done', !(await open()) && await ev(`JSON.parse(localStorage.gymquest_tutorial).status === 'done'`));
 
     /* existujúci používateľ: história, bez kľúča */
@@ -346,7 +491,7 @@ function check(name, ok, info) {
     check('existing user with the XP note pending: XP note first, invitation card not shown', !(await xpHidden()) && await cardHidden());
     await click('btn-xp-note'); await wait(100);
     check('after the XP note is dismissed the invitation card appears', (await xpHidden()) && !(await cardHidden()));
-    check('card: text, Start and Not now (44 px)', await ev(`(() => { const c = document.getElementById('tour-invite'); const b = Array.from(c.querySelectorAll('button')); return /1-minute tour/.test(c.textContent) && b.map((x) => x.textContent).join() === 'Start,Not now' && b.every((x) => { const r = x.getBoundingClientRect(); return r.width >= 44 && r.height >= 44; }); })()`));
+    check('card: Start and Not now buttons (44 px), no fixed duration promise', await ev(`(() => { const c = document.getElementById('tour-invite'); const b = Array.from(c.querySelectorAll('button')); return c.textContent.trim().length > 20 && !/1[- ]?minute/i.test(c.textContent) && b.map((x) => x.textContent).join() === 'Start,Not now' && b.every((x) => { const r = x.getBoundingClientRect(); return r.width >= 44 && r.height >= 44; }); })()`));
     check('never both at once', !(await ev(`!document.getElementById('xp-note').hidden && !document.getElementById('tour-invite').hidden`)));
     await click('btn-tour-later'); await wait(100);
     check('Not now hides the card and stores invited-dismissed', (await cardHidden()) && await ev(`JSON.parse(localStorage.gymquest_tutorial).status === 'invited-dismissed'`));

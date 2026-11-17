@@ -51,7 +51,7 @@ async function finishWorkout(p) {
     for (let k = 0; k < 4; k++) for (const id of ['modal-generic', 'modal-levelup', 'modal-achievement']) { const m = document.getElementById(id); if (m && !m.hidden) { const x = m.querySelector('.btn-primary'); if (x) x.click(); await w(200); } }
     return true; })()`);
 }
-const staticIds = new Set(['first', 'start3', 'goal1', 'goal4', 'goal12', 'goal26', 'streak4', 'streak8', 'streak12', 'streak26', 'w10', 'w25', 'w50', 'w100', 'w250', 'pr1', 'pr10', 'pr25', 'steady5', 'back', 'rest5', 'ownplan', 'fullbody', 'explorer10', 'body4', 'together', 'balanced10']);
+const staticIds = new Set(['first', 'start3', 'goal1', 'goal4', 'goal12', 'goal26', 'streak4', 'streak8', 'streak12', 'streak26', 'w10', 'w25', 'w50', 'w100', 'w250', 'pr1', 'pr10', 'pr25', 'steady5', 'back', 'rest5', 'ownplan', 'fullbody', 'explorer10', 'body4', 'together', 'balanced10', 'phaseWarmup1', 'phaseStretch1']);
 const serverRow = (u) => sqlVal(`select training_xp||'|'||achievement_xp||'|'||total_xp||'|'||level from public.leaderboard_entries where user_id = ${lit(u.id)}`);
 
 const scenarios = [];
@@ -63,7 +63,7 @@ scenario('reports XP after a workout', async () => {
   await signIn(p, u);
   await finishWorkout(p);
   const local = await p.eval(`(() => { const x = leaderboardPayload(); const li = levelInfo(); return { training: x.p_training, xp: li.xp, level: li.level, rules: x.p_rules, ids: x.p_achievements }; })()`);
-  check('payload (server v9): p_rules 2 and only new achievement ids', local.rules === 2 && local.ids.every((id) => staticIds.has(id)), J(local));
+  check('payload (server v14): p_rules 2 and only 0017/0022 achievement ids', local.rules === 2 && local.ids.every((id) => staticIds.has(id)), J(local));
   await waitFor(() => { const r = serverRow(u); return r && Number(r.split('|')[0]) === local.training; }, 20000, 'server row');
   const [training, ach, total, level] = serverRow(u).split('|').map(Number);
   check('server training XP = app workout+activity XP', training === local.training, J({ training, local }));

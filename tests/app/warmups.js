@@ -55,12 +55,14 @@ function check(name, ok, info) {
     const rows = (i, w) => p.eval(`warmupRamp(getPlan('wtest').exercises[${i}], ${w})`);
     const exEl = (i) => `document.querySelectorAll('#exercise-list .exercise')[${i}]`;
     const ex0 = exEl(0);
-    const clickIn = (el, sel, i) => p.eval(`(${el}.querySelectorAll(${J(sel)})[${i || 0}].click(), true)`);
-    /* Akcie cviku sú v liste ⋯: otvor ⋯ dlaždice, ťukni na položku (list sa zavrie sám). */
-    const actIn = (el, sel) => p.eval(`(${el}.querySelector('.btn-ex-more').click(), document.querySelector('#modal-ex-actions ' + ${J(sel)}).click(), true)`);
-    /* Položka listu ⋯ (null, ak chýba): vyhodnotí expr nad prvkom b a list zavrie. */
-    const peek = (el, sel, expr) => p.eval(`(() => { ${el}.querySelector('.btn-ex-more').click(); const b = document.querySelector('#modal-ex-actions ' + ${J(sel)}); const r = ${expr}; closeExerciseActions(); return r; })()`);
-    const warm = (el) => p.eval(`Array.from(${el}.querySelectorAll('.warmup-item')).map((d) => d.querySelector('.warmup-label').textContent + '|' + d.querySelector('.warmup-reps').textContent + '|' + d.querySelector('.warmup-weight').textContent + '|' + (d.querySelector('.warmup-done').classList.contains('done') ? 'done' : '-'))`);
+    const practice = (el) => el.replace('#exercise-list .exercise', '#workout-phase-legacy .phase-legacy-exercise');
+    const clickIn = (el, sel, i) => p.eval(`(${/warmup/.test(sel) ? practice(el) : el}.querySelectorAll(${J(sel)})[${i || 0}].click(), true)`);
+    /* Legacy practice actions moved centrally; exercise replacement remains in its action sheet. */
+    const actIn = (el, sel) => /warmup/.test(sel)
+      ? p.eval(`(${practice(el)}.querySelector(${J(sel)}).click(), true)`)
+      : p.eval(`(${el}.querySelector('.btn-ex-more').click(), document.querySelector('#modal-ex-actions ' + ${J(sel)}).click(), true)`);
+    const peek = (el, sel, expr) => p.eval(`(() => { const b = ${practice(el)}.querySelector(${J(sel)}); return ${expr}; })()`);
+    const warm = (el) => p.eval(`Array.from(${practice(el)}.querySelectorAll('.warmup-item')).map((d) => d.querySelector('.warmup-label').textContent + '|' + d.querySelector('.warmup-reps').textContent + '|' + d.querySelector('.warmup-weight').textContent + '|' + (d.querySelector('.warmup-done').classList.contains('done') ? 'done' : '-'))`);
 
     console.log('== ramp maths');
     let r = await rows(0, 100);
@@ -83,7 +85,7 @@ function check(name, ok, info) {
     check('a 15 kg bar changes the first row to 15', r[0] === 15, r);
 
     console.log('== buttons');
-    check('bench has "+ Warm-up" and "Warm-up ramp" in its ⋯ sheet', (await peek(ex0, '.btn-add-warmup', 'b !== null')) && (await peek(ex0, '.btn-warmup-ramp', 'b !== null')));
+    check('bench has manual/ramp actions only in the leading practice section', (await peek(ex0, '.btn-add-warmup', 'b !== null')) && (await peek(ex0, '.btn-warmup-ramp', 'b !== null')) && await p.eval(`!document.querySelector('#exercise-list .btn-add-warmup, #exercise-list .btn-warmup-ramp')`));
     check('dumbbell row has both', (await peek(exEl(1), '.btn-add-warmup', 'b !== null')) && (await peek(exEl(1), '.btn-warmup-ramp', 'b !== null')));
     check('assisted row: "+ Warm-up" stays, no ramp button', (await peek(exEl(2), '.btn-add-warmup', 'b !== null')) && (await peek(exEl(2), '.btn-warmup-ramp', 'b === null')));
     check('labels are "+ Warm-up" and "Warm-up ramp"', J([await peek(ex0, '.btn-add-warmup', 'b.textContent'), await peek(ex0, '.btn-warmup-ramp', 'b.textContent')]) === J(['+ Warm-up', 'Warm-up ramp']));
@@ -93,8 +95,8 @@ function check(name, ok, info) {
     await actIn(ex0, '.btn-add-warmup');
     check('W1 added: 50 % of 100 = 50 kg × 5', J(await warm(ex0)) === J(['W1|5×|50|-']), await warm(ex0));
     check('adding a warm-up starts the workout', !!(await p.eval('getSession()')));
-    check('the warm-up block sits above the working sets', await p.eval(`(() => { const e = ${ex0}; const w = e.querySelector('.warmups'); const s = e.querySelector('.sets'); return !!w && !!(w.compareDocumentPosition(s) & Node.DOCUMENT_POSITION_FOLLOWING); })()`));
-    check('the .warmups block is before the first set row', await p.eval(`(() => { const e = ${ex0}; const w = e.querySelector('.warmup-item'); const s = e.querySelector('.sets .set-item'); return !!(w.compareDocumentPosition(s) & Node.DOCUMENT_POSITION_FOLLOWING); })()`));
+    check('the practice block is outside and before all working exercises', await p.eval(`(() => { const w = document.getElementById('workout-phase-legacy'); const s = document.getElementById('exercise-list'); return !s.contains(w) && !!(w.compareDocumentPosition(s) & Node.DOCUMENT_POSITION_FOLLOWING) && w.querySelectorAll('.warmup-item').length === 1; })()`));
+    check('phase-off keeps the unfinished practice row and working selectors separate', await p.eval(`!document.getElementById('phase-toggle-warmup').checked && !document.querySelector('#exercise-list .warmup-item') && !!document.querySelector('#workout-phase-legacy .warmup-item')`));
     /* úprava váhy na 42,5 (čiarka aj bodka) a opakovaní na 8 */
     await clickIn(ex0, '.warmup-weight', 0);
     check('weight editor opens with 50', await p.eval(`!!document.querySelector('.warmup-editor') && document.querySelector('.set-weight-input').value === '50'`));
@@ -114,7 +116,7 @@ function check(name, ok, info) {
     check('✓ toggles done', J(await warm(ex0)) === J(['W1|8×|42.25|done']), await warm(ex0));
     await clickIn(ex0, '.warmup-done', 0);
     for (let k = 0; k < 5; k++) await actIn(ex0, '.btn-add-warmup');
-    check('6 warm-ups, then the add button disappears', (await p.eval(`${ex0}.querySelectorAll('.warmup-item').length`)) === 6 && (await peek(ex0, '.btn-add-warmup', 'b === null')));
+    check('6 warm-ups, then the central add button disappears', (await p.eval(`${practice(ex0)}.querySelectorAll('.warmup-item').length`)) === 6 && (await peek(ex0, '.btn-add-warmup', 'b === null')));
     check('the 7th add is refused', await p.eval(`addWarmup(getPlan('wtest').exercises[0]) === false`));
     for (let k = 0; k < 6; k++) await clickIn(ex0, '.warmup-remove', 0);
     check('✕ removes (back to none) and the add button returns', J(await warm(ex0)) === '[]' && (await peek(ex0, '.btn-add-warmup', 'b !== null')));
@@ -141,22 +143,22 @@ function check(name, ok, info) {
 
     console.log('== unilateral / other rows');
     await actIn(exEl(3), '.btn-add-warmup');
-    check('unilateral row: ONE warm-up list (not per side)', (await p.eval(`${exEl(3)}.querySelectorAll('.warmup-item').length`)) === 1 && (await p.eval(`${exEl(3)}.querySelectorAll('.warmups').length`)) === 1);
+    check('unilateral row: ONE central warm-up list (not per side)', (await p.eval(`${practice(exEl(3))}.querySelectorAll('.warmup-item').length`)) === 1 && (await p.eval(`${practice(exEl(3))}.querySelectorAll('.warmups').length`)) === 1);
     await clickIn(exEl(3), '.warmup-remove', 0);
     await actIn(exEl(1), '.btn-warmup-ramp');
-    check('dumbbell ramp renders 12 / 18 / 24', J(await p.eval(`Array.from(${exEl(1)}.querySelectorAll('.warmup-weight')).map((x) => x.textContent)`)) === J(['12', '18', '24']));
+    check('dumbbell ramp renders 12 / 18 / 24', J(await p.eval(`Array.from(${practice(exEl(1))}.querySelectorAll('.warmup-weight')).map((x) => x.textContent)`)) === J(['12', '18', '24']));
     await clickIn(exEl(1), '.warmup-remove', 0); await clickIn(exEl(1), '.warmup-remove', 0); await clickIn(exEl(1), '.warmup-remove', 0);
     await actIn(exEl(2), '.btn-add-warmup');
-    check('assisted "+ Warm-up" works (floor of 50 % of 20 = 10)', J(await p.eval(`Array.from(${exEl(2)}.querySelectorAll('.warmup-weight')).map((x) => x.textContent)`)) === J(['10']));
+    check('assisted manual practice works (floor of 50 % of 20 = 10)', J(await p.eval(`Array.from(${practice(exEl(2))}.querySelectorAll('.warmup-weight')).map((x) => x.textContent)`)) === J(['10']));
     await clickIn(exEl(2), '.warmup-remove', 0);
 
     console.log('== 390 px layout');
     await p.c.send('Emulation.setDeviceMetricsOverride', { width: 390, height: 844, deviceScaleFactor: 2, mobile: true });
     for (const theme of ['light', 'dark']) {
-      await p.eval(`(document.documentElement.setAttribute('data-theme', ${J(theme)}), ${ex0}.querySelector('.warmups').scrollIntoView({ block: 'center' }), true)`);
+      await p.eval(`(document.documentElement.setAttribute('data-theme', ${J(theme)}), ${practice(ex0)}.querySelector('.warmups').scrollIntoView({ block: 'center' }), true)`);
       await wait(250);
       check('390 px ' + theme + ': no horizontal overflow', await p.eval(`document.documentElement.scrollWidth <= innerWidth + 1`));
-      check('390 px ' + theme + ': warm-up buttons are tappable (≥ 40 px) and inside the screen', await p.eval(`Array.from(${ex0}.querySelectorAll('.warmup-item button')).every((x) => { const r = x.getBoundingClientRect(); return r.height >= 40 && r.left >= 0 && r.right <= innerWidth + 1; })`));
+      check('390 px ' + theme + ': central practice buttons are tappable (≥ 40 px) and inside the screen', await p.eval(`Array.from(${practice(ex0)}.querySelectorAll('.warmup-item button')).every((x) => { const r = x.getBoundingClientRect(); return r.height >= 40 && r.left >= 0 && r.right <= innerWidth + 1; })`));
       if (process.env.GQ_SCREENSHOTS !== '0') {
       const s = await p.c.send('Page.captureScreenshot', { format: 'png' });
       fs.writeFileSync(path.join(WORK, 'shots', 'warmups-' + theme + '-390.png'), Buffer.from(s.data, 'base64'));
@@ -200,26 +202,68 @@ function check(name, ok, info) {
     console.log('== plan toggle: automatic ramp');
     await p.eval(`(() => { selectedPlan = 'wauto'; switchTab('trening'); renderTrening(); return true; })()`);
     await wait(300);
-    check('no session → nothing filled yet', await p.eval(`!getSession() && document.querySelectorAll('#exercise-list .warmup-item').length === 0`));
+    check('no session → nothing filled yet', await p.eval(`!getSession() && document.querySelectorAll('#workout-phase-legacy .warmup-item').length === 0`));
     await p.eval(`(ensureSession(getPlan('wauto')), renderTrening(), true)`);
     await wait(300);
     const key = await p.eval(`exerciseSessionKey(getPlan('wauto').exercises[0])`);
-    check('starting the session fills the ramp (4 rows) and marks sess.warmupsInit', (await p.eval(`document.querySelectorAll('#exercise-list .exercise')[0].querySelectorAll('.warmup-item').length`)) === 4 && (await p.eval(`getSession().warmupsInit[${J(key)}]`)) === true, await p.eval(`getSession().warmupsInit`));
-    check('the assisted row with the toggle gets no ramp', (await p.eval(`document.querySelectorAll('#exercise-list .exercise')[1].querySelectorAll('.warmup-item').length`)) === 0);
+    check('starting the session fills the central ramp and retains its exercise key', (await p.eval(`document.querySelectorAll('#workout-phase-legacy .phase-legacy-exercise')[0].querySelectorAll('.warmup-item').length`)) === 4 && (await p.eval(`getSession().warmupsInit[${J(key)}]`)) === true, await p.eval(`getSession().warmupsInit`));
+    check('the assisted row with a remembered toggle gets no ramp', (await p.eval(`document.querySelectorAll('#workout-phase-legacy .phase-legacy-exercise')[1].querySelectorAll('.warmup-item').length`)) === 0);
     for (let k = 0; k < 4; k++) await clickIn(`document.querySelectorAll('#exercise-list .exercise')[0]`, '.warmup-remove', 0);
     await p.eval(`(renderTrening(), true)`);
-    check('removing all and re-rendering does not refill', (await p.eval(`document.querySelectorAll('#exercise-list .warmup-item').length`)) === 0);
+    check('removing all and re-rendering does not refill', (await p.eval(`document.querySelectorAll('#workout-phase-legacy .warmup-item').length`)) === 0);
     await p.reload();
     await p.eval(`(selectedPlan = 'wauto', switchTab('trening'), renderTrening(), true)`); await wait(300);
-    check('…nor after a reload (warmupsInit persisted)', (await p.eval(`document.querySelectorAll('#exercise-list .warmup-item').length`)) === 0 && (await p.eval(`getSession().warmupsInit[${J(key)}]`)) === true);
-    /* editor plánu: prepínač */
-    await p.eval(`(() => { state.activeSession = null; saveState(); selectedPlan = 'wauto'; startEditPlan('wauto'); return true; })()`);
+    check('…nor after a reload (warmupsInit persisted)', (await p.eval(`document.querySelectorAll('#workout-phase-legacy .warmup-item').length`)) === 0 && (await p.eval(`getSession().warmupsInit[${J(key)}]`)) === true);
+    /* The remembered ramp stays configurable in the plan editor before any workout exists (draft until Save). */
+    await p.eval(`(() => { clearSession(); saveState(); selectedPlan = 'wauto'; startEditPlan('wauto'); return true; })()`);
     await wait(200);
-    check('plan editor: toggle on for the bench row, hidden for the assisted row', await p.eval(`(() => { const r = document.querySelectorAll('#edit-rows .edit-row'); const c = r[0].querySelector('.edit-warmup-ramp'); return !!c && c.checked && r[1].querySelector('.edit-warmup-box').hidden && !r[0].querySelector('.edit-warmup-box').hidden; })()`));
-    await p.eval(`(() => { const c = document.querySelectorAll('#edit-rows .edit-row')[0].querySelector('.edit-warmup-ramp'); c.checked = false; c.dispatchEvent(new Event('change')); saveEditPlan(); return true; })()`);
-    check('turning the toggle off removes the field from the plan', await p.eval(`!('warmupRamp' in getPlan('wauto').exercises[0])`), await p.eval(`getPlan('wauto').exercises[0]`));
-    await p.eval(`(() => { startEditPlan('wauto'); const c = document.querySelectorAll('#edit-rows .edit-row')[0].querySelector('.edit-warmup-ramp'); c.checked = true; c.dispatchEvent(new Event('change')); saveEditPlan(); return true; })()`);
-    check('turning it on stores warmupRamp: true', await p.eval(`getPlan('wauto').exercises[0].warmupRamp === true`));
+    const editRamps = `Array.from(document.querySelectorAll('#edit-warmup-ramp .edit-ramp-pref'))`;
+    check('before any workout the editor offers the remembered ramp for the bench row only (assisted row excluded)', await p.eval(`(() => { const c = ${editRamps}; return !getSession() && !document.getElementById('edit-warmup-ramp').hidden && c.length === 1 && c[0].checked && !document.querySelector('#edit-rows .edit-warmup-ramp'); })()`));
+    await p.eval(`(() => { const c = ${editRamps}[0]; c.checked = false; c.dispatchEvent(new Event('change')); return true; })()`);
+    check('unticking in the editor only changes the draft', await p.eval(`editDraft[0].warmupRamp !== true && getPlan('wauto').exercises[0].warmupRamp === true`));
+    await p.eval(`(cancelEditPlan(), true)`);
+    check('Cancel keeps the remembered ramp', await p.eval(`getPlan('wauto').exercises[0].warmupRamp === true`));
+    await p.eval(`(() => { startEditPlan('wauto'); const c = ${editRamps}[0]; c.checked = false; c.dispatchEvent(new Event('change')); saveEditPlan(); return true; })()`);
+    check('Save with the ramp off removes the field from the plan', await p.eval(`!('warmupRamp' in getPlan('wauto').exercises[0])`));
+    await p.eval(`(() => { startEditPlan('wauto'); const c = ${editRamps}[0]; c.checked = true; c.dispatchEvent(new Event('change')); saveEditPlan(); return true; })()`);
+    check('Save with the ramp on stores warmupRamp: true', await p.eval(`getPlan('wauto').exercises[0].warmupRamp === true`));
+    await p.eval(`(clearSession(), saveState(), selectedPlan = 'wauto', ensureSession(getPlan('wauto')), switchTab('trening'), renderTrening(), true)`); await wait(300);
+    check('the preference saved from the editor fills the leading ramp when the workout starts', (await p.eval(`document.querySelectorAll('#workout-phase-legacy .phase-legacy-exercise')[0].querySelectorAll('.warmup-item').length`)) === 4);
+
+    console.log('== program workout: the remembered ramp is saved to the plan, not only the session snapshot');
+    await p.eval(`(() => {
+      clearSession(); saveState();
+      state.plans['wprog'] = { id: 'wprog', builtin: false, customName: 'Program ramp', location: null,
+        exercises: [{ id: 'bench-press', name: 'Bench', sets: 3, reps: 5, weight: 100 }] };
+      selectedPlan = 'wprog';
+      const s = ensureSession(getPlan('wprog'));
+      s.programPlan = cleanProgramSessionPlan(getPlan('wprog'), 'wprog', 'Program ramp');
+      saveState(); switchTab('trening'); renderTrening(); return true; })()`);
+    await wait(300);
+    check('a program workout renders from its own plan snapshot', await p.eval(`currentPlan() === getSession().programPlan && currentPlan().exercises[0] !== getPlan('wprog').exercises[0]`));
+    await p.eval(`(() => { const c = document.querySelector('#workout-phase-legacy .phase-legacy-ramp'); c.checked = true; c.dispatchEvent(new Event('change')); return true; })()`);
+    await wait(200);
+    check('ticking the preference during a program workout persists it on the saved plan row', await p.eval(`getPlan('wprog').exercises[0].warmupRamp === true`));
+    check('…while the session snapshot copy used for rendering shows the ticked state', await p.eval(`getSession().programPlan.exercises[0].warmupRamp === true && document.querySelector('#workout-phase-legacy .phase-legacy-ramp').checked`));
+    await p.eval(`(clearSession(), saveState(), ensureSession(getPlan('wprog')), renderTrening(), true)`); await wait(300);
+    check('a later workout of that plan starts with the remembered ramp', (await p.eval(`document.querySelectorAll('#workout-phase-legacy .phase-legacy-exercise')[0].querySelectorAll('.warmup-item').length`)) === 4);
+    await p.eval(`(clearSession(), saveState(), delete state.plans['wprog'], true)`);
+
+    console.log('== duplicate exercise: every occurrence is initialised and keeps its own ramp preference');
+    await p.eval(`(() => {
+      state.plans['wdup'] = { id: 'wdup', builtin: false, customName: 'Duplicate ramp', location: null,
+        exercises: [{ id: 'bench-press', name: 'Bench', sets: 3, reps: 5, weight: 60 },
+          { id: 'bench-press', name: 'Bench', sets: 3, reps: 5, weight: 80, warmupRamp: true }] };
+      selectedPlan = 'wdup'; ensureSession(getPlan('wdup')); switchTab('trening'); renderTrening(); return true; })()`);
+    await wait(300);
+    check('a ramp on only the later occurrence is still filled once at start', await p.eval(`(() => { const want = warmupRamp(getPlan('wdup').exercises[1], 80).length; return want > 0 && getSession().warmupsInit['bench-press'] === true && sessionWarmups(getPlan('wdup').exercises[1]).length === want; })()`));
+    check('one shared practice section offers one preference per occurrence (off, on)', await p.eval(`(() => { const s = document.querySelectorAll('#workout-phase-legacy [data-exercise-key="bench-press"]'); return s.length === 1 && Array.from(s[0].querySelectorAll('.phase-legacy-ramp')).map((x) => x.checked).join() === 'false,true'; })()`));
+    await p.eval(`(() => { const c = document.querySelectorAll('#workout-phase-legacy [data-exercise-key="bench-press"] .phase-legacy-ramp'); c[1].checked = false; c[1].dispatchEvent(new Event('change')); return true; })()`);
+    await wait(150);
+    await p.eval(`(() => { const c = document.querySelectorAll('#workout-phase-legacy [data-exercise-key="bench-press"] .phase-legacy-ramp'); c[0].checked = true; c[0].dispatchEvent(new Event('change')); return true; })()`);
+    await wait(150);
+    check('each occurrence stores its own preference', await p.eval(`(() => { const r = getPlan('wdup').exercises; return r[0].warmupRamp === true && !('warmupRamp' in r[1]); })()`));
+    await p.eval(`(clearSession(), saveState(), delete state.plans['wdup'], true)`);
     check('sanitiser drops a junk session warm-up list', await p.eval(`(() => { const s = normalizeActiveSession({ id: 'x', startedAt: Date.now(), planId: 'wauto', completedSets: {}, actualFailureSets: {}, warmups: { a: [{ w: -1, r: 5 }, { w: 20, r: 5, done: true }], b: 'junk' }, warmupsInit: { a: true, b: 1 } }); return !!s && J2(s.warmups) === '{"a":[{"w":20,"r":5,"done":true}]}' && J2(s.warmupsInit) === '{"a":true}'; function J2(x) { return JSON.stringify(x); } })()`));
 
     console.log('== replacing an exercise');
@@ -234,7 +278,7 @@ function check(name, ok, info) {
     const slot = await p.eval(`exerciseSlots(getPlan('wtest'))[0].slot`);
     const subKey = await p.eval(`(() => { const st = substitutionSteps(${J(slot)}); return st.length ? String(st[st.length - 1].key) : null; })()`);
     check('the exercise was replaced', !!subKey && subKey !== 'bench-press', subKey);
-    check('the closed original keeps its warm-up, locked', await p.eval(`(() => { const e = document.querySelector('#exercise-list .exercise.exercise-closed'); return !!e && e.querySelectorAll('.warmup-item').length === 1 && Array.from(e.querySelectorAll('.warmup-item button')).every((x) => x.disabled) && !e.querySelector('.btn-add-warmup'); })()`));
+    check('the closed original keeps its central practice rows locked, outside the working card', await p.eval(`(() => { const e = document.querySelector('#workout-phase-legacy [data-exercise-key="bench-press"]'); const c = document.querySelector('#exercise-list .exercise.exercise-closed'); return !!e && !!c && !c.querySelector('.warmup-item') && e.querySelectorAll('.warmup-item').length === 1 && Array.from(e.querySelectorAll('.warmup-item button')).every((x) => x.disabled) && !e.querySelector('.btn-add-warmup'); })()`));
     await actIn(`document.querySelectorAll('#exercise-list .exercise')[1]`, '.btn-add-warmup');
     await wait(200);
     check('the replacement gets its own warm-ups', (await p.eval(`(getSession().warmups[${J(subKey)}] || []).length`)) === 1);
@@ -244,17 +288,38 @@ function check(name, ok, info) {
     await wait(200);
     check('undoing the replacement removes its warm-ups; the original keeps its own', await p.eval(`!(getSession().warmups || {})[${J(subKey)}] && ((getSession().warmups || {})['bench-press'] || []).length === 1`), await p.eval(`getSession().warmups`));
 
+    console.log('== replaced exercise that only owns warm-up rows stays closed, named and locked');
+    await p.eval(`(document.querySelector('#workout-phase-legacy [data-exercise-key="dumbbell-row"] .btn-add-warmup').click(), true)`); await wait(150);
+    await actIn(exEl(1), '.exercise-swap'); await wait(200);
+    await p.eval(`(applySubstitution('hammer-curl'), true)`); await wait(300);
+    const slot1 = await p.eval(`exerciseSlots(getPlan('wtest'))[1].slot`);
+    const subKey1 = await p.eval(`(() => { const st = substitutionSteps(${J(slot1)}); return st.length ? String(st[st.length - 1].key) : null; })()`);
+    check('the second exercise was replaced before any working set was done', !!subKey1 && subKey1 !== 'dumbbell-row' && (await p.eval(`!document.querySelector('#exercise-list .exercise-closed')`)), subKey1);
+    const closed = await p.eval(`(() => { const e = document.querySelector('#workout-phase-legacy [data-exercise-key="dumbbell-row"]'); const all = Array.from(document.querySelectorAll('#workout-phase-legacy .phase-legacy-exercise'));
+      return { found: !!e, name: e ? e.querySelector('h4').textContent : '', expected: exerciseDisplayName(getPlan('wtest').exercises[1]), rows: e ? e.querySelectorAll('.warmup-item').length : -1,
+        locked: !!e && Array.from(e.querySelectorAll('.warmup-item button')).every((b) => b.disabled), actions: !!e && !!e.querySelector('.btn-add-warmup, .btn-warmup-ramp, .phase-legacy-ramp'),
+        rawTitle: all.some((s) => s.querySelector('h4').textContent === s.dataset.exerciseKey),
+        replacementWritable: all.some((s) => s.dataset.exerciseKey === ${J(subKey1)} && !!s.querySelector('.btn-add-warmup')) }; })()`);
+    check('the warm-up-only original keeps its resolved name and its rows, locked', closed.found && closed.name === closed.expected && closed.rows === 1 && closed.locked && !closed.actions, closed);
+    check('no practice section is titled with an internal key', closed.rawTitle === false, closed);
+    check('the replacement stays writable in its own section', closed.replacementWritable === true, closed);
+    await p.eval(`(requestUndoSubstitution(${J(slot1)}), true)`);
+    await wait(300);
+    if (await p.eval(`!document.getElementById('modal-generic').hidden`)) await p.eval(`(confirmGeneric(), true)`);
+    await wait(200);
+    check('undoing reopens the original with its warm-up row writable again', await p.eval(`(() => { const e = document.querySelector('#workout-phase-legacy [data-exercise-key="dumbbell-row"]'); return !!e && e.querySelectorAll('.warmup-item').length === 1 && !!e.querySelector('.btn-add-warmup') && Array.from(e.querySelectorAll('.warmup-item button')).every((b) => !b.disabled); })()`));
+
     console.log('== languages');
     for (const lang of ['sk', 'en', 'es', 'pt-BR', 'fr', 'ar']) {
       await p.eval(`(setLang(${J(lang)}), switchTab('trening'), renderTrening(), true)`);
-      const x = await p.eval(`(() => { const e = ${ex0}; return { add: (e.querySelector('.btn-ex-more').click(), document.querySelector('#modal-ex-actions .btn-add-warmup').textContent), ramp: document.querySelector('#modal-ex-actions .btn-warmup-ramp').textContent, label: e.querySelector('.warmup-label').textContent,
-        aria: Array.from(e.querySelectorAll('.warmup-item button')).map((b) => b.getAttribute('aria-label')).join('|'), title: document.querySelector('#modal-ex-actions .btn-add-warmup').title + document.querySelector('#modal-ex-actions .btn-warmup-ramp').title, _c: closeExerciseActions(),
+      const x = await p.eval(`(() => { const e = ${practice(ex0)}; return { add: e.querySelector('.btn-add-warmup').textContent, ramp: e.querySelector('.btn-warmup-ramp').textContent, label: e.querySelector('.warmup-label').textContent,
+        aria: Array.from(e.querySelectorAll('.warmup-item button')).map((b) => b.getAttribute('aria-label')).join('|'), title: e.querySelector('.btn-add-warmup').title + e.querySelector('.btn-warmup-ramp').title,
         hist: historyWarmupsText(state.history[state.history.length - 1].exercises[0]), dir: document.documentElement.dir,
         miss: Object.keys(I18N.en).filter((k) => k.startsWith('warmup.') && I18N[${J(lang)}][k] === undefined) }; })()`);
       check(lang + ': warm-up texts translated, no missing warmup.* key', !/warmup\.|setReps\.|setWeight\./.test(x.add + x.ramp + x.label + x.aria + x.title + x.hist) && x.miss.length === 0 && x.add.length > 0 && x.ramp.length > 0 && x.hist.includes('20'), x);
       if (lang === 'ar') {
         check('ar: right-to-left', x.dir === 'rtl');
-        await p.eval(`(${ex0}.querySelector('.warmups').scrollIntoView({ block: 'center' }), true)`);
+        await p.eval(`(${practice(ex0)}.querySelector('.warmups').scrollIntoView({ block: 'center' }), true)`);
         if (process.env.GQ_SCREENSHOTS !== '0') {
         const s2 = await p.c.send('Page.captureScreenshot', { format: 'png' });
         fs.writeFileSync(path.join(WORK, 'shots', 'warmups-ar.png'), Buffer.from(s2.data, 'base64'));

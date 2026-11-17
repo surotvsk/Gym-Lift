@@ -35,7 +35,7 @@
     }, 4000);
   </script>
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
-  <link rel="stylesheet" href="style.css?v=122">
+  <link rel="stylesheet" href="style.css?v=123">
 </head>
 <body data-tab="dnes">
 
@@ -158,6 +158,8 @@
         <span class="bt-line summary-bar" id="summary-bar"></span>
         <div class="mini">
           <button type="button" class="mini-ghost" id="btn-open-rest"><svg class="kico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2M9.5 2.5h5"/></svg><span data-i18n="bento.rest">Oddych</span></button>
+          <label class="phase-header-toggle"><input type="checkbox" id="phase-toggle-warmup"><span data-i18n="phase.warmup"></span></label>
+          <label class="phase-header-toggle"><input type="checkbox" id="phase-toggle-stretching"><span data-i18n="phase.stretching"></span></label>
           <button type="button" class="mini-ghost sess-more" id="btn-session-more" aria-haspopup="true" aria-expanded="false" aria-controls="session-menu" data-i18n-aria="session.moreAria" aria-label="Ďalšie možnosti tréningu"><svg class="kico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1.3"/><circle cx="12" cy="12" r="1.3"/><circle cx="19" cy="12" r="1.3"/></svg></button>
         </div>
         <div class="sess-menu" id="session-menu" hidden>
@@ -200,6 +202,7 @@
           <button class="btn-icon btn-icon-danger" id="btn-plan-delete" data-i18n-title="trening.deletePlan" data-i18n-aria="trening.deletePlan">🗑️</button>
         </div>
         <div class="edit-rows" id="edit-rows"></div>
+        <details class="edit-ramp-prefs" id="edit-warmup-ramp" hidden></details>
         <button class="btn btn-secondary btn-block" id="btn-add-exercise" data-i18n="trening.addExercise">+ Pridať cvik</button>
         <button class="btn btn-secondary btn-block btn-from-plans" id="btn-edit-add-from-plans" data-i18n="trening.addFromPlans">Pridať cviky z existujúcich plánov</button>
         <p class="edit-hint" data-i18n="trening.failureHintEdit">Voliteľné: vyber série, ktoré plánuješ ísť do zlyhania. Skutočný výsledok môžeš zmeniť počas tréningu.</p>
@@ -215,9 +218,12 @@
 
       <!-- Bento: cviky počas tréningu -->
       <div class="tr-session" id="tr-session">
+        <section class="workout-phase-card" id="workout-phase-warmup" hidden></section>
+        <section class="workout-phase-legacy" id="workout-phase-legacy"></section>
         <div class="exercise-list" id="exercise-list"></div>
         <button type="button" class="btn btn-secondary btn-block" id="btn-session-add-exercise" data-i18n="quick.addExercise">+ Pridať cvik</button>
         <p class="failure-hint" data-i18n="trening.failureHint">🔥 Zlyhanie — označ iba sériu, ktorú si reálne odcvičil do zlyhania.</p>
+        <section class="workout-phase-card" id="workout-phase-stretching" hidden></section>
       </div>
       <!-- Lepivá lišta Dokončiť nad tab barom (len počas tréningu) -->
       <div class="finish-bar" id="finish-bar" hidden>
@@ -1418,8 +1424,8 @@
     <button type="button" class="btn btn-sm" id="btn-csv-undo" data-i18n="csv.undo">Undo import</button>
   </div>
 
-  <script src="community-config.js?v=122"></script>
-  <script src="vendor/supabase-js.js?v=122"></script>
-  <script src="script.js?v=122"></script>
+  <script src="community-config.js?v=123"></script>
+  <script src="vendor/supabase-js.js?v=123"></script>
+  <script src="script.js?v=123"></script>
 </body>
 </html>

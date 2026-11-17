@@ -19829,6 +19829,940 @@ function todayLabel() {
 /* ---------- Konstanty ---------- */
 const WARMUP_MAX = 6;  // najviac rozcvičiek na jeden cvik v tréningu
 const DROP_MAX = 5;   // najviac drop sérií na jeden cvik v tréningu
+const WORKOUT_PHASE_I18N = {
+  "en": {
+    "phase.toggleHelp": "Add optional phases to this workout. Each can be skipped or completed independently.",
+    "phase.warmupPlacement": "Before your working exercises",
+    "phase.stretchingPlacement": "After your working exercises, before saving",
+    "phase.optionalHelp": "Optional: use the timer or mark completion yourself. Neither phase is required to finish your workout.",
+    "phase.markComplete": "Mark phase complete",
+    "phase.clearCompletion": "Clear phase completion",
+    "phase.manualCompletionHelp": "Marking complete stops this phase's timer and records your own confirmation. It does not certify elapsed activity.",
+    "phase.timerCompletionHelp": "The timer completed this phase. Save the workout to include it in history and calculate eligible rewards.",
+    "phase.stopHelp": "Stopping does not mark the phase complete.",
+    "phase.completionCleared": "Completion cleared. Your configuration and light practice rows are retained.",
+    "phase.enabled": "Phase enabled",
+    "phase.disabled": "Phase disabled",
+    "phase.activitySuggestions": "Optional activity ideas",
+    "phase.activityGuidance": "Guidance only, not exercise records. Choose comfortable movements and a gentle pace; stop if anything hurts. Selecting ideas does not change sets or XP.",
+    "phase.noActivitiesSelected": "No activity ideas selected",
+    "phase.selectedActivities": "Selected ideas: {0}",
+    "phase.restart": "Restart phase timer",
+    "phase.configuration": "Phase timer settings",
+    "phase.totalDuration": "Total: {0}",
+    "phase.totalFormula": "{0} × {1} s work + {2} × {3} s rest",
+    "phase.sequenceHelp": "N work periods have N−1 rests. There is no rest after the final work period; 10 periods have 9 rests.",
+    "phase.zeroRestHelp": "With 0 seconds of rest, work periods follow directly and there is no rest gong.",
+    "phase.configLocked": "Settings are locked while the timer is running or paused. Stop it before editing.",
+    "phase.workBounds": "Work: whole seconds from 1 to 3600.",
+    "phase.restBounds": "Rest: whole seconds from 0 to 3600.",
+    "phase.roundBounds": "Work periods: a whole number from 1 to 100.",
+    "phase.totalBounds": "The complete sequence must not exceed 24 hours (86400 seconds).",
+    "phase.invalidConfiguration": "Check the work time, rest time, number of periods and total duration before starting.",
+    "phase.legacyTitle": "Light practice sets",
+    "phase.legacyHelp": "Your existing exercise-specific warm-up rows and ramp controls are here. They remain separate from the optional phase timer.",
+    "phase.legacyTarget": "Choose the exercise for light practice sets",
+    "phase.legacyRamp": "Generate progressive warm-up rows",
+    "phase.legacyManual": "Add a light practice row manually",
+    "phase.legacyRetained": "Existing rows, their completion and remembered ramp choices are retained, even when the optional Warm-up phase is off.",
+    "phase.legacyIndependent": "Completing these rows does not complete the Warm-up phase. Mark the phase separately if you want to record it.",
+    "phase.countsHelp": "Phase periods, suggested activities and light practice rows do not add working sets, exercises, muscle totals, volume or personal records. They do not create another workout or count as ordinary rest use.",
+    "phase.rewardsTitle": "Phase XP and badges",
+    "phase.xpHelp": "Each enabled, completed phase adds 5 XP only when the saved workout has at least 3 completed working sets. Manual and timer completion count equally; ticking or starting alone awards nothing.",
+    "phase.dailyCapHelp": "Base workout XP and phase XP share the existing daily limit: only the first two eligible workouts on a local date earn them. A third earns neither. Workouts below 3 working sets earn neither and use no slot.",
+    "phase.badgeWarmup": "First completed Warm-up",
+    "phase.badgeStretching": "First completed Stretching",
+    "phase.badgeHelp": "The first saved workout with a completed phase that actually earns workout XP unlocks its badge and 25 achievement XP, once per badge.",
+    "phase.undoHelp": "Undo or deleting a workout removes its workout and phase XP. Another workout may take the freed daily slot. An already-earned phase badge and its 25 achievement XP stay permanently earned; Undo is not a full achievement-XP refund.",
+    "phase.historyCompleted": "Completed",
+    "phase.historyIncomplete": "Not completed",
+    "phase.historyManual": "Marked complete manually",
+    "phase.historyTimer": "Completed by timer",
+    "phase.historySummary": "{0}: {1} · configured total {2}",
+    "phase.browserTitle": "Browser timer limits",
+    "phase.browserLimits": "Keep this page open and visible for reliable timing. Browsers may delay or suspend timers in the background or with the screen off; background timing and gongs are not guaranteed.",
+    "phase.browserAudio": "Start from a visible user action to enable browser audio. Device volume, browser policy or audio focus may prevent a gong; the screen remains the timing reference.",
+    "phase.browserExplicitLimited": "Use browser timer with these limits",
+    "phase.batteryTitle": "Android background readiness",
+    "phase.batteryOptimized": "Battery optimization is on. Strict screen-off or deep-idle timing is not ready; open Android battery settings and manually allow unrestricted battery use for this app, then return and recheck.",
+    "phase.batteryRestricted": "Android reports background restrictions. Remove this app's restrictions in system settings and recheck before relying on screen-off timing.",
+    "phase.batteryReady": "Battery optimization is off and no background restriction is reported. Force-stop, a device restart or additional manufacturer restrictions can still interrupt the timer.",
+    "phase.batteryUnknown": "Background readiness could not be checked. Do not assume screen-off timing is available.",
+    "phase.openBatterySettings": "Open Android battery settings",
+    "phase.batterySettingsHelp": "This opens system settings; it does not grant an exemption. Make the change yourself, return here and recheck the actual status.",
+    "phase.recheckReadiness": "Recheck background readiness",
+    "phase.notificationHelp": "Allow notifications to see the ongoing timer and its Pause and Stop controls in the notification drawer. Permission is requested only when you choose to use it, not during the tutorial.",
+    "phase.notificationDenied": "Timer notifications are disabled for the app or its channel. Android may still allow the timer service, but its notification-drawer controls will not be available. This status does not indicate whether sound can play.",
+    "phase.requestNotifications": "Allow timer notifications",
+    "phase.audioHelp": "Native timer gongs use media volume and the active speaker or headphones. Muting or losing audio focus can prevent sound; no gong is guaranteed.",
+    "phase.audioUnavailable": "The timer could not play a gong. Check media volume, audio routing and other apps using audio.",
+    "phase.startFailed": "The phase timer could not start. No browser timer was substituted. Check the reported issue and try again explicitly.",
+    "phase.serviceStartFailed": "Android could not start the foreground timer service. No phase timer is running from this attempt. Keep the app visible, review system restrictions and try again.",
+    "phase.revisionConflict": "The timer changed before that action was applied. Its latest state has been requested; review it before choosing another action.",
+    "phase.statusUnavailable": "The authoritative timer status is unavailable. Completion has not been assumed; reconnect to the timer before acting again.",
+    "phase.bridgeUnavailable": "The native phase timer is unavailable in this build. It will not be silently replaced by a browser timer.",
+    "phase.interrupted": "Timer interrupted. This phase has not been automatically marked complete.",
+    "phase.interruptedGap": "Timer execution was interrupted. Missed gongs will not be replayed, and elapsed time across the interruption does not automatically complete the phase.",
+    "phase.interruptedReboot": "The device restarted or the timer's saved state is no longer valid. The previous sequence will not restart or complete automatically.",
+    "phase.interruptedUserStop": "Android reports that the timer was stopped, or its service is no longer running. Your stop is respected; the phase has not been marked complete.",
+    "phase.restartAfterInterruption": "Restart explicitly, or mark complete yourself if appropriate. Neither action is taken automatically.",
+    "phase.noSilentFallback": "Native timing problems are shown here. The app never silently switches a native phase to browser-only timing.",
+    "phase.replaceTimerTitle": "Replace the current timer?",
+    "phase.replaceTimerBody": "Stop {0} and start {1}? Only one rest or phase timer can own timing and sound at a time.",
+    "phase.replaceTimerConfirm": "Replace timer",
+    "phase.keepCurrentTimer": "Keep current timer",
+    "phase.communityPending": "New Community badges pending server upgrade",
+    "phase.communityPendingHelp": "Local phase rewards still work. Publishing the new badges requires the Community server upgrade; they have not been confirmed as published. Existing Community features remain available.",
+    "phase.mixedVersionHelp": "Update GymQuest on every device using these phases. Older app versions do not know the new rewards and can submit lower Community totals. Local and Community totals can also differ because of existing server checks and time limits.",
+    "phase.statusRunning": "Timer running",
+    "phase.statusPaused": "Timer paused",
+    "phase.statusStopped": "Timer stopped",
+    "phase.statusCompleted": "Timer completed",
+    "phase.statusInterrupted": "Timer interrupted",
+    "phase.warmup": "Warm-up",
+    "phase.stretching": "Stretching",
+    "phase.rounds": "Activity periods",
+    "phase.workSeconds": "Activity time (seconds)",
+    "phase.restSeconds": "Rest time (seconds)",
+    "phase.start": "Start timer",
+    "phase.pause": "Pause",
+    "phase.resume": "Resume",
+    "phase.stop": "Stop",
+    "phase.done": "Finished",
+    "phase.rest": "Rest",
+    "phase.round": "Activity {n} of {total}"
+  },
+  "sk": {
+    "phase.toggleHelp": "Pridaj k tréningu voliteľné fázy. Každú môžeš samostatne preskočiť alebo dokončiť.",
+    "phase.warmupPlacement": "Pred hlavnými cvikmi",
+    "phase.stretchingPlacement": "Po hlavných cvikoch, pred uložením",
+    "phase.optionalHelp": "Voliteľné: použi časovač alebo dokončenie označ ručne. Na ukončenie tréningu nie je potrebná ani jedna fáza.",
+    "phase.markComplete": "Označiť fázu ako dokončenú",
+    "phase.clearCompletion": "Zrušiť označenie dokončenia fázy",
+    "phase.manualCompletionHelp": "Označenie dokončenia zastaví časovač tejto fázy a zaznamená tvoje vlastné potvrdenie. Nepotvrdzuje skutočný čas aktivity.",
+    "phase.timerCompletionHelp": "Časovač dokončil túto fázu. Ulož tréning, aby sa zobrazila v histórii a vypočítali sa prípadné odmeny.",
+    "phase.stopHelp": "Zastavenie neoznačí fázu ako dokončenú.",
+    "phase.completionCleared": "Označenie dokončenia bolo zrušené. Nastavenia aj riadky ľahkých prípravných sérií zostali zachované.",
+    "phase.enabled": "Fáza zapnutá",
+    "phase.disabled": "Fáza vypnutá",
+    "phase.activitySuggestions": "Voliteľné tipy na aktivity",
+    "phase.activityGuidance": "Iba odporúčania, nie záznamy cvikov. Vyber si príjemné pohyby a mierne tempo; ak niečo bolí, prestaň. Výber tipov nemení počet sérií ani XP.",
+    "phase.noActivitiesSelected": "Nie sú vybrané žiadne tipy na aktivity",
+    "phase.selectedActivities": "Vybrané tipy: {0}",
+    "phase.restart": "Spustiť časovač fázy odznova",
+    "phase.configuration": "Nastavenia časovača fázy",
+    "phase.totalDuration": "Spolu: {0}",
+    "phase.totalFormula": "{0} × {1} s aktivity + {2} × {3} s odpočinku",
+    "phase.sequenceHelp": "N úsekov aktivity má N−1 prestávok. Po poslednom úseku už prestávka nie je; 10 úsekov má 9 prestávok.",
+    "phase.zeroRestHelp": "Pri odpočinku 0 sekúnd úseky aktivity nadväzujú priamo a nezaznie gong odpočinku.",
+    "phase.configLocked": "Počas behu aj pozastavenia časovača sú nastavenia uzamknuté. Pred úpravou ho zastav.",
+    "phase.workBounds": "Aktivita: celé sekundy od 1 do 3600.",
+    "phase.restBounds": "Odpočinok: celé sekundy od 0 do 3600.",
+    "phase.roundBounds": "Úseky aktivity: celé číslo od 1 do 100.",
+    "phase.totalBounds": "Celá sekvencia nesmie presiahnuť 24 hodín (86400 sekúnd).",
+    "phase.invalidConfiguration": "Pred spustením skontroluj čas aktivity, odpočinku, počet úsekov a celkové trvanie.",
+    "phase.legacyTitle": "Ľahké prípravné série",
+    "phase.legacyHelp": "Tu sú tvoje pôvodné rozcvičovacie riadky pre jednotlivé cviky a ovládanie postupného zvyšovania záťaže. Sú oddelené od voliteľného časovača fázy.",
+    "phase.legacyTarget": "Vybrať cvik pre ľahké prípravné série",
+    "phase.legacyRamp": "Vytvoriť rozcvičovacie riadky s postupným zvyšovaním záťaže",
+    "phase.legacyManual": "Ručne pridať ľahký prípravný riadok",
+    "phase.legacyRetained": "Existujúce riadky, ich dokončenie aj zapamätané voľby postupného zvyšovania záťaže zostávajú zachované, aj keď je voliteľná fáza rozcvičky vypnutá.",
+    "phase.legacyIndependent": "Dokončenie týchto riadkov nedokončí fázu rozcvičky. Ak ju chceš zaznamenať, označ ju samostatne.",
+    "phase.countsHelp": "Úseky fáz, navrhované aktivity ani ľahké prípravné riadky nepridávajú pracovné série, cviky, svalové súčty, objem ani osobné rekordy. Nevytvárajú ďalší tréning a nepočítajú sa ako použitie bežného odpočinku.",
+    "phase.rewardsTitle": "XP a odznaky za fázy",
+    "phase.xpHelp": "Každá zapnutá a dokončená fáza pridá 5 XP iba vtedy, keď má uložený tréning aspoň 3 dokončené pracovné série. Ručné dokončenie aj časovač sa počítajú rovnako; samotné označenie alebo spustenie nič neudeľuje.",
+    "phase.dailyCapHelp": "Základné XP za tréning aj XP za fázy zdieľajú existujúci denný limit: získajú ich iba prvé dva oprávnené tréningy podľa miestneho dátumu. Tretí nezíska ani jedny. Tréningy s menej než 3 pracovnými sériami nezískajú ani jedny a neobsadia miesto v limite.",
+    "phase.badgeWarmup": "Prvá dokončená rozcvička",
+    "phase.badgeStretching": "Prvý dokončený strečing",
+    "phase.badgeHelp": "Prvý uložený tréning s dokončenou fázou, ktorý skutočne získa tréningové XP, odomkne jej odznak a 25 XP za úspech, raz pre každý odznak.",
+    "phase.undoHelp": "Vrátenie späť alebo odstránenie tréningu odoberie jeho tréningové XP aj XP za fázy. Uvoľnené denné miesto môže využiť iný tréning. Už získaný odznak fázy aj jeho 25 XP za úspech zostávajú natrvalo; vrátenie späť nie je úplným odobratím XP za úspechy.",
+    "phase.historyCompleted": "Dokončené",
+    "phase.historyIncomplete": "Nedokončené",
+    "phase.historyManual": "Ručne označené ako dokončené",
+    "phase.historyTimer": "Dokončené časovačom",
+    "phase.historySummary": "{0}: {1} · nastavené celkové trvanie {2}",
+    "phase.browserTitle": "Obmedzenia časovača v prehliadači",
+    "phase.browserLimits": "Pre spoľahlivé meranie nechaj stránku otvorenú a viditeľnú. Prehliadače môžu časovače na pozadí alebo pri vypnutej obrazovke spomaliť či pozastaviť; časovanie a gongy na pozadí nie sú zaručené.",
+    "phase.browserAudio": "Zvuk prehliadača povoľ spustením cez viditeľnú akciu. Hlasitosť zariadenia, pravidlá prehliadača alebo zvukový fokus môžu gongu zabrániť; rozhodujúce je zobrazenie na obrazovke.",
+    "phase.browserExplicitLimited": "Použiť časovač prehliadača s týmito obmedzeniami",
+    "phase.batteryTitle": "Pripravenosť na beh na pozadí v Androide",
+    "phase.batteryOptimized": "Optimalizácia batérie je zapnutá. Presné časovanie pri vypnutej obrazovke alebo hlbokom spánku nie je pripravené; otvor nastavenia batérie Androidu, ručne povoľ tejto aplikácii neobmedzené používanie batérie a potom sa vráť a stav znova skontroluj.",
+    "phase.batteryRestricted": "Android hlási obmedzenia na pozadí. Pred spoliehaním sa na časovanie pri vypnutej obrazovke ich pre túto aplikáciu odstráň v systémových nastaveniach a stav znova skontroluj.",
+    "phase.batteryReady": "Optimalizácia batérie je vypnutá a nie je hlásené obmedzenie na pozadí. Vynútené zastavenie, reštart zariadenia alebo ďalšie obmedzenia výrobcu však môžu časovač prerušiť.",
+    "phase.batteryUnknown": "Pripravenosť na beh na pozadí sa nepodarilo skontrolovať. Nepredpokladaj, že je časovanie pri vypnutej obrazovke dostupné.",
+    "phase.openBatterySettings": "Otvoriť nastavenia batérie Androidu",
+    "phase.batterySettingsHelp": "Otvorí sa systémové nastavenie; výnimka sa tým neudelí. Zmenu vykonaj ručne, vráť sa sem a znova skontroluj skutočný stav.",
+    "phase.recheckReadiness": "Znova skontrolovať pripravenosť na pozadí",
+    "phase.notificationHelp": "Povoľ upozornenia, aby si na paneli upozornení videl aktívny časovač a tlačidlá Pozastaviť a Zastaviť. O povolenie sa žiada iba pri tvojom rozhodnutí funkciu použiť, nie počas sprievodcu.",
+    "phase.notificationDenied": "Upozornenia časovača sú pre aplikáciu alebo jej kanál vypnuté. Android môže službu časovača aj tak povoliť, ale ovládanie na paneli upozornení nebude dostupné. Tento stav nehovorí, či sa dá prehrať zvuk.",
+    "phase.requestNotifications": "Povoliť upozornenia časovača",
+    "phase.audioHelp": "Gongy natívneho časovača používajú hlasitosť médií a aktívny reproduktor alebo slúchadlá. Stlmenie alebo strata zvukového fokusu môžu zabrániť zvuku; žiadny gong nie je zaručený.",
+    "phase.audioUnavailable": "Časovač nedokázal prehrať gong. Skontroluj hlasitosť médií, zvukový výstup a ďalšie aplikácie používajúce zvuk.",
+    "phase.startFailed": "Časovač fázy sa nepodarilo spustiť. Nebol nahradený časovačom prehliadača. Skontroluj hlásený problém a vedome ho skús spustiť znova.",
+    "phase.serviceStartFailed": "Android nedokázal spustiť službu časovača v popredí. Tento pokus nespustil žiadny časovač fázy. Nechaj aplikáciu viditeľnú, skontroluj systémové obmedzenia a skús to znova.",
+    "phase.revisionConflict": "Pred vykonaním akcie sa stav časovača zmenil. Bola vyžiadaná jeho najnovšia verzia; pred ďalšou akciou ju skontroluj.",
+    "phase.statusUnavailable": "Rozhodujúci stav časovača nie je dostupný. Dokončenie sa nepredpokladá; pred ďalšou akciou obnov spojenie s časovačom.",
+    "phase.bridgeUnavailable": "Natívny časovač fáz nie je v tejto verzii dostupný. Nebude potichu nahradený časovačom prehliadača.",
+    "phase.interrupted": "Časovač bol prerušený. Táto fáza nebola automaticky označená ako dokončená.",
+    "phase.interruptedGap": "Beh časovača bol prerušený. Zmeškané gongy sa neprehrajú spätne a čas počas prerušenia fázu automaticky nedokončí.",
+    "phase.interruptedReboot": "Zariadenie sa reštartovalo alebo uložený stav časovača už nie je platný. Predchádzajúca sekvencia sa automaticky nespustí ani nedokončí.",
+    "phase.interruptedUserStop": "Android hlási zastavenie časovača alebo jeho služba už nebeží. Zastavenie sa rešpektuje; fáza nebola označená ako dokončená.",
+    "phase.restartAfterInterruption": "Spusti ho vedome odznova alebo, ak je to vhodné, označ dokončenie ručne. Ani jedna akcia sa nevykoná automaticky.",
+    "phase.noSilentFallback": "Problémy natívneho časovania sa zobrazujú tu. Aplikácia nikdy potichu neprepne natívnu fázu na časovanie iba v prehliadači.",
+    "phase.replaceTimerTitle": "Nahradiť aktuálny časovač?",
+    "phase.replaceTimerBody": "Zastaviť {0} a spustiť {1}? Časovanie a zvuk môže naraz ovládať iba jeden časovač odpočinku alebo fázy.",
+    "phase.replaceTimerConfirm": "Nahradiť časovač",
+    "phase.keepCurrentTimer": "Ponechať aktuálny časovač",
+    "phase.communityPending": "Nové odznaky Komunity čakajú na aktualizáciu servera",
+    "phase.communityPendingHelp": "Miestne odmeny za fázy naďalej fungujú. Zverejnenie nových odznakov vyžaduje aktualizáciu servera Komunity; ich zverejnenie zatiaľ nebolo potvrdené. Existujúce funkcie Komunity zostávajú dostupné.",
+    "phase.mixedVersionHelp": "Aktualizuj GymQuest na každom zariadení, kde používaš tieto fázy. Staršie verzie nové odmeny nepoznajú a môžu odoslať nižšie súčty do Komunity. Miestne súčty a súčty Komunity sa môžu líšiť aj pre existujúce kontroly a časové limity servera.",
+    "phase.statusRunning": "Časovač beží",
+    "phase.statusPaused": "Časovač pozastavený",
+    "phase.statusStopped": "Časovač zastavený",
+    "phase.statusCompleted": "Časovač dokončený",
+    "phase.statusInterrupted": "Časovač prerušený",
+    "phase.warmup": "Rozcvička",
+    "phase.stretching": "Strečing",
+    "phase.rounds": "Úseky aktivity",
+    "phase.workSeconds": "Čas aktivity (sekundy)",
+    "phase.restSeconds": "Čas oddychu (sekundy)",
+    "phase.start": "Spustiť časovač",
+    "phase.pause": "Pozastaviť",
+    "phase.resume": "Pokračovať",
+    "phase.stop": "Zastaviť",
+    "phase.done": "Dokončené",
+    "phase.rest": "Oddych",
+    "phase.round": "Aktivita {n} z {total}"
+  },
+  "es": {
+    "phase.toggleHelp": "Añade fases opcionales a este entrenamiento. Puedes omitir o completar cada una por separado.",
+    "phase.warmupPlacement": "Antes de los ejercicios principales",
+    "phase.stretchingPlacement": "Después de los ejercicios principales, antes de guardar",
+    "phase.optionalHelp": "Opcional: usa el temporizador o marca la fase como completada. Ninguna fase es obligatoria para finalizar el entrenamiento.",
+    "phase.markComplete": "Marcar fase como completada",
+    "phase.clearCompletion": "Desmarcar fase completada",
+    "phase.manualCompletionHelp": "Marcarla como completada detiene el temporizador de esta fase y registra tu propia confirmación. No certifica el tiempo de actividad transcurrido.",
+    "phase.timerCompletionHelp": "El temporizador completó esta fase. Guarda el entrenamiento para incluirla en el historial y calcular las recompensas que correspondan.",
+    "phase.stopHelp": "Detener no marca la fase como completada.",
+    "phase.completionCleared": "Se ha desmarcado la finalización. Se conservan la configuración y las filas de series ligeras de preparación.",
+    "phase.enabled": "Fase activada",
+    "phase.disabled": "Fase desactivada",
+    "phase.activitySuggestions": "Ideas de actividad opcionales",
+    "phase.activityGuidance": "Solo son orientaciones, no registros de ejercicios. Elige movimientos cómodos y un ritmo suave; para si algo duele. Seleccionar ideas no cambia las series ni los XP.",
+    "phase.noActivitiesSelected": "No hay ideas de actividad seleccionadas",
+    "phase.selectedActivities": "Ideas seleccionadas: {0}",
+    "phase.restart": "Reiniciar temporizador de fase",
+    "phase.configuration": "Ajustes del temporizador de fase",
+    "phase.totalDuration": "Total: {0}",
+    "phase.totalFormula": "{0} × {1} s de actividad + {2} × {3} s de descanso",
+    "phase.sequenceHelp": "N períodos de actividad tienen N−1 descansos. No hay descanso tras el último período; 10 períodos tienen 9 descansos.",
+    "phase.zeroRestHelp": "Con 0 segundos de descanso, los períodos de actividad se suceden directamente y no suena el gong de descanso.",
+    "phase.configLocked": "Los ajustes están bloqueados mientras el temporizador está en marcha o en pausa. Detenlo antes de editarlos.",
+    "phase.workBounds": "Actividad: segundos enteros de 1 a 3600.",
+    "phase.restBounds": "Descanso: segundos enteros de 0 a 3600.",
+    "phase.roundBounds": "Períodos de actividad: un número entero de 1 a 100.",
+    "phase.totalBounds": "La secuencia completa no puede superar las 24 horas (86400 segundos).",
+    "phase.invalidConfiguration": "Revisa los tiempos de actividad y descanso, el número de períodos y la duración total antes de empezar.",
+    "phase.legacyTitle": "Series ligeras de preparación",
+    "phase.legacyHelp": "Aquí están tus filas de calentamiento por ejercicio y los controles de progresión de carga existentes. Siguen separados del temporizador de fase opcional.",
+    "phase.legacyTarget": "Elegir ejercicio para las series ligeras de preparación",
+    "phase.legacyRamp": "Generar filas de calentamiento con carga progresiva",
+    "phase.legacyManual": "Añadir manualmente una fila de preparación ligera",
+    "phase.legacyRetained": "Se conservan las filas existentes, su estado de finalización y las opciones de progresión recordadas, incluso si la fase opcional de calentamiento está desactivada.",
+    "phase.legacyIndependent": "Completar estas filas no completa la fase de calentamiento. Márcala por separado si quieres registrarla.",
+    "phase.countsHelp": "Los períodos de fase, las actividades sugeridas y las filas de preparación ligera no añaden series de trabajo, ejercicios, totales musculares, volumen ni récords personales. No crean otro entrenamiento ni cuentan como uso del descanso habitual.",
+    "phase.rewardsTitle": "XP y medallas de fase",
+    "phase.xpHelp": "Cada fase activada y completada añade 5 XP solo si el entrenamiento guardado tiene al menos 3 series de trabajo completadas. La finalización manual y por temporizador valen lo mismo; marcar o iniciar por sí solos no otorga nada.",
+    "phase.dailyCapHelp": "Los XP base del entrenamiento y los XP de fase comparten el límite diario existente: solo los dos primeros entrenamientos válidos de cada fecha local los reciben. El tercero no recibe ninguno. Los entrenamientos con menos de 3 series de trabajo no reciben ninguno ni ocupan un puesto del límite.",
+    "phase.badgeWarmup": "Primer calentamiento completado",
+    "phase.badgeStretching": "Primer estiramiento completado",
+    "phase.badgeHelp": "El primer entrenamiento guardado con una fase completada que realmente gane XP de entrenamiento desbloquea su medalla y 25 XP de logro, una sola vez por medalla.",
+    "phase.undoHelp": "Deshacer o eliminar un entrenamiento quita sus XP de entrenamiento y de fase. Otro entrenamiento puede ocupar el puesto diario liberado. Una medalla de fase ya obtenida y sus 25 XP de logro se conservan para siempre; Deshacer no revierte todos los XP de logro.",
+    "phase.historyCompleted": "Completada",
+    "phase.historyIncomplete": "Sin completar",
+    "phase.historyManual": "Marcada como completada manualmente",
+    "phase.historyTimer": "Completada por temporizador",
+    "phase.historySummary": "{0}: {1} · duración total configurada {2}",
+    "phase.browserTitle": "Límites del temporizador del navegador",
+    "phase.browserLimits": "Mantén esta página abierta y visible para una temporización fiable. El navegador puede retrasar o suspender temporizadores en segundo plano o con la pantalla apagada; no se garantizan los tiempos ni los gongs en segundo plano.",
+    "phase.browserAudio": "Inicia mediante una acción visible para habilitar el audio del navegador. El volumen del dispositivo, las políticas del navegador o el foco de audio pueden impedir un gong; la pantalla sigue siendo la referencia temporal.",
+    "phase.browserExplicitLimited": "Usar temporizador del navegador con estos límites",
+    "phase.batteryTitle": "Preparación de Android para segundo plano",
+    "phase.batteryOptimized": "La optimización de batería está activada. La temporización precisa con pantalla apagada o en reposo profundo no está lista; abre los ajustes de batería de Android y permite manualmente el uso sin restricciones para esta app. Después vuelve y comprueba el estado.",
+    "phase.batteryRestricted": "Android indica restricciones en segundo plano. Quítalas para esta app en los ajustes del sistema y vuelve a comprobar antes de confiar en la temporización con pantalla apagada.",
+    "phase.batteryReady": "La optimización de batería está desactivada y no se indican restricciones en segundo plano. Aun así, un cierre forzado, un reinicio u otras restricciones del fabricante pueden interrumpir el temporizador.",
+    "phase.batteryUnknown": "No se pudo comprobar la preparación para segundo plano. No des por disponible la temporización con pantalla apagada.",
+    "phase.openBatterySettings": "Abrir ajustes de batería de Android",
+    "phase.batterySettingsHelp": "Esto abre los ajustes del sistema; no concede una exención. Haz el cambio manualmente, vuelve aquí y comprueba el estado real.",
+    "phase.recheckReadiness": "Volver a comprobar segundo plano",
+    "phase.notificationHelp": "Permite las notificaciones para ver el temporizador activo y sus controles Pausar y Detener en el panel de notificaciones. El permiso se solicita solo cuando decides usarlo, no durante el tutorial.",
+    "phase.notificationDenied": "Las notificaciones del temporizador están desactivadas para la app o su canal. Android puede permitir el servicio igualmente, pero sus controles no estarán disponibles en el panel de notificaciones. Este estado no indica si el sonido puede reproducirse.",
+    "phase.requestNotifications": "Permitir notificaciones del temporizador",
+    "phase.audioHelp": "Los gongs nativos usan el volumen multimedia y el altavoz o los auriculares activos. El silencio o la pérdida de foco de audio pueden impedir el sonido; ningún gong está garantizado.",
+    "phase.audioUnavailable": "El temporizador no pudo reproducir un gong. Revisa el volumen multimedia, la salida de audio y otras apps que usen audio.",
+    "phase.startFailed": "No se pudo iniciar el temporizador de fase. No se sustituyó por uno del navegador. Revisa el problema indicado y vuelve a intentarlo de forma explícita.",
+    "phase.serviceStartFailed": "Android no pudo iniciar el servicio de temporizador en primer plano. Este intento no ha puesto en marcha ningún temporizador de fase. Mantén la app visible, revisa las restricciones del sistema y vuelve a intentarlo.",
+    "phase.revisionConflict": "El temporizador cambió antes de aplicar esa acción. Se ha solicitado su estado más reciente; revísalo antes de elegir otra acción.",
+    "phase.statusUnavailable": "El estado autoritativo del temporizador no está disponible. No se ha dado por completada la fase; restablece la conexión con el temporizador antes de actuar de nuevo.",
+    "phase.bridgeUnavailable": "El temporizador de fase nativo no está disponible en esta versión. No se sustituirá silenciosamente por un temporizador del navegador.",
+    "phase.interrupted": "Temporizador interrumpido. Esta fase no se ha marcado automáticamente como completada.",
+    "phase.interruptedGap": "Se interrumpió la ejecución del temporizador. No se reproducirán los gongs omitidos y el tiempo transcurrido durante la interrupción no completa la fase automáticamente.",
+    "phase.interruptedReboot": "El dispositivo se reinició o el estado guardado del temporizador ya no es válido. La secuencia anterior no se reiniciará ni completará automáticamente.",
+    "phase.interruptedUserStop": "Android indica que el temporizador se detuvo o que su servicio ya no está en marcha. Se respeta la detención; la fase no se ha marcado como completada.",
+    "phase.restartAfterInterruption": "Reinícialo explícitamente o marca la fase como completada si corresponde. Ninguna acción se realiza automáticamente.",
+    "phase.noSilentFallback": "Los problemas del temporizador nativo se muestran aquí. La app nunca cambia silenciosamente una fase nativa a un temporizador solo de navegador.",
+    "phase.replaceTimerTitle": "¿Reemplazar el temporizador actual?",
+    "phase.replaceTimerBody": "¿Detener {0} e iniciar {1}? Solo un temporizador de descanso o de fase puede controlar los tiempos y el sonido a la vez.",
+    "phase.replaceTimerConfirm": "Reemplazar temporizador",
+    "phase.keepCurrentTimer": "Mantener temporizador actual",
+    "phase.communityPending": "Nuevas medallas de Comunidad pendientes de actualizar el servidor",
+    "phase.communityPendingHelp": "Las recompensas locales de fase siguen funcionando. Publicar las nuevas medallas requiere actualizar el servidor de Comunidad; no se ha confirmado su publicación. Las funciones existentes de Comunidad siguen disponibles.",
+    "phase.mixedVersionHelp": "Actualiza GymQuest en todos los dispositivos donde uses estas fases. Las versiones antiguas desconocen las nuevas recompensas y pueden enviar totales inferiores a Comunidad. Los totales locales y de Comunidad también pueden diferir por las comprobaciones y los límites temporales existentes del servidor.",
+    "phase.statusRunning": "Temporizador en marcha",
+    "phase.statusPaused": "Temporizador en pausa",
+    "phase.statusStopped": "Temporizador detenido",
+    "phase.statusCompleted": "Temporizador completado",
+    "phase.statusInterrupted": "Temporizador interrumpido",
+    "phase.warmup": "Calentamiento",
+    "phase.stretching": "Estiramiento",
+    "phase.rounds": "Períodos de actividad",
+    "phase.workSeconds": "Tiempo de actividad (segundos)",
+    "phase.restSeconds": "Tiempo de descanso (segundos)",
+    "phase.start": "Iniciar cronómetro",
+    "phase.pause": "Pausa",
+    "phase.resume": "Reanudar",
+    "phase.stop": "Detener",
+    "phase.done": "Finalizado",
+    "phase.rest": "Descanso",
+    "phase.round": "Actividad {n} de {total}"
+  },
+  "pt-BR": {
+    "phase.toggleHelp": "Adicione fases opcionais a este treino. Cada uma pode ser pulada ou concluída de forma independente.",
+    "phase.warmupPlacement": "Antes dos exercícios principais",
+    "phase.stretchingPlacement": "Depois dos exercícios principais, antes de salvar",
+    "phase.optionalHelp": "Opcional: use o cronômetro ou marque a conclusão manualmente. Nenhuma fase é obrigatória para finalizar o treino.",
+    "phase.markComplete": "Marcar fase como concluída",
+    "phase.clearCompletion": "Desmarcar conclusão da fase",
+    "phase.manualCompletionHelp": "Marcar como concluída para o cronômetro desta fase e registra sua própria confirmação. Isso não comprova o tempo de atividade realizado.",
+    "phase.timerCompletionHelp": "O cronômetro concluiu esta fase. Salve o treino para incluí-la no histórico e calcular as recompensas elegíveis.",
+    "phase.stopHelp": "Parar não marca a fase como concluída.",
+    "phase.completionCleared": "A conclusão foi desmarcada. A configuração e as linhas de séries leves de preparação foram mantidas.",
+    "phase.enabled": "Fase ativada",
+    "phase.disabled": "Fase desativada",
+    "phase.activitySuggestions": "Ideias opcionais de atividades",
+    "phase.activityGuidance": "São apenas orientações, não registros de exercícios. Escolha movimentos confortáveis e um ritmo leve; pare se sentir dor. Selecionar ideias não altera as séries nem os XP.",
+    "phase.noActivitiesSelected": "Nenhuma ideia de atividade selecionada",
+    "phase.selectedActivities": "Ideias selecionadas: {0}",
+    "phase.restart": "Reiniciar cronômetro da fase",
+    "phase.configuration": "Configurações do cronômetro da fase",
+    "phase.totalDuration": "Total: {0}",
+    "phase.totalFormula": "{0} × {1} s de atividade + {2} × {3} s de descanso",
+    "phase.sequenceHelp": "N períodos de atividade têm N−1 descansos. Não há descanso após o último período; 10 períodos têm 9 descansos.",
+    "phase.zeroRestHelp": "Com 0 segundos de descanso, os períodos de atividade seguem diretamente e não há toque de descanso.",
+    "phase.configLocked": "As configurações ficam bloqueadas enquanto o cronômetro está em execução ou pausado. Pare-o antes de editar.",
+    "phase.workBounds": "Atividade: segundos inteiros de 1 a 3600.",
+    "phase.restBounds": "Descanso: segundos inteiros de 0 a 3600.",
+    "phase.roundBounds": "Períodos de atividade: um número inteiro de 1 a 100.",
+    "phase.totalBounds": "A sequência completa não pode ultrapassar 24 horas (86400 segundos).",
+    "phase.invalidConfiguration": "Confira os tempos de atividade e descanso, o número de períodos e a duração total antes de iniciar.",
+    "phase.legacyTitle": "Séries leves de preparação",
+    "phase.legacyHelp": "Suas linhas de aquecimento por exercício e os controles de progressão de carga existentes estão aqui. Continuam separados do cronômetro opcional da fase.",
+    "phase.legacyTarget": "Escolher exercício para as séries leves de preparação",
+    "phase.legacyRamp": "Gerar linhas de aquecimento com carga progressiva",
+    "phase.legacyManual": "Adicionar manualmente uma linha de preparação leve",
+    "phase.legacyRetained": "As linhas existentes, sua conclusão e as escolhas de progressão lembradas são mantidas, mesmo quando a fase opcional de aquecimento está desativada.",
+    "phase.legacyIndependent": "Concluir essas linhas não conclui a fase de aquecimento. Marque a fase separadamente se quiser registrá-la.",
+    "phase.countsHelp": "Os períodos das fases, as atividades sugeridas e as linhas leves de preparação não acrescentam séries de trabalho, exercícios, totais musculares, volume ou recordes pessoais. Não criam outro treino nem contam como uso do descanso normal.",
+    "phase.rewardsTitle": "XP e emblemas das fases",
+    "phase.xpHelp": "Cada fase ativada e concluída adiciona 5 XP apenas quando o treino salvo tem pelo menos 3 séries de trabalho concluídas. A conclusão manual e pelo cronômetro valem o mesmo; apenas marcar ou iniciar não concede nada.",
+    "phase.dailyCapHelp": "Os XP básicos do treino e os XP das fases compartilham o limite diário existente: só os dois primeiros treinos elegíveis de cada data local os recebem. O terceiro não recebe nenhum deles. Treinos com menos de 3 séries de trabalho não recebem nenhum deles nem ocupam uma vaga do limite.",
+    "phase.badgeWarmup": "Primeiro aquecimento concluído",
+    "phase.badgeStretching": "Primeiro alongamento concluído",
+    "phase.badgeHelp": "O primeiro treino salvo com uma fase concluída que realmente receba XP de treino desbloqueia o emblema dela e 25 XP de conquista, uma única vez por emblema.",
+    "phase.undoHelp": "Desfazer ou excluir um treino remove os XP de treino e de fase dele. Outro treino pode ocupar a vaga diária liberada. Um emblema de fase já obtido e seus 25 XP de conquista permanecem para sempre; Desfazer não reverte todos os XP de conquista.",
+    "phase.historyCompleted": "Concluída",
+    "phase.historyIncomplete": "Não concluída",
+    "phase.historyManual": "Marcada como concluída manualmente",
+    "phase.historyTimer": "Concluída pelo cronômetro",
+    "phase.historySummary": "{0}: {1} · duração total configurada {2}",
+    "phase.browserTitle": "Limites do cronômetro no navegador",
+    "phase.browserLimits": "Mantenha esta página aberta e visível para uma contagem confiável. Navegadores podem atrasar ou suspender cronômetros em segundo plano ou com a tela apagada; a contagem e os toques em segundo plano não são garantidos.",
+    "phase.browserAudio": "Inicie por uma ação visível para habilitar o áudio do navegador. O volume do dispositivo, as políticas do navegador ou o foco de áudio podem impedir um toque; a tela continua sendo a referência de tempo.",
+    "phase.browserExplicitLimited": "Usar cronômetro do navegador com esses limites",
+    "phase.batteryTitle": "Prontidão do Android para segundo plano",
+    "phase.batteryOptimized": "A otimização de bateria está ativada. A contagem precisa com a tela apagada ou em repouso profundo não está pronta; abra as configurações de bateria do Android e permita manualmente o uso irrestrito para este app. Depois volte e confira o status.",
+    "phase.batteryRestricted": "O Android informa restrições em segundo plano. Remova as restrições deste app nas configurações do sistema e confira novamente antes de confiar na contagem com a tela apagada.",
+    "phase.batteryReady": "A otimização de bateria está desativada e nenhuma restrição em segundo plano foi informada. Mesmo assim, forçar a parada, reiniciar o dispositivo ou outras restrições do fabricante podem interromper o cronômetro.",
+    "phase.batteryUnknown": "Não foi possível verificar a prontidão para segundo plano. Não presuma que a contagem com a tela apagada esteja disponível.",
+    "phase.openBatterySettings": "Abrir configurações de bateria do Android",
+    "phase.batterySettingsHelp": "Isso abre as configurações do sistema; não concede uma isenção. Faça a alteração manualmente, volte aqui e confira o status real.",
+    "phase.recheckReadiness": "Verificar segundo plano novamente",
+    "phase.notificationHelp": "Permita notificações para ver o cronômetro ativo e os controles Pausar e Parar no painel de notificações. A permissão é solicitada apenas quando você decide usar o recurso, não durante o tutorial.",
+    "phase.notificationDenied": "As notificações do cronômetro estão desativadas para o app ou seu canal. O Android ainda pode permitir o serviço, mas os controles no painel de notificações não estarão disponíveis. Esse status não indica se o som pode ser reproduzido.",
+    "phase.requestNotifications": "Permitir notificações do cronômetro",
+    "phase.audioHelp": "Os toques do cronômetro nativo usam o volume de mídia e o alto-falante ou fone de ouvido ativo. Silenciar ou perder o foco de áudio pode impedir o som; nenhum toque é garantido.",
+    "phase.audioUnavailable": "O cronômetro não conseguiu reproduzir um toque. Confira o volume de mídia, a saída de áudio e outros apps usando áudio.",
+    "phase.startFailed": "Não foi possível iniciar o cronômetro da fase. Nenhum cronômetro do navegador foi usado como substituto. Confira o problema informado e tente novamente de forma explícita.",
+    "phase.serviceStartFailed": "O Android não conseguiu iniciar o serviço de cronômetro em primeiro plano. Esta tentativa não iniciou nenhum cronômetro de fase. Mantenha o app visível, confira as restrições do sistema e tente novamente.",
+    "phase.revisionConflict": "O cronômetro mudou antes de aplicar essa ação. O status mais recente foi solicitado; confira-o antes de escolher outra ação.",
+    "phase.statusUnavailable": "O status autoritativo do cronômetro está indisponível. A conclusão não foi presumida; restabeleça a conexão com o cronômetro antes de agir novamente.",
+    "phase.bridgeUnavailable": "O cronômetro nativo de fases não está disponível nesta versão. Ele não será substituído silenciosamente por um cronômetro do navegador.",
+    "phase.interrupted": "Cronômetro interrompido. Esta fase não foi marcada automaticamente como concluída.",
+    "phase.interruptedGap": "A execução do cronômetro foi interrompida. Os toques perdidos não serão reproduzidos depois, e o tempo decorrido durante a interrupção não conclui a fase automaticamente.",
+    "phase.interruptedReboot": "O dispositivo reiniciou ou o estado salvo do cronômetro não é mais válido. A sequência anterior não será reiniciada nem concluída automaticamente.",
+    "phase.interruptedUserStop": "O Android informa que o cronômetro foi parado ou que o serviço não está mais em execução. A parada é respeitada; a fase não foi marcada como concluída.",
+    "phase.restartAfterInterruption": "Reinicie explicitamente ou marque a conclusão manualmente, se for apropriado. Nenhuma ação é realizada automaticamente.",
+    "phase.noSilentFallback": "Os problemas da contagem nativa são mostrados aqui. O app nunca muda silenciosamente uma fase nativa para uma contagem apenas no navegador.",
+    "phase.replaceTimerTitle": "Substituir o cronômetro atual?",
+    "phase.replaceTimerBody": "Parar {0} e iniciar {1}? Só um cronômetro de descanso ou fase pode controlar a contagem e o som por vez.",
+    "phase.replaceTimerConfirm": "Substituir cronômetro",
+    "phase.keepCurrentTimer": "Manter cronômetro atual",
+    "phase.communityPending": "Novos emblemas da Comunidade aguardam atualização do servidor",
+    "phase.communityPendingHelp": "As recompensas locais das fases continuam funcionando. Publicar os novos emblemas exige a atualização do servidor da Comunidade; a publicação deles ainda não foi confirmada. Os recursos existentes da Comunidade continuam disponíveis.",
+    "phase.mixedVersionHelp": "Atualize o GymQuest em todos os dispositivos que usam estas fases. Versões antigas não conhecem as novas recompensas e podem enviar totais menores à Comunidade. Os totais locais e da Comunidade também podem diferir pelas verificações e limites de tempo existentes do servidor.",
+    "phase.statusRunning": "Cronômetro em execução",
+    "phase.statusPaused": "Cronômetro pausado",
+    "phase.statusStopped": "Cronômetro parado",
+    "phase.statusCompleted": "Cronômetro concluído",
+    "phase.statusInterrupted": "Cronômetro interrompido",
+    "phase.warmup": "Aquecimento",
+    "phase.stretching": "Alongamento",
+    "phase.rounds": "Períodos de atividade",
+    "phase.workSeconds": "Tempo de atividade (segundos)",
+    "phase.restSeconds": "Tempo de descanso (segundos)",
+    "phase.start": "Iniciar cronômetro",
+    "phase.pause": "Pausa",
+    "phase.resume": "Retomar",
+    "phase.stop": "Parar",
+    "phase.done": "Finalizado",
+    "phase.rest": "Descanso",
+    "phase.round": "Atividade {n} de {total}"
+  },
+  "fr": {
+    "phase.toggleHelp": "Ajoutez des phases facultatives à cette séance. Chacune peut être ignorée ou terminée indépendamment.",
+    "phase.warmupPlacement": "Avant les exercices principaux",
+    "phase.stretchingPlacement": "Après les exercices principaux, avant l’enregistrement",
+    "phase.optionalHelp": "Facultatif : utilisez le minuteur ou indiquez vous-même la fin. Aucune phase n’est obligatoire pour terminer la séance.",
+    "phase.markComplete": "Marquer la phase comme terminée",
+    "phase.clearCompletion": "Annuler la validation de la phase",
+    "phase.manualCompletionHelp": "Marquer la phase comme terminée arrête son minuteur et enregistre votre propre confirmation. Cela ne certifie pas la durée d’activité effectuée.",
+    "phase.timerCompletionHelp": "Le minuteur a terminé cette phase. Enregistrez la séance pour l’inclure dans l’historique et calculer les récompenses admissibles.",
+    "phase.stopHelp": "L’arrêt ne marque pas la phase comme terminée.",
+    "phase.completionCleared": "Validation annulée. Vos réglages et vos lignes de séries légères de préparation sont conservés.",
+    "phase.enabled": "Phase activée",
+    "phase.disabled": "Phase désactivée",
+    "phase.activitySuggestions": "Idées d’activités facultatives",
+    "phase.activityGuidance": "De simples conseils, pas des exercices enregistrés. Choisissez des mouvements confortables et un rythme doux ; arrêtez en cas de douleur. Sélectionner des idées ne change ni les séries ni les XP.",
+    "phase.noActivitiesSelected": "Aucune idée d’activité sélectionnée",
+    "phase.selectedActivities": "Idées sélectionnées : {0}",
+    "phase.restart": "Redémarrer le minuteur de phase",
+    "phase.configuration": "Réglages du minuteur de phase",
+    "phase.totalDuration": "Total : {0}",
+    "phase.totalFormula": "{0} × {1} s d’activité + {2} × {3} s de repos",
+    "phase.sequenceHelp": "N périodes d’activité comportent N−1 repos. Aucun repos ne suit la dernière période ; 10 périodes comportent 9 repos.",
+    "phase.zeroRestHelp": "Avec 0 seconde de repos, les périodes d’activité s’enchaînent directement et aucun gong de repos ne retentit.",
+    "phase.configLocked": "Les réglages sont verrouillés lorsque le minuteur fonctionne ou est en pause. Arrêtez-le avant de les modifier.",
+    "phase.workBounds": "Activité : secondes entières de 1 à 3600.",
+    "phase.restBounds": "Repos : secondes entières de 0 à 3600.",
+    "phase.roundBounds": "Périodes d’activité : un nombre entier de 1 à 100.",
+    "phase.totalBounds": "La séquence complète ne doit pas dépasser 24 heures (86400 secondes).",
+    "phase.invalidConfiguration": "Vérifiez les durées d’activité et de repos, le nombre de périodes et la durée totale avant de démarrer.",
+    "phase.legacyTitle": "Séries légères de préparation",
+    "phase.legacyHelp": "Vos lignes d’échauffement par exercice et les commandes de montée progressive en charge existantes se trouvent ici. Elles restent distinctes du minuteur de phase facultatif.",
+    "phase.legacyTarget": "Choisir l’exercice pour les séries légères de préparation",
+    "phase.legacyRamp": "Générer des lignes d’échauffement à charge progressive",
+    "phase.legacyManual": "Ajouter manuellement une ligne de préparation légère",
+    "phase.legacyRetained": "Les lignes existantes, leur état de réalisation et les choix de progression mémorisés sont conservés, même si la phase facultative d’échauffement est désactivée.",
+    "phase.legacyIndependent": "Terminer ces lignes ne termine pas la phase d’échauffement. Validez la phase séparément pour l’enregistrer.",
+    "phase.countsHelp": "Les périodes de phase, les activités suggérées et les lignes légères de préparation n’ajoutent ni séries de travail, ni exercices, ni totaux musculaires, ni volume, ni records personnels. Elles ne créent pas de séance supplémentaire et ne comptent pas comme utilisation du repos habituel.",
+    "phase.rewardsTitle": "XP et badges de phase",
+    "phase.xpHelp": "Chaque phase activée et terminée ajoute 5 XP uniquement si la séance enregistrée comporte au moins 3 séries de travail terminées. La validation manuelle et le minuteur comptent de la même façon ; cocher ou démarrer ne rapporte rien à lui seul.",
+    "phase.dailyCapHelp": "Les XP de base de la séance et les XP de phase partagent la limite quotidienne existante : seules les deux premières séances admissibles d’une même date locale en reçoivent. La troisième ne reçoit ni les uns ni les autres. Les séances de moins de 3 séries de travail n’en reçoivent pas et ne prennent aucune place dans cette limite.",
+    "phase.badgeWarmup": "Premier échauffement terminé",
+    "phase.badgeStretching": "Premiers étirements terminés",
+    "phase.badgeHelp": "La première séance enregistrée avec une phase terminée qui reçoit réellement des XP de séance débloque son badge et 25 XP de succès, une seule fois par badge.",
+    "phase.undoHelp": "Annuler ou supprimer une séance retire ses XP de séance et de phase. Une autre séance peut prendre la place quotidienne libérée. Un badge de phase déjà obtenu et ses 25 XP de succès restent acquis définitivement ; Annuler ne retire pas tous les XP de succès.",
+    "phase.historyCompleted": "Terminée",
+    "phase.historyIncomplete": "Non terminée",
+    "phase.historyManual": "Marquée comme terminée manuellement",
+    "phase.historyTimer": "Terminée par le minuteur",
+    "phase.historySummary": "{0} : {1} · durée totale configurée {2}",
+    "phase.browserTitle": "Limites du minuteur du navigateur",
+    "phase.browserLimits": "Gardez cette page ouverte et visible pour un minutage fiable. Les navigateurs peuvent retarder ou suspendre les minuteurs en arrière-plan ou écran éteint ; le minutage et les gongs en arrière-plan ne sont pas garantis.",
+    "phase.browserAudio": "Démarrez par une action visible pour activer le son du navigateur. Le volume de l’appareil, les règles du navigateur ou le focus audio peuvent empêcher un gong ; l’écran reste la référence temporelle.",
+    "phase.browserExplicitLimited": "Utiliser le minuteur du navigateur avec ces limites",
+    "phase.batteryTitle": "Préparation d’Android à l’arrière-plan",
+    "phase.batteryOptimized": "L’optimisation de la batterie est activée. Le minutage précis écran éteint ou en veille profonde n’est pas prêt ; ouvrez les réglages de batterie Android et autorisez manuellement une utilisation sans restriction pour cette application. Revenez ensuite vérifier l’état.",
+    "phase.batteryRestricted": "Android signale des restrictions en arrière-plan. Supprimez-les pour cette application dans les réglages système, puis vérifiez à nouveau avant de vous fier au minutage écran éteint.",
+    "phase.batteryReady": "L’optimisation de la batterie est désactivée et aucune restriction en arrière-plan n’est signalée. Un arrêt forcé, un redémarrage ou d’autres restrictions du fabricant peuvent néanmoins interrompre le minuteur.",
+    "phase.batteryUnknown": "Impossible de vérifier la préparation à l’arrière-plan. Ne supposez pas que le minutage écran éteint est disponible.",
+    "phase.openBatterySettings": "Ouvrir les réglages de batterie Android",
+    "phase.batterySettingsHelp": "Cela ouvre les réglages système sans accorder d’exemption. Effectuez le changement vous-même, revenez ici et vérifiez l’état réel.",
+    "phase.recheckReadiness": "Revérifier la préparation à l’arrière-plan",
+    "phase.notificationHelp": "Autorisez les notifications pour voir le minuteur actif et ses commandes Pause et Arrêter dans le panneau de notifications. L’autorisation n’est demandée que lorsque vous choisissez de l’utiliser, pas pendant le tutoriel.",
+    "phase.notificationDenied": "Les notifications du minuteur sont désactivées pour l’application ou son canal. Android peut tout de même autoriser le service, mais ses commandes ne seront pas disponibles dans le panneau de notifications. Cet état n’indique pas si le son peut être joué.",
+    "phase.requestNotifications": "Autoriser les notifications du minuteur",
+    "phase.audioHelp": "Les gongs du minuteur natif utilisent le volume multimédia et le haut-parleur ou le casque actif. Le mode muet ou la perte du focus audio peut empêcher le son ; aucun gong n’est garanti.",
+    "phase.audioUnavailable": "Le minuteur n’a pas pu jouer de gong. Vérifiez le volume multimédia, la sortie audio et les autres applications utilisant le son.",
+    "phase.startFailed": "Impossible de démarrer le minuteur de phase. Aucun minuteur de navigateur ne l’a remplacé. Vérifiez le problème signalé et réessayez explicitement.",
+    "phase.serviceStartFailed": "Android n’a pas pu démarrer le service de minuteur au premier plan. Cette tentative n’a lancé aucun minuteur de phase. Gardez l’application visible, vérifiez les restrictions système et réessayez.",
+    "phase.revisionConflict": "Le minuteur a changé avant l’application de cette action. Son état le plus récent a été demandé ; vérifiez-le avant de choisir une autre action.",
+    "phase.statusUnavailable": "L’état faisant autorité du minuteur est indisponible. La phase n’a pas été considérée comme terminée ; rétablissez la connexion au minuteur avant d’agir à nouveau.",
+    "phase.bridgeUnavailable": "Le minuteur de phase natif est indisponible dans cette version. Il ne sera pas remplacé silencieusement par un minuteur de navigateur.",
+    "phase.interrupted": "Minuteur interrompu. Cette phase n’a pas été automatiquement marquée comme terminée.",
+    "phase.interruptedGap": "L’exécution du minuteur a été interrompue. Les gongs manqués ne seront pas rejoués et le temps écoulé pendant l’interruption ne termine pas automatiquement la phase.",
+    "phase.interruptedReboot": "L’appareil a redémarré ou l’état enregistré du minuteur n’est plus valide. La séquence précédente ne redémarrera pas et ne se terminera pas automatiquement.",
+    "phase.interruptedUserStop": "Android indique que le minuteur a été arrêté ou que son service ne fonctionne plus. L’arrêt est respecté ; la phase n’a pas été marquée comme terminée.",
+    "phase.restartAfterInterruption": "Redémarrez explicitement ou indiquez vous-même la fin si cela convient. Aucune de ces actions n’est effectuée automatiquement.",
+    "phase.noSilentFallback": "Les problèmes du minutage natif sont affichés ici. L’application ne bascule jamais silencieusement une phase native vers un minutage limité au navigateur.",
+    "phase.replaceTimerTitle": "Remplacer le minuteur actuel ?",
+    "phase.replaceTimerBody": "Arrêter {0} et démarrer {1} ? Un seul minuteur de repos ou de phase peut contrôler le temps et le son à la fois.",
+    "phase.replaceTimerConfirm": "Remplacer le minuteur",
+    "phase.keepCurrentTimer": "Garder le minuteur actuel",
+    "phase.communityPending": "Nouveaux badges Communauté en attente de mise à jour du serveur",
+    "phase.communityPendingHelp": "Les récompenses locales de phase fonctionnent toujours. La publication des nouveaux badges nécessite la mise à jour du serveur Communauté ; leur publication n’a pas été confirmée. Les fonctions existantes de la Communauté restent disponibles.",
+    "phase.mixedVersionHelp": "Mettez GymQuest à jour sur chaque appareil utilisant ces phases. Les anciennes versions ignorent les nouvelles récompenses et peuvent envoyer des totaux inférieurs à la Communauté. Les totaux locaux et communautaires peuvent aussi différer en raison des contrôles et limites de temps existants du serveur.",
+    "phase.statusRunning": "Minuteur en cours",
+    "phase.statusPaused": "Minuteur en pause",
+    "phase.statusStopped": "Minuteur arrêté",
+    "phase.statusCompleted": "Minuteur terminé",
+    "phase.statusInterrupted": "Minuteur interrompu",
+    "phase.warmup": "Échauffement",
+    "phase.stretching": "Étirements",
+    "phase.rounds": "Périodes d'activité",
+    "phase.workSeconds": "Temps d'activité (secondes)",
+    "phase.restSeconds": "Temps de repos (secondes)",
+    "phase.start": "Démarrer le chronomètre",
+    "phase.pause": "Pause",
+    "phase.resume": "Reprendre",
+    "phase.stop": "Arrêter",
+    "phase.done": "Terminé",
+    "phase.rest": "Repos",
+    "phase.round": "Activité {n} sur {total}"
+  },
+  "ar": {
+    "phase.toggleHelp": "أضف مراحل اختيارية إلى هذا التمرين. يمكنك تخطي كل مرحلة أو إكمالها بشكل مستقل.",
+    "phase.warmupPlacement": "قبل التمارين الأساسية",
+    "phase.stretchingPlacement": "بعد التمارين الأساسية وقبل الحفظ",
+    "phase.optionalHelp": "اختياري: استخدم المؤقت أو سجّل الإكمال بنفسك. لا تُشترط أي من المرحلتين لإنهاء التمرين.",
+    "phase.markComplete": "تحديد المرحلة كمكتملة",
+    "phase.clearCompletion": "إلغاء تحديد إكمال المرحلة",
+    "phase.manualCompletionHelp": "يؤدي تحديد الإكمال إلى إيقاف مؤقت هذه المرحلة وتسجيل تأكيدك الشخصي. ولا يُعدّ إثباتًا لمدة النشاط الفعلية.",
+    "phase.timerCompletionHelp": "أكمل المؤقت هذه المرحلة. احفظ التمرين لإضافتها إلى السجل وحساب المكافآت المستحقة.",
+    "phase.stopHelp": "الإيقاف لا يحدد المرحلة كمكتملة.",
+    "phase.completionCleared": "أُلغي تحديد الإكمال. تم الاحتفاظ بالإعدادات وصفوف مجموعات التحضير الخفيفة.",
+    "phase.enabled": "المرحلة مفعّلة",
+    "phase.disabled": "المرحلة معطّلة",
+    "phase.activitySuggestions": "أفكار أنشطة اختيارية",
+    "phase.activityGuidance": "إرشادات فقط وليست سجلات تمارين. اختر حركات مريحة ووتيرة هادئة، وتوقف إذا شعرت بألم. اختيار الأفكار لا يغيّر المجموعات أو نقاط الخبرة.",
+    "phase.noActivitiesSelected": "لم تُحدّد أي أفكار أنشطة",
+    "phase.selectedActivities": "الأفكار المحددة: {0}",
+    "phase.restart": "إعادة تشغيل مؤقت المرحلة من البداية",
+    "phase.configuration": "إعدادات مؤقت المرحلة",
+    "phase.totalDuration": "الإجمالي: {0}",
+    "phase.totalFormula": "{0} × {1} ث نشاط + {2} × {3} ث راحة",
+    "phase.sequenceHelp": "تتضمن N فترات نشاط عددًا من فترات الراحة يساوي N−1. لا توجد راحة بعد آخر فترة نشاط؛ تتضمن 10 فترات نشاط 9 فترات راحة.",
+    "phase.zeroRestHelp": "عند ضبط الراحة على 0 ثانية، تتتابع فترات النشاط مباشرة ولا تصدر نغمة راحة.",
+    "phase.configLocked": "تُقفل الإعدادات أثناء تشغيل المؤقت أو إيقافه مؤقتًا. أوقفه نهائيًا قبل التعديل.",
+    "phase.workBounds": "النشاط: عدد صحيح من الثواني من 1 إلى 3600.",
+    "phase.restBounds": "الراحة: عدد صحيح من الثواني من 0 إلى 3600.",
+    "phase.roundBounds": "فترات النشاط: عدد صحيح من 1 إلى 100.",
+    "phase.totalBounds": "يجب ألا يتجاوز التسلسل الكامل 24 ساعة (86400 ثانية).",
+    "phase.invalidConfiguration": "تحقق من مدة النشاط والراحة وعدد الفترات والمدة الإجمالية قبل البدء.",
+    "phase.legacyTitle": "مجموعات تحضير خفيفة",
+    "phase.legacyHelp": "توجد هنا صفوف الإحماء السابقة الخاصة بكل تمرين وأدوات الزيادة التدريجية للحمل. وتبقى منفصلة عن مؤقت المرحلة الاختياري.",
+    "phase.legacyTarget": "اختيار تمرين لمجموعات التحضير الخفيفة",
+    "phase.legacyRamp": "إنشاء صفوف إحماء بحمل متدرج",
+    "phase.legacyManual": "إضافة صف تحضير خفيف يدويًا",
+    "phase.legacyRetained": "تُحفظ الصفوف الحالية وحالة إكمالها وخيارات الحمل المتدرج المحفوظة، حتى عند تعطيل مرحلة الإحماء الاختيارية.",
+    "phase.legacyIndependent": "إكمال هذه الصفوف لا يُكمل مرحلة الإحماء. حدّد المرحلة كمكتملة بشكل منفصل إذا أردت تسجيلها.",
+    "phase.countsHelp": "لا تضيف فترات المراحل أو الأنشطة المقترحة أو صفوف التحضير الخفيفة مجموعات أساسية أو تمارين أو مجاميع عضلية أو حجم تدريب أو أرقامًا قياسية شخصية. ولا تنشئ تمرينًا آخر ولا تُحتسب استخدامًا للراحة المعتادة.",
+    "phase.rewardsTitle": "نقاط الخبرة وشارات المراحل",
+    "phase.xpHelp": "تضيف كل مرحلة مفعّلة ومكتملة 5 نقاط خبرة فقط عندما يتضمن التمرين المحفوظ 3 مجموعات أساسية مكتملة على الأقل. يتساوى الإكمال اليدوي مع الإكمال بالمؤقت؛ ولا يمنح مجرد التحديد أو البدء أي مكافأة.",
+    "phase.dailyCapHelp": "تشترك نقاط التمرين الأساسية ونقاط المراحل في الحد اليومي الحالي: يحصل عليها أول تمرينين مؤهلين فقط في كل تاريخ محلي. ولا يحصل التمرين الثالث على أي منهما. والتمارين التي تقل عن 3 مجموعات أساسية لا تحصل عليهما ولا تشغل حصة من الحد.",
+    "phase.badgeWarmup": "أول إحماء مكتمل",
+    "phase.badgeStretching": "أول إطالة مكتملة",
+    "phase.badgeHelp": "يفتح أول تمرين محفوظ بمرحلة مكتملة يحصل فعليًا على نقاط خبرة للتمرين شارة تلك المرحلة و25 نقطة خبرة للإنجاز، مرة واحدة لكل شارة.",
+    "phase.undoHelp": "يؤدي التراجع عن التمرين أو حذفه إلى إزالة نقاط خبرة التمرين والمراحل الخاصة به. وقد يستفيد تمرين آخر من الحصة اليومية التي أصبحت متاحة. تبقى شارة المرحلة المكتسبة و25 نقطة خبرة للإنجاز الخاصة بها مكتسبة بصورة دائمة؛ فالتراجع لا يلغي جميع نقاط خبرة الإنجاز.",
+    "phase.historyCompleted": "مكتملة",
+    "phase.historyIncomplete": "غير مكتملة",
+    "phase.historyManual": "حُدّدت كمكتملة يدويًا",
+    "phase.historyTimer": "اكتملت بالمؤقت",
+    "phase.historySummary": "{0}: {1} · المدة الإجمالية المضبوطة {2}",
+    "phase.browserTitle": "حدود مؤقت المتصفح",
+    "phase.browserLimits": "أبقِ هذه الصفحة مفتوحة ومرئية للحصول على توقيت موثوق. قد تؤخر المتصفحات المؤقتات أو تعلّقها في الخلفية أو عند إطفاء الشاشة؛ ولا يُضمن التوقيت أو النغمات في الخلفية.",
+    "phase.browserAudio": "ابدأ بإجراء ظاهر لتفعيل صوت المتصفح. قد يمنع مستوى صوت الجهاز أو سياسة المتصفح أو تركيز الصوت تشغيل النغمة؛ وتبقى الشاشة مرجع التوقيت.",
+    "phase.browserExplicitLimited": "استخدام مؤقت المتصفح ضمن هذه الحدود",
+    "phase.batteryTitle": "جاهزية Android للعمل في الخلفية",
+    "phase.batteryOptimized": "تحسين البطارية مفعّل. الجهاز غير جاهز للتوقيت الدقيق مع إطفاء الشاشة أو في السكون العميق؛ افتح إعدادات بطارية Android واسمح يدويًا باستخدام غير مقيّد للبطارية لهذا التطبيق، ثم عد وتحقق من الحالة.",
+    "phase.batteryRestricted": "يشير Android إلى وجود قيود على الخلفية. أزل قيود هذا التطبيق من إعدادات النظام وأعد التحقق قبل الاعتماد على التوقيت مع إطفاء الشاشة.",
+    "phase.batteryReady": "تحسين البطارية معطّل ولا توجد قيود مُبلّغ عنها على الخلفية. ومع ذلك قد يؤدي الإيقاف الإجباري أو إعادة تشغيل الجهاز أو قيود إضافية من الشركة المصنّعة إلى مقاطعة المؤقت.",
+    "phase.batteryUnknown": "تعذّر التحقق من الجاهزية للعمل في الخلفية. لا تفترض أن التوقيت مع إطفاء الشاشة متاح.",
+    "phase.openBatterySettings": "فتح إعدادات بطارية Android",
+    "phase.batterySettingsHelp": "يفتح هذا إعدادات النظام ولا يمنح استثناءً. أجرِ التغيير بنفسك، ثم عد إلى هنا وتحقق من الحالة الفعلية.",
+    "phase.recheckReadiness": "إعادة التحقق من جاهزية الخلفية",
+    "phase.notificationHelp": "اسمح بالإشعارات لعرض المؤقت الجاري وزرّي الإيقاف المؤقت والإيقاف في لوحة الإشعارات. يُطلب الإذن فقط عندما تختار استخدام الميزة، وليس أثناء الدليل التعليمي.",
+    "phase.notificationDenied": "إشعارات المؤقت معطّلة للتطبيق أو لقناته. قد يظل Android يسمح بتشغيل خدمة المؤقت، لكن أدوات التحكم في لوحة الإشعارات لن تكون متاحة. ولا تدل هذه الحالة على إمكانية تشغيل الصوت.",
+    "phase.requestNotifications": "السماح بإشعارات المؤقت",
+    "phase.audioHelp": "تستخدم نغمات المؤقت الأصلي مستوى صوت الوسائط ومكبر الصوت أو سماعات الرأس النشطة. قد يمنع كتم الصوت أو فقدان تركيز الصوت تشغيله؛ ولا تُضمن أي نغمة.",
+    "phase.audioUnavailable": "تعذّر على المؤقت تشغيل نغمة. تحقق من مستوى صوت الوسائط ومخرج الصوت والتطبيقات الأخرى التي تستخدم الصوت.",
+    "phase.startFailed": "تعذّر بدء مؤقت المرحلة. لم يُستبدل بمؤقت متصفح. تحقق من المشكلة الموضحة ثم أعد المحاولة بإجراء صريح.",
+    "phase.serviceStartFailed": "تعذّر على Android بدء خدمة المؤقت في المقدمة. لم تبدأ هذه المحاولة أي مؤقت مرحلة. أبقِ التطبيق مرئيًا وراجع قيود النظام ثم حاول مجددًا.",
+    "phase.revisionConflict": "تغيّر المؤقت قبل تطبيق هذا الإجراء. طُلبت حالته الأحدث؛ راجعها قبل اختيار إجراء آخر.",
+    "phase.statusUnavailable": "الحالة المرجعية للمؤقت غير متاحة. لم يُفترض اكتمال المرحلة؛ أعد الاتصال بالمؤقت قبل اتخاذ إجراء آخر.",
+    "phase.bridgeUnavailable": "مؤقت المراحل الأصلي غير متاح في هذا الإصدار. ولن يُستبدل تلقائيًا بمؤقت متصفح دون إبلاغك.",
+    "phase.interrupted": "انقطع المؤقت. لم تُحدّد هذه المرحلة كمكتملة تلقائيًا.",
+    "phase.interruptedGap": "انقطع تشغيل المؤقت. لن تُعاد النغمات الفائتة، ولا يؤدي الوقت المنقضي أثناء الانقطاع إلى إكمال المرحلة تلقائيًا.",
+    "phase.interruptedReboot": "أُعيد تشغيل الجهاز أو لم تعد حالة المؤقت المحفوظة صالحة. لن يُستأنف التسلسل السابق من البداية ولن يكتمل تلقائيًا.",
+    "phase.interruptedUserStop": "يشير Android إلى إيقاف المؤقت أو إلى أن خدمته لم تعد تعمل. يُحترم الإيقاف؛ ولم تُحدّد المرحلة كمكتملة.",
+    "phase.restartAfterInterruption": "أعد التشغيل من البداية بإجراء صريح، أو سجّل الإكمال بنفسك إذا كان ذلك مناسبًا. لا يُنفّذ أي من الإجراءين تلقائيًا.",
+    "phase.noSilentFallback": "تظهر مشكلات التوقيت الأصلي هنا. لا يحوّل التطبيق مرحلة أصلية إلى توقيت في المتصفح فقط دون إبلاغك.",
+    "phase.replaceTimerTitle": "استبدال المؤقت الحالي؟",
+    "phase.replaceTimerBody": "هل تريد إيقاف {0} وبدء {1}؟ يمكن لمؤقت راحة أو مرحلة واحد فقط التحكم في التوقيت والصوت في كل مرة.",
+    "phase.replaceTimerConfirm": "استبدال المؤقت",
+    "phase.keepCurrentTimer": "الإبقاء على المؤقت الحالي",
+    "phase.communityPending": "شارات المجتمع الجديدة تنتظر ترقية الخادم",
+    "phase.communityPendingHelp": "لا تزال مكافآت المراحل المحلية تعمل. يتطلب نشر الشارات الجديدة ترقية خادم المجتمع؛ ولم يُؤكّد نشرها بعد. تبقى ميزات المجتمع الحالية متاحة.",
+    "phase.mixedVersionHelp": "حدّث GymQuest على كل جهاز تستخدم عليه هذه المراحل. لا تعرف الإصدارات القديمة المكافآت الجديدة وقد ترسل مجاميع أقل إلى المجتمع. وقد تختلف المجاميع المحلية عن مجاميع المجتمع أيضًا بسبب فحوص الخادم وحدوده الزمنية الحالية.",
+    "phase.statusRunning": "المؤقت يعمل",
+    "phase.statusPaused": "المؤقت متوقف مؤقتًا",
+    "phase.statusStopped": "المؤقت متوقف",
+    "phase.statusCompleted": "اكتمل المؤقت",
+    "phase.statusInterrupted": "انقطع المؤقت",
+    "phase.warmup": "الإحماء",
+    "phase.stretching": "التمدد",
+    "phase.rounds": "فترات النشاط",
+    "phase.workSeconds": "وقت النشاط (ثواني)",
+    "phase.restSeconds": "وقت الراحة (ثواني)",
+    "phase.start": "بدء المؤقت",
+    "phase.pause": "إيقاف مؤقت",
+    "phase.resume": "استكمال",
+    "phase.stop": "توقف",
+    "phase.done": "منتهي",
+    "phase.rest": "راحة",
+    "phase.round": "النشاط {n} من {total}"
+  }
+};
+const WORKOUT_PHASE_SUGGESTIONS = [
+  {
+    "id": "warmup.march",
+    "phase": "warmup",
+    "names": {
+      "en": "Gentle march in place",
+      "sk": "Ľahké pochodovanie na mieste",
+      "es": "Marcha suave en el sitio",
+      "pt-BR": "Marcha leve no lugar",
+      "fr": "Marche douce sur place",
+      "ar": "مشي خفيف في المكان"
+    },
+    "guidance": {
+      "en": "Step in place at an easy pace, lifting your feet only as high as feels comfortable. Use a stable support if needed.",
+      "sk": "Pochoduj na mieste miernym tempom a dvíhaj chodidlá len do príjemnej výšky. Podľa potreby použi pevnú oporu.",
+      "es": "Camina en el sitio a un ritmo suave, levantando los pies solo hasta una altura cómoda. Usa un apoyo estable si lo necesitas.",
+      "pt-BR": "Marche no lugar em ritmo leve, levantando os pés apenas até uma altura confortável. Use um apoio firme se precisar.",
+      "fr": "Marchez sur place à un rythme tranquille, sans lever les pieds au-delà d’une hauteur confortable. Utilisez un appui stable si nécessaire.",
+      "ar": "امشِ في مكانك بوتيرة هادئة، وارفع قدميك إلى ارتفاع مريح فقط. استخدم دعامة ثابتة عند الحاجة."
+    }
+  },
+  {
+    "id": "warmup.shoulderCircles",
+    "phase": "warmup",
+    "names": {
+      "en": "Small shoulder circles",
+      "sk": "Malé krúženie ramenami",
+      "es": "Círculos pequeños de hombros",
+      "pt-BR": "Círculos pequenos com os ombros",
+      "fr": "Petits cercles des épaules",
+      "ar": "دوائر صغيرة بالكتفين"
+    },
+    "guidance": {
+      "en": "With arms relaxed, slowly circle your shoulders through a small, comfortable range. Change direction when you wish.",
+      "sk": "S uvoľnenými rukami pomaly krúž ramenami v malom, príjemnom rozsahu. Smer zmeň podľa potreby.",
+      "es": "Con los brazos relajados, mueve los hombros lentamente en círculos pequeños y cómodos. Cambia de dirección cuando quieras.",
+      "pt-BR": "Com os braços relaxados, gire os ombros devagar em círculos pequenos e confortáveis. Mude de direção quando quiser.",
+      "fr": "Les bras détendus, faites lentement de petits cercles confortables avec les épaules. Changez de sens à votre convenance.",
+      "ar": "مع إرخاء الذراعين، حرّك كتفيك ببطء في دوائر صغيرة ومريحة. غيّر الاتجاه متى شئت."
+    }
+  },
+  {
+    "id": "warmup.ankleCircles",
+    "phase": "warmup",
+    "names": {
+      "en": "Seated ankle circles",
+      "sk": "Krúženie členkami v sede",
+      "es": "Círculos de tobillo sentado",
+      "pt-BR": "Círculos com os tornozelos sentado",
+      "fr": "Cercles des chevilles en position assise",
+      "ar": "دوائر بالكاحلين أثناء الجلوس"
+    },
+    "guidance": {
+      "en": "Sit on a stable chair. Lift one foot slightly and make small, easy ankle circles, then switch sides.",
+      "sk": "Sadni si na stabilnú stoličku. Mierne nadvihni jedno chodidlo a urob malé, ľahké kruhy členkom, potom vymeň strany.",
+      "es": "Siéntate en una silla estable. Levanta un pie ligeramente y haz círculos pequeños y suaves con el tobillo; después cambia de lado.",
+      "pt-BR": "Sente-se em uma cadeira firme. Levante um pé um pouco e faça círculos pequenos e suaves com o tornozelo; depois troque de lado.",
+      "fr": "Asseyez-vous sur une chaise stable. Soulevez légèrement un pied et faites de petits cercles doux avec la cheville, puis changez de côté.",
+      "ar": "اجلس على كرسي ثابت. ارفع إحدى القدمين قليلًا وحرّك الكاحل في دوائر صغيرة وهادئة، ثم بدّل الجانب."
+    }
+  },
+  {
+    "id": "stretching.calves",
+    "phase": "stretching",
+    "names": {
+      "en": "Gentle supported calf stretch",
+      "sk": "Jemné natiahnutie lýtka s oporou",
+      "es": "Estiramiento suave de pantorrilla con apoyo",
+      "pt-BR": "Alongamento leve da panturrilha com apoio",
+      "fr": "Étirement doux du mollet avec appui",
+      "ar": "إطالة خفيفة لربلة الساق مع دعم"
+    },
+    "guidance": {
+      "en": "With hands on a stable wall, step one foot back and keep that heel down. Move only to a comfortable stretch, without bouncing; switch sides when you wish.",
+      "sk": "Opri ruky o pevnú stenu, vykroč jednou nohou dozadu a nechaj jej pätu na zemi. Pohybuj sa len po príjemné natiahnutie, bez pruženia; strany vymeň podľa potreby.",
+      "es": "Apoya las manos en una pared estable, lleva un pie hacia atrás y mantén ese talón en el suelo. Llega solo a un estiramiento cómodo, sin rebotes; cambia de lado cuando quieras.",
+      "pt-BR": "Apoie as mãos em uma parede firme, leve um pé para trás e mantenha esse calcanhar no chão. Vá apenas até um alongamento confortável, sem movimentos de impulso; troque de lado quando quiser.",
+      "fr": "Les mains contre un mur stable, reculez un pied en gardant son talon au sol. Allez seulement jusqu’à un étirement confortable, sans à-coups ; changez de côté à votre convenance.",
+      "ar": "ضع يديك على حائط ثابت، وأرجع قدمًا إلى الخلف مع إبقاء كعبها على الأرض. تحرّك حتى إطالة مريحة فقط، من دون حركات ارتدادية؛ بدّل الجانب متى شئت."
+    }
+  },
+  {
+    "id": "stretching.shoulders",
+    "phase": "stretching",
+    "names": {
+      "en": "Gentle across-body shoulder stretch",
+      "sk": "Jemné natiahnutie ramena cez telo",
+      "es": "Estiramiento suave de hombro cruzando el brazo",
+      "pt-BR": "Alongamento leve do ombro com o braço cruzado",
+      "fr": "Étirement doux de l’épaule, bras croisé devant soi",
+      "ar": "إطالة خفيفة للكتف بذراع أمام الجسم"
+    },
+    "guidance": {
+      "en": "Bring one arm loosely across your chest and support it with the other arm. Keep the shoulder relaxed and do not pull into pain; switch sides when you wish.",
+      "sk": "Voľne prelož jednu ruku cez hrudník a podopri ju druhou. Rameno nechaj uvoľnené a neťahaj do bolesti; strany vymeň podľa potreby.",
+      "es": "Lleva un brazo suavemente por delante del pecho y sujétalo con el otro. Mantén el hombro relajado y no tires hasta sentir dolor; cambia de lado cuando quieras.",
+      "pt-BR": "Passe um braço suavemente à frente do peito e apoie-o com o outro. Mantenha o ombro relaxado e não puxe até sentir dor; troque de lado quando quiser.",
+      "fr": "Amenez doucement un bras devant la poitrine et soutenez-le avec l’autre. Gardez l’épaule détendue et ne tirez pas jusqu’à la douleur ; changez de côté à votre convenance.",
+      "ar": "مرّر ذراعًا برفق أمام صدرك واسندها بالذراع الأخرى. أبقِ الكتف مسترخيًا ولا تسحب حتى الشعور بالألم؛ بدّل الجانب متى شئت."
+    }
+  },
+  {
+    "id": "stretching.sideReach",
+    "phase": "stretching",
+    "names": {
+      "en": "Comfortable seated side reach",
+      "sk": "Príjemné vytiahnutie do strany v sede",
+      "es": "Inclinación lateral cómoda sentado",
+      "pt-BR": "Inclinação lateral confortável sentado",
+      "fr": "Inclinaison latérale confortable en position assise",
+      "ar": "امتداد جانبي مريح أثناء الجلوس"
+    },
+    "guidance": {
+      "en": "Sit on a stable chair with both feet supported. Reach one arm gently upward and slightly to the side, staying in a comfortable range; return and switch sides.",
+      "sk": "Sadni si na stabilnú stoličku s oboma chodidlami podopretými. Jemne vytiahni jednu ruku nahor a mierne do strany, iba v príjemnom rozsahu; vráť sa a vymeň strany.",
+      "es": "Siéntate en una silla estable con ambos pies apoyados. Estira un brazo suavemente hacia arriba y un poco hacia un lado, dentro de un rango cómodo; vuelve y cambia de lado.",
+      "pt-BR": "Sente-se em uma cadeira firme com os dois pés apoiados. Estenda um braço suavemente para cima e um pouco para o lado, em uma amplitude confortável; volte e troque de lado.",
+      "fr": "Asseyez-vous sur une chaise stable, les deux pieds en appui. Étendez doucement un bras vers le haut et légèrement sur le côté, dans une amplitude confortable ; revenez puis changez de côté.",
+      "ar": "اجلس على كرسي ثابت مع إسناد القدمين. مدّ ذراعًا برفق إلى الأعلى وإلى الجانب قليلًا ضمن مدى مريح؛ عد ثم بدّل الجانب."
+    }
+  }
+];
+for (const [lang, copy] of Object.entries(WORKOUT_PHASE_I18N)) Object.assign(I18N[lang], copy);
+/* ---------- Rozcvička a strečing: samostatné časti tréningu, nie pracovné série ---------- */
+const WORKOUT_PHASE_KINDS = ['warmup', 'stretching'];
+const WORKOUT_PHASE_BONUS = 5;
+const WORKOUT_PHASE_MAX_SECONDS = 86400;
+
+function workoutPhaseKind(kind) { return WORKOUT_PHASE_KINDS.includes(kind); }
+function workoutPhaseObject(raw) { return !!raw && typeof raw === 'object' && !Array.isArray(raw); }
+function defaultWorkoutPhaseConfig() { return { workSeconds: 60, restSeconds: 30, rounds: 10, activityIds: [] }; }
+function workoutPhaseTotalSeconds(config) {
+  return config.rounds * config.workSeconds + (config.rounds - 1) * config.restSeconds;
+}
+function validWorkoutPhaseConfig(raw) {
+  return workoutPhaseObject(raw)
+    && Number.isInteger(raw.workSeconds) && raw.workSeconds >= 1 && raw.workSeconds <= 3600
+    && Number.isInteger(raw.restSeconds) && raw.restSeconds >= 0 && raw.restSeconds <= 3600
+    && Number.isInteger(raw.rounds) && raw.rounds >= 1 && raw.rounds <= 100
+    && workoutPhaseTotalSeconds(raw) <= WORKOUT_PHASE_MAX_SECONDS
+    && (raw.activityIds === undefined || (Array.isArray(raw.activityIds) && raw.activityIds.length <= 100
+      && raw.activityIds.every(id => typeof id === 'string' && /^[a-zA-Z0-9._-]{1,64}$/.test(id))));
+}
+function cleanWorkoutPhaseConfig(raw) {
+  if (!validWorkoutPhaseConfig(raw)) return null;
+  return { workSeconds: raw.workSeconds, restSeconds: raw.restSeconds, rounds: raw.rounds,
+    activityIds: [...new Set(raw.activityIds || [])] };
+}
+function validWorkoutPhaseCompletion(raw) {
+  return workoutPhaseObject(raw) && raw.enabled === true && raw.done === true
+    && validWorkoutPhaseConfig(raw.config) && Number.isSafeInteger(raw.completedAt)
+    && raw.completedAt > 0 && raw.completedAt <= 8640000000000000
+    && (raw.completionMethod === 'manual' || raw.completionMethod === 'timer');
+}
+function cleanWorkoutPhaseEntry(raw) {
+  if (!workoutPhaseObject(raw) || typeof raw.enabled !== 'boolean') return null;
+  const config = cleanWorkoutPhaseConfig(raw.config);
+  if (!config) return null;
+  const out = { enabled: raw.enabled, config, done: validWorkoutPhaseCompletion(raw) };
+  if (out.done) { out.completedAt = raw.completedAt; out.completionMethod = raw.completionMethod; }
+  return out;
+}
+function cleanWorkoutPhases(raw) {
+  if (!workoutPhaseObject(raw) || raw.v !== 1) return null;
+  const out = { v: 1 };
+  let present = false;
+  for (const kind of WORKOUT_PHASE_KINDS) {
+    const entry = cleanWorkoutPhaseEntry(raw[kind]);
+    if (entry) { out[kind] = entry; present = true; }
+  }
+  return present ? out : null;
+}
+function cleanWorkoutPhasePreferences(raw) {
+  const source = workoutPhaseObject(raw) && raw.v === 1 ? raw : {};
+  const out = { v: 1 };
+  for (const kind of WORKOUT_PHASE_KINDS) {
+    const item = source[kind];
+    const config = cleanWorkoutPhaseConfig(item);
+    out[kind] = Object.assign({ enabled: !!config && item.enabled === true }, config || defaultWorkoutPhaseConfig());
+  }
+  return out;
+}
+function workoutPhasePreferences() {
+  return cleanWorkoutPhasePreferences(state && state.settings && state.settings.workoutPhases);
+}
+function ensureWorkoutPhases(sess) {
+  if (!sess) return null;
+  const preferences = workoutPhasePreferences();
+  const phases = cleanWorkoutPhases(sess.phases) || { v: 1 };
+  for (const kind of WORKOUT_PHASE_KINDS) {
+    if (!phases[kind]) {
+      const pref = preferences[kind];
+      phases[kind] = { enabled: pref.enabled, config: cleanWorkoutPhaseConfig(pref), done: false };
+    }
+  }
+  sess.phases = phases;
+  return phases;
+}
+function phaseSnapshotForHistory(sess) {
+  return sess && cleanWorkoutPhases(sess.phases);
+}
+function historyPhaseBonus(workout) {
+  const phases = workout && workout.phases;
+  if (!workoutPhaseObject(phases) || phases.v !== 1) return 0;
+  let bonus = 0;
+  for (const kind of WORKOUT_PHASE_KINDS) if (validWorkoutPhaseCompletion(phases[kind])) bonus += WORKOUT_PHASE_BONUS;
+  return bonus;
+}
+function workoutEntryBaseXp(workout) {
+  const base = workoutXpFor(historyDoneSets(workout));
+  return base > 0 ? base + historyPhaseBonus(workout) : 0;
+}
+function workoutPhaseOwnerId(sess) {
+  if (!sess || typeof sess.id !== 'string' || !sess.id) return null;
+  const workspace = typeof wsSlot !== 'undefined' && wsSlot && wsSlot.id ? wsSlot.id : 'legacy';
+  return JSON.stringify(['phase-v1', workspace, sess.id]);
+}
+function workoutPhaseSegmentMs(config, index) { return (index % 2 ? config.restSeconds : config.workSeconds) * 1000; }
+function workoutPhaseSegmentOffsetMs(config, index) {
+  return Math.floor(index / 2) * (config.workSeconds + config.restSeconds) * 1000
+    + (index % 2 ? config.workSeconds * 1000 : 0);
+}
+function cleanWorkoutPhaseTimer(raw, phases) {
+  if (!workoutPhaseObject(raw) || raw.v !== 1 || !workoutPhaseKind(raw.phase)) return null;
+  const phase = phases && phases[raw.phase];
+  if (!phase || !validWorkoutPhaseConfig(phase.config)) return null;
+  const config = phase.config;
+  if (typeof raw.runId !== 'string' || !raw.runId || raw.runId.length > 200
+    || typeof raw.ownerId !== 'string' || !raw.ownerId || raw.ownerId.length > 500
+    || !Number.isInteger(raw.revision) || raw.revision < 0
+    || !['running', 'paused', 'stopped', 'completed', 'interrupted'].includes(raw.status)
+    || raw.rounds !== config.rounds || !Number.isInteger(raw.round) || raw.round < 1 || raw.round > config.rounds
+    || !Number.isInteger(raw.segmentIndex) || raw.segmentIndex < 0 || raw.segmentIndex > 2 * config.rounds - 2
+    || !Number.isInteger(raw.lastTransition) || raw.lastTransition < 0 || raw.lastTransition > 2 * config.rounds - 1
+    || !Number.isFinite(raw.sampledAt) || raw.sampledAt <= 0 || raw.sampledAt > 8640000000000000
+    || !Number.isFinite(raw.remainingMs) || raw.remainingMs < 0) return null;
+  const active = raw.status === 'running' || raw.status === 'paused';
+  if (active) {
+    if (raw.stage !== 'work' && raw.stage !== 'rest') return null;
+    if (raw.stage === 'rest' && (raw.round === config.rounds || config.restSeconds === 0)) return null;
+    if (raw.segmentIndex !== 2 * (raw.round - 1) + (raw.stage === 'rest' ? 1 : 0)
+      || raw.lastTransition !== raw.segmentIndex
+      || raw.remainingMs > workoutPhaseSegmentMs(config, raw.segmentIndex) + 1) return null;
+    if (raw.status === 'running' && (!Number.isFinite(raw.stageEndAt) || raw.stageEndAt <= 0
+      || raw.stageEndAt > 8640000000000000)) return null;
+  } else if (raw.stage !== null) return null;
+  if (raw.status === 'completed' && (raw.round !== config.rounds
+    || raw.segmentIndex !== 2 * config.rounds - 2 || raw.lastTransition !== 2 * config.rounds - 1)) return null;
+  const out = { v: 1, ownerId: raw.ownerId, runId: raw.runId, phase: raw.phase, revision: raw.revision,
+    status: raw.status, segmentIndex: raw.segmentIndex, round: raw.round, stage: active ? raw.stage : null,
+    rounds: config.rounds, remainingMs: active ? raw.remainingMs : 0,
+    stageEndAt: raw.status === 'running' ? raw.stageEndAt : 0, sampledAt: raw.sampledAt,
+    lastTransition: raw.lastTransition, interruptedReason: typeof raw.interruptedReason === 'string' ? raw.interruptedReason.slice(0, 160) : null,
+    nativeOwnsSound: raw.nativeOwnsSound === true,
+    audioError: raw.audioError == null ? null : (['focus_denied', 'focus_lost', 'playback_failed', 'playback_timeout'].includes(raw.audioError) ? raw.audioError : 'unknown') };
+  if (typeof raw.sound === 'boolean') out.sound = raw.sound;
+  return out;
+}
+function newBrowserWorkoutPhaseTimer(sess, kind, now) {
+  const phases = ensureWorkoutPhases(sess), entry = phases && phases[kind];
+  if (!entry || !entry.enabled || !validWorkoutPhaseConfig(entry.config)) return null;
+  return { v: 1, ownerId: workoutPhaseOwnerId(sess), runId: uid(), phase: kind, revision: 1,
+    status: 'running', segmentIndex: 0, round: 1, stage: 'work', rounds: entry.config.rounds,
+    remainingMs: entry.config.workSeconds * 1000, stageEndAt: now + entry.config.workSeconds * 1000,
+    sampledAt: now, lastTransition: 0, interruptedReason: null, nativeOwnsSound: false };
+}
+/* Čistý výpočet z termínov: ani oneskorené prekreslenie nepridáva čas každej pauze.
+   allowCompletion=false pri známej medzere vykonávania/obnovení: nevymýšľa dokončenie. */
+function browserWorkoutPhaseAt(timer, config, now, allowCompletion, monotonicElapsedMs) {
+  if (!timer || timer.status !== 'running' || !validWorkoutPhaseConfig(config) || !Number.isFinite(now)) return timer;
+  const monotonic = Number.isFinite(monotonicElapsedMs) && monotonicElapsedMs >= 0;
+  const clockNow = monotonic ? timer.sampledAt + monotonicElapsedMs : now;
+  const shift = now - clockNow;   // nástenný čas je len projekcia; živý odpočet používa monotónny rozdiel
+  if (!monotonic && now < timer.sampledAt) {
+    return Object.assign({}, timer, { status: 'interrupted', stage: null, remainingMs: 0, stageEndAt: 0,
+      sampledAt: now, revision: timer.revision + 1, interruptedReason: 'clock-change' });
+  }
+  const start = timer.stageEndAt - workoutPhaseSegmentMs(config, timer.segmentIndex)
+    - workoutPhaseSegmentOffsetMs(config, timer.segmentIndex);
+  const elapsed = clockNow - start;
+  const total = workoutPhaseTotalSeconds(config) * 1000;
+  if (elapsed >= total) {
+    const completed = allowCompletion === true;
+    return Object.assign({}, timer, { status: completed ? 'completed' : 'interrupted', revision: timer.revision + 1,
+      stage: null, round: config.rounds, segmentIndex: 2 * config.rounds - 2, remainingMs: 0,
+      stageEndAt: 0, sampledAt: now, lastTransition: 2 * config.rounds - 1,
+      interruptedReason: completed ? null : 'execution-gap' });
+  }
+  const cycleMs = (config.workSeconds + config.restSeconds) * 1000;
+  const round = Math.max(0, Math.min(config.rounds - 1, Math.floor(elapsed / cycleMs)));
+  const inRound = elapsed - round * cycleMs;
+  const rest = config.restSeconds > 0 && inRound >= config.workSeconds * 1000;
+  const index = 2 * round + (rest ? 1 : 0);
+  if (elapsed < 0 || index < timer.segmentIndex) {
+    return Object.assign({}, timer, { status: 'interrupted', stage: null, remainingMs: 0, stageEndAt: 0,
+      sampledAt: now, revision: timer.revision + 1, interruptedReason: 'clock-change' });
+  }
+  const changed = index !== timer.segmentIndex;
+  const end = start + workoutPhaseSegmentOffsetMs(config, index) + workoutPhaseSegmentMs(config, index);
+  return Object.assign({}, timer, { segmentIndex: index, round: round + 1, stage: rest ? 'rest' : 'work',
+    stageEndAt: end + shift, remainingMs: end - clockNow,
+    sampledAt: now, lastTransition: changed ? index : timer.lastTransition,
+    revision: timer.revision + (changed ? 1 : 0) });
+}
+function pauseBrowserWorkoutPhase(timer, config, now, allowCompletion, monotonicElapsedMs) {
+  const current = browserWorkoutPhaseAt(timer, config, now, allowCompletion, monotonicElapsedMs);
+  if (!current || current.status !== 'running') return current;
+  return Object.assign({}, current, { status: 'paused', remainingMs: Math.max(0, current.stageEndAt - now),
+    stageEndAt: 0, sampledAt: now, revision: current.revision + 1 });
+}
+function resumeBrowserWorkoutPhase(timer, now) {
+  if (!timer || timer.status !== 'paused') return timer;
+  return Object.assign({}, timer, { status: 'running', stageEndAt: now + timer.remainingMs,
+    sampledAt: now, revision: timer.revision + 1 });
+}
+function stopBrowserWorkoutPhase(timer, now) {
+  if (!timer) return null;
+  return Object.assign({}, timer, { status: 'stopped', stage: null, stageEndAt: 0, remainingMs: 0,
+    sampledAt: now, revision: timer.revision + 1 });
+}
 
 /* Kľúč stavu AKTÍVNEHO pracovného priestoru (nastaví wsInit pred loadState):
    pôvodné dáta 'gymquest', priestor účtu 'gymquest@<id>'. */
@@ -19860,8 +20794,9 @@ function dailyXpLimitReached(map, dateISO) {
   for (const [e, xp] of map) if (xp > 0 && e && e.date === dateISO) n++;
   return n >= XP_DAILY_LIMIT;
 }
-function xpForNewWorkout(doneSets, dateISO) {
-  return dailyXpLimitReached(xpMaps().h, dateISO) ? 0 : workoutXpFor(doneSets);
+function xpForNewWorkout(doneSets, dateISO, phases) {
+  const base = workoutXpFor(doneSets);
+  return dailyXpLimitReached(xpMaps().h, dateISO) || base === 0 ? 0 : base + historyPhaseBonus({ phases });
 }
 function xpForNewActivity(minutes, dateISO) {
   return dailyXpLimitReached(xpMaps().a, dateISO) ? 0 : activityXpFor(minutes);
@@ -19901,7 +20836,7 @@ function xpMaps() {
   const act = Array.isArray(state.activities) ? state.activities : [];
   if (xpCache.hist !== hist || xpCache.hlen !== hist.length) {
     xpCache.hist = hist; xpCache.hlen = hist.length;
-    xpCache.h = derivedXpMap(hist, (w) => workoutXpFor(historyDoneSets(w)));
+    xpCache.h = derivedXpMap(hist, workoutEntryBaseXp);
   }
   if (xpCache.act !== act || xpCache.alen !== act.length) {
     xpCache.act = act; xpCache.alen = act.length;
@@ -19911,11 +20846,21 @@ function xpMaps() {
 }
 function historyEntryXp(w) {
   const m = xpMaps().h;
-  return m.has(w) ? m.get(w) : workoutXpFor(historyDoneSets(w));
+  return m.has(w) ? m.get(w) : workoutEntryBaseXp(w);
 }
 function activityEntryXp(a) {
   const m = xpMaps().a;
   return m.has(a) ? m.get(a) : activityXpFor(Math.floor((Number(a && a.activeSeconds) || 0) / 60));
+}
+function historyWorkoutPhasesHtml(w) {
+  const phases = w && cleanWorkoutPhases(w.phases);
+  if (!phases) return '';
+  return WORKOUT_PHASE_KINDS.filter(kind => phases[kind] && phases[kind].enabled).map(kind => {
+    const phase = phases[kind];
+    return '<div class="history-detail phase-history">' + esc(t('phase.historySummary', {
+      0: t('phase.' + kind), 1: t(phase.done ? 'phase.historyCompleted' : 'phase.historyIncomplete'),
+      2: formatDurationClock(workoutPhaseTotalSeconds(phase.config)) })) + '</div>';
+  }).join('');
 }
 const GOAL_MIN = 1;
 const GOAL_MAX = 7;
@@ -20551,6 +21496,12 @@ function normalizeActiveSession(raw) {
     completedSets: pickMarks(raw.completedSets),
     actualFailureSets: pickMarks(raw.actualFailureSets),
   };
+  const phases = cleanWorkoutPhases(raw.phases);
+  if (phases) {
+    out.phases = phases;
+    const timer = cleanWorkoutPhaseTimer(raw.phaseTimer, phases);
+    if (timer) out.phaseTimer = timer;
+  }
   /* Snímka plánovaných hodnôt cvikov z času štartu (v100): zmena plánu zvonka (iné zariadenie,
      synchronizácia) tak nikdy nezmení váhy rozbehnutého tréningu. Staršia session ju nemá. */
   const snapshot = {};
@@ -20766,6 +21717,7 @@ function backfillState() {
   normalizePlans();
   normalizeGoalHistory();
   syncGoalSnapshot();
+  state.settings.workoutPhases = cleanWorkoutPhasePreferences(state.settings.workoutPhases);
   /* Predvoľby časovača: chýbajúce sa doplnia, PRÁZDNE zostávajú prázdne (idempotentné). */
   state.settings.restPresets = Array.isArray(state.settings.restPresets)
     ? cleanRestPresets(state.settings.restPresets)
@@ -20840,6 +21792,11 @@ function backfillState() {
   if (!Array.isArray(state.history)) return;
   state.history = state.history.map(w => {
     let out = w;
+    if (Object.prototype.hasOwnProperty.call(out, 'phases')) {
+      out = Object.assign({}, out);
+      const phases = cleanWorkoutPhases(out.phases);
+      if (phases) out.phases = phases; else delete out.phases;
+    }
     if (typeof out.planName !== 'string' || !out.planName) {
       const plan = state.plans[out.planId];
       const snapshot = plan ? recordedPlanName(plan) : (BUILTIN_PLAN_NAMES[out.planId] || '');
@@ -21514,6 +22471,8 @@ const ACHIEVEMENTS_V1_XP = Object.freeze(Object.fromEntries(LEGACY_ACHIEVEMENT_D
 function staticAchievementDefs() {
   const d = (id, icon, category, xp, nameKey, descKey, n) => ({ id, icon, category, xp, nameKey, descKey, n });
   return [
+    d('phaseWarmup1', '🌤️', 'dedication', 25, 'phase.badgeWarmup', 'phase.badgeHelp'),
+    d('phaseStretch1', '🌿', 'dedication', 25, 'phase.badgeStretching', 'phase.badgeHelp'),
     d('first', '🎯', 'milestones', 25, 'ach2.first', 'ach2.firstDesc'),
     d('start3', '🌱', 'milestones', 50, 'ach2.start3', 'ach2.start3Desc'),
     d('goal1', '📅', 'consistency', 50, 'ach2.goal', 'ach2.goalDesc', 1),
@@ -21582,6 +22541,12 @@ function achievementReach(sorted) {
   const out = {};
   const n = sorted.length;
   const put = (id, date) => { if (date && !out[id]) out[id] = date; };
+  const eligible = xpMaps().h;
+  for (const w of sorted) {
+    if (!(eligible.get(w) > 0) || !w.phases || w.phases.v !== 1) continue;
+    if (validWorkoutPhaseCompletion(w.phases.warmup)) put('phaseWarmup1', w.date);
+    if (validWorkoutPhaseCompletion(w.phases.stretching)) put('phaseStretch1', w.date);
+  }
 
   /* Počty dokončených tréningov. */
   for (const [id, need] of [['first', 1], ['w10', 10], ['w25', 25], ['w50', 50], ['w100', 100], ['w250', 250]]) {
@@ -21734,6 +22699,7 @@ function evaluateAchievements() {
 /* Zlúčí novo vyhodnotené úspechy s uloženými. Nikdy nič neodoberá – získaný úspech zostáva navždy,
    aj keď sa zmení týždenný cieľ, pretrhne sa séria alebo sa zmaže plán či cvik. */
 function reconcileAchievements() {
+  xpCacheClear();   // In-place date/set edits must be reflected BEFORE badge predicates.
   const current = evaluateAchievements();
   const stored = state.achievements || {};
   const merged = {};
@@ -22465,7 +23431,7 @@ async function tyLoad(force) {
 }
 async function tyLoadMore() {
   const f = tyFeed;
-  if (!f || f.loading || f.done || !f.uid) return;
+  if (!f || f.loading || f.done || !f.uid || tourOpen()) return;   // návod beží: žiadne stránkovanie (ani z už naplánovaného volania)
   const sb = communityClient(); if (!sb) return;
   const last = f.items[f.items.length - 1];
   f.loading = true;
@@ -22489,12 +23455,12 @@ function tyWatchSentinel() {
   if (!s || typeof IntersectionObserver !== 'function') return;
   if (!tyObserver) {
     tyObserver = new IntersectionObserver((entries) => {
-      if (activeTab !== 'ty' || tyFilter === 'history') return;
+      if (tourSuppressed() || activeTab !== 'ty' || tyFilter === 'history') return;   // aj chvíľu po zatvorení návodu: znovu zobrazená obrazovka spustí observer
       if (entries.some((e) => e.isIntersecting)) tyLoadMore();
     }, { rootMargin: '600px 0px' });
     tyObserver.observe(s);
   }
-  if (activeTab === 'ty' && tyFilter !== 'history' && tyFeed && !tyFeed.done && !tyFeed.loading) {
+  if (activeTab === 'ty' && !tourSuppressed() && tyFilter !== 'history' && tyFeed && !tyFeed.done && !tyFeed.loading) {
     const r = s.getBoundingClientRect();
     if (r.top < innerHeight + 600) setTimeout(tyLoadMore, 0);
   }
@@ -22792,6 +23758,7 @@ function ensureSession(plan) {
     completedSets: {},
     actualFailureSets: {},
   };
+  ensureWorkoutPhases(state.activeSession);
   if (tourOpen()) closeTour('yield');   // začal tréning: návod mu nesmie zavadzať
   /* Snímka plánovaných hodnôt: rozbehnutý tréning nemenia zmeny plánu zvonka. */
   const snapshot = {}, seenKeys = {};
@@ -22832,6 +23799,7 @@ function ensureSession(plan) {
 }
 
 function clearSession() {
+  workoutPhaseCancelOwner();
   if (state) state.activeSession = null;
   if (selectedPlan === 'quick') selectedPlan = recommendedPlan() || activePlanIds()[0] || null;
   setSessionNote(null, 0);
@@ -23238,6 +24206,8 @@ function startDurationTicker() {
 
 function onVisibilityChange() {
   updateDurationDisplay();
+  if (document.hidden && !workoutPhaseNative()) workoutPhaseInterrupt('execution-gap');
+  if (!document.hidden) { workoutPhaseReconcile(); workoutPhaseCapabilities(); workoutPhaseCommunityReprobe(); }
   if (document.hidden) {
     wasHidden = true;
     timerHiddenAt = Date.now();
@@ -23549,6 +24519,7 @@ function renderTrening() {
      aby ich prekreslenie (zmena jazyka, úprava plánu, návrat na kartu) nezmazalo. */
   updateDurationDisplay();
   renderSessionNote();
+  renderWorkoutPhases(); renderWorkoutPhaseLegacy();
   if (!plan) {
     document.getElementById('summary-bar').innerHTML = '';
     setFinishDisabled(true);
@@ -23776,10 +24747,6 @@ function buildExerciseBlock(seg, info, plan) {
     div.appendChild(note);
   }
 
-  /* Rozcvičky: rad z plánu sa doplní raz pri štarte; blok je nad sériami. */
-  if (!seg.readOnly) autoWarmupRamp(ex);
-  const warmupsBox = buildWarmupsBlock(ex, seg.readOnly);
-  if (warmupsBox) div.appendChild(warmupsBox);
 
   /* Štvorce sérií (ťuknutie = hotová) a pod nimi pilulky S1, S2 … s opakovaniami, váhou a zlyhaním */
   const sets = document.createElement('div');
@@ -24138,9 +25105,8 @@ function openSetValueEditor(item, cfg) {
   input.select();
 }
 /* ---------- Akcie cviku (⋯) ---------- */
-/* Jedno kruhové "⋯" na konci riadku sérií otvorí list s ostatnými akciami cviku. Položky sú rovnaké
-   tlačidlá ako predtým (buildWarmupButtons, buildDropButton, buildPlatesButton, výmena) – list sa pri
-   ťuknutí najprv zavrie (fokus sa vráti na "⋯"), potom sa vykoná pôvodná akcia. */
+/* Jedno kruhové „⋯“ otvára ostatné akcie cviku (drop, kotúče, výmena, pokrok).
+   Ľahké prípravné série aj pamätaný rad sa ovládajú v úvodnej centrálnej sekcii. */
 let exActionsOpener = null;
 const editMoreOpen = new WeakSet();   // riadky konceptu editora, ktorým je "Ďalšie možnosti" otvorené (prežije prekreslenie)
 function buildMoreButton(ex, info) {
@@ -24153,11 +25119,9 @@ function buildMoreButton(ex, info) {
   btn.addEventListener('click', () => { closeSetWeightEditor(); openExerciseActions(ex, info, btn); });
   return btn;
 }
-/* Položky listu v poradí: rozcvička, rad, drop séria, kotúče, výmena, pokrok (zapojí sa neskôr, zatiaľ skrytý). */
+/* Položky listu: drop séria, kotúče, výmena, pokrok. */
 function exerciseActionButtons(ex, info) {
   const out = [];
-  const warm = buildWarmupButtons(ex);   // [+ Rozcvička?, Rozcvičkový rad?]
-  for (const b of warm) out.push(b);
   const drop = buildDropButton(ex);
   if (drop) out.push(drop);
   if (isBarbellExercise(ex)) out.push(buildPlatesButton(ex));
@@ -24484,7 +25448,7 @@ function buildWarmupsBlock(ex, readOnly) {
   });
   return box;
 }
-/* Tlačidlá "+ Rozcvička" a "Rozcvičkový rad" do riadku akcií cviku (rad nie je pri asistovanom cviku). */
+/* Pôvodné closure handlery používa iba centrálna sekcia ľahkých prípravných sérií. */
 function buildWarmupButtons(ex) {
   const out = [];
   if (sessionWarmups(ex).length < WARMUP_MAX) {
@@ -24503,6 +25467,350 @@ function buildWarmupButtons(ex) {
   }
   return out;
 }
+/* Phase cards deliberately live OUTSIDE #exercise-list and never use .exercise. */
+function workoutPhaseCurrent(kind) {
+  const sess = getSession();
+  if (sess) return ensureWorkoutPhases(sess)[kind];
+  const pref = workoutPhasePreferences()[kind];
+  return { enabled: pref.enabled, config: cleanWorkoutPhaseConfig(pref), done: false };
+}
+function workoutPhaseConfigLocked(kind) {
+  const sess = getSession(), p = sess && sess.phaseTimer;
+  return !!p && p.phase === kind && ['running', 'paused'].includes(p.status);
+}
+function workoutPhaseForgetCompletion(entry) {
+  entry.done = false; delete entry.completedAt; delete entry.completionMethod;
+}
+function setWorkoutPhaseEnabled(kind, on) {
+  if (!workoutPhaseKind(kind)) return;
+  const sess = getSession();
+  if (sess && sess.phaseTimer && sess.phaseTimer.phase === kind) workoutPhaseCancelOwner();
+  const prefs = workoutPhasePreferences(); prefs[kind].enabled = on === true;
+  state.settings.workoutPhases = prefs;
+  if (sess) { const entry = ensureWorkoutPhases(sess)[kind]; entry.enabled = on === true; workoutPhaseForgetCompletion(entry); }
+  saveState(); renderWorkoutPhases(); updateSummary();
+}
+async function setWorkoutPhaseDone(kind, on) {
+  if (!workoutPhaseKind(kind)) return;
+  const sess = getSession();
+  if (!sess) return;
+  const entry = ensureWorkoutPhases(sess)[kind];
+  if (!entry.enabled) return;
+  // Invalidation happens before awaiting the bridge; old completions can never restore a tick.
+  if (sess.phaseTimer && sess.phaseTimer.phase === kind) workoutPhaseCancelOwner();
+  workoutPhaseForgetCompletion(entry);
+  if (on === true) Object.assign(entry, { done: true, completedAt: Date.now(), completionMethod: 'manual' });
+  saveState(); renderWorkoutPhases(); updateSummary();
+}
+function updateWorkoutPhaseConfig(kind, config) {
+  if (!workoutPhaseKind(kind) || workoutPhaseConfigLocked(kind)) return false;
+  const clean = cleanWorkoutPhaseConfig(config);
+  if (!clean) return false;
+  const sess = getSession();
+  if (sess && sess.phaseTimer && sess.phaseTimer.phase === kind) workoutPhaseCancelOwner();
+  const prefs = workoutPhasePreferences();
+  prefs[kind] = Object.assign({ enabled: workoutPhaseCurrent(kind).enabled }, clean);
+  state.settings.workoutPhases = prefs;
+  if (sess) { const entry = ensureWorkoutPhases(sess)[kind]; entry.config = cleanWorkoutPhaseConfig(clean); workoutPhaseForgetCompletion(entry); }
+  saveState(); renderWorkoutPhases(); updateSummary(); return true;
+}
+function workoutPhaseText(host, key, cls, args) {
+  const node = document.createElement('p'); node.className = cls || 'card-note';
+  node.textContent = t(key, args); host.appendChild(node); return node;
+}
+function workoutPhaseButton(host, key, action, fn) {
+  const btn = document.createElement('button'); btn.type = 'button'; btn.className = 'btn btn-secondary';
+  btn.textContent = t(key); if (action) btn.dataset.phaseAction = action;
+  btn.addEventListener('click', fn); host.appendChild(btn); return btn;
+}
+function workoutPhasePaint() {
+  const sess = getSession(), p = sess && sess.phaseTimer;
+  if (!p) return;
+  const card = document.getElementById('workout-phase-' + p.phase);
+  if (!card) return;
+  const clock = card.querySelector('[data-phase-clock]');
+  if (clock) clock.textContent = formatDurationClock(Math.ceil((p.status === 'running' && workoutPhaseNative()
+    ? Math.max(0, p.remainingMs - Math.max(0, Date.now() - p.sampledAt)) : p.remainingMs) / 1000));
+  const stage = card.querySelector('[data-phase-stage]');
+  if (stage) stage.textContent = t('phase.round', { n: p.round, total: p.rounds }) + (p.stage === 'rest' ? ' · ' + t('phase.rest') : '');
+  const guidance = card.querySelector('[data-phase-round-guidance]');
+  if (guidance) {
+    const selected = WORKOUT_PHASE_SUGGESTIONS.filter(s => s.phase === p.phase && sess.phases[p.phase].config.activityIds.includes(s.id));
+    const activity = selected.length ? selected[(p.round - 1) % selected.length] : null;
+    guidance.textContent = p.stage === 'rest' ? t('phase.rest') : activity
+      ? activity.names[activeLang()] + ': ' + activity.guidance[activeLang()] : t('phase.activityGuidance');
+  }
+}
+const workoutPhaseOpenDetails = new Set();   // "<kind>:<part>": opened <details> survive every repaint
+function workoutPhaseDetails(kind, part, titleKey) {
+  const key = kind + ':' + part, details = document.createElement('details');
+  details.className = 'phase-more'; details.dataset.phaseDetails = part; details.open = workoutPhaseOpenDetails.has(key);
+  details.addEventListener('toggle', () => { if (details.open) workoutPhaseOpenDetails.add(key); else workoutPhaseOpenDetails.delete(key); });
+  const summary = document.createElement('summary'); summary.textContent = t(titleKey);
+  details.appendChild(summary); return details;
+}
+/* Actionable readiness problems stay in the card; explanations and an all-clear status are folded into `help`. */
+function renderWorkoutPhaseReadiness(card, help) {
+  if (!workoutPhaseNative()) {
+    workoutPhaseText(help, 'phase.browserTitle'); workoutPhaseText(help, 'phase.browserLimits');
+    workoutPhaseText(help, 'phase.browserAudio'); return;
+  }
+  const caps = workoutPhaseCaps;
+  const battery = !caps ? 'phase.batteryUnknown' : caps.backgroundRestricted ? 'phase.batteryRestricted'
+    : caps.batteryOptimized ? 'phase.batteryOptimized' : 'phase.batteryReady';
+  const batteryProblem = battery !== 'phase.batteryReady', notificationDenied = !!caps && !caps.notificationsAllowed;
+  const host = batteryProblem || notificationDenied ? card : help;
+  if (batteryProblem || host === help) workoutPhaseText(host, battery, batteryProblem ? 'phase-error' : 'card-note');
+  if (notificationDenied) workoutPhaseText(host, 'phase.notificationDenied', 'phase-error');
+  workoutPhaseText(help, 'phase.noSilentFallback'); workoutPhaseText(help, 'phase.batterySettingsHelp');
+  workoutPhaseText(help, 'phase.audioHelp');
+  const actions = document.createElement('div'); actions.className = 'phase-actions'; host.appendChild(actions);
+  workoutPhaseButton(actions, 'phase.recheckReadiness', null, workoutPhaseCapabilities);
+  workoutPhaseButton(actions, 'phase.openBatterySettings', null, async () => {
+    const plugin = nativePlugin('GymPhase');
+    try { if (!plugin) throw new Error(); await plugin.openBatterySettings(); }
+    catch (e) { workoutPhaseError = 'phase.batteryUnknown'; renderWorkoutPhases(); }
+  });
+  if (!caps || !caps.notificationsAllowed) workoutPhaseButton(actions, 'phase.requestNotifications', null, async () => {
+    const plugin = nativePlugin('LocalNotifications');
+    try { if (plugin) await plugin.requestPermissions(); } catch (e) {}
+    await workoutPhaseCapabilities();
+  });
+}
+let workoutPhaseRendering = false;   // a blur fired by removing a focused control must never commit anything
+function workoutPhaseControlSelector(el) {
+  if (el.matches('[data-phase-config]')) return '[data-phase-config="' + el.dataset.phaseConfig + '"]';
+  if (el.matches('[data-phase-activity]')) return '[data-phase-activity="' + el.dataset.phaseActivity + '"]';
+  if (el.matches('[data-phase-action]')) return '[data-phase-action="' + el.dataset.phaseAction + '"]';
+  if (el.matches('[data-phase-complete]')) return '[data-phase-complete]';
+  if (el.matches('summary') && el.parentElement && el.parentElement.dataset.phaseDetails) return 'details[data-phase-details="' + el.parentElement.dataset.phaseDetails + '"] > summary';
+  return null;
+}
+/* Focus, caret and typed-but-uncommitted numbers survive a structural rebuild of a phase card. */
+function workoutPhaseUiSnapshot() {
+  const active = document.activeElement, card = active && active.closest ? active.closest('.workout-phase-card') : null;
+  const dirty = [];
+  for (const input of document.querySelectorAll('.workout-phase-card input[data-phase-config]')) {
+    if (input.value !== input.dataset.phaseSaved) dirty.push({ card: input.closest('.workout-phase-card').id, selector: workoutPhaseControlSelector(input), value: input.value });
+  }
+  const snap = { card: card ? card.id : null, selector: card ? workoutPhaseControlSelector(active) : null, start: null, end: null, dirty };
+  try { snap.start = active.selectionStart; snap.end = active.selectionEnd; } catch (e) {}
+  return snap;
+}
+function workoutPhaseUiRestore(snap) {
+  for (const d of snap.dirty) {
+    const input = d.selector && document.querySelector('#' + d.card + ' ' + d.selector);
+    if (input && !input.disabled && input.value !== d.value) { input.value = d.value; input.dispatchEvent(new Event('input')); }
+  }
+  if (!snap.card || !snap.selector) return;
+  const scope = '#' + snap.card + ' ';
+  let el = document.querySelector(scope + snap.selector);
+  if (!el) {   // Pause and Resume replace each other: keep the keyboard on the counterpart
+    const swap = { pause: 'resume', resume: 'pause' }, m = /data-phase-action="(pause|resume)"/.exec(snap.selector);
+    if (m) el = document.querySelector(scope + '[data-phase-action="' + swap[m[1]] + '"]');
+  }
+  if (!el || el.disabled || el === document.activeElement) return;
+  el.focus({ preventScroll: true });
+  try { if (typeof snap.start === 'number') el.setSelectionRange(snap.start, snap.end); } catch (e) {}
+}
+function renderWorkoutPhases() {
+  const snapshot = workoutPhaseUiSnapshot();
+  workoutPhaseRendering = true;
+  try { renderWorkoutPhaseCards(); } finally { workoutPhaseRendering = false; }
+  workoutPhaseUiRestore(snapshot); workoutPhasePaint(); renderWorkoutPhaseCommunityPending();
+}
+/* A card is rebuilt only when something structural changed; round and clock movement is painted in place. */
+function renderWorkoutPhaseCards() {
+  const sess = getSession();
+  for (const kind of WORKOUT_PHASE_KINDS) {
+    const toggle = document.getElementById('phase-toggle-' + kind), card = document.getElementById('workout-phase-' + kind);
+    if (!toggle || !card) continue;
+    const entry = workoutPhaseCurrent(kind), locked = workoutPhaseConfigLocked(kind);
+    toggle.checked = entry.enabled; toggle.onchange = () => setWorkoutPhaseEnabled(kind, toggle.checked);
+    const live = sess && sess.phaseTimer && sess.phaseTimer.phase === kind ? sess.phaseTimer : null, caps = workoutPhaseCaps;
+    const sig = JSON.stringify([entry.enabled, entry.done, entry.completionMethod || '', entry.config, locked, !!sess, activeLang(), workoutPhaseError,
+      workoutPhaseNative(), caps ? [caps.backgroundRestricted, caps.batteryOptimized, caps.notificationsAllowed] : null,
+      live ? [live.status, live.runId, live.audioError || '', live.interruptedReason || ''] : null]);
+    if (entry.enabled && !card.hidden && card.dataset.phaseSig === sig) continue;
+    card.replaceChildren(); card.hidden = !entry.enabled; card.dataset.phaseSig = entry.enabled ? sig : '';
+    if (!entry.enabled) continue;
+    const heading = document.createElement('h3'); heading.textContent = t('phase.' + kind); card.appendChild(heading);
+    const settings = workoutPhaseDetails(kind, 'settings', 'phase.configuration');
+    const help = workoutPhaseDetails(kind, 'help', 'phase.rewardsTitle');
+    workoutPhaseText(help, 'phase.' + kind + 'Placement'); workoutPhaseText(help, 'phase.optionalHelp');
+    const doneLabel = document.createElement('label'); doneLabel.className = 'phase-complete';
+    const done = document.createElement('input'); done.type = 'checkbox'; done.dataset.phaseComplete = '';
+    done.checked = entry.done; done.disabled = !sess;
+    done.addEventListener('change', () => setWorkoutPhaseDone(kind, done.checked));
+    const text = document.createElement('span'); text.textContent = t(entry.done ? 'phase.clearCompletion' : 'phase.markComplete');
+    doneLabel.append(done, text); card.appendChild(doneLabel);
+    if (entry.done && entry.completionMethod === 'timer') workoutPhaseText(card, 'phase.timerCompletionHelp');
+    else workoutPhaseText(help, 'phase.manualCompletionHelp');
+    workoutPhaseText(card, 'phase.totalDuration', 'card-note phase-duration', { 0: formatDurationClock(workoutPhaseTotalSeconds(entry.config)) });
+    const fields = document.createElement('fieldset'); fields.className = 'phase-config'; fields.disabled = locked;
+    const legend = document.createElement('legend'); legend.textContent = t('phase.configuration'); fields.appendChild(legend);
+    const inputs = {};
+    for (const [name, min, max] of [['workSeconds', 1, 3600], ['restSeconds', 0, 3600], ['rounds', 1, 100]]) {
+      const label = document.createElement('label'), input = document.createElement('input');
+      label.textContent = t('phase.' + name); input.type = 'number'; input.min = min; input.max = max; input.step = 1;
+      input.value = entry.config[name]; input.dataset.phaseConfig = name; inputs[name] = input;
+      label.appendChild(input); fields.appendChild(label);
+    }
+    const invalid = workoutPhaseText(fields, 'phase.invalidConfiguration'); invalid.hidden = true; invalid.setAttribute('role', 'alert');
+    const readConfig = () => {
+      const config = Object.assign({}, workoutPhaseCurrent(kind).config);
+      for (const [name, element] of Object.entries(inputs)) config[name] = element.value.trim() === '' ? NaN : Number(element.value);
+      return config;
+    };
+    const checkConfig = () => {
+      const config = readConfig(), valid = validWorkoutPhaseConfig(config);
+      invalid.hidden = valid;
+      for (const element of Object.values(inputs)) element.setAttribute('aria-invalid', valid ? 'false' : 'true');
+      const start = card.querySelector('[data-phase-action="start"]');
+      if (start) start.disabled = !valid;
+      return valid ? config : null;
+    };
+    const commitConfig = () => {
+      if (workoutPhaseRendering) return;
+      const config = checkConfig(), saved = workoutPhaseCurrent(kind).config;
+      if (config && ['workSeconds', 'restSeconds', 'rounds'].some(name => config[name] !== saved[name])) updateWorkoutPhaseConfig(kind, config);
+    };
+    for (const input of Object.values(inputs)) {
+      input.dataset.phaseSaved = String(entry.config[input.dataset.phaseConfig]);
+      input.addEventListener('input', checkConfig); input.addEventListener('change', commitConfig); input.addEventListener('blur', commitConfig);
+    }
+    settings.appendChild(fields);
+    workoutPhaseText(settings, 'phase.sequenceHelp');
+    workoutPhaseText(settings, 'phase.totalFormula', null, {0:entry.config.rounds,1:entry.config.workSeconds,2:entry.config.rounds-1,3:entry.config.restSeconds});
+    if (locked) workoutPhaseText(settings, 'phase.configLocked');
+    const ideas = document.createElement('fieldset'); ideas.disabled = locked; ideas.className = 'phase-suggestions';
+    const ideaTitle = document.createElement('legend'); ideaTitle.textContent = t('phase.activitySuggestions'); ideas.appendChild(ideaTitle);
+    workoutPhaseText(ideas, entry.config.activityIds.length ? 'phase.selectedActivities' : 'phase.noActivitiesSelected', null, {0:entry.config.activityIds.length});
+    workoutPhaseText(ideas, 'phase.activityGuidance');
+    for (const activity of WORKOUT_PHASE_SUGGESTIONS.filter(s => s.phase === kind)) {
+      const label = document.createElement('label'), input = document.createElement('input'), words = document.createElement('span');
+      input.type = 'checkbox'; input.checked = entry.config.activityIds.includes(activity.id); input.dataset.phaseActivity = activity.id;
+      words.textContent = activity.names[activeLang()] + ' — ' + activity.guidance[activeLang()];
+      input.addEventListener('change', () => {
+        const current = workoutPhaseCurrent(kind).config, ids = new Set(current.activityIds); if (input.checked) ids.add(activity.id); else ids.delete(activity.id);
+        updateWorkoutPhaseConfig(kind, Object.assign({}, current, { activityIds: [...ids] }));
+      });
+      label.append(input, words); ideas.appendChild(label);
+    }
+    settings.appendChild(ideas);
+    const p = sess && sess.phaseTimer && sess.phaseTimer.phase === kind ? sess.phaseTimer : null;
+    if (p) {
+      workoutPhaseText(card, 'phase.status' + p.status[0].toUpperCase() + p.status.slice(1), 'phase-status');
+      const stage = document.createElement('p'); stage.dataset.phaseStage = ''; card.appendChild(stage);
+      const clock = document.createElement('output'); clock.dataset.phaseClock = ''; card.appendChild(clock);
+      const guidance = document.createElement('p'); guidance.dataset.phaseRoundGuidance = ''; card.appendChild(guidance);
+      if (p.status === 'interrupted') workoutPhaseText(card, 'phase.interruptedGap');
+      if (p.audioError) workoutPhaseText(card, 'phase.audioUnavailable', 'phase-error');
+    }
+    if (workoutPhaseError) workoutPhaseText(card, workoutPhaseError, 'phase-error');
+    const actions = document.createElement('div'); actions.className = 'phase-actions'; card.appendChild(actions);
+    if (p && p.status === 'running') workoutPhaseButton(actions, 'phase.pause', 'pause', () => workoutPhaseCommand('pause'));
+    if (p && p.status === 'paused') workoutPhaseButton(actions, 'phase.resume', 'resume', () => workoutPhaseCommand('resume'));
+    if (p && ['running', 'paused'].includes(p.status)) workoutPhaseButton(actions, 'phase.stop', 'stop', () => workoutPhaseCommand('stop'));
+    workoutPhaseButton(actions, p ? 'phase.restart' : 'phase.start', 'start', () => startWorkoutPhase(kind));
+    workoutPhaseText(help, 'phase.stopHelp'); renderWorkoutPhaseReadiness(card, settings);
+    workoutPhaseText(help, 'phase.countsHelp'); workoutPhaseText(help, 'phase.xpHelp'); workoutPhaseText(help, 'phase.dailyCapHelp'); workoutPhaseText(help, 'phase.badgeHelp'); workoutPhaseText(help, 'phase.undoHelp');
+    card.append(settings, help);
+  }
+}
+/* Raw plan rows behind one slot occurrence: the row the running plan renders from, and (program workouts render from a
+   session snapshot) the saved plan row that actually remembers the preference. */
+function workoutPhaseRampRows(slot) {
+  const sess = getSession();
+  const find = (p) => {
+    if (!p || !Array.isArray(p.exercises)) return null;
+    let n = 0;
+    for (const row of p.exercises) if (exerciseSessionKey(row) === slot.base && n++ === slot.occ) return row;
+    return null;
+  };
+  return { session: find(currentPlan()), saved: sess && sess.programPlan && sess.planId !== 'quick' ? find(getPlan(sess.planId)) : null };
+}
+/* One section per exercise key (warm-up rows are keyed that way). Every plan occurrence is initialised and keeps its own
+   ramp preference; replaced exercises that only own warm-up rows stay closed and are named from the substitution chain. */
+function workoutPhaseLegacyEntries(plan) {
+  const sess = getSession(), entries = new Map();
+  const entryFor = (ex) => {
+    const key = exerciseSessionKey(ex);
+    if (!entries.has(key)) entries.set(key, { key, ex, readOnly: true, ramps: [] });
+    return entries.get(key);
+  };
+  if (plan) for (const slot of exerciseSlots(plan)) {
+    const steps = substitutionSteps(slot.slot);
+    const active = exerciseSegments(slot).filter(seg => !seg.readOnly).map(seg => seg.ex);
+    for (const ex of [slot.ex].concat(steps.map(step => step.ex))) {
+      if (active.includes(ex)) {
+        autoWarmupRamp(ex);
+        const entry = entryFor(ex);
+        if (entry.readOnly) { entry.ex = ex; entry.readOnly = false; }
+        if (!steps.length && !isAssisted(ex)) {
+          const rows = workoutPhaseRampRows(slot);
+          if (rows.session) entry.ramps.push({ slot, rows });
+        }
+      } else if (sessionWarmups(ex).length && !entries.has(exerciseSessionKey(ex))) entryFor(ex);
+    }
+  }
+  if (sess && sess.warmups) for (const key of Object.keys(sess.warmups)) {
+    if (entries.has(key) || !Array.isArray(sess.warmups[key]) || !sess.warmups[key].length) continue;
+    const ex = BUILTIN_EXERCISE_IDS.has(key) ? { id: key, name: key } : { sessionKey: key, name: key.indexOf('c:') === 0 ? key.slice(2) : key };
+    entries.set(key, { key, ex, readOnly: true, ramps: [] });   // truly unresolved key: anonymous, locked
+  }
+  return [...entries.values()];
+}
+function renderWorkoutPhaseLegacy() {
+  const host = document.getElementById('workout-phase-legacy');
+  if (!host) return;
+  host.replaceChildren();
+  const title = document.createElement('h3'); title.textContent = t('phase.legacyTitle'); host.appendChild(title);
+  workoutPhaseText(host, 'phase.legacyHelp'); workoutPhaseText(host, 'phase.legacyIndependent');
+  const entries = workoutPhaseLegacyEntries(currentPlan());
+  for (const { key, ex, readOnly, ramps } of entries) {
+    const section = document.createElement('section'); section.className = 'phase-legacy-exercise'; section.dataset.exerciseKey = key;
+    const name = document.createElement('h4'); name.textContent = exerciseDisplayName(ex); section.appendChild(name);
+    const rows = buildWarmupsBlock(ex, readOnly); if (rows) section.appendChild(rows);
+    if (!readOnly) {
+      const actions = document.createElement('div'); actions.className = 'phase-actions';
+      for (const btn of buildWarmupButtons(ex)) actions.appendChild(btn);
+      section.appendChild(actions);
+      for (const { slot, rows: source } of ramps) {
+        const label = document.createElement('label'), toggle = document.createElement('input'), text = document.createElement('span');
+        toggle.type = 'checkbox'; toggle.className = 'phase-legacy-ramp'; toggle.checked = source.session.warmupRamp === true;
+        text.textContent = t('warmup.planToggle') + (ramps.length > 1 ? ' · #' + (slot.occ + 1) : '');
+        toggle.addEventListener('change', () => {
+          for (const row of [source.session, source.saved]) if (row) { if (toggle.checked) row.warmupRamp = true; else delete row.warmupRamp; }
+          saveState(); renderWorkoutPhaseLegacy();
+        });
+        label.append(toggle, text); section.appendChild(label);
+      }
+    }
+    host.appendChild(section);
+  }
+  host.hidden = entries.length === 0;
+}
+/* Remembered ramp preference while editing a plan: edits the draft only; Save persists it, Cancel discards it. */
+function renderEditWarmupRampPrefs() {
+  const host = document.getElementById('edit-warmup-ramp'), rowsHost = document.getElementById('edit-rows');
+  if (!host || !rowsHost) return;
+  if (!host.dataset.bound) { host.dataset.bound = '1'; for (const type of ['input', 'change']) rowsHost.addEventListener(type, renderEditWarmupRampPrefs); }
+  const draft = editingPlan !== null && Array.isArray(editDraft) ? editDraft : [];
+  const summary = document.createElement('summary'); summary.textContent = t('phase.legacyTitle');
+  const list = document.createElement('div'); list.className = 'edit-ramp-list';
+  draft.forEach((d, i) => {
+    if (isAssisted(d)) return;
+    const label = document.createElement('label'), box = document.createElement('input'), text = document.createElement('span');
+    box.type = 'checkbox'; box.className = 'edit-ramp-pref'; box.checked = d.warmupRamp === true;
+    text.textContent = (i + 1) + '. ' + (exerciseDisplayName(d) || '') + ' — ' + t('warmup.planToggle');
+    box.addEventListener('change', () => { if (box.checked) d.warmupRamp = true; else delete d.warmupRamp; });
+    label.append(box, text); list.appendChild(label);
+  });
+  host.hidden = list.children.length === 0;
+  host.replaceChildren(summary, list);
+}
+
 
 /* ---------- Námaha série (RPE / RIR) ----------
    Voliteľné hodnotenie každej hotovej série: RPE 6–10 po 0,5, alebo RIR (opakovania v rezerve) = 10 − RPE.
@@ -24843,7 +26151,7 @@ function updateSummary() {
   document.getElementById('summary-bar').innerHTML = t('trening.setsDone', { done, total, msg });
   setFinishDisabled(done === 0);
   const xpEl = document.getElementById('tr-finish-xp');
-  if (xpEl) xpEl.textContent = ' · +' + xpForNewWorkout(done, todayISO()) + ' ' + t('units.xp');
+  if (xpEl) xpEl.textContent = ' · +' + xpForNewWorkout(done, todayISO(), phaseSnapshotForHistory(getSession())) + ' ' + t('units.xp');
   bentoMarkExercises();
   bentoTrainMode();
   refreshSuggestChips();
@@ -25737,23 +27045,7 @@ function renderEditPanel() {
     sideBox.append(sideToggle, sideStart);
     row.appendChild(sideBox);
 
-    /* Voliteľný "Rozcvičkový rad": pri štarte cviku v tréningu sa sám doplní (nie pri asistovanom cviku). */
-    const warmBox = document.createElement('div');
-    warmBox.className = 'edit-warmup edit-warmup-box';
-    const warmLabel = document.createElement('label');
-    warmLabel.className = 'edit-side-toggle';
-    const warmCheck = document.createElement('input');
-    warmCheck.type = 'checkbox';
-    warmCheck.className = 'edit-warmup-ramp';
-    warmCheck.checked = ex.warmupRamp === true;
-    const warmText = document.createElement('span');
-    warmText.textContent = t('warmup.planToggle');
-    warmLabel.append(warmCheck, warmText);
-    warmBox.appendChild(warmLabel);
-    warmCheck.addEventListener('change', () => {
-      if (warmCheck.checked) editDraft[idx].warmupRamp = true; else delete editDraft[idx].warmupRamp;
-    });
-    /* Doplnky fázy 1 (rozcvičkový rad, spojenie do supersérie) sú v zatvorenom "Ďalšie možnosti". */
+    /* Spojenie do supersérie a priradenie svalov zostávajú v Ďalších možnostiach. */
     const moreOpts = document.createElement('details');
     moreOpts.className = 'edit-more';
     moreOpts.open = editMoreOpen.has(ex);
@@ -25763,7 +27055,7 @@ function renderEditPanel() {
     });
     const moreSum = document.createElement('summary');
     moreSum.textContent = t('exactions.moreOptions');
-    moreOpts.append(moreSum, warmBox);
+    moreOpts.append(moreSum);
     const syncMoreOpts = () => { moreOpts.hidden = Array.from(moreOpts.children).every((c) => c === moreSum || c.hidden); };
     /* Rozpoznanie je hneď pri názve; vlastný výber sa otvorí priamou akciou bez hľadania v doplnkoch. */
     const picker = createExerciseMusclePicker('edit-muscle-primary-' + idx, (meta) => {
@@ -25827,7 +27119,6 @@ function renderEditPanel() {
       assistCheck.disabled = fixed;
       /* Zabudovaný neasistovaný cvik prepínač nemá (zámena s "Dips" je vylúčená); prepisom názvu sa stane vlastným. */
       assistBox.hidden = !fixed && !!d.id && BUILTIN_EXERCISE_IDS.has(d.id);
-      warmBox.hidden = isAssisted(d);
       syncMoreOpts();
     };
     syncAssist();
@@ -25924,6 +27215,7 @@ function renderEditPanel() {
     rows.appendChild(row);
   });
   refreshSharedNotes();
+  renderEditWarmupRampPrefs();
 }
 
 /* Prvý riadok rovnakej identity v inom pláne než v upravovanom (null, ak žiadny). */
@@ -28023,14 +29315,19 @@ function communityMissingFn(error) {
   const code = String((error && error.code) || '');
   return code === 'PGRST202' || code === '42883' || Number(error && error.status) === 404;
 }
-async function communityDetectSocial(sb) {
-  if (communitySocial !== null) return communitySocial;
+async function communityDetectSocial(sb, force) {
+  if (!force && communitySocial !== null) return communitySocial;
+  const previous = communityVersion;
   let r;
   try { r = await sb.rpc('community_social_version'); } catch (e) { r = { error: e }; }
+  workoutPhaseCapabilityKnown = !!r && !r.error;
   if (r && !r.error) { communitySocial = true; communityVersion = Number(r.data) || 1; }
-  else if (communityMissingFn(r && r.error)) communitySocial = false;
-  else return false;   // sieť: teraz staré zobrazenie, pri ďalšom vykreslení sa skúsi znova
-  return communitySocial;
+  else if (communityMissingFn(r && r.error)) { communitySocial = false; communityVersion = 0; }
+  if (previous !== communityVersion || !workoutPhaseCapabilityKnown) {
+    leaderboardSentSig = ''; profileAchSentSig = null;
+  }
+  renderWorkoutPhaseCommunityPending();
+  return r && !r.error ? communitySocial : false;
 }
 async function communityLoadConsent(sb) {
   let r;
@@ -28186,6 +29483,33 @@ let leaderboardSentSig = '';           // posledný úspešne odoslaný stav (be
 let leaderboardTimer = null;
 let leaderboardPeriod = 'all';         // 'all' | 'week'
 
+let workoutPhaseCapabilityKnown = false, workoutPhaseProbe = null;
+function workoutPhasePublishableBadge(id) {
+  return !['phaseWarmup1', 'phaseStretch1'].includes(id) || (workoutPhaseCapabilityKnown && communityVersion >= 14);
+}
+function workoutPhaseCommunityPending() {
+  const earned = state && state.achievements || {};
+  return !!(earned.phaseWarmup1 || earned.phaseStretch1) && !(workoutPhaseCapabilityKnown && communityVersion >= 14);
+}
+function renderWorkoutPhaseCommunityPending() {
+  const host = document.getElementById('screen-komunita');
+  if (!host) return;
+  let note = document.getElementById('phase-community-pending');
+  if (!note) { note = document.createElement('p'); note.id = 'phase-community-pending'; note.className = 'card-note phase-community-pending'; note.setAttribute('role', 'status'); host.prepend(note); }
+  note.hidden = !communityOptIn() || !workoutPhaseCommunityPending();
+  note.textContent = t('phase.communityPending') + ' ' + t('phase.communityPendingHelp') + ' ' + t('phase.mixedVersionHelp');
+}
+function workoutPhaseCommunityReprobe() {
+  if (workoutPhaseProbe) return workoutPhaseProbe;
+  const sb = communityClient();
+  if (!sb || !communityProfile || !communityOptIn()) return Promise.resolve();
+  workoutPhaseProbe = (async () => {
+    await communityDetectSocial(sb, true);
+    await leaderboardSend(false);
+    await profileAchievementsSend(false);
+  })().finally(() => { workoutPhaseProbe = null; });
+  return workoutPhaseProbe;
+}
 function leaderboardEnabled() { return communitySocial === true && communityVersion >= 3 && !!communityProfile; }
 
 function leaderboardPayload() {
@@ -28200,7 +29524,7 @@ function leaderboardPayload() {
     p_week_training: week,
     p_week_key: wk,
     p_workouts: state.history.length + (state.activities || []).length,   // séria týždňov počíta aj aktivity
-    p_achievements: (v2 ? staticAchievementDefs() : allAchievementDefs()).filter((d) => earned[d.id]).map((d) => d.id),
+    p_achievements: (v2 ? staticAchievementDefs() : allAchievementDefs()).filter((d) => earned[d.id] && workoutPhasePublishableBadge(d.id)).map((d) => d.id),
   };
   if (v2) payload.p_rules = 2;   // bez p_rules (staršia appka) server XP z tejto appky ignoruje
   return payload;
@@ -28223,11 +29547,12 @@ async function leaderboardSend(force) {
   const sb = communityClient();
   if (!sb) return null;
   const payload = leaderboardPayload();
+  if (workoutPhaseCommunityPending()) { leaderboardSentSig = ''; profileAchSentSig = null; }
   const sig = JSON.stringify(payload);
   if (!force && sig === leaderboardSentSig) return null;
   let r;
   try { r = await sb.rpc('leaderboard_submit', payload); } catch (e) { r = { error: e }; }
-  if (r && !r.error) leaderboardSentSig = sig;   // offline/chyba: pri ďalšej zmene alebo otvorení Community znova
+  if (r && !r.error && !workoutPhaseCommunityPending()) leaderboardSentSig = sig;
   return r;
 }
 
@@ -28894,7 +30219,7 @@ function communityChatScrollToEnd() {
 }
 /* Chat je „videný“ len keď je naozaj na očiach: karta Community, pohľad chat a viditeľná stránka. */
 function communityChatVisible() {
-  return activeTab === 'komunita' && communityView === 'chat' && !!communityChatId && document.visibilityState === 'visible';
+  return !tourOpen() && activeTab === 'komunita' && communityView === 'chat' && !!communityChatId && document.visibilityState === 'visible';   // návod prekrýva obrazovku: chat sa nepovažuje za videný (žiadne mark_read)
 }
 /* Krátky serverový prenájom: iba viditeľný chat, 20 s obnovenie / 30 s expirácia.
    Poradie RPC je sériové, aby pomalý heartbeat neobnovil už zatvorený chat. */
@@ -29045,14 +30370,17 @@ function communityOnChatRead(r) {
 /* Živá správa: v otvorenom chate sa hneď pridá (a označí ako prečítaná), inak len odznak. */
 function communityOnMessage(m) {
   if (!m) return;
-  const inChat = activeTab === 'komunita' && communityView === 'chat' && m.conversation_id === communityChatId && communityChatVisible();
-  if (inChat) {
+  const inChatView = activeTab === 'komunita' && communityView === 'chat' && m.conversation_id === communityChatId;
+  if (inChatView && communityChatVisible()) {
     communityAddChatMsg(m);
     if (communityProfile && m.sender_id !== communityProfile.id) communityMarkChatRead();
     return;
   }
+  /* návod prekrýva chat/zoznam: správa sa len lokálne pridá (communityAddChatMsg je lokálne a ruší duplicity); žiadne mark_read ani prekreslenie
+     cez sieť. Chat ju ukáže po zatvorení návodu, zoznam rozhovorov sa neprekresľuje (odznak sa obnoví nižšie). */
+  if (inChatView && tourOpen()) communityAddChatMsg(m);
   communityRefreshBadges();
-  if (activeTab === 'komunita' && communityView === 'chats') renderCommunity();
+  if (!tourOpen() && activeTab === 'komunita' && communityView === 'chats') renderCommunity();
 }
 
 /* ---------- Upozornenia na správy (Web Push, migrácia 0010) ----------
@@ -30300,11 +31628,12 @@ async function profileAchievementsSend(force) {
   const sb = communityClient();
   if (!sb) return;
   const earned = state.achievements || {};
-  const payload = { p_ids: allAchievementDefs().filter((d) => earned[d.id]).map((d) => d.id),
+  const payload = { p_ids: allAchievementDefs().filter((d) => earned[d.id] && workoutPhasePublishableBadge(d.id)).map((d) => d.id),
     p_workouts: state.history.length + (state.activities || []).length };
+  if (workoutPhaseCommunityPending()) { leaderboardSentSig = ''; profileAchSentSig = null; }
   const sig = JSON.stringify(payload) + ':' + (communityProfile && communityProfile.id);
   if (!force && sig === profileAchSentSig) return;
-  try { const r = await sb.rpc('profile_achievements_set', payload); if (r && !r.error) profileAchSentSig = sig; } catch (e) {}
+  try { const r = await sb.rpc('profile_achievements_set', payload); if (r && !r.error && !workoutPhaseCommunityPending()) profileAchSentSig = sig; } catch (e) {}
 }
 async function profileAchievementsGet(sb, uid) {
   if (!sb || !uid || !communityV5()) return null;
@@ -30478,6 +31807,7 @@ function communityViewKey(view, user, post, chat) {
 async function renderCommunity() {
   const body = document.getElementById('community-body');
   if (!body) return;
+  renderWorkoutPhaseCommunityPending();
   /* Novšie vykreslenie vždy vyhrá: pomalšia staršia odpoveď už nič neprepíše. */
   const seq = ++communityRenderSeq;
   communityChatHashSync();
@@ -30685,7 +32015,7 @@ function communityWatchFeedEnd() {
   communityFeedObserver = new IntersectionObserver((entries) => {
     const f = communityFeed;
     if (!entries.some((e) => e.isIntersecting) || f.loading || f.done || f.error || !f.items.length || f.grid) return;
-    if (activeTab !== 'komunita' || (communityView !== 'feed' && communityView !== 'user')) return;
+    if (tourSuppressed() || activeTab !== 'komunita' || (communityView !== 'feed' && communityView !== 'user')) return;
     const sb = communityClient(); if (sb) communityLoadFeed(sb, false);
   }, { rootMargin: '800px 0px' });
   communityFeedObserver.observe(foot);
@@ -31788,6 +33118,7 @@ async function communityResendConfirmation() {
 async function communitySignOut() {
   if (googleAuthBusy) return;
   const sb = communitySb(); if (!sb) return;
+  await workoutPhaseCancelOwner(); stopTimer();
   await syncQuiesce();
   persistState();
   await Promise.race([communityViewingStop(), new Promise(resolve => setTimeout(resolve, 1500))]);
@@ -33715,6 +35046,7 @@ function renderPokrok() {
           ${w.trainedWith ? `<div class="history-detail train-with">👥 ${esc(t('train.trainedWith', { name: w.trainedWith }))}</div>` : ''}
           <div class="history-detail">${formatDate(w.date)} · ${tPlural('pokrok.setsCount', setsDone)}</div>
           ${historyDurationLine(w)}
+          ${historyWorkoutPhasesHtml(w)}
           <div class="history-detail">${detail}</div>
           ${w.note ? `<div class="history-note">“${esc(w.note)}”</div>` : ''}
         </div>
@@ -34079,6 +35411,7 @@ function workoutBlock(w, opts) {
     <div class="day-workout-date">${esc(formatDate(w.date))}</div>
     ${w.trainedWith ? `<div class="day-ex-meta train-with">👥 ${esc(t('train.trainedWith', { name: w.trainedWith }))}</div>` : ''}
     ${historyDurationLine(w)}
+    ${historyWorkoutPhasesHtml(w)}
     ${imported ? '' : healthDayHtml(w)}
     ${rows}
     ${w.note ? `<div class="modal-note">“${esc(w.note)}”</div>` : ''}`;
@@ -34321,7 +35654,7 @@ function finishWorkout() {
   if (!plan) return;
   const doneCount = totalSetsDone();
   const totalSets = planExerciseCount(plan);
-  const xp = xpForNewWorkout(doneCount, todayISO());
+  const xp = xpForNewWorkout(doneCount, todayISO(), phaseSnapshotForHistory(getSession()));
   const limited = xp === 0 && workoutXpFor(doneCount) > 0;   // 0 XP kvôli dennému limitu
 
   const confirmText = document.getElementById('confirm-text');
@@ -34555,6 +35888,13 @@ function confirmFinish() {
   const plan = currentPlan();
   if (!plan) return;
   const sess = getSession();
+  if (sess && state.history.some(w => w.id === sess.id)) {
+    workoutPhaseCancelOwner();
+    clearSession(); stopTimer();
+    document.getElementById('modal-confirm').hidden = true;
+    saveState(); renderAll();
+    return;
+  }
   const prevRecommended = recommendedPlan();
   const beforeUnlocked = Object.keys(state.achievements);
   const beforeAchXP = achievementXP();
@@ -34604,12 +35944,12 @@ function confirmFinish() {
   }
 
   const doneCount = totalSetsDone();
-  const xp = xpForNewWorkout(doneCount, todayISO());
+  const xp = xpForNewWorkout(doneCount, todayISO(), phaseSnapshotForHistory(getSession()));
   const note = document.getElementById('confirm-note').value.trim();
   const trainData = trainActive() ? trainProgressData() : null;   // pred zrušením session
 
   const entry = {
-    id: uid(),
+    id: sess ? sess.id : uid(),
     planId: plan.id,
     planName: recordedPlanName(plan),
     date: todayISO(),
@@ -34618,6 +35958,8 @@ function confirmFinish() {
     exercises,
     endedAt: Date.now(),   // čas ukončenia (ms) pre prehľad regenerácie; staré záznamy ho nemajú
   };
+  const phases = phaseSnapshotForHistory(sess);
+  if (phases) entry.phases = phases;
   /* Trvanie sa zapíše len ak naozaj existuje rozbehnutá session – nikdy nevymýšľame nulu. */
   if (sess) entry.durationSeconds = sessionElapsedSeconds(sess);
   if (sess && sess.restUsed === true) entry.restUsed = true;   // aspoň raz bežal odpočet pauzy (úspech rest5)
@@ -34782,7 +36124,7 @@ function requestUndoWorkout() {
     recalculateAll();
     saveState();
     switchTab('trening');
-  }, t('trening.undoConfirm', { xp: historyEntryXp(entry) }), t('history.keepWorkout'));
+  }, t('trening.undoConfirm', { xp: historyEntryXp(entry) }) + '<br>' + esc(t('phase.undoHelp')), t('history.keepWorkout'));
 }
 
 function requestDeleteWorkout(id) {
@@ -35371,6 +36713,7 @@ function importFile(file) {
              Cudzia nedokončená session by inak mohla previazať nové dáta na starý plán. */
           delete data.activeSession;
           delete data.activeActivity;   // cudzia rozbehnutá aktivita sa nikdy neobnoví
+          workoutPhaseCancelOwner(); stopTimer();
           const incoming = data.version === 1 ? migrateV1toV2(data) : data;
           state = migrateV2toV3(incoming);
           reconcileAchievements();
@@ -35402,6 +36745,7 @@ function importConfirmText(data, currentCount, currentImported) {
 function requestResetData() {
   showGeneric(t('settings.resetTitle'), t('settings.resetConfirmAction'), () => {
     showGeneric(t('settings.resetFinal'), t('settings.resetFinalAction'), async () => {
+      await workoutPhaseCancelOwner(); stopTimer();
       await syncQuiesce();
       localStorage.removeItem(STORAGE_KEY);
       localStorage.removeItem(STORAGE_KEY + '_seeded');
@@ -35653,7 +36997,7 @@ function autoRestOn() {
   return !!(state && state.settings && state.settings.autoRest === true);
 }
 function maybeAutoRest(plan, rowIndex) {
-  if (!autoRestOn() || !getSession() || !plan || timerInterval !== null) return false;
+  if (!autoRestOn() || !getSession() || !plan || timerInterval !== null || workoutPhaseLive()) return false;
   if (!isLastInGroup(plan, rowIndex)) return false;
   const list = restPresets();
   const pr = restPresetById(state.settings.lastRestPresetId) || list[0];
@@ -35731,6 +37075,250 @@ const NATIVE_REST_I18N = {
 Object.keys(NATIVE_REST_I18N).forEach(lang => ['channel', 'permissionTitle', 'permissionBody', 'settings', 'late', 'notifications', 'unavailable'].forEach((key, i) => {
   I18N[lang]['nativeRest.' + key] = NATIVE_REST_I18N[lang][i];
 }));
+/* One serialized bridge lane owns both Rest and phase commands. No native fallback. */
+let workoutPhaseEpoch = 0, workoutPhasePerf = null, workoutPhaseTickHandle = null;
+let workoutPhaseListenerReady = null, workoutPhaseCaps = null, workoutPhaseError = null;
+let workoutPhaseCueGeneration = 0;
+function workoutPhaseLive() {
+  const s = getSession(), p = s && s.phaseTimer;
+  return !!p && ['running', 'paused'].includes(p.status);
+}
+function workoutPhaseNative() { return isNativeApp(); }
+function workoutPhaseEnqueue(fn) {
+  const task = nativeRestQueue.then(fn);
+  nativeRestQueue = task.catch(() => {});
+  return task;
+}
+function workoutPhaseAccept(raw, epoch) {
+  const sess = getSession(), old = sess && sess.phaseTimer;
+  if (epoch !== workoutPhaseEpoch || !sess || !old) return false;
+  const next = cleanWorkoutPhaseTimer(raw, sess.phases);
+  if (!next || next.ownerId !== workoutPhaseOwnerId(sess) || next.ownerId !== old.ownerId
+      || next.runId !== old.runId || next.phase !== old.phase || next.revision < old.revision
+      || !sess.phases[next.phase].enabled) return false;
+  if ((old.status === 'stopped' || old.status === 'interrupted') && next.status !== old.status) return false;
+  const changed = next.revision !== old.revision || next.status !== old.status || next.audioError !== old.audioError;
+  sess.phaseTimer = next;
+  if (next.status === 'completed' && !sess.phases[next.phase].done) {
+    Object.assign(sess.phases[next.phase], { done: true, completedAt: Date.now(), completionMethod: 'timer' });
+  }
+  if (changed) { workoutPhaseError = null; saveState(); renderWorkoutPhases(); updateSummary(); }
+  else workoutPhasePaint();
+  return true;
+}
+function workoutPhaseInterrupt(reason, missingNativeAuthority) {
+  const sess = getSession(), p = sess && sess.phaseTimer;
+  if (!p || (p.status !== 'running' && !(missingNativeAuthority && p.status === 'paused'))) return;
+  workoutPhaseAccept(Object.assign({}, p, { status: 'interrupted', stage: null, stageEndAt: 0,
+    remainingMs: 0, sampledAt: Date.now(), revision: p.revision + 1, interruptedReason: reason }), workoutPhaseEpoch);
+  workoutPhasePerf = null; stopActiveChime();
+}
+function workoutPhaseCancelOwner() {
+  const sess = getSession(), old = sess && sess.phaseTimer;
+  ++workoutPhaseEpoch; workoutPhasePerf = null;
+  if (sess) delete sess.phaseTimer; // Invalidate synchronously, before ANY workspace/session mutation.
+  stopActiveChime();
+  const plugin = nativePlugin('GymPhase');
+  if (!plugin || !old) return nativeRestQueue;
+  return workoutPhaseEnqueue(async () => {
+    for (let attempt = 0; attempt < 2; attempt++) {
+      const current = await plugin.status();
+      if (!current || current.runId !== old.runId || current.ownerId !== old.ownerId) return;
+      try { await plugin.stop({ runId: current.runId, revision: current.revision }); return; }
+      catch (e) { if (e.code !== 'STALE_REVISION' || attempt !== 0) throw e; }
+    }
+  }).catch(() => { workoutPhaseError = 'phase.statusUnavailable'; renderWorkoutPhases(); });
+}
+function workoutPhaseErrorKey(error) {
+  const code = String(error && error.code || '');
+  return code === 'STALE_REVISION' || code === 'STALE_RUN' ? 'phase.revisionConflict'
+    : code === 'FGS_START_FAILED' ? 'phase.serviceStartFailed' : 'phase.startFailed';
+}
+function workoutPhaseClearError() {
+  if (workoutPhaseError) { workoutPhaseError = null; renderWorkoutPhases(); }
+}
+async function workoutPhaseCapabilities() {
+  const plugin = nativePlugin('GymPhase');
+  if (!workoutPhaseNative()) { workoutPhaseCaps = null; return null; }
+  if (!plugin) { workoutPhaseError = 'phase.bridgeUnavailable'; renderWorkoutPhases(); return null; }
+  try { workoutPhaseCaps = await workoutPhaseEnqueue(() => plugin.capabilities()); }
+  catch (e) { workoutPhaseCaps = null; workoutPhaseError = 'phase.statusUnavailable'; }
+  if (workoutPhaseCaps && workoutPhaseError === 'phase.statusUnavailable') workoutPhaseError = null;
+  renderWorkoutPhases(); return workoutPhaseCaps;
+}
+async function workoutPhaseReconcile() {
+  const plugin = nativePlugin('GymPhase');
+  const epoch = workoutPhaseEpoch;
+  if (!workoutPhaseNative()) {
+    const p = getSession() && getSession().phaseTimer;
+    if (p && p.status === 'running' && workoutPhasePerf === null) workoutPhaseInterrupt('execution-gap');
+    return;
+  }
+  if (!plugin) { workoutPhaseError = 'phase.bridgeUnavailable'; renderWorkoutPhases(); return; }
+  if (!workoutPhaseListenerReady) {
+    workoutPhaseListenerReady = Promise.resolve(plugin.addListener('state', raw => workoutPhaseAccept(raw, workoutPhaseEpoch)))
+      .catch(e => { workoutPhaseListenerReady = null; throw e; });
+  }
+  try {
+    await workoutPhaseListenerReady; // Listener first, status second: no missed terminal commit.
+    await workoutPhaseEnqueue(async () => {
+      if (epoch !== workoutPhaseEpoch) return;
+      const raw = await plugin.status();
+      if (epoch !== workoutPhaseEpoch) return;
+      if (!raw || !raw.runId) {
+        workoutPhaseInterrupt('service_missing', true);
+      } else if (!workoutPhaseAccept(raw, epoch)) workoutPhaseInterrupt('service_missing', true);
+      workoutPhaseClearError();
+    });
+  } catch (e) { if (epoch === workoutPhaseEpoch) { workoutPhaseError = 'phase.statusUnavailable'; renderWorkoutPhases(); } }
+}
+function workoutPhaseReplace(current, requested, proceed) {
+  showGeneric(t('phase.replaceTimerTitle'), t('phase.replaceTimerConfirm'), proceed,
+    esc(t('phase.replaceTimerBody', {0:current,1:requested})), t('phase.keepCurrentTimer'));
+}
+async function startWorkoutPhase(kind, confirmed) {
+  if (!workoutPhaseKind(kind)) return;
+  const sess = ensureSession();
+  if (!sess) return;
+  const entry = ensureWorkoutPhases(sess)[kind];
+  if (!entry.enabled || !validWorkoutPhaseConfig(entry.config)) return;
+  if (!confirmed && (workoutPhaseLive() || timerInterval !== null)) {
+    const p = sess.phaseTimer;
+    workoutPhaseReplace(p && workoutPhaseLive() ? t('phase.' + p.phase) : t('bento.rest'), t('phase.' + kind),
+      () => startWorkoutPhase(kind, true));
+    return;
+  }
+  workoutPhaseCancelOwner(); stopTimer();
+  const epoch = workoutPhaseEpoch;
+  entry.done = false; delete entry.completedAt; delete entry.completionMethod;
+  const pending = newBrowserWorkoutPhaseTimer(sess, kind, Date.now());
+  pending.revision = 0; pending.sound = restSoundOn();
+  sess.phaseTimer = pending; workoutPhaseError = null;
+  saveState(); renderWorkoutPhases(); updateSummary();
+  if (!workoutPhaseNative()) {
+    pending.revision = 1; workoutPhasePerf = performance.now();
+    if (restSoundOn()) { unlockAudio(); workoutPhaseGong(pending, epoch); }
+    saveState(); return;
+  }
+  const plugin = nativePlugin('GymPhase');
+  if (!plugin) { workoutPhaseInterrupt('startup_failed'); workoutPhaseError = 'phase.bridgeUnavailable'; renderWorkoutPhases(); return; }
+  try {
+    await workoutPhaseReconcileListener(plugin);
+    await workoutPhaseEnqueue(async () => {
+      if (epoch !== workoutPhaseEpoch) return;
+      const config = entry.config;
+      const raw = await plugin.start({ runId: pending.runId, ownerId: pending.ownerId, phase: kind,
+        workMs: config.workSeconds * 1000, restMs: config.restSeconds * 1000, rounds: config.rounds,
+        sound: restSoundOn(), title: t('phase.' + kind), workLabel: t('phase.' + kind),
+        restLabel: t('phase.rest'), doneLabel: t('phase.done') });
+      workoutPhaseAccept(raw, epoch);
+    });
+    await workoutPhaseCapabilities();
+    workoutPhaseSoundChanged(); // Latest preference wins a toggle racing start acknowledgement.
+  } catch (e) {
+    if (epoch !== workoutPhaseEpoch) return;
+    workoutPhaseError = null; await workoutPhaseReconcile();
+    const reconcileError = workoutPhaseError;   // a failed status read is more precise than the start code
+    workoutPhaseInterrupt('startup_failed');
+    workoutPhaseError = reconcileError || workoutPhaseErrorKey(e); renderWorkoutPhases();
+  }
+}
+async function workoutPhaseReconcileListener(plugin) {
+  if (!workoutPhaseListenerReady) workoutPhaseListenerReady = Promise.resolve(plugin.addListener('state', raw => workoutPhaseAccept(raw, workoutPhaseEpoch)))
+    .catch(e => { workoutPhaseListenerReady = null; throw e; });
+  await workoutPhaseListenerReady;
+}
+async function workoutPhaseCommand(command) {
+  if (!['pause','resume','stop'].includes(command)) return;
+  const sess = getSession(), p = sess && sess.phaseTimer;
+  if (!p) return;
+  const epoch = workoutPhaseEpoch;
+  if (command === 'stop') {
+    const stopped = stopBrowserWorkoutPhase(p, Date.now());
+    const cleanup = workoutPhaseCancelOwner();
+    sess.phaseTimer = stopped; workoutPhaseError = null; saveState(); renderWorkoutPhases();
+    await cleanup; return;
+  }
+  if (!workoutPhaseNative()) {
+    const now = Date.now(), perf = performance.now();
+    const elapsed = workoutPhasePerf === null ? 0 : perf - workoutPhasePerf;
+    if (command === 'pause' && (document.hidden || workoutPhasePerf === null || elapsed > TIMER_SOUND_GRACE_MS)) { workoutPhaseInterrupt('execution-gap'); return; }
+    const next = command === 'pause' ? pauseBrowserWorkoutPhase(p, sess.phases[p.phase].config, now,
+      workoutPhasePerf !== null && elapsed <= TIMER_SOUND_GRACE_MS, elapsed) : resumeBrowserWorkoutPhase(p, now);
+    workoutPhasePerf = command === 'resume' ? perf : null;
+    const transition = next.lastTransition !== p.lastTransition;
+    const accepted = workoutPhaseAccept(next, epoch);
+    if (accepted && transition && restSoundOn() && !next.interruptedReason) workoutPhaseGong(next, epoch);
+    workoutPhaseClearError();
+    return;
+  }
+  const plugin = nativePlugin('GymPhase');
+  if (!plugin) { workoutPhaseError = 'phase.bridgeUnavailable'; renderWorkoutPhases(); return; }
+  try {
+    await workoutPhaseEnqueue(async () => {
+      if (epoch !== workoutPhaseEpoch || getSession() !== sess) return;
+      const current = sess.phaseTimer;
+      if (!current || current.runId !== p.runId) return;
+      workoutPhaseAccept(await plugin[command]({runId:current.runId,revision:current.revision}), epoch);
+      workoutPhaseClearError();
+    });
+  } catch (e) { if (epoch === workoutPhaseEpoch) { workoutPhaseError = null; await workoutPhaseReconcile(); if (!workoutPhaseError) workoutPhaseError = workoutPhaseErrorKey(e); renderWorkoutPhases(); } }
+}
+function workoutPhaseSoundChanged(reconciled) {
+  if (!reconciled) workoutPhaseCueGeneration++;
+  const epoch = workoutPhaseEpoch, sess = getSession();
+  if (!restSoundOn()) stopActiveChime();
+  if (!sess || !sess.phaseTimer) return;
+  if (!workoutPhaseNative()) { sess.phaseTimer.sound = restSoundOn(); saveState(); return; }
+  const plugin = nativePlugin('GymPhase'), run = sess.phaseTimer.runId;
+  if (!plugin) return;
+  workoutPhaseEnqueue(async () => {
+    if (epoch !== workoutPhaseEpoch || getSession() !== sess || !sess.phaseTimer || sess.phaseTimer.runId !== run) return;
+    const p = sess.phaseTimer;
+    workoutPhaseAccept(await plugin.setSound({runId:run,revision:p.revision,sound:restSoundOn()}), epoch);
+    workoutPhaseClearError();
+  }).catch(async e => {
+    if (epoch !== workoutPhaseEpoch) return;
+    workoutPhaseError = null; await workoutPhaseReconcile(); if (!workoutPhaseError) workoutPhaseError = workoutPhaseErrorKey(e);
+    const current = getSession() && getSession().phaseTimer;
+    if (!reconciled && e.code === 'STALE_REVISION' && current && current.runId === run && current.sound !== restSoundOn())
+      workoutPhaseSoundChanged(true);
+    else renderWorkoutPhases();
+  });
+}
+function workoutPhaseGong(p, epoch) {
+  const run = p.runId, transition = p.lastTransition, requestedAt = performance.now(), cueGeneration = workoutPhaseCueGeneration;
+  resumeAudio().then(running => {
+    const s = getSession(), current = s && s.phaseTimer;
+    if (epoch !== workoutPhaseEpoch || cueGeneration !== workoutPhaseCueGeneration || !current
+      || current.runId !== run || current.lastTransition !== transition
+      || !restSoundOn() || document.hidden || performance.now() - requestedAt > TIMER_SOUND_GRACE_MS) return;
+    let ok = false;
+    try { ok = running && scheduleChime(getAudioContext(), restSoundLength()); } catch (e) {}
+    if (!ok) { current.audioError = 'playback_failed'; saveState(); renderWorkoutPhases(); }
+  });
+}
+function workoutPhaseTick() {
+  const sess = getSession(), p = sess && sess.phaseTimer;
+  if (!p || p.status !== 'running') return;
+  if (workoutPhaseNative()) { workoutPhasePaint(); return; }
+  const now = performance.now();
+  if (document.hidden || workoutPhasePerf === null || now - workoutPhasePerf > TIMER_SOUND_GRACE_MS) {
+    workoutPhaseInterrupt('execution-gap'); return;
+  }
+  const next = browserWorkoutPhaseAt(p, sess.phases[p.phase].config, Date.now(), true, now - workoutPhasePerf);
+  workoutPhasePerf = now;
+  const transition = next.lastTransition !== p.lastTransition;
+  workoutPhaseAccept(next, workoutPhaseEpoch);
+  if (transition && restSoundOn() && !next.interruptedReason) workoutPhaseGong(next, workoutPhaseEpoch);
+}
+function workoutPhaseInit() {
+  if (workoutPhaseTickHandle === null) workoutPhaseTickHandle = setInterval(workoutPhaseTick, 250);
+  workoutPhaseReconcile(); workoutPhaseCapabilities();
+  window.addEventListener('online', workoutPhaseCommunityReprobe);
+  window.addEventListener('focus', () => { workoutPhaseCommunityReprobe(); workoutPhaseCapabilities(); workoutPhaseReconcile(); });
+}
+
 
 function nativeRestCancel() {
   const plugin = nativePlugin('GymRest');
@@ -35744,7 +37332,11 @@ function nativeRestSync(ask) {
   const rev = ++nativeRestRevision;
   const args = { id: String(timerEnd), endAt: timerEnd, title: t('nativeRest.channel'), body: t('trening.timerDone'), sound: restSoundOn() };
   nativeRestManaged = true;
-  nativeRestQueue = nativeRestQueue.then(() => plugin.schedule(args)).then(async result => {
+  nativeRestQueue = nativeRestQueue.then(() => {
+    if (rev !== nativeRestRevision || workoutPhaseLive()) return null;
+    return plugin.schedule(args);
+  }).then(async result => {
+    if (!result) return;
     if (rev !== nativeRestRevision) return;
     let notifications = result.notifications !== false;
     nativeRestManaged = notifications;
@@ -35874,6 +37466,7 @@ function refreshRestTimerOnVisible() {
    Ak medzitým dobehol, zobrazí sa dokončený stav BEZ gongu. */
 function restoreRestTimer() {
   const saved = restoreRestTimerEnd();
+  if (workoutPhaseLive()) { persistRestTimer(false); return; }
   if (!saved) return;
   timerSessionId++;
   timerEnd = saved.endAt;
@@ -35895,7 +37488,14 @@ function restoreRestTimer() {
 
 /* Spustí odpočet. Ak práve iný beží, nahradí ho a hlásku "Nahradené X za Y" ukáže na karte.
    quiet = true pri Znova (rovnaký čas, nie je čo hlásiť). */
-function startTimer(seconds, presetId, quiet) {
+function startTimer(seconds, presetId, quiet, replacementConfirmed) {
+  if (workoutPhaseLive() && !replacementConfirmed) {
+    const p = getSession().phaseTimer;
+    workoutPhaseReplace(t('phase.' + p.phase), t('bento.rest'),
+      () => startTimer(seconds, presetId, quiet, true));
+    return;
+  }
+  if (workoutPhaseLive()) { workoutPhaseCancelOwner(); saveState(); renderWorkoutPhases(); }
   const wasRunning = timerInterval !== null;
   const restSess = getSession();
   if (restSess && restSess.restUsed !== true) { restSess.restUsed = true; saveState(); }   // pre úspech "Oddych sa počíta"
@@ -36978,6 +38578,7 @@ function startQuickWorkout(id) {
     actualFailureSets: {},
     quick: { exercises: [ex] },
   };
+  ensureWorkoutPhases(state.activeSession);
   selectedPlan = 'quick';
   saveState();
   goToCurrentWorkout();
@@ -40880,6 +42481,8 @@ function wsFreshRegistry() {
 }
 /* Prepnutie priestoru = uložiť, zastaviť synchronizáciu, zapísať register, znovu načítať. */
 async function wsSwitchTo(id) {
+  await workoutPhaseCancelOwner();
+  stopTimer();
   await syncQuiesce();
   persistState();
   try {
@@ -40999,6 +42602,7 @@ async function wsResolveLink(choice) {
 function wsDetachAfterAccountDeletion(uid) {
   const slot = wsFindSlotByOwner(uid);
   if (!slot) return;
+  workoutPhaseCancelOwner(); stopTimer();
   const meta = syncMetaRead(slot);
   Object.assign(meta, { owner: null, rev: null, hash: null, conflict: null, published: {}, mediaFailed: [], disabled: false, guest: true });
   syncMetaWrite(meta, slot);
@@ -41429,7 +43033,7 @@ function wsFollowRegistry() {
   try { reg = JSON.parse(localStorage.getItem(WS_REGISTRY_KEY) || 'null'); } catch (e) {}
   if (!reg || !reg.active || reg.active === wsSlot.id || !reg.slots || !reg.slots[reg.active]) return false;
   if (isBusy()) return false;
-  syncQuiesce().then(() => { persistState(); location.reload(); });
+  workoutPhaseCancelOwner().then(() => syncQuiesce()).then(() => { persistState(); location.reload(); });
   return true;
 }
 
@@ -41787,6 +43391,7 @@ async function syncApply(payload, o) {
     await gqHook('apply:mediaCommitted', { rid });
     /* Používateľ medzitým niečo zmenil → nič neprepisuj, vráť médiá späť. */
     if (o.seqAtDecision !== undefined && syncMetaRead().seq !== o.seqAtDecision) throw new SyncAbort('local-changed');
+    if (next.activeSession !== state.activeSession) workoutPhaseCancelOwner();
     next._applyId = rid;
     state = next; swapped = true;            // výmena + zápis bez prerušenia (synchrónne)
     if (!persistState()) throw new SyncAbort('local-write');
@@ -42393,6 +43998,7 @@ function setupEvents() {
   });
   on('btn-rest-sound', () => {
     state.settings.restSound = !restSoundOn();
+    workoutPhaseSoundChanged();
     if (timerInterval !== null) nativeRestSync();
     unlockAudio();               // používateľský pokyn = povolenie prehrávať zvuk
     renderRestSoundSetting();
@@ -43132,8 +44738,8 @@ function applyUpdateFromSettings() {
    Krok: { id, target: () => Element|null, illus: () => HTMLElement|null, title, body, tab?, illusWithTarget? }.
    title/body: funkcia, kľúč z I18N, alebo hotový text. Ak je cieľ viditeľný, posunie sa do výhľadu (len ak v ňom
    ešte nie je) a zvýrazní; inak sa v karte ukáže ilustrácia (neaktívna kópia s odstránenými ID-čkami);
-   illusWithTarget ju ukáže aj popri zvýraznenom cieli. tab: len dnes / trening / pokrok (ostatné karty
-   pri prepnutí načítavajú zo siete alebo menia históriu prehliadača, preto sa v návode ignorujú). */
+   illusWithTarget ju ukáže aj popri zvýraznenom cieli. tab: každá z 6 kariet sa len ZOBRAZÍ (tourEnterTab): bez switchTab, bez načítania
+   zo siete, bez zápisu a bez zmeny activeTab / režimu Správy-Community; pri zatvorení sa pôvodné zobrazenie vráti priamo. */
 const TOUR_KEY = 'gymquest_tutorial';
 const TOUR_I18N = {
   sk: { 'tour.back': 'Späť', 'tour.next': 'Ďalej', 'tour.done': 'Hotovo', 'tour.skip': 'Preskočiť', 'tour.close': 'Zavrieť návod', 'tour.stepOf': '{n} z {total}' },
@@ -43145,8 +44751,75 @@ const TOUR_I18N = {
 };
 for (const lang of Object.keys(TOUR_I18N)) Object.assign(I18N[lang] || (I18N[lang] = {}), TOUR_I18N[lang]);
 
-const TOUR_TABS = ['dnes', 'trening', 'pokrok'];
-let tourRun = null;   // { steps, i, root, spot, card, opener, startTab, startScroll, tabChanged, raf, animUntil, animT, off } | null
+const TOUR_TABS = ['dnes', 'trening', 'pokrok', 'komunita', 'spravy', 'ty'];
+const TOUR_SCREENS = ['dnes', 'trening', 'pokrok', 'kalendar', 'komunita', 'ty'];
+let tourRun = null;   // { steps, i, root, spot, card, opener, nav, shown, startScroll, raf, animUntil, animT, off } | null
+let tourQuiet = false;   // krátko po zatvorení: znovu zobrazená obrazovka spustí IntersectionObserver-y; ich stránkovanie sa preskočí (tourSuppressed)
+function tourSuppressed() { return tourRun !== null || tourQuiet; }
+
+/* Zobrazená karta: Správy a Community sú jedna obrazovka, odlišuje ich communityMode (ten návod nikdy nemení). */
+function tourShownKey() { return activeTab === 'komunita' && communityMode === 'messages' ? 'spravy' : activeTab; }
+/* Odtlačok zobrazenia pred návodom: obrazovky, zvýraznenie menu (trieda + aria-current), trieda msg-mode a body[data-tab]. */
+function tourSnapshotNav() {
+  const kom = document.getElementById('screen-komunita');
+  return {
+    app: [activeTab, communityMode, communityView, communityChatId],   // skutočný stav appky; ak sa počas návodu zmení (napr. ťuknutie na upozornenie), obnova by klamala
+    body: document.body.dataset.tab,
+    screens: TOUR_SCREENS.map((s) => [s, document.getElementById('screen-' + s).hidden]),
+    msg: !!kom && kom.classList.contains('msg-mode'),
+    tabs: Array.from(document.querySelectorAll('.tab')).map((el) => [el, el.classList.contains('active'), el.getAttribute('aria-current')]),
+  };
+}
+/* Čisto prezentačné zobrazenie karty (obrazovky, menu, msg-mode, body[data-tab]); nič sa nevykresľuje ani nenačítava. */
+function tourShowScreen(tab) {
+  const screen = tab === 'spravy' ? 'komunita' : tab;
+  document.body.dataset.tab = screen;
+  for (const s of TOUR_SCREENS) document.getElementById('screen-' + s).hidden = s !== screen;
+  document.querySelectorAll('.tab').forEach((el) => {
+    const on = el.dataset.tab === tab;
+    el.classList.toggle('active', on);
+    if (el.closest('.tab-bar')) el.setAttribute('aria-current', on ? 'page' : 'false');
+  });
+  const kom = document.getElementById('screen-komunita');
+  if (kom) kom.classList.toggle('msg-mode', tab === 'spravy');
+  updateStickyBottom();
+}
+/* Zatvorenie: ak sa stav appky počas návodu nezmenil, vráti sa presne pôvodný odtlačok; ak sa zmenil (switchTab/pushOpenChat počas návodu),
+   zobrazí sa AKTUÁLNA karta (nikdy zastaraná). V oboch prípadoch bez renderu a siete; potom krátko potláča stránkovanie pozorovateľov. */
+function tourRestoreNav(n) {
+  const now = [activeTab, communityMode, communityView, communityChatId];
+  if (now.every((v, i) => v === n.app[i])) tourApplyNav(n); else tourShowScreen(tourShownKey());
+  tourQuiet = true;
+  setTimeout(() => { tourQuiet = false; }, 500);
+}
+function tourApplyNav(n) {
+  document.body.dataset.tab = n.body;
+  for (const [s, hidden] of n.screens) document.getElementById('screen-' + s).hidden = hidden;
+  const kom = document.getElementById('screen-komunita');
+  if (kom) kom.classList.toggle('msg-mode', n.msg);
+  for (const [el, on, cur] of n.tabs) {
+    el.classList.toggle('active', on);
+    if (cur === null) el.removeAttribute('aria-current'); else el.setAttribute('aria-current', cur);
+  }
+  updateStickyBottom();
+}
+/* Krok len ZOBRAZÍ kartu. Žiadne switchTab / openMessagesTab / tyLoad, activeTab ani communityMode/ReturnTab/View/Back sa nemenia (bežné
+   prepnutie na Community by pre prihláseného používateľa spustilo community_join, leaderboardSend, profileAchievementsSend, pushRefresh a
+   načítanie schránky; Správy by prepísali režim a Community pohľad). Pozorovatelia a handlery, ktoré sa riadia activeTab (chat, stránkovanie
+   Ty/Community), tak preview nevidia. Obsah sa vykreslí len z lokálnych dát; Community len keď je vypnuté/nenakonfigurované (lokálne úvodné
+   okno), inak ostáva obsah, aký tam bol. */
+function tourEnterTab(r, tab) {
+  if (tab === r.shown) return;
+  r.shown = tab;
+  tourShowScreen(tab);
+  const screen = tab === 'spravy' ? 'komunita' : tab;
+  if (screen === 'dnes') renderDnes();
+  else if (screen === 'trening') renderTrening();
+  else if (screen === 'pokrok') renderPokrok();
+  else if (screen === 'ty') renderTy();
+  else if (!communityConfigured() || !communityOptIn()) renderCommunity();
+  updateStickyBottom();
+}
 
 function tourOpen() { return !!tourRun; }
 function tourRead() {
@@ -43201,7 +44874,7 @@ function startTour(steps, opts) {
     steps, i: 0, root,
     spot: root.querySelector('.tour-spot'), card: root.querySelector('.tour-card'),
     opener: (from && from.nodeType === 1) ? from : document.activeElement,
-    startTab: activeTab, startScroll: window.scrollY || 0, tabChanged: false, raf: 0, animUntil: 0, animT: 0,
+    nav: tourSnapshotNav(), shown: tourShownKey(), startScroll: window.scrollY || 0, raf: 0, animUntil: 0, animT: 0,
   };
   const relayout = () => {
     if (!tourRun || tourRun.raf) return;
@@ -43214,7 +44887,7 @@ function startTour(steps, opts) {
   };
   const keydown = (e) => {
     if (e.key !== 'Tab' || !tourRun) return;
-    const f = Array.from(root.querySelectorAll('button')).filter((b) => !b.disabled && b.getClientRects().length);
+    const f = Array.from(root.querySelectorAll('button, .tour-text[tabindex]')).filter((b) => !b.disabled && b.getClientRects().length);
     if (!f.length) return;
     const a = document.activeElement;
     if (e.shiftKey && (a === f[0] || !root.contains(a))) { e.preventDefault(); f[f.length - 1].focus(); }
@@ -43230,7 +44903,8 @@ function startTour(steps, opts) {
   document.addEventListener('focusin', focusin);
   window.addEventListener('resize', relayout);
   window.addEventListener('orientationchange', relayout);
-  window.addEventListener('scroll', relayout, true);
+  const onScroll = (e) => { if (!(e.target && e.target.closest && e.target.closest('.tour-text'))) relayout(); };   // rolovanie textu karty nesmie prepočítať polohu
+  window.addEventListener('scroll', onScroll, true);
   if (window.visualViewport) window.visualViewport.addEventListener('resize', relayout);
   /* dialóg sa otvoril (aktualizácia, konflikt synchronizácie, nastavenia…): návod ustúpi. Sleduje sa len atribút hidden. */
   const watch = (m) => mo.observe(m, { attributes: true, attributeFilter: ['hidden'] });
@@ -43247,7 +44921,7 @@ function startTour(steps, opts) {
     document.removeEventListener('focusin', focusin);
     window.removeEventListener('resize', relayout);
     window.removeEventListener('orientationchange', relayout);
-    window.removeEventListener('scroll', relayout, true);
+    window.removeEventListener('scroll', onScroll, true);
     if (window.visualViewport) window.visualViewport.removeEventListener('resize', relayout);
   };
   root.addEventListener('click', (e) => {
@@ -43277,10 +44951,11 @@ function tourGo(i) {
   const step = r.steps[i];
   const last = i === r.steps.length - 1;
   const hadFocus = r.root.contains(document.activeElement) ? document.activeElement : null;
-  if (step.tab && TOUR_TABS.includes(step.tab) && step.tab !== activeTab) { switchTab(step.tab); r.tabChanged = true; }   // len prepnutie karty, nič sa nezapisuje
+  if (step.tab && TOUR_TABS.includes(step.tab)) tourEnterTab(r, step.tab);   // len zobrazenie karty, nič sa nezapisuje
   const q = (s) => r.root.querySelector(s);
   q('#tour-title').textContent = tourText(step.title);
   q('#tour-body').textContent = tourText(step.body);
+  q('.tour-text').scrollTop = 0;   // nový krok vždy od začiatku textu
   q('.tour-count').textContent = t('tour.stepOf', { n: i + 1, total: r.steps.length });
   q('#tour-close').setAttribute('aria-label', t('tour.close')); q('#tour-close').title = t('tour.close');
   q('#tour-back').textContent = t('tour.back');
@@ -43317,7 +44992,7 @@ function tourGo(i) {
       tr = target.getBoundingClientRect();
     }
     /* vysoká karta (ilustrácia) sa nezmestí nad ani pod cieľ uprostred obrazovky: cieľ posunieme k hornému okraju, karta ide pod neho */
-    const ch = Math.min(r.card.offsetHeight, bottom - top), gap = 12, pad = 6;
+    const ch = tourCardMetrics(r, bottom - top).want, gap = 12, pad = 6;
     if (bottom - tr.bottom - pad - gap < ch && tr.top - top - pad - gap < ch && tr.height + 2 * pad + gap + ch <= bottom - top) {
       const want = tr.top - pad - top, de = document.documentElement;
       const room = de.scrollHeight - window.innerHeight - window.scrollY;
@@ -43340,7 +45015,28 @@ function tourGo(i) {
   requestAnimationFrame(() => { if (tourRun === r) tourLayout(); });
 }
 
-/* Poloha zvýraznenia a karty: karta nad alebo pod cieľom podľa miesta, vždy v zornom poli (bezpečné okraje). */
+/* Rozmery karty: celý text (nadpis + telo) sa meria bez obmedzenia; pevná časť (ilustrácia, päta, odsadenie) sa nikdy nerolluje, rolluje sa len text.
+   want = výška, ktorú karta pri cieli potrebuje (celá, najviac polovica plochy, nie menej ako pevná časť + čitateľný kúsok textu). */
+const TOUR_MIN_TEXT = 120;
+function tourCardMetrics(r, avail) {
+  const text = r.card.querySelector('.tour-text');
+  const st = text.scrollTop, mh = text.style.maxHeight, ov = text.style.overflowY;   // meranie bez obmedzenia výšky by scrollTop vynulovalo
+  text.style.maxHeight = 'none'; text.style.overflowY = 'visible';
+  const natural = r.card.offsetHeight, textH = text.offsetHeight, fixed = natural - textH, minText = Math.min(textH, TOUR_MIN_TEXT);
+  text.style.maxHeight = mh; text.style.overflowY = ov; text.scrollTop = st;   // meranie je bez vedľajších účinkov: obmedzenie aj posunutie sa vrátia
+  return { text, textH, fixed, minText, want: Math.min(natural, Math.max(fixed + minText, Math.round(avail / 2))) };
+}
+/* Text dostane najviac `limit - fixed` px; ak sa nezmestí, rolluje sa (fokusovateľná oblasť pre klávesnicu/čítačky). Vráti výslednú výšku karty. */
+function tourFitCard(m, limit) {
+  const room = Math.max(m.minText, Math.min(m.textH, Math.floor(limit - m.fixed)));
+  const scroll = m.textH > room + 1;
+  m.text.style.maxHeight = room + 'px';
+  m.text.style.overflowY = scroll ? 'auto' : 'visible';
+  if (scroll) m.text.setAttribute('tabindex', '0'); else m.text.removeAttribute('tabindex');
+  return m.fixed + room;
+}
+/* Poloha zvýraznenia a karty: karta nad alebo pod cieľom podľa miesta, vždy v zornom poli (bezpečné okraje) a mimo cieľa, kým je
+   vedľa neho miesto aspoň na `want`; inak sa preferuje čitateľnosť (obrovský cieľ). */
 function tourLayout() {
   const r = tourRun;
   if (!r) return;
@@ -43350,17 +45046,14 @@ function tourLayout() {
   const H = root.clientHeight, W = root.clientWidth;
   const padT = parseFloat(cs.paddingTop) || 0, padB = parseFloat(cs.paddingBottom) || 0;
   const avail = Math.max(120, H - padT - padB);
-  card.style.maxHeight = avail + 'px';
   const caret = card.querySelector('.tour-caret');
-  caret.hidden = true;   // šípka vyčnieva z karty, do merania posúvania sa nepočíta
-  card.style.overflowY = 'visible';
-  card.style.overflowY = card.scrollHeight > card.clientHeight + 1 ? 'auto' : 'visible';   // inak by orezalo šípku
-  const ch = Math.min(card.offsetHeight, avail);
+  caret.hidden = true;
+  const m = tourCardMetrics(r, avail);
   const target = tourTargetEl(step);
   if (!target) {
     spot.hidden = true;
-    caret.hidden = true;
-    card.style.top = Math.round(padT + Math.max(0, (avail - ch) / 2)) + 'px';
+    const ch0 = tourFitCard(m, avail);
+    card.style.top = Math.round(padT + Math.max(0, (avail - ch0) / 2)) + 'px';
     return;
   }
   const gap = 12, pad = 6;
@@ -43372,10 +45065,10 @@ function tourLayout() {
   spot.style.left = sx + 'px'; spot.style.top = sy + 'px';
   spot.style.width = Math.max(0, ex - sx) + 'px'; spot.style.height = Math.max(0, ey - sy) + 'px';
   const below = H - padB - ey - gap, above = sy - padT - gap;
-  let top, place;
-  if (below >= ch) { top = ey + gap; place = 'below'; }
-  else if (above >= ch) { top = sy - gap - ch; place = 'above'; }
-  else { place = below >= above ? 'below' : 'above'; top = place === 'below' ? H - padB - ch : padT; }   // obrovský cieľ: karta ho čiastočne zakryje, no zostane čitateľná
+  let top, place, ch;
+  if (below >= m.want) { ch = tourFitCard(m, below); top = ey + gap; place = 'below'; }
+  else if (above >= m.want) { ch = tourFitCard(m, above); top = sy - gap - ch; place = 'above'; }
+  else { ch = tourFitCard(m, avail); place = below >= above ? 'below' : 'above'; top = place === 'below' ? H - padB - ch : padT; }   // obrovský cieľ: karta ho čiastočne zakryje, no zostane čitateľná
   top = Math.min(Math.max(top, padT), Math.max(padT, H - padB - ch));
   card.style.top = Math.round(top) + 'px';
   /* šípka ukazuje na stred cieľa (fyzická poloha, takže funguje rovnako v RTL); ak karta cieľ prekrýva, šípka by klamala */
@@ -43396,7 +45089,7 @@ function closeTour(reason) {
   r.off();
   r.root.remove();
   if ((reason === 'done' || reason === 'skipped') && !(tourRead() && tourRead().status === 'done')) tourWrite(reason);
-  if (r.tabChanged && activeTab !== r.startTab) switchTab(r.startTab);
+  tourRestoreNav(r.nav);   // bez switchTab / renderu / načítania: pôvodný odtlačok, alebo aktuálna karta ak sa stav počas návodu zmenil
   if (r.opener && r.opener.isConnected && r.opener.focus) { try { r.opener.focus({ preventScroll: true }); } catch (e) {} }
   try { window.scrollTo({ top: r.startScroll, behavior: 'instant' }); } catch (e) { window.scrollTo(0, r.startScroll); }   // stránka sa vráti tam, kde používateľ bol
   renderTourInvite();   // po Preskočiť / Hotovo karta s pozvánkou zmizne
@@ -43408,54 +45101,282 @@ function closeTour(reason) {
    vždy sedia s tým, čo je na obrazovke. Cieľ je skutočný prvok; ilustrácia (z živých CSS tried) sa ukáže tam,
    kde na obrazovke nič také nie je (tréning ešte nebeží), alebo popri cieli (illusWithTarget). */
 const TOUR_STEPS_I18N = {
-  sk: {
-    'tour.plan.title': 'Vyber si plán', 'tour.plan.body': 'Na karte {tab} ťukni na dlaždicu plánu. Začať môžeš aj jedným cvikom cez „{lib}“.',
-    'tour.start.title': 'Ťukni na {start}', 'tour.start.body': '„{start}“ spustí tréning a čas. Nič sa nespustí, kým neťukneš ty.',
-    'tour.sets.title': 'Zapisuj série', 'tour.sets.body': 'Každý riadok je jedna séria: zadaj váhu a opakovania, 🔥 označí sériu do zlyhania a ✓ ju dokončí. „{add}“ pridá ďalšiu.',
-    'tour.rest.title': 'Časovač oddychu', 'tour.rest.body': 'Dlaždica „{rest}“ spustí odpočet pauzy. Na karte ho môžeš pozastaviť, pridať 15 s, spustiť znova alebo zastaviť.',
-    'tour.finish.title': 'Dokonči a pozri výsledky', 'tour.finish.body': '„{finish}“ uloží tréning a pripíše XP, ⋯ → „{discard}“ ho zahodí. Výsledky nájdeš cez {stats}: „{history}“ a „{calendar}“.',
-    'tour.tabs.title': 'Záložky', 'tour.tabs.body': 'Medzi obrazovkami prepínaš tu: {tabs}.',
+  "sk": {
+    "tour.plan.title": "Vyber si tréning",
+    "tour.plan.body": "Na karte {tab} si vyber dlaždicu plánu; cez {lib} môžeš začať aj jedným cvikom. Tento návod iba vysvetľuje: nespustí tréning ani nezmení tvoje dáta. Kedykoľvek ho preskoč a bez aktívneho tréningu ho zopakuj cez Nastavenia → Pomoc → Zobraziť návod.",
+    "tour.warmup.title": "Zahrejte sa pred začatím",
+    "tour.warmup.body": "Vedľa {rest} zapni voliteľnú Rozcvičku a jeho kartu uvidíš pred pracovnými cvikmi; predvolene je vypnuté. Uprav si 60 s práce / 30 s oddychu / 10 pracovných úsekov: spolu je to deväť prestávok a 14 min 30 s. Vyber si jemné pohybové návrhy alebo v tejto úvodnej karte použi rozcvičovacie série cvikov a rampu; nič z toho sa neráta ako pracovné série.",
+    "tour.library.title": "Nájdi cvik",
+    "tour.library.body": "Otvor {tab} → {lib} a hľadaj medzi 500 cvikmi alebo filtruj podľa svalov, miesta a vybavenia. V detaile nájdeš postup, časté chyby a dostupné ukážky; potom si vyber, ako cvik použiť v pláne alebo tréningu.",
+    "tour.custom.title": "Pridaj vlastné cviky",
+    "tour.custom.body": "Na karte {tab} vyber plán → Upraviť → Pridať cvik a zadaj vlastný názov, série, opakovania a váhu. V Ďalších možnostiach priraď hlavný sval a voliteľné pomocné svaly, aby ho prehľad Svaly vedel zaradiť; potom plán ulož.",
+    "tour.plans.title": "Organizujte svoje plány",
+    "tour.plans.body": "Cez Upraviť plány na karte {tab} zmeníš poradie plánov a otvoríš ich na úpravu; Nový plán pridá ďalší. V úprave zmeň názov, cviky a ciele, presuň riadky alebo vymaž plán a zmeny ulož.",
+    "tour.programs.title": "Cvič podľa programu",
+    "tour.programs.body": "Otvor {tab} → Programy a vyber si viactýždňový rozpis, napríklad celé telo pre začiatočníkov alebo Push / Pull / Legs. Plány môžeš ďalej upravovať; v okne programu môžeš zopakovať týždeň, preskočiť dopredu alebo program ukončiť bez vymazania histórie.",
+    "tour.start.title": "Spusti svoj tréning",
+    "tour.start.body": "{start} pri vybranom pláne spustí tréning a meranie jeho trvania; návod ho nestlačí. Rozbehnutý tréning zostáva na tomto zariadení a prepnutie záložky ho neukončí.",
+    "tour.sets.title": "Zapisuj pracovné série",
+    "tour.sets.body": "Každý riadok pracovnej série obsahuje váhu a opakovania; ✓ označ až po odcvičení a cez {add} pridaj ďalšiu. Plameň označuje skutočnú sériu do zlyhania, nie povinnosť; rozcvičovacie série a úseky fáz sú od pracovných sérií oddelené.",
+    "tour.effort.title": "RPE a opakovania v rezerve",
+    "tour.effort.body": "Nastavenia → Námaha série ponúkajú Vypnuté, RPE alebo RIR; predvolene je hodnotenie vypnuté. RPE hodnotí náročnosť dokončenej série od 6 do 10, RIR počet ďalších opakovaní so správnou technikou: RPE 8 je približne RIR 2 a RIR 0 znamená žiadne ďalšie.",
+    "tour.sides.title": "Trénujte každú stranu",
+    "tour.sides.body": "V úprave plánu pri cviku zapni Cvičiť každú stranu samostatne a vyber počiatočnú stranu. Počas tréningu zapisuj váhu, opakovania a dokončenie pre ľavú a pravú zvlášť; aj námaha sa hodnotí pre každú stranu.",
+    "tour.advancedSets.title": "Supersérie, drop série a kotúče",
+    "tour.advancedSets.body": "V Ďalších možnostiach editora plánu prepoj susedné cviky do supersérie alebo okruhu, aby si ich striedal. Počas tréningu ponúka ⋯ pri cviku Pridať drop sériu; Kotúče sú dostupné pri neasistovaných cvikoch s osou a neasistovaných vlastných cvikoch a vypočítajú záťaž na každej strane podľa tvojej osi a kotúčov.",
+    "tour.rest.title": "Používajte časovač odpočinku",
+    "tour.rest.body": "Otvor {rest} na Dnes alebo v tréningu a vyber predvoľbu či vlastný čas; kartu časovača môžeš pozastaviť, pridať 15 s, reštartovať alebo zastaviť. Zvuk aj automatická pauza sú v Nastaveniach predvolene vypnuté; automatická pauza čaká na posledný cvik kola supersérie a nepreruší fázu. Ručné spustenie oddychu alebo fázy nahradí druhý časovač.",
+    "tour.stretching.title": "Po tréningu sa ponaťahuj",
+    "tour.stretching.body": "Vedľa {rest} zapni voliteľný Strečing a jeho kartu nájdeš za pracovnými cvikmi pred {finish}; rovnako ako Rozcvička umožňuje upraviť intervaly, pozastaviť, zastaviť alebo ručne označiť dokončenie. V prehliadači môžu byť časovanie a zvuk na pozadí oneskorené; na Androide skontroluj zobrazené obmedzenia upozornení a batérie a pre časovanie so zhasnutou obrazovkou použi ponúknuté nastavenia batérie. Vynútené zastavenie, reštart zariadenia ani prerušený beh nepotvrdzujú dokončenie: spusti ho znova alebo ho ručne označ, ak si ho naozaj dokončil.",
+    "tour.finish.title": "Uložte a pochopte odmeny",
+    "tour.finish.body": "{finish} uloží tréning; ⋯ → Zahodiť tréning ho zruší a samotné fázy nestačia na povolenie uloženia. Pri aspoň troch dokončených pracovných sériách pridá každá zapnutá a dokončená fáza 5 XP v limite prvých dvoch oprávnených tréningov denne; jej prvé dokončenie s nárokom na XP prinesie aj jednorazový odznak za 25 XP. Vrátenie tréningu späť alebo vymazanie odstráni základné aj fázové XP tréningu, no získané fázové odznaky a ich 25 XP zostanú navždy.",
+    "tour.history.title": "Pozri si históriu",
+    "tour.history.body": "Otvor {stats} → {history} alebo {calendar} a pozri si uložené tréningy, série a dokončené fázy. Cvik z histórie alebo jeho ⋯ → Pokrok otvorí vývoj výkonu; odhad 1RM je odhad, nie otestované maximum.",
+    "tour.muscles.title": "Pozri si precvičené svaly",
+    "tour.muscles.body": "Otvor {stats} → Svaly pre týždenné série, objem a mapu nedávneho tréningu. Hlavné svaly sa rátajú naplno a pomocné polovicou; mapa je orientačná pomôcka, nie zdravotné posúdenie regenerácie. Cez Priradiť svaly ostatným cvikom zaradíš nerozpoznané uložené názvy bez zmeny váh či XP.",
+    "tour.body.title": "Miery a fotky",
+    "tour.body.body": "Otvor Telo z Dnes alebo {stats}, zapisuj váhu a miery s dátumom a sleduj ich vývoj. Fotky progresu sú samostatný súkromný prehľad, nie príspevky v Community; nezverejnia sa, kým ich výslovne nezdieľaš.",
+    "tour.activityFood.title": "Aktivity a voliteľný denník jedla",
+    "tour.activityFood.body": "Na Dnes ponúka Čo chceš robiť? domáci či vonkajší tréning, beh, chôdzu alebo bicykel; vzdialenosť aktivity zadávaš ručne, bez GPS. Jedlo dnes otvorí voliteľný ručný denník, nie overenú databázu potravín. Iba v Android aplikácii môže Nastavenia → Health Connect po udelení príslušných povolení voliteľne ukladať tréningy a čítať dostupný tep z hodiniek; na tréning ho nepotrebuješ.",
+    "tour.community.title": "Komunita a súkromie",
+    "tour.community.body": "Community je voliteľná a vypnutá, kým ju nezapneš; online funkcie potrebujú pripojenie, nastavenú službu a prihlásenie, účet je od 16 rokov. Pred príspevkom si prejdi profil a súkromie: používateľské meno je verejné, ale súkromný tréningový denník, miery ani galéria fotiek progresu sa automaticky nestávajú príspevkami. Zdieľaj len to, čo si vyberieš; ponuky príspevkov a profilov umožňujú blokovanie aj nahlásenie.",
+    "tour.messages.title": "Správy a tréningoví priatelia",
+    "tour.messages.body": "So zapnutou Community, prihlásením a pripojením otvor Správy → Nová správa a vyber priateľa. Na živé zdieľanie sérií otvor {tab} → Trénovať s priateľom a niekoho pozvi; online funkciu potrebujú obaja, no každý si vedie vlastný tréningový denník.",
+    "tour.reminders.title": "Upomienky a oznámenia",
+    "tour.reminders.body": "Otvor Ty → Nastavenia → Pripomienky; na načítanie a uloženie pripomienok účtu potrebuješ zapnutú Community, prihlásenie a pripojenie. Upozornenia na tomto zariadení zapni, len ak ich chceš; na iPhone/iPade treba iOS 16.4+ a GymQuest otvorený z inštalácie na ploche. Android plánuje pripomienky v telefóne, no povolenia, obmedzenia batérie a režim Nerušiť ich môžu oneskoriť alebo stíšiť; návod nežiada žiadne povolenia.",
+    "tour.backup.title": "Importovať, zálohovať a synchronizovať",
+    "tour.backup.body": "Ty → Nastavenia → Ďalšie možnosti obsahuje CSV (Strong / Hevy) s lokálnym náhľadom importu a exportom vo formáte Hevy; importovaná história nedáva XP, série týždňov ani rekordy. Exportovať/Importovať dáta používa JSON zálohy, kým Záloha a synchronizácia ponúka Uložiť zálohu teraz a súkromnú synchronizáciu účtu po prihlásení; pred zmenou zariadenia skontroluj stav a vyrieš prípadný konflikt. Uložené dáta sa môžu synchronizovať, ale rozbehnutý tréning či časovač zostáva na zariadení; pre zhodné nové fázové odmeny aktualizuj všetkých klientov."
   },
-  en: {
-    'tour.plan.title': 'Pick a plan', 'tour.plan.body': 'On the {tab} tab, tap a plan tile to choose it. You can also start from a single exercise via “{lib}”.',
-    'tour.start.title': 'Press {start}', 'tour.start.body': '“{start}” begins your workout and its timer. Nothing starts until you tap it.',
-    'tour.sets.title': 'Log your sets', 'tour.sets.body': 'Each row is one set: enter weight and reps, tap 🔥 for a failure set and ✓ when it’s done. “{add}” adds another.',
-    'tour.rest.title': 'Rest timer', 'tour.rest.body': 'The “{rest}” tile starts a break countdown. On its card you can pause, add 15 s, restart or stop it.',
-    'tour.finish.title': 'Finish and review', 'tour.finish.body': '“{finish}” saves the workout and gives you XP; ⋯ → “{discard}” throws it away. Results show up in {stats}: “{history}” and “{calendar}”.',
-    'tour.tabs.title': 'The tabs', 'tour.tabs.body': 'Switch screens down here: {tabs}.',
+  "en": {
+    "tour.plan.title": "Choose a workout",
+    "tour.plan.body": "On {tab}, choose a plan tile; {lib} also lets you begin with one exercise. This tour only explains: it never starts a workout or changes your data. Skip whenever you like; replay from Settings → Help → Show the tour when no workout is active.",
+    "tour.warmup.title": "Warm up first",
+    "tour.warmup.body": "Beside {rest}, enable optional Warm-up to show its card before the working exercises; it starts off. Adjust the 60 s work / 30 s rest / 10 work periods: that means nine rests and 14 min 30 s in total. Choose gentle activity suggestions or use the exercise warm-up rows and ramp controls in this leading card; neither counts as working sets.",
+    "tour.library.title": "Find an exercise",
+    "tour.library.body": "Open {tab} → {lib} to search 500 exercises or filter by muscle, place and equipment. Open an exercise for instructions, common mistakes and available demonstrations, then choose how to use it in a plan or workout.",
+    "tour.custom.title": "Add your own exercises",
+    "tour.custom.body": "On {tab}, choose a plan → Edit → Add exercise to enter a custom exercise name, sets, reps and weight. Under More options, assign its main muscle and optional helpers so the Muscles view can classify it; save the plan when ready.",
+    "tour.plans.title": "Organize your plans",
+    "tour.plans.body": "Use Manage plans on {tab} to reorder plans and open one for editing; New plan creates another. In Edit, change the name, exercises and targets, reorder rows or delete the plan, then save your changes.",
+    "tour.programs.title": "Follow a program",
+    "tour.programs.body": "Open {tab} → Programs for a guided multi-week schedule, such as beginner full body or Push / Pull / Legs. Its plans remain editable; the program sheet lets you repeat a week, skip ahead or end the program without deleting your history.",
+    "tour.start.title": "Start your workout",
+    "tour.start.body": "{start} on a selected plan begins the workout and measures its duration; this tour will not press it. Your running workout stays on this device, and switching tabs does not finish it.",
+    "tour.sets.title": "Record working sets",
+    "tour.sets.body": "Each working-set row records weight and reps; tap ✓ only after doing it, and use {add} for another. The flame marks an actual set to failure, not a requirement; warm-up rows and phase periods are separate from working sets.",
+    "tour.effort.title": "RPE and reps in reserve",
+    "tour.effort.body": "Settings → Effort rating offers Off, RPE or RIR; Off is the default. RPE rates how hard a completed set felt from 6–10, while RIR records good-form reps you could still do: RPE 8 is about RIR 2, and RIR 0 means none left.",
+    "tour.sides.title": "Train each side",
+    "tour.sides.body": "In a plan's Edit screen, turn on Train each side separately for the exercise and choose the starting side. During the workout, record left and right weights, reps and completion separately; effort ratings also belong to each side.",
+    "tour.advancedSets.title": "Supersets, drop sets and plates",
+    "tour.advancedSets.body": "In the plan editor's More options, link neighbouring exercises into a superset or circuit to alternate between them. During a workout, the exercise's ⋯ menu offers Add drop set; Plates is available for non-assisted barbell and custom exercises to calculate the load per side using your bar and available plates.",
+    "tour.rest.title": "Use the rest timer",
+    "tour.rest.body": "Open {rest} on Today or in a workout, then choose a preset or custom time; its timer card can pause, add 15 s, restart or stop. Sound and automatic rest are off by default in Settings; automatic rest waits for the last exercise in a superset round and does not interrupt a phase. Starting Rest or a phase yourself replaces the other timer.",
+    "tour.stretching.title": "Stretch after training",
+    "tour.stretching.body": "Enable optional Stretching beside {rest} for a card after the working exercises, before {finish}; like Warm-up, you can adjust its intervals, pause, stop or mark it done yourself. Browser background timing and sound can be late; in Android, check the shown notification and battery restrictions and use the offered battery settings for screen-off timing. Force-stop, reboot or an interrupted run does not prove completion: restart or mark done manually if you really completed it.",
+    "tour.finish.title": "Save and understand rewards",
+    "tour.finish.body": "{finish} saves the workout; ⋯ → Discard abandons it, and phases alone cannot make a workout eligible to save. With at least three completed working sets, each enabled, completed phase adds 5 XP within the first-two-eligible-workouts-per-day limit; its first XP-eligible completion also earns a one-time 25 XP badge. Undo or delete removes that workout's base and phase XP, but earned phase badges and their 25 XP remain permanently.",
+    "tour.history.title": "Review your history",
+    "tour.history.body": "Open {stats} → {history} or {calendar} to review saved workouts, sets and phase completion. Open an exercise from history or its ⋯ → Progress view for trends; estimated 1RM is an estimate, not a tested maximum.",
+    "tour.muscles.title": "See trained muscles",
+    "tour.muscles.body": "Open {stats} → Muscles for weekly sets, volume and the recent-training map. Main muscles count fully and helpers half; the map is a rough training guide, not a medical recovery assessment. Use Assign muscles to Other exercises to classify unmatched saved names without changing their weights or XP.",
+    "tour.body.title": "Measurements and photos",
+    "tour.body.body": "Open Body from Today or {stats} to log dated weight and measurements and follow their trends. Progress photos are a separate private view, not Community posts; they are not published unless you explicitly share one.",
+    "tour.activityFood.title": "Activities and optional food log",
+    "tour.activityFood.body": "On Today, What do you want to do? offers home/outdoor workouts and runs, walks or cycling; activity distance is entered manually, with no GPS. Food today opens an optional manual food log, not a verified food database. In the Android app only, Settings → Health Connect can optionally save workouts and read available watch heart-rate data after you grant the relevant permissions; it is not needed to train.",
+    "tour.community.title": "Community and privacy",
+    "tour.community.body": "The Community tab is optional and off until you enable it; online features require a connection, a configured service and sign-in, with accounts for ages 16+. Review profile/privacy choices before posting: your username is public, but your private workout log, measurements and progress-photo gallery are not automatically posts. Share only what you choose; post/profile menus include blocking and reporting.",
+    "tour.messages.title": "Messages and workout friends",
+    "tour.messages.body": "With Community enabled, signed in and online, open Messages → New message to choose a friend. For live set sharing, open {tab} → Train with a friend and invite one; both people need the online feature, while each keeps their own workout log.",
+    "tour.reminders.title": "Reminders and notifications",
+    "tour.reminders.body": "Open You → Settings → Reminders; this needs Community enabled, sign-in and a connection to load/save account reminders. Turn on notifications on this device only if you want alerts; on iPhone/iPad this requires iOS 16.4+ and opening GymQuest from its Home Screen installation. Android schedules reminders on the phone, but permissions, battery restrictions and Do Not Disturb can delay or silence alerts; the tour requests no permissions.",
+    "tour.backup.title": "Import, back up and sync",
+    "tour.backup.body": "You → Settings → More options contains CSV (Strong / Hevy) for a local import preview or Hevy-format export; imported history earns no XP, streaks or records. Export/Import data uses JSON backups, while Backup & sync provides Save backup now and private account sync after sign-in; check its status and resolve any conflict before switching devices. Saved data can sync, but a running workout or timer stays on this device; update all clients to keep new phase rewards consistent."
   },
-  es: {
-    'tour.plan.title': 'Elige un plan', 'tour.plan.body': 'En la pestaña {tab}, toca un plan para elegirlo. También puedes empezar con un solo ejercicio desde «{lib}».',
-    'tour.start.title': 'Pulsa {start}', 'tour.start.body': '«{start}» inicia tu entrenamiento y su cronómetro. No empieza nada hasta que lo toques.',
-    'tour.sets.title': 'Anota tus series', 'tour.sets.body': 'Cada fila es una serie: escribe peso y repeticiones, toca 🔥 si fue al fallo y ✓ al terminar. «{add}» suma otra.',
-    'tour.rest.title': 'Temporizador de descanso', 'tour.rest.body': 'El mosaico «{rest}» inicia una cuenta atrás. En su tarjeta puedes pausar, sumar 15 s, reiniciar o parar.',
-    'tour.finish.title': 'Termina y revisa', 'tour.finish.body': '«{finish}» guarda el entrenamiento y suma XP; ⋯ → «{discard}» lo descarta. Los resultados están en {stats}: «{history}» y «{calendar}».',
-    'tour.tabs.title': 'Las pestañas', 'tour.tabs.body': 'Cambia de pantalla aquí abajo: {tabs}.',
+  "es": {
+    "tour.plan.title": "Elige un entrenamiento",
+    "tour.plan.body": "En {tab}, elige un plan; {lib} también permite empezar con un solo ejercicio. Esta guía solo explica: no inicia entrenamientos ni cambia tus datos. Puedes omitirla y repetirla desde Ajustes → Ayuda → Ver la guía cuando no haya un entrenamiento activo.",
+    "tour.warmup.title": "Calienta antes de empezar",
+    "tour.warmup.body": "Junto a {rest}, activa Calentamiento para mostrar su tarjeta antes de los ejercicios de trabajo; viene desactivado. Ajusta los 60 s de trabajo / 30 s de descanso / 10 periodos de trabajo: son nueve descansos y 14 min 30 s en total. Elige movimientos suaves sugeridos o usa las series de calentamiento y la rampa de los ejercicios en esta tarjeta inicial; nada de ello cuenta como series de trabajo.",
+    "tour.library.title": "Encuentra un ejercicio",
+    "tour.library.body": "Abre {tab} → {lib} para buscar entre 500 ejercicios o filtrar por músculo, lugar y equipo. Abre un ejercicio para ver instrucciones, errores frecuentes y demostraciones disponibles, y elige cómo usarlo en un plan o entrenamiento.",
+    "tour.custom.title": "Añade tus propios ejercicios",
+    "tour.custom.body": "En {tab}, elige un plan → Editar → Añadir ejercicio e introduce un nombre para tu ejercicio, series, repeticiones y peso. En Más opciones, asigna el músculo principal y los auxiliares opcionales para clasificarlo en Músculos; guarda el plan al terminar.",
+    "tour.plans.title": "Organiza tus planes",
+    "tour.plans.body": "Usa Gestionar planes en {tab} para ordenar los planes y abrirlos para editarlos; Nuevo plan añade otro. En Editar puedes cambiar el nombre, ejercicios y objetivos, ordenar las filas o borrar el plan, y guardar los cambios.",
+    "tour.programs.title": "Sigue un programa",
+    "tour.programs.body": "Abre {tab} → Programas para seguir un calendario de varias semanas, como cuerpo completo para principiantes o Push / Pull / Legs. Los planes siguen siendo editables; desde el programa puedes repetir una semana, avanzar o terminarlo sin borrar tu historial.",
+    "tour.start.title": "Comienza tu entrenamiento",
+    "tour.start.body": "{start} en el plan elegido inicia el entrenamiento y mide su duración; la guía no lo pulsará. El entrenamiento en curso se queda en este dispositivo, y cambiar de pestaña no lo termina.",
+    "tour.sets.title": "Registra series de trabajo",
+    "tour.sets.body": "Cada fila de una serie de trabajo registra peso y repeticiones; pulsa ✓ solo después de hacerla y usa {add} para añadir otra. La llama marca una serie realmente hecha al fallo, no una obligación; las series de calentamiento y los periodos de las fases se cuentan aparte.",
+    "tour.effort.title": "RPE y repeticiones en reserva",
+    "tour.effort.body": "Ajustes → Esfuerzo de la serie ofrece Desactivado, RPE o RIR; viene desactivado. RPE valora la dificultad de una serie terminada del 6 al 10, y RIR las repeticiones que aún podrías hacer con buena técnica: RPE 8 equivale aproximadamente a RIR 2, y RIR 0 significa ninguna más.",
+    "tour.sides.title": "Entrena cada lado",
+    "tour.sides.body": "Al editar un plan, activa Entrenar cada lado por separado en el ejercicio y elige el lado inicial. Durante el entrenamiento registra peso, repeticiones y finalización de izquierda y derecha por separado; el esfuerzo también se valora por lado.",
+    "tour.advancedSets.title": "Superseries, series descendentes y discos",
+    "tour.advancedSets.body": "En Más opciones del editor del plan, enlaza ejercicios vecinos en una superserie o circuito para alternarlos. Durante el entrenamiento, el menú ⋯ del ejercicio ofrece Añadir serie descendente; Discos está disponible para ejercicios no asistidos, tanto con barra como personalizados y calcula la carga por lado según tu barra y discos.",
+    "tour.rest.title": "Usa el temporizador de descanso",
+    "tour.rest.body": "Abre {rest} en Hoy o durante un entrenamiento y elige un tiempo predefinido o personalizado; puedes pausar, sumar 15 s, reiniciar o parar en la tarjeta. El sonido y el descanso automático vienen desactivados en Ajustes; el automático espera al último ejercicio de la ronda de superserie y no interrumpe una fase. Iniciar un descanso o una fase manualmente sustituye al otro temporizador.",
+    "tour.stretching.title": "Estira después del entrenamiento",
+    "tour.stretching.body": "Activa Estiramientos junto a {rest} para ver su tarjeta después de los ejercicios de trabajo, antes de {finish}; como en Calentamiento, puedes ajustar intervalos, pausar, parar o marcar la fase como hecha. En el navegador, el tiempo y el sonido en segundo plano pueden retrasarse; en Android revisa las restricciones de notificaciones y batería indicadas y los ajustes de batería ofrecidos para usarlo con la pantalla apagada. Un cierre forzado, reinicio o interrupción no demuestra que hayas terminado: reinicia la fase o márcala manualmente si realmente la completaste.",
+    "tour.finish.title": "Guarda y comprende las recompensas",
+    "tour.finish.body": "{finish} guarda el entrenamiento; ⋯ → Descartar lo abandona, y las fases por sí solas no permiten guardarlo. Con al menos tres series de trabajo completadas, cada fase activada y terminada suma 5 XP dentro del límite de los dos primeros entrenamientos aptos del día; su primera finalización con derecho a XP también da una insignia única de 25 XP. Deshacer o borrar quita los XP base y de fases del entrenamiento, pero las insignias de fases ya ganadas y sus 25 XP permanecen para siempre.",
+    "tour.history.title": "Revisa tu historial",
+    "tour.history.body": "Abre {stats} → {history} o {calendar} para revisar entrenamientos guardados, series y fases completadas. Abre un ejercicio desde el historial o su menú ⋯ → Progreso para ver tendencias; el 1RM estimado no es un máximo comprobado.",
+    "tour.muscles.title": "Ver músculos entrenados",
+    "tour.muscles.body": "Abre {stats} → Músculos para ver series semanales, volumen y el mapa del entrenamiento reciente. Los músculos principales cuentan enteros y los auxiliares la mitad; el mapa orienta, no evalúa médicamente la recuperación. Asignar músculos a otros ejercicios permite clasificar nombres guardados sin reconocer, sin cambiar pesos ni XP.",
+    "tour.body.title": "Medidas y fotos",
+    "tour.body.body": "Abre Cuerpo desde Hoy o {stats} para registrar peso y medidas con fecha y seguir sus tendencias. Las fotos de progreso tienen una vista privada separada, no son publicaciones de Comunidad; solo se publican si las compartes expresamente.",
+    "tour.activityFood.title": "Actividades y registro de alimentos opcional",
+    "tour.activityFood.body": "En Hoy, ¿Qué quieres hacer? ofrece entrenamientos en casa o al aire libre, correr, caminar o ir en bici; la distancia se introduce a mano, sin GPS. Comida hoy abre un registro manual opcional, no una base de alimentos verificada. Solo en la app Android, Ajustes → Health Connect permite guardar entrenamientos y leer el pulso disponible del reloj tras conceder los permisos correspondientes; no es necesario para entrenar.",
+    "tour.community.title": "Comunidad y privacidad",
+    "tour.community.body": "Comunidad es opcional y está desactivada hasta que la actives; sus funciones en línea requieren conexión, un servicio configurado e iniciar sesión, con cuentas a partir de 16 años. Revisa el perfil y la privacidad antes de publicar: tu nombre de usuario es público, pero tu registro de entrenamientos, medidas y galería privada de fotos no se publican automáticamente. Comparte solo lo que elijas; los menús de perfiles y publicaciones permiten bloquear y denunciar.",
+    "tour.messages.title": "Mensajes y amigos de entrenamiento",
+    "tour.messages.body": "Con Comunidad activada, sesión iniciada y conexión, abre Mensajes → Nuevo mensaje para elegir un amigo. Para compartir series en directo, abre {tab} → Entrenar con un amigo e invítalo; ambos necesitan la función en línea y cada uno conserva su propio registro de entrenamiento.",
+    "tour.reminders.title": "Recordatorios y notificaciones",
+    "tour.reminders.body": "Abre Tú → Ajustes → Recordatorios; necesitas Comunidad activada, iniciar sesión y conexión para cargar o guardar los recordatorios de la cuenta. Activa las notificaciones en este dispositivo solo si quieres avisos; en iPhone/iPad se requiere iOS 16.4+ y abrir GymQuest instalado en la pantalla de inicio. Android programa recordatorios en el teléfono, pero los permisos, restricciones de batería y No molestar pueden retrasarlos o silenciarlos; la guía no pide permisos.",
+    "tour.backup.title": "Importar, hacer copia de seguridad y sincronizar",
+    "tour.backup.body": "Tú → Ajustes → Más opciones incluye CSV (Strong / Hevy), con vista previa local de importación y exportación en formato Hevy; el historial importado no da XP, rachas ni récords. Exportar/Importar datos usa copias JSON, y Copia y sincronización ofrece Guardar copia ahora y sincronización privada de cuenta al iniciar sesión; comprueba el estado y resuelve conflictos antes de cambiar de dispositivo. Los datos guardados pueden sincronizarse, pero el entrenamiento o temporizador en curso se queda en este dispositivo; actualiza todos los clientes para mantener las nuevas recompensas de fases coherentes."
   },
-  'pt-BR': {
-    'tour.plan.title': 'Escolha um plano', 'tour.plan.body': 'Na aba {tab}, toque em um plano para escolhê-lo. Você também pode começar por um único exercício em “{lib}”.',
-    'tour.start.title': 'Toque em {start}', 'tour.start.body': '“{start}” inicia o treino e o cronômetro. Nada começa até você tocar.',
-    'tour.sets.title': 'Registre as séries', 'tour.sets.body': 'Cada linha é uma série: digite peso e repetições, toque em 🔥 se foi até a falha e em ✓ ao terminar. “{add}” cria mais uma.',
-    'tour.rest.title': 'Cronômetro de descanso', 'tour.rest.body': 'O bloco “{rest}” inicia a contagem do descanso. No cartão você pode pausar, somar 15 s, reiniciar ou parar.',
-    'tour.finish.title': 'Conclua e veja os resultados', 'tour.finish.body': '“{finish}” salva o treino e dá XP; ⋯ → “{discard}” o descarta. Os resultados ficam em {stats}: “{history}” e “{calendar}”.',
-    'tour.tabs.title': 'As abas', 'tour.tabs.body': 'Troque de tela aqui embaixo: {tabs}.',
+  "pt-BR": {
+    "tour.plan.title": "Escolha um treino",
+    "tour.plan.body": "Na aba {tab}, escolha um plano; {lib} também permite começar com um único exercício. Este tutorial só explica: não inicia treinos nem altera seus dados. Pule quando quiser e reveja em Configurações → Ajuda → Mostrar o tutorial quando não houver treino ativo.",
+    "tour.warmup.title": "Aqueça antes de começar",
+    "tour.warmup.body": "Ao lado de {rest}, ative Aquecimento para mostrar o cartão antes dos exercícios de trabalho; ele vem desativado. Ajuste os 60 s de trabalho / 30 s de descanso / 10 períodos de trabalho: são nove descansos e 14 min 30 s no total. Escolha movimentos leves sugeridos ou use as séries de aquecimento e os controles de rampa dos exercícios neste cartão inicial; nada disso conta como séries de trabalho.",
+    "tour.library.title": "Encontre um exercício",
+    "tour.library.body": "Abra {tab} → {lib} para buscar entre 500 exercícios ou filtrar por músculo, local e equipamento. Abra um exercício para ver instruções, erros comuns e demonstrações disponíveis, depois escolha como usá-lo em um plano ou treino.",
+    "tour.custom.title": "Adicione seus próprios exercícios",
+    "tour.custom.body": "Em {tab}, escolha um plano → Editar → Adicionar exercício e digite um nome para seu exercício, séries, repetições e peso. Em Mais opções, defina o músculo principal e os auxiliares opcionais para classificá-lo em Músculos; salve o plano ao terminar.",
+    "tour.plans.title": "Organize seus planos",
+    "tour.plans.body": "Use Gerenciar planos em {tab} para mudar a ordem dos planos e abri-los para edição; Novo plano cria outro. Em Editar, altere o nome, exercícios e metas, reordene as linhas ou exclua o plano, depois salve as mudanças.",
+    "tour.programs.title": "Siga um programa",
+    "tour.programs.body": "Abra {tab} → Programas para seguir uma programação de várias semanas, como corpo inteiro para iniciantes ou Push / Pull / Legs. Os planos continuam editáveis; na tela do programa você pode repetir uma semana, avançar ou encerrar sem apagar o histórico.",
+    "tour.start.title": "Comece seu treino",
+    "tour.start.body": "{start} no plano escolhido inicia o treino e mede sua duração; o tutorial não vai tocar nele. O treino em andamento fica neste dispositivo, e mudar de aba não o encerra.",
+    "tour.sets.title": "Registre séries de trabalho",
+    "tour.sets.body": "Cada linha de série de trabalho registra peso e repetições; toque em ✓ só depois de fazê-la e use {add} para outra. A chama marca uma série realmente feita até a falha, não uma obrigação; séries de aquecimento e períodos das fases ficam separados das séries de trabalho.",
+    "tour.effort.title": "RPE e repetições em reserva",
+    "tour.effort.body": "Configurações → Esforço da série oferece Desativado, RPE ou RIR; o padrão é desativado. RPE avalia a dificuldade da série concluída de 6 a 10, enquanto RIR registra quantas repetições com boa técnica ainda seriam possíveis: RPE 8 é aproximadamente RIR 2, e RIR 0 significa nenhuma.",
+    "tour.sides.title": "Treine cada lado",
+    "tour.sides.body": "Na edição do plano, ative Treinar cada lado separadamente para o exercício e escolha o lado inicial. Durante o treino, registre peso, repetições e conclusão de esquerda e direita separadamente; o esforço também é avaliado por lado.",
+    "tour.advancedSets.title": "Superséries, drop sets e anilhas",
+    "tour.advancedSets.body": "Em Mais opções do editor de plano, vincule exercícios vizinhos em uma supersérie ou circuito para alterná-los. Durante o treino, o menu ⋯ do exercício oferece Adicionar drop set; Anilhas está disponível para exercícios não assistidos, tanto com barra quanto personalizados e calcula a carga por lado com sua barra e anilhas disponíveis.",
+    "tour.rest.title": "Use o temporizador de descanso",
+    "tour.rest.body": "Abra {rest} em Hoje ou no treino e escolha um tempo salvo ou personalizado; no cartão você pode pausar, somar 15 s, reiniciar ou parar. Som e descanso automático vêm desativados em Configurações; o automático espera o último exercício da rodada da supersérie e não interrompe uma fase. Iniciar um descanso ou uma fase manualmente substitui o outro cronômetro.",
+    "tour.stretching.title": "Alongue-se após o treino",
+    "tour.stretching.body": "Ative Alongamento ao lado de {rest} para mostrar o cartão depois dos exercícios de trabalho, antes de {finish}; como no Aquecimento, você pode ajustar intervalos, pausar, parar ou marcar como concluído. No navegador, o tempo e o som em segundo plano podem atrasar; no Android, confira as restrições de notificações e bateria exibidas e os ajustes de bateria oferecidos para usar com a tela apagada. Parada forçada, reinício ou interrupção não comprovam a conclusão: reinicie ou marque manualmente se realmente terminou.",
+    "tour.finish.title": "Salve e compreenda as recompensas",
+    "tour.finish.body": "{finish} salva o treino; ⋯ → Descartar o abandona, e as fases sozinhas não permitem salvar um treino. Com pelo menos três séries de trabalho concluídas, cada fase ativada e concluída soma 5 XP dentro do limite dos dois primeiros treinos elegíveis do dia; sua primeira conclusão com direito a XP também rende uma medalha única de 25 XP. Desfazer ou excluir remove os XP base e das fases daquele treino, mas as medalhas de fases já conquistadas e seus 25 XP ficam para sempre.",
+    "tour.history.title": "Revise seu histórico",
+    "tour.history.body": "Abra {stats} → {history} ou {calendar} para rever treinos salvos, séries e fases concluídas. Abra um exercício pelo histórico ou pelo menu ⋯ → Progresso para ver tendências; o 1RM estimado não é uma carga máxima testada.",
+    "tour.muscles.title": "Ver músculos treinados",
+    "tour.muscles.body": "Abra {stats} → Músculos para ver séries semanais, volume e o mapa de treino recente. Músculos principais contam por inteiro e auxiliares pela metade; o mapa é uma orientação, não uma avaliação médica da recuperação. Atribuir músculos a outros exercícios classifica nomes salvos não reconhecidos sem mudar os pesos ou XP.",
+    "tour.body.title": "Medidas e fotos",
+    "tour.body.body": "Abra Corpo em Hoje ou {stats} para registrar peso e medidas com data e acompanhar as tendências. Fotos de progresso ficam em uma área privada separada, não são publicações da Comunidade; só são publicadas se você as compartilhar explicitamente.",
+    "tour.activityFood.title": "Atividades e registro alimentar opcional",
+    "tour.activityFood.body": "Em Hoje, O que você quer fazer? oferece treinos em casa ou ao ar livre, corrida, caminhada ou ciclismo; a distância é digitada manualmente, sem GPS. Comida hoje abre um diário manual opcional, não uma base verificada de alimentos. Só no app Android, Configurações → Health Connect pode salvar treinos e ler os dados de frequência cardíaca disponíveis do relógio após as permissões correspondentes; isso não é necessário para treinar.",
+    "tour.community.title": "Comunidade e privacidade",
+    "tour.community.body": "A Comunidade é opcional e fica desativada até você ativar; os recursos on-line precisam de conexão, serviço configurado e login, com contas a partir dos 16 anos. Revise perfil e privacidade antes de publicar: seu nome de usuário é público, mas seu diário de treinos, medidas e galeria privada de fotos não viram publicações automaticamente. Compartilhe só o que escolher; os menus de perfis e publicações permitem bloquear e denunciar.",
+    "tour.messages.title": "Mensagens e amigos de treino",
+    "tour.messages.body": "Com a Comunidade ativada, login e conexão, abra Mensagens → Nova mensagem para escolher um amigo. Para compartilhar séries ao vivo, abra {tab} → Treinar com um amigo e faça o convite; os dois precisam do recurso on-line e cada um mantém seu próprio registro de treino.",
+    "tour.reminders.title": "Lembretes e notificações",
+    "tour.reminders.body": "Abra Você → Configurações → Lembretes; é preciso ter a Comunidade ativada, login e conexão para carregar ou salvar lembretes da conta. Ative notificações neste dispositivo só se quiser avisos; no iPhone/iPad é necessário iOS 16.4+ e abrir o GymQuest instalado na Tela de Início. O Android agenda os lembretes no telefone, mas permissões, restrições de bateria e Não Perturbe podem atrasar ou silenciar os avisos; o tutorial não pede permissões.",
+    "tour.backup.title": "Importar, fazer backup e sincronizar",
+    "tour.backup.body": "Você → Configurações → Mais opções contém CSV (Strong / Hevy), com prévia local da importação e exportação no formato Hevy; o histórico importado não dá XP, sequências nem recordes. Exportar/Importar dados usa backups JSON, enquanto Backup e sincronização oferece Salvar backup agora e sincronização privada da conta após o login; confira o estado e resolva conflitos antes de trocar de dispositivo. Os dados salvos podem sincronizar, mas o treino ou cronômetro em andamento fica neste dispositivo; atualize todos os clientes para manter as novas recompensas de fases consistentes."
   },
-  fr: {
-    'tour.plan.title': 'Choisis un plan', 'tour.plan.body': 'Dans l’onglet {tab}, touche un plan pour le choisir. Tu peux aussi partir d’un seul exercice via « {lib} ».',
-    'tour.start.title': 'Appuie sur {start}', 'tour.start.body': '« {start} » lance ta séance et son chronomètre. Rien ne démarre tant que tu n’appuies pas.',
-    'tour.sets.title': 'Note tes séries', 'tour.sets.body': 'Chaque ligne est une série : saisis charge et répétitions, touche 🔥 pour un échec et ✓ quand c’est fait. « {add} » en ajoute une.',
-    'tour.rest.title': 'Minuteur de repos', 'tour.rest.body': 'La tuile « {rest} » lance un compte à rebours. Sur sa carte, tu peux mettre en pause, ajouter 15 s, relancer ou arrêter.',
-    'tour.finish.title': 'Termine et consulte', 'tour.finish.body': '« {finish} » enregistre la séance et rapporte de l’XP ; ⋯ → « {discard} » l’abandonne. Les résultats sont dans {stats} : « {history} » et « {calendar} ».',
-    'tour.tabs.title': 'Les onglets', 'tour.tabs.body': 'Change d’écran ici en bas : {tabs}.',
+  "fr": {
+    "tour.plan.title": "Choisissez un entraînement",
+    "tour.plan.body": "Dans {tab}, choisis une tuile de plan ; {lib} permet aussi de commencer avec un seul exercice. Ce guide explique seulement : il ne lance aucune séance et ne modifie pas tes données. Tu peux le passer et le revoir via Réglages → Aide → Afficher le guide quand aucune séance n’est active.",
+    "tour.warmup.title": "Échauffez-vous avant de commencer",
+    "tour.warmup.body": "À côté de {rest}, active l’Échauffement pour afficher sa carte avant les exercices de travail ; il est désactivé au départ. Ajuste les 60 s de travail / 30 s de repos / 10 périodes de travail : cela fait neuf repos et 14 min 30 s au total. Choisis des mouvements doux suggérés ou utilise les séries d’échauffement et la montée progressive des exercices dans cette carte initiale ; rien de cela ne compte comme séries de travail.",
+    "tour.library.title": "Trouvez un exercice",
+    "tour.library.body": "Ouvre {tab} → {lib} pour chercher parmi 500 exercices ou filtrer par muscle, lieu et matériel. Ouvre un exercice pour consulter les consignes, erreurs fréquentes et démonstrations disponibles, puis choisis comment l’utiliser dans un plan ou une séance.",
+    "tour.custom.title": "Ajoutez vos propres exercices",
+    "tour.custom.body": "Dans {tab}, choisis un plan → Modifier → Ajouter un exercice et saisis un nom pour ton exercice, les séries, répétitions et la charge. Dans Plus d’options, attribue le muscle principal et les muscles secondaires éventuels pour le classer dans Muscles ; enregistre ensuite le plan.",
+    "tour.plans.title": "Organisez vos plans",
+    "tour.plans.body": "Utilise Gérer les plans dans {tab} pour les réordonner et les ouvrir en modification ; Nouveau plan en crée un autre. Dans Modifier, change le nom, les exercices et objectifs, déplace les lignes ou supprime le plan, puis enregistre les changements.",
+    "tour.programs.title": "Suivez un programme",
+    "tour.programs.body": "Ouvre {tab} → Programmes pour suivre un calendrier sur plusieurs semaines, comme corps entier débutant ou Push / Pull / Legs. Les plans restent modifiables ; la fiche du programme permet de répéter une semaine, d’avancer ou d’arrêter sans supprimer ton historique.",
+    "tour.start.title": "Commencez votre séance",
+    "tour.start.body": "{start} sur le plan choisi lance la séance et mesure sa durée ; le guide n’appuiera pas dessus. La séance en cours reste sur cet appareil, et changer d’onglet ne la termine pas.",
+    "tour.sets.title": "Enregistrez les séries de travail",
+    "tour.sets.body": "Chaque ligne de série de travail enregistre charge et répétitions ; touche ✓ seulement après l’avoir faite et utilise {add} pour en ajouter une. La flamme indique une série réellement menée à l’échec, pas une obligation ; les séries d’échauffement et les périodes des phases restent séparées des séries de travail.",
+    "tour.effort.title": "RPE et répétitions en réserve",
+    "tour.effort.body": "Réglages → Effort de la série propose Désactivé, RPE ou RIR ; c’est désactivé par défaut. Le RPE note la difficulté d’une série terminée de 6 à 10, tandis que le RIR indique les répétitions encore possibles avec une bonne technique : RPE 8 correspond environ à RIR 2, et RIR 0 signifie aucune de plus.",
+    "tour.sides.title": "Entraînez chaque côté",
+    "tour.sides.body": "Dans la modification du plan, active Entraîner chaque côté séparément pour l’exercice et choisis le côté de départ. Pendant la séance, note charge, répétitions et validation séparément à gauche et à droite ; l’effort est aussi évalué par côté.",
+    "tour.advancedSets.title": "Superséries, séries dégressives et disques",
+    "tour.advancedSets.body": "Dans Plus d’options de l’éditeur de plan, lie des exercices voisins en supersérie ou circuit pour les alterner. Pendant la séance, le menu ⋯ de l’exercice propose Ajouter une série dégressive ; Disques est disponible pour les exercices non assistés, avec barre ou personnalisés et calcule la charge par côté selon ta barre et tes disques.",
+    "tour.rest.title": "Utilisez le minuteur de repos",
+    "tour.rest.body": "Ouvre {rest} depuis Aujourd’hui ou une séance, puis choisis un préréglage ou une durée personnalisée ; la carte permet de mettre en pause, ajouter 15 s, relancer ou arrêter. Son et repos automatique sont désactivés par défaut dans Réglages ; le repos automatique attend le dernier exercice du tour de supersérie et n’interrompt pas une phase. Lancer toi-même un repos ou une phase remplace l’autre minuteur.",
+    "tour.stretching.title": "Étirez-vous après l'entraînement",
+    "tour.stretching.body": "Active les Étirements à côté de {rest} pour afficher leur carte après les exercices de travail, avant {finish} ; comme pour l’Échauffement, tu peux ajuster les intervalles, mettre en pause, arrêter ou valider manuellement. Dans un navigateur, le temps et le son en arrière-plan peuvent être retardés ; sur Android, vérifie les restrictions de notifications et de batterie affichées et les réglages de batterie proposés pour l’écran éteint. Un arrêt forcé, redémarrage ou fonctionnement interrompu ne prouve pas la fin : relance ou valide manuellement si tu as vraiment terminé.",
+    "tour.finish.title": "Sauvegardez et comprenez les récompenses",
+    "tour.finish.body": "{finish} enregistre la séance ; ⋯ → Abandonner l’annule, et les phases seules ne permettent pas d’enregistrer une séance. Avec au moins trois séries de travail terminées, chaque phase activée et terminée ajoute 5 XP dans la limite des deux premières séances admissibles du jour ; sa première validation donnant droit à des XP rapporte aussi un badge unique de 25 XP. Annuler ou supprimer retire les XP de base et de phases de la séance, mais les badges de phases déjà gagnés et leurs 25 XP restent acquis définitivement.",
+    "tour.history.title": "Consultez votre historique",
+    "tour.history.body": "Ouvre {stats} → {history} ou {calendar} pour revoir séances enregistrées, séries et phases terminées. Ouvre un exercice depuis l’historique ou son menu ⋯ → Progression pour voir les tendances ; le 1RM estimé n’est pas un maximum testé.",
+    "tour.muscles.title": "Voir les muscles entraînés",
+    "tour.muscles.body": "Ouvre {stats} → Muscles pour les séries hebdomadaires, le volume et la carte d’entraînement récent. Les muscles principaux comptent entièrement et les secondaires pour moitié ; la carte est un repère, pas une évaluation médicale de la récupération. Attribuer des muscles aux autres exercices classe les noms enregistrés non reconnus sans modifier charges ni XP.",
+    "tour.body.title": "Mesures et photos",
+    "tour.body.body": "Ouvre Corps depuis Aujourd’hui ou {stats} pour noter poids et mensurations datés et suivre leurs tendances. Les photos de progression sont une vue privée distincte, pas des publications de la Communauté ; elles ne sont publiées que si tu les partages explicitement.",
+    "tour.activityFood.title": "Activités et journal alimentaire facultatif",
+    "tour.activityFood.body": "Dans Aujourd’hui, Que veux-tu faire ? propose des séances à domicile ou en extérieur, course, marche ou vélo ; la distance est saisie à la main, sans GPS. Repas du jour ouvre un journal manuel facultatif, pas une base alimentaire vérifiée. Uniquement dans l’app Android, Réglages → Health Connect peut enregistrer les séances et lire les données cardiaques disponibles de la montre après les autorisations correspondantes ; ce n’est pas nécessaire pour s’entraîner.",
+    "tour.community.title": "Communauté et confidentialité",
+    "tour.community.body": "La Communauté est facultative et désactivée tant que tu ne l’actives pas ; ses fonctions en ligne nécessitent une connexion, un service configuré et une connexion au compte, à partir de 16 ans. Vérifie profil et confidentialité avant de publier : ton nom d’utilisateur est public, mais ton journal d’entraînement, tes mensurations et ta galerie privée ne deviennent pas automatiquement des publications. Partage seulement ce que tu choisis ; les menus des profils et publications permettent de bloquer et signaler.",
+    "tour.messages.title": "Messages et amis d'entraînement",
+    "tour.messages.body": "Avec la Communauté activée, ton compte connecté et Internet, ouvre Messages → Nouveau message pour choisir un ami. Pour partager les séries en direct, ouvre {tab} → S’entraîner avec un ami et invite-le ; vous avez tous deux besoin de la fonction en ligne et chacun garde son propre journal de séance.",
+    "tour.reminders.title": "Rappels et notifications",
+    "tour.reminders.body": "Ouvre Toi → Réglages → Rappels ; il faut la Communauté activée, un compte connecté et Internet pour charger ou enregistrer les rappels du compte. Active les notifications sur cet appareil seulement si tu veux des alertes ; sur iPhone/iPad, il faut iOS 16.4+ et ouvrir GymQuest installé sur l’écran d’accueil. Android programme les rappels sur le téléphone, mais les autorisations, restrictions de batterie et Ne pas déranger peuvent retarder ou couper les alertes ; le guide ne demande aucune autorisation.",
+    "tour.backup.title": "Importer, sauvegarder et synchroniser",
+    "tour.backup.body": "Toi → Réglages → Plus d’options contient CSV (Strong / Hevy), avec aperçu local d’import et export au format Hevy ; l’historique importé ne rapporte ni XP, ni séries de semaines, ni records. Exporter/Importer les données utilise des sauvegardes JSON, tandis que Sauvegarde et synchronisation propose Enregistrer une sauvegarde et la synchronisation privée du compte après connexion ; vérifie l’état et résous les conflits avant de changer d’appareil. Les données enregistrées peuvent se synchroniser, mais une séance ou un minuteur en cours reste sur cet appareil ; mets tous les clients à jour pour garder les nouvelles récompenses de phases cohérentes."
   },
-  ar: {
-    'tour.plan.title': 'اختر خطة', 'tour.plan.body': 'في تبويب {tab} اضغط على بطاقة خطة لاختيارها. يمكنك أيضًا البدء بتمرين واحد من «{lib}».',
-    'tour.start.title': 'اضغط {start}', 'tour.start.body': '«{start}» يبدأ تمرينك والمؤقت. لا يبدأ شيء حتى تضغط أنت.',
-    'tour.sets.title': 'سجّل مجموعاتك', 'tour.sets.body': 'كل صف هو مجموعة: اكتب الوزن والتكرارات، واضغط 🔥 لمجموعة حتى الفشل، ثم ✓ عند الانتهاء. «{add}» يضيف مجموعة أخرى.',
-    'tour.rest.title': 'مؤقت الراحة', 'tour.rest.body': 'بطاقة «{rest}» تبدأ العدّ التنازلي للراحة. من بطاقته يمكنك الإيقاف المؤقت أو إضافة 15 ثانية أو الإعادة أو الإيقاف.',
-    'tour.finish.title': 'أنهِ وراجع النتائج', 'tour.finish.body': '«{finish}» يحفظ التمرين ويمنحك XP، و⋯ ← «{discard}» يتجاهله. تجد النتائج في {stats}: «{history}» و«{calendar}».',
-    'tour.tabs.title': 'التبويبات', 'tour.tabs.body': 'تنقّل بين الشاشات من هنا: {tabs}.',
-  },
+  "ar": {
+    "tour.plan.title": "اختر جلسة تدريب",
+    "tour.plan.body": "في {tab} اختر بطاقة خطة؛ وتتيح لك {lib} البدء بتمرين واحد أيضًا. هذا الدليل للشرح فقط: لا يبدأ جلسة ولا يغيّر بياناتك. يمكنك تخطيه وإعادته من الإعدادات ← المساعدة ← عرض الدليل عندما لا توجد جلسة نشطة.",
+    "tour.warmup.title": "ابدأ بالإحماء",
+    "tour.warmup.body": "بجوار {rest} فعّل الإحماء الاختياري لتظهر بطاقته قبل تمارين مجموعات العمل؛ وهو متوقف افتراضيًا. عدّل إعداد 60 ثانية عمل / 30 ثانية راحة / 10 فترات عمل: أي تسع فترات راحة و14 دقيقة و30 ثانية إجمالًا. اختر حركات خفيفة مقترحة أو استخدم صفوف إحماء التمارين وأدوات التدرج في هذه البطاقة الأولى؛ لا يُحسب أي منها ضمن مجموعات العمل.",
+    "tour.library.title": "ابحث عن تمارين",
+    "tour.library.body": "افتح {tab} ← {lib} للبحث بين 500 تمرين أو التصفية حسب العضلة والمكان والمعدات. افتح تمرينًا لعرض التعليمات والأخطاء الشائعة والعروض المتاحة، ثم اختر كيفية استخدامه في خطة أو جلسة.",
+    "tour.custom.title": "أضف تمارينك الخاصة",
+    "tour.custom.body": "في {tab} اختر خطة ← تعديل ← إضافة تمرين، وأدخل اسمًا مخصصًا للتمرين وعدد المجموعات والتكرارات والوزن. من خيارات إضافية عيّن العضلة الرئيسية والعضلات المساعدة الاختيارية ليُصنَّف في عرض العضلات، ثم احفظ الخطة.",
+    "tour.plans.title": "نظم خططك",
+    "tour.plans.body": "استخدم إدارة الخطط في {tab} لإعادة ترتيب الخطط وفتحها للتعديل؛ وتُنشئ خطة جديدة خطة أخرى. في التعديل يمكنك تغيير الاسم والتمارين والأهداف وترتيب الصفوف أو حذف الخطة، ثم حفظ التغييرات.",
+    "tour.programs.title": "اتبع برنامج تدريب",
+    "tour.programs.body": "افتح {tab} ← البرامج لاتباع جدول لعدة أسابيع، مثل كامل الجسم للمبتدئين أو Push / Pull / Legs. تظل الخطط قابلة للتعديل؛ ومن نافذة البرنامج يمكنك تكرار أسبوع أو التقدم أو إنهاء البرنامج دون حذف سجلك.",
+    "tour.start.title": "ابدأ تمرينك",
+    "tour.start.body": "يبدأ {start} في الخطة المختارة الجلسة ويقيس مدتها؛ لن يضغط عليه الدليل. تبقى الجلسة الجارية على هذا الجهاز، ولا ينهيها التنقل بين التبويبات.",
+    "tour.sets.title": "سجل مجموعات العمل",
+    "tour.sets.body": "يسجّل كل صف مجموعة عمل بالوزن والتكرارات؛ اضغط ✓ بعد أدائها فقط، واستخدم {add} لإضافة أخرى. اللهب علامة لمجموعة أديتها فعلًا حتى الفشل وليس شرطًا؛ صفوف الإحماء وفترات المراحل منفصلة عن مجموعات العمل.",
+    "tour.effort.title": "RPE والتكرارات المتبقية",
+    "tour.effort.body": "تتيح الإعدادات ← تقييم الجهد خيارات متوقف أو RPE أو RIR؛ والافتراضي متوقف. يقيس RPE صعوبة المجموعة المكتملة من 6 إلى 10، بينما يسجّل RIR التكرارات الإضافية الممكنة بتقنية سليمة: RPE 8 يعادل تقريبًا RIR 2، وRIR 0 يعني عدم القدرة على تكرار آخر.",
+    "tour.sides.title": "تدرب على كل جانب",
+    "tour.sides.body": "عند تعديل الخطة فعّل تدريب كل جانب على حدة للتمرين واختر جانب البداية. أثناء الجلسة سجّل الوزن والتكرارات والإكمال لليسار واليمين بشكل منفصل؛ ويُقيّم الجهد لكل جانب أيضًا.",
+    "tour.advancedSets.title": "المجموعات الفائقة، المجموعات التنازلية والأقراص",
+    "tour.advancedSets.body": "من خيارات إضافية في محرر الخطة اربط التمارين المتجاورة في مجموعة فائقة أو دائرة لتتناوب بينها. أثناء الجلسة تتيح قائمة ⋯ للتمرين إضافة مجموعة تنازلية؛ وتتوفر الأقراص للتمارين غير المعتمدة على المساعدة، سواء كانت بالبار أو مخصصة، لحساب الحمل لكل جانب وفق البار والأقراص المتاحة لديك.",
+    "tour.rest.title": "استخدم مؤقت الراحة",
+    "tour.rest.body": "افتح {rest} من اليوم أو أثناء الجلسة واختر مدة جاهزة أو مخصصة؛ تتيح بطاقة المؤقت الإيقاف المؤقت وإضافة 15 ثانية وإعادة البدء والإيقاف. الصوت والراحة التلقائية متوقفان افتراضيًا في الإعدادات؛ تنتظر الراحة التلقائية آخر تمرين في جولة المجموعة الفائقة ولا تقاطع مرحلة. بدء الراحة أو مرحلة يدويًا يستبدل المؤقت الآخر.",
+    "tour.stretching.title": "تمدد بعد التدريب",
+    "tour.stretching.body": "فعّل التمدد الاختياري بجوار {rest} لتظهر بطاقته بعد تمارين مجموعات العمل وقبل {finish}؛ وكالإحماء يمكنك تعديل الفترات أو الإيقاف المؤقت أو الإيقاف أو تحديد الإكمال يدويًا. قد يتأخر التوقيت والصوت في خلفية المتصفح؛ على Android راجع قيود الإشعارات والبطارية المعروضة وإعدادات البطارية المقترحة للتوقيت والشاشة مطفأة. الإيقاف القسري أو إعادة تشغيل الجهاز أو انقطاع التشغيل لا يثبت الإكمال: أعد البدء أو حدّد الإكمال يدويًا إذا أنهيته فعلًا.",
+    "tour.finish.title": "احفظ الجلسة وتعرّف على المكافآت",
+    "tour.finish.body": "يحفظ {finish} الجلسة؛ وتلغيها ⋯ ← تجاهل الجلسة، ولا تكفي المراحل وحدها للسماح بحفظ جلسة. مع ثلاث مجموعات عمل مكتملة على الأقل تضيف كل مرحلة مفعّلة ومكتملة 5 XP ضمن حد أول جلستين مؤهلتين يوميًا؛ ويمنح أول إكمال مؤهل للنقاط شارة لمرة واحدة بقيمة 25 XP أيضًا. التراجع أو الحذف يزيل نقاط الجلسة الأساسية ونقاط مراحلها، لكن شارات المراحل المكتسبة ونقاطها البالغة 25 XP تبقى دائمة.",
+    "tour.history.title": "راجع سجلك",
+    "tour.history.body": "افتح {stats} ← {history} أو {calendar} لمراجعة الجلسات المحفوظة والمجموعات والمراحل المكتملة. افتح تمرينًا من السجل أو قائمته ⋯ ← التقدم لعرض الاتجاهات؛ تقدير 1RM ليس حدًا أقصى اختُبر فعليًا.",
+    "tour.muscles.title": "رؤية العضلات المدربة",
+    "tour.muscles.body": "افتح {stats} ← العضلات لعرض المجموعات الأسبوعية والحجم وخريطة التدريب الأخير. تُحسب العضلات الرئيسية بالكامل والمساعدة بالنصف؛ والخريطة دليل تقريبي وليست تقييمًا طبيًا للتعافي. استخدم تعيين عضلات للتمارين الأخرى لتصنيف الأسماء المحفوظة غير المعروفة دون تغيير أوزانها أو نقاطها.",
+    "tour.body.title": "القياسات والصور",
+    "tour.body.body": "افتح الجسم من اليوم أو {stats} لتسجيل الوزن والقياسات مع التاريخ ومتابعة اتجاهاتها. صور التقدم عرض خاص منفصل وليست منشورات مجتمع؛ لا تُنشر إلا إذا شاركتها صراحة.",
+    "tour.activityFood.title": "أنشطة وتسجيل أطعمة اختياري",
+    "tour.activityFood.body": "في اليوم يتيح ماذا تريد أن تفعل؟ تمارين المنزل والخارج والجري والمشي والدراجات؛ تُدخل مسافة النشاط يدويًا دون GPS. يفتح طعام اليوم سجلًا يدويًا اختياريًا وليس قاعدة أغذية موثقة. في تطبيق Android فقط، يمكن للإعدادات ← Health Connect حفظ الجلسات وقراءة بيانات نبض الساعة المتاحة بعد منح الأذونات المعنية؛ ولا تحتاج إليه للتدريب.",
+    "tour.community.title": "مجتمع وخصوصية",
+    "tour.community.body": "المجتمع اختياري ويبقى متوقفًا حتى تفعّله؛ تتطلب ميزاته اتصالًا وخدمة مُعدّة وتسجيل الدخول، والحسابات لمن بلغوا 16 عامًا. راجع الملف والخصوصية قبل النشر: اسم المستخدم علني، لكن سجل الجلسات والقياسات ومعرض صور التقدم الخاص لا تتحول تلقائيًا إلى منشورات. شارك ما تختاره فقط؛ وتتضمن قوائم الملفات والمنشورات الحظر والإبلاغ.",
+    "tour.messages.title": "رسائل وأصدقاء التمرين",
+    "tour.messages.body": "مع تفعيل المجتمع وتسجيل الدخول والاتصال افتح الرسائل ← رسالة جديدة لاختيار صديق. لمشاركة المجموعات مباشرة افتح {tab} ← التمرّن مع صديق وأرسل دعوة؛ يحتاج كلاكما إلى الميزة المتصلة، ويحتفظ كل شخص بسجل جلسته الخاص.",
+    "tour.reminders.title": "تذكيرات وإشعارات",
+    "tour.reminders.body": "افتح أنت ← الإعدادات ← التذكيرات؛ يلزم تفعيل المجتمع وتسجيل الدخول والاتصال لتحميل تذكيرات الحساب وحفظها. فعّل الإشعارات على هذا الجهاز فقط إذا أردت التنبيهات؛ على iPhone وiPad يلزم iOS 16.4 أو أحدث وفتح GymQuest المثبّت على الشاشة الرئيسية. يجدول Android التذكيرات على الهاتف، لكن الأذونات وقيود البطارية وعدم الإزعاج قد تؤخر التنبيهات أو تكتمها؛ ولا يطلب الدليل أذونات.",
+    "tour.backup.title": "استيراد، نسخة احتياطية وتزامن",
+    "tour.backup.body": "تتضمن أنت ← الإعدادات ← خيارات أخرى أداة CSV (Strong / Hevy) لمعاينة الاستيراد محليًا أو التصدير بتنسيق Hevy؛ ولا يمنح السجل المستورد نقاطًا أو سلاسل أسابيع أو أرقامًا قياسية. يستخدم تصدير/استيراد البيانات نسخ JSON، بينما يتيح النسخ الاحتياطي والمزامنة حفظ نسخة الآن ومزامنة حساب خاصة بعد تسجيل الدخول؛ راجع الحالة وحل التعارضات قبل تغيير الجهاز. يمكن مزامنة البيانات المحفوظة، لكن الجلسة أو المؤقت الجاري يبقى على هذا الجهاز؛ حدّث كل التطبيقات المستخدمة للحفاظ على اتساق مكافآت المراحل الجديدة."
+  }
 };
 for (const lang of Object.keys(TOUR_STEPS_I18N)) Object.assign(I18N[lang] || (I18N[lang] = {}), TOUR_STEPS_I18N[lang]);
 
@@ -43463,8 +45384,7 @@ for (const lang of Object.keys(TOUR_STEPS_I18N)) Object.assign(I18N[lang] || (I1
 function tourVars() {
   return {
     tab: t('tab.trening'), stats: t('tab.pokrok'), lib: t('bento.library'), start: t('bento.start'), add: t('session.addSet'),
-    rest: t('bento.rest'), finish: t('bento.finish'), discard: t('discard.menu'), history: t('bento.history'), calendar: t('tab.kalendar'),
-    tabs: ['tab.dnes', 'tab.trening', 'tab.pokrok', 'bento.messages', 'community.title', 'tab.ty'].map((k) => t(k)).join(' · '),
+    rest: t('bento.rest'), finish: t('bento.finish'), history: t('bento.history'), calendar: t('tab.kalendar'),
   };
 }
 const tourStepText = (key) => () => t(key, tourVars());
@@ -43491,26 +45411,42 @@ function tourIllusRest() {
 function tourIllusFinish() {
   const d = document.createElement('div');
   d.className = 'tour-finish';
-  d.innerHTML = '<div class="finish-bar"><button type="button" class="finish-btn">' + esc(t('bento.finish')) + ' · <bdi>+45 ' + esc(t('units.xp')) + '</bdi></button></div>'
+  d.innerHTML = '<div class="finish-bar"><button type="button" class="finish-btn">' + esc(t('bento.finish')) + '</button></div>'
     + '<div class="tour-menu-row"><button type="button" class="mini-ghost sess-more"><svg class="kico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1.3"/><circle cx="12" cy="12" r="1.3"/><circle cx="19" cy="12" r="1.3"/></svg></button>'
     + '<div class="sess-menu"><button type="button" class="sess-menu-item">' + esc(t('discard.menu')) + '</button></div></div>';
   return d;
 }
-const TOUR_STEPS = [
-  { id: 'plan', tab: 'trening', target: () => document.querySelector('#plan-chips > *'), illus: null,
-    title: tourStepText('tour.plan.title'), body: tourStepText('tour.plan.body') },
-  { id: 'start', tab: 'trening', target: () => document.getElementById('tr-start'), illus: null,
-    title: tourStepText('tour.start.title'), body: tourStepText('tour.start.body') },
-  { id: 'sets', tab: 'trening', target: () => null, illus: tourIllusSets,
-    title: tourStepText('tour.sets.title'), body: tourStepText('tour.sets.body') },
-  { id: 'rest', tab: 'dnes', target: () => document.getElementById('bt-rest'), illus: tourIllusRest, illusWithTarget: true,
-    title: tourStepText('tour.rest.title'), body: tourStepText('tour.rest.body') },
-  { id: 'finish', tab: 'pokrok', illusWithTarget: true, illus: tourIllusFinish,
-    target: () => Array.from(document.querySelectorAll('#stats-grid [data-go="history"]')).find((el) => el.textContent.trim() === t('bento.history')) || null,
-    title: tourStepText('tour.finish.title'), body: tourStepText('tour.finish.body') },
-  { id: 'tabs', tab: 'dnes', target: () => document.querySelector('.tab-bar'), illus: null,
-    title: tourStepText('tour.tabs.title'), body: tourStepText('tour.tabs.body') },
+const TOUR_ILLUS = { sets: tourIllusSets, rest: tourIllusRest, finish: tourIllusFinish };
+/* [id, karta, cieľ (CSS selektor skutočného ovládača alebo null = len vysvetlenie), ilustrácia]. Cieľ sa použije len ak je viditeľný;
+   inak sa ukáže vysvetlenie (nikdy sa nič neotvára, nespúšťa ani nezapína kvôli zvýrazneniu). Kroky bez cieľa popisujú karty, ktoré
+   existujú len počas tréningu/účtu. Texty: TOUR_STEPS_I18N 'tour.<id>.title' / '.body'. */
+const TOUR_STEP_SPECS = [
+  ['plan', 'trening', '#plan-chips > *', null],
+  ['warmup', 'trening', null, null],
+  ['library', 'trening', '#btn-exercise-library', null],
+  ['custom', 'trening', '#btn-plan-rename', null],
+  ['plans', 'trening', '#btn-manage-plans', null],
+  ['programs', 'trening', '#btn-programs-tile', null],
+  ['start', 'trening', '#tr-start', null],
+  ['sets', 'trening', null, 'sets'],
+  ['effort', 'dnes', '#bt-settings', null],
+  ['sides', 'trening', null, null],
+  ['advancedSets', 'trening', null, null],
+  ['rest', 'dnes', '#bt-rest', 'rest'],
+  ['stretching', 'trening', null, null],
+  ['finish', 'pokrok', null, 'finish'],
+  ['history', 'pokrok', null, null],
+  ['muscles', 'pokrok', null, null],
+  ['body', 'dnes', '#bt-body', null],
+  ['activityFood', 'dnes', '#bt-food', null],
+  ['community', 'komunita', '.tab-bar [data-tab="komunita"]', null],
+  ['messages', 'spravy', '.tab-bar [data-tab="spravy"]', null],
+  ['reminders', 'ty', '#ty-settings', null],
+  ['backup', 'ty', '#ty-settings', null],
 ];
+const TOUR_STEPS = TOUR_STEP_SPECS.map(([id, tab, sel, illus]) => ({
+  id, tab, target: () => (sel ? document.querySelector(sel) : null), illus: illus ? TOUR_ILLUS[illus] : null, illusWithTarget: illus === 'rest',
+  title: tourStepText('tour.' + id + '.title'), body: tourStepText('tour.' + id + '.body') }));
 
 /* ---------- Android appka (Capacitor) ----------
    Tá istá appka zabalená pre Google Play. Súbory sú priamo v appke a aktualizuje ju obchod,
@@ -43533,12 +45469,12 @@ function nativePlugin(name) {
    Počas tréningu sa návod neukáže a tlačidlo v Pomoci je vypnuté s vysvetlením. Návod sa uzavrie ('yield'),
    keď sa otvorí akýkoľvek dialóg (sleduje sa len atribút hidden na .modal-backdrop), ponuka aktualizácie alebo začne tréning. */
 const TOUR_WHEN_I18N = {
-  sk: { 'tour.invite': 'Novinka: 1-minútový návod, ako zapisovať tréning.', 'tour.invite.start': 'Spustiť', 'tour.invite.later': 'Teraz nie', 'tour.help': 'Pomoc', 'tour.help.show': 'Zobraziť návod', 'tour.help.busy': 'Najprv dokonči tréning.' },
-  en: { 'tour.invite': 'New: a 1-minute tour of how to log a workout.', 'tour.invite.start': 'Start', 'tour.invite.later': 'Not now', 'tour.help': 'Help', 'tour.help.show': 'Show the tour', 'tour.help.busy': 'Finish your workout first.' },
-  es: { 'tour.invite': 'Novedad: una guía de 1 minuto para registrar un entrenamiento.', 'tour.invite.start': 'Empezar', 'tour.invite.later': 'Ahora no', 'tour.help': 'Ayuda', 'tour.help.show': 'Ver la guía', 'tour.help.busy': 'Termina antes tu entrenamiento.' },
-  'pt-BR': { 'tour.invite': 'Novidade: um tutorial de 1 minuto para registrar um treino.', 'tour.invite.start': 'Começar', 'tour.invite.later': 'Agora não', 'tour.help': 'Ajuda', 'tour.help.show': 'Mostrar o tutorial', 'tour.help.busy': 'Conclua o treino antes.' },
-  fr: { 'tour.invite': 'Nouveau : un guide d’1 minute pour enregistrer une séance.', 'tour.invite.start': 'Démarrer', 'tour.invite.later': 'Pas maintenant', 'tour.help': 'Aide', 'tour.help.show': 'Afficher le guide', 'tour.help.busy': 'Termine d’abord ta séance.' },
-  ar: { 'tour.invite': 'جديد: دليل من دقيقة واحدة لتسجيل التمرين.', 'tour.invite.start': 'ابدأ', 'tour.invite.later': 'ليس الآن', 'tour.help': 'مساعدة', 'tour.help.show': 'عرض الدليل', 'tour.help.busy': 'أنهِ تمرينك أولاً.' },
+  sk: { 'tour.invite': 'Spoznaj GymQuest v sprievodcovi tréningmi a voliteľnými funkciami. Kedykoľvek ho môžeš preskočiť.', 'tour.invite.start': 'Spustiť', 'tour.invite.later': 'Teraz nie', 'tour.help': 'Pomoc', 'tour.help.show': 'Zobraziť návod', 'tour.help.busy': 'Najprv dokonči tréning.' },
+  en: { 'tour.invite': 'Explore GymQuest with a guided tour of workouts and optional features. You can skip it at any time.', 'tour.invite.start': 'Start', 'tour.invite.later': 'Not now', 'tour.help': 'Help', 'tour.help.show': 'Show the tour', 'tour.help.busy': 'Finish your workout first.' },
+  es: { 'tour.invite': 'Descubre GymQuest con una guía de entrenamientos y funciones opcionales. Puedes omitirla cuando quieras.', 'tour.invite.start': 'Empezar', 'tour.invite.later': 'Ahora no', 'tour.help': 'Ayuda', 'tour.help.show': 'Ver la guía', 'tour.help.busy': 'Termina antes tu entrenamiento.' },
+  'pt-BR': { 'tour.invite': 'Conheça o GymQuest com um tutorial de treinos e recursos opcionais. Você pode pular quando quiser.', 'tour.invite.start': 'Começar', 'tour.invite.later': 'Agora não', 'tour.help': 'Ajuda', 'tour.help.show': 'Mostrar o tutorial', 'tour.help.busy': 'Conclua o treino antes.' },
+  fr: { 'tour.invite': 'Découvre GymQuest avec un guide des séances et fonctions facultatives. Tu peux le passer à tout moment.', 'tour.invite.start': 'Démarrer', 'tour.invite.later': 'Pas maintenant', 'tour.help': 'Aide', 'tour.help.show': 'Afficher le guide', 'tour.help.busy': 'Termine d’abord ta séance.' },
+  ar: { 'tour.invite': 'تعرّف على GymQuest عبر دليل للجلسات والميزات الاختيارية. يمكنك تخطيه في أي وقت.', 'tour.invite.start': 'ابدأ', 'tour.invite.later': 'ليس الآن', 'tour.help': 'مساعدة', 'tour.help.show': 'عرض الدليل', 'tour.help.busy': 'أنهِ تمرينك أولاً.' },
 };
 for (const lang of Object.keys(TOUR_WHEN_I18N)) Object.assign(I18N[lang] || (I18N[lang] = {}), TOUR_WHEN_I18N[lang]);
 
@@ -44148,7 +46084,7 @@ function nativeInit() {
   const app = nativePlugin('App');
   if (app) {
     app.addListener('backButton', () => { nativeBack(); });
-    app.addListener('resume', () => { nativeNavMode(); nativeRemindersApply(); healthRecheck().then(healthRetryRecent); if (timerInterval !== null) nativeRestSync(); });   // povolenia/čas v systéme, tep z hodiniek
+    app.addListener('resume', () => { nativeNavMode(); nativeRemindersApply(); healthRecheck().then(healthRetryRecent); workoutPhaseReconcile(); workoutPhaseCapabilities(); workoutPhaseCommunityReprobe(); if (timerInterval !== null) nativeRestSync(); });
   }
   const ln = nativePlugin('LocalNotifications');
   if (ln) ln.createChannel({ id: 'reminders', name: t('rem.title'), importance: 3 }).catch(() => {});
@@ -44264,6 +46200,7 @@ function appTakeOver() {
 /* Táto karta odovzdáva aplikáciu inej: dokončí synchronizáciu, uloží a viac nezapisuje. */
 async function appYield() {
   if (appYielded || !appLockRelease) return;
+  await workoutPhaseCancelOwner(); stopTimer();
   await gqHook('tab:yield');
   await syncQuiesce();
   persistState();
@@ -44326,6 +46263,7 @@ function appStart() {
   scheduleCommunityInvite();   // kto Community nepoužíva, občas dostane pozvánku
   registerServiceWorker();
   nativeInit();                // Android appka: spúšťacia obrazovka, natívne udalosti
+  workoutPhaseInit();
   if (state.history.length === 0 && !localStorage.getItem(STORAGE_KEY + '_seeded')) {
     openSetup();
   }

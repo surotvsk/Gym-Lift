@@ -57,6 +57,20 @@ everything on your own device.
 - **Warm-up sets and warm-up ramp** — add warm-up sets to any exercise with **+ Warm-up** in its **⋯** sheet, or switch on
   the warm-up ramp in the plan editor to get a ready-made ramp every time. Warm-ups are saved in your
   history but never change your sets, XP, records or streak.
+- **Warm-up and Stretching phases** — during a workout, two optional cards sit beside Rest: **Warm-up** before your
+  working exercises and **Stretching** after them. Both are off by default. Each runs on its own timer
+  (default 60 s of activity and 30 s of rest, 10 periods; you can set 1–3600 s of activity, 0–3600 s of rest and
+  1–100 periods, up to 24 hours in total). N activity periods contain N − 1 rests; with no rest there is no rest
+  stage. A gong marks every change when sound is on. You can also tick a phase complete yourself, and you can
+  pick comfortable activity ideas (guidance only, not medical advice). A phase never blocks saving. On Android the
+  timer keeps running with the screen off through its own foreground notification with Pause and Stop; Rest and
+  a phase never run at the same time. Each phase you finish earns **+5 XP** when the workout already counts
+  for XP (at least 3 completed working sets), shares the usual daily XP limit, and **Warm-up** / **Stretching**
+  each unlock a one-time badge. Phases never count as working sets, volume, records or streak, and Undo removes
+  their XP while earned badges stay. The old per-exercise warm-up sets and ramp still work; their controls
+  moved into a **Light practice sets** section under the phase cards, and the ramp setting is in the plan editor.
+  Until the Community database has the matching update, Community leaderboards and profile achievements keep
+  showing the previous values (nothing is lost; they catch up automatically).
 - **Effort rating (RPE / RIR)** — optional per-set ratings, with explanations beside all three Settings
   choices. **Off** hides the rating chip. **RPE** rates effort from 6–10 (8 means roughly two good-form
   reps left); **RIR** records reps in reserve (0 means none left, 2 means two). Off by default;
@@ -176,17 +190,24 @@ everything on your own device.
 
 ## Tutorial
 
-A short, skippable six-step tour introduces choosing a plan, starting a workout, entering sets,
-using the rest timer, saving results, and navigating the app. On a fresh guest device it starts
-after initial setup. Existing users and signed-in accounts without a tour choice receive a
-dismissible invitation on Today instead.
+A skippable 22-step tour covers choosing a workout, the optional Warm-up and Stretching phases, the exercise
+library and custom exercises, plans and programs, starting a workout, recording working sets, RPE/RIR effort,
+per-side training, supersets, drop sets and plates, the rest timer, saving and rewards, history, muscles, body
+measurements, activities and food, Community, Messages, reminders, and backup/import/sync. It spans all six
+tabs: Today, Training, Progress, Messages, Community and You. On a fresh guest device it starts after initial
+setup. Existing users and signed-in accounts without a tour choice receive a dismissible invitation on Today
+instead.
 
 Use Back and Next to explore, or Skip / Close to leave. Replay it at any time from
 Settings → Help → Show the tour when no workout is active. The tour waits for setup and other
-dialogs to close and yields when a dialog opens.
+dialogs to close and yields when a dialog opens, a workout starts or an update notice appears.
 
-The tour never creates or changes workout data. Its completion or dismissal is stored only on
-this device in the localStorage key `gymquest_tutorial`; it is not synced to an account.
+The tour only explains. It never starts a workout, timer or phase, requests a permission, signs in, enables
+Community or changes workout data or settings; when a control it describes is not on screen (for example
+Warm-up and Stretching cards, which exist only during a workout) it shows an explanation instead. The
+Community, Messages and You steps are displayed without loading from or sending anything to a server, and the
+tour leaves the Community/Messages screen state exactly as it found it. Its completion or dismissal is stored
+only on this device in the localStorage key `gymquest_tutorial`; it is not synced to an account.
 All six app languages, including Arabic right-to-left, are supported.
 
 ## How to run it

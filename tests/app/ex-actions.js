@@ -65,29 +65,25 @@ function check(name, ok, info) {
 
     console.log('== sheet items');
     await open(0);
-    check('bench: + Warm-up, ramp, + Drop set, Plates, Swap (in order)', J(await items()) === J(['btn-add-warmup', 'btn-warmup-ramp', 'btn-add-drop', 'btn-plates', 'exercise-swap', 'btn-ex-progress']), await items());
+    check('bench action sheet contains only drop/plates/swap/progress', J(await items()) === J(['btn-add-drop', 'btn-plates', 'exercise-swap', 'btn-ex-progress']), await items());
     check('the Progress item is visible and wired (task 3)', await p.eval(`(() => { const x = ${sheet}.querySelector('.btn-ex-progress'); return !!x && !x.hidden; })()`));
-    check('labels', J(await p.eval(`Array.from(${sheet}.querySelectorAll('#ex-actions-list button:not([hidden])')).map((x) => x.textContent.trim())`)) === J(['+ Warm-up', 'Warm-up ramp', '+ Drop set', 'Plates', 'Replace exercise', 'Progress']));
+    check('no warm-up/ramp action remains in the sheet', await p.eval(`!${sheet}.querySelector('.btn-add-warmup, .btn-warmup-ramp') && ${sheet}.querySelectorAll('#ex-actions-list button:not([hidden])').length === 4`));
     check('sheet is in isBusy() and Back closes it', await p.eval(`(() => { const ok = isBusy(); return ok && nativeBack() === 'closed' && ${sheet}.hidden; })()`));
     check('NATIVE_BACK_CLOSE lists it', await p.eval(`NATIVE_BACK_CLOSE.some((e) => e[0] === 'modal-ex-actions' && !!document.querySelector(e[1]))`));
     await open(1);
-    check('dumbbell row: no Plates item', J(await items()) === J(['btn-add-warmup', 'btn-warmup-ramp', 'btn-add-drop', 'exercise-swap', 'btn-ex-progress']), await items());
+    check('dumbbell row: drop/swap/progress, no Plates', J(await items()) === J(['btn-add-drop', 'exercise-swap', 'btn-ex-progress']), await items());
     await esc();
     await open(2);
-    check('assisted row: no ramp, no Plates', J(await items()) === J(['btn-add-warmup', 'btn-add-drop', 'exercise-swap', 'btn-ex-progress']), await items());
+    check('assisted row: drop/swap/progress, no phase controls or Plates', J(await items()) === J(['btn-add-drop', 'exercise-swap', 'btn-ex-progress']), await items());
     await esc();
 
-    console.log('== each item does what the old button did, then closes the sheet');
-    await open(0);
-    await p.eval(`(${sheet}.querySelector('.btn-add-warmup').click(), true)`); await wait(150);
-    check('+ Warm-up adds a warm-up row', (await p.eval(`${exEl(0)}.querySelectorAll('.warmup-item').length`)) === 1);
-    check('focus moves to the new ⋯ of the same exercise (warm-up)', await p.eval(`document.activeElement === ${exEl(0)}.querySelector('.btn-ex-more')`));
-    check('the sheet closed', await sheetHidden());
-    await open(0);
-    await p.eval(`(${sheet}.querySelector('.btn-warmup-ramp').click(), true)`); await wait(150);
-    check('Warm-up ramp fills the ramp (4 rows for 100 kg)', (await p.eval(`${exEl(0)}.querySelectorAll('.warmup-item').length`)) === 4);
-    check('the sheet closed (ramp)', await sheetHidden());
-    check('focus moves to the new ⋯ of the same exercise (ramp)', await p.eval(`document.activeElement === ${exEl(0)}.querySelector('.btn-ex-more')`));
+    console.log('== central practice capabilities replace the removed exercise actions');
+    await p.eval(`(document.querySelector('#workout-phase-legacy .btn-add-warmup').click(), true)`); await wait(150);
+    check('central manual control adds a row without placing it inside a working exercise', await p.eval(`document.querySelectorAll('#workout-phase-legacy .warmup-item').length === 1 && !document.querySelector('#exercise-list .warmup-item')`));
+    check('the action sheet stays closed', await sheetHidden());
+    await p.eval(`(document.querySelector('#workout-phase-legacy .btn-warmup-ramp').click(), true)`); await wait(150);
+    check('central ramp fills the same four exercise-keyed rows', await p.eval(`sessionWarmups(getPlan('xtest').exercises[0]).length === 4 && document.querySelectorAll('#workout-phase-legacy .phase-legacy-exercise')[0].querySelectorAll('.warmup-item').length === 4`));
+    check('working exercise still has a single more button and no duplicate practice actions', await p.eval(`${exEl(0)}.querySelectorAll('.btn-ex-more').length === 1 && !${exEl(0)}.querySelector('.btn-add-warmup, .btn-warmup-ramp')`));
     await open(0);
     await p.eval(`(${sheet}.querySelector('.btn-add-drop').click(), true)`); await wait(150);
     check('+ Drop set adds a drop row, .ex-mini appears', (await p.eval(`${exEl(0)}.querySelectorAll('.drop-item').length`)) === 1 && (await p.eval(`!!${exEl(0)}.querySelector('.ex-mini .drop-item')`)));
@@ -122,7 +118,7 @@ function check(name, ok, info) {
     await p.eval(`(startEditPlan('xtest'), true)`); await wait(300);
     const rows = `Array.from(document.querySelectorAll('#edit-list .edit-row, .edit-row'))`;
     check('every editor row has a closed details.edit-more', await p.eval(`${rows}.length === 5 && ${rows}.every((r) => { const d = r.querySelector('details.edit-more'); return d && !d.open; })`));
-    check('the ramp checkbox lives inside details.edit-more', await p.eval(`${rows}.filter((r) => !r.querySelector('.edit-assisted:checked')).every((r) => !!r.querySelector('details.edit-more .edit-warmup-ramp'))`));
+    check('ramp preference has one central replacement and no editor placement', await p.eval(`!document.querySelector('#edit-rows .edit-warmup-ramp') && !!document.querySelector('#workout-phase-legacy .phase-legacy-ramp')`));
     check('the link button lives inside details.edit-more', await p.eval(`${rows}.some((r) => !!r.querySelector('details.edit-more .edit-link')) && ${rows}.every((r) => !r.querySelector(':scope > .edit-link'))`));
     check('the group label stays visible with the details closed', await p.eval(`(() => { const l = document.querySelector('.edit-group-label'); return !!l && l.getBoundingClientRect().height > 0; })()`));
     check('the summary reads "More options"', await p.eval(`document.querySelector('details.edit-more > summary').textContent.trim()`) === 'More options');
@@ -171,7 +167,7 @@ function check(name, ok, info) {
         n: ${sheet}.querySelectorAll('#ex-actions-list button:not([hidden])').length,
         over: ${sheet}.querySelector('.modal').scrollWidth <= ${sheet}.querySelector('.modal').clientWidth + 1,
         miss: Object.keys(I18N.en).filter((k) => k.startsWith('exactions.') && I18N[${J(lang)}][k] === undefined) })`);
-      check(lang + ': translated, 6 items, no raw key, no overflow, no missing exactions.* key', x.n === 6 && !/exactions\./.test(x.raw) && x.title.length > 0 && x.over && x.miss.length === 0 && x.aria.length > 5, x);
+      check(lang + ': translated, 4 retained items, no raw key, no overflow, no missing exactions.* key', x.n === 4 && !/exactions\./.test(x.raw) && x.title.length > 0 && x.over && x.miss.length === 0 && x.aria.length > 5, x);
       if (lang === 'ar') {
         check('ar: right-to-left', x.dir === 'rtl');
         if (process.env.GQ_SCREENSHOTS !== '0') {

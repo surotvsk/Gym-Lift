@@ -48,6 +48,12 @@
         <receiver android:name=".GymRestReceiver" android:exported="false" />
         <service android:name=".GymRestService" android:exported="false"
             android:foregroundServiceType="shortService" />
+        <receiver android:name=".GymPhaseReceiver" android:exported="false" />
+        <service android:name=".GymPhaseService" android:exported="false"
+            android:foregroundServiceType="specialUse">
+            <property android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="User-started finite workout warm-up and stretching interval timer. Immediate work/rest boundaries and media-volume gongs continue with the screen off; delaying them defeats the timer. Ongoing notification provides Pause and Stop; no tracking sensors or repeating idle alarms." />
+        </service>
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -71,6 +77,7 @@
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <queries>
         <package android:name="com.google.android.apps.healthdata" />

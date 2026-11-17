@@ -105,6 +105,7 @@ internal object GymRest {
     }
 
     fun schedule(c: Context, token: String, end: Long, title: String, body: String, sound: Boolean): Boolean {
+        GymPhase.replaceWithRest(c)
         // Obnovenie vždy plánuje nanovo: elapsedRealtime z minulého bootu už neplatí.
         cancel(c)
         channels(c, title)
@@ -134,7 +135,7 @@ internal object GymRest {
 
     fun cancel(c: Context) {
         prefs(c).edit().remove("id").commit()
-        playing?.let { stop(it) }
+        stopChime()
         manager(c).cancel(alarm(c))
         c.stopService(Intent(c, GymRestService::class.java))
         NotificationManagerCompat.from(c).cancel(COUNTDOWN)
@@ -142,12 +143,23 @@ internal object GymRest {
         NotificationManagerCompat.from(c).cancel(ALERT)
     }
 
-    /** done() sa volá presne raz: hneď, alebo keď dohrá zvuk. */
-    fun finish(c: Context, token: String?, done: () -> Unit = {}) {
+    /** Due alarm for a sounding Rest: only the user's exact alarm may start the bounded foreground service that
+        makes Android 15+ (target 35+) grant audio focus to a backgrounded app. Returns false when the caller must
+        fall back to the notification-only completion path. */
+    fun startDueChime(c: Context, token: String?): Boolean {
+        if (token == null || token != id(c) || remaining(c) > 0 || !prefs(c).getBoolean("sound", false) || GymPhase.blocksRestAudio(c)) return false
+        return try { c.startForegroundService(Intent(c, GymRestService::class.java).putExtra("due", token)); true }
+        catch (_: IllegalStateException) { false } // Inexact alarm or restricted background: no exemption.
+        catch (_: SecurityException) { false }
+    }
+
+    /** done() sa volá presne raz: hneď, alebo keď dohrá zvuk. inService: volá sa zo služby, ktorá hrá zvuk a sama sa zastaví. */
+    fun finish(c: Context, token: String?, inService: Boolean = false, done: () -> Unit = {}) {
+        if (GymPhase.blocksRestAudio(c)) { done(); return }
         if (token == null || token != id(c) || remaining(c) > 0) { done(); return }
         prefs(c).edit().remove("id").commit() // služba aj alarm smú upozorniť spolu iba raz
         manager(c).cancel(alarm(c))
-        c.stopService(Intent(c, GymRestService::class.java))
+        if (!inService) c.stopService(Intent(c, GymRestService::class.java))
         NotificationManagerCompat.from(c).cancel(COUNTDOWN)
         NotificationManagerCompat.from(c).cancel(LONG_COUNTDOWN)
         try { NotificationManagerCompat.from(c).notify(ALERT, notification(c, false)) } catch (_: SecurityException) {}
@@ -158,61 +170,99 @@ internal object GymRest {
         tlačidlami hlasitosti a hrá aj v režime vibrácií (vlastník 2026-11-10: budík hral do reproduktora
         aj so slúchadlami a nedal sa stíšiť). Bežiacu hudbu na chvíľu stíši (duck), nezastaví ju. */
     fun chime(c: Context, done: () -> Unit) {
+        if (GymPhase.blocksRestAudio(c)) { done(); return }
+        stopChime()
         var once = false
+        val handler = Handler(Looper.getMainLooper())
         val am = c.getSystemService(AudioManager::class.java)
         val attrs = AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_MEDIA)
             .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION).build()
-        val focus = if (Build.VERSION.SDK_INT >= 26) AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK)
-            .setAudioAttributes(attrs).build() else null
-        val end = { if (!once) { once = true; if (focus != null) am.abandonAudioFocusRequest(focus); done() } }
-        if (focus != null) am.requestAudioFocus(focus)
-        playing?.release() // nový koniec pauzy nahradí ešte znejúci starý
+        var player: MediaPlayer? = null
+        var timeout: Runnable? = null
+        var focus: AudioFocusRequest? = null
+        val end = {
+            if (!once) {
+                once = true
+                timeout?.let { handler.removeCallbacks(it) }
+                player?.release(); player = null
+                focus?.let { am.abandonAudioFocusRequest(it) }
+                stopPlaying = null
+                done()
+            }
+        }
+        stopPlaying = end
+        val request = AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK)
+            .setAudioAttributes(attrs).setOnAudioFocusChangeListener({ change -> if (change < 0) end() }, handler).build()
+        focus = request
         try {
-            val player = MediaPlayer()
-            playing = player // silná referencia: GC by inak zvuk utíšil
-            player.setAudioAttributes(attrs)
-            player.setWakeMode(c, PowerManager.PARTIAL_WAKE_LOCK) // obrazovka je zhasnutá
-            player.setDataSource(c, Uri.parse("android.resource://${c.packageName}/${R.raw.rest_chime}"))
-            player.setOnCompletionListener { stop(it); end() }
-            player.setOnErrorListener { mp, _, _ -> stop(mp); end(); true }
-            player.prepare()
-            player.start()
-            Handler(Looper.getMainLooper()).postDelayed({ end() }, 5000) // poistka pre goAsync
-        } catch (_: Exception) { playing?.let { stop(it) }; end() }
+            if (am.requestAudioFocus(request) != AudioManager.AUDIOFOCUS_REQUEST_GRANTED) { end(); return }
+            val media = MediaPlayer()
+            player = media
+            media.setAudioAttributes(attrs)
+            media.setWakeMode(c, PowerManager.PARTIAL_WAKE_LOCK)
+            media.setDataSource(c, Uri.parse("android.resource://${c.packageName}/${R.raw.rest_chime}"))
+            media.setOnCompletionListener { end() }
+            media.setOnErrorListener { _, _, _ -> end(); true }
+            media.prepare(); media.start()
+            timeout = Runnable { end() }
+            handler.postDelayed(timeout, 5000)
+        } catch (_: Exception) { end() }
     }
-    private var playing: MediaPlayer? = null
-    private fun stop(p: MediaPlayer) { p.release(); if (playing === p) playing = null }
+    private var stopPlaying: (() -> Unit)? = null
+    internal fun stopChime() { stopPlaying?.invoke() }
 }
 
 class GymRestReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
+        val token = intent.getStringExtra("id")
+        // Exact-alarm delivery is the policy exemption that lets the bounded service (and so audio focus) start.
+        if (GymRest.startDueChime(context, token)) return
         val pending = goAsync() // proces musí žiť, kým dohrá zvuk
-        GymRest.finish(context, intent.getStringExtra("id")) { pending.finish() }
+        GymRest.finish(context, token) { pending.finish() }
     }
 }
 
 class GymRestService : Service() {
     private val handler = Handler(Looper.getMainLooper())
     private var wake: PowerManager.WakeLock? = null
+    private var startId = 0 // newest command id: completion stops the service only if nothing newer is queued
+    private var playing = false // this service owns one finish/chime until its completion runs
     override fun onBind(intent: Intent?) = null
+    private fun hold(timeout: Long) {
+        wake?.let { if (it.isHeld) it.release() }
+        wake = getSystemService(PowerManager::class.java).newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "GymLift:rest").apply { acquire(timeout) }
+    }
+    /** Retires the single active completion; obsolete commands never reach here while one is active. */
+    private fun complete() { playing = false; stopSelfResult(startId) }
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        this.startId = startId
+        val due = intent?.getStringExtra("due")
         val token = GymRest.id(this)
         val left = GymRest.remaining(this)
-        if (token == null || left > GymRest.SHORT_LIMIT) { stopSelf(); return START_NOT_STICKY }
+        // startForegroundService() must always be answered with startForeground(), even if the Rest is already gone.
         val note = GymRest.notification(this, true)
         if (Build.VERSION.SDK_INT >= 34) startForeground(GymRest.COUNTDOWN, note, ServiceInfo.FOREGROUND_SERVICE_TYPE_SHORT_SERVICE)
         else startForeground(GymRest.COUNTDOWN, note)
+        // A completion is already finishing (e.g. the countdown fired just before the due alarm's command): an obsolete
+        // command must not stop the service under active playback; the completion stops it using the newest id.
+        if (playing) return START_NOT_STICKY
         handler.removeCallbacksAndMessages(null)
-        wake?.let { if (it.isHeld) it.release() }
-        wake = getSystemService(PowerManager::class.java).newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "GymLift:rest").apply {
-            acquire(GymRest.SHORT_LIMIT + 2000)
+        if (due != null) {
+            // Bounded to one chime (5 s playback timeout): never a second countdown window for a long Rest.
+            hold(10_000)
+            playing = true
+            GymRest.finish(this, due, true) { complete() }
+            return START_NOT_STICKY
         }
-        handler.postDelayed({ GymRest.finish(this, token) { stopSelf() } }, left.coerceAtLeast(1))
+        if (token == null || left > GymRest.SHORT_LIMIT) { stopSelf(); return START_NOT_STICKY }
+        hold(GymRest.SHORT_LIMIT + 2000)
+        handler.postDelayed({ playing = true; GymRest.finish(this, token, true) { complete() } }, left.coerceAtLeast(1))
         return START_NOT_STICKY
     }
     override fun onTimeout(startId: Int) { stopSelf() }
     override fun onDestroy() {
         handler.removeCallbacksAndMessages(null)
+        if (playing) { playing = false; GymRest.stopChime() } // release player/focus if the OS ends the service first
         wake?.let { if (it.isHeld) it.release() }
         stopForeground(STOP_FOREGROUND_REMOVE)
         super.onDestroy()

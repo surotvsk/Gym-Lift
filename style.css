@@ -4951,7 +4951,7 @@ html.ios .tour { --tour-top: max(34px, calc(env(safe-area-inset-top, 0px) + 34px
 .tour.tour-anim .tour-spot { transition: left .2s ease, top .2s ease, width .2s ease, height .2s ease; }
 .tour-spot[hidden] { display: none; }
 .tour-card {
-  position: absolute; inset-inline: 12px; margin-inline: auto; max-width: 420px; box-sizing: border-box; overflow-y: auto; overscroll-behavior: contain; touch-action: pan-y;
+  position: absolute; inset-inline: 12px; margin-inline: auto; max-width: 420px; box-sizing: border-box; overflow: visible; overscroll-behavior: contain; touch-action: pan-y;
   background: var(--surface); color: var(--text); border: 1px solid var(--border); border-radius: 22px; padding: 16px 16px 12px; box-shadow: 0 12px 32px rgba(0,0,0,.28);
 }
 .tour.tour-anim .tour-card { transition: top .2s ease; }
@@ -4966,6 +4966,8 @@ html.ios .tour { --tour-top: max(34px, calc(env(safe-area-inset-top, 0px) + 34px
 .tour-x { position: absolute; top: 6px; inset-inline-end: 6px; min-width: 44px; min-height: 44px; }
 .tour-title { margin: 0 0 6px; margin-inline-end: 44px; font-size: var(--fs-lg); line-height: 1.2; overflow-wrap: anywhere; }
 .tour-body { margin: 0 0 12px; font-size: var(--fs-md); line-height: 1.4; color: var(--text-dim); overflow-wrap: anywhere; }
+.tour-text { overscroll-behavior: contain; touch-action: pan-y; }   /* dlhý text sa rolluje v karte (päta s tlačidlami ostáva na očiach) */
+.tour-text[tabindex]:focus-visible { outline: 2px solid var(--lime); outline-offset: 2px; border-radius: 8px; }
 .tour-illus { margin: 0 0 12px; padding: 8px; border-radius: 16px; background: var(--surface-2); pointer-events: none; user-select: none; overflow: hidden; }
 .tour-illus[hidden] { display: none; }
 .tour-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; }
@@ -5036,7 +5038,6 @@ html.ios .tour { --tour-top: max(34px, calc(env(safe-area-inset-top, 0px) + 34px
 .warmup-item button:disabled { opacity: .55; cursor: default; }
 .warmups .set-weight-editor { flex: none; }
 .warmup-note { display: block; font-size: var(--fs-xs); color: var(--text-dim); margin-top: 2px; }
-.edit-warmup { margin-top: var(--sp-2); }
 /* Námaha série (RPE / RIR): čip pod hotovou sériou, list s hodnotami, prepínač v Nastaveniach */
 .effort-chips { display: flex; gap: var(--sp-2); flex-wrap: wrap; margin-top: var(--sp-2); }
 .effort-chips .len-chip { min-height: 44px; min-width: 44px; }
@@ -5405,3 +5406,36 @@ html[dir="rtl"] .hr-note { direction: rtl; }
 .hr-avg { stroke: var(--text-dim); stroke-width: 1; stroke-dasharray: 4 3; }
 .hr-avg-label, .hr-max-label { font-weight: var(--fw-bold); fill: var(--text-dim); paint-order: stroke; stroke: var(--surface-2); stroke-width: 3px; stroke-linejoin: round; }
 .hr-max { fill: var(--accent); }
+/* Optional workout phases are not working exercise rows. */
+.phase-header-toggle { display: inline-flex; align-items: center; gap: .4rem; min-height: 44px; cursor: pointer; font-size: .82rem; }
+.phase-header-toggle input, .phase-complete input, .phase-suggestions input, .phase-legacy-exercise input[type="checkbox"] { width: 20px; height: 20px; flex: 0 0 auto; accent-color: var(--accent); }
+.duration-row > .mini { flex-wrap: wrap; }
+.workout-phase-card, .workout-phase-legacy { margin-block: 12px; padding: 16px; border: 1px solid var(--border); border-radius: 18px; background: var(--surface); color: var(--text); min-width: 0; }
+.workout-phase-card[hidden], .workout-phase-legacy[hidden] { display: none; }
+.workout-phase-card h3, .workout-phase-legacy h3 { margin: 0 0 8px; }
+.phase-complete, .phase-suggestions label, .phase-legacy-exercise > label { display: flex; align-items: center; gap: 10px; min-height: 44px; padding-block: 6px; cursor: pointer; }
+.phase-config { display: flex; flex-wrap: wrap; gap: 10px; padding: 10px; margin-block: 12px; border: 1px solid var(--border); border-radius: 12px; min-width: 0; }
+.phase-config label { display: flex; flex-direction: column; gap: 4px; flex: 1 1 90px; min-width: 0; font-size: .8rem; }
+.phase-config input { width: 100%; min-height: 44px; min-width: 0; box-sizing: border-box; color: inherit; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 8px; font-size: 1rem; }
+.phase-config:disabled, .phase-suggestions:disabled { opacity: .7; }
+.phase-suggestions { border: 0; padding: 0; margin-block: 12px; min-width: 0; }
+.phase-suggestions label { align-items: flex-start; font-size: .85rem; line-height: 1.45; }
+.phase-suggestions label input { margin-top: 3px; }
+.phase-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-block: 10px; }
+.phase-actions button { min-height: 44px; flex: 1 1 110px; white-space: normal; }
+.workout-phase-card output { display: block; font-variant-numeric: tabular-nums; font-size: 2rem; font-weight: 700; direction: ltr; text-align: start; }
+.phase-status { font-weight: 700; }
+.phase-error { color: var(--danger, #c33); font-size: .85rem; }
+.phase-legacy-exercise { padding-block: 12px; border-top: 1px solid var(--border); min-width: 0; }
+.phase-legacy-exercise h4 { margin-block: 0 8px; overflow-wrap: anywhere; }
+.phase-legacy-exercise .warmups { margin-block: 8px; }
+.phase-community-pending { padding: 12px; margin: 12px; border: 1px solid var(--border); border-radius: 12px; }
+.phase-history { margin-block: 4px; }
+.phase-more { margin-block: 8px; border-top: 1px solid var(--border); min-width: 0; }
+.phase-more > summary, .edit-ramp-prefs > summary { display: flex; align-items: center; min-height: 44px; cursor: pointer; font-weight: 600; font-size: .9rem; }
+.phase-more[open] > summary { margin-bottom: 4px; }
+.phase-duration { font-weight: 600; }
+.edit-ramp-prefs { margin-block: 10px; padding: 0 12px; border: 1px solid var(--border); border-radius: 12px; min-width: 0; }
+.edit-ramp-prefs[hidden] { display: none; }
+.edit-ramp-list label { display: flex; align-items: flex-start; gap: 10px; min-height: 44px; padding-block: 6px; cursor: pointer; font-size: .85rem; line-height: 1.4; overflow-wrap: anywhere; }
+.edit-ramp-list input { width: 20px; height: 20px; flex: 0 0 auto; margin-top: 2px; accent-color: var(--accent); }

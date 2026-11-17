@@ -35,8 +35,51 @@ Run **all** migrations, in order (there is no 0007 — the number is reserved):
 18. [`migrations/0019_reminders_v2.sql`](./migrations/0019_reminders_v2.sql) — reminders v2 (Phase 8): `push_reminders` gets `water_mode` (`interval` | `times`), `water_times` (≤ 12), `custom` (≤ 10 own reminders `{ id, text 1–60, time, days }`) and `sent` (per-slot marks); `reminders_get` returns the new keys, `reminders_set` validates them and **keeps the stored value when a key is absent** (older apps); `reminders_due` sends meals, water times and own reminders per slot (20-minute window after the exact HH:MM in the member's time zone, once per local date, DST-safe) and returns `custom: [{id, text}]`. `community_social_version()` becomes 11. Needs 0018 (version 10).
 19. [`migrations/0020_google_age_ticket.sql`](./migrations/0020_google_age_ticket.sql) — create an account with Google with the 16+ rule still enforced: table `age_tickets` (only `sha256(lower(trim(email)))` + time; RLS on, no policies, no table grants), `age_ticket_create(p_email)` (anon/authenticated; validates the e-mail, drops tickets older than 10 minutes, global cap 30 per minute, error `rate_limited`), `handle_new_user()` accepts a `provider = google` sign-up only with a fresh single-use ticket for that e-mail (consent source `google_signup`, allowed by the widened `community_consents_source_check`); the metadata path is unchanged. `community_social_version()` becomes 12. Needs 0019 (version 11).
 20. [`migrations/0021_version_probe.sql`](./migrations/0021_version_probe.sql) — enforce the schema-version probe's authenticated-only execution even when PostgreSQL reuses a prepared query across roles. `STABLE` plus a function-local `search_path` prevents constant folding and SQL inlining; no elevated privileges, table changes or data writes. `community_social_version()` becomes 13. Needs 0020 (version 12). Prepared and tested locally only; production application requires separate owner approval.
+21. [`migrations/0022_phase_badges.sql`](./migrations/0022_phase_badges.sql) — add `phaseWarmup1` and `phaseStretch1` to both achievement catalogs (25 XP each, minimum one claimed workout), raise the achievement ceiling to 5,775 and capability to 14. Preserves all previous catalog values, function privileges, 0021's `STABLE SECURITY INVOKER`/local `search_path` probe, RPC signatures, caps, peaks, baselines and existing records. Source prepared only; no production application is implied.
 
 Apply each new file once through the SQL editor, as its own transaction, then run `NOTIFY pgrst, 'reload schema';`. Do not use `supabase db push`: production has no CLI migration history.
+
+### v117 phase badges: deployment and rollback gate
+
+**Separate owner approval is required before any production SQL**, including prerequisites and rollback.
+Review the exact [`0022` SQL](./migrations/0022_phase_badges.sql) and
+[`0022_down.sql`](./rollback/0022_down.sql), and run the focused local-only source
+`node tests/social/phase-badges.js` against a disposable stack through **0021 / capability 13**.
+It applies, rolls back and reapplies 0022, tests both badge publishers and privilege/cap preservation,
+then restores capability 13 and removes its temporary accounts. It must not run alongside other database tests.
+This is a validation instruction, not a claim that the test has run.
+
+After separate production authorization, verify prerequisites using the authenticated capability probe;
+apply approved missing migrations in order, apply 0022 once as its own transaction, then issue
+`NOTIFY pgrst, 'reload schema';`. Confirm authenticated capability **14**, anonymous denial,
+both new 25-XP/minimum-one rows and the 5,775 check. Full Community badge-XP rollout remains blocked
+until deployment and capability confirmation; a source push or signed AAB does not authorize database writes.
+No Edge Function update, `p_rules:3`, RPC signature change, historical conversion or rebaseline is needed.
+The client retains `p_rules:2`; its five-XP phase training bonuses use the existing aggregate submit path.
+The SQL receives no phase metadata and does not prove phase completion or working-set eligibility.
+
+Before capability 14 (including an unavailable probe), updated clients must visibly mark the two new
+Community badges as pending backend upgrade, keep old Community features working and avoid caching a
+successful new-badge publication signature. Both leaderboard and profile publishers must reprobe using
+the existing account/connection lifecycle and resubmit when support arrives. Local rewards still work.
+Old binaries omit phase bonuses/new badges and can submit lower totals: the server already accepts
+decreases. Update every client using this feature; there is no mixed-version parity guarantee.
+Server UTC daily/week caps and coarse claimed-workout checks remain unchanged.
+
+**Rollback is bounded, not data-free:** after separate authorization, run 0022_down as one transaction
+and reload PostgREST. It restores the prior catalogs and capability 13, and changes only leaderboard
+`achievement_xp > 5725` to **5725**, removing at most 50 XP per affected row; generated total/level
+follow automatically. Training, training peaks, daily/weekly counters, timestamps, history and stored
+profile IDs remain untouched. The server stores only aggregate achievement XP, not earned-ID provenance:
+it cannot exactly remove phase contributions below the ceiling. Those persist until the owner's next
+submit recomputes against the restored catalog; profile IDs are filtered on the next profile publication.
+Local permanent badges are not revoked. Reapplying 0022 restores support, but removed aggregate XP
+returns only after an updated client resubmits its earned IDs. Review affected rows before rollback:
+
+```sql
+select user_id, achievement_xp, achievement_xp - 5725 as rollback_reduction
+from public.leaderboard_entries where achievement_xp > 5725;
+```
 
 `0002` is required **because you disabled “Automatically expose new tables”**: without it the new
 tables have no privileges for the `authenticated` role and the API cannot reach them at all. It grants
