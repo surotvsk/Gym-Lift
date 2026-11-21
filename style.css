@@ -4527,6 +4527,7 @@ html[data-theme="dark"] .train-card .train-cheer { background: rgba(255,255,255,
 .settings-sheet .set-group .btn-secondary, .settings-sheet .set-group .goal-chip:not(.active), .settings-sheet .set-group .len-chip:not(.active) { background: var(--b-tile); }
 .settings-sheet .set-group .setting-row { background: none; box-shadow: none; padding: 0; }
 .settings-sheet .set-group .card-sub { font-size: 12px; }
+.settings-sheet a.btn { display: flex; align-items: center; justify-content: center; text-align: center; text-decoration: none; }
 .settings-sheet #auto-backup-row[hidden], .settings-sheet #auto-backup-last[hidden] { display: none; }
 .settings-sheet .set-group .setting-row { border: 0; }
 

@@ -19708,6 +19708,53 @@ const V80_I18N = {
 };
 for (const lang of Object.keys(V80_I18N)) Object.assign(I18N[lang] || (I18N[lang] = {}), V80_I18N[lang]);
 
+/* Pomoc v Nastaveniach: e-mailový koncept, nikdy automatické odosielanie dát. */
+const SUPPORT_I18N = {
+  sk: {
+    'support.bug': 'Nahlásiť chybu',
+    'support.feedback': 'Poslať spätnú väzbu',
+    'support.emailHint': 'Otvorí e-mailovú aplikáciu. Správu odošleš ty; dáta tréningov ani účtu sa neprikladajú. Bez e-mailovej aplikácie napíš na:',
+    'support.bugBody': 'Čo sa stalo?\n\n\nČo si očakával/a?\n\n\nAko sa dá chyba zopakovať?\n\n\nZariadenie a verzia aplikácie (voliteľné):\n\nSnímku obrazovky môžeš priložiť ručne. Neposielaj heslá ani citlivé údaje.',
+    'support.feedbackBody': 'Tvoj návrh alebo spätná väzba:\n\n\nČo by ti pomohlo pri tréningu?\n\n\nNeposielaj heslá ani citlivé údaje.'
+  },
+  en: {
+    'support.bug': 'Report a bug',
+    'support.feedback': 'Send feedback',
+    'support.emailHint': 'Opens your email app. You send the message; no workout or account data is attached. No email app? Write to:',
+    'support.bugBody': 'What happened?\n\n\nWhat did you expect?\n\n\nSteps to reproduce:\n\n\nDevice and app version (optional):\n\nYou can attach a screenshot manually. Do not send passwords or sensitive information.',
+    'support.feedbackBody': 'Your suggestion or feedback:\n\n\nWhat would help you during your workouts?\n\n\nDo not send passwords or sensitive information.'
+  },
+  es: {
+    'support.bug': 'Informar de un error',
+    'support.feedback': 'Enviar comentarios',
+    'support.emailHint': 'Abre tu aplicación de correo. Tú envías el mensaje; no se adjuntan datos de entrenamientos ni de la cuenta. ¿No tienes aplicación de correo? Escribe a:',
+    'support.bugBody': '¿Qué ocurrió?\n\n\n¿Qué esperabas?\n\n\nPasos para reproducir el error:\n\n\nDispositivo y versión de la aplicación (opcional):\n\nPuedes adjuntar una captura manualmente. No envíes contraseñas ni información sensible.',
+    'support.feedbackBody': 'Tu sugerencia o comentario:\n\n\n¿Qué te ayudaría durante tus entrenamientos?\n\n\nNo envíes contraseñas ni información sensible.'
+  },
+  'pt-BR': {
+    'support.bug': 'Relatar um erro',
+    'support.feedback': 'Enviar feedback',
+    'support.emailHint': 'Abre seu aplicativo de e-mail. Você envia a mensagem; nenhum dado de treino ou da conta é anexado. Sem aplicativo de e-mail? Escreva para:',
+    'support.bugBody': 'O que aconteceu?\n\n\nO que você esperava?\n\n\nPassos para reproduzir o erro:\n\n\nDispositivo e versão do aplicativo (opcional):\n\nVocê pode anexar uma captura de tela manualmente. Não envie senhas nem informações sensíveis.',
+    'support.feedbackBody': 'Sua sugestão ou feedback:\n\n\nO que ajudaria você durante os treinos?\n\n\nNão envie senhas nem informações sensíveis.'
+  },
+  fr: {
+    'support.bug': 'Signaler un bug',
+    'support.feedback': 'Envoyer un avis',
+    'support.emailHint': 'Ouvre ton application de messagerie. Tu envoies le message ; aucune donnée de séance ou de compte n’est jointe. Sans application de messagerie, écris à :',
+    'support.bugBody': 'Que s’est-il passé ?\n\n\nQuel résultat attendais-tu ?\n\n\nÉtapes pour reproduire le problème :\n\n\nAppareil et version de l’application (facultatif) :\n\nTu peux joindre une capture d’écran manuellement. N’envoie ni mots de passe ni informations sensibles.',
+    'support.feedbackBody': 'Ta suggestion ou ton avis :\n\n\nQu’est-ce qui t’aiderait pendant tes séances ?\n\n\nN’envoie ni mots de passe ni informations sensibles.'
+  },
+  ar: {
+    'support.bug': 'الإبلاغ عن خطأ',
+    'support.feedback': 'إرسال ملاحظات',
+    'support.emailHint': 'يفتح تطبيق البريد الإلكتروني. أنت ترسل الرسالة؛ لا تُرفق بيانات التمارين أو الحساب. إذا لم يكن لديك تطبيق بريد، فاكتب إلى:',
+    'support.bugBody': 'ماذا حدث؟\n\n\nماذا توقعت؟\n\n\nخطوات تكرار الخطأ:\n\n\nالجهاز وإصدار التطبيق (اختياري):\n\nيمكنك إرفاق لقطة شاشة يدويًا. لا ترسل كلمات مرور أو معلومات حساسة.',
+    'support.feedbackBody': 'اقتراحك أو ملاحظاتك:\n\n\nما الذي سيساعدك أثناء التمارين؟\n\n\nلا ترسل كلمات مرور أو معلومات حساسة.'
+  }
+};
+for (const [lang, copy] of Object.entries(SUPPORT_I18N)) Object.assign(I18N[lang], copy);
+
 function t(key, vars) {
   const dict = I18N[activeLang()] || I18N.en;
   let s = dict[key];
@@ -36569,6 +36616,16 @@ function closeSettingsSheet() {
   modal.hidden = true;
   refreshUpdateBanner();   // čakajúca aktualizácia sa po zatvorení znova ponúkne
 }
+/* Len preložené otázky v koncepte; stav aplikácie ani diagnostika sa nepripájajú. */
+function renderSettingsSupportLinks() {
+  for (const kind of ['bug', 'feedback']) {
+    const link = document.getElementById('btn-support-' + kind);
+    if (link) link.href = 'mailto:martinsuriak2005@gmail.com?subject='
+      + encodeURIComponent('GymLift — ' + t('support.' + kind))
+      + '&body=' + encodeURIComponent(t('support.' + kind + 'Body').replace(/\n/g, '\r\n'));
+  }
+}
+
 function openSettings() {
   tourHelpOpener = document.activeElement;
   renderTourHelp();
@@ -38276,6 +38333,7 @@ function applyStaticI18n() {
   });
   renderLangSetting();
   renderLangList();
+  renderSettingsSupportLinks();
   renderAutoBackupSetting();
   renderCloudBackupSetting();
   renderAppUpdateSetting();

@@ -209,6 +209,11 @@ everything on your own device.
 - **Automatic backups** — opt-in JSON backup files every five workouts (at most weekly), created
   automatically on desktop and Android, and with one honest tap on iPhone. See *Automatic backups*
   below for exactly what is and is not automatic.
+- **Bug reports and feedback** — Settings → Help offers *Report a bug* and *Send feedback* in all six
+  languages. Each opens your email app with an editable draft to martinsuriak2005@gmail.com.
+  Bug reports prompt for what happened, the expected result, reproduction steps and optional device/version
+  details. Nothing is sent automatically; no workout or account data is attached. Screenshots can be
+  attached manually. Without an email app, use the support address shown below the buttons.
 - **Installable** — add it to your phone's home screen and it opens like a native app.
 
 ---
