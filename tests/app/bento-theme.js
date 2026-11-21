@@ -223,7 +223,7 @@ const CONTRAST_JS = `(() => {
           const tag = [mode, w, lang].join('/');
           /* horný okraj: kompaktná hlavička – prvý nadpis 14–36 px od vrchu (mimo rozmazania iOS) okna (okno začína pod stavovým riadkom) */
           for (const [tab, sel] of [['dnes', '.bh-head'], ['trening', '#screen-trening .screen-title'], ['pokrok', '#screen-pokrok .screen-title'], ['ty', '#ty-title']]) {
-            const top = await p.eval(`(switchTab(${J(tab)}), window.scrollTo(0, 0), (() => { const e = [document.querySelector(${J(sel)}), ...document.querySelectorAll('#screen-' + ${J(tab)} + ' h1, #screen-' + ${J(tab)} + ' h2, #screen-' + ${J(tab)} + ' h3'), ...document.querySelectorAll('#screen-' + ${J(tab)} + ' > *')].find((x) => x && x.getClientRects().length && x.getBoundingClientRect().height > 0); return e ? e.getBoundingClientRect().top : -1; })())`);
+            const top = await p.eval(`(switchTab(${J(tab)}), window.scrollTo(0, 0), (() => { const e = [document.querySelector(${J(sel)}), ...document.querySelectorAll('#screen-' + ${J(tab)} + ' h1, #screen-' + ${J(tab)} + ' h2, #screen-' + ${J(tab)} + ' h3')].filter((x) => x && !x.closest('.practice-launcher')).concat([...document.querySelectorAll('#screen-' + ${J(tab)} + ' > *')]).find((x) => x && x.getClientRects().length && x.getBoundingClientRect().height > 0); return e ? e.getBoundingClientRect().top : -1; })())`);
             if (!(top >= 14 && top <= 36)) lay.push(['top', tag, tab, top]);
           }
           /* Stats: nič nepretečie z dlaždice (okrem zámerného „…“ v rekordoch) */

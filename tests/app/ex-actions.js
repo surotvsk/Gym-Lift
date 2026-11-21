@@ -13,7 +13,7 @@ const path = require('path');
 const { startServer, Browser } = require('../sync/lib');
 
 const REPO = path.resolve(__dirname, '..', '..');
-const PORT = 8124;
+const PORT = Number(process.env.GQ_TEST_PORT) || 8124;
 const BASE = 'http://localhost:' + PORT + '/';
 const WORK = process.env.GQ_WORK || path.join(os.tmpdir(), 'gq-app-ex-actions');
 const J = JSON.stringify;
@@ -30,7 +30,7 @@ function check(name, ok, info) {
   fs.writeFileSync(emptyCfg, "window.GYMQUEST_COMMUNITY = { supabaseUrl: '', supabaseAnonKey: '' };\n");
   process.env.GQ_COMMUNITY_CONFIG = emptyCfg;
   const server = await startServer(PORT, { new: REPO });
-  const b = new Browser('exact-' + Date.now().toString(36), 9874, path.join(WORK, 'profiles'));
+  const b = new Browser('exact-' + Date.now().toString(36), Number(process.env.GQ_DEBUG_PORT) || 9874, path.join(WORK, 'profiles'));
   const p = await b.launch();
   const logs = [];
   await p.c.send('Log.enable');
@@ -78,12 +78,18 @@ function check(name, ok, info) {
     await esc();
 
     console.log('== central practice capabilities replace the removed exercise actions');
+    /* The controls sit in the Manage sheet; open it through the visible launcher button, as a user does. */
+    check('the practice controls are behind the closed Manage sheet, not on the exercise tiles', await p.eval(`(() => { const b = document.getElementById('btn-practice-manage'), m = document.getElementById('modal-practice'); return !!b && b.checkVisibility() && m.hidden && !document.querySelector('#workout-phase-legacy .btn-add-warmup').checkVisibility(); })()`));
+    await p.eval(`(() => { const b = document.getElementById('btn-practice-manage'); b.focus(); b.click(); return true; })()`); await wait(150);
+    check('Manage opens the sheet with the central controls visible', await p.eval(`!document.getElementById('modal-practice').hidden && document.querySelector('#workout-phase-legacy .btn-add-warmup').checkVisibility() && document.querySelector('#workout-phase-legacy .btn-warmup-ramp').checkVisibility()`));
     await p.eval(`(document.querySelector('#workout-phase-legacy .btn-add-warmup').click(), true)`); await wait(150);
     check('central manual control adds a row without placing it inside a working exercise', await p.eval(`document.querySelectorAll('#workout-phase-legacy .warmup-item').length === 1 && !document.querySelector('#exercise-list .warmup-item')`));
     check('the action sheet stays closed', await sheetHidden());
     await p.eval(`(document.querySelector('#workout-phase-legacy .btn-warmup-ramp').click(), true)`); await wait(150);
     check('central ramp fills the same four exercise-keyed rows', await p.eval(`sessionWarmups(getPlan('xtest').exercises[0]).length === 4 && document.querySelectorAll('#workout-phase-legacy .phase-legacy-exercise')[0].querySelectorAll('.warmup-item').length === 4`));
     check('working exercise still has a single more button and no duplicate practice actions', await p.eval(`${exEl(0)}.querySelectorAll('.btn-ex-more').length === 1 && !${exEl(0)}.querySelector('.btn-add-warmup, .btn-warmup-ramp')`));
+    await p.eval(`(document.getElementById('btn-practice-close').click(), true)`); await wait(100);
+    check('closing the Manage sheet leaves the exercise ⋯ menu usable', await p.eval(`document.getElementById('modal-practice').hidden && ${exEl(0)}.querySelector('.btn-ex-more').checkVisibility()`));
     await open(0);
     await p.eval(`(${sheet}.querySelector('.btn-add-drop').click(), true)`); await wait(150);
     check('+ Drop set adds a drop row, .ex-mini appears', (await p.eval(`${exEl(0)}.querySelectorAll('.drop-item').length`)) === 1 && (await p.eval(`!!${exEl(0)}.querySelector('.ex-mini .drop-item')`)));

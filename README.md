@@ -67,8 +67,12 @@ everything on your own device.
   a phase never run at the same time. Each phase you finish earns **+5 XP** when the workout already counts
   for XP (at least 3 completed working sets), shares the usual daily XP limit, and **Warm-up** / **Stretching**
   each unlock a one-time badge. Phases never count as working sets, volume, records or streak, and Undo removes
-  their XP while earned badges stay. The old per-exercise warm-up sets and ramp still work; their controls
-  moved into a **Light practice sets** section under the phase cards, and the ramp setting is in the plan editor.
+  their XP while earned badges stay. The old per-exercise warm-up sets and ramp still work in
+  **Light practice sets**, a compact launcher below the workout header with a **Manage** button and a
+  completed/total progress pill. **Manage** opens a bottom sheet with every add / ramp / edit / done control
+  and the remembered-ramp toggles. The sheet never opens by itself (not after a reload, new rows or the
+  automatic ramp), closes with ✕, Escape, a tap outside or the phone's Back button, and returns focus to
+  **Manage**. Explanations are under **About practice sets** inside the sheet.
   Until the Community database has the matching update, Community leaderboards and profile achievements keep
   showing the previous values (nothing is lost; they catch up automatically).
 - **Effort rating (RPE / RIR)** — optional per-set ratings, with explanations beside all three Settings
@@ -91,12 +95,30 @@ everything on your own device.
   half, and a small chart shows the last eight weeks. It is a guide, not a target.
   Exact library names and Strong/Hevy aliases in old name-only history now classify correctly without
   rewriting records. Custom exercises can have one main muscle and optional helpers; unassigned,
-  unmatched exercises remain **Other**. New session/history snapshots preserve their classification.
+  unmatched exercises remain **Other**. Assigning muscles later in the plan editor automatically updates
+  completed Auto/unknown workouts in the Muscles totals, trend, map and breakdown. It never rewrites
+  logged exercises, weights, completed sets, XP or records. Running sessions keep their frozen
+  classification; newly recorded explicit Other choices and already classified snapshots stay fixed.
+  New unknown snapshots retain Auto provenance through reload, sync and backup/import. Older frozen-Other
+  records also automatically use current assigned muscles, even if the plan was assigned before this update.
+  Older automatic and deliberate Other choices were stored identically: automatic recovery can therefore
+  reclassify either kind of old Other, by the owner's chosen policy. Raw workout records remain unchanged.
+  Quick-start and quick-add keep a custom exercise's retained ID and saved muscle assignment. If the
+  same name refers to different saved identities, the app explains that it must be started from the
+  intended workout plan rather than silently choosing one.
   **How sets are counted** expands a private, on-device breakdown: saved completion counts, mapping
   source, left/right normalization, weighted contributions, included dates and excluded-week workouts.
   Missing weight/reps no longer erase completed sets (only their volume); old records without completion
-  markers are explicitly labelled as using their saved set total. Legs includes thighs and calves;
-  Glutes is separate. Separately logged sides count as half a paired set each, never an assumed pair.
+  markers are explicitly labelled as using their saved set total. **Glutes, Thighs, Calves, Hip abductors
+  and Hip adductors** are separate main/helper choices; Thighs combines the front and back of the upper leg.
+  Old general **Legs** assignments remain unchanged and are not guessed into finer groups. Obvious library
+  movements use the detailed groups (for example squats → Thighs, calf raises → Calves, hip machines →
+  Abductors/Adductors). Built-in history therefore displays the updated library mapping without changing
+  stored workouts. The broad Legs library filter still includes these groups, and Full body discovery
+  keeps one shared Legs slot rather than multiplying lower-body picks. Separately logged sides count
+  as half a paired set each, never an assumed pair.
+  **Update GymLift on every device before saving the new groups:** older versions do not recognize
+  these codes. The assignment picker displays this compatibility warning when a new group is selected.
   Biceps and Triceps are separate groups: curls/rows/pulldowns load Biceps, while presses/extensions
   load Triceps as appropriate. **Shoulders** covers the deltoids and smaller shoulder-joint and
   shoulder-blade stabilizers; the front-view highlight is approximate. **Muscle guide** explains these
@@ -108,7 +130,8 @@ everything on your own device.
 - **Recovery map** — the Muscles tile and sheet use the owner's supplied detailed anatomical image,
   unchanged, with straight empty arms. Dark green translucent highlights remain visible against its light
   background in both themes; stronger recent work darkens progressively without hiding the muscle definition.
-  This is a **front view**: Back and Glutes still count in the list, not on incorrect front-body regions.
+  This is a **front view**: Thighs and Calves have independent highlights; Back, Glutes, Hip abductors/
+  adductors and general Arms/Legs count in the list rather than being drawn on guessed front-body regions.
   It is an **estimate** from your last three to four days of sets, not medical advice or muscle-growth
   measurement. At most once a day Today adds a quiet recovery hint; there is no red/green judging.
 - **Supersets and circuits** — group two or more neighbouring exercises in the plan editor. The workout
@@ -247,7 +270,7 @@ browser — double-click the file or drag it into a browser window. The app work
 | `manifest.json` | Web app manifest so the app can be installed to a home screen |
 | `apple-touch-icon.png`, `icon-192.png`, `icon-512.png` | Home screen and app icons |
 | `media/` | Licensed exercise photographs and their credits (`media/CREDITS.md`) |
-| `design-concepts/` | 32 clickable redesign prototypes (mockups with sample data, not part of the app). The gallery is `design-concepts/index.html`. The service worker leaves these pages alone, so they always load from the network. `design-concepts/app/` holds copies of the chosen designs; `app/r2/03-bento.html` is the reference the app follows |
+| `design-concepts/` | Clickable redesign prototypes with synthetic data, not part of the app. The original gallery is `design-concepts/index.html`; the Workout/practice choices are in `design-concepts/workout-refresh/`. The service worker leaves these pages alone. `design-concepts/app/` holds chosen designs; `app/r2/03-bento.html` is the app reference |
 | `privacy.html` | Privacy policy (English and Slovak), linked from the Android app's Health Connect screen and the Play Store listing |
 | `android/`, `capacitor.config.json`, `tools/android/`, `docs/android/` | The Android app: the same web app wrapped by Capacitor, with native notifications, on-phone reminders and Health Connect. In preparation for Google Play, not used by the website. Build and release steps: `docs/android/README.md` |
 | `README.md` | This documentation |
@@ -264,9 +287,17 @@ icons — **Today** (grid), **Workout** (dumbbell), **Stats** (bar chart), **Mes
 your unread messages, the Community icon your friend requests. Deeper screens open as sheets with a back arrow, as
 in the prototype.
 
+**Workout refresh choices:** open `design-concepts/workout-refresh/index.html` with
+`?view=workout&option=a&theme=dark` (or `view=practice`, `option=b`/`c`, `theme=light`,
+`lang=ar`). The six interactive previews use the app's existing color tokens, compact exercise
+rows and synthetic data only; they never read or write workout storage. PNGs and A/B/C contact
+sheets are in its `shots/` folder. The chosen options, **Workout A** (compact plan rows) and **Practice C**
+(Manage bottom sheet), are now in the app.
+
 - **Today** — see below.
-- **Workout** — the plans as coloured tiles (*Next ✦* or *Plan N*, exercises and sets; the selected
-  one is dark), a tile with the selected plan's exercises and **Start** / **Edit**, then *Manage plans*,
+- **Workout** — the plans as slim full-width coloured rows (number, name, exercises and sets, *Next ✦*
+  on the recommended plan; the selected row has a bright outline), a compact list of the selected plan's
+  exercises with **Start** / **Edit**, then *Manage plans*,
   *New plan*, *Exercise library*, *Full Body builder*, *Programs* and — with Community — **Train with a friend**
   (a lavender tile; tapping it opens the friend picker as a tile right below). During a workout a dark tile shows the plan
   (tap its name to switch plans), the running time and **Rest**, **Finish · +XP** and **Discard**; every

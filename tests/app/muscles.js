@@ -14,7 +14,7 @@ const path = require('path');
 const { startServer, Browser } = require('../sync/lib');
 
 const REPO = path.resolve(__dirname, '..', '..');
-const PORT = 8124;
+const PORT = Number(process.env.GQ_TEST_PORT) || 8124;
 const BASE = 'http://localhost:' + PORT + '/';
 const WORK = process.env.GQ_WORK || path.join(os.tmpdir(), 'gq-app-muscles');
 const J = JSON.stringify;
@@ -91,11 +91,11 @@ const near = (a, b) => typeof a === 'number' && Math.abs(a - b) < 1e-9;
     check('no NaN in the week data', !/NaN|null/.test(J(wk)), wk);
     const prevKey = await ev(`weekKey(addDays(new Date(), -7))`);
     const pw = JSON.parse(await ev(`JSON.stringify(muscleWeek(${J(prevKey)}))`));
-    check('previous week: only the squat day (legs 4)', near(pw.sets.legs, 4) && !pw.sets.chest, pw.sets);
+    check('previous week: squat work belongs to Thighs, not general Legs', near(pw.sets.thighs, 4) && !pw.sets.legs && !pw.sets.chest, pw.sets);
     const tr = JSON.parse(await ev(`JSON.stringify(muscleTrend())`));
     check('muscleTrend: 8 weeks, oldest first, ends with the current week', tr.length === 8, tr.map((x) => x.week));
     const curKey = await ev(`currentWeekKey()`);
-    check('trend last = current week, previous = last week; sets match', tr[7].week === curKey && tr[6].week === prevKey && near(tr[7].sets.chest, 3) && near(tr[6].sets.legs, 4), tr.slice(6));
+    check('trend last = current week, previous = last week; sets match', tr[7].week === curKey && tr[6].week === prevKey && near(tr[7].sets.chest, 3) && near(tr[6].sets.thighs, 4), tr.slice(6));
     check('trend weeks are ascending', tr.every((x, i) => i === 0 || tr[i - 1].week < x.week), tr.map((x) => x.week));
 
     const armProfiles = await ev(`({
@@ -123,7 +123,8 @@ const near = (a, b) => typeof a === 'number' && Math.abs(a - b) < 1e-9;
         unchanged: before === JSON.stringify(state.history) };
     })()`);
     check('all eight exact names resolve without rewriting names or adding IDs to history', reported.unchanged && J(reported.ids) === J(['hack-squat','leg-press','bulgarian-split-squat','lying-leg-curl','hip-thrust','abductor-machine','adductor-machine','calf-raises']), reported);
-    check('23 explicitly completed bilateral fixture sets produce 20 weighted Legs, not a forced 23', near(reported.week.sets.legs, 20) && near(reported.week.sets.glutes, 10) && !reported.week.sets.other && reported.completed.reduce((a,b) => a+b,0) === 23, reported);
+    check('completed lower-body work separates thighs, glutes, calves and hip muscles without forcing a single Legs total', near(reported.week.sets.thighs, 12.5) && near(reported.week.sets.glutes, 8.5) && near(reported.week.sets.calves, 3)
+      && near(reported.week.sets.abductors, 3) && near(reported.week.sets.adductors, 3) && !reported.week.sets.legs && !reported.week.sets.other && reported.completed.reduce((a,b) => a+b,0) === 23, reported);
     const counts = await ev(`(() => {
       const base = { name: 'Bulgarian split squat', sets: 3, setsDone: 6, reps: 12, weight: 10, unilateral: true };
       return {
@@ -145,7 +146,9 @@ const near = (a, b) => typeof a === 'number' && Math.abs(a - b) < 1e-9;
         excluded: body.querySelector('.mu-excluded').textContent, unchanged: JSON.stringify(state.history) === window.__muscleHistoryBefore };
     })()`);
     check('expanded breakdown shows all eight included exercises and exact saved counts', trace.rows.length === 8 && trace.rows.every((r,i) => r.includes('Saved completed-set count: ' + [3,3,2,3,3,3,3,3][i])), trace);
-    check('breakdown makes helper weighting explicit for hip thrust and abductor', trace.rows[4].includes('Legs: 1.5') && trace.rows[4].includes('Glutes: 3') && trace.rows[5].includes('Legs: 1.5'), trace.rows.slice(4,6));
+    const lowerLabels = await ev(`({ thighs: muscleLabel('thighs'), glutes: muscleLabel('glutes'), abductors: muscleLabel('abductors') })`);
+    check('breakdown separates hip-thrust and abduction primaries from half-weighted helpers', trace.rows[4].includes(lowerLabels.thighs + ': 1.5') && trace.rows[4].includes(lowerLabels.glutes + ': 3')
+      && trace.rows[5].includes(lowerLabels.abductors + ': 3') && trace.rows[5].includes(lowerLabels.glutes + ': 1.5'), trace.rows.slice(4,6));
     check('selected date range excludes the other-week workout without changing history', /Included dates:/.test(trace.text) && /Outside selected week/.test(trace.excluded) && trace.unchanged, trace);
     await ev(`(() => {
       state.history[0].exercises = [
@@ -170,9 +173,9 @@ const near = (a, b) => typeof a === 'number' && Math.abs(a - b) < 1e-9;
       saveState(); renderStatsGrid();
       const cur = muscleWeek(currentWeekKey()), prev = muscleWeek(weekKey(addDays(new Date(), -7)));
       const weekTile = document.querySelector('#stats-grid .bt-lime .bt-v').firstChild.textContent;
-      return { chestCur: cur.sets.chest || 0, legsCur: cur.sets.legs || 0, legsPrev: prev.sets.legs || 0, weekTile, sunKey: weekKey(parseDate(fmt(sun))), cur: currentWeekKey() }; })()`));
+      return { chestCur: cur.sets.chest || 0, thighsCur: cur.sets.thighs || 0, thighsPrev: prev.sets.thighs || 0, weekTile, sunKey: weekKey(parseDate(fmt(sun))), cur: currentWeekKey() }; })()`));
     check('Sunday workout is in the current week (as the Week tile counts it: 1 workout)', bd.chestCur === 2 && bd.sunKey === bd.cur && String(bd.weekTile).trim() === '1', bd);
-    check('last week\'s Sunday belongs to the previous week only', bd.legsCur === 0 && bd.legsPrev === 3, bd);
+    check('last week\'s Sunday belongs to the previous week only', bd.thighsCur === 0 && bd.thighsPrev === 3, bd);
 
     console.log('== Stats tile');
     await p.eval(`(() => { ${DAY}
@@ -209,11 +212,11 @@ const near = (a, b) => typeof a === 'number' && Math.abs(a - b) < 1e-9;
     check('total volume shown in kg: 1500 + 240 = 1740 kg', /1740 kg/.test(await text()), await text());
     check('note: counting rule and 10–20 guidance, no target/colour', /1 set/.test(await text()) && /10–20 sets/.test(await text()), await text());
     await p.eval(`(document.getElementById('btn-muscles-prev').click(), true)`); await wait(100);
-    const rows1 = await ev(`Array.from(${sheet}.querySelectorAll('.mu-row')).map((r) => r.innerText.replace(/\\s+/g, ' ').trim())`);
-    check('‹ shows last week: Legs 4 first, then its helpers Glutes 2, Core 2', rows1.length === 3 && /^Glutes 2/.test(rows1[1]) && /^Legs 4/.test(rows1[0]) && /Last week/.test(await ev(`document.getElementById('muscles-week').textContent`)), rows1);
+    const rows1 = await ev(`Array.from(${sheet}.querySelectorAll('.mu-row')).map(r => ({ muscle: MUSCLE_KEYS.find(code => muscleLabel(code) === r.querySelector('.mu-name').textContent), sets: Number(r.querySelector('.mu-val bdi').textContent) }))`);
+    check('previous-week chart ranks four thigh sets above their two-set glute/core helpers', J(rows1) === J([{muscle:'thighs',sets:4},{muscle:'glutes',sets:2},{muscle:'core',sets:2}]), rows1);
     check('next is enabled after ‹', await ev(`!document.getElementById('btn-muscles-next').disabled`));
     await p.eval(`(document.getElementById('btn-muscles-prev').click(), true)`); await wait(100);
-    check('2 weeks ago: Legs 8 (two squat days), label "Week of ..."', /Legs\s+8/.test(await text()) && /Week of/.test(await ev(`document.getElementById('muscles-week').textContent`)), await text());
+    check('two weeks ago chart combines both squat days into eight thigh sets', await ev(`(() => {const row=document.querySelector('#muscles-list .mu-row');return row.querySelector('.mu-name').textContent===muscleLabel('thighs')&&Number(row.querySelector('.mu-val bdi').textContent)===8;})()`));
     await p.eval(`(() => { for (let i = 0; i < 30; i++) { const bt = document.getElementById('btn-muscles-prev'); if (bt.disabled) break; bt.click(); } return true; })()`); await wait(100);
     check('‹ stops at the oldest week of the history (disabled)', await ev(`document.getElementById('btn-muscles-prev').disabled`));
     check('focus is not lost when a button becomes disabled (stays inside the sheet)', await ev(`${sheet}.contains(document.activeElement) && document.activeElement !== document.body`));

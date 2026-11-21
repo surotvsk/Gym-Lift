@@ -13,7 +13,7 @@ const path = require('path');
 const { startServer, Browser } = require('../sync/lib');
 
 const REPO = path.resolve(__dirname, '..', '..');
-const PORT = 8124;
+const PORT = Number(process.env.GQ_TEST_PORT) || 8124;
 const BASE = 'http://localhost:' + PORT + '/';
 const WORK = process.env.GQ_WORK || path.join(os.tmpdir(), 'gq-app-recovery');
 const J = JSON.stringify;
@@ -108,14 +108,15 @@ const rec = (n, share, age, win, mult) => { if (age >= win) return 100; return M
     check('a future date is clamped to now; now defaults to Date.now()', et.future && et.def, et);
 
     console.log('== bodyMapSvg');
-    const svg = await ev(`bodyMapSvg({ chest: 100, shoulders: 50, biceps: 20, triceps: 70, legs: 90, core: 85 }, { size: 'full' })`);
-    const m = (await ev(`(() => { const d = document.createElement('div'); d.innerHTML = bodyMapSvg({ chest: 100, shoulders: 50, biceps: 20, triceps: 70, legs: 90, core: 85 }, { size: 'full' });
+    const svg = await ev(`bodyMapSvg({ chest: 100, shoulders: 50, biceps: 20, triceps: 70, thighs: 20, calves: 70, core: 85 }, { size: 'full' })`);
+    const m = (await ev(`(() => { const d = document.createElement('div'); d.innerHTML = bodyMapSvg({ chest: 100, shoulders: 50, biceps: 20, triceps: 70, thighs: 20, calves: 70, core: 85 }, { size: 'full' });
       const cls = {}; d.querySelectorAll('[data-muscle]').forEach((e) => { cls[e.dataset.muscle] = e.getAttribute('class'); });
       const s = d.querySelector('svg'); return { n: d.querySelectorAll('[data-muscle]').length, cls, hasOther: !!d.querySelector('[data-muscle="other"]'), role: s.getAttribute('role'), aria: s.getAttribute('aria-label'),
         mini: (() => { const e = document.createElement('div'); e.innerHTML = bodyMapSvg({}, { size: 'mini' }); return e.querySelector('svg').getAttribute('class'); })(),
         image: s.querySelector('image').getAttribute('href') }; })()`));
-    check('front diagram represents visible muscles without inventing back/glute/unspecified-arm areas', !m.hasOther && J(Object.keys(m.cls).sort()) === J(['biceps', 'chest', 'core', 'legs', 'shoulders', 'triceps']), m);
-    check('biceps and triceps can show different recent loads on the same figure', /rec-0/.test(m.cls.chest) && /rec-0/.test(m.cls.core) && /rec-1/.test(m.cls.triceps) && /rec-2/.test(m.cls.shoulders) && /rec-3/.test(m.cls.biceps) && /rec-0/.test(m.cls.legs), m.cls);
+    check('front diagram separates thighs and calves without inventing back, glute, hip or unspecified limb regions', !m.hasOther && !!m.cls.thighs && !!m.cls.calves && !m.cls.legs && !m.cls.arms && !m.cls.back && !m.cls.glutes && !m.cls.abductors && !m.cls.adductors, m);
+    check('biceps/triceps and thighs/calves show independent recent loads', /rec-0/.test(m.cls.chest) && /rec-0/.test(m.cls.core) && /rec-1/.test(m.cls.triceps) && /rec-2/.test(m.cls.shoulders) && /rec-3/.test(m.cls.biceps) && /rec-3/.test(m.cls.thighs) && /rec-1/.test(m.cls.calves), m.cls);
+    check('general Legs does not silently guess a thigh or calf highlight', await ev(`(() => { const d = document.createElement('div'); d.innerHTML = bodyMapSvg({ legs: 0 }, { size: 'full' }); return d.querySelector('[data-muscle="thighs"]').classList.contains('rec-0') && d.querySelector('[data-muscle="calves"]').classList.contains('rec-0'); })()`));
     check('boundaries: 84 -> rec-1, 60 -> rec-1, 59 -> rec-2, 35 -> rec-2, 34 -> rec-3', await ev(`(() => { const c = (v) => { const d = document.createElement('div'); d.innerHTML = bodyMapSvg({ chest: v }, { size: 'mini' }); return d.querySelector('[data-muscle="chest"]').getAttribute('class'); };
       return /rec-1/.test(c(84)) && /rec-1/.test(c(60)) && /rec-2/.test(c(59)) && /rec-2/.test(c(35)) && /rec-3/.test(c(34)); })()`));
     check('full diagram has a localized text alternative and mini is decorative', m.role === 'img' && !!m.aria && /mini/.test(m.mini), m);
@@ -160,7 +161,8 @@ const rec = (n, share, age, win, mult) => { if (age >= win) return 100; return M
     const hintEl = `document.getElementById('bt-recovery-hint')`;
     const ht = async () => ev(`(() => { const h = ${hintEl}; return h && !h.hidden ? h.innerText.trim() : ''; })()`);
     const txt1 = await ht();
-    check('recommended plan is Legs; legs worked an hour ago, Push is fresh: hint shown once', rp === 'legs' && /^Legs still recovering — consider Chest, Shoulders & Triceps$/.test(txt1), { rp, txt1 });
+    const hintLabels = await ev(`({ muscle: muscleLabel(libraryEntry('squats').primary), plan: planDisplayName(getPlan('push')) })`);
+    check('tired recommended lower-body plan suggests the fresh Push plan using its actual muscle group', rp === 'legs' && txt1.includes(hintLabels.muscle) && txt1.includes(hintLabels.plan), { rp, txt1 });
     check('hint is a single muted line inside the Next-up tile (no new tile)', await ev(`(() => { const h = ${hintEl}; return !!h && h.closest('#bt-next') !== null && h.tagName === 'SPAN' && document.querySelectorAll('#bento-grid > .bt').length === ${await ev(`document.querySelectorAll('#bento-grid > .bt').length`)}; })()`));
     await ev(`(renderDnes(), true)`);
     check('same day re-render keeps the same hint visible', (await ht()) === txt1, await ht());
@@ -196,8 +198,8 @@ const rec = (n, share, age, win, mult) => { if (age >= win) return 100; return M
     await hintSetup();
     for (const lang of ['sk', 'en', 'es', 'pt-BR', 'fr', 'ar']) {
       await p.eval(`(() => { try { localStorage.removeItem('${KEY}'); } catch (e) {} setLang(${J(lang)}); switchTab('dnes'); renderDnes(); return true; })()`); await wait(80);
-      const x = JSON.parse(await ev(`JSON.stringify({ txt: (${hintEl} && !${hintEl}.hidden) ? ${hintEl}.innerText : '', legs: t('muscle.legs'), plan: planDisplayName(getPlan('push')), dir: document.documentElement.dir })`));
-      check(lang + ': hint reads with the translated muscle and plan names, no raw key', x.txt.indexOf(x.legs) >= 0 && x.txt.indexOf(x.plan) >= 0 && !/recovery\.|\{|NaN|undefined/.test(x.txt), x);
+      const x = JSON.parse(await ev(`JSON.stringify({ txt: (${hintEl} && !${hintEl}.hidden) ? ${hintEl}.innerText : '', muscle: muscleLabel(libraryEntry('squats').primary), plan: planDisplayName(getPlan('push')), dir: document.documentElement.dir })`));
+      check(lang + ': hint identifies the actual tired muscle and fresh plan in the selected language', x.txt.includes(x.muscle) && x.txt.includes(x.plan) && !/recovery\.|\{|NaN|undefined/.test(x.txt), x);
       if (lang === 'ar') check('ar: right-to-left', x.dir === 'rtl');
     }
 

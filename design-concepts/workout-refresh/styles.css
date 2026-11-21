@@ -1,0 +1,102 @@
+/* Standalone design choices; the app stylesheet owns every color and font token. */
+body.concept-page { margin: 0; min-height: 100dvh; background: var(--bg); color: var(--text); font-family: "Space Grotesk", sans-serif; }
+.concept-page * { box-sizing: border-box; }
+.concept-page button, .concept-page a { font: inherit; -webkit-tap-highlight-color: transparent; }
+.concept-page button { cursor: pointer; color: inherit; }
+.concept-page a { color: inherit; text-decoration: none; }
+.preview-tools { max-width: 440px; margin: auto; padding: 12px 16px 8px; }
+.preview-label { display: flex; align-items: center; justify-content: space-between; font-size: 10px; color: var(--text-dim); letter-spacing: .04em; }
+.preview-label a { min-height: 32px; display: flex; align-items: center; text-decoration: underline; }
+#concept-links { display: flex; gap: 5px; align-items: center; margin-top: 2px; }
+#concept-links a { min-height: 34px; padding: 7px 10px; border-radius: 20px; background: var(--surface); font-size: 11px; }
+#concept-links a[aria-current="page"] { background: var(--accent); color: var(--on-accent); font-weight: 700; }
+#concept-links .option-link { min-width: 34px; text-align: center; }
+#concept-links .option-link:first-of-type { margin-inline-start: auto; }
+.preview-main { width: 100%; max-width: 440px; margin: auto; padding: 12px 16px 110px; }
+.preview-heading { display: flex; justify-content: space-between; align-items: flex-end; gap: 10px; margin-bottom: 18px; }
+.preview-heading h1 { font-size: 32px; letter-spacing: -1.2px; line-height: 1.05; margin: 0; }
+.preview-heading p { color: var(--text-dim); font-size: 11px; margin: 8px 0 0; }
+.preview-heading > small { color: var(--text-dim); font-size: 11px; }
+.plan-list { display: grid; gap: 8px; }
+.plan-row { width: 100%; min-height: 72px; display: flex; align-items: center; gap: 12px; padding: 12px 15px; text-align: start; border: 1px solid var(--border); border-radius: 18px; background: var(--surface); }
+.plan-row > .plan-copy { flex: 1; min-width: 0; }
+.plan-row strong { display: block; font-size: 19px; letter-spacing: -.4px; overflow-wrap: anywhere; }
+.plan-row small { display: block; font-size: 11px; margin-top: 4px; opacity: .72; }
+.plan-number { font-size: 12px; opacity: .65; min-width: 16px; }
+.plan-arrow { font-size: 22px; opacity: .7; }
+.tone-lav { background: var(--tile-lav); color: var(--tile-fg); }
+.tone-peach { background: var(--tile-peach); color: var(--tile-fg); }
+.tone-sky { background: var(--tile-sky); color: var(--tile-fg); }
+.tone-sand { background: var(--tile-sand); color: var(--tile-fg); }
+.plan-row[aria-pressed="true"] { border-color: var(--text); }
+.section-label { font-size: 10px; text-transform: uppercase; color: var(--text-dim); letter-spacing: .08em; margin: 20px 0 10px; }
+.selected-preview { margin-top: 16px; padding: 14px 16px; border: 1px solid var(--border); border-radius: 18px; background: var(--surface); }
+.selected-preview h2 { margin: 0 0 8px; font-size: 14px; }
+.compact-exercise { display: flex; gap: 10px; justify-content: space-between; padding: 9px 0; border-bottom: 1px solid var(--border); font-size: 12px; }
+.compact-exercise:last-child { border-bottom: 0; }
+.compact-exercise small { color: var(--text-dim); white-space: nowrap; }
+.start-demo { display: inline-flex; min-height: 42px; align-items: center; justify-content: center; border: 0; border-radius: 22px; background: var(--accent); color: var(--on-accent) !important; padding: 10px 18px; font-size: 12px; font-weight: 700; margin-top: 12px; }
+.featured-plan { border-radius: 24px; padding: 20px; margin-bottom: 20px; }
+.featured-plan small { font-size: 10px; opacity: .7; letter-spacing: .05em; }
+.featured-plan h2 { font-size: 29px; line-height: 1.1; letter-spacing: -.8px; margin: 12px 0 8px; }
+.featured-plan p { font-size: 12px; margin: 0; opacity: .8; }
+.compact-plans .plan-row { background: none; border: 0; border-bottom: 1px solid var(--border); border-radius: 0; min-height: 65px; padding-inline: 4px; }
+.compact-plans .plan-number { width: 6px; min-width: 6px; height: 32px; border-radius: 4px; }
+.agenda { border-inline-start: 1px solid var(--border); padding-inline-start: 13px; }
+.agenda details { border: 1px solid var(--border); border-radius: 18px; margin: 0 0 9px; background: var(--surface); overflow: hidden; }
+.agenda summary { display: flex; align-items: center; gap: 12px; padding: 16px; min-height: 64px; cursor: pointer; list-style: none; }
+.agenda summary::-webkit-details-marker { display: none; }
+.agenda summary > span { flex: 1; }
+.agenda summary strong { display: block; font-size: 18px; }
+.agenda summary small { display: block; font-size: 11px; margin-top: 4px; opacity: .7; }
+.agenda summary::after { content: '+'; font-size: 22px; font-weight: 400; }
+.agenda details[open] > summary::after { content: '−'; }
+.agenda .agenda-body { padding: 2px 16px 14px; }
+.session-banner { background: var(--surface); border: 1px solid var(--border); border-radius: 22px; padding: 18px; margin-bottom: 16px; }
+.session-banner small { color: var(--text-dim); font-size: 10px; }
+.session-banner .clock { font-size: 43px; line-height: 1; margin: 10px 0; font-weight: 700; letter-spacing: -2px; }
+.session-banner p { font-size: 12px; color: var(--text-dim); margin: 6px 0 12px; }
+.session-flags { display: flex; gap: 8px; flex-wrap: wrap; font-size: 11px; color: var(--text-dim); }
+.session-flags span { padding: 7px 10px; border: 1px solid var(--border); border-radius: 20px; }
+.practice-disclosure { margin: 12px 0 18px; border: 1px solid var(--border); border-radius: 17px; background: var(--surface); }
+.practice-disclosure > summary { display: flex; align-items: center; gap: 8px; padding: 16px; min-height: 58px; font-size: 13px; font-weight: 600; list-style: none; cursor: pointer; }
+.practice-disclosure > summary::-webkit-details-marker { display: none; }
+.practice-disclosure > summary > span:first-child { flex: 1; min-width: 0; }
+.practice-disclosure > summary::after { content: '⌄'; font-size: 18px; }
+.practice-disclosure[open] > summary::after { content: '⌃'; }
+.practice-count { font-size: 10px; color: var(--text-dim); background: var(--surface-2); padding: 5px 8px; border-radius: 20px; white-space: nowrap; }
+.practice-content { padding: 0 14px 14px; }
+.practice-content p { font-size: 11px; color: var(--text-dim); margin: 0 0 12px; }
+.practice-content h3 { margin: 14px 0 8px; font-size: 13px; }
+.practice-line { display: flex; align-items: center; gap: 8px; font-size: 12px; padding: 5px 0; }
+.practice-line span:nth-child(2) { flex: 1; }
+.practice-line button, .set-tick { min-width: 44px; min-height: 44px; border: 1px solid var(--border); border-radius: 12px; background: var(--surface-2); }
+.practice-line button[aria-pressed="true"], .set-tick[aria-pressed="true"] { background: var(--accent); color: var(--on-accent); }
+.practice-actions { display: flex; gap: 8px; margin-top: 8px; }
+.practice-actions button { min-height: 40px; flex: 1; background: var(--surface-2); border: 1px solid var(--border); border-radius: 12px; font-size: 11px; }
+.session-ex { padding: 14px 0 17px; border-bottom: 1px solid var(--border); }
+.session-ex h2 { font-size: 19px; margin: 0 0 5px; letter-spacing: -.35px; }
+.session-ex > p { font-size: 11px; color: var(--text-dim); margin: 0 0 12px; }
+.working-sets { display: flex; gap: 7px; }
+.working-sets .set-tick { flex: 1; font-size: 11px; }
+.per-exercise { padding: 14px; border-radius: 20px; margin-bottom: 10px; border: 1px solid var(--border); background: var(--surface); }
+.per-exercise .practice-disclosure { border: 0; border-radius: 0; border-top: 1px solid var(--border); margin: 12px 0 0; }
+.per-exercise .practice-disclosure > summary { padding: 8px 0 0; min-height: 40px; font-size: 11px; color: var(--text-dim); }
+.practice-launcher { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 14px; border-radius: 18px; margin: 12px 0; }
+.practice-launcher strong { font-size: 13px; display: block; }
+.practice-launcher small { font-size: 10px; opacity: .7; display: block; margin-top: 4px; }
+.practice-launcher button { min-height: 42px; padding: 8px 14px; border: 1px solid currentColor; border-radius: 22px; background: none; font-size: 11px; }
+.preview-bottom { display: flex; justify-content: space-around; gap: 5px; align-items: center; position: fixed; inset-block-end: 16px; inset-inline: 16px; max-width: 408px; margin-inline: auto; padding: 10px; border: 1px solid var(--border); border-radius: 36px; background: var(--nav-bg); color: var(--nav-fg); z-index: 4; }
+.preview-bottom span { font-size: 10px; padding: 11px 7px; border-radius: 22px; }
+.preview-bottom .current { background: var(--lime); color: var(--ink); font-weight: 700; }
+.practice-sheet { position: fixed; inset-block-start: auto; inset-block-end: 0; inset-inline: 0; margin: 0 auto; width: min(440px, 100%); max-height: 75dvh; padding: 20px; border: 1px solid var(--border); border-radius: 26px 26px 0 0; background: var(--surface); color: var(--text); overflow: auto; }
+.practice-sheet::backdrop { background: var(--bg); opacity: .7; }
+.practice-sheet > header { display: flex; gap: 12px; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+.practice-sheet h2 { font-size: 20px; margin: 4px 0; }
+.practice-sheet small { color: var(--text-dim); font-size: 10px; }
+.practice-sheet #close-sheet { min-height: 44px; min-width: 44px; border: 1px solid var(--border); border-radius: 50%; background: var(--surface-2); }
+.preview-references { font-size: 10px; color: var(--text-dim); margin-top: 24px; line-height: 1.6; }
+.preview-references a { text-decoration: underline; }
+[dir="rtl"] .plan-arrow { transform: scaleX(-1); }
+.concept-page :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+@media (max-width: 340px) { .preview-tools, .preview-main { padding-inline: 12px; } .plan-row strong { font-size: 17px; } .preview-bottom span { font-size: 9px; padding-inline: 5px; } #concept-links a { padding-inline: 8px; } }

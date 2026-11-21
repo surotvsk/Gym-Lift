@@ -94,7 +94,7 @@ function check(name, ok, info) {
     await ev(`(state.plans['qx'] = { id: 'qx', builtin: false, customName: 'Custom plan', location: null, exercises: [{ name: 'My cable thing', sets: 2, reps: 12, weight: 5 }] }, state.planOrder.push('qx'), openExerciseSheet('c:My cable thing', 'add'), true)`); await wait(200);
     check('custom exercise sheet offers Add', J(await sheetBtns()) === J(['quickadd']), await sheetBtns());
     await ev(`(document.querySelector('[data-sheet-action="quickadd"]').click(), true)`); await wait(300);
-    check('custom exercise added (no library id)', (await blocks()).length === 3 && (await ev(`state.activeSession.quick.exercises[2].id === undefined && state.activeSession.quick.exercises[2].name === 'My cable thing'`)) === true, await blocks());
+    check('custom exercise added (no built-in library id; keeps its stable custom id)', (await blocks()).length === 3 && (await ev(`(() => { const x = state.activeSession.quick.exercises[2]; return !BUILTIN_EXERCISE_IDS.has(x.id) && (x.id === undefined || x.id.startsWith('cx-')) && x.name === 'My cable thing'; })()`)) === true, await blocks());
     await ev(`(delete state.plans['qx'], state.planOrder = state.planOrder.filter((x) => x !== 'qx'), saveState(), true)`);
 
     console.log('== reload restores');

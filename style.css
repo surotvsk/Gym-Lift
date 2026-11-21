@@ -4162,30 +4162,35 @@ html[data-theme="dark"] .bt-badge { background: #D6F35A; color: #121212; }
 .timer-bar .timer-btn:focus-visible { outline: 2px solid var(--on-lime); outline-offset: 2px; }
 
 /* ---- Tréning ---- */
-.plan-chips { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin: 0 0 8px; }
+.plan-chips { display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; margin: 0 0 8px; }
 .chip-wrap { display: flex; min-width: 0; }
 .plan-chips .chip {
-  flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; align-items: flex-start; text-align: start; gap: 0;
-  min-height: 176px; padding: 14px; border: 0; border-radius: 22px; background: var(--b-lime); color: var(--b-pastel-fg); box-shadow: none; font: inherit; cursor: pointer;
+  flex: 1 1 auto; min-width: 0; display: flex; align-items: center; text-align: start; gap: 12px;
+  min-height: 72px; padding: 12px 15px; border: 1px solid var(--border); border-radius: 18px; background: var(--b-tile); color: var(--b-pastel-fg); box-shadow: none; font: inherit; cursor: pointer;
 }
 .plan-chips .chip[data-tile="1"] { background: var(--b-lav); } .plan-chips .chip[data-tile="2"] { background: var(--b-peach); }
 .plan-chips .chip[data-tile="3"] { background: var(--b-sky); } .plan-chips .chip[data-tile="4"] { background: var(--b-sand); }
-.plan-chips .chip.active { background: var(--b-dark); color: var(--b-on-dark); box-shadow: var(--b-dark-ring); }
+.plan-chips .chip.active { border-color: var(--text); }
 .plan-chips .chip:hover { filter: none; }
 .plan-chips .chip.recommended::after { content: none; }
-.chip-l { font-size: 12px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; opacity: .6; }
-.chip-name { font-size: 22px; font-weight: 700; margin-top: 4px; line-height: 1.15; overflow-wrap: anywhere; }
-.chip-meta { margin-top: auto; font-size: 12px; opacity: .7; font-weight: 400; }
-.plan-chips.managing { grid-template-columns: minmax(0, 1fr); }
-.plan-chips.managing .chip { min-height: 64px; border-radius: 0; }
-.plan-chips.managing .chip-wrap { border-radius: 22px; overflow: hidden; }
+.chip-l { flex: 0 0 auto; min-width: 16px; font-size: 12px; font-weight: 500; opacity: .65; }
+.chip-copy { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+.chip-name { font-size: 19px; font-weight: 700; margin: 0; line-height: 1.2; overflow-wrap: anywhere; }
+.chip-meta { font-size: 12px; opacity: .72; font-weight: 400; line-height: 1.4; overflow-wrap: anywhere; }
+.chip-arrow { flex: 0 0 auto; font-size: 22px; opacity: .7; }
+[dir="rtl"] .chip-arrow { transform: scaleX(-1); }
+.plan-chips.managing .chip { border-radius: 0; }
+.plan-chips.managing .chip-wrap { border-radius: 18px; overflow: hidden; }
 .plan-chips.managing .chip-drag, .plan-chips.managing .chip-edit { display: inline-flex; align-items: center; justify-content: center; background: var(--b-tile); border: 0; color: var(--b-fg); width: 44px; }
-.tr-detail { min-height: 268px; margin: 0 0 8px; cursor: default; }
+.tr-detail { min-height: 0; padding: 14px 16px; margin: 0 0 8px; border: 1px solid var(--border); border-radius: 18px; cursor: default; }
 .tr-rows { display: flex; flex-direction: column; margin-top: 4px; }
-.tr-row { display: flex; justify-content: space-between; gap: 10px; padding: 4px 0; font-size: 14px; }
-.tr-row b { white-space: nowrap; font-weight: 700; }
+.tr-row { display: flex; justify-content: space-between; gap: 10px; padding: 9px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+.tr-row:last-child { border-bottom: 0; }
+.tr-row > span { min-width: 0; overflow-wrap: anywhere; }
+.tr-row b { max-width: 50%; flex-shrink: 0; text-align: end; overflow-wrap: anywhere; font-weight: 700; }
 .mini { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; align-items: center; }
-.tr-detail .mini { margin-top: auto; padding-top: 8px; }
+.tr-detail .mini { margin-top: 8px; padding-top: 0; }
+.tr-detail .mini > button { min-height: 44px; padding-inline: 16px; font-size: 13px; }
 .mini > button, .mini > .mini-icon, .btn-add-drop, .set-pill {
   border: 0; background: var(--b-mini); border-radius: 999px; padding: 6px 10px; font: 600 12px 'Space Grotesk', system-ui, sans-serif; cursor: pointer; color: inherit;
   display: inline-flex; gap: 4px; align-items: center; min-height: 28px; width: auto; box-shadow: none; text-transform: none; letter-spacing: 0;
@@ -4397,7 +4402,6 @@ html[data-theme="dark"] .cal-cell.cal-miss { color: #121212; }
 @media (min-width: 900px) {
   .app-main { max-width: 880px; }
   .bento-grid { grid-template-columns: repeat(8, minmax(0, 1fr)); grid-auto-flow: row dense; }
-  .plan-chips { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .timer-bar { max-width: 856px; }
   #screen-pokrok.sheet-open > .subview:not([hidden]), #screen-kalendar, #screen-komunita.sheet-open #community-body { left: 50%; right: auto; width: 600px; transform: translateX(-50%); box-shadow: 0 0 0 100vmax var(--k-scrim); }
 }
@@ -5119,7 +5123,7 @@ html.ios .tour { --tour-top: max(34px, calc(env(safe-area-inset-top, 0px) + 34px
 .edit-muscles { margin-top: var(--sp-2); min-width: 0; }
 .edit-muscles[hidden] { display: none; }
 .edit-muscles > label, .edit-muscles legend { font-size: var(--fs-sm); font-weight: var(--fw-bold); }
-.edit-muscles select { width: 100%; min-height: 44px; margin-block: var(--sp-1); }
+.edit-muscles select { width: 100%; min-height: 44px; margin-block: var(--sp-1); font-size: 16px; }
 .edit-muscles fieldset { border: 0; padding: 0; margin: var(--sp-2) 0 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--sp-1); }
 .edit-muscles legend { grid-column: 1 / -1; }
 .edit-muscles .edit-side-toggle { min-height: 44px; overflow-wrap: anywhere; }
@@ -5410,9 +5414,21 @@ html[dir="rtl"] .hr-note { direction: rtl; }
 .phase-header-toggle { display: inline-flex; align-items: center; gap: .4rem; min-height: 44px; cursor: pointer; font-size: .82rem; }
 .phase-header-toggle input, .phase-complete input, .phase-suggestions input, .phase-legacy-exercise input[type="checkbox"] { width: 20px; height: 20px; flex: 0 0 auto; accent-color: var(--accent); }
 .duration-row > .mini { flex-wrap: wrap; }
-.workout-phase-card, .workout-phase-legacy { margin-block: 12px; padding: 16px; border: 1px solid var(--border); border-radius: 18px; background: var(--surface); color: var(--text); min-width: 0; }
-.workout-phase-card[hidden], .workout-phase-legacy[hidden] { display: none; }
-.workout-phase-card h3, .workout-phase-legacy h3 { margin: 0 0 8px; }
+.workout-phase-card { margin-block: 12px; padding: 16px; border: 1px solid var(--border); border-radius: 18px; background: var(--surface); color: var(--text); min-width: 0; }
+.workout-phase-card[hidden], .practice-launcher[hidden] { display: none; }
+.workout-phase-card h3 { margin: 0 0 8px; }
+.practice-launcher { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-block: 12px; padding: 14px; border-radius: 18px; background: var(--b-sand); color: var(--b-pastel-fg); min-width: 0; }
+.practice-launcher-copy { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.practice-launcher h3 { margin: 0; font-size: 14px; line-height: 1.35; }
+.practice-launcher p { margin: 4px 0 0; font-size: 12px; opacity: .72; }
+#btn-practice-manage { flex: 0 0 auto; min-height: 44px; padding: 8px 14px; max-width: 50%; border: 1px solid currentColor; border-radius: 24px; background: none; color: inherit; font: inherit; font-size: 12px; font-weight: 600; overflow-wrap: anywhere; cursor: pointer; }
+#modal-practice { align-items: flex-end; padding: 0; }
+#modal-practice .modal-practice { height: auto; min-height: 0; max-height: 80vh; max-height: 80dvh; width: 100%; max-width: 600px; padding: 0; border-radius: 26px 26px 0 0; display: flex; flex-direction: column; overflow: hidden; }
+#modal-practice .sheet-head { flex: 0 0 auto; }
+#modal-practice .sheet-head h3 { overflow-wrap: anywhere; }
+#modal-practice .phase-legacy-body { flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: 0 16px calc(16px + env(safe-area-inset-bottom, 0px)); }
+#modal-practice .phase-actions button { padding: 10px 12px; border: 1px solid var(--k-line); border-radius: 14px; background: var(--k-card); color: var(--k-fg); font: inherit; font-weight: 600; cursor: pointer; }
+.phase-legacy-body > .phase-more { margin-block: 0 8px; }
 .phase-complete, .phase-suggestions label, .phase-legacy-exercise > label { display: flex; align-items: center; gap: 10px; min-height: 44px; padding-block: 6px; cursor: pointer; }
 .phase-config { display: flex; flex-wrap: wrap; gap: 10px; padding: 10px; margin-block: 12px; border: 1px solid var(--border); border-radius: 12px; min-width: 0; }
 .phase-config label { display: flex; flex-direction: column; gap: 4px; flex: 1 1 90px; min-width: 0; font-size: .8rem; }

@@ -35,7 +35,7 @@
     }, 4000);
   </script>
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
-  <link rel="stylesheet" href="style.css?v=123">
+  <link rel="stylesheet" href="style.css?v=126">
 </head>
 <body data-tab="dnes">
 
@@ -219,7 +219,13 @@
       <!-- Bento: cviky počas tréningu -->
       <div class="tr-session" id="tr-session">
         <section class="workout-phase-card" id="workout-phase-warmup" hidden></section>
-        <section class="workout-phase-legacy" id="workout-phase-legacy"></section>
+        <section class="practice-launcher" id="workout-practice-launcher" hidden>
+          <div class="practice-launcher-copy">
+            <h3 data-i18n="phase.legacyTitle">Ľahké prípravné série</h3>
+            <p><span class="phase-legacy-progress" id="practice-progress"></span></p>
+          </div>
+          <button type="button" id="btn-practice-manage" aria-haspopup="dialog" aria-controls="modal-practice" aria-expanded="false" data-i18n="phase.manage">Spravovať</button>
+        </section>
         <div class="exercise-list" id="exercise-list"></div>
         <button type="button" class="btn btn-secondary btn-block" id="btn-session-add-exercise" data-i18n="quick.addExercise">+ Pridať cvik</button>
         <p class="failure-hint" data-i18n="trening.failureHint">🔥 Zlyhanie — označ iba sériu, ktorú si reálne odcvičil do zlyhania.</p>
@@ -557,6 +563,17 @@
     <button class="tab" data-tab="ty"><span class="tab-icon"><svg class="kico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg></span><span data-i18n="tab.ty">Ty</span></button>
   </nav>
 
+
+  <!-- ============ MODAL: ľahké prípravné série ============ -->
+  <div class="modal-backdrop" id="modal-practice" hidden>
+    <div class="modal modal-sheet modal-practice" role="dialog" aria-modal="true" aria-labelledby="practice-title">
+      <div class="sheet-head">
+        <h3 id="practice-title" data-i18n="phase.legacyTitle">Ľahké prípravné série</h3>
+        <button type="button" class="btn-icon" id="btn-practice-close" data-i18n-title="exactions.close" data-i18n-aria="exactions.close">✕</button>
+      </div>
+      <div class="sheet-scroll phase-legacy-body" id="workout-phase-legacy"></div>
+    </div>
+  </div>
 
   <!-- ============ MODAL: akcie cviku (⋯) ============ -->
   <div class="modal-backdrop" id="modal-ex-actions" hidden>
@@ -1346,6 +1363,7 @@
           <summary data-i18n="muscles.guide"></summary>
           <p class="card-note" data-i18n="muscles.anatomyHint"></p>
           <p class="card-note" data-i18n="muscles.armsNote"></p>
+          <p class="card-note" data-i18n="muscles.legsNote"></p>
         </details>
         <div class="mu-nav" role="group" data-i18n-aria="muscles.weekGroup">
           <button type="button" class="btn-icon mu-step" id="btn-muscles-prev" data-i18n-title="muscles.prev" data-i18n-aria="muscles.prev">‹</button>
@@ -1424,8 +1442,8 @@
     <button type="button" class="btn btn-sm" id="btn-csv-undo" data-i18n="csv.undo">Undo import</button>
   </div>
 
-  <script src="community-config.js?v=123"></script>
-  <script src="vendor/supabase-js.js?v=123"></script>
-  <script src="script.js?v=123"></script>
+  <script src="community-config.js?v=126"></script>
+  <script src="vendor/supabase-js.js?v=126"></script>
+  <script src="script.js?v=126"></script>
 </body>
 </html>

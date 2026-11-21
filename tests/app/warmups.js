@@ -15,7 +15,7 @@ const path = require('path');
 const { startServer, Browser } = require('../sync/lib');
 
 const REPO = path.resolve(__dirname, '..', '..');
-const PORT = 8124;
+const PORT = Number(process.env.GQ_TEST_PORT) || 8124;
 const BASE = 'http://localhost:' + PORT + '/';
 const WORK = process.env.GQ_WORK || path.join(os.tmpdir(), 'gq-app-warmups');
 const J = JSON.stringify;
@@ -32,14 +32,14 @@ function check(name, ok, info) {
   fs.writeFileSync(emptyCfg, "window.GYMQUEST_COMMUNITY = { supabaseUrl: '', supabaseAnonKey: '' };\n");
   process.env.GQ_COMMUNITY_CONFIG = emptyCfg;
   const server = await startServer(PORT, { new: REPO });
-  const b = new Browser('warmups-' + Date.now().toString(36), 9874, path.join(WORK, 'profiles'));
+  const b = new Browser('warmups-' + Date.now().toString(36), Number(process.env.GQ_DEBUG_PORT) || 9874, path.join(WORK, 'profiles'));
   const p = await b.launch();
   const logs = [];
   await p.c.send('Log.enable');
   p.c.on('Log.entryAdded', (e) => { if (e.entry.level === 'error' && !/favicon/.test(e.entry.url || '')) logs.push(e.entry.text); });
   try {
     await p.navigate(BASE);
-    await p.eval(`(() => { const ok = document.getElementById('btn-setup-ok'); if (ok && !document.getElementById('modal-setup').hidden) ok.click(); setLang('en'); return true; })()`);
+    await p.eval(`(() => { localStorage.setItem('gymquest_tutorial', '{"v":1,"status":"done","at":0}'); const ok = document.getElementById('btn-setup-ok'); if (ok && !document.getElementById('modal-setup').hidden) ok.click(); if (tourOpen()) closeTour('skipped'); setLang('en'); return true; })()`);
     await p.eval(`(() => {
       state.plans['wtest'] = { id: 'wtest', builtin: false, customName: 'Warm-up test', location: null,
         exercises: [{ id: 'bench-press', name: 'Bench', sets: 3, reps: 5, weight: 100 },
@@ -56,13 +56,154 @@ function check(name, ok, info) {
     const exEl = (i) => `document.querySelectorAll('#exercise-list .exercise')[${i}]`;
     const ex0 = exEl(0);
     const practice = (el) => el.replace('#exercise-list .exercise', '#workout-phase-legacy .phase-legacy-exercise');
-    const clickIn = (el, sel, i) => p.eval(`(${/warmup/.test(sel) ? practice(el) : el}.querySelectorAll(${J(sel)})[${i || 0}].click(), true)`);
+    /* The practice controls live in the Manage bottom sheet (#modal-practice) that only the visible launcher opens.
+       The helpers start the workout through the real Start control and open the sheet through the real Manage button. */
+    const modalOpen = () => p.eval(`(() => { const m = document.getElementById('modal-practice'); return !!m && !m.hidden && m.checkVisibility(); })()`);
+    const ensureWorkout = async (planId) => {
+      if (await p.eval('!!getSession()')) return;
+      await p.eval(`(${planId ? 'selectedPlan = ' + J(planId) + ',' : ''} switchTab('trening'), renderTrening(), true)`);
+      await p.eval(`(() => { const b = document.getElementById('tr-start'); if (!b || !b.checkVisibility()) throw new Error('Start control is not available'); b.click(); return true; })()`);
+      await wait(250);
+    };
+    const openPractice = async () => {
+      await ensureWorkout();
+      if (await modalOpen()) return;
+      const ok = await p.eval(`(() => { const b = document.getElementById('btn-practice-manage'); if (!b || !b.checkVisibility()) return false; b.focus(); b.click(); return true; })()`);
+      if (!ok) throw new Error('Manage button is not visible');
+      await wait(150);
+    };
+    const closePractice = async () => {
+      if (!(await modalOpen())) return;
+      await p.eval(`(document.getElementById('btn-practice-close').click(), true)`); await wait(120);
+    };
+    const press = async (k, code, vk, o) => {
+      const text = o && o.text;
+      await p.c.send('Input.dispatchKeyEvent', Object.assign({ type: text ? 'keyDown' : 'rawKeyDown', key: k, code, windowsVirtualKeyCode: vk }, o || {}));
+      await p.c.send('Input.dispatchKeyEvent', Object.assign({ type: 'keyUp', key: k, code, windowsVirtualKeyCode: vk }, o && o.modifiers ? { modifiers: o.modifiers } : {}));
+    };
+    const clickIn = async (el, sel, i) => {
+      const central = /warmup/.test(sel);
+      if (central) await openPractice();
+      return p.eval(`(() => { const b = ${central ? practice(el) : el}.querySelectorAll(${J(sel)})[${i || 0}]; b.focus(); b.click(); return true; })()`);
+    };
     /* Legacy practice actions moved centrally; exercise replacement remains in its action sheet. */
-    const actIn = (el, sel) => /warmup/.test(sel)
-      ? p.eval(`(${practice(el)}.querySelector(${J(sel)}).click(), true)`)
-      : p.eval(`(${el}.querySelector('.btn-ex-more').click(), document.querySelector('#modal-ex-actions ' + ${J(sel)}).click(), true)`);
+    const actIn = async (el, sel) => {
+      if (/warmup/.test(sel)) { await openPractice(); return p.eval(`(() => { const b = ${practice(el)}.querySelector(${J(sel)}); b.focus(); b.click(); return true; })()`); }
+      await closePractice();
+      return p.eval(`(${el}.querySelector('.btn-ex-more').click(), document.querySelector('#modal-ex-actions ' + ${J(sel)}).click(), true)`);
+    };
+    const tickRamp = async (scope, idx, on) => {
+      await openPractice();
+      return p.eval(`(() => { const c = document.querySelectorAll(${J('#workout-phase-legacy ' + scope + ' .phase-legacy-ramp')})[${idx}]; if (c.checked !== ${on}) c.click(); return true; })()`);
+    };
+    const progressText = () => p.eval(`document.getElementById('practice-progress').textContent`);
     const peek = (el, sel, expr) => p.eval(`(() => { const b = ${practice(el)}.querySelector(${J(sel)}); return ${expr}; })()`);
     const warm = (el) => p.eval(`Array.from(${practice(el)}.querySelectorAll('.warmup-item')).map((d) => d.querySelector('.warmup-label').textContent + '|' + d.querySelector('.warmup-reps').textContent + '|' + d.querySelector('.warmup-weight').textContent + '|' + (d.querySelector('.warmup-done').classList.contains('done') ? 'done' : '-'))`);
+
+    console.log('== practice launcher and Manage bottom sheet');
+    await p.c.send('Emulation.setDeviceMetricsOverride', { width: 393, height: 852, deviceScaleFactor: 1, mobile: true });
+    const autoRestBefore = await p.eval(`state.settings.autoRest`);
+    await p.eval(`(state.settings.autoRest = false, true)`);
+    const inModal = `(() => { const m = document.getElementById('modal-practice'); return !!m && m.contains(document.activeElement); })()`;
+    const launcherGone = `(() => { const l = document.getElementById('workout-practice-launcher'), m = document.getElementById('modal-practice'); return (!l || !l.checkVisibility()) && (!m || m.hidden || !m.checkVisibility()); })()`;
+    check('without a workout there is no launcher and no sheet to see', await p.eval(`!getSession() && ${launcherGone}`));
+    await ensureWorkout('wtest');
+    check('starting a workout shows a compact launcher inside the session, sheet closed', await p.eval(`(() => {
+      const l = document.getElementById('workout-practice-launcher'), b = document.getElementById('btn-practice-manage'), m = document.getElementById('modal-practice');
+      return l.checkVisibility() && b.getBoundingClientRect().height >= 44 && l.getBoundingClientRect().height < 100
+        && m.hidden;
+    })()`));
+    check('closed launcher hides every practice control while the working exercise stays visible without scrolling', await p.eval(`(() => {
+      const first = document.querySelector('#exercise-list .exercise'), r = first.getBoundingClientRect();
+      return first.checkVisibility() && r.top < innerHeight - 80 && !document.getElementById('modal-practice').checkVisibility()
+        && Array.from(document.querySelectorAll('#workout-phase-legacy .btn-add-warmup, #workout-phase-legacy .btn-warmup-ramp, #workout-phase-legacy .warmup-done')).every((x) => !x.checkVisibility());
+    })()`));
+    check('the Manage button is really on top at its centre (nothing covers it)', await p.eval(`(() => { const b = document.getElementById('btn-practice-manage'), r = b.getBoundingClientRect(), e = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2); return r.top >= 0 && r.bottom <= innerHeight && !!e && b.contains(e); })()`));
+
+    /* keyboard: Enter on the focused Manage button opens the sheet and moves focus into it */
+    await p.eval(`(document.getElementById('btn-practice-manage').focus(), true)`);
+    await press('Enter', 'Enter', 13, { text: '\r' });
+    await wait(150);
+    check('keyboard Enter on Manage opens the sheet, shows the controls and moves focus inside', (await modalOpen()) && await p.eval(`document.querySelector('#workout-phase-legacy .btn-add-warmup').checkVisibility() && ${inModal}`));
+    /* Tab containment: Tab and Shift+Tab never leave the dialog (background launcher, exercises, tab bar stay unreachable) */
+    const focusables = await p.eval(`Array.from(document.querySelectorAll('#modal-practice button, #modal-practice input, #modal-practice select, #modal-practice summary, #modal-practice [tabindex]:not([tabindex="-1"])')).filter((x) => !x.disabled && x.checkVisibility()).length`);
+    let escaped = null;
+    for (let k = 0; k < focusables + 3 && !escaped; k++) { await press('Tab', 'Tab', 9); if (!(await p.eval(inModal))) escaped = 'Tab #' + k; }
+    for (let k = 0; k < focusables + 3 && !escaped; k++) { await press('Tab', 'Tab', 9, { modifiers: 8 }); if (!(await p.eval(inModal))) escaped = 'Shift+Tab #' + k; }
+    check('Tab and Shift+Tab stay inside the open sheet', focusables >= 2 && !escaped, { focusables, escaped });
+
+    /* adding, ramp and done re-render the rows: the sheet stays open and focus stays inside */
+    await clickIn(ex0, '.btn-add-warmup');
+    check('adding a row keeps the sheet open, focus inside, and the progress is 0/1', (await modalOpen()) && await p.eval(inModal) && (await progressText()) === await p.eval(`t('phase.legacyProgress', { done: 0, total: 1 })`));
+    await clickIn(ex0, '.warmup-done');
+    check('marking it done keeps the sheet open, focus inside, and the progress is 1/1', (await modalOpen()) && await p.eval(inModal) && (await progressText()) === await p.eval(`t('phase.legacyProgress', { done: 1, total: 1 })`));
+    await clickIn(ex0, '.btn-warmup-ramp');
+    const rampRows = await p.eval(`sessionWarmups(getPlan('wtest').exercises[0]).length`);
+    check('the ramp keeps the sheet open and focus inside, and the progress counts every practice row', (await modalOpen()) && await p.eval(inModal) && rampRows >= 2 && (await progressText()) === await p.eval(`t('phase.legacyProgress', { done: 1, total: ${rampRows} })`), { rampRows, progress: await progressText() });
+
+    /* progress stays separate from working sets and from the timed warm-up phase */
+    await closePractice();
+    await p.eval(`(document.querySelector('#exercise-list .sets .set-btn').click(), true)`); await wait(100);
+    check('a working set does not change the practice progress', (await progressText()) === await p.eval(`t('phase.legacyProgress', { done: 1, total: ${rampRows} })`) && await p.eval(`totalSetsDone() === 1`));
+    await p.eval(`(async () => { setWorkoutPhaseEnabled('warmup', true); await setWorkoutPhaseDone('warmup', true); return true; })()`); await wait(150);
+    check('completing the timed warm-up phase does not change the practice progress or rows', (await progressText()) === await p.eval(`t('phase.legacyProgress', { done: 1, total: ${rampRows} })`) && await p.eval(`getSession().phases.warmup.done && sessionWarmups(getPlan('wtest').exercises[0]).filter((x) => x.done).length === 1 && totalSetsDone() === 1`));
+    await p.eval(`(async () => { await setWorkoutPhaseDone('warmup', false); setWorkoutPhaseEnabled('warmup', false); return true; })()`); await wait(150);
+    check('practice rows stay out of the working set count and the timed phase', await p.eval(`!getSession().phases.warmup.done && !getSession().phases.warmup.enabled && totalSetsDone() === 1 && !document.querySelector('#exercise-list .warmup-item')`));
+
+    /* every way out closes the sheet and returns focus to the Manage button */
+    const closers = [
+      ['Escape', async () => { await press('Escape', 'Escape', 27); }],
+      ['backdrop click', async () => {
+        const hit = await p.eval(`(() => { const m = document.getElementById('modal-practice'); return document.elementFromPoint(6, 6) === m; })()`);
+        if (!hit) throw new Error('the backdrop is not hit-testable at the top-left corner');
+        await p.c.send('Input.dispatchMouseEvent', { type: 'mousePressed', x: 6, y: 6, button: 'left', clickCount: 1 });
+        await p.c.send('Input.dispatchMouseEvent', { type: 'mouseReleased', x: 6, y: 6, button: 'left', clickCount: 1 });
+      }],
+      ['native Back', async () => { check('native Back reports the sheet as closed', await p.eval(`nativeBack() === 'closed'`)); }],
+      ['close button', async () => { await p.eval(`(document.getElementById('btn-practice-close').click(), true)`); }],
+    ];
+    for (const [name, close] of closers) {
+      await openPractice();
+      check(name + ': sheet is open before closing', (await modalOpen()) && await p.eval(inModal));
+      await close(); await wait(150);
+      check(name + ' closes the sheet and focus returns to Manage', !(await modalOpen()) && await p.eval(`document.activeElement === document.getElementById('btn-practice-manage')`), await p.eval(`document.activeElement && (document.activeElement.id || document.activeElement.tagName)`));
+      check(name + ': the launcher is still there with its progress and the workout is unchanged', await p.eval(`document.getElementById('workout-practice-launcher').checkVisibility() && !!getSession() && totalSetsDone() === 1`));
+    }
+    check('Manage and keyboard focus work without the newer checkVisibility API', await p.eval(`(() => {
+      const original = Element.prototype.checkVisibility, modal = document.getElementById('modal-practice'), manage = document.getElementById('btn-practice-manage');
+      try {
+        Element.prototype.checkVisibility = undefined;
+        manage.focus(); manage.click();
+        const opened = !modal.hidden && document.querySelector('#workout-phase-legacy .btn-add-warmup').getClientRects().length > 0;
+        document.getElementById('btn-practice-close').focus();
+        document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab', shiftKey: true, bubbles: true, cancelable: true }));
+        const trapped = modal.contains(document.activeElement) && document.activeElement.id !== 'btn-practice-close';
+        document.getElementById('btn-practice-close').click();
+        return opened && trapped && modal.hidden && document.activeElement === manage;
+      } finally { Element.prototype.checkVisibility = original; }
+    })()`));
+
+    /* a closed sheet is never opened by rendering: new rows, same-session rerender, language rerender */
+    await p.eval(`(addWarmup(getPlan('wtest').exercises[1]), renderTrening(), true)`); await wait(100);
+    check('new practice rows while closed update the launcher progress without opening the sheet', !(await modalOpen()) && (await progressText()) === await p.eval(`t('phase.legacyProgress', { done: 1, total: ${rampRows + 1} })`));
+    await p.eval(`(setLang('es'), renderTrening(), setLang('en'), renderTrening(), true)`); await wait(100);
+    check('re-rendering the same session keeps a closed sheet closed', !(await modalOpen()) && await p.eval(`document.getElementById('workout-practice-launcher').checkVisibility()`));
+
+    /* reload and a different session owner always start closed */
+    await openPractice();
+    await p.reload();
+    await p.eval(`(switchTab('trening'), true)`); await wait(250);
+    check('reload retains the practice data, shows the launcher and does not reopen the sheet', !(await modalOpen()) && await p.eval(`document.getElementById('workout-practice-launcher').checkVisibility() && sessionWarmups(getPlan('wtest').exercises[0])[0].done && totalSetsDone() === 1`) && (await progressText()) === await p.eval(`t('phase.legacyProgress', { done: 1, total: ${rampRows + 1} })`));
+    await openPractice();
+    await p.eval(`(() => { const oldId = getSession().id; clearSession(); selectedPlan = 'wtest'; ensureSession(getPlan('wtest')); window.__oldPracticeOwner = oldId; renderTrening(); return true; })()`); await wait(150);
+    check('another workout (new session owner) closes the sheet instead of inheriting it', await p.eval(`getSession().id !== window.__oldPracticeOwner`) && !(await modalOpen()) && await p.eval(`document.getElementById('workout-practice-launcher').checkVisibility()`));
+    await openPractice();
+    await p.eval(`(clearSession(), saveState(), renderTrening(), true)`); await wait(150);
+    check('ending the workout closes the sheet and removes the launcher', await p.eval(launcherGone));
+    await ensureWorkout('wtest');
+    check('a freshly started workout does not auto-open the sheet', !(await modalOpen()) && await p.eval(`document.getElementById('workout-practice-launcher').checkVisibility() && document.getElementById('practice-progress').textContent === t('phase.legacyOptional')`));
+    await p.eval(`(state.settings.autoRest = ${J(autoRestBefore)}, clearSession(), selectedPlan = 'wtest', saveState(), renderTrening(), true)`);
+    await p.c.send('Emulation.clearDeviceMetricsOverride');
 
     console.log('== ramp maths');
     let r = await rows(0, 100);
@@ -85,6 +226,7 @@ function check(name, ok, info) {
     check('a 15 kg bar changes the first row to 15', r[0] === 15, r);
 
     console.log('== buttons');
+    await openPractice();   // the controls only exist for an active workout, behind the Manage button
     check('bench has manual/ramp actions only in the leading practice section', (await peek(ex0, '.btn-add-warmup', 'b !== null')) && (await peek(ex0, '.btn-warmup-ramp', 'b !== null')) && await p.eval(`!document.querySelector('#exercise-list .btn-add-warmup, #exercise-list .btn-warmup-ramp')`));
     check('dumbbell row has both', (await peek(exEl(1), '.btn-add-warmup', 'b !== null')) && (await peek(exEl(1), '.btn-warmup-ramp', 'b !== null')));
     check('assisted row: "+ Warm-up" stays, no ramp button', (await peek(exEl(2), '.btn-add-warmup', 'b !== null')) && (await peek(exEl(2), '.btn-warmup-ramp', 'b === null')));
@@ -94,8 +236,7 @@ function check(name, ok, info) {
     console.log('== adding / editing');
     await actIn(ex0, '.btn-add-warmup');
     check('W1 added: 50 % of 100 = 50 kg × 5', J(await warm(ex0)) === J(['W1|5×|50|-']), await warm(ex0));
-    check('adding a warm-up starts the workout', !!(await p.eval('getSession()')));
-    check('the practice block is outside and before all working exercises', await p.eval(`(() => { const w = document.getElementById('workout-phase-legacy'); const s = document.getElementById('exercise-list'); return !s.contains(w) && !!(w.compareDocumentPosition(s) & Node.DOCUMENT_POSITION_FOLLOWING) && w.querySelectorAll('.warmup-item').length === 1; })()`));
+    check('the practice row is reachable in the sheet, not among working sets', await p.eval(`document.querySelector('#workout-phase-legacy .warmup-item').checkVisibility() && !document.querySelector('#exercise-list .warmup-item')`));
     check('phase-off keeps the unfinished practice row and working selectors separate', await p.eval(`!document.getElementById('phase-toggle-warmup').checked && !document.querySelector('#exercise-list .warmup-item') && !!document.querySelector('#workout-phase-legacy .warmup-item')`));
     /* úprava váhy na 42,5 (čiarka aj bodka) a opakovaní na 8 */
     await clickIn(ex0, '.warmup-weight', 0);
@@ -103,14 +244,17 @@ function check(name, ok, info) {
     await p.eval(`(() => { const i = document.querySelector('.set-weight-input'); i.value = '42,25'; document.querySelector('.set-weight-ok').click(); return true; })()`);
     await wait(150);
     check('weight 42.25 is stored as entered (not rounded to 0.5)', J(await warm(ex0)) === J(['W1|5×|42.25|-']), await warm(ex0));
+    check('saving weight returns focus to that row’s weight control inside the sheet', await p.eval(`document.activeElement === document.querySelector('#workout-phase-legacy .warmup-weight') && !document.getElementById('modal-practice').hidden`));
     await clickIn(ex0, '.warmup-reps', 0);
     await p.eval(`(() => { const i = document.querySelector('.set-reps-input'); i.value = '8'; i.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true })); return true; })()`);
     await wait(150);
     check('reps changed to 8', J(await warm(ex0)) === J(['W1|8×|42.25|-']), await warm(ex0));
+    check('saving reps returns focus to that row’s reps control inside the sheet', await p.eval(`document.activeElement === document.querySelector('#workout-phase-legacy .warmup-reps') && !document.getElementById('modal-practice').hidden`));
     await clickIn(ex0, '.warmup-reps', 0);
     await p.eval(`(() => { const i = document.querySelector('.set-reps-input'); i.value = '0'; document.querySelector('.set-reps-ok').click(); return true; })()`);
     check('invalid reps refused (editor stays open)', (await p.eval(`!!document.querySelector('.warmup-editor')`)) && J(await warm(ex0)) === J(['W1|8×|42.25|-']));
-    await p.eval(`(closeSetWeightEditor(), true)`);
+    await press('Escape', 'Escape', 27);
+    check('Escape cancels the inline edit without closing the sheet or losing the row focus', await p.eval(`!document.querySelector('.warmup-editor') && !document.getElementById('modal-practice').hidden && document.activeElement === document.querySelector('#workout-phase-legacy .warmup-reps')`) && J(await warm(ex0)) === J(['W1|8×|42.25|-']));
     check('validator: negative / text / > 999 refused', await p.eval(`(() => { const e = getPlan('wtest').exercises[0]; return updateWarmup(e, 0, { w: -1 }) === false && updateWarmup(e, 0, { w: 1000 }) === false && updateWarmup(e, 0, { r: 1.5 }) === false && updateWarmup(e, 0, { w: NaN }) === false && sessionWarmups(e)[0].w === 42.25; })()`));
     await clickIn(ex0, '.warmup-done', 0);
     check('✓ toggles done', J(await warm(ex0)) === J(['W1|8×|42.25|done']), await warm(ex0));
@@ -154,10 +298,12 @@ function check(name, ok, info) {
 
     console.log('== 390 px layout');
     await p.c.send('Emulation.setDeviceMetricsOverride', { width: 390, height: 844, deviceScaleFactor: 2, mobile: true });
+    await openPractice();
     for (const theme of ['light', 'dark']) {
       await p.eval(`(document.documentElement.setAttribute('data-theme', ${J(theme)}), ${practice(ex0)}.querySelector('.warmups').scrollIntoView({ block: 'center' }), true)`);
       await wait(250);
       check('390 px ' + theme + ': no horizontal overflow', await p.eval(`document.documentElement.scrollWidth <= innerWidth + 1`));
+      check('390 px ' + theme + ': the sheet stays inside the screen', await p.eval(`(() => { const r = document.querySelector('#modal-practice .modal-practice').getBoundingClientRect(); return r.left >= -1 && r.right <= innerWidth + 1 && r.top >= 0 && r.bottom <= innerHeight + 1; })()`));
       check('390 px ' + theme + ': central practice buttons are tappable (≥ 40 px) and inside the screen', await p.eval(`Array.from(${practice(ex0)}.querySelectorAll('.warmup-item button')).every((x) => { const r = x.getBoundingClientRect(); return r.height >= 40 && r.left >= 0 && r.right <= innerWidth + 1; })`));
       if (process.env.GQ_SCREENSHOTS !== '0') {
       const s = await p.c.send('Page.captureScreenshot', { format: 'png' });
@@ -166,6 +312,7 @@ function check(name, ok, info) {
     }
     await p.eval(`(document.documentElement.removeAttribute('data-theme'), true)`);
     await p.c.send('Emulation.clearDeviceMetricsOverride');
+    await closePractice();
 
     console.log('== saved history');
     /* Hotové pracovné série bench-u 1–3. */
@@ -203,10 +350,11 @@ function check(name, ok, info) {
     await p.eval(`(() => { selectedPlan = 'wauto'; switchTab('trening'); renderTrening(); return true; })()`);
     await wait(300);
     check('no session → nothing filled yet', await p.eval(`!getSession() && document.querySelectorAll('#workout-phase-legacy .warmup-item').length === 0`));
-    await p.eval(`(ensureSession(getPlan('wauto')), renderTrening(), true)`);
-    await wait(300);
-    const key = await p.eval(`exerciseSessionKey(getPlan('wauto').exercises[0])`);
+    check('no session → no launcher either', await p.eval(`!document.getElementById('workout-practice-launcher').checkVisibility()`));
+    await ensureWorkout('wauto');
+    const key =await p.eval(`exerciseSessionKey(getPlan('wauto').exercises[0])`);
     check('starting the session fills the central ramp and retains its exercise key', (await p.eval(`document.querySelectorAll('#workout-phase-legacy .phase-legacy-exercise')[0].querySelectorAll('.warmup-item').length`)) === 4 && (await p.eval(`getSession().warmupsInit[${J(key)}]`)) === true, await p.eval(`getSession().warmupsInit`));
+    check('automatic ramp does not open the sheet or add working sets, and the launcher shows 0/4', !(await modalOpen()) && await p.eval(`totalSetsDone() === 0`) && (await progressText()) === await p.eval(`t('phase.legacyProgress', { done: 0, total: 4 })`));
     check('the assisted row with a remembered toggle gets no ramp', (await p.eval(`document.querySelectorAll('#workout-phase-legacy .phase-legacy-exercise')[1].querySelectorAll('.warmup-item').length`)) === 0);
     for (let k = 0; k < 4; k++) await clickIn(`document.querySelectorAll('#exercise-list .exercise')[0]`, '.warmup-remove', 0);
     await p.eval(`(renderTrening(), true)`);
@@ -241,7 +389,7 @@ function check(name, ok, info) {
       saveState(); switchTab('trening'); renderTrening(); return true; })()`);
     await wait(300);
     check('a program workout renders from its own plan snapshot', await p.eval(`currentPlan() === getSession().programPlan && currentPlan().exercises[0] !== getPlan('wprog').exercises[0]`));
-    await p.eval(`(() => { const c = document.querySelector('#workout-phase-legacy .phase-legacy-ramp'); c.checked = true; c.dispatchEvent(new Event('change')); return true; })()`);
+    await tickRamp('', 0, true);
     await wait(200);
     check('ticking the preference during a program workout persists it on the saved plan row', await p.eval(`getPlan('wprog').exercises[0].warmupRamp === true`));
     check('…while the session snapshot copy used for rendering shows the ticked state', await p.eval(`getSession().programPlan.exercises[0].warmupRamp === true && document.querySelector('#workout-phase-legacy .phase-legacy-ramp').checked`));
@@ -258,16 +406,17 @@ function check(name, ok, info) {
     await wait(300);
     check('a ramp on only the later occurrence is still filled once at start', await p.eval(`(() => { const want = warmupRamp(getPlan('wdup').exercises[1], 80).length; return want > 0 && getSession().warmupsInit['bench-press'] === true && sessionWarmups(getPlan('wdup').exercises[1]).length === want; })()`));
     check('one shared practice section offers one preference per occurrence (off, on)', await p.eval(`(() => { const s = document.querySelectorAll('#workout-phase-legacy [data-exercise-key="bench-press"]'); return s.length === 1 && Array.from(s[0].querySelectorAll('.phase-legacy-ramp')).map((x) => x.checked).join() === 'false,true'; })()`));
-    await p.eval(`(() => { const c = document.querySelectorAll('#workout-phase-legacy [data-exercise-key="bench-press"] .phase-legacy-ramp'); c[1].checked = false; c[1].dispatchEvent(new Event('change')); return true; })()`);
+    await tickRamp('[data-exercise-key="bench-press"]', 1, false);
     await wait(150);
-    await p.eval(`(() => { const c = document.querySelectorAll('#workout-phase-legacy [data-exercise-key="bench-press"] .phase-legacy-ramp'); c[0].checked = true; c[0].dispatchEvent(new Event('change')); return true; })()`);
+    await tickRamp('[data-exercise-key="bench-press"]', 0, true);
     await wait(150);
+    await closePractice();
     check('each occurrence stores its own preference', await p.eval(`(() => { const r = getPlan('wdup').exercises; return r[0].warmupRamp === true && !('warmupRamp' in r[1]); })()`));
     await p.eval(`(clearSession(), saveState(), delete state.plans['wdup'], true)`);
     check('sanitiser drops a junk session warm-up list', await p.eval(`(() => { const s = normalizeActiveSession({ id: 'x', startedAt: Date.now(), planId: 'wauto', completedSets: {}, actualFailureSets: {}, warmups: { a: [{ w: -1, r: 5 }, { w: 20, r: 5, done: true }], b: 'junk' }, warmupsInit: { a: true, b: 1 } }); return !!s && J2(s.warmups) === '{"a":[{"w":20,"r":5,"done":true}]}' && J2(s.warmupsInit) === '{"a":true}'; function J2(x) { return JSON.stringify(x); } })()`));
 
     console.log('== replacing an exercise');
-    await p.eval(`(() => { selectedPlan = 'wtest'; switchTab('trening'); renderTrening(); return true; })()`);
+    await ensureWorkout('wtest');
     await p.eval(`(${ex0}.querySelectorAll('.sets .set-btn')[0].click(), true)`);   // 1 hotová séria pred výmenou
     await actIn(ex0, '.btn-add-warmup');
     check('warm-ups are stored per exercise key in the running workout', J(await p.eval(`Object.keys(getSession().warmups || {})`)) === J(['bench-press']));
@@ -289,6 +438,7 @@ function check(name, ok, info) {
     check('undoing the replacement removes its warm-ups; the original keeps its own', await p.eval(`!(getSession().warmups || {})[${J(subKey)}] && ((getSession().warmups || {})['bench-press'] || []).length === 1`), await p.eval(`getSession().warmups`));
 
     console.log('== replaced exercise that only owns warm-up rows stays closed, named and locked');
+    await openPractice();
     await p.eval(`(document.querySelector('#workout-phase-legacy [data-exercise-key="dumbbell-row"] .btn-add-warmup').click(), true)`); await wait(150);
     await actIn(exEl(1), '.exercise-swap'); await wait(200);
     await p.eval(`(applySubstitution('hammer-curl'), true)`); await wait(300);
@@ -317,8 +467,12 @@ function check(name, ok, info) {
         hist: historyWarmupsText(state.history[state.history.length - 1].exercises[0]), dir: document.documentElement.dir,
         miss: Object.keys(I18N.en).filter((k) => k.startsWith('warmup.') && I18N[${J(lang)}][k] === undefined) }; })()`);
       check(lang + ': warm-up texts translated, no missing warmup.* key', !/warmup\.|setReps\.|setWeight\./.test(x.add + x.ramp + x.label + x.aria + x.title + x.hist) && x.miss.length === 0 && x.add.length > 0 && x.ramp.length > 0 && x.hist.includes('20'), x);
+      const ln = await p.eval(`(() => { const l = document.getElementById('workout-practice-launcher'), b = document.getElementById('btn-practice-manage'), h = document.querySelector('#modal-practice .sheet-head'), c = document.getElementById('btn-practice-close');
+        return { visible: l.checkVisibility(), text: l.textContent.trim(), aria: (b.getAttribute('aria-label') || '') + (c.getAttribute('aria-label') || '') + (c.title || ''), head: h.textContent.trim(), overflow: l.scrollWidth > l.clientWidth + 1 || document.documentElement.scrollWidth > innerWidth + 1 }; })()`);
+      check(lang + ': launcher and sheet header are translated and do not overflow', ln.visible && ln.text.length > 0 && ln.head.length > 0 && !/\b(phase|practice|warmup)\.[a-zA-Z]/.test(ln.text + ln.aria + ln.head) && !ln.overflow, ln);
       if (lang === 'ar') {
         check('ar: right-to-left', x.dir === 'rtl');
+        await openPractice();
         await p.eval(`(${practice(ex0)}.querySelector('.warmups').scrollIntoView({ block: 'center' }), true)`);
         if (process.env.GQ_SCREENSHOTS !== '0') {
         const s2 = await p.c.send('Page.captureScreenshot', { format: 'png' });
@@ -326,6 +480,7 @@ function check(name, ok, info) {
         }
       }
     }
+    await closePractice();
     await p.eval(`(setLang('en'), true)`);
     check('verifyI18n reports nothing missing for warmup.*', await p.eval(`LANG_CODES.every((l) => Object.keys(I18N.en).filter((k) => /^warmup\\./.test(k) && I18N[l][k] === undefined).length === 0)`));
 

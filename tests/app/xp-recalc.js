@@ -76,7 +76,7 @@ function check(name, ok, info) {
     check('workoutXP = 222 (stored sum was ' + hist.reduce((s, h) => s + h.xp, 0) + ')', r.w === 222, r.w);
     const afterHist = await E(`(() => { persistState(); renderAll(); return JSON.stringify(state.history); })()`);
     check('history unchanged byte for byte after load, persist and render (stored xp 24, 26, 80, 40, 44, 44, 44, 20)', afterHist === stored, afterHist.slice(0, 300));
-    check('no new settings key (no xpLegacy / xpV2)', J(r.keys.filter((k) => k !== 'startersAdded')) === J(keys0) && !r.keys.includes('xpLegacy') && !r.keys.includes('xpV2'), { keys0, keys: r.keys });
+    check('no new settings key (no xpLegacy / xpV2)', J(r.keys.filter((k) => k !== 'startersAdded' && k !== 'workoutPhases')) === J(keys0.filter((k) => k !== 'workoutPhases')) && !r.keys.includes('xpLegacy') && !r.keys.includes('xpV2'), { keys0, keys: r.keys });
 
     console.log('== Activities (derived from minutes, daily limit)');
     r = await load({ history: [], activities: [act('2026-03-01', 9, 4), act('2026-03-01', 40, 20), act('2026-03-01', 120, 60), act('2026-03-01', 50, 25), act('2026-03-02', 10, 10)], achievements: {} });

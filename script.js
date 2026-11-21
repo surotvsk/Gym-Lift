@@ -141,7 +141,8 @@ function isBuiltinPlanLabel(id, value) {
    histórii, ale neponúka sa v knižnici ani medzi alternatívami. Vymazanie cviku
    z histórie nie je nikdy automatické. */
 
-const MUSCLE_CODES = ['chest', 'back', 'shoulders', 'biceps', 'triceps', 'arms', 'legs', 'glutes', 'core'];
+const LEG_DETAIL_CODES = ['thighs', 'calves', 'abductors', 'adductors'];
+const MUSCLE_CODES = ['chest', 'back', 'shoulders', 'biceps', 'triceps', 'arms', 'legs', 'glutes', ...LEG_DETAIL_CODES, 'core'];
 /* "Full body" je iba vyhľadávací kôš, NIE svalová skupina – pozri FULL_BODY_SPREAD. */
 const BODY_BUCKETS = ['fullBody'];
 
@@ -179,15 +180,15 @@ const EXERCISE_LIBRARY = [
     alternatives: [['band-row', 'homeVersion'], ['dumbbell-row', 'samePrimaryOtherEquipment'], ['superman', 'noEquipmentVersion']] },
   { id: 'bicep-curls', primary: 'biceps', secondary: [], pattern: 'armIsolation', category: 'strength', difficulty: 'beginner', equipment: ['dumbbells'], locations: ['gym', 'home'], diagram: 'armIsolation',
     alternatives: [['hammer-curl', 'similarPurpose'], ['band-bicep-curl', 'homeVersion'], ['band-row', 'similarPurpose']] },
-  { id: 'squats', primary: 'legs', secondary: ['glutes', 'core'], pattern: 'squat', category: 'strength', difficulty: 'intermediate', equipment: ['barbell'], locations: ['gym'], diagram: 'squat',
+  { id: 'squats', primary: 'thighs', secondary: ['glutes', 'core'], pattern: 'squat', category: 'strength', difficulty: 'intermediate', equipment: ['barbell'], locations: ['gym'], diagram: 'squat',
     alternatives: [['bodyweight-squat', 'noEquipmentVersion'], ['leg-press', 'samePrimaryOtherEquipment'], ['split-squat', 'harderVariation']] },
-  { id: 'leg-press', primary: 'legs', secondary: ['glutes'], pattern: 'squat', category: 'strength', difficulty: 'beginner', equipment: ['cableMachine'], locations: ['gym'], diagram: 'squat',
+  { id: 'leg-press', primary: 'thighs', secondary: ['glutes'], pattern: 'squat', category: 'strength', difficulty: 'beginner', equipment: ['cableMachine'], locations: ['gym'], diagram: 'squat',
     alternatives: [['bodyweight-squat', 'homeVersion'], ['squats', 'similarPurpose'], ['split-squat', 'samePrimaryOtherEquipment']] },
-  { id: 'lunges', primary: 'legs', secondary: ['glutes'], pattern: 'lunge', category: 'strength', difficulty: 'beginner', equipment: ['dumbbells'], locations: ['gym', 'home', 'outdoor'], diagram: 'lunge',
+  { id: 'lunges', primary: 'thighs', secondary: ['glutes'], pattern: 'lunge', category: 'strength', difficulty: 'beginner', equipment: ['dumbbells'], locations: ['gym', 'home', 'outdoor'], diagram: 'lunge',
     alternatives: [['split-squat', 'homeVersion'], ['bodyweight-squat', 'samePrimaryOtherEquipment'], ['step-up', 'similarPurpose']] },
-  { id: 'leg-curls', primary: 'legs', secondary: [], pattern: 'legIsolation', category: 'strength', difficulty: 'beginner', equipment: ['cableMachine'], locations: ['gym'], diagram: 'legIsolation',
+  { id: 'leg-curls', primary: 'thighs', secondary: [], pattern: 'legIsolation', category: 'strength', difficulty: 'beginner', equipment: ['cableMachine'], locations: ['gym'], diagram: 'legIsolation',
     alternatives: [['glute-bridge', 'similarPurpose'], ['single-leg-glute-bridge', 'similarPurpose']] },
-  { id: 'calf-raises', primary: 'legs', secondary: [], pattern: 'legIsolation', category: 'strength', difficulty: 'beginner', equipment: ['none'], locations: ['gym', 'home', 'outdoor'], diagram: 'calfRaise',
+  { id: 'calf-raises', primary: 'calves', secondary: [], pattern: 'legIsolation', category: 'strength', difficulty: 'beginner', equipment: ['none'], locations: ['gym', 'home', 'outdoor'], diagram: 'calfRaise',
     alternatives: [['bodyweight-squat', 'samePrimaryOtherEquipment'], ['step-up', 'similarPurpose'], ['split-squat', 'similarPurpose']] },
 
   /* --- Domáce a outdoorové doplnenie (bez náčinia, s gumou, s jednoručkami) --- */
@@ -213,17 +214,17 @@ const EXERCISE_LIBRARY = [
     alternatives: [['push-up', 'easierVariation'], ['band-bicep-curl', 'samePrimaryOtherEquipment'], ['dips', 'gymVersion']] },
   { id: 'band-bicep-curl', primary: 'biceps', secondary: [], pattern: 'armIsolation', category: 'strength', difficulty: 'beginner', equipment: ['bands'], locations: ['gym', 'home', 'outdoor'], diagram: 'armIsolation',
     alternatives: [['bicep-curls', 'gymVersion'], ['hammer-curl', 'samePrimaryOtherEquipment'], ['band-row', 'similarPurpose']] },
-  { id: 'bodyweight-squat', primary: 'legs', secondary: ['glutes', 'core'], pattern: 'squat', category: 'strength', difficulty: 'beginner', equipment: ['none'], locations: ['home', 'outdoor', 'gym'], diagram: 'squat',
+  { id: 'bodyweight-squat', primary: 'thighs', secondary: ['glutes', 'core'], pattern: 'squat', category: 'strength', difficulty: 'beginner', equipment: ['none'], locations: ['home', 'outdoor', 'gym'], diagram: 'squat',
     alternatives: [['squats', 'gymVersion'], ['split-squat', 'harderVariation'], ['leg-press', 'gymVersion']] },
-  { id: 'split-squat', primary: 'legs', secondary: ['glutes'], pattern: 'lunge', category: 'strength', difficulty: 'intermediate', equipment: ['none'], locations: ['home', 'outdoor', 'gym'], diagram: 'lunge',
+  { id: 'split-squat', primary: 'thighs', secondary: ['glutes'], pattern: 'lunge', category: 'strength', difficulty: 'intermediate', equipment: ['none'], locations: ['home', 'outdoor', 'gym'], diagram: 'lunge',
     alternatives: [['lunges', 'samePrimaryOtherEquipment'], ['bodyweight-squat', 'easierVariation'], ['step-up', 'similarPurpose']] },
-  { id: 'step-up', primary: 'legs', secondary: ['glutes'], pattern: 'lunge', category: 'strength', difficulty: 'beginner', equipment: ['bench'], locations: ['gym', 'home', 'outdoor'], diagram: 'lunge',
+  { id: 'step-up', primary: 'thighs', secondary: ['glutes'], pattern: 'lunge', category: 'strength', difficulty: 'beginner', equipment: ['bench'], locations: ['gym', 'home', 'outdoor'], diagram: 'lunge',
     alternatives: [['split-squat', 'noEquipmentVersion'], ['lunges', 'samePrimaryOtherEquipment'], ['bodyweight-squat', 'easierVariation']] },
-  { id: 'glute-bridge', primary: 'glutes', secondary: ['legs', 'core'], pattern: 'hinge', category: 'strength', difficulty: 'beginner', equipment: ['none'], locations: ['home', 'outdoor', 'gym'], diagram: 'bridge',
+  { id: 'glute-bridge', primary: 'glutes', secondary: ['thighs', 'core'], pattern: 'hinge', category: 'strength', difficulty: 'beginner', equipment: ['none'], locations: ['home', 'outdoor', 'gym'], diagram: 'bridge',
     alternatives: [['hip-thrust', 'harderVariation'], ['single-leg-glute-bridge', 'harderVariation'], ['leg-curls', 'gymVersion']] },
-  { id: 'hip-thrust', primary: 'glutes', secondary: ['legs'], pattern: 'hinge', category: 'strength', difficulty: 'intermediate', equipment: ['bench'], locations: ['gym', 'home'], diagram: 'bridge',
+  { id: 'hip-thrust', primary: 'glutes', secondary: ['thighs'], pattern: 'hinge', category: 'strength', difficulty: 'intermediate', equipment: ['bench'], locations: ['gym', 'home'], diagram: 'bridge',
     alternatives: [['glute-bridge', 'easierVariation'], ['single-leg-glute-bridge', 'samePrimaryOtherEquipment'], ['squats', 'similarPurpose']] },
-  { id: 'single-leg-glute-bridge', primary: 'glutes', secondary: ['legs', 'core'], pattern: 'hinge', category: 'strength', difficulty: 'intermediate', equipment: ['none'], locations: ['home', 'outdoor', 'gym'], diagram: 'bridge',
+  { id: 'single-leg-glute-bridge', primary: 'glutes', secondary: ['thighs', 'core'], pattern: 'hinge', category: 'strength', difficulty: 'intermediate', equipment: ['none'], locations: ['home', 'outdoor', 'gym'], diagram: 'bridge',
     alternatives: [['glute-bridge', 'easierVariation'], ['hip-thrust', 'samePrimaryOtherEquipment'], ['leg-curls', 'gymVersion']] },
   { id: 'plank', primary: 'core', secondary: ['shoulders', 'glutes'], pattern: 'coreAntiExtension', category: 'core', difficulty: 'beginner', equipment: ['none'], locations: ['home', 'outdoor', 'gym'], diagram: 'coreAntiExtension',
     alternatives: [['dead-bug', 'easierVariation'], ['superman', 'samePrimaryOtherEquipment'], ['burpee', 'harderVariation']] },
@@ -253,15 +254,15 @@ const EXERCISE_LIBRARY = [
     alternatives: [['single-arm-cable-triceps-extension', 'samePrimaryOtherEquipment'], ['dips', 'similarPurpose'], ['diamond-push-up', 'noEquipmentVersion']] },
   { id: 'single-arm-cable-triceps-extension', primary: 'triceps', secondary: [], pattern: 'armIsolation', category: 'strength', difficulty: 'beginner', equipment: ['cableMachine'], locations: ['gym'], diagram: 'armIsolation',
     alternatives: [['single-arm-dumbbell-triceps-extension', 'samePrimaryOtherEquipment'], ['dips', 'similarPurpose'], ['diamond-push-up', 'homeVersion']] },
-  { id: 'hack-squat', primary: 'legs', secondary: ['glutes', 'core'], pattern: 'squat', category: 'strength', difficulty: 'intermediate', equipment: ['cableMachine'], locations: ['gym'], diagram: 'squat',
+  { id: 'hack-squat', primary: 'thighs', secondary: ['glutes', 'core'], pattern: 'squat', category: 'strength', difficulty: 'intermediate', equipment: ['cableMachine'], locations: ['gym'], diagram: 'squat',
     alternatives: [['squats', 'samePrimaryOtherEquipment'], ['leg-press', 'similarPurpose'], ['bodyweight-squat', 'noEquipmentVersion']] },
-  { id: 'romanian-deadlift', primary: 'legs', secondary: ['glutes', 'back'], pattern: 'hinge', category: 'strength', difficulty: 'intermediate', equipment: ['barbell'], locations: ['gym'], diagram: 'hinge',
+  { id: 'romanian-deadlift', primary: 'thighs', secondary: ['glutes', 'back'], pattern: 'hinge', category: 'strength', difficulty: 'intermediate', equipment: ['barbell'], locations: ['gym'], diagram: 'hinge',
     alternatives: [['glute-bridge', 'similarPurpose'], ['hip-thrust', 'similarPurpose'], ['squats', 'samePrimaryOtherEquipment']] },
-  { id: 'leg-extension', primary: 'legs', secondary: [], pattern: 'legIsolation', category: 'strength', difficulty: 'beginner', equipment: ['cableMachine'], locations: ['gym'], diagram: 'legIsolation',
+  { id: 'leg-extension', primary: 'thighs', secondary: [], pattern: 'legIsolation', category: 'strength', difficulty: 'beginner', equipment: ['cableMachine'], locations: ['gym'], diagram: 'legIsolation',
     alternatives: [['leg-press', 'samePrimaryOtherEquipment'], ['bodyweight-squat', 'homeVersion'], ['split-squat', 'similarPurpose']] },
-  { id: 'adductor-machine', primary: 'legs', secondary: [], pattern: 'legIsolation', category: 'strength', difficulty: 'beginner', equipment: ['cableMachine'], locations: ['gym'], diagram: 'legIsolation',
+  { id: 'adductor-machine', primary: 'adductors', secondary: [], pattern: 'legIsolation', category: 'strength', difficulty: 'beginner', equipment: ['cableMachine'], locations: ['gym'], diagram: 'legIsolation',
     alternatives: [['abductor-machine', 'similarPurpose'], ['bodyweight-squat', 'samePrimaryOtherEquipment'], ['split-squat', 'similarPurpose']] },
-  { id: 'abductor-machine', primary: 'glutes', secondary: ['legs'], pattern: 'legIsolation', category: 'strength', difficulty: 'beginner', equipment: ['cableMachine'], locations: ['gym'], diagram: 'legIsolation',
+  { id: 'abductor-machine', primary: 'abductors', secondary: ['glutes'], pattern: 'legIsolation', category: 'strength', difficulty: 'beginner', equipment: ['cableMachine'], locations: ['gym'], diagram: 'legIsolation',
     alternatives: [['adductor-machine', 'similarPurpose'], ['glute-bridge', 'samePrimaryOtherEquipment'], ['hip-thrust', 'similarPurpose']] },
   { id: 'assisted-dips', assisted: true, primary: 'chest', secondary: ['triceps', 'shoulders'], pattern: 'pushV', category: 'strength', difficulty: 'beginner', equipment: ['cableMachine'], locations: ['gym'], diagram: 'pushV',
     alternatives: [['dips', 'harderVariation'], ['machine-chest-press', 'similarPurpose'], ['push-up', 'noEquipmentVersion']] },
@@ -368,49 +369,49 @@ const EXERCISE_LIBRARY = [
     alternatives: [["bicep-curls","similarPurpose"],["hammer-curl","similarPurpose"]] },
   { id: "single-arm-preacher-curl", primary: "biceps", secondary: [], pattern: "armIsolation", category: "strength", difficulty: "intermediate", equipment: ["dumbbells","bench"], locations: ["gym","home"], diagram: "armIsolation",
     alternatives: [["bicep-curls","similarPurpose"],["hammer-curl","similarPurpose"]] },
-  { id: "bulgarian-split-squat", primary: "legs", secondary: ["glutes"], pattern: "lunge", category: "strength", difficulty: "intermediate", equipment: ["bench"], locations: ["gym","home"], diagram: "lunge",
+  { id: "bulgarian-split-squat", primary: "thighs", secondary: ["glutes"], pattern: "lunge", category: "strength", difficulty: "intermediate", equipment: ["bench"], locations: ["gym","home"], diagram: "lunge",
     alternatives: [["lunges","similarPurpose"],["split-squat","similarPurpose"]] },
-  { id: "lying-leg-curl", primary: "legs", secondary: [], pattern: "legIsolation", category: "strength", difficulty: "beginner", equipment: ["cableMachine"], locations: ["gym"], diagram: "legIsolation",
+  { id: "lying-leg-curl", primary: "thighs", secondary: [], pattern: "legIsolation", category: "strength", difficulty: "beginner", equipment: ["cableMachine"], locations: ["gym"], diagram: "legIsolation",
     alternatives: [["leg-curls","similarPurpose"],["calf-raises","similarPurpose"]] },
-  { id: "seated-leg-curl", primary: "legs", secondary: [], pattern: "legIsolation", category: "strength", difficulty: "beginner", equipment: ["cableMachine"], locations: ["gym"], diagram: "legIsolation",
+  { id: "seated-leg-curl", primary: "thighs", secondary: [], pattern: "legIsolation", category: "strength", difficulty: "beginner", equipment: ["cableMachine"], locations: ["gym"], diagram: "legIsolation",
     alternatives: [["leg-curls","similarPurpose"],["calf-raises","similarPurpose"]] },
-  { id: "seated-calf-raise", primary: "legs", secondary: [], pattern: "legIsolation", category: "strength", difficulty: "beginner", equipment: ["cableMachine"], locations: ["gym"], diagram: "calfRaise",
+  { id: "seated-calf-raise", primary: "calves", secondary: [], pattern: "legIsolation", category: "strength", difficulty: "beginner", equipment: ["cableMachine"], locations: ["gym"], diagram: "calfRaise",
     alternatives: [["leg-curls","similarPurpose"],["calf-raises","similarPurpose"]] },
-  { id: "barbell-deadlift", primary: "legs", secondary: ["glutes","back"], pattern: "hinge", category: "strength", difficulty: "intermediate", equipment: ["barbell"], locations: ["gym","home"], diagram: "hinge",
+  { id: "barbell-deadlift", primary: "thighs", secondary: ["glutes","back"], pattern: "hinge", category: "strength", difficulty: "intermediate", equipment: ["barbell"], locations: ["gym","home"], diagram: "hinge",
     alternatives: [["romanian-deadlift","similarPurpose"],["sumo-deadlift","similarPurpose"]] },
-  { id: "front-squat", primary: "legs", secondary: ["glutes","core"], pattern: "squat", category: "strength", difficulty: "intermediate", equipment: ["barbell"], locations: ["gym","home"], diagram: "squat",
+  { id: "front-squat", primary: "thighs", secondary: ["glutes","core"], pattern: "squat", category: "strength", difficulty: "intermediate", equipment: ["barbell"], locations: ["gym","home"], diagram: "squat",
     alternatives: [["squats","similarPurpose"],["leg-press","similarPurpose"]] },
-  { id: "goblet-squat", primary: "legs", secondary: ["glutes","core"], pattern: "squat", category: "strength", difficulty: "beginner", equipment: ["dumbbells"], locations: ["gym","home"], diagram: "squat",
+  { id: "goblet-squat", primary: "thighs", secondary: ["glutes","core"], pattern: "squat", category: "strength", difficulty: "beginner", equipment: ["dumbbells"], locations: ["gym","home"], diagram: "squat",
     alternatives: [["squats","similarPurpose"],["leg-press","similarPurpose"]] },
-  { id: "sumo-deadlift", primary: "legs", secondary: ["glutes","back"], pattern: "hinge", category: "strength", difficulty: "intermediate", equipment: ["barbell"], locations: ["gym","home"], diagram: "hinge",
+  { id: "sumo-deadlift", primary: "thighs", secondary: ["glutes","back","adductors"], pattern: "hinge", category: "strength", difficulty: "intermediate", equipment: ["barbell"], locations: ["gym","home"], diagram: "hinge",
     alternatives: [["romanian-deadlift","similarPurpose"],["barbell-deadlift","similarPurpose"]] },
-  { id: "single-leg-romanian-deadlift", primary: "legs", secondary: ["glutes","core"], pattern: "hinge", category: "strength", difficulty: "intermediate", equipment: ["dumbbells"], locations: ["gym","home"], diagram: "hinge",
+  { id: "single-leg-romanian-deadlift", primary: "thighs", secondary: ["glutes","core"], pattern: "hinge", category: "strength", difficulty: "intermediate", equipment: ["dumbbells"], locations: ["gym","home"], diagram: "hinge",
     alternatives: [["romanian-deadlift","similarPurpose"],["barbell-deadlift","similarPurpose"]] },
-  { id: "reverse-lunge", primary: "legs", secondary: ["glutes"], pattern: "lunge", category: "strength", difficulty: "beginner", equipment: ["none"], locations: ["gym","home","outdoor"], diagram: "lunge",
+  { id: "reverse-lunge", primary: "thighs", secondary: ["glutes"], pattern: "lunge", category: "strength", difficulty: "beginner", equipment: ["none"], locations: ["gym","home","outdoor"], diagram: "lunge",
     alternatives: [["lunges","similarPurpose"],["split-squat","similarPurpose"]] },
-  { id: "walking-lunge", primary: "legs", secondary: ["glutes"], pattern: "lunge", category: "strength", difficulty: "intermediate", equipment: ["none"], locations: ["gym","home","outdoor"], diagram: "lunge",
+  { id: "walking-lunge", primary: "thighs", secondary: ["glutes"], pattern: "lunge", category: "strength", difficulty: "intermediate", equipment: ["none"], locations: ["gym","home","outdoor"], diagram: "lunge",
     alternatives: [["lunges","similarPurpose"],["split-squat","similarPurpose"]] },
-  { id: "lateral-lunge", primary: "legs", secondary: ["glutes"], pattern: "lunge", category: "strength", difficulty: "intermediate", equipment: ["none"], locations: ["gym","home","outdoor"], diagram: "lunge",
+  { id: "lateral-lunge", primary: "thighs", secondary: ["glutes","adductors"], pattern: "lunge", category: "strength", difficulty: "intermediate", equipment: ["none"], locations: ["gym","home","outdoor"], diagram: "lunge",
     alternatives: [["lunges","similarPurpose"],["split-squat","similarPurpose"]] },
-  { id: "smith-machine-squat", primary: "legs", secondary: ["glutes","core"], pattern: "squat", category: "strength", difficulty: "intermediate", equipment: ["cableMachine"], locations: ["gym"], diagram: "squat",
+  { id: "smith-machine-squat", primary: "thighs", secondary: ["glutes","core"], pattern: "squat", category: "strength", difficulty: "intermediate", equipment: ["cableMachine"], locations: ["gym"], diagram: "squat",
     alternatives: [["squats","similarPurpose"],["leg-press","similarPurpose"]] },
-  { id: "single-leg-press", primary: "legs", secondary: ["glutes"], pattern: "squat", category: "strength", difficulty: "intermediate", equipment: ["cableMachine"], locations: ["gym"], diagram: "squat",
+  { id: "single-leg-press", primary: "thighs", secondary: ["glutes"], pattern: "squat", category: "strength", difficulty: "intermediate", equipment: ["cableMachine"], locations: ["gym"], diagram: "squat",
     alternatives: [["squats","similarPurpose"],["leg-press","similarPurpose"]] },
-  { id: "standing-machine-calf-raise", primary: "legs", secondary: [], pattern: "legIsolation", category: "strength", difficulty: "beginner", equipment: ["cableMachine"], locations: ["gym"], diagram: "calfRaise",
+  { id: "standing-machine-calf-raise", primary: "calves", secondary: [], pattern: "legIsolation", category: "strength", difficulty: "beginner", equipment: ["cableMachine"], locations: ["gym"], diagram: "calfRaise",
     alternatives: [["leg-curls","similarPurpose"],["calf-raises","similarPurpose"]] },
-  { id: "dumbbell-calf-raise", primary: "legs", secondary: [], pattern: "legIsolation", category: "strength", difficulty: "beginner", equipment: ["dumbbells"], locations: ["gym","home"], diagram: "calfRaise",
+  { id: "dumbbell-calf-raise", primary: "calves", secondary: [], pattern: "legIsolation", category: "strength", difficulty: "beginner", equipment: ["dumbbells"], locations: ["gym","home"], diagram: "calfRaise",
     alternatives: [["leg-curls","similarPurpose"],["calf-raises","similarPurpose"]] },
-  { id: "cable-hip-abduction", primary: "glutes", secondary: ["legs"], pattern: "legIsolation", category: "strength", difficulty: "beginner", equipment: ["cableMachine"], locations: ["gym"], diagram: "legIsolation",
+  { id: "cable-hip-abduction", primary: "abductors", secondary: ["glutes"], pattern: "legIsolation", category: "strength", difficulty: "beginner", equipment: ["cableMachine"], locations: ["gym"], diagram: "legIsolation",
     alternatives: [["abductor-machine","similarPurpose"],["glute-bridge","similarPurpose"]] },
-  { id: "cable-hip-adduction", primary: "legs", secondary: [], pattern: "legIsolation", category: "strength", difficulty: "beginner", equipment: ["cableMachine"], locations: ["gym"], diagram: "legIsolation",
+  { id: "cable-hip-adduction", primary: "adductors", secondary: [], pattern: "legIsolation", category: "strength", difficulty: "beginner", equipment: ["cableMachine"], locations: ["gym"], diagram: "legIsolation",
     alternatives: [["leg-curls","similarPurpose"],["calf-raises","similarPurpose"]] },
-  { id: "cable-glute-kickback", primary: "glutes", secondary: ["legs"], pattern: "hinge", category: "strength", difficulty: "beginner", equipment: ["cableMachine"], locations: ["gym"], diagram: "hinge",
+  { id: "cable-glute-kickback", primary: "glutes", secondary: ["thighs"], pattern: "hinge", category: "strength", difficulty: "beginner", equipment: ["cableMachine"], locations: ["gym"], diagram: "hinge",
     alternatives: [["glute-bridge","similarPurpose"],["hip-thrust","similarPurpose"]] },
-  { id: "barbell-glute-bridge", primary: "glutes", secondary: ["legs","core"], pattern: "hinge", category: "strength", difficulty: "intermediate", equipment: ["barbell"], locations: ["gym","home"], diagram: "bridge",
+  { id: "barbell-glute-bridge", primary: "glutes", secondary: ["thighs","core"], pattern: "hinge", category: "strength", difficulty: "intermediate", equipment: ["barbell"], locations: ["gym","home"], diagram: "bridge",
     alternatives: [["glute-bridge","similarPurpose"],["hip-thrust","similarPurpose"]] },
-  { id: "machine-hip-thrust", primary: "glutes", secondary: ["legs"], pattern: "hinge", category: "strength", difficulty: "beginner", equipment: ["cableMachine"], locations: ["gym"], diagram: "bridge",
+  { id: "machine-hip-thrust", primary: "glutes", secondary: ["thighs"], pattern: "hinge", category: "strength", difficulty: "beginner", equipment: ["cableMachine"], locations: ["gym"], diagram: "bridge",
     alternatives: [["glute-bridge","similarPurpose"],["hip-thrust","similarPurpose"]] },
-  { id: "dumbbell-hip-thrust", primary: "glutes", secondary: ["legs"], pattern: "hinge", category: "strength", difficulty: "intermediate", equipment: ["dumbbells","bench"], locations: ["gym","home"], diagram: "bridge",
+  { id: "dumbbell-hip-thrust", primary: "glutes", secondary: ["thighs"], pattern: "hinge", category: "strength", difficulty: "intermediate", equipment: ["dumbbells","bench"], locations: ["gym","home"], diagram: "bridge",
     alternatives: [["glute-bridge","similarPurpose"],["hip-thrust","similarPurpose"]] },
   { id: "hanging-knee-raise", primary: "core", secondary: [], pattern: "coreFlexion", category: "core", difficulty: "intermediate", equipment: ["pullupBar"], locations: ["gym","home","outdoor"],
     alternatives: [["hanging-leg-raise","similarPurpose"],["lying-leg-raise","similarPurpose"]] },
@@ -459,29 +460,29 @@ const EXERCISE_LIBRARY = [
     alternatives: [["machine-row","similarPurpose"],["lat-pulldown","similarPurpose"]] },
   { id: "pendlay-row", primary: "back", secondary: ["biceps","core"], pattern: "pullH", category: "strength", difficulty: "intermediate", equipment: ["barbell"], locations: ["gym","home"],
     alternatives: [["bent-over-rows","similarPurpose"],["chest-supported-dumbbell-row","similarPurpose"]] },
-  { id: "dumbbell-romanian-deadlift", primary: "legs", secondary: ["glutes","back"], pattern: "hinge", category: "strength", difficulty: "intermediate", equipment: ["dumbbells"], locations: ["gym","home"],
+  { id: "dumbbell-romanian-deadlift", primary: "thighs", secondary: ["glutes","back"], pattern: "hinge", category: "strength", difficulty: "intermediate", equipment: ["dumbbells"], locations: ["gym","home"],
     alternatives: [["romanian-deadlift","similarPurpose"],["single-leg-romanian-deadlift","similarPurpose"]] },
-  { id: "dumbbell-deadlift", primary: "legs", secondary: ["glutes","back"], pattern: "hinge", category: "strength", difficulty: "intermediate", equipment: ["dumbbells"], locations: ["gym","home"],
+  { id: "dumbbell-deadlift", primary: "thighs", secondary: ["glutes","back"], pattern: "hinge", category: "strength", difficulty: "intermediate", equipment: ["dumbbells"], locations: ["gym","home"],
     alternatives: [["barbell-deadlift","similarPurpose"],["romanian-deadlift","similarPurpose"]] },
-  { id: "kettlebell-swing", primary: "glutes", secondary: ["legs","core","back"], pattern: "hinge", category: "strength", difficulty: "intermediate", equipment: ["kettlebells"], locations: ["gym","home"],
+  { id: "kettlebell-swing", primary: "glutes", secondary: ["thighs","core","back"], pattern: "hinge", category: "strength", difficulty: "intermediate", equipment: ["kettlebells"], locations: ["gym","home"],
     alternatives: [["romanian-deadlift","similarPurpose"],["glute-bridge","similarPurpose"]] },
-  { id: "kettlebell-goblet-squat", primary: "legs", secondary: ["glutes","core"], pattern: "squat", category: "strength", difficulty: "beginner", equipment: ["kettlebells"], locations: ["gym","home"],
+  { id: "kettlebell-goblet-squat", primary: "thighs", secondary: ["glutes","core"], pattern: "squat", category: "strength", difficulty: "beginner", equipment: ["kettlebells"], locations: ["gym","home"],
     alternatives: [["goblet-squat","similarPurpose"],["bodyweight-squat","similarPurpose"]] },
-  { id: "smith-machine-hip-thrust", primary: "glutes", secondary: ["legs"], pattern: "hinge", category: "strength", difficulty: "intermediate", equipment: ["cableMachine","bench"], locations: ["gym"],
+  { id: "smith-machine-hip-thrust", primary: "glutes", secondary: ["thighs"], pattern: "hinge", category: "strength", difficulty: "intermediate", equipment: ["cableMachine","bench"], locations: ["gym"],
     alternatives: [["machine-hip-thrust","similarPurpose"],["dumbbell-hip-thrust","similarPurpose"]] },
-  { id: "dumbbell-split-squat", primary: "legs", secondary: ["glutes"], pattern: "lunge", category: "strength", difficulty: "intermediate", equipment: ["dumbbells"], locations: ["gym","home"],
+  { id: "dumbbell-split-squat", primary: "thighs", secondary: ["glutes"], pattern: "lunge", category: "strength", difficulty: "intermediate", equipment: ["dumbbells"], locations: ["gym","home"],
     alternatives: [["split-squat","similarPurpose"],["lunges","similarPurpose"]] },
-  { id: "dumbbell-walking-lunge", primary: "legs", secondary: ["glutes"], pattern: "lunge", category: "strength", difficulty: "intermediate", equipment: ["dumbbells"], locations: ["gym","home"],
+  { id: "dumbbell-walking-lunge", primary: "thighs", secondary: ["glutes"], pattern: "lunge", category: "strength", difficulty: "intermediate", equipment: ["dumbbells"], locations: ["gym","home"],
     alternatives: [["walking-lunge","similarPurpose"],["lunges","similarPurpose"]] },
-  { id: "barbell-lunge", primary: "legs", secondary: ["glutes","core"], pattern: "lunge", category: "strength", difficulty: "intermediate", equipment: ["barbell"], locations: ["gym","home"],
+  { id: "barbell-lunge", primary: "thighs", secondary: ["glutes","core"], pattern: "lunge", category: "strength", difficulty: "intermediate", equipment: ["barbell"], locations: ["gym","home"],
     alternatives: [["lunges","similarPurpose"],["split-squat","similarPurpose"]] },
-  { id: "smith-machine-bulgarian-split-squat", primary: "legs", secondary: ["glutes"], pattern: "lunge", category: "strength", difficulty: "intermediate", equipment: ["cableMachine","bench"], locations: ["gym"],
+  { id: "smith-machine-bulgarian-split-squat", primary: "thighs", secondary: ["glutes"], pattern: "lunge", category: "strength", difficulty: "intermediate", equipment: ["cableMachine","bench"], locations: ["gym"],
     alternatives: [["bulgarian-split-squat","similarPurpose"],["split-squat","similarPurpose"]] },
-  { id: "dumbbell-step-up", primary: "legs", secondary: ["glutes"], pattern: "lunge", category: "strength", difficulty: "beginner", equipment: ["dumbbells","bench"], locations: ["gym","home"],
+  { id: "dumbbell-step-up", primary: "thighs", secondary: ["glutes"], pattern: "lunge", category: "strength", difficulty: "beginner", equipment: ["dumbbells","bench"], locations: ["gym","home"],
     alternatives: [["step-up","similarPurpose"],["lunges","similarPurpose"]] },
-  { id: "standing-leg-curl", primary: "legs", secondary: [], pattern: "legIsolation", category: "strength", difficulty: "beginner", equipment: ["cableMachine"], locations: ["gym"],
+  { id: "standing-leg-curl", primary: "thighs", secondary: [], pattern: "legIsolation", category: "strength", difficulty: "beginner", equipment: ["cableMachine"], locations: ["gym"],
     alternatives: [["lying-leg-curl","similarPurpose"],["seated-leg-curl","similarPurpose"]] },
-  { id: "single-leg-machine-curl", primary: "legs", secondary: [], pattern: "legIsolation", category: "strength", difficulty: "beginner", equipment: ["cableMachine"], locations: ["gym"],
+  { id: "single-leg-machine-curl", primary: "thighs", secondary: [], pattern: "legIsolation", category: "strength", difficulty: "beginner", equipment: ["cableMachine"], locations: ["gym"],
     alternatives: [["lying-leg-curl","similarPurpose"],["seated-leg-curl","similarPurpose"]] },
   { id: "single-arm-cable-reverse-fly", primary: "shoulders", secondary: ["back"], pattern: "lateralRaise", category: "strength", difficulty: "intermediate", equipment: ["cableMachine"], locations: ["gym"],
     alternatives: [["cable-reverse-fly","similarPurpose"],["reverse-pec-deck","similarPurpose"]] },
@@ -505,13 +506,13 @@ const EXERCISE_LIBRARY = [
     alternatives: [["push-up","similarPurpose"],["incline-dumbbell-press","similarPurpose"]] },
   { id: "incline-push-up", primary: "chest", secondary: ["triceps","shoulders","core"], pattern: "pushH", category: "strength", difficulty: "beginner", equipment: ["bench"], locations: ["gym","home"],
     alternatives: [["push-up","similarPurpose"],["band-chest-press","similarPurpose"]] },
-  { id: "cable-pull-through", primary: "glutes", secondary: ["legs","back"], pattern: "hinge", category: "strength", difficulty: "beginner", equipment: ["cableMachine"], locations: ["gym"],
+  { id: "cable-pull-through", primary: "glutes", secondary: ["thighs","back"], pattern: "hinge", category: "strength", difficulty: "beginner", equipment: ["cableMachine"], locations: ["gym"],
     alternatives: [["romanian-deadlift","similarPurpose"],["glute-bridge","similarPurpose"]] },
   { id: "crunch", primary: "core", secondary: [], pattern: "coreFlexion", category: "core", difficulty: "beginner", equipment: ["none"], locations: ["gym","home","outdoor"],
     alternatives: [["reverse-crunch","similarPurpose"],["cable-crunch","similarPurpose"]] },
-  { id: "dumbbell-bulgarian-split-squat", primary: "legs", secondary: ["glutes"], pattern: "lunge", category: "strength", difficulty: "intermediate", equipment: ["dumbbells","bench"], locations: ["gym","home"],
+  { id: "dumbbell-bulgarian-split-squat", primary: "thighs", secondary: ["glutes"], pattern: "lunge", category: "strength", difficulty: "intermediate", equipment: ["dumbbells","bench"], locations: ["gym","home"],
     alternatives: [["bulgarian-split-squat","similarPurpose"],["lunges","similarPurpose"]] },
-  { id: "leg-press-calf-raise", primary: "legs", secondary: [], pattern: "legIsolation", category: "strength", difficulty: "beginner", equipment: ["cableMachine"], locations: ["gym"],
+  { id: "leg-press-calf-raise", primary: "calves", secondary: [], pattern: "legIsolation", category: "strength", difficulty: "beginner", equipment: ["cableMachine"], locations: ["gym"],
     alternatives: [["standing-machine-calf-raise","similarPurpose"],["seated-calf-raise","similarPurpose"]] },
   { id: "assisted-chin-up", assisted: true, primary: "back", secondary: ["biceps"], pattern: "pullV", category: "strength", difficulty: "beginner", equipment: ["cableMachine"], locations: ["gym"],
     alternatives: [["chin-up","similarPurpose"],["lat-pulldown","similarPurpose"]] },
@@ -532,15 +533,15 @@ const EXERCISE_LIBRARY = [
   /* Zdroj: Backward_Medicine_Ball_Throw */
   {"id":"backward-medicine-ball-throw","primary":"legs","secondary":["shoulders","core","glutes"],"pattern":"conditioning","category":"conditioning","difficulty":"intermediate","equipment":["medicineBall"],"locations":["gym","home"],"alternatives":[["medicine-ball-chest-pass","similarPurpose"],["medicine-ball-overhead-slam","similarPurpose"]]},
   /* Zdroj: Ball_Leg_Curl */
-  {"id":"stability-ball-leg-curl","primary":"legs","secondary":["glutes"],"pattern":"legIsolation","category":"strength","difficulty":"beginner","equipment":["stabilityBall"],"locations":["gym","home"],"alternatives":[["lying-leg-curl","similarPurpose"],["seated-leg-curl","similarPurpose"]]},
+  {"id":"stability-ball-leg-curl","primary":"thighs","secondary":["glutes"],"pattern":"legIsolation","category":"strength","difficulty":"beginner","equipment":["stabilityBall"],"locations":["gym","home"],"alternatives":[["lying-leg-curl","similarPurpose"],["seated-leg-curl","similarPurpose"]]},
   /* Zdroj: Band_Assisted_Pull-Up */
   {"id":"band-assisted-pull-up","primary":"back","secondary":["biceps","shoulders"],"pattern":"pullV","category":"strength","difficulty":"beginner","equipment":["bands","pullupBar"],"locations":["gym","home","outdoor"],"alternatives":[["pull-ups","samePattern"],["lat-pulldown","similarPurpose"]],"assisted":true},
   /* Zdroj: Band_Good_Morning */
-  {"id":"standing-band-good-morning","primary":"glutes","secondary":["legs","back","core"],"pattern":"hinge","category":"strength","difficulty":"beginner","equipment":["bands"],"locations":["gym","home","outdoor"],"alternatives":[["romanian-deadlift","similarPurpose"],["dumbbell-romanian-deadlift","similarPurpose"]]},
+  {"id":"standing-band-good-morning","primary":"glutes","secondary":["thighs","back","core"],"pattern":"hinge","category":"strength","difficulty":"beginner","equipment":["bands"],"locations":["gym","home","outdoor"],"alternatives":[["romanian-deadlift","similarPurpose"],["dumbbell-romanian-deadlift","similarPurpose"]]},
   /* Zdroj: Band_Good_Morning_Pull_Through */
-  {"id":"anchored-band-good-morning","primary":"glutes","secondary":["legs","back","core"],"pattern":"hinge","category":"strength","difficulty":"beginner","equipment":["bands"],"locations":["gym","home","outdoor"],"alternatives":[["romanian-deadlift","similarPurpose"],["dumbbell-romanian-deadlift","similarPurpose"]]},
+  {"id":"anchored-band-good-morning","primary":"glutes","secondary":["thighs","back","core"],"pattern":"hinge","category":"strength","difficulty":"beginner","equipment":["bands"],"locations":["gym","home","outdoor"],"alternatives":[["romanian-deadlift","similarPurpose"],["dumbbell-romanian-deadlift","similarPurpose"]]},
   /* Zdroj: Band_Hip_Adductions */
-  {"id":"standing-band-hip-abduction","primary":"glutes","secondary":["core"],"pattern":"legIsolation","category":"strength","difficulty":"beginner","equipment":["bands"],"locations":["gym","home","outdoor"],"alternatives":[["cable-hip-abduction","samePrimaryOtherEquipment"],["abductor-machine","gymVersion"]]},
+  {"id":"standing-band-hip-abduction","primary":"abductors","secondary":["glutes","core"],"pattern":"legIsolation","category":"strength","difficulty":"beginner","equipment":["bands"],"locations":["gym","home","outdoor"],"alternatives":[["cable-hip-abduction","samePrimaryOtherEquipment"],["abductor-machine","gymVersion"]]},
   /* Zdroj: Band_Pull_Apart */
   {"id":"band-pull-apart","primary":"shoulders","secondary":["back"],"pattern":"pullH","category":"strength","difficulty":"beginner","equipment":["bands"],"locations":["gym","home","outdoor"],"alternatives":[["bent-over-dumbbell-reverse-fly","similarPurpose"],["face-pull","similarPurpose"]]},
   /* Zdroj: Band_Skull_Crusher */
@@ -550,23 +551,23 @@ const EXERCISE_LIBRARY = [
   /* Zdroj: Barbell_Curls_Lying_Against_An_Incline */
   {"id":"barbell-spider-curl","primary":"biceps","secondary":[],"pattern":"armIsolation","category":"strength","difficulty":"intermediate","equipment":["barbell","bench"],"locations":["gym","home"],"alternatives":[["barbell-curl","samePattern"],["band-bicep-curl","homeVersion"]]},
   /* Zdroj: Barbell_Hack_Squat */
-  {"id":"barbell-hack-squat","primary":"legs","secondary":["glutes","core"],"pattern":"squat","category":"strength","difficulty":"intermediate","equipment":["barbell"],"locations":["gym","home"],"alternatives":[["bodyweight-squat","noEquipmentVersion"],["goblet-squat","samePattern"]]},
+  {"id":"barbell-hack-squat","primary":"thighs","secondary":["glutes","core"],"pattern":"squat","category":"strength","difficulty":"intermediate","equipment":["barbell"],"locations":["gym","home"],"alternatives":[["bodyweight-squat","noEquipmentVersion"],["goblet-squat","samePattern"]]},
   /* Zdroj: Barbell_Incline_Shoulder_Raise */
   {"id":"incline-barbell-scapular-protraction","primary":"shoulders","secondary":[],"pattern":"scapularControl","category":"strength","difficulty":"beginner","equipment":["barbell","bench"],"locations":["gym","home"],"alternatives":[["incline-dumbbell-scapular-protraction","samePrimaryOtherEquipment"],["push-up","similarPurpose"]]},
   /* Zdroj: Barbell_Rear_Delt_Row */
   {"id":"barbell-rear-delt-row","primary":"shoulders","secondary":["back","biceps"],"pattern":"pullH","category":"strength","difficulty":"intermediate","equipment":["barbell"],"locations":["gym","home"],"alternatives":[["bent-over-dumbbell-reverse-fly","similarPurpose"],["face-pull","similarPurpose"]]},
   /* Zdroj: Barbell_Seated_Calf_Raise */
-  {"id":"seated-barbell-calf-raise","primary":"legs","secondary":[],"pattern":"legIsolation","category":"strength","difficulty":"beginner","equipment":["barbell","bench","plyoBox"],"locations":["gym","home"],"alternatives":[["calf-raises","similarPurpose"],["seated-calf-raise","similarPurpose"]]},
+  {"id":"seated-barbell-calf-raise","primary":"calves","secondary":[],"pattern":"legIsolation","category":"strength","difficulty":"beginner","equipment":["barbell","bench","plyoBox"],"locations":["gym","home"],"alternatives":[["calf-raises","similarPurpose"],["seated-calf-raise","similarPurpose"]]},
   /* Zdroj: Barbell_Shrug_Behind_The_Back */
   {"id":"behind-the-back-barbell-shrug","primary":"back","secondary":["shoulders"],"pattern":"pullH","category":"strength","difficulty":"beginner","equipment":["barbell"],"locations":["gym","home"],"alternatives":[["dumbbell-shrug","samePrimaryOtherEquipment"],["barbell-shrug","samePattern"]]},
   /* Zdroj: Barbell_Side_Bend */
   {"id":"barbell-side-bend","primary":"core","secondary":[],"pattern":"coreLateral","category":"core","difficulty":"intermediate","equipment":["barbell"],"locations":["gym","home"],"alternatives":[["side-plank","similarPurpose"],["dumbbell-side-bend","samePattern"]]},
   /* Zdroj: Barbell_Side_Split_Squat */
-  {"id":"barbell-lateral-squat","primary":"legs","secondary":["glutes","core"],"pattern":"squat","category":"strength","difficulty":"intermediate","equipment":["barbell"],"locations":["gym","home"],"alternatives":[["bodyweight-squat","noEquipmentVersion"],["goblet-squat","samePattern"]]},
+  {"id":"barbell-lateral-squat","primary":"thighs","secondary":["glutes","core","adductors"],"pattern":"squat","category":"strength","difficulty":"intermediate","equipment":["barbell"],"locations":["gym","home"],"alternatives":[["bodyweight-squat","noEquipmentVersion"],["goblet-squat","samePattern"]]},
   /* Zdroj: Barbell_Step_Ups */
-  {"id":"barbell-step-up","primary":"legs","secondary":["glutes","core"],"pattern":"lunge","category":"strength","difficulty":"intermediate","equipment":["barbell","plyoBox"],"locations":["gym","home"],"alternatives":[["reverse-lunge","samePattern"],["split-squat","similarPurpose"]]},
+  {"id":"barbell-step-up","primary":"thighs","secondary":["glutes","core"],"pattern":"lunge","category":"strength","difficulty":"intermediate","equipment":["barbell","plyoBox"],"locations":["gym","home"],"alternatives":[["reverse-lunge","samePattern"],["split-squat","similarPurpose"]]},
   /* Zdroj: Barbell_Walking_Lunge */
-  {"id":"barbell-walking-lunge","primary":"legs","secondary":["glutes","core"],"pattern":"lunge","category":"strength","difficulty":"intermediate","equipment":["barbell"],"locations":["gym","home"],"alternatives":[["reverse-lunge","samePattern"],["split-squat","similarPurpose"]]},
+  {"id":"barbell-walking-lunge","primary":"thighs","secondary":["glutes","core"],"pattern":"lunge","category":"strength","difficulty":"intermediate","equipment":["barbell"],"locations":["gym","home"],"alternatives":[["reverse-lunge","samePattern"],["split-squat","similarPurpose"]]},
   /* Zdroj: Battling_Ropes */
   {"id":"battle-rope-waves","primary":"shoulders","secondary":["core"],"pattern":"conditioning","category":"conditioning","difficulty":"intermediate","equipment":["battleRopes"],"locations":["gym","outdoor"],"alternatives":[["burpee","similarPurpose"]]},
   /* Zdroj: Bear_Crawl_Sled_Drags */
@@ -592,13 +593,13 @@ const EXERCISE_LIBRARY = [
   /* Zdroj: Body_Tricep_Press */
   {"id":"bodyweight-bar-triceps-extension","primary":"triceps","secondary":["core"],"pattern":"armIsolation","category":"strength","difficulty":"intermediate","equipment":["squatRack"],"locations":["gym","home"],"alternatives":[["lying-triceps-extension","similarPurpose"],["rope-triceps-pushdown","similarPurpose"]]},
   /* Zdroj: Box_Squat */
-  {"id":"barbell-box-squat","primary":"legs","secondary":["glutes","core"],"pattern":"squat","category":"strength","difficulty":"intermediate","equipment":["barbell","squatRack","plyoBox"],"locations":["gym","home"],"alternatives":[["bodyweight-squat","noEquipmentVersion"],["goblet-squat","samePattern"]]},
+  {"id":"barbell-box-squat","primary":"thighs","secondary":["glutes","core"],"pattern":"squat","category":"strength","difficulty":"intermediate","equipment":["barbell","squatRack","plyoBox"],"locations":["gym","home"],"alternatives":[["bodyweight-squat","noEquipmentVersion"],["goblet-squat","samePattern"]]},
   /* Zdroj: Box_Squat_with_Bands */
-  {"id":"band-resisted-barbell-box-squat","primary":"legs","secondary":["glutes","core"],"pattern":"squat","category":"strength","difficulty":"intermediate","equipment":["barbell","bands","squatRack","plyoBox"],"locations":["gym","home"],"alternatives":[["bodyweight-squat","noEquipmentVersion"],["goblet-squat","samePattern"]]},
+  {"id":"band-resisted-barbell-box-squat","primary":"thighs","secondary":["glutes","core"],"pattern":"squat","category":"strength","difficulty":"intermediate","equipment":["barbell","bands","squatRack","plyoBox"],"locations":["gym","home"],"alternatives":[["bodyweight-squat","noEquipmentVersion"],["goblet-squat","samePattern"]]},
   /* Zdroj: Cable_Chest_Press */
   {"id":"seated-cable-chest-press","primary":"chest","secondary":["triceps","shoulders"],"pattern":"pushH","category":"strength","difficulty":"beginner","equipment":["cableMachine","bench"],"locations":["gym"],"alternatives":[["push-up","samePattern"],["dumbbell-bench-press","similarPurpose"]]},
   /* Zdroj: Cable_Deadlifts */
-  {"id":"cable-deadlift","primary":"legs","secondary":["glutes","back","core"],"pattern":"hinge","category":"strength","difficulty":"intermediate","equipment":["cableMachine"],"locations":["gym"],"alternatives":[["romanian-deadlift","samePattern"],["dumbbell-romanian-deadlift","homeVersion"]]},
+  {"id":"cable-deadlift","primary":"thighs","secondary":["glutes","back","core"],"pattern":"hinge","category":"strength","difficulty":"intermediate","equipment":["cableMachine"],"locations":["gym"],"alternatives":[["romanian-deadlift","samePattern"],["dumbbell-romanian-deadlift","homeVersion"]]},
   /* Zdroj: Cable_Incline_Pushdown */
   {"id":"incline-bench-cable-pullover","primary":"back","secondary":["shoulders"],"pattern":"pullV","category":"strength","difficulty":"intermediate","equipment":["cableMachine","bench"],"locations":["gym"],"alternatives":[["dumbbell-pullover","samePrimaryOtherEquipment"],["cable-pullover","similarPurpose"]]},
   /* Zdroj: Cable_Incline_Triceps_Extension */
@@ -626,7 +627,7 @@ const EXERCISE_LIBRARY = [
   /* Zdroj: Cable_Wrist_Curl */
   {"id":"seated-cable-wrist-curl","primary":"arms","secondary":[],"pattern":"armIsolation","category":"strength","difficulty":"beginner","equipment":["cableMachine","bench"],"locations":["gym"],"alternatives":[["wrist-curl","similarPurpose"],["reverse-wrist-curl","similarPurpose"]]},
   /* Zdroj: Calf_Raises_-_With_Bands */
-  {"id":"band-calf-raise","primary":"legs","secondary":[],"pattern":"legIsolation","category":"strength","difficulty":"beginner","equipment":["bands"],"locations":["gym","home","outdoor"],"alternatives":[["calf-raises","similarPurpose"],["seated-calf-raise","similarPurpose"]]},
+  {"id":"band-calf-raise","primary":"calves","secondary":[],"pattern":"legIsolation","category":"strength","difficulty":"beginner","equipment":["bands"],"locations":["gym","home","outdoor"],"alternatives":[["calf-raises","similarPurpose"],["seated-calf-raise","similarPurpose"]]},
   /* Zdroj: Car_Drivers */
   {"id":"weight-plate-steering-rotation","primary":"shoulders","secondary":[],"pattern":"lateralRaise","category":"strength","difficulty":"beginner","equipment":["weightPlate"],"locations":["gym","home"],"alternatives":[["lateral-raises","similarPurpose"],["band-shoulder-press","similarPurpose"]]},
   /* Zdroj: Carioca_Quick_Step */
@@ -634,7 +635,7 @@ const EXERCISE_LIBRARY = [
   /* Zdroj: Catch_and_Overhead_Throw */
   {"id":"forward-overhead-medicine-ball-throw","primary":"shoulders","secondary":["triceps","core"],"pattern":"conditioning","category":"conditioning","difficulty":"intermediate","equipment":["medicineBall"],"locations":["gym","home"],"alternatives":[["medicine-ball-chest-pass","similarPurpose"],["medicine-ball-overhead-slam","similarPurpose"]]},
   /* Zdroj: Chair_Squat */
-  {"id":"smith-machine-chair-squat","primary":"legs","secondary":["glutes","core"],"pattern":"squat","category":"strength","difficulty":"beginner","equipment":["cableMachine"],"locations":["gym"],"alternatives":[["bodyweight-squat","noEquipmentVersion"],["goblet-squat","samePattern"]]},
+  {"id":"smith-machine-chair-squat","primary":"thighs","secondary":["glutes","core"],"pattern":"squat","category":"strength","difficulty":"beginner","equipment":["cableMachine"],"locations":["gym"],"alternatives":[["bodyweight-squat","noEquipmentVersion"],["goblet-squat","samePattern"]]},
   /* Zdroj: Clean */
   {"id":"barbell-squat-clean","primary":"legs","secondary":["glutes","shoulders","back","core"],"pattern":"hinge","category":"strength","difficulty":"advanced","equipment":["barbell"],"locations":["gym","home"],"alternatives":[["romanian-deadlift","samePattern"],["dumbbell-romanian-deadlift","homeVersion"]]},
   /* Zdroj: Clean_Pull */
@@ -654,7 +655,7 @@ const EXERCISE_LIBRARY = [
   /* Zdroj: Cuban_Press */
   {"id":"dumbbell-cuban-press","primary":"shoulders","secondary":["triceps","core"],"pattern":"pushV","category":"strength","difficulty":"intermediate","equipment":["dumbbells"],"locations":["gym","home"],"alternatives":[["standing-dumbbell-overhead-press","samePattern"],["pike-push-up","noEquipmentVersion"]]},
   /* Zdroj: Deadlift_with_Bands */
-  {"id":"band-resisted-barbell-deadlift","primary":"legs","secondary":["glutes","back","core"],"pattern":"hinge","category":"strength","difficulty":"advanced","equipment":["barbell","bands","squatRack"],"locations":["gym","home"],"alternatives":[["romanian-deadlift","samePattern"],["dumbbell-romanian-deadlift","homeVersion"]]},
+  {"id":"band-resisted-barbell-deadlift","primary":"thighs","secondary":["glutes","back","core"],"pattern":"hinge","category":"strength","difficulty":"advanced","equipment":["barbell","bands","squatRack"],"locations":["gym","home"],"alternatives":[["romanian-deadlift","samePattern"],["dumbbell-romanian-deadlift","homeVersion"]]},
   /* Zdroj: Decline_Crunch */
   {"id":"decline-bench-crunch","primary":"core","secondary":[],"pattern":"coreFlexion","category":"core","difficulty":"beginner","equipment":["bench"],"locations":["gym","home"],"alternatives":[["crunch","samePattern"],["reverse-crunch","similarPurpose"]]},
   /* Zdroj: Decline_Dumbbell_Bench_Press */
@@ -672,11 +673,11 @@ const EXERCISE_LIBRARY = [
   /* Zdroj: Decline_Smith_Press */
   {"id":"smith-machine-decline-bench-press","primary":"chest","secondary":["triceps","shoulders"],"pattern":"pushH","category":"strength","difficulty":"beginner","equipment":["cableMachine","bench"],"locations":["gym"],"alternatives":[["push-up","samePattern"],["dumbbell-bench-press","similarPurpose"]]},
   /* Zdroj: Deficit_Deadlift */
-  {"id":"deficit-barbell-deadlift","primary":"legs","secondary":["glutes","back","core"],"pattern":"hinge","category":"strength","difficulty":"advanced","equipment":["barbell","weightPlate"],"locations":["gym","home"],"alternatives":[["romanian-deadlift","samePattern"],["dumbbell-romanian-deadlift","homeVersion"]]},
+  {"id":"deficit-barbell-deadlift","primary":"thighs","secondary":["glutes","back","core"],"pattern":"hinge","category":"strength","difficulty":"advanced","equipment":["barbell","weightPlate"],"locations":["gym","home"],"alternatives":[["romanian-deadlift","samePattern"],["dumbbell-romanian-deadlift","homeVersion"]]},
   /* Zdroj: Depth_Jump_Leap */
   {"id":"depth-jump-to-box","primary":"legs","secondary":["glutes","core"],"pattern":"conditioning","category":"conditioning","difficulty":"advanced","equipment":["plyoBox"],"locations":["gym","home","outdoor"],"alternatives":[["burpee","similarPurpose"]]},
   /* Zdroj: Donkey_Calf_Raises */
-  {"id":"donkey-calf-raise-machine","primary":"legs","secondary":[],"pattern":"legIsolation","category":"strength","difficulty":"beginner","equipment":["cableMachine"],"locations":["gym"],"alternatives":[["calf-raises","similarPurpose"],["seated-calf-raise","similarPurpose"]]},
+  {"id":"donkey-calf-raise-machine","primary":"calves","secondary":[],"pattern":"legIsolation","category":"strength","difficulty":"beginner","equipment":["cableMachine"],"locations":["gym"],"alternatives":[["calf-raises","similarPurpose"],["seated-calf-raise","similarPurpose"]]},
   /* Zdroj: Double_Kettlebell_Jerk */
   {"id":"double-kettlebell-split-jerk","primary":"shoulders","secondary":["triceps","legs","glutes","core"],"pattern":"pushV","category":"strength","difficulty":"advanced","equipment":["kettlebells"],"locations":["gym","home"],"alternatives":[["standing-dumbbell-overhead-press","samePattern"],["pike-push-up","noEquipmentVersion"]]},
   /* Zdroj: Double_Kettlebell_Push_Press */
@@ -704,17 +705,17 @@ const EXERCISE_LIBRARY = [
   /* Zdroj: Dumbbell_One-Arm_Upright_Row */
   {"id":"single-arm-dumbbell-upright-row","primary":"shoulders","secondary":[],"pattern":"lateralRaise","category":"strength","difficulty":"intermediate","equipment":["dumbbells"],"locations":["gym","home"],"alternatives":[["lateral-raises","similarPurpose"],["band-shoulder-press","similarPurpose"]]},
   /* Zdroj: Dumbbell_Rear_Lunge */
-  {"id":"dumbbell-reverse-lunge","primary":"legs","secondary":["glutes","core"],"pattern":"lunge","category":"strength","difficulty":"intermediate","equipment":["dumbbells"],"locations":["gym","home"],"alternatives":[["reverse-lunge","samePattern"],["split-squat","similarPurpose"]]},
+  {"id":"dumbbell-reverse-lunge","primary":"thighs","secondary":["glutes","core"],"pattern":"lunge","category":"strength","difficulty":"intermediate","equipment":["dumbbells"],"locations":["gym","home"],"alternatives":[["reverse-lunge","samePattern"],["split-squat","similarPurpose"]]},
   /* Zdroj: Dumbbell_Scaption */
   {"id":"dumbbell-scaption-raise","primary":"shoulders","secondary":[],"pattern":"lateralRaise","category":"strength","difficulty":"beginner","equipment":["dumbbells"],"locations":["gym","home"],"alternatives":[["lateral-raises","similarPurpose"],["band-shoulder-press","similarPurpose"]]},
   /* Zdroj: Dumbbell_Seated_One-Leg_Calf_Raise */
-  {"id":"seated-single-leg-dumbbell-calf-raise","primary":"legs","secondary":[],"pattern":"legIsolation","category":"strength","difficulty":"beginner","equipment":["dumbbells","bench","plyoBox"],"locations":["gym","home"],"alternatives":[["calf-raises","similarPurpose"],["seated-calf-raise","similarPurpose"]]},
+  {"id":"seated-single-leg-dumbbell-calf-raise","primary":"calves","secondary":[],"pattern":"legIsolation","category":"strength","difficulty":"beginner","equipment":["dumbbells","bench","plyoBox"],"locations":["gym","home"],"alternatives":[["calf-raises","similarPurpose"],["seated-calf-raise","similarPurpose"]]},
   /* Zdroj: Dumbbell_Squat */
-  {"id":"dumbbell-suitcase-squat","primary":"legs","secondary":["glutes","core"],"pattern":"squat","category":"strength","difficulty":"beginner","equipment":["dumbbells"],"locations":["gym","home"],"alternatives":[["bodyweight-squat","noEquipmentVersion"],["goblet-squat","samePattern"]]},
+  {"id":"dumbbell-suitcase-squat","primary":"thighs","secondary":["glutes","core"],"pattern":"squat","category":"strength","difficulty":"beginner","equipment":["dumbbells"],"locations":["gym","home"],"alternatives":[["bodyweight-squat","noEquipmentVersion"],["goblet-squat","samePattern"]]},
   /* Zdroj: Dumbbell_Squat_To_A_Bench */
-  {"id":"dumbbell-bench-squat","primary":"legs","secondary":["glutes","core"],"pattern":"squat","category":"strength","difficulty":"beginner","equipment":["dumbbells","bench"],"locations":["gym","home"],"alternatives":[["bodyweight-squat","noEquipmentVersion"],["goblet-squat","samePattern"]]},
+  {"id":"dumbbell-bench-squat","primary":"thighs","secondary":["glutes","core"],"pattern":"squat","category":"strength","difficulty":"beginner","equipment":["dumbbells","bench"],"locations":["gym","home"],"alternatives":[["bodyweight-squat","noEquipmentVersion"],["goblet-squat","samePattern"]]},
   /* Zdroj: Elevated_Back_Lunge */
-  {"id":"deficit-barbell-reverse-lunge","primary":"legs","secondary":["glutes","core"],"pattern":"lunge","category":"strength","difficulty":"intermediate","equipment":["barbell","plyoBox","squatRack"],"locations":["gym","home"],"alternatives":[["reverse-lunge","samePattern"],["split-squat","similarPurpose"]]},
+  {"id":"deficit-barbell-reverse-lunge","primary":"thighs","secondary":["glutes","core"],"pattern":"lunge","category":"strength","difficulty":"intermediate","equipment":["barbell","plyoBox","squatRack"],"locations":["gym","home"],"alternatives":[["reverse-lunge","samePattern"],["split-squat","similarPurpose"]]},
   /* Zdroj: Elevated_Cable_Rows */
   {"id":"elevated-seat-cable-row","primary":"back","secondary":["biceps","shoulders"],"pattern":"pullH","category":"strength","difficulty":"intermediate","equipment":["cableMachine"],"locations":["gym"],"alternatives":[["dumbbell-row","samePattern"],["band-row","homeVersion"]]},
   /* Zdroj: Elliptical_Trainer */
@@ -744,7 +745,7 @@ const EXERCISE_LIBRARY = [
   /* Zdroj: Floor_Press */
   {"id":"barbell-floor-press","primary":"chest","secondary":["triceps","shoulders"],"pattern":"pushH","category":"strength","difficulty":"intermediate","equipment":["barbell","squatRack"],"locations":["gym","home"],"alternatives":[["push-up","samePattern"],["dumbbell-bench-press","similarPurpose"]]},
   /* Zdroj: Flutter_Kicks */
-  {"id":"prone-bench-flutter-kicks","primary":"glutes","secondary":["legs","back","core"],"pattern":"hinge","category":"strength","difficulty":"intermediate","equipment":["bench"],"locations":["gym","home"],"alternatives":[["glute-bridge","similarPurpose"],["romanian-deadlift","similarPurpose"]]},
+  {"id":"prone-bench-flutter-kicks","primary":"glutes","secondary":["thighs","back","core"],"pattern":"hinge","category":"strength","difficulty":"intermediate","equipment":["bench"],"locations":["gym","home"],"alternatives":[["glute-bridge","similarPurpose"],["romanian-deadlift","similarPurpose"]]},
   /* Zdroj: Forward_Drag_with_Press */
   {"id":"sled-drag-with-chest-press","primary":"legs","secondary":["glutes","core"],"pattern":"conditioning","category":"conditioning","difficulty":"intermediate","equipment":["sled"],"locations":["gym","outdoor"],"alternatives":[["backward-sled-drag","similarPurpose"],["forward-harness-sled-drag","similarPurpose"]]},
   /* Zdroj: Freehand_Jump_Squat */
@@ -752,7 +753,7 @@ const EXERCISE_LIBRARY = [
   /* Zdroj: Frog_Sit-Ups */
   {"id":"butterfly-sit-up","primary":"core","secondary":[],"pattern":"coreFlexion","category":"core","difficulty":"intermediate","equipment":["none"],"locations":["gym","home","outdoor"],"alternatives":[["crunch","samePattern"],["reverse-crunch","similarPurpose"]]},
   /* Zdroj: Front_Barbell_Squat_To_A_Bench */
-  {"id":"barbell-front-bench-squat","primary":"legs","secondary":["glutes","core"],"pattern":"squat","category":"strength","difficulty":"intermediate","equipment":["barbell","bench","squatRack"],"locations":["gym","home"],"alternatives":[["bodyweight-squat","noEquipmentVersion"],["goblet-squat","samePattern"]]},
+  {"id":"barbell-front-bench-squat","primary":"thighs","secondary":["glutes","core"],"pattern":"squat","category":"strength","difficulty":"intermediate","equipment":["barbell","bench","squatRack"],"locations":["gym","home"],"alternatives":[["bodyweight-squat","noEquipmentVersion"],["goblet-squat","samePattern"]]},
   /* Zdroj: Front_Box_Jump */
   {"id":"forward-box-jump","primary":"legs","secondary":["glutes","core"],"pattern":"conditioning","category":"conditioning","difficulty":"intermediate","equipment":["plyoBox"],"locations":["gym","home","outdoor"],"alternatives":[["bodyweight-squat-jump","similarPurpose"]]},
   /* Zdroj: Front_Cone_Hops_or_hurdle_hops */
@@ -762,17 +763,17 @@ const EXERCISE_LIBRARY = [
   /* Zdroj: Front_Plate_Raise */
   {"id":"weight-plate-front-raise","primary":"shoulders","secondary":[],"pattern":"lateralRaise","category":"strength","difficulty":"beginner","equipment":["weightPlate"],"locations":["gym","home"],"alternatives":[["lateral-raises","similarPurpose"],["band-shoulder-press","similarPurpose"]]},
   /* Zdroj: Front_Squats_With_Two_Kettlebells */
-  {"id":"double-kettlebell-front-squat","primary":"legs","secondary":["glutes","core"],"pattern":"squat","category":"strength","difficulty":"intermediate","equipment":["kettlebells"],"locations":["gym","home"],"alternatives":[["bodyweight-squat","noEquipmentVersion"],["goblet-squat","samePattern"]]},
+  {"id":"double-kettlebell-front-squat","primary":"thighs","secondary":["glutes","core"],"pattern":"squat","category":"strength","difficulty":"intermediate","equipment":["kettlebells"],"locations":["gym","home"],"alternatives":[["bodyweight-squat","noEquipmentVersion"],["goblet-squat","samePattern"]]},
   /* Zdroj: Full_Range-Of-Motion_Lat_Pulldown */
   {"id":"crossed-cable-arcing-pulldown","primary":"back","secondary":["biceps","shoulders"],"pattern":"pullV","category":"strength","difficulty":"intermediate","equipment":["cableMachine"],"locations":["gym"],"alternatives":[["pull-ups","samePattern"],["lat-pulldown","similarPurpose"]]},
   /* Zdroj: Gironda_Sternum_Chins */
   {"id":"sternum-chin-up","primary":"back","secondary":["biceps","shoulders"],"pattern":"pullV","category":"strength","difficulty":"advanced","equipment":["pullupBar"],"locations":["gym","home","outdoor"],"alternatives":[["pull-ups","samePattern"],["lat-pulldown","similarPurpose"]]},
   /* Zdroj: Glute_Ham_Raise */
-  {"id":"glute-ham-developer-raise","primary":"legs","secondary":["glutes"],"pattern":"legIsolation","category":"strength","difficulty":"intermediate","equipment":["ghdBench"],"locations":["gym"],"alternatives":[["lying-leg-curl","similarPurpose"],["seated-leg-curl","similarPurpose"]]},
+  {"id":"glute-ham-developer-raise","primary":"thighs","secondary":["glutes"],"pattern":"legIsolation","category":"strength","difficulty":"intermediate","equipment":["ghdBench"],"locations":["gym"],"alternatives":[["lying-leg-curl","similarPurpose"],["seated-leg-curl","similarPurpose"]]},
   /* Zdroj: Glute_Kickback */
   {"id":"quadruped-bent-knee-hip-extension","primary":"glutes","secondary":[],"pattern":"legIsolation","category":"strength","difficulty":"beginner","equipment":["none"],"locations":["gym","home","outdoor"],"alternatives":[["cable-glute-kickback","samePrimaryOtherEquipment"],["single-leg-glute-bridge","similarPurpose"]]},
   /* Zdroj: Good_Morning */
-  {"id":"barbell-good-morning","primary":"glutes","secondary":["legs","back","core"],"pattern":"hinge","category":"strength","difficulty":"intermediate","equipment":["barbell","squatRack"],"locations":["gym","home"],"alternatives":[["romanian-deadlift","similarPurpose"],["dumbbell-romanian-deadlift","similarPurpose"]]},
+  {"id":"barbell-good-morning","primary":"glutes","secondary":["thighs","back","core"],"pattern":"hinge","category":"strength","difficulty":"intermediate","equipment":["barbell","squatRack"],"locations":["gym","home"],"alternatives":[["romanian-deadlift","similarPurpose"],["dumbbell-romanian-deadlift","similarPurpose"]]},
   /* Zdroj: Gorilla_Chin_Crunch */
   {"id":"chin-up-with-knee-crunch","primary":"core","secondary":["back","biceps"],"pattern":"pullV","category":"core","difficulty":"intermediate","equipment":["pullupBar"],"locations":["gym","home","outdoor"],"alternatives":[["pull-ups","samePattern"],["lat-pulldown","similarPurpose"]]},
   /* Zdroj: Handstand_Push-Ups */
@@ -790,7 +791,7 @@ const EXERCISE_LIBRARY = [
   /* Zdroj: Hip_Flexion_with_Band */
   {"id":"standing-band-hip-flexion","primary":"legs","secondary":["core"],"pattern":"legIsolation","category":"strength","difficulty":"beginner","equipment":["bands"],"locations":["gym","home","outdoor"],"alternatives":[["wall-supported-running-knee-drive","similarPurpose"],["hanging-knee-raise","similarPurpose"]]},
   /* Zdroj: Hip_Lift_with_Band */
-  {"id":"band-resisted-glute-bridge","primary":"glutes","secondary":["legs","back","core"],"pattern":"hinge","category":"strength","difficulty":"beginner","equipment":["bands"],"locations":["gym","home","outdoor"],"alternatives":[["glute-bridge","similarPurpose"],["hip-thrust","similarPurpose"]]},
+  {"id":"band-resisted-glute-bridge","primary":"glutes","secondary":["thighs","back","core"],"pattern":"hinge","category":"strength","difficulty":"beginner","equipment":["bands"],"locations":["gym","home","outdoor"],"alternatives":[["glute-bridge","similarPurpose"],["hip-thrust","similarPurpose"]]},
   /* Zdroj: Hyperextensions_Back_Extensions */
   {"id":"roman-chair-back-extension","primary":"back","secondary":["glutes","legs"],"pattern":"backExtension","category":"strength","difficulty":"beginner","equipment":["backExtensionBench"],"locations":["gym","home"],"alternatives":[["superman","homeVersion"],["bird-dog","similarPurpose"]]},
   /* Zdroj: Hyperextensions_With_No_Hyperextension_Bench */
@@ -826,11 +827,11 @@ const EXERCISE_LIBRARY = [
   /* Zdroj: Kettlebell_Hang_Clean */
   {"id":"single-kettlebell-hang-clean","primary":"legs","secondary":["glutes","shoulders","back","core"],"pattern":"hinge","category":"strength","difficulty":"intermediate","equipment":["kettlebells"],"locations":["gym","home"],"alternatives":[["romanian-deadlift","samePattern"],["dumbbell-romanian-deadlift","homeVersion"]]},
   /* Zdroj: Kettlebell_One-Legged_Deadlift */
-  {"id":"single-leg-kettlebell-deadlift","primary":"glutes","secondary":["legs","back","core"],"pattern":"hinge","category":"strength","difficulty":"intermediate","equipment":["kettlebells"],"locations":["gym","home"],"alternatives":[["romanian-deadlift","similarPurpose"],["dumbbell-romanian-deadlift","similarPurpose"]]},
+  {"id":"single-leg-kettlebell-deadlift","primary":"glutes","secondary":["thighs","back","core"],"pattern":"hinge","category":"strength","difficulty":"intermediate","equipment":["kettlebells"],"locations":["gym","home"],"alternatives":[["romanian-deadlift","similarPurpose"],["dumbbell-romanian-deadlift","similarPurpose"]]},
   /* Zdroj: Kettlebell_Overhead_Triceps_Extension */
   {"id":"kettlebell-overhead-triceps-extension","primary":"triceps","secondary":[],"pattern":"armIsolation","category":"strength","difficulty":"intermediate","equipment":["kettlebells"],"locations":["gym","home"],"alternatives":[["lying-triceps-extension","similarPurpose"],["rope-triceps-pushdown","similarPurpose"]]},
   /* Zdroj: Kettlebell_Pistol_Squat */
-  {"id":"kettlebell-pistol-squat","primary":"legs","secondary":["glutes","core"],"pattern":"squat","category":"strength","difficulty":"advanced","equipment":["kettlebells"],"locations":["gym","home"],"alternatives":[["bodyweight-squat","noEquipmentVersion"],["goblet-squat","samePattern"]]},
+  {"id":"kettlebell-pistol-squat","primary":"thighs","secondary":["glutes","core"],"pattern":"squat","category":"strength","difficulty":"advanced","equipment":["kettlebells"],"locations":["gym","home"],"alternatives":[["bodyweight-squat","noEquipmentVersion"],["goblet-squat","samePattern"]]},
   /* Zdroj: Kettlebell_Seated_Press */
   {"id":"floor-seated-kettlebell-overhead-press","primary":"shoulders","secondary":["triceps","core"],"pattern":"pushV","category":"strength","difficulty":"intermediate","equipment":["kettlebells"],"locations":["gym","home"],"alternatives":[["standing-dumbbell-overhead-press","samePattern"],["pike-push-up","noEquipmentVersion"]]},
   /* Zdroj: Kettlebell_Sumo_High_Pull */
@@ -854,7 +855,7 @@ const EXERCISE_LIBRARY = [
   /* Zdroj: Kneeling_Single-Arm_High_Pulley_Row */
   {"id":"kneeling-single-arm-high-cable-row","primary":"back","secondary":["biceps","shoulders"],"pattern":"pullH","category":"strength","difficulty":"intermediate","equipment":["cableMachine"],"locations":["gym"],"alternatives":[["dumbbell-row","samePattern"],["band-row","homeVersion"]]},
   /* Zdroj: Kneeling_Squat */
-  {"id":"barbell-kneeling-squat","primary":"glutes","secondary":["legs","back","core"],"pattern":"hinge","category":"strength","difficulty":"intermediate","equipment":["barbell","squatRack"],"locations":["gym","home"],"alternatives":[["glute-bridge","similarPurpose"],["romanian-deadlift","similarPurpose"]]},
+  {"id":"barbell-kneeling-squat","primary":"glutes","secondary":["thighs","back","core"],"pattern":"hinge","category":"strength","difficulty":"intermediate","equipment":["barbell","squatRack"],"locations":["gym","home"],"alternatives":[["glute-bridge","similarPurpose"],["romanian-deadlift","similarPurpose"]]},
   /* Zdroj: Landmine_180s */
   {"id":"landmine-trunk-rotation","primary":"core","secondary":[],"pattern":"coreRotation","category":"core","difficulty":"intermediate","equipment":["barbell","landmine"],"locations":["gym","home"],"alternatives":[["cable-woodchop","samePattern"],["bicycle-crunch","similarPurpose"]]},
   /* Zdroj: Landmine_Linear_Jammer */
@@ -866,9 +867,9 @@ const EXERCISE_LIBRARY = [
   /* Zdroj: Lateral_Raise_-_With_Bands */
   {"id":"band-lateral-raise","primary":"shoulders","secondary":[],"pattern":"lateralRaise","category":"strength","difficulty":"beginner","equipment":["bands"],"locations":["gym","home","outdoor"],"alternatives":[["lateral-raises","similarPurpose"],["band-shoulder-press","similarPurpose"]]},
   /* Zdroj: Leg_Lift */
-  {"id":"supported-bodyweight-standing-leg-curl","primary":"legs","secondary":[],"pattern":"legIsolation","category":"strength","difficulty":"beginner","equipment":["none"],"locations":["gym","home","outdoor"],"alternatives":[["lying-leg-curl","similarPurpose"],["seated-leg-curl","similarPurpose"]]},
+  {"id":"supported-bodyweight-standing-leg-curl","primary":"thighs","secondary":[],"pattern":"legIsolation","category":"strength","difficulty":"beginner","equipment":["none"],"locations":["gym","home","outdoor"],"alternatives":[["lying-leg-curl","similarPurpose"],["seated-leg-curl","similarPurpose"]]},
   /* Zdroj: Leverage_Deadlift */
-  {"id":"lever-machine-deadlift","primary":"legs","secondary":["glutes","back","core"],"pattern":"hinge","category":"strength","difficulty":"beginner","equipment":["cableMachine"],"locations":["gym"],"alternatives":[["romanian-deadlift","samePattern"],["dumbbell-romanian-deadlift","homeVersion"]]},
+  {"id":"lever-machine-deadlift","primary":"thighs","secondary":["glutes","back","core"],"pattern":"hinge","category":"strength","difficulty":"beginner","equipment":["cableMachine"],"locations":["gym"],"alternatives":[["romanian-deadlift","samePattern"],["dumbbell-romanian-deadlift","homeVersion"]]},
   /* Zdroj: Leverage_Decline_Chest_Press */
   {"id":"decline-strength-machine-chest-press","primary":"chest","secondary":["triceps","shoulders"],"pattern":"pushH","category":"strength","difficulty":"beginner","equipment":["cableMachine"],"locations":["gym"],"alternatives":[["push-up","samePattern"],["dumbbell-bench-press","similarPurpose"]]},
   /* Zdroj: Leverage_Shrug */
@@ -878,7 +879,7 @@ const EXERCISE_LIBRARY = [
   /* Zdroj: Linear_Acceleration_Wall_Drill */
   {"id":"wall-supported-running-knee-drive","primary":"legs","secondary":["glutes","core"],"pattern":"conditioning","category":"conditioning","difficulty":"beginner","equipment":["none"],"locations":["gym","home","outdoor"],"alternatives":[["running-high-knees-in-place","similarPurpose"]]},
   /* Zdroj: Lunge_Pass_Through */
-  {"id":"kettlebell-lunge-pass-through","primary":"legs","secondary":["glutes","core"],"pattern":"lunge","category":"strength","difficulty":"intermediate","equipment":["kettlebells"],"locations":["gym","home"],"alternatives":[["reverse-lunge","samePattern"],["split-squat","similarPurpose"]]},
+  {"id":"kettlebell-lunge-pass-through","primary":"thighs","secondary":["glutes","core"],"pattern":"lunge","category":"strength","difficulty":"intermediate","equipment":["kettlebells"],"locations":["gym","home"],"alternatives":[["reverse-lunge","samePattern"],["split-squat","similarPurpose"]]},
   /* Zdroj: Lying_Cable_Curl */
   {"id":"supine-low-cable-biceps-curl","primary":"biceps","secondary":[],"pattern":"armIsolation","category":"strength","difficulty":"beginner","equipment":["cableMachine"],"locations":["gym"],"alternatives":[["barbell-curl","samePattern"],["band-bicep-curl","homeVersion"]]},
   /* Zdroj: Lying_T-Bar_Row */
@@ -888,7 +889,7 @@ const EXERCISE_LIBRARY = [
   /* Zdroj: Medicine_Ball_Full_Twist */
   {"id":"partner-medicine-ball-rotational-pass","primary":"core","secondary":["shoulders","glutes"],"pattern":"coreRotation","category":"core","difficulty":"intermediate","equipment":["medicineBall"],"locations":["gym","home"],"alternatives":[["cable-woodchop","samePattern"],["bicycle-crunch","similarPurpose"]]},
   /* Zdroj: Monster_Walk */
-  {"id":"banded-monster-walk","primary":"glutes","secondary":["core"],"pattern":"legIsolation","category":"strength","difficulty":"beginner","equipment":["bands"],"locations":["gym","home","outdoor"],"alternatives":[["cable-hip-abduction","samePrimaryOtherEquipment"],["abductor-machine","gymVersion"]]},
+  {"id":"banded-monster-walk","primary":"abductors","secondary":["glutes","core"],"pattern":"legIsolation","category":"strength","difficulty":"beginner","equipment":["bands"],"locations":["gym","home","outdoor"],"alternatives":[["cable-hip-abduction","samePrimaryOtherEquipment"],["abductor-machine","gymVersion"]]},
   /* Zdroj: Mountain_Climbers */
   {"id":"mountain-climber","primary":"legs","secondary":["core","shoulders"],"pattern":"conditioning","category":"conditioning","difficulty":"intermediate","equipment":["none"],"locations":["gym","home","outdoor"],"alternatives":[["burpee","similarPurpose"]]},
   /* Zdroj: Muscle_Snatch */
@@ -896,7 +897,7 @@ const EXERCISE_LIBRARY = [
   /* Zdroj: Muscle_Up */
   {"id":"strict-ring-muscle-up","primary":"back","secondary":["chest","triceps","biceps","shoulders","core"],"pattern":"pushV","category":"strength","difficulty":"advanced","equipment":["gymnasticRings"],"locations":["gym","home","outdoor"],"alternatives":[["pull-ups","similarPurpose"],["gymnastic-ring-dip","similarPurpose"]]},
   /* Zdroj: Natural_Glute_Ham_Raise */
-  {"id":"nordic-hamstring-curl","primary":"legs","secondary":["glutes"],"pattern":"legIsolation","category":"strength","difficulty":"advanced","equipment":["cableMachine"],"locations":["gym"],"alternatives":[["lying-leg-curl","similarPurpose"],["seated-leg-curl","similarPurpose"]]},
+  {"id":"nordic-hamstring-curl","primary":"thighs","secondary":["glutes"],"pattern":"legIsolation","category":"strength","difficulty":"advanced","equipment":["cableMachine"],"locations":["gym"],"alternatives":[["lying-leg-curl","similarPurpose"],["seated-leg-curl","similarPurpose"]]},
   /* Zdroj: Oblique_Crunches_-_On_The_Floor */
   {"id":"side-lying-oblique-crunch","primary":"core","secondary":[],"pattern":"coreLateral","category":"core","difficulty":"beginner","equipment":["none"],"locations":["gym","home","outdoor"],"alternatives":[["side-plank","similarPurpose"],["dumbbell-side-bend","samePattern"]]},
   /* Zdroj: One-Arm_Flat_Bench_Dumbbell_Flye */
@@ -922,27 +923,27 @@ const EXERCISE_LIBRARY = [
   /* Zdroj: One-Arm_Kettlebell_Snatch */
   {"id":"single-arm-kettlebell-snatch","primary":"legs","secondary":["glutes","shoulders","back","core"],"pattern":"hinge","category":"strength","difficulty":"advanced","equipment":["kettlebells"],"locations":["gym","home"],"alternatives":[["romanian-deadlift","samePattern"],["dumbbell-romanian-deadlift","homeVersion"]]},
   /* Zdroj: One-Arm_Kettlebell_Swings */
-  {"id":"single-arm-kettlebell-swing","primary":"glutes","secondary":["legs","back","core"],"pattern":"hinge","category":"strength","difficulty":"intermediate","equipment":["kettlebells"],"locations":["gym","home"],"alternatives":[["glute-bridge","similarPurpose"],["romanian-deadlift","similarPurpose"]]},
+  {"id":"single-arm-kettlebell-swing","primary":"glutes","secondary":["thighs","back","core"],"pattern":"hinge","category":"strength","difficulty":"intermediate","equipment":["kettlebells"],"locations":["gym","home"],"alternatives":[["glute-bridge","similarPurpose"],["romanian-deadlift","similarPurpose"]]},
   /* Zdroj: One-Arm_Medicine_Ball_Slam */
   {"id":"single-arm-medicine-ball-slam","primary":"core","secondary":["shoulders","glutes","legs"],"pattern":"conditioning","category":"conditioning","difficulty":"intermediate","equipment":["medicineBall"],"locations":["gym","home"],"alternatives":[["medicine-ball-chest-pass","similarPurpose"],["medicine-ball-overhead-slam","similarPurpose"]]},
   /* Zdroj: One-Arm_Overhead_Kettlebell_Squats */
-  {"id":"single-arm-kettlebell-overhead-squat","primary":"legs","secondary":["glutes","core"],"pattern":"squat","category":"strength","difficulty":"advanced","equipment":["kettlebells"],"locations":["gym","home"],"alternatives":[["bodyweight-squat","noEquipmentVersion"],["goblet-squat","samePattern"]]},
+  {"id":"single-arm-kettlebell-overhead-squat","primary":"thighs","secondary":["glutes","core"],"pattern":"squat","category":"strength","difficulty":"advanced","equipment":["kettlebells"],"locations":["gym","home"],"alternatives":[["bodyweight-squat","noEquipmentVersion"],["goblet-squat","samePattern"]]},
   /* Zdroj: One-Arm_Side_Deadlift */
-  {"id":"barbell-suitcase-deadlift","primary":"legs","secondary":["glutes","back","core"],"pattern":"hinge","category":"strength","difficulty":"advanced","equipment":["barbell"],"locations":["gym","home"],"alternatives":[["romanian-deadlift","samePattern"],["dumbbell-romanian-deadlift","homeVersion"]]},
+  {"id":"barbell-suitcase-deadlift","primary":"thighs","secondary":["glutes","back","core"],"pattern":"hinge","category":"strength","difficulty":"advanced","equipment":["barbell"],"locations":["gym","home"],"alternatives":[["romanian-deadlift","samePattern"],["dumbbell-romanian-deadlift","homeVersion"]]},
   /* Zdroj: One_Arm_Dumbbell_Bench_Press */
   {"id":"single-arm-dumbbell-bench-press","primary":"chest","secondary":["triceps","shoulders","core"],"pattern":"pushH","category":"strength","difficulty":"intermediate","equipment":["dumbbells","bench"],"locations":["gym","home"],"alternatives":[["push-up","samePattern"],["dumbbell-bench-press","similarPurpose"]]},
   /* Zdroj: One_Leg_Barbell_Squat */
-  {"id":"barbell-rear-foot-elevated-split-squat","primary":"legs","secondary":["glutes","core"],"pattern":"lunge","category":"strength","difficulty":"advanced","equipment":["barbell","bench","squatRack"],"locations":["gym","home"],"alternatives":[["reverse-lunge","samePattern"],["split-squat","similarPurpose"]]},
+  {"id":"barbell-rear-foot-elevated-split-squat","primary":"thighs","secondary":["glutes","core"],"pattern":"lunge","category":"strength","difficulty":"advanced","equipment":["barbell","bench","squatRack"],"locations":["gym","home"],"alternatives":[["reverse-lunge","samePattern"],["split-squat","similarPurpose"]]},
   /* Zdroj: Otis-Up */
   {"id":"weight-plate-sit-up-to-overhead-press","primary":"core","secondary":[],"pattern":"coreFlexion","category":"core","difficulty":"intermediate","equipment":["weightPlate"],"locations":["gym","home"],"alternatives":[["crunch","samePattern"],["reverse-crunch","similarPurpose"]]},
   /* Zdroj: Overhead_Slam */
   {"id":"medicine-ball-overhead-slam","primary":"core","secondary":["shoulders","glutes","legs"],"pattern":"conditioning","category":"conditioning","difficulty":"intermediate","equipment":["medicineBall"],"locations":["gym","home"],"alternatives":[["forward-overhead-medicine-ball-throw","similarPurpose"],["single-arm-medicine-ball-slam","similarPurpose"]]},
   /* Zdroj: Overhead_Squat */
-  {"id":"barbell-overhead-squat","primary":"legs","secondary":["glutes","core"],"pattern":"squat","category":"strength","difficulty":"advanced","equipment":["barbell","squatRack"],"locations":["gym","home"],"alternatives":[["bodyweight-squat","noEquipmentVersion"],["goblet-squat","samePattern"]]},
+  {"id":"barbell-overhead-squat","primary":"thighs","secondary":["glutes","core"],"pattern":"squat","category":"strength","difficulty":"advanced","equipment":["barbell","squatRack"],"locations":["gym","home"],"alternatives":[["bodyweight-squat","noEquipmentVersion"],["goblet-squat","samePattern"]]},
   /* Zdroj: Pallof_Press_With_Rotation */
   {"id":"cable-press-with-trunk-rotation","primary":"core","secondary":[],"pattern":"coreRotation","category":"core","difficulty":"intermediate","equipment":["cableMachine"],"locations":["gym"],"alternatives":[["cable-woodchop","samePattern"],["bicycle-crunch","similarPurpose"]]},
   /* Zdroj: Physioball_Hip_Bridge */
-  {"id":"stability-ball-hip-thrust","primary":"glutes","secondary":["legs","back","core"],"pattern":"hinge","category":"strength","difficulty":"intermediate","equipment":["stabilityBall"],"locations":["gym","home"],"alternatives":[["glute-bridge","similarPurpose"],["hip-thrust","similarPurpose"]]},
+  {"id":"stability-ball-hip-thrust","primary":"glutes","secondary":["thighs","back","core"],"pattern":"hinge","category":"strength","difficulty":"intermediate","equipment":["stabilityBall"],"locations":["gym","home"],"alternatives":[["glute-bridge","similarPurpose"],["hip-thrust","similarPurpose"]]},
   /* Zdroj: Pin_Presses */
   {"id":"dead-start-barbell-pin-press","primary":"chest","secondary":["triceps","shoulders"],"pattern":"pushH","category":"strength","difficulty":"advanced","equipment":["barbell","bench","squatRack"],"locations":["gym","home"],"alternatives":[["push-up","samePattern"],["dumbbell-bench-press","similarPurpose"]]},
   /* Zdroj: Plate_Pinch */
@@ -950,9 +951,9 @@ const EXERCISE_LIBRARY = [
   /* Zdroj: Plate_Twist */
   {"id":"weight-plate-russian-twist","primary":"core","secondary":[],"pattern":"coreRotation","category":"core","difficulty":"intermediate","equipment":["weightPlate"],"locations":["gym","home"],"alternatives":[["cable-woodchop","samePattern"],["bicycle-crunch","similarPurpose"]]},
   /* Zdroj: Platform_Hamstring_Slides */
-  {"id":"single-leg-sliding-hamstring-curl","primary":"legs","secondary":["glutes"],"pattern":"legIsolation","category":"strength","difficulty":"intermediate","equipment":["sliders"],"locations":["gym","home","outdoor"],"alternatives":[["lying-leg-curl","similarPurpose"],["seated-leg-curl","similarPurpose"]]},
+  {"id":"single-leg-sliding-hamstring-curl","primary":"thighs","secondary":["glutes"],"pattern":"legIsolation","category":"strength","difficulty":"intermediate","equipment":["sliders"],"locations":["gym","home","outdoor"],"alternatives":[["lying-leg-curl","similarPurpose"],["seated-leg-curl","similarPurpose"]]},
   /* Zdroj: Plie_Dumbbell_Squat */
-  {"id":"low-held-dumbbell-sumo-squat","primary":"legs","secondary":["glutes","core"],"pattern":"squat","category":"strength","difficulty":"intermediate","equipment":["dumbbells"],"locations":["gym","home"],"alternatives":[["bodyweight-squat","noEquipmentVersion"],["goblet-squat","samePattern"]]},
+  {"id":"low-held-dumbbell-sumo-squat","primary":"thighs","secondary":["glutes","core","adductors"],"pattern":"squat","category":"strength","difficulty":"intermediate","equipment":["dumbbells"],"locations":["gym","home"],"alternatives":[["bodyweight-squat","noEquipmentVersion"],["goblet-squat","samePattern"]]},
   /* Zdroj: Plyo_Push-up */
   {"id":"explosive-push-up","primary":"chest","secondary":["triceps","shoulders","core"],"pattern":"conditioning","category":"conditioning","difficulty":"advanced","equipment":["none"],"locations":["gym","home","outdoor"],"alternatives":[["burpee","similarPurpose"]]},
   /* Zdroj: Power_Clean */
@@ -980,7 +981,7 @@ const EXERCISE_LIBRARY = [
   /* Zdroj: Reverse_Band_Bench_Press */
   {"id":"band-assisted-barbell-bench-press","primary":"chest","secondary":["triceps","shoulders"],"pattern":"pushH","category":"strength","difficulty":"advanced","equipment":["barbell","bench","bands","squatRack"],"locations":["gym","home"],"alternatives":[["push-up","samePattern"],["dumbbell-bench-press","similarPurpose"]]},
   /* Zdroj: Reverse_Band_Deadlift */
-  {"id":"band-assisted-barbell-deadlift","primary":"legs","secondary":["glutes","back","core"],"pattern":"hinge","category":"strength","difficulty":"advanced","equipment":["barbell","bands","squatRack"],"locations":["gym","home"],"alternatives":[["romanian-deadlift","samePattern"],["dumbbell-romanian-deadlift","homeVersion"]]},
+  {"id":"band-assisted-barbell-deadlift","primary":"thighs","secondary":["glutes","back","core"],"pattern":"hinge","category":"strength","difficulty":"advanced","equipment":["barbell","bands","squatRack"],"locations":["gym","home"],"alternatives":[["romanian-deadlift","samePattern"],["dumbbell-romanian-deadlift","homeVersion"]]},
   /* Zdroj: Reverse_Barbell_Preacher_Curls */
   {"id":"reverse-ez-bar-preacher-curl","primary":"biceps","secondary":["arms"],"pattern":"armIsolation","category":"strength","difficulty":"beginner","equipment":["barbell","bench"],"locations":["gym","home"],"alternatives":[["barbell-curl","samePattern"],["band-bicep-curl","homeVersion"]]},
   /* Zdroj: Reverse_Cable_Curl */
@@ -990,7 +991,7 @@ const EXERCISE_LIBRARY = [
   /* Zdroj: Ring_Dips */
   {"id":"gymnastic-ring-dip","primary":"chest","secondary":["shoulders","triceps"],"pattern":"pushV","category":"strength","difficulty":"intermediate","equipment":["gymnasticRings"],"locations":["gym","home","outdoor"],"alternatives":[["standing-dumbbell-overhead-press","samePattern"],["pike-push-up","noEquipmentVersion"]]},
   /* Zdroj: Romanian_Deadlift_from_Deficit */
-  {"id":"deficit-barbell-romanian-deadlift","primary":"glutes","secondary":["legs","back","core"],"pattern":"hinge","category":"strength","difficulty":"advanced","equipment":["barbell","plyoBox"],"locations":["gym","home"],"alternatives":[["romanian-deadlift","similarPurpose"],["dumbbell-romanian-deadlift","similarPurpose"]]},
+  {"id":"deficit-barbell-romanian-deadlift","primary":"glutes","secondary":["thighs","back","core"],"pattern":"hinge","category":"strength","difficulty":"advanced","equipment":["barbell","plyoBox"],"locations":["gym","home"],"alternatives":[["romanian-deadlift","similarPurpose"],["dumbbell-romanian-deadlift","similarPurpose"]]},
   /* Zdroj: Rope_Climb */
   {"id":"rope-climb-with-foot-lock","primary":"back","secondary":["biceps","shoulders"],"pattern":"pullV","category":"strength","difficulty":"intermediate","equipment":["climbingRope"],"locations":["gym","outdoor"],"alternatives":[["pull-ups","samePattern"],["lat-pulldown","similarPurpose"]]},
   /* Zdroj: Rope_Jumping */
@@ -1004,7 +1005,7 @@ const EXERCISE_LIBRARY = [
   /* Zdroj: Scissors_Jump */
   {"id":"switching-jump-lunge","primary":"legs","secondary":["glutes","core"],"pattern":"conditioning","category":"conditioning","difficulty":"intermediate","equipment":["none"],"locations":["gym","home","outdoor"],"alternatives":[["burpee","similarPurpose"]]},
   /* Zdroj: Seated_Band_Hamstring_Curl */
-  {"id":"seated-band-leg-curl","primary":"legs","secondary":["glutes"],"pattern":"legIsolation","category":"strength","difficulty":"beginner","equipment":["bands","bench"],"locations":["gym","home"],"alternatives":[["lying-leg-curl","similarPurpose"],["seated-leg-curl","similarPurpose"]]},
+  {"id":"seated-band-leg-curl","primary":"thighs","secondary":["glutes"],"pattern":"legIsolation","category":"strength","difficulty":"beginner","equipment":["bands","bench"],"locations":["gym","home"],"alternatives":[["lying-leg-curl","similarPurpose"],["seated-leg-curl","similarPurpose"]]},
   /* Zdroj: Seated_Barbell_Military_Press */
   {"id":"seated-barbell-shoulder-press","primary":"shoulders","secondary":["triceps","core"],"pattern":"pushV","category":"strength","difficulty":"intermediate","equipment":["barbell","bench","squatRack"],"locations":["gym","home"],"alternatives":[["standing-dumbbell-overhead-press","samePattern"],["pike-push-up","noEquipmentVersion"]]},
   /* Zdroj: Seated_Barbell_Twist */
@@ -1016,7 +1017,7 @@ const EXERCISE_LIBRARY = [
   /* Zdroj: Seated_Dumbbell_Curl */
   {"id":"seated-dumbbell-biceps-curl","primary":"biceps","secondary":[],"pattern":"armIsolation","category":"strength","difficulty":"beginner","equipment":["dumbbells","bench"],"locations":["gym","home"],"alternatives":[["barbell-curl","samePattern"],["band-bicep-curl","homeVersion"]]},
   /* Zdroj: Seated_Good_Mornings */
-  {"id":"seated-barbell-good-morning","primary":"glutes","secondary":["legs","back","core"],"pattern":"hinge","category":"strength","difficulty":"intermediate","equipment":["barbell","squatRack","plyoBox"],"locations":["gym","home"],"alternatives":[["romanian-deadlift","similarPurpose"],["dumbbell-romanian-deadlift","similarPurpose"]]},
+  {"id":"seated-barbell-good-morning","primary":"glutes","secondary":["thighs","back","core"],"pattern":"hinge","category":"strength","difficulty":"intermediate","equipment":["barbell","squatRack","plyoBox"],"locations":["gym","home"],"alternatives":[["romanian-deadlift","similarPurpose"],["dumbbell-romanian-deadlift","similarPurpose"]]},
   /* Zdroj: Side_Hop-Sprint */
   {"id":"lateral-hurdle-hops-to-sprint","primary":"legs","secondary":["glutes","core"],"pattern":"conditioning","category":"conditioning","difficulty":"intermediate","equipment":["hurdles"],"locations":["gym","home","outdoor"],"alternatives":[["burpee","similarPurpose"]]},
   /* Zdroj: Side_Jackknife */
@@ -1032,11 +1033,11 @@ const EXERCISE_LIBRARY = [
   /* Zdroj: Single-Arm_Push-Up */
   {"id":"one-arm-floor-push-up","primary":"chest","secondary":["triceps","shoulders","core"],"pattern":"pushH","category":"strength","difficulty":"advanced","equipment":["none"],"locations":["gym","home","outdoor"],"alternatives":[["push-up","samePattern"],["dumbbell-bench-press","similarPurpose"]]},
   /* Zdroj: Single-Leg_High_Box_Squat */
-  {"id":"band-assisted-high-step-up","primary":"legs","secondary":["glutes","core"],"pattern":"lunge","category":"strength","difficulty":"beginner","equipment":["bands","plyoBox"],"locations":["gym","home","outdoor"],"alternatives":[["reverse-lunge","samePattern"],["split-squat","similarPurpose"]],"assisted":true},
+  {"id":"band-assisted-high-step-up","primary":"thighs","secondary":["glutes","core"],"pattern":"lunge","category":"strength","difficulty":"beginner","equipment":["bands","plyoBox"],"locations":["gym","home","outdoor"],"alternatives":[["reverse-lunge","samePattern"],["split-squat","similarPurpose"]],"assisted":true},
   /* Zdroj: Single-Leg_Lateral_Hop */
   {"id":"single-leg-lateral-hurdle-hop","primary":"legs","secondary":["glutes","core"],"pattern":"conditioning","category":"conditioning","difficulty":"intermediate","equipment":["hurdles"],"locations":["gym","home","outdoor"],"alternatives":[["burpee","similarPurpose"]]},
   /* Zdroj: Single-Leg_Leg_Extension */
-  {"id":"single-leg-machine-leg-extension","primary":"legs","secondary":[],"pattern":"legIsolation","category":"strength","difficulty":"beginner","equipment":["cableMachine"],"locations":["gym"],"alternatives":[["leg-extension","samePattern"],["bodyweight-squat","similarPurpose"]]},
+  {"id":"single-leg-machine-leg-extension","primary":"thighs","secondary":[],"pattern":"legIsolation","category":"strength","difficulty":"beginner","equipment":["cableMachine"],"locations":["gym"],"alternatives":[["leg-extension","samePattern"],["bodyweight-squat","similarPurpose"]]},
   /* Zdroj: Single_Leg_Butt_Kick */
   {"id":"single-leg-heel-tuck-jump","primary":"legs","secondary":["glutes","core"],"pattern":"conditioning","category":"conditioning","difficulty":"intermediate","equipment":["none"],"locations":["gym","home","outdoor"],"alternatives":[["burpee","similarPurpose"]]},
   /* Zdroj: Single_Leg_Push-off */
@@ -1052,7 +1053,7 @@ const EXERCISE_LIBRARY = [
   /* Zdroj: Smith_Machine_Bent_Over_Row */
   {"id":"smith-machine-bent-over-row","primary":"back","secondary":["biceps","shoulders"],"pattern":"pullH","category":"strength","difficulty":"beginner","equipment":["cableMachine"],"locations":["gym"],"alternatives":[["dumbbell-row","samePattern"],["band-row","homeVersion"]]},
   /* Zdroj: Smith_Machine_Calf_Raise */
-  {"id":"smith-machine-standing-calf-raise","primary":"legs","secondary":[],"pattern":"legIsolation","category":"strength","difficulty":"beginner","equipment":["cableMachine","plyoBox"],"locations":["gym"],"alternatives":[["calf-raises","similarPurpose"],["seated-calf-raise","similarPurpose"]]},
+  {"id":"smith-machine-standing-calf-raise","primary":"calves","secondary":[],"pattern":"legIsolation","category":"strength","difficulty":"beginner","equipment":["cableMachine","plyoBox"],"locations":["gym"],"alternatives":[["calf-raises","similarPurpose"],["seated-calf-raise","similarPurpose"]]},
   /* Zdroj: Smith_Machine_Close-Grip_Bench_Press */
   {"id":"smith-machine-close-grip-triceps-press","primary":"triceps","secondary":["chest","shoulders"],"pattern":"pushH","category":"strength","difficulty":"beginner","equipment":["cableMachine","bench"],"locations":["gym"],"alternatives":[["lying-triceps-extension","similarPurpose"],["rope-triceps-pushdown","similarPurpose"]]},
   /* Zdroj: Smith_Machine_Overhead_Shoulder_Press */
@@ -1060,7 +1061,7 @@ const EXERCISE_LIBRARY = [
   /* Zdroj: Smith_Machine_Reverse_Calf_Raises */
   {"id":"smith-machine-tibialis-raise","primary":"legs","secondary":[],"pattern":"legIsolation","category":"strength","difficulty":"beginner","equipment":["cableMachine","plyoBox"],"locations":["gym"],"alternatives":[["calf-raises","similarPurpose"]]},
   /* Zdroj: Smith_Machine_Stiff-Legged_Deadlift */
-  {"id":"smith-machine-romanian-deadlift","primary":"glutes","secondary":["legs","back","core"],"pattern":"hinge","category":"strength","difficulty":"beginner","equipment":["cableMachine"],"locations":["gym"],"alternatives":[["romanian-deadlift","similarPurpose"],["dumbbell-romanian-deadlift","similarPurpose"]]},
+  {"id":"smith-machine-romanian-deadlift","primary":"glutes","secondary":["thighs","back","core"],"pattern":"hinge","category":"strength","difficulty":"beginner","equipment":["cableMachine"],"locations":["gym"],"alternatives":[["romanian-deadlift","similarPurpose"],["dumbbell-romanian-deadlift","similarPurpose"]]},
   /* Zdroj: Smith_Machine_Upright_Row */
   {"id":"smith-machine-upright-row","primary":"shoulders","secondary":[],"pattern":"lateralRaise","category":"strength","difficulty":"beginner","equipment":["cableMachine"],"locations":["gym"],"alternatives":[["lateral-raises","similarPurpose"],["band-shoulder-press","similarPurpose"]]},
   /* Zdroj: Snatch */
@@ -1074,13 +1075,13 @@ const EXERCISE_LIBRARY = [
   /* Zdroj: Split_Jump */
   {"id":"non-switching-split-stance-jump","primary":"legs","secondary":["glutes","core"],"pattern":"conditioning","category":"conditioning","difficulty":"intermediate","equipment":["none"],"locations":["gym","home","outdoor"],"alternatives":[["burpee","similarPurpose"]]},
   /* Zdroj: Squat_with_Bands */
-  {"id":"band-resisted-barbell-back-squat","primary":"legs","secondary":["glutes","core"],"pattern":"squat","category":"strength","difficulty":"intermediate","equipment":["barbell","bands","squatRack"],"locations":["gym","home"],"alternatives":[["bodyweight-squat","noEquipmentVersion"],["goblet-squat","samePattern"]]},
+  {"id":"band-resisted-barbell-back-squat","primary":"thighs","secondary":["glutes","core"],"pattern":"squat","category":"strength","difficulty":"intermediate","equipment":["barbell","bands","squatRack"],"locations":["gym","home"],"alternatives":[["bodyweight-squat","noEquipmentVersion"],["goblet-squat","samePattern"]]},
   /* Zdroj: Squats_-_With_Bands */
-  {"id":"band-only-squat","primary":"legs","secondary":["glutes","core"],"pattern":"squat","category":"strength","difficulty":"beginner","equipment":["bands"],"locations":["gym","home","outdoor"],"alternatives":[["bodyweight-squat","noEquipmentVersion"],["goblet-squat","samePattern"]]},
+  {"id":"band-only-squat","primary":"thighs","secondary":["glutes","core"],"pattern":"squat","category":"strength","difficulty":"beginner","equipment":["bands"],"locations":["gym","home","outdoor"],"alternatives":[["bodyweight-squat","noEquipmentVersion"],["goblet-squat","samePattern"]]},
   /* Zdroj: Stairmaster */
   {"id":"stair-stepper","primary":"legs","secondary":["glutes","core"],"pattern":"conditioning","category":"conditioning","difficulty":"beginner","equipment":["cardioMachine"],"locations":["gym","home"],"alternatives":[["upright-stationary-cycling","similarPurpose"],["treadmill-walking","similarPurpose"]]},
   /* Zdroj: Standing_Barbell_Calf_Raise */
-  {"id":"standing-barbell-calf-raise","primary":"legs","secondary":[],"pattern":"legIsolation","category":"strength","difficulty":"intermediate","equipment":["barbell","squatRack"],"locations":["gym","home"],"alternatives":[["calf-raises","similarPurpose"],["seated-calf-raise","similarPurpose"]]},
+  {"id":"standing-barbell-calf-raise","primary":"calves","secondary":[],"pattern":"legIsolation","category":"strength","difficulty":"intermediate","equipment":["barbell","squatRack"],"locations":["gym","home"],"alternatives":[["calf-raises","similarPurpose"],["seated-calf-raise","similarPurpose"]]},
   /* Zdroj: Standing_Cable_Chest_Press */
   {"id":"standing-cable-chest-press","primary":"chest","secondary":["triceps","shoulders"],"pattern":"pushH","category":"strength","difficulty":"intermediate","equipment":["cableMachine"],"locations":["gym"],"alternatives":[["push-up","samePattern"],["dumbbell-bench-press","similarPurpose"]]},
   /* Zdroj: Standing_Cable_Lift */
@@ -1102,7 +1103,7 @@ const EXERCISE_LIBRARY = [
   /* Zdroj: Star_Jump */
   {"id":"airborne-star-jump","primary":"legs","secondary":["glutes","core"],"pattern":"conditioning","category":"conditioning","difficulty":"intermediate","equipment":["none"],"locations":["gym","home","outdoor"],"alternatives":[["burpee","similarPurpose"]]},
   /* Zdroj: Step-up_with_Knee_Raise */
-  {"id":"step-up-to-high-knee","primary":"legs","secondary":["glutes","core"],"pattern":"lunge","category":"strength","difficulty":"intermediate","equipment":["plyoBox"],"locations":["gym","home","outdoor"],"alternatives":[["reverse-lunge","samePattern"],["split-squat","similarPurpose"]]},
+  {"id":"step-up-to-high-knee","primary":"thighs","secondary":["glutes","core"],"pattern":"lunge","category":"strength","difficulty":"intermediate","equipment":["plyoBox"],"locations":["gym","home","outdoor"],"alternatives":[["reverse-lunge","samePattern"],["split-squat","similarPurpose"]]},
   /* Zdroj: Straight_Raises_on_Incline_Bench */
   {"id":"prone-incline-barbell-front-raise","primary":"shoulders","secondary":[],"pattern":"lateralRaise","category":"strength","difficulty":"intermediate","equipment":["barbell","bench"],"locations":["gym","home"],"alternatives":[["lateral-raises","similarPurpose"],["band-shoulder-press","similarPurpose"]]},
   /* Zdroj: Suspended_Fallout */
@@ -1112,13 +1113,13 @@ const EXERCISE_LIBRARY = [
   /* Zdroj: Suspended_Reverse_Crunch */
   {"id":"suspension-strap-knee-tuck","primary":"core","secondary":["shoulders"],"pattern":"coreAntiExtension","category":"core","difficulty":"intermediate","equipment":["suspensionTrainer"],"locations":["gym","home","outdoor"],"alternatives":[["plank","samePattern"],["dead-bug","easierVariation"]]},
   /* Zdroj: Suspended_Split_Squat */
-  {"id":"suspension-strap-rear-foot-split-squat","primary":"legs","secondary":["glutes","core"],"pattern":"lunge","category":"strength","difficulty":"intermediate","equipment":["suspensionTrainer"],"locations":["gym","home","outdoor"],"alternatives":[["reverse-lunge","samePattern"],["split-squat","similarPurpose"]]},
+  {"id":"suspension-strap-rear-foot-split-squat","primary":"thighs","secondary":["glutes","core"],"pattern":"lunge","category":"strength","difficulty":"intermediate","equipment":["suspensionTrainer"],"locations":["gym","home","outdoor"],"alternatives":[["reverse-lunge","samePattern"],["split-squat","similarPurpose"]]},
   /* Zdroj: Svend_Press */
   {"id":"standing-plate-squeeze-press","primary":"chest","secondary":["triceps","shoulders"],"pattern":"pushH","category":"strength","difficulty":"intermediate","equipment":["weightPlate"],"locations":["gym","home"],"alternatives":[["push-up","samePattern"],["dumbbell-bench-press","similarPurpose"]]},
   /* Zdroj: Tate_Press */
   {"id":"dumbbell-tate-triceps-press","primary":"triceps","secondary":[],"pattern":"armIsolation","category":"strength","difficulty":"intermediate","equipment":["dumbbells","bench"],"locations":["gym","home"],"alternatives":[["lying-triceps-extension","similarPurpose"],["rope-triceps-pushdown","similarPurpose"]]},
   /* Zdroj: Trap_Bar_Deadlift */
-  {"id":"trap-bar-deadlift","primary":"legs","secondary":["glutes","back","core"],"pattern":"hinge","category":"strength","difficulty":"intermediate","equipment":["trapBar"],"locations":["gym","home"],"alternatives":[["romanian-deadlift","samePattern"],["dumbbell-romanian-deadlift","homeVersion"]]},
+  {"id":"trap-bar-deadlift","primary":"thighs","secondary":["glutes","back","core"],"pattern":"hinge","category":"strength","difficulty":"intermediate","equipment":["trapBar"],"locations":["gym","home"],"alternatives":[["romanian-deadlift","samePattern"],["dumbbell-romanian-deadlift","homeVersion"]]},
   /* Zdroj: Two-Arm_Dumbbell_Preacher_Curl */
   {"id":"bilateral-dumbbell-preacher-curl","primary":"biceps","secondary":["arms"],"pattern":"armIsolation","category":"strength","difficulty":"beginner","equipment":["dumbbells","bench"],"locations":["gym","home"],"alternatives":[["barbell-curl","samePattern"],["band-bicep-curl","homeVersion"]]},
   /* Zdroj: Two-Arm_Kettlebell_Clean */
@@ -1140,13 +1141,13 @@ const EXERCISE_LIBRARY = [
   /* Zdroj: Weighted_Pull_Ups */
   {"id":"dip-belt-weighted-pull-up","primary":"back","secondary":["biceps","shoulders"],"pattern":"pullV","category":"strength","difficulty":"advanced","equipment":["dipBelt","weightPlate","pullupBar"],"locations":["gym","home"],"alternatives":[["pull-ups","samePattern"],["lat-pulldown","similarPurpose"]]},
   /* Zdroj: Weighted_Sissy_Squat */
-  {"id":"plate-loaded-supported-sissy-squat","primary":"legs","secondary":["glutes","core"],"pattern":"squat","category":"strength","difficulty":"advanced","equipment":["weightPlate","squatRack"],"locations":["gym","home"],"alternatives":[["bodyweight-squat","noEquipmentVersion"],["goblet-squat","samePattern"]]},
+  {"id":"plate-loaded-supported-sissy-squat","primary":"thighs","secondary":["glutes","core"],"pattern":"squat","category":"strength","difficulty":"advanced","equipment":["weightPlate","squatRack"],"locations":["gym","home"],"alternatives":[["bodyweight-squat","noEquipmentVersion"],["goblet-squat","samePattern"]]},
   /* Zdroj: Weighted_Sit-Ups_-_With_Bands */
   {"id":"band-resisted-decline-sit-up","primary":"core","secondary":[],"pattern":"coreFlexion","category":"core","difficulty":"intermediate","equipment":["bands","bench"],"locations":["gym","home"],"alternatives":[["crunch","samePattern"],["reverse-crunch","similarPurpose"]]},
   /* Zdroj: Wrist_Roller */
   {"id":"wrist-roller-curl","primary":"arms","secondary":[],"pattern":"armIsolation","category":"strength","difficulty":"intermediate","equipment":["wristRoller"],"locations":["gym","home"],"alternatives":[["wrist-curl","similarPurpose"],["reverse-wrist-curl","similarPurpose"]]},
   /* Zdroj: Zercher_Squats */
-  {"id":"barbell-zercher-squat","primary":"legs","secondary":["glutes","core"],"pattern":"squat","category":"strength","difficulty":"advanced","equipment":["barbell","squatRack"],"locations":["gym","home"],"alternatives":[["bodyweight-squat","noEquipmentVersion"],["goblet-squat","samePattern"]]},
+  {"id":"barbell-zercher-squat","primary":"thighs","secondary":["glutes","core"],"pattern":"squat","category":"strength","difficulty":"advanced","equipment":["barbell","squatRack"],"locations":["gym","home"],"alternatives":[["bodyweight-squat","noEquipmentVersion"],["goblet-squat","samePattern"]]},
   /* Zdroj: Zottman_Curl */
   {"id":"dumbbell-zottman-curl","primary":"biceps","secondary":["arms"],"pattern":"armIsolation","category":"strength","difficulty":"intermediate","equipment":["dumbbells"],"locations":["gym","home"],"alternatives":[["barbell-curl","samePattern"],["band-bicep-curl","homeVersion"]]},
   /* Zdroj: Zottman_Preacher_Curl */
@@ -1160,13 +1161,13 @@ const EXERCISE_LIBRARY = [
   /* Pôvodný opis Gym-Lift */
   {"id":"supine-hollow-body-hold","primary":"core","secondary":[],"pattern":"coreAntiExtension","category":"core","difficulty":"intermediate","equipment":["none"],"locations":["gym","home","outdoor"],"alternatives":[["dead-bug","easierVariation"],["plank","samePattern"]]},
   /* Pôvodný opis Gym-Lift */
-  {"id":"bench-supported-copenhagen-plank","primary":"core","secondary":["legs"],"pattern":"coreLateral","category":"core","difficulty":"advanced","equipment":["bench"],"locations":["gym","home"],"alternatives":[["side-plank","easierVariation"],["adductor-machine","similarPurpose"]]},
+  {"id":"bench-supported-copenhagen-plank","primary":"core","secondary":["adductors"],"pattern":"coreLateral","category":"core","difficulty":"advanced","equipment":["bench"],"locations":["gym","home"],"alternatives":[["side-plank","easierVariation"],["adductor-machine","similarPurpose"]]},
   /* Pôvodný opis Gym-Lift */
-  {"id":"wall-supported-squat-hold","primary":"legs","secondary":["glutes"],"pattern":"squat","category":"strength","difficulty":"beginner","equipment":["none"],"locations":["gym","home","outdoor"],"alternatives":[["bodyweight-squat","samePattern"],["leg-extension","similarPurpose"]]},
+  {"id":"wall-supported-squat-hold","primary":"thighs","secondary":["glutes"],"pattern":"squat","category":"strength","difficulty":"beginner","equipment":["none"],"locations":["gym","home","outdoor"],"alternatives":[["bodyweight-squat","samePattern"],["leg-extension","similarPurpose"]]},
   /* Pôvodný opis Gym-Lift */
   {"id":"single-arm-dumbbell-floor-press","primary":"chest","secondary":["triceps","shoulders","core"],"pattern":"pushH","category":"strength","difficulty":"intermediate","equipment":["dumbbells"],"locations":["gym","home"],"alternatives":[["dumbbell-floor-press","samePattern"],["single-arm-dumbbell-bench-press","samePattern"]]},
   /* Pôvodný opis Gym-Lift */
-  {"id":"unweighted-pistol-squat","primary":"legs","secondary":["glutes","core"],"pattern":"squat","category":"strength","difficulty":"advanced","equipment":["none"],"locations":["gym","home","outdoor"],"alternatives":[["kettlebell-pistol-squat","samePrimaryOtherEquipment"],["bulgarian-split-squat","similarPurpose"]]},
+  {"id":"unweighted-pistol-squat","primary":"thighs","secondary":["glutes","core"],"pattern":"squat","category":"strength","difficulty":"advanced","equipment":["none"],"locations":["gym","home","outdoor"],"alternatives":[["kettlebell-pistol-squat","samePrimaryOtherEquipment"],["bulgarian-split-squat","similarPurpose"]]},
   /* Pôvodný opis Gym-Lift */
   {"id":"side-plank-hip-lift","primary":"core","secondary":["glutes"],"pattern":"coreLateral","category":"core","difficulty":"intermediate","equipment":["none"],"locations":["gym","home","outdoor"],"alternatives":[["side-plank","easierVariation"],["dumbbell-side-bend","samePattern"]]},
   /* Pôvodný opis Gym-Lift */
@@ -1232,13 +1233,17 @@ function createExerciseMusclePicker(prefix, onChange) {
   const guide = document.createElement('details');
   guide.className = 'mu-guide';
   guide.innerHTML = '<summary>' + esc(t('muscles.guide')) + '</summary><p class="card-note">'
-    + esc(t('muscles.anatomyHint')) + '</p><p class="card-note">' + esc(t('muscles.armsNote')) + '</p>';
-  box.append(label, primarySelect, helpers, guide);
+    + esc(t('muscles.anatomyHint')) + '</p><p class="card-note">' + esc(t('muscles.armsNote')) + '</p><p class="card-note">' + esc(t('muscles.legsNote')) + '</p>';
+  const compatibility = document.createElement('p');
+  compatibility.className = 'card-note';
+  compatibility.textContent = t('muscles.deviceCompatibility');
+  box.append(label, primarySelect, helpers, compatibility, guide);
   const read = () => cleanExerciseMuscles({ primary: primarySelect.value,
     secondary: Array.from(helpers.querySelectorAll('input:checked'), input => input.dataset.muscle) });
   const setValue = (raw) => {
     const meta = cleanExerciseMuscles(raw);
     primarySelect.value = meta ? meta.primary : '';
+    compatibility.hidden = !meta || ![meta.primary, ...meta.secondary].some(m => LEG_DETAIL_CODES.includes(m));
     helpers.querySelectorAll('input').forEach(input => {
       input.disabled = !meta || meta.primary === 'other' || input.dataset.muscle === meta.primary;
       input.checked = !!meta && meta.secondary.includes(input.dataset.muscle);
@@ -1251,14 +1256,35 @@ function createExerciseMusclePicker(prefix, onChange) {
   return { box, primarySelect, helpers, read, setValue };
 }
 
+/* Nové historické snímky nesú aj zachované cx-id; staré záznamy používajú pôvodnú identitu z názvu. */
+function muscleExerciseIdentity(ex) {
+  const id = ex && (ex.customId || ex.id);
+  return typeof id === 'string' && id.startsWith('cx-') ? id : exerciseIdentity({ name: ex && ex.name });
+}
+
 /* Výslovná voľba má prednosť pred odhadom z názvu; staré záznamy sa nikdy neprepisujú. */
 function assignedExerciseMuscles(ex) {
   if (!ex || typeof ex !== 'object') return null;
   const own = cleanExerciseMuscles(ex.muscles);
   if (own) return own;
-  const identity = typeof ex.id === 'string' && ex.id.startsWith('cx-') ? ex.id : exerciseIdentity({ name: ex.name });
+  const identity = muscleExerciseIdentity(ex);
   const memory = identity && state && state.settings && state.settings.exerciseMemory;
   return cleanExerciseMuscles(memory && memory[identity] && memory[identity].muscles);
+}
+
+/* Rovnaký názov nestačí, ak používateľ zachoval dve rozdielne cx-id. */
+function customExerciseNameMatch(name) {
+  const normalized = exerciseNormName({ name });
+  let match = null;
+  for (const plan of Object.values(state.plans || {})) {
+    if (!plan || !Array.isArray(plan.exercises)) continue;
+    for (const row of plan.exercises) {
+      if (builtinExerciseId(row) || exerciseNormName(row) !== normalized) continue;
+      if (match && exerciseRowIdentity(match) !== exerciseRowIdentity(row)) return { row: null, ambiguous: true };
+      if (!match) match = row;
+    }
+  }
+  return { row: match, ambiguous: false };
 }
 
 /* ---------- Knižnica: prístup a filtrovanie (jazykovo nezávislé kódy) ---------- */
@@ -1307,8 +1333,9 @@ function fullBodySpread(list) {
   const seen = new Set();
   for (const entry of list) {
     if (entry.primary === 'core') continue;   // stred tela má vlastnú skupinu nižšie
-    if (seen.has(entry.primary)) continue;
-    seen.add(entry.primary);
+    const bucket = LEG_DETAIL_CODES.includes(entry.primary) ? 'legs' : entry.primary;
+    if (seen.has(bucket)) continue;
+    seen.add(bucket);
     out.push(entry);
   }
   const core = list.find((e) => e.primary === 'core');
@@ -3026,8 +3053,12 @@ const I18N = {
     "muscles.guide": "Sprievodca svalmi",
     "muscles.anatomyHint": "Biceps je vpredu na nadlaktí, triceps vzadu. Ramená zahŕňajú zaoblené deltové svaly aj menšie svaly, ktoré otáčajú a stabilizujú ramenný kĺb a lopatku. Zvýraznená oblasť je orientačná, nie presné zobrazenie každého svalu.",
     "muscles.armsNote": "Ruky zachovávajú všeobecné alebo staršie zaradenia bez rozlíšenia bicepsu a tricepsu. Série ostanú v zozname; mapa nehádá, ktorý sval pracoval.",
-    "muscles.frontNote": "Pohľad spredu. Chrbát a zadok sa na tomto obrázku nezobrazujú; ich tréning ostáva započítaný v zozname nižšie.",
+    "muscles.frontNote": "Pohľad spredu zobrazuje stehná a lýtka. Chrbát, zadok, abduktory a adduktory bedra aj všeobecné Ruky/Nohy ostávajú započítané v zozname; mapa ich neodhaduje.",
     'muscle.legs': 'Nohy', 'muscle.glutes': 'Zadok', 'muscle.core': 'Stred tela', 'muscle.fullBody': 'Celé telo',
+    'muscle.thighs': 'Stehná', 'muscle.calves': 'Lýtka', 'muscle.abductors': 'Abduktory bedra', 'muscle.adductors': 'Adduktory bedra',
+    'muscles.legsNote': 'Stehná zahŕňajú prednú aj zadnú stranu hornej časti nohy, lýtka zadnú stranu predkolenia. Abduktory bedra pohybujú nohou von, adduktory dnu. Zadok je samostatná skupina. Staršie všeobecné Nohy sa nerozdeľujú odhadom; zostávajú v zozname.',
+    'muscles.deviceCompatibility': 'Pred použitím nových svalových skupín aktualizuj GymLift na všetkých zariadeniach. Staršie verzie ich nerozpoznajú.',
+    'muscles.ambiguousCustom': 'Tento názov patrí viacerým uloženým cvikom. Spusti zamýšľaný cvik z jeho tréningového plánu, aby sa zachovalo správne zaradenie svalov.',
 
     'equip.none': 'Bez náčinia', 'equip.bands': 'Gumy', 'equip.dumbbells': 'Jednoručky',
     'equip.pullupBar': 'Hrazda (alebo bradlá)', 'equip.bench': 'Nastaviteľná lavica',
@@ -4423,8 +4454,12 @@ const I18N = {
     "muscles.guide": "Muscle guide",
     "muscles.anatomyHint": "Biceps are at the front of your upper arms; triceps are at the back. The Shoulders group includes the rounded deltoids and smaller muscles that rotate and stabilize the shoulder joint and shoulder blade. The highlighted region is approximate, not a drawing of every individual muscle.",
     "muscles.armsNote": "Arms keeps general or older assignments that do not specify biceps or triceps. These sets stay in the list; the diagram does not guess which muscle they trained.",
-    "muscles.frontNote": "Front view. Back and glutes are not visible in this picture; their training is still counted in the list below.",
+    "muscles.frontNote": "Front view shows thighs and calves. Back, Glutes, Hip abductors/adductors and general Arms/Legs remain counted in the list; the map does not guess their regions.",
     'muscle.legs': 'Legs', 'muscle.glutes': 'Glutes', 'muscle.core': 'Core', 'muscle.fullBody': 'Full body',
+    'muscle.thighs': 'Thighs', 'muscle.calves': 'Calves', 'muscle.abductors': 'Hip abductors', 'muscle.adductors': 'Hip adductors',
+    'muscles.legsNote': 'Thighs includes the front and back of the upper leg; calves are at the back of the lower leg. Hip abductors move the leg outward; hip adductors move it inward. Glutes are separate. Older general Legs assignments are not split by guesswork; they stay in the list.',
+    'muscles.deviceCompatibility': 'Update GymLift on all your devices before using the new muscle groups. Older versions do not recognize them.',
+    'muscles.ambiguousCustom': 'Several saved exercises share this name. Start the intended exercise from its workout plan to keep the correct muscle assignment.',
 
     'equip.none': 'No equipment', 'equip.bands': 'Resistance bands', 'equip.dumbbells': 'Dumbbells',
     'equip.pullupBar': 'Pull-up bar (or dip bars)', 'equip.bench': 'Adjustable bench',
@@ -5814,8 +5849,12 @@ const I18N = {
     "muscles.guide": "Guía muscular",
     "muscles.anatomyHint": "Los bíceps están delante del brazo y los tríceps detrás. La categoría Hombros incluye los deltoides redondeados y los músculos pequeños que rotan y estabilizan la articulación y la escápula. La zona resaltada es orientativa, no un dibujo exacto de cada músculo.",
     "muscles.armsNote": "Brazos conserva las asignaciones generales o antiguas sin distinguir bíceps y tríceps. Las series siguen en la lista; el mapa no adivina qué músculo trabajaron.",
-    "muscles.frontNote": "Vista frontal. La espalda y los glúteos no se ven en esta imagen; su entrenamiento sigue contado en la lista inferior.",
+    "muscles.frontNote": "La vista frontal muestra muslos y pantorrillas. Espalda, glúteos, abductores/aductores de cadera y brazos/piernas generales siguen contándose en la lista; el mapa no adivina sus zonas.",
     'muscle.legs': 'Piernas', 'muscle.glutes': 'Glúteos', 'muscle.core': 'Core', 'muscle.fullBody': 'Cuerpo completo',
+    'muscle.thighs': 'Muslos', 'muscle.calves': 'Pantorrillas', 'muscle.abductors': 'Abductores de cadera', 'muscle.adductors': 'Aductores de cadera',
+    'muscles.legsNote': 'Muslos incluye la parte delantera y trasera de la zona superior de la pierna; las pantorrillas están detrás de la zona inferior. Los abductores de cadera alejan la pierna y los aductores la acercan. Los glúteos son independientes. Las asignaciones generales antiguas de Piernas se conservan en la lista sin dividirlas por suposición.',
+    'muscles.deviceCompatibility': 'Actualiza GymLift en todos tus dispositivos antes de usar los nuevos grupos musculares. Las versiones antiguas no los reconocen.',
+    'muscles.ambiguousCustom': 'Varios ejercicios guardados comparten este nombre. Inicia el ejercicio deseado desde su plan para conservar la asignación muscular correcta.',
 
     'equip.none': 'Sin equipo', 'equip.bands': 'Bandas elásticas', 'equip.dumbbells': 'Mancuernas',
     'equip.pullupBar': 'Barra de dominadas (o paralelas)', 'equip.bench': 'Banco ajustable',
@@ -7203,8 +7242,12 @@ const I18N = {
     "muscles.guide": "Guia dos músculos",
     "muscles.anatomyHint": "Os bíceps ficam na frente dos braços e os tríceps atrás. O grupo Ombros inclui os deltoides arredondados e os músculos menores que giram e estabilizam a articulação e a escápula. A região destacada é aproximada, não um desenho exato de cada músculo.",
     "muscles.armsNote": "Braços mantém as classificações gerais ou antigas que não distinguem bíceps e tríceps. As séries ficam na lista; o mapa não adivinha qual músculo foi treinado.",
-    "muscles.frontNote": "Vista frontal. Costas e glúteos não aparecem nesta imagem; o treino deles continua contado na lista abaixo.",
+    "muscles.frontNote": "A vista frontal mostra coxas e panturrilhas. Costas, glúteos, abdutores/adutores do quadril e braços/pernas gerais continuam contados na lista; o mapa não adivinha as regiões.",
     'muscle.legs': 'Pernas', 'muscle.glutes': 'Glúteos', 'muscle.core': 'Centro do corpo', 'muscle.fullBody': 'Corpo inteiro',
+    'muscle.thighs': 'Coxas', 'muscle.calves': 'Panturrilhas', 'muscle.abductors': 'Abdutores do quadril', 'muscle.adductors': 'Adutores do quadril',
+    'muscles.legsNote': 'Coxas inclui a frente e a parte de trás da região superior da perna; as panturrilhas ficam atrás da região inferior. Os abdutores do quadril afastam a perna e os adutores a aproximam. Glúteos são separados. Classificações gerais antigas de Pernas ficam na lista, sem divisão por suposição.',
+    'muscles.deviceCompatibility': 'Atualize o GymLift em todos os seus dispositivos antes de usar os novos grupos musculares. Versões antigas não os reconhecem.',
+    'muscles.ambiguousCustom': 'Vários exercícios salvos têm este nome. Inicie o exercício desejado pelo seu plano para manter a classificação muscular correta.',
 
     'equip.none': 'Sem equipamento', 'equip.bands': 'Faixas elásticas', 'equip.dumbbells': 'Halteres',
     'equip.pullupBar': 'Barra fixa (ou barras paralelas)', 'equip.bench': 'Banco ajustável',
@@ -8592,8 +8635,12 @@ const I18N = {
     "muscles.guide": "Guide des muscles",
     "muscles.anatomyHint": "Les biceps sont à l’avant des bras, les triceps à l’arrière. Le groupe Épaules comprend les deltoïdes arrondis et les petits muscles qui font tourner et stabilisent l’articulation et l’omoplate. La zone colorée est indicative, pas un dessin exact de chaque muscle.",
     "muscles.armsNote": "Bras conserve les classements généraux ou anciens sans distinction entre biceps et triceps. Les séries restent dans la liste ; la carte ne devine pas quel muscle a travaillé.",
-    "muscles.frontNote": "Vue de face. Le dos et les fessiers ne sont pas visibles sur cette image ; leur travail reste comptabilisé dans la liste ci-dessous.",
+    "muscles.frontNote": "La vue de face montre cuisses et mollets. Dos, fessiers, abducteurs/adducteurs de hanche et bras/jambes généraux restent comptés dans la liste ; la carte ne devine pas leurs zones.",
     'muscle.legs': 'Jambes', 'muscle.glutes': 'Fessiers', 'muscle.core': 'Gainage', 'muscle.fullBody': 'Corps entier',
+    'muscle.thighs': 'Cuisses', 'muscle.calves': 'Mollets', 'muscle.abductors': 'Abducteurs de hanche', 'muscle.adductors': 'Adducteurs de hanche',
+    'muscles.legsNote': 'Cuisses comprend les muscles avant et arrière du haut de la jambe ; les mollets sont derrière le bas de la jambe. Les abducteurs de hanche écartent la jambe, les adducteurs la rapprochent. Les fessiers restent séparés. Les anciens classements généraux Jambes restent dans la liste, sans répartition supposée.',
+    'muscles.deviceCompatibility': 'Mettez GymLift à jour sur tous vos appareils avant d’utiliser les nouveaux groupes musculaires. Les anciennes versions ne les reconnaissent pas.',
+    'muscles.ambiguousCustom': 'Plusieurs exercices enregistrés portent ce nom. Lancez l’exercice voulu depuis son programme pour conserver le bon classement musculaire.',
 
     'equip.none': 'Sans matériel', 'equip.bands': 'Élastiques', 'equip.dumbbells': 'Haltères',
     'equip.pullupBar': 'Barre de traction (ou barres parallèles)', 'equip.bench': 'Banc réglable',
@@ -10002,8 +10049,12 @@ const I18N = {
     "muscles.guide": "دليل العضلات",
     "muscles.anatomyHint": "تقع البايسبس في مقدمة أعلى الذراع والترايسبس في الخلف. تشمل مجموعة الكتفين العضلات الدالية المستديرة والعضلات الصغيرة التي تدير مفصل الكتف ولوح الكتف وتثبتهما. المنطقة المظللة تقريبية ولا تمثل رسماً دقيقاً لكل عضلة.",
     "muscles.armsNote": "تحتفظ فئة الذراعين بالتصنيفات العامة أو القديمة التي لا تميّز البايسبس والترايسبس. تبقى المجموعات في القائمة، ولا تخمّن الخريطة العضلة التي تدربت.",
-    "muscles.frontNote": "منظر أمامي. لا تظهر عضلات الظهر والأرداف في هذه الصورة، لكن تدريبها يبقى محسوبًا في القائمة أدناه.",
+    "muscles.frontNote": "يُظهر المنظر الأمامي الفخذين وعضلات الربلة. يبقى الظهر والأرداف ومبعدات ومقربات الورك وتصنيفا الذراعين والساقين العامان محسوبين في القائمة دون تخمين مناطقهم على الخريطة.",
     'muscle.legs': 'الساقان', 'muscle.glutes': 'الأرداف', 'muscle.core': 'منتصف الجسم', 'muscle.fullBody': 'الجسم كامل',
+    'muscle.thighs': 'عضلات الفخذ', 'muscle.calves': 'عضلات الربلة', 'muscle.abductors': 'مبعدات الورك', 'muscle.adductors': 'مقربات الورك',
+    'muscles.legsNote': 'تشمل عضلات الفخذ مقدمة أعلى الساق وخلفه، وتقع عضلات الربلة خلف أسفل الساق. تحرك مبعدات الورك الساق إلى الخارج والمقربات إلى الداخل. تبقى الأرداف مجموعة مستقلة. لا تُقسّم تصنيفات الساقين العامة القديمة بالتخمين؛ بل تبقى في القائمة.',
+    'muscles.deviceCompatibility': 'حدّث GymLift على جميع أجهزتك قبل استخدام المجموعات العضلية الجديدة. الإصدارات القديمة لا تتعرف عليها.',
+    'muscles.ambiguousCustom': 'تحمل عدة تمارين محفوظة هذا الاسم. ابدأ التمرين المقصود من خطته للحفاظ على التصنيف العضلي الصحيح.',
 
     'equip.none': 'بدون أدوات', 'equip.bands': 'أشرطة مقاومة', 'equip.dumbbells': 'دمبل',
     'equip.pullupBar': 'عقلة (أو متوازي)', 'equip.bench': 'مقعد قابل للتعديل',
@@ -19860,6 +19911,10 @@ const WORKOUT_PHASE_I18N = {
     "phase.totalBounds": "The complete sequence must not exceed 24 hours (86400 seconds).",
     "phase.invalidConfiguration": "Check the work time, rest time, number of periods and total duration before starting.",
     "phase.legacyTitle": "Light practice sets",
+    "phase.manage": "Manage",
+    "phase.legacyProgress": "{done}/{total} done",
+    "phase.legacyOptional": "Optional",
+    "phase.legacyAbout": "About practice sets",
     "phase.legacyHelp": "Your existing exercise-specific warm-up rows and ramp controls are here. They remain separate from the optional phase timer.",
     "phase.legacyTarget": "Choose the exercise for light practice sets",
     "phase.legacyRamp": "Generate progressive warm-up rows",
@@ -19962,6 +20017,10 @@ const WORKOUT_PHASE_I18N = {
     "phase.totalBounds": "Celá sekvencia nesmie presiahnuť 24 hodín (86400 sekúnd).",
     "phase.invalidConfiguration": "Pred spustením skontroluj čas aktivity, odpočinku, počet úsekov a celkové trvanie.",
     "phase.legacyTitle": "Ľahké prípravné série",
+    "phase.manage": "Spravovať",
+    "phase.legacyProgress": "{done}/{total} hotové",
+    "phase.legacyOptional": "Voliteľné",
+    "phase.legacyAbout": "O prípravných sériách",
     "phase.legacyHelp": "Tu sú tvoje pôvodné rozcvičovacie riadky pre jednotlivé cviky a ovládanie postupného zvyšovania záťaže. Sú oddelené od voliteľného časovača fázy.",
     "phase.legacyTarget": "Vybrať cvik pre ľahké prípravné série",
     "phase.legacyRamp": "Vytvoriť rozcvičovacie riadky s postupným zvyšovaním záťaže",
@@ -20064,6 +20123,10 @@ const WORKOUT_PHASE_I18N = {
     "phase.totalBounds": "La secuencia completa no puede superar las 24 horas (86400 segundos).",
     "phase.invalidConfiguration": "Revisa los tiempos de actividad y descanso, el número de períodos y la duración total antes de empezar.",
     "phase.legacyTitle": "Series ligeras de preparación",
+    "phase.manage": "Gestionar",
+    "phase.legacyProgress": "{done}/{total} completadas",
+    "phase.legacyOptional": "Opcional",
+    "phase.legacyAbout": "Acerca de las series de preparación",
     "phase.legacyHelp": "Aquí están tus filas de calentamiento por ejercicio y los controles de progresión de carga existentes. Siguen separados del temporizador de fase opcional.",
     "phase.legacyTarget": "Elegir ejercicio para las series ligeras de preparación",
     "phase.legacyRamp": "Generar filas de calentamiento con carga progresiva",
@@ -20166,6 +20229,10 @@ const WORKOUT_PHASE_I18N = {
     "phase.totalBounds": "A sequência completa não pode ultrapassar 24 horas (86400 segundos).",
     "phase.invalidConfiguration": "Confira os tempos de atividade e descanso, o número de períodos e a duração total antes de iniciar.",
     "phase.legacyTitle": "Séries leves de preparação",
+    "phase.manage": "Gerenciar",
+    "phase.legacyProgress": "{done}/{total} concluídas",
+    "phase.legacyOptional": "Opcional",
+    "phase.legacyAbout": "Sobre as séries de preparação",
     "phase.legacyHelp": "Suas linhas de aquecimento por exercício e os controles de progressão de carga existentes estão aqui. Continuam separados do cronômetro opcional da fase.",
     "phase.legacyTarget": "Escolher exercício para as séries leves de preparação",
     "phase.legacyRamp": "Gerar linhas de aquecimento com carga progressiva",
@@ -20268,6 +20335,10 @@ const WORKOUT_PHASE_I18N = {
     "phase.totalBounds": "La séquence complète ne doit pas dépasser 24 heures (86400 secondes).",
     "phase.invalidConfiguration": "Vérifiez les durées d’activité et de repos, le nombre de périodes et la durée totale avant de démarrer.",
     "phase.legacyTitle": "Séries légères de préparation",
+    "phase.manage": "Gérer",
+    "phase.legacyProgress": "{done}/{total} terminées",
+    "phase.legacyOptional": "Facultatif",
+    "phase.legacyAbout": "À propos des séries de préparation",
     "phase.legacyHelp": "Vos lignes d’échauffement par exercice et les commandes de montée progressive en charge existantes se trouvent ici. Elles restent distinctes du minuteur de phase facultatif.",
     "phase.legacyTarget": "Choisir l’exercice pour les séries légères de préparation",
     "phase.legacyRamp": "Générer des lignes d’échauffement à charge progressive",
@@ -20370,6 +20441,10 @@ const WORKOUT_PHASE_I18N = {
     "phase.totalBounds": "يجب ألا يتجاوز التسلسل الكامل 24 ساعة (86400 ثانية).",
     "phase.invalidConfiguration": "تحقق من مدة النشاط والراحة وعدد الفترات والمدة الإجمالية قبل البدء.",
     "phase.legacyTitle": "مجموعات تحضير خفيفة",
+    "phase.manage": "إدارة",
+    "phase.legacyProgress": "{done}/{total} مكتملة",
+    "phase.legacyOptional": "اختياري",
+    "phase.legacyAbout": "حول مجموعات التحضير",
     "phase.legacyHelp": "توجد هنا صفوف الإحماء السابقة الخاصة بكل تمرين وأدوات الزيادة التدريجية للحمل. وتبقى منفصلة عن مؤقت المرحلة الاختياري.",
     "phase.legacyTarget": "اختيار تمرين لمجموعات التحضير الخفيفة",
     "phase.legacyRamp": "إنشاء صفوف إحماء بحمل متدرج",
@@ -21462,12 +21537,14 @@ function normalizeSubstituteExercise(raw) {
     sessionKey,
   };
   if (hasId) out.id = raw.id;
+  else if (typeof raw.id === 'string' && raw.id.startsWith('cx-')) out.id = raw.id;
   if (raw.unilateral === true) {
     out.unilateral = true;
     out.startSide = raw.startSide === 'right' ? 'right' : 'left';
   }
   const muscles = cleanExerciseMuscles(raw.muscles);
   if (muscles) out.muscles = muscles;
+  if (muscles && muscles.primary === 'other' && typeof raw.musclesAuto === 'boolean' && !hasId) out.musclesAuto = raw.musclesAuto;
   return out;
 }
 
@@ -21516,6 +21593,7 @@ function normalizeActiveSession(raw) {
       if (v.assisted === true) e.assisted = true;
       const muscles = cleanExerciseMuscles(v.muscles);
       if (muscles) e.muscles = muscles;
+      if (muscles && muscles.primary === 'other' && typeof v.musclesAuto === 'boolean') e.musclesAuto = v.musclesAuto;
       Object.assign(e, cleanSessionPrescription(v));
       snapshot[key] = e;
     }
@@ -21828,7 +21906,7 @@ function backfillState() {
     if (!Array.isArray(out.exercises)) return out;
     const exercises = out.exercises.map(e => {
       let next = e;
-      if (!next.exId) {
+      if (!next.exId && !cleanExerciseMuscles(next.muscles) && !next.customId) {
         const mapped = BUILTIN_NAME_TO_ID[next.name];
         if (mapped) next = Object.assign({}, next, { exId: mapped });
       }
@@ -23619,6 +23697,8 @@ function sessionSnapshotExercise(ex, snap) {
   if (snap.assisted === true) out.assisted = true;
   const muscles = cleanExerciseMuscles(snap.muscles);
   if (muscles) out.muscles = muscles;
+  delete out.musclesAuto;
+  if (muscles && muscles.primary === 'other' && typeof snap.musclesAuto === 'boolean') out.musclesAuto = snap.musclesAuto;
   return out;
 }
 
@@ -23774,6 +23854,7 @@ function ensureSession(plan) {
     if (!builtinExerciseId(ex)) {
       const profile = muscleProfile(ex);
       e.muscles = { primary: profile.primary, secondary: profile.secondary.slice() };
+      if (profile.primary === 'other') e.musclesAuto = profile.source === 'unknown' || ex.musclesAuto === true;
     }
     const prescription = programPrescription(program, p.id, ex);
     if (prescription && week) {
@@ -24460,8 +24541,7 @@ function renderTrening() {
     const wrap = document.createElement('div');
     wrap.className = 'chip-wrap';
     wrap.dataset.planId = id;
-    /* Uchopovadlo a ceruzka existujú vždy, ale v bežnom režime sú skryté –
-       názov plánu tak dostane celú šírku karty a je vycentrovaný. */
+    /* Uchopovadlo a ceruzka sú dostupné pri správe; inak plán tvorí jeden kompaktný riadok. */
     const drag = document.createElement('button');
     drag.type = 'button';
     drag.className = 'chip-drag';
@@ -24472,14 +24552,16 @@ function renderTrening() {
     wrap.appendChild(drag);
 
     const btn = document.createElement('button');
+    btn.type = 'button';
     btn.className = 'chip' + (id === selectedPlan ? ' active' : '') + (id === rec ? ' recommended' : '');
-    /* Bento: dlaždica plánu – štítok (Ďalší ✦ / Plán N), názov a počet cvikov a sérií */
+    /* Poradie, názov a súhrn ostávajú v jednom farebnom riadku aj na veľkej obrazovke. */
     const order = activePlanIds().indexOf(id);
     btn.dataset.tile = String(order % 5);
     const stats = bentoPlanStats(p);
-    btn.innerHTML = '<span class="chip-l">' + esc(id === rec ? t('bento.nextMark') : t('bento.planN', { n: order + 1 })) + '</span>'
-      + '<b class="chip-name">' + esc(planDisplayName(p)) + '</b>'
-      + '<span class="chip-meta">' + esc(bentoCountsText(stats.exercises, stats.sets)) + '</span>';
+    btn.innerHTML = '<span class="chip-l" aria-hidden="true">' + String(order + 1).padStart(2, '0') + '</span>'
+      + '<span class="chip-copy"><b class="chip-name">' + esc(planDisplayName(p)) + '</b>'
+      + '<span class="chip-meta">' + esc(bentoCountsText(stats.exercises, stats.sets) + (id === rec ? ' · ' + t('bento.nextMark') : '')) + '</span></span>'
+      + '<span class="chip-arrow" aria-hidden="true">›</span>';
     btn.setAttribute('aria-pressed', id === selectedPlan ? 'true' : 'false');
     btn.addEventListener('click', () => {
       if (getSession() && (getSession().quick || getSession().programPlan)) return;   // snímka tréningu sa nepreviaže na iný plán
@@ -25089,11 +25171,12 @@ function openSetValueEditor(item, cfg) {
     closeSetWeightEditor();
     setSessionNote(null, 0);
     renderTrening();
+    if (cfg.restoreFocus) cfg.restoreFocus();
   };
   ok.addEventListener('click', apply);
   input.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') { e.preventDefault(); apply(); }
-    if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); closeSetWeightEditor(); }
+    if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); closeSetWeightEditor(); if (cfg.restoreFocus) cfg.restoreFocus(); }
   });
   const note = document.createElement('p');
   note.className = 'set-weight-note';
@@ -25426,6 +25509,7 @@ function buildWarmupsBlock(ex, readOnly) {
     } else {
       done.addEventListener('click', () => { closeSetWeightEditor(); updateWarmup(ex, i, { done: !d.done }); setSessionNote(null, 0); renderTrening(); });
       reps.addEventListener('click', () => openSetValueEditor(item, {
+        restoreFocus: practiceEditorReturnFocus(item, 'warmup-reps', i),
         extraClass: 'set-reps-editor warmup-editor', note: t('warmup.editorNote'),
         editorAria: t('warmup.repsEditor', { n: i + 1 }), inputAria: t('warmup.repsEditor', { n: i + 1 }),
         lessAria: t('setReps.less'), moreAria: t('setReps.more'), minusText: '−1', plusText: '+1', step: 1,
@@ -25434,6 +25518,7 @@ function buildWarmupsBlock(ex, readOnly) {
         save: (v) => { const n = cleanSetRepsValue(v); return n !== null && updateWarmup(ex, i, { r: n }); },
       }));
       weight.addEventListener('click', () => openSetValueEditor(item, {
+        restoreFocus: practiceEditorReturnFocus(item, 'warmup-weight', i),
         extraClass: 'warmup-editor', note: t('warmup.editorNote'),
         editorAria: t('warmup.weightEditor', { n: i + 1 }), inputAria: t('warmup.weightEditor', { n: i + 1 }),
         lessAria: t('setWeight.less'), moreAria: t('setWeight.more'), minusText: '−2.5', plusText: '+2.5', step: 2.5,
@@ -25761,13 +25846,79 @@ function workoutPhaseLegacyEntries(plan) {
   }
   return [...entries.values()];
 }
+function practiceEditorReturnFocus(item, control, index) {
+  const key = item.closest('.phase-legacy-exercise').dataset.exerciseKey;
+  return () => {
+    const section = Array.from(document.querySelectorAll('#workout-phase-legacy .phase-legacy-exercise'))
+      .find(el => el.dataset.exerciseKey === key);
+    restoreSheetFocus(section && section.querySelectorAll('.' + control)[index]);
+  };
+}
+function practiceElementVisible(el) {
+  return typeof el.checkVisibility === 'function' ? el.checkVisibility() : !!el.getClientRects().length;
+}
+let practiceOpener = null;
+function openPracticeSheet() {
+  closeSetWeightEditor();
+  renderWorkoutPhaseLegacy();
+  const launcher = document.getElementById('workout-practice-launcher');
+  if (!practiceElementVisible(launcher)) return;
+  practiceOpener = document.getElementById('btn-practice-manage');
+  document.getElementById('modal-practice').hidden = false;
+  practiceOpener.setAttribute('aria-expanded', 'true');
+  document.getElementById('btn-practice-close').focus({ preventScroll: true });
+}
+function closePracticeSheet() {
+  const modal = document.getElementById('modal-practice');
+  if (!modal || modal.hidden) return;
+  closeSetWeightEditor();
+  modal.hidden = true;
+  document.getElementById('btn-practice-manage').setAttribute('aria-expanded', 'false');
+  restoreSheetFocus(practiceOpener);
+  practiceOpener = null;
+  refreshUpdateBanner();
+}
+function initPracticeSheet() {
+  on('btn-practice-manage', openPracticeSheet);
+  on('btn-practice-close', closePracticeSheet);
+  const modal = document.getElementById('modal-practice');
+  modal.addEventListener('click', e => { if (e.target === modal) closePracticeSheet(); });
+  document.addEventListener('keydown', e => {
+    if (e.key !== 'Tab' || modal.hidden || tourOpen()) return;
+    const overlays = Array.from(document.querySelectorAll('.modal-backdrop')).filter(el => !el.hidden);
+    if (overlays[overlays.length - 1] !== modal) return;
+    const controls = Array.from(modal.querySelectorAll('button, input, select, textarea, summary, a[href], [tabindex]'))
+      .filter(el => !el.disabled && el.tabIndex >= 0 && practiceElementVisible(el));
+    const first = controls[0], last = controls[controls.length - 1];
+    if (!controls.includes(document.activeElement) || (e.shiftKey ? document.activeElement === first : document.activeElement === last)) {
+      e.preventDefault();
+      (e.shiftKey ? last : first).focus({ preventScroll: true });
+    }
+  });
+}
 function renderWorkoutPhaseLegacy() {
   const host = document.getElementById('workout-phase-legacy');
-  if (!host) return;
-  host.replaceChildren();
-  const title = document.createElement('h3'); title.textContent = t('phase.legacyTitle'); host.appendChild(title);
-  workoutPhaseText(host, 'phase.legacyHelp'); workoutPhaseText(host, 'phase.legacyIndependent');
+  const launcher = document.getElementById('workout-practice-launcher');
+  if (!host || !launcher) return;
+  const modal = document.getElementById('modal-practice');
+  const sess = getSession(), owner = sess ? sess.id : '';
   const entries = workoutPhaseLegacyEntries(currentPlan());
+  if (host.dataset.session !== owner || !entries.length || activeTab !== 'trening' || editingPlan !== null) closePracticeSheet();
+  host.dataset.session = owner;
+  const active = document.activeElement, focusedSection = host.contains(active) && active.closest('.phase-legacy-exercise');
+  const focusClass = focusedSection && ['warmup-weight', 'warmup-reps', 'warmup-done', 'warmup-remove', 'btn-add-warmup', 'btn-warmup-ramp', 'phase-legacy-ramp']
+    .find(name => active.classList.contains(name));
+  const focusIndex = focusClass ? Array.from(focusedSection.querySelectorAll('.' + focusClass)).indexOf(active) : -1;
+  const aboutOpen = !!host.querySelector('.phase-more[open]');
+  host.replaceChildren();
+  let total = 0, done = 0;
+  for (const { ex } of entries) for (const row of sessionWarmups(ex)) { total++; if (row.done) done++; }
+  document.getElementById('practice-progress').textContent = total ? t('phase.legacyProgress', { done, total }) : t('phase.legacyOptional');
+  launcher.hidden = !sess || entries.length === 0;
+  const help = document.createElement('details'); help.className = 'phase-more'; help.open = aboutOpen;
+  const about = document.createElement('summary'); about.textContent = t('phase.legacyAbout'); help.appendChild(about);
+  workoutPhaseText(help, 'phase.legacyHelp'); workoutPhaseText(help, 'phase.legacyIndependent');
+  host.appendChild(help);
   for (const { key, ex, readOnly, ramps } of entries) {
     const section = document.createElement('section'); section.className = 'phase-legacy-exercise'; section.dataset.exerciseKey = key;
     const name = document.createElement('h4'); name.textContent = exerciseDisplayName(ex); section.appendChild(name);
@@ -25789,7 +25940,14 @@ function renderWorkoutPhaseLegacy() {
     }
     host.appendChild(section);
   }
-  host.hidden = entries.length === 0;
+  if (!modal.hidden) {
+    const section = focusedSection && Array.from(host.querySelectorAll('.phase-legacy-exercise'))
+      .find(el => el.dataset.exerciseKey === focusedSection.dataset.exerciseKey);
+    const controls = section && focusClass ? section.querySelectorAll('.' + focusClass) : [];
+    const target = controls[Math.min(focusIndex, controls.length - 1)];
+    if (target) target.focus({ preventScroll: true });
+    else if (!modal.contains(document.activeElement)) document.getElementById('btn-practice-close').focus({ preventScroll: true });
+  }
 }
 /* Remembered ramp preference while editing a plan: edits the draft only; Save persists it, Cancel discards it. */
 function renderEditWarmupRampPrefs() {
@@ -27604,8 +27762,9 @@ function libraryResults() {
   if (libMuscle === 'fullBody') {
     list = fullBodySpread(list);
   } else if (libMuscle) {
-    const primary = list.filter((e) => e.primary === libMuscle);
-    const secondary = list.filter((e) => e.primary !== libMuscle && e.secondary.includes(libMuscle));
+    const matches = muscle => muscle === libMuscle || (libMuscle === 'legs' && LEG_DETAIL_CODES.includes(muscle));
+    const primary = list.filter(e => matches(e.primary));
+    const secondary = list.filter(e => !matches(e.primary) && e.secondary.some(matches));
     list = primary.concat(secondary);
   }
   return list;
@@ -35607,11 +35766,20 @@ function renderAll() {
   renderEffortSetting();
   renderShowSuggestionsSetting();
   refreshUpdateBanner();   // aktualizácia sa môže ponúknuť, len ak nič neupravujeme
+  const musclesModal = document.getElementById('modal-muscles');
+  if (muState && musclesModal && !musclesModal.hidden) {
+    muState.trend = muscleTrend(8);
+    muState.maxOff = muscleMaxOffset();
+    const map = document.getElementById('muscles-map');
+    if (map) map.innerHTML = bodyMapSvg(muscleRecovery(Date.now()), { size: 'full' });
+    renderMuscles();
+  }
 }
 
 /* ---------- Prepínanie kariet ---------- */
 
 function switchTab(tab) {
+  if (tab !== 'trening') closePracticeSheet();
   if (tab === 'spravy') { openMessagesTab(); return; }   // Bento: karta Správy = Community obrazovka v režime rozhovorov
   activeTab = tab;
   document.body.dataset.tab = tab;
@@ -35762,8 +35930,12 @@ function historyExerciseEntry(ex, sess) {
     plannedFailureSets: cleanFailureSets(ex.plannedFailureSets, ex.sets),
   };
   if (!builtinExerciseId(ex)) {
+    entry.customId = exerciseRowIdentity(ex);
     const profile = muscleProfile(ex);
     entry.muscles = { primary: profile.primary, secondary: profile.secondary.slice() };
+    if (profile.primary === 'other' && (typeof ex.musclesAuto === 'boolean' || profile.source !== 'saved')) {
+      entry.musclesAuto = profile.source === 'unknown' || ex.musclesAuto === true;
+    }
   }
   /* Asistovaný cvik: značka na zázname (additívne), aby história ukazovala "Pomoc" aj po zmene plánu. */
   if (isAssisted(ex)) entry.assisted = true;
@@ -38523,9 +38695,9 @@ function quickExerciseCopy(id) {
   const entry = libraryEntry(id);
   const base = { sets: 3, reps: 10, weight: 0, plannedFailureSets: [], sessionKey: 'q_' + uid() };
   /* Pamätaná pracovná váha: settings.exerciseMemory, inak prvý riadok plánu s rovnakou identitou, inak 0. */
-  const remembered = (ex) => {
-    const identity = exerciseIdentity(ex);
-    let src = exerciseMemoryEntry(identity);
+  const remembered = (ex, customRow = null) => {
+    const identity = exerciseRowIdentity(ex);
+    let src = exerciseMemoryEntry(identity) || customRow;
     if (!src) {
       for (const plan of Object.values(state.plans || {})) {
         const row = plan && Array.isArray(plan.exercises) ? plan.exercises.find((r) => r && exerciseRowIdentity(r) === identity) : null;
@@ -38535,10 +38707,11 @@ function quickExerciseCopy(id) {
     if (src && Number.isFinite(Number(src.weight))) ex.weight = Number(src.weight);
     if (src && src.assisted === true) ex.assisted = true;
     if (!entry) {
-      const assigned = cleanExerciseMuscles(src && src.muscles);
+      const assigned = cleanExerciseMuscles(src && src.muscles) || cleanExerciseMuscles(customRow && customRow.muscles);
       if (assigned) ex.muscles = assigned;
       const profile = muscleProfile(ex);
       ex.muscles = { primary: profile.primary, secondary: profile.secondary.slice() };
+      if (profile.primary === 'other') ex.musclesAuto = profile.source === 'unknown';
     }
     return ex;
   };
@@ -38548,7 +38721,13 @@ function quickExerciseCopy(id) {
   }
   if (isCustomSheetId(id)) {
     const name = customNameFromKey(id).trim();
-    if (name) return remembered(Object.assign({ name }, base));
+    if (name) {
+      const match = customExerciseNameMatch(name);
+      if (match.ambiguous) return null;
+      const ex = Object.assign({ name }, base);
+      if (match.row) ex.id = exerciseRowIdentity(match.row);
+      return remembered(ex, match.row);
+    }
   }
   return null;
 }
@@ -38562,13 +38741,16 @@ function goToCurrentWorkout() {
 /* Tréning z cviku. Rozbehnutý tréning sa nikdy nenahradí – ponúkne sa len prechod naň. */
 function startQuickWorkout(id) {
   if (getSession()) { goToCurrentWorkout(); return; }
+  const ex = quickExerciseCopy(id);
+  if (!ex) {
+    if (isCustomSheetId(id)) showGeneric(t('muscles.ambiguousCustom'), t('common.ok'), null);
+    return;
+  }
   const active = getActiveActivity();
   if (active) {
     showActivityConflict(active, () => { state.activeActivity = null; saveState(); startQuickWorkout(id); });
     return;
   }
-  const ex = quickExerciseCopy(id);
-  if (!ex) return;
   state.activeSession = {
     id: uid(),
     startedAt: Date.now(),
@@ -38590,7 +38772,10 @@ function addExerciseToSession(id) {
   const sess = getSession();
   if (!sess) return false;
   const ex = quickExerciseCopy(id);
-  if (!ex) return false;
+  if (!ex) {
+    if (isCustomSheetId(id)) showGeneric(t('muscles.ambiguousCustom'), t('common.ok'), null);
+    return false;
+  }
   let list;
   if (sess.quick && Array.isArray(sess.quick.exercises)) list = sess.quick.exercises;
   else list = sess.extraExercises = Array.isArray(sess.extraExercises) ? sess.extraExercises : [];
@@ -38804,7 +38989,7 @@ function suggestStep(ex) {
   try {
     const lib = libraryEntry(builtinExerciseId(ex));
     if (!lib) return 2.5;
-    if (lib.primary === 'legs' || lib.primary === 'glutes') return 5;
+    if (lib.primary === 'legs' || lib.primary === 'glutes' || LEG_DETAIL_CODES.includes(lib.primary)) return 5;
     if (Array.isArray(lib.equipment) && lib.equipment.includes('dumbbells')) return 2;
     return 2.5;
   } catch (err) {
@@ -39348,10 +39533,10 @@ function programPrescription(prog, planId, row, today = todayISO()) {
       const tm = clean.tm && clean.tm[tpl.exId];
       const out = { sets: 3, reps: step.reps[0], deload, setReps: step.reps.slice(), pctLabel: step.pct.join('/') + '%' };
       if (!(tm > 0)) return Object.assign(out, { weight: null, setWeights: null });
-      /* Druhá vlna (týždne 5–8): TM + 2,5 kg pre horné cviky, + 5 kg pre dolné (primary legs/glutes).
+      /* Druhá vlna (týždne 5–8): TM + 2,5 kg pre horné cviky, + 5 kg pre dolné vrátane detailných skupín.
          state.program.tm zostáva hodnota od používateľa; efektívne TM sa vráti ako tmUsed. */
       const lib = libraryEntry(tpl.exId);
-      const lower = !!lib && (lib.primary === 'legs' || lib.primary === 'glutes');
+      const lower = !!lib && (lib.primary === 'legs' || lib.primary === 'glutes' || LEG_DETAIL_CODES.includes(lib.primary));
       const tmUsed = tm + (wk.week > 4 ? (lower ? 5 : 2.5) : 0);
       out.tmUsed = tmUsed;
       out.setWeights = step.pct.map((pc) => programRoundWeight(tpl.exId, tmUsed * pc / 100));
@@ -41724,21 +41909,44 @@ const MUSCLE_KEYS = MUSCLE_CODES.concat(['other']);
 
 /* Pôvod zaradenia pre výpočet aj rozpis. Presné mená knižnice/aliasy sa používajú iba na čítanie svalov,
    nikdy nemenia identitu, históriu, spoločné váhy ani body. Žiadne približné hádanie názvov. */
+/* Staré Iné sa podľa rozhodnutia vlastníka dopočítajú aj pri už uloženom zaradení.
+   Bez zachovaného cx-id používame presný názov plánu; rôzne identity rovnakého názvu nehádame. */
+function completedExerciseAssignment(entry) {
+  const id = entry && (entry.customId || entry.id);
+  const customId = typeof id === 'string' && id.startsWith('cx-') ? id : null;
+  if (!customId) {
+    const match = customExerciseNameMatch(entry.name);
+    if (match.ambiguous) return null;
+    if (match.row) return assignedExerciseMuscles({ id: exerciseRowIdentity(match.row), name: entry.name }) || assignedExerciseMuscles(match.row);
+  }
+  const remembered = assignedExerciseMuscles({ id: customId, name: entry.name });
+  if (remembered) return remembered;
+  if (customId) for (const plan of Object.values(state.plans || {})) {
+    const row = plan && Array.isArray(plan.exercises) && plan.exercises.find(candidate => exerciseRowIdentity(candidate) === customId);
+    if (row) return assignedExerciseMuscles(row);
+  }
+  return null;
+}
+
 function muscleProfile(entry, workout) {
   const id = entry && (entry.exId || entry.id);
   const lib = id && BUILTIN_EXERCISE_IDS.has(id) ? libraryEntry(id) : null;
   if (lib) return { primary: lib.primary, secondary: lib.secondary, source: 'library', id: lib.id };
   const own = cleanExerciseMuscles(entry && entry.muscles);
   if (own && own.primary !== 'other') return Object.assign({ source: 'saved', id: null }, own);
-  /* Iba výslovná oprava v prehľade môže zaradiť minulé Iné; bežiaca snímka sa tým nemení. */
+  /* Výslovná oprava má prednosť; bežiaca snímka sa nikdy nemení. */
   if (workout) {
     const corrections = state && state.settings && state.settings.exerciseMuscleCorrections;
-    const identity = exerciseIdentity({ name: entry && entry.name });
+    const identity = muscleExerciseIdentity(entry);
     const correction = corrections && corrections[identity];
     const corrected = cleanExerciseMuscles(correction);
     if (corrected && corrected.primary !== 'other' && Array.isArray(correction.workoutIds) && correction.workoutIds.includes(workout.id)) {
       return Object.assign({ source: 'corrected', id: null }, corrected);
     }
+  }
+  if (workout && own && own.primary === 'other' && (entry.musclesAuto === true || entry.musclesAuto === undefined)) {
+    const current = completedExerciseAssignment(entry);
+    if (current && current.primary !== 'other') return Object.assign({ source: 'custom', id: null }, current);
   }
   if (own) return Object.assign({ source: 'saved', id: null }, own);
   const assigned = assignedExerciseMuscles(entry);
@@ -41846,7 +42054,7 @@ function muscleWeekStart(off) {
   return addDays(d, -((d.getDay() + 6) % 7));
 }
 
-/* Oprava sa ukladá mimo histórie aj pamäte váh a platí iba pre existujúce záznamy Iné. */
+/* Výslovná oprava sa ukladá mimo histórie a platí iba pre vybrané existujúce tréningy. */
 function correctOtherMuscles(identity, raw) {
   const meta = cleanExerciseMuscles(raw);
   if (!identity || !meta || meta.primary === 'other') return false;
@@ -41855,7 +42063,7 @@ function correctOtherMuscles(identity, raw) {
   const ids = new Set(Array.isArray(previous[identity] && previous[identity].workoutIds) ? previous[identity].workoutIds : []);
   for (const w of insightHistory()) {
     if (!w || typeof w.id !== 'string' || !Array.isArray(w.exercises)) continue;
-    if (w.exercises.some(e => e && exerciseIdentity({ name: e.name }) === identity
+    if (w.exercises.some(e => e && muscleExerciseIdentity(e) === identity
         && muscleProfile(e, w).primary === 'other' && muscleSetTotals(e).sets > 0)) ids.add(w.id);
   }
   if (!ids.size) return false;
@@ -41876,7 +42084,7 @@ function renderUnassignedMuscles() {
     if (!w || weekKey(parseDate(w.date)) !== key || !Array.isArray(w.exercises)) continue;
     for (const e of w.exercises) {
       if (!e || muscleProfile(e, w).primary !== 'other') continue;
-      const count = muscleSetTotals(e).sets, identity = exerciseIdentity({ name: e.name });
+      const count = muscleSetTotals(e).sets, identity = muscleExerciseIdentity(e);
       if (!identity || !count) continue;
       const group = groups.get(identity);
       if (group) group.sets += count; else groups.set(identity, { name: String(e.name), sets: count });
@@ -42147,7 +42355,8 @@ function bodyMapSvg(recovery, opts) {
     + group('biceps', 'M159 257 C146 273 138 298 137 321 C138 333 145 343 153 346 C166 333 175 313 178 292 L178 266 L168 252Z')
     + group('triceps', 'M128 265 C118 287 116 311 114 330 L122 350 L132 326 C131 303 138 282 145 272 L140 261Z')
     + group('core', 'M267 290 C248 292 226 287 205 281 L192 304 L196 343 L191 381 C194 414 218 444 249 461 L270 478 L270 291Z')
-    + group('legs', 'M204 431 C177 459 164 504 160 554 C154 596 160 637 177 666 L185 688 L205 684 C229 642 236 596 237 552 C237 511 224 464 204 431Z M178 706 C156 737 146 774 149 805 C153 840 161 876 159 915 L176 926 C189 890 191 855 190 823 C191 785 181 746 178 706Z')
+    + group('thighs', 'M204 431 C177 459 164 504 160 554 C154 596 160 637 177 666 L185 688 L205 684 C229 642 236 596 237 552 C237 511 224 464 204 431Z')
+    + group('calves', 'M178 706 C156 737 146 774 149 805 C153 840 161 876 159 915 L176 926 C189 890 191 855 190 823 C191 785 181 746 178 706Z')
     + '</svg>';
 }
 
@@ -44150,6 +44359,8 @@ function setupEvents() {
     if (platesSheet && !platesSheet.hidden) { closePlateCalc(); return; }
     const effortSheet = document.getElementById('modal-effort');
     if (effortSheet && !effortSheet.hidden) { closeEffortSheet(); return; }
+    const practiceSheet = document.getElementById('modal-practice');
+    if (practiceSheet && !practiceSheet.hidden) { closePracticeSheet(); return; }
     const restSheet = document.getElementById('modal-rest');
     if (restSheet && !restSheet.hidden) { closeRestSheet(); return; }
     const syncModal = document.getElementById('modal-sync');
@@ -44413,6 +44624,7 @@ function setupEvents() {
   on('btn-rest-close', closeRestSheet);
   initPlateSheet();
   initExerciseActions();
+  initPracticeSheet();
   initExerciseProgress();
   initMuscles();
   initSuggestSheet();
@@ -44602,6 +44814,7 @@ function isBusy() {
   const ctPanel = document.getElementById('custom-timer');
   if (ctPanel && !ctPanel.hidden) return true;           // rozrobený vlastný čas pauzy
   const forms = ['modal-confirm', 'modal-history-edit', 'modal-settings', 'modal-setup', 'modal-generic',
+    'modal-practice',
     'modal-reminders',
     'modal-planchoice', 'modal-fullbody', 'modal-lang', 'modal-measure', 'modal-food',
     'modal-library', 'modal-exercise', 'modal-photo-add', 'modal-photo', 'modal-photo-compare',
@@ -45547,6 +45760,7 @@ const NATIVE_BACK_CLOSE = [
   ['modal-muscles', '#btn-muscles-close'],
   ['modal-csv', '#btn-csv-close'],
   ['modal-csv-import', '#btn-csv-import-close'],
+  ['modal-practice', '#btn-practice-close'],
   ['modal-ex-actions', '#btn-ex-actions-close'],
   ['modal-plates', '#btn-plates-close'],
   ['modal-effort', '#btn-effort-close'],
