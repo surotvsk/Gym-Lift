@@ -198,6 +198,8 @@ everything on your own device.
   skipped too. A toast offers **Undo** right after the import, and each source can be removed later from the
   same sheet. Weights are read as **kg or lb** (detected from the file; if the file does not say, you choose
   in the preview) and stored in kg, rounded to 0.25 kg.
+  Exercise matching recognizes library names in all six languages as well as supported Strong/Hevy aliases;
+  a library exercise does not need a separate alias to import correctly. Unrecognized names stay custom.
   Imported workouts are **history, not training you did in GymQuest**. They **count for**: the history
   list (marked *Imported · Strong* or *Hevy*), a neutral marker on the Calendar, exercise charts and
   estimated 1RM, the Muscles view and recovery. They **never count for**: XP, level, streak or weekly goal,

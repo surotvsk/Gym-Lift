@@ -9,7 +9,7 @@ const path = require('path');
 const { startServer, Browser } = require('../sync/lib');
 
 const REPO = path.resolve(__dirname, '..', '..');
-const PORT = 8124;
+const PORT = Number(process.env.GQ_TEST_PORT) || 8124;
 const BASE = 'http://localhost:' + PORT + '/';
 const WORK = process.env.GQ_WORK || path.join(os.tmpdir(), 'gq-app-csv-parse');
 const FIX = path.join(REPO, 'tests', 'fixtures', 'csv');
@@ -147,9 +147,32 @@ const fx = (n) => fs.readFileSync(path.join(FIX, n), 'utf8');
     check('match: other language (es)', mt.e.exId === 'squats', mt.e);
     check('match: unknown -> exId null + original name', mt.d.exId === null && mt.d.name === 'Zercher Squat', mt.d);
     check('match: empty / null never throws', mt.f.exId === null && mt.g.exId === null, [mt.f, mt.g]);
-    const al = await ev(`(() => { const bad = Object.entries(CSV_EXERCISE_ALIASES).filter(([k, id]) => !BUILTIN_EXERCISE_IDS.has(id)); const ids = new Set(Object.values(CSV_EXERCISE_ALIASES)); return { bad, n: Object.keys(CSV_EXERCISE_ALIASES).length, covered: EXERCISE_LIBRARY.filter((e) => !ids.has(e.id)).map((e) => e.id) }; })()`);
-    check('aliases: every target is a library id', al.bad.length === 0, al.bad);
-    check('aliases: library exercises without any alias are only the ones with no Strong/Hevy name', al.covered.length <= 6, al.covered);
+    const al = await ev(`Object.entries(CSV_EXERCISE_ALIASES).filter(([name, id]) => !BUILTIN_EXERCISE_IDS.has(id))`);
+    check('aliases: every target is a library id', al.length === 0, al);
+    /* Knižničné názvy nepotrebujú duplicitný alias; overujeme výsledok importu, nie počet aliasov. */
+    for (const lang of ['en', 'sk', 'es', 'pt-BR', 'fr', 'ar']) {
+      for (const format of ['strong', 'hevy']) {
+        const expanded = await ev(`(() => {
+          const ids = ['band-chest-press', 'quadruped-bent-knee-hip-extension', 'wall-supported-handstand-push-up'];
+          const names = ids.map(id => I18N[${J(lang)}]['exercise.' + id]);
+          const header = ${J(format)} === 'strong'
+            ? ['Date', 'Workout Name', 'Exercise Name', 'Set Order', 'Weight', 'Reps']
+            : ['start_time', 'title', 'exercise_title', 'set_type', 'weight_kg', 'reps'];
+          const rows = [header, ...names.map(name => ['2024-03-04 18:00:00', 'Expanded library', name,
+            ${J(format)} === 'strong' ? '1' : 'normal', '12.5', '8'])];
+          const text = rows.map(row => row.map(cell => '"' + cell.replace(/"/g, '""') + '"').join(',')).join('\\n');
+          const parsed = parseCsv(text);
+          const result = csvToWorkouts(parsed.rows, detectCsvFormat(parsed.rows[0]), { delimiter: parsed.delimiter });
+          const workout = result.workouts[0];
+          return { unmatched: result.unmatched, skipped: result.skippedRows, count: result.workouts.length,
+            expected: ids.map(id => [id, [12.5], [8]]),
+            actual: workout && workout.exercises.map(e => [e.exId, e.setWeights, e.setReps]) };
+        })()`);
+        check(format + ': expanded library names import with correct identity and sets (' + lang + ')',
+          expanded.count === 1 && expanded.skipped === 0 && expanded.unmatched.length === 0
+          && J(expanded.actual) === J(expanded.expected), expanded);
+      }
+    }
     for (const [name, id] of [['Squat (Barbell)', 'squats'], ['Romanian Deadlift (Barbell)', 'romanian-deadlift'], ['Pull Up (Assisted)', 'assisted-pull-ups'], ['Push Up', 'push-up'], ['Lat Pulldown (Cable)', 'lat-pulldown']]) {
       const m = await ev(`matchExercise(${J(name)})`);
       check('alias ' + name + ' -> ' + id, m && m.exId === id, m);
