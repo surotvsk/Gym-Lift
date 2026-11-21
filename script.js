@@ -19574,7 +19574,7 @@ const BENTO_REF_I18N = {
     'bento.weeksWordOne': 'týždeň', 'bento.weeksWordFew': 'týždne', 'bento.weeksWordMany': 'týždňa', 'bento.weeksWordOther': 'týždňov',
     'bento.excusedTitle': 'Ospravedlnený ✓', 'bento.tapUndo': 'Ťukni na zrušenie', 'bento.levelLower': 'level {n}',
     'bento.goalLineOne': 'Cieľ: {n} týždenne', 'bento.goalLineFew': 'Cieľ: {n} týždenne', 'bento.goalLineMany': 'Cieľ: {n} týždenne', 'bento.goalLineOther': 'Cieľ: {n} týždenne',
-    'bento.tapPlan': 'ťukni na plán', 'bento.edit': 'Upraviť', 'bento.newPlan': 'Nový plán', 'bento.fullBody': 'Full Body zostava', 'bento.library': 'Knižnica cvikov',
+    'bento.tapPlan': 'dvojité ťuknutie spustí tréning', 'bento.edit': 'Upraviť', 'bento.newPlan': 'Nový plán', 'bento.fullBody': 'Full Body zostava', 'bento.library': 'Knižnica cvikov',
     'bento.historyTitle': 'Rekordy a história', 'bento.achievements': 'Úspechy', 'bento.communityProfile': 'Community profil',
     'bento.settingsLine': 'Nastavenia · jazyk, jednotky, zvuk, záloha', 'bento.noExercises': 'Zatiaľ žiadne cviky', 'bento.lr': 'Ľ / P', 'bento.sideL': 'Ľ', 'bento.sideR': 'P',
     'bento.setShort': 'S{n}', 'bento.exerciseInfo': 'O cviku {name}', 'bento.statWeek': 'Týždeň', 'bento.statMonth': 'Mesiac', 'bento.statAll': 'Spolu',
@@ -19588,7 +19588,7 @@ const BENTO_REF_I18N = {
     'bento.weeksWordOne': 'week', 'bento.weeksWordOther': 'weeks',
     'bento.excusedTitle': 'Excused ✓', 'bento.tapUndo': 'Tap to undo', 'bento.levelLower': 'level {n}',
     'bento.goalLineOne': 'Goal: {n} a week', 'bento.goalLineOther': 'Goal: {n} a week',
-    'bento.tapPlan': 'tap a plan', 'bento.edit': 'Edit', 'bento.newPlan': 'New plan', 'bento.fullBody': 'Full Body builder', 'bento.library': 'Exercise library',
+    'bento.tapPlan': 'double-tap to start', 'bento.edit': 'Edit', 'bento.newPlan': 'New plan', 'bento.fullBody': 'Full Body builder', 'bento.library': 'Exercise library',
     'bento.historyTitle': 'Records and history', 'bento.achievements': 'Achievements', 'bento.communityProfile': 'Community profile',
     'bento.settingsLine': 'Settings · language, units, sound, backup', 'bento.noExercises': 'No exercises yet', 'bento.lr': 'L / R', 'bento.sideL': 'L', 'bento.sideR': 'R',
     'bento.setShort': 'S{n}', 'bento.exerciseInfo': 'About {name}', 'bento.statWeek': 'Week', 'bento.statMonth': 'Month', 'bento.statAll': 'All',
@@ -19602,7 +19602,7 @@ const BENTO_REF_I18N = {
     'bento.weeksWordOne': 'semana', 'bento.weeksWordOther': 'semanas',
     'bento.excusedTitle': 'Justificada ✓', 'bento.tapUndo': 'Toca para deshacer', 'bento.levelLower': 'nivel {n}',
     'bento.goalLineOne': 'Meta: {n} por semana', 'bento.goalLineOther': 'Meta: {n} por semana',
-    'bento.tapPlan': 'toca un plan', 'bento.edit': 'Editar', 'bento.newPlan': 'Nuevo plan', 'bento.fullBody': 'Creador Full Body', 'bento.library': 'Biblioteca de ejercicios',
+    'bento.tapPlan': 'toca dos veces para empezar', 'bento.edit': 'Editar', 'bento.newPlan': 'Nuevo plan', 'bento.fullBody': 'Creador Full Body', 'bento.library': 'Biblioteca de ejercicios',
     'bento.historyTitle': 'Récords e historial', 'bento.achievements': 'Logros', 'bento.communityProfile': 'Perfil de Comunidad',
     'bento.settingsLine': 'Ajustes · idioma, unidades, sonido, copia', 'bento.noExercises': 'Aún no hay ejercicios', 'bento.lr': 'I / D', 'bento.sideL': 'I', 'bento.sideR': 'D',
     'bento.setShort': 'S{n}', 'bento.exerciseInfo': 'Sobre {name}', 'bento.statWeek': 'Semana', 'bento.statMonth': 'Mes', 'bento.statAll': 'Todo',
@@ -19616,7 +19616,7 @@ const BENTO_REF_I18N = {
     'bento.weeksWordOne': 'semana', 'bento.weeksWordOther': 'semanas',
     'bento.excusedTitle': 'Justificada ✓', 'bento.tapUndo': 'Toque para desfazer', 'bento.levelLower': 'nível {n}',
     'bento.goalLineOne': 'Meta: {n} por semana', 'bento.goalLineOther': 'Meta: {n} por semana',
-    'bento.tapPlan': 'toque em um plano', 'bento.edit': 'Editar', 'bento.newPlan': 'Novo plano', 'bento.fullBody': 'Montar Full Body', 'bento.library': 'Biblioteca de exercícios',
+    'bento.tapPlan': 'toque duas vezes para começar', 'bento.edit': 'Editar', 'bento.newPlan': 'Novo plano', 'bento.fullBody': 'Montar Full Body', 'bento.library': 'Biblioteca de exercícios',
     'bento.historyTitle': 'Recordes e histórico', 'bento.achievements': 'Conquistas', 'bento.communityProfile': 'Perfil na Comunidade',
     'bento.settingsLine': 'Ajustes · idioma, unidades, som, backup', 'bento.noExercises': 'Ainda sem exercícios', 'bento.lr': 'E / D', 'bento.sideL': 'E', 'bento.sideR': 'D',
     'bento.setShort': 'S{n}', 'bento.exerciseInfo': 'Sobre {name}', 'bento.statWeek': 'Semana', 'bento.statMonth': 'Mês', 'bento.statAll': 'Tudo',
@@ -19630,7 +19630,7 @@ const BENTO_REF_I18N = {
     'bento.weeksWordOne': 'semaine', 'bento.weeksWordOther': 'semaines',
     'bento.excusedTitle': 'Excusée ✓', 'bento.tapUndo': 'Touche pour annuler', 'bento.levelLower': 'niveau {n}',
     'bento.goalLineOne': 'Objectif : {n} par semaine', 'bento.goalLineOther': 'Objectif : {n} par semaine',
-    'bento.tapPlan': 'touche un plan', 'bento.edit': 'Modifier', 'bento.newPlan': 'Nouveau plan', 'bento.fullBody': 'Créer un Full Body', 'bento.library': 'Bibliothèque d’exercices',
+    'bento.tapPlan': 'touche deux fois pour démarrer', 'bento.edit': 'Modifier', 'bento.newPlan': 'Nouveau plan', 'bento.fullBody': 'Créer un Full Body', 'bento.library': 'Bibliothèque d’exercices',
     'bento.historyTitle': 'Records et historique', 'bento.achievements': 'Succès', 'bento.communityProfile': 'Profil Communauté',
     'bento.settingsLine': 'Réglages · langue, unités, son, sauvegarde', 'bento.noExercises': 'Pas encore d’exercices', 'bento.lr': 'G / D', 'bento.sideL': 'G', 'bento.sideR': 'D',
     'bento.setShort': 'S{n}', 'bento.exerciseInfo': 'À propos de {name}', 'bento.statWeek': 'Semaine', 'bento.statMonth': 'Mois', 'bento.statAll': 'Total',
@@ -19644,7 +19644,7 @@ const BENTO_REF_I18N = {
     'bento.weeksWordZero': 'أسابيع', 'bento.weeksWordOne': 'أسبوع', 'bento.weeksWordTwo': 'أسبوعان', 'bento.weeksWordFew': 'أسابيع', 'bento.weeksWordMany': 'أسبوعًا', 'bento.weeksWordOther': 'أسبوع',
     'bento.excusedTitle': 'معذور ✓', 'bento.tapUndo': 'اضغط للتراجع', 'bento.levelLower': 'المستوى {n}',
     'bento.goalLineZero': 'الهدف: {n} أسبوعيًا', 'bento.goalLineOne': 'الهدف: {n} أسبوعيًا', 'bento.goalLineTwo': 'الهدف: {n} أسبوعيًا', 'bento.goalLineFew': 'الهدف: {n} أسبوعيًا', 'bento.goalLineMany': 'الهدف: {n} أسبوعيًا', 'bento.goalLineOther': 'الهدف: {n} أسبوعيًا',
-    'bento.tapPlan': 'اضغط على خطة', 'bento.edit': 'تعديل', 'bento.newPlan': 'خطة جديدة', 'bento.fullBody': 'منشئ الجسم الكامل', 'bento.library': 'مكتبة التمارين',
+    'bento.tapPlan': 'اضغط مرتين للبدء', 'bento.edit': 'تعديل', 'bento.newPlan': 'خطة جديدة', 'bento.fullBody': 'منشئ الجسم الكامل', 'bento.library': 'مكتبة التمارين',
     'bento.historyTitle': 'الأرقام القياسية والسجل', 'bento.achievements': 'الإنجازات', 'bento.communityProfile': 'ملف المجتمع',
     'bento.settingsLine': 'الإعدادات · اللغة، الوحدات، الصوت، النسخ الاحتياطي', 'bento.noExercises': 'لا تمارين بعد', 'bento.lr': 'يسار / يمين', 'bento.sideL': 'يسار', 'bento.sideR': 'يمين',
     'bento.setShort': 'م{n}', 'bento.exerciseInfo': 'عن {name}', 'bento.statWeek': 'الأسبوع', 'bento.statMonth': 'الشهر', 'bento.statAll': 'الكل',
@@ -24573,6 +24573,16 @@ function historyGroupWrap(entries, pieces, sep) {
   return html;
 }
 
+/* Pamäť ťuknutia prežije prekreslenie riadkov po prvom výbere plánu. */
+let lastPlanTap = null;
+
+function startSelectedWorkout() {
+  const plan = getPlan(selectedPlan);
+  if (plan && ensureSession(plan)) saveState();
+  renderTrening();
+  window.scrollTo(0, 0);
+}
+
 function renderTrening() {
   trainRender();
   if (getSession() && getSession().quick) keepSessionPlan();   // rýchly tréning sa nikdy nezobrazí ako iný plán
@@ -24610,7 +24620,13 @@ function renderTrening() {
       + '<span class="chip-meta">' + esc(bentoCountsText(stats.exercises, stats.sets) + (id === rec ? ' · ' + t('bento.nextMark') : '')) + '</span></span>'
       + '<span class="chip-arrow" aria-hidden="true">›</span>';
     btn.setAttribute('aria-pressed', id === selectedPlan ? 'true' : 'false');
-    btn.addEventListener('click', () => {
+    btn.addEventListener('click', (event) => {
+      const now = Date.now();
+      const canStart = event.detail > 0 && !getSession() && !planManageMode && editingPlan === null;
+      const doubleTap = canStart && lastPlanTap && lastPlanTap.id === id
+        && now - lastPlanTap.at < DOUBLE_TAP_MS
+        && Math.abs(event.clientX - lastPlanTap.x) < 40 && Math.abs(event.clientY - lastPlanTap.y) < 40;
+      lastPlanTap = canStart && !doubleTap ? { id, at: now, x: event.clientX, y: event.clientY } : null;
       if (getSession() && (getSession().quick || getSession().programPlan)) return;   // snímka tréningu sa nepreviaže na iný plán
       // výber iného plánu vždy zatvorí editor, aby meno v poli nepatrilo inému plánu
       if (editingPlan !== null && editingPlan !== id && closeEditor()) saveState();
@@ -24618,7 +24634,8 @@ function renderTrening() {
       // rozbehnutá session sa previaže na novo zvolený plán (značky sérií zostávajú zachované)
       const s = getSession();
       if (s) { s.planId = id; s.planName = recordedPlanName(p); saveState(); }
-      renderTrening();
+      if (doubleTap) startSelectedWorkout();
+      else renderTrening();
     });
     wrap.appendChild(btn);
     const editBtn = document.createElement('button');
@@ -44690,7 +44707,7 @@ function setupEvents() {
   initCsvImport();
   initCsvSheet();
   initEffort();
-  on('tr-start', () => { const p = getPlan(selectedPlan); if (p && ensureSession(p)) saveState(); renderTrening(); window.scrollTo(0, 0); });
+  on('tr-start', startSelectedWorkout);
   on('btn-fullbody-tile', openFullBodyBuilder);
   on('btn-train-tile', () => {
     if (!trainPickerOpen) trainOpenPicker();
@@ -44804,7 +44821,7 @@ let tapGuardStart = null;
 let tapGuardLast = { at: 0, x: 0, y: 0 };
 function installDoubleTapGuard() {
   document.addEventListener('touchstart', (e) => {
-    if (e.touches.length !== 1) { tapGuardStart = null; tapGuardLast.at = 0; return; }   // viac prstov = gesto
+    if (e.touches.length !== 1) { tapGuardStart = null; tapGuardLast.at = 0; lastPlanTap = null; return; }   // viac prstov = gesto
     const t = e.touches[0];
     tapGuardStart = { x: t.clientX, y: t.clientY, at: Date.now() };
   }, { passive: true });
@@ -44815,15 +44832,23 @@ function installDoubleTapGuard() {
     const t = e.changedTouches[0];
     const now = Date.now();
     const moved = Math.abs(t.clientX - start.x) > 10 || Math.abs(t.clientY - start.y) > 10;
-    if (moved || now - start.at > 500) { tapGuardLast.at = 0; return; }   // posúvanie / podržanie nie je ťuknutie
+    if (moved || now - start.at > 500) { tapGuardLast.at = 0; lastPlanTap = null; return; }   // posúvanie / podržanie nie je ťuknutie
     const quick = now - tapGuardLast.at < DOUBLE_TAP_MS && Math.abs(t.clientX - tapGuardLast.x) < 40 && Math.abs(t.clientY - tapGuardLast.y) < 40;
     tapGuardLast = { at: now, x: t.clientX, y: t.clientY };
     if (!quick) return;
     const target = e.target && e.target.closest ? e.target : null;
     if (!target || target.closest('input, textarea, select, [contenteditable="true"], video, audio')) return;
     e.preventDefault();   // iOS potom nespustí dvojité priblíženie (ani vlastný klik)…
-    target.click();       // …takže klik sa vybaví tu – druhé ťuknutie funguje ako každé iné
+    if (target.closest('#plan-chips .chip')) {
+      /* Druhý dotyk má rovnakú aktiváciu ako klik; obyčajné .click() nemá detail a patrí klávesnici. */
+      target.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, detail: 1, clientX: t.clientX, clientY: t.clientY }));
+    } else target.click();   // ostatné ovládacie prvky zachovajú pôvodné správanie
   }, { passive: false });
+  document.addEventListener('touchcancel', () => {
+    tapGuardStart = null;
+    tapGuardLast.at = 0;
+    lastPlanTap = null;
+  }, { passive: true });
 }
 
 /* ---------- Denný strážca (dátum, ISO týždeň, týždenný progres) ---------- */

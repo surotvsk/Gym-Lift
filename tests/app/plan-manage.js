@@ -46,12 +46,17 @@ function check(name, ok, info) {
       overflow: document.documentElement.scrollWidth > innerWidth + 1 || bar.scrollWidth > bar.clientWidth + 1, hint: document.getElementById('plan-manage-hint').textContent }; })()`);
   const wait = (ms) => new Promise((r) => setTimeout(r, ms));
   /* Real pointer tap at the centre of a visible element; fails when something else covers it. */
-  const tap = async (selector) => {
+  const tap = async (selector, delay = 150) => {
     const pt = await E(`(() => { const e = document.querySelector(${J(selector)}); if (!e) return { ok: false }; e.scrollIntoView({ block: 'center' }); const r = e.getBoundingClientRect(), x = r.left + r.width / 2, y = r.top + r.height / 2, hit = document.elementFromPoint(x, y); return { x, y, ok: !!hit && e.contains(hit) }; })()`);
     if (!pt.ok) throw new Error('Not tappable: ' + selector);
     await p.c.send('Input.dispatchMouseEvent', { type: 'mousePressed', x: pt.x, y: pt.y, button: 'left', clickCount: 1 });
     await p.c.send('Input.dispatchMouseEvent', { type: 'mouseReleased', x: pt.x, y: pt.y, button: 'left', clickCount: 1 });
-    await wait(150);
+    if (delay) await wait(delay);
+  };
+  const touch = async (selector) => {
+    const pt = await E(`(() => { const e = document.querySelector(${J(selector)}); e.scrollIntoView({ block: 'center' }); const r = e.getBoundingClientRect(); return { x: r.left + r.width / 2, y: r.top + r.height / 2 }; })()`);
+    await p.c.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ ...pt, id: 1 }] });
+    await p.c.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
   };
   /* Geometry of the plan rows: `bad` lists every violated rule (empty = fine). */
   const rowsCheck = (opts) => E(`(() => {
@@ -133,10 +138,45 @@ function check(name, ok, info) {
     rc = await rowsCheck({ maxH: 110 });
     check('after the workout is cleared the plan rows are back and unchanged in geometry', await E(`!getSession() && !document.getElementById('tr-pick').hidden && selectedPlan === 'pmB'`) && rc.bad.length === 0, rc);
 
+    console.log('== double tap starts only the intended plan');
+    await tap('#plan-chips [data-plan-id="pmA"] .chip', 0);
+    await tap('#plan-chips [data-plan-id="pmC"] .chip', 0);
+    check('quick taps on different plans only preview the last plan', await E(`!getSession() && selectedPlan === 'pmC'`));
+    await wait(450);
+    await tap('#plan-chips [data-plan-id="pmC"] .chip', 0);
+    check('a slow second tap only previews, without starting a workout', await E(`!getSession() && selectedPlan === 'pmC'`));
+    await tap('#plan-chips [data-plan-id="pmA"] .chip', 0);
+    await tap('#plan-chips [data-plan-id="pmA"] .chip', 0);
+    const mouseSession = await E(`getSession() && {id:getSession().id, startedAt:getSession().startedAt}`);
+    check('mouse double-click starts and persists the tapped plan, not the old selection', await E(`!!getSession() && getSession().planId === 'pmA' && JSON.parse(localStorage.getItem(STORAGE_KEY)).activeSession.id === getSession().id && document.getElementById('tr-pick').hidden`));
+    await tap('#tr-sess-plan', 0);
+    await tap('#plan-chips [data-plan-id="pmB"] .chip', 0);
+    await tap('#plan-chips [data-plan-id="pmB"] .chip', 0);
+    check('double-click during an existing workout does not replace it or restart its clock', await E(`getSession().id === ${J(mouseSession && mouseSession.id)} && getSession().startedAt === ${J(mouseSession && mouseSession.startedAt)}`));
+    await E(`(clearSession(), saveState(), renderTrening(), true)`);
+    await p.c.send('Emulation.setTouchEmulationEnabled', { enabled: true, maxTouchPoints: 2 });
+    await touch('#plan-chips [data-plan-id="pmC"] .chip');
+    check('first real touch previews an unselected plan without starting', await E(`!getSession() && selectedPlan === 'pmC' && !document.getElementById('tr-detail').hidden`));
+    await touch('#plan-chips [data-plan-id="pmC"] .chip');
+    const touchSession = await E(`getSession() && getSession().id`);
+    check('second real touch starts the plan despite the first tap rebuilding its row', await E(`!!getSession() && getSession().planId === 'pmC' && document.getElementById('tr-pick').hidden && totalSetsDone() === 0`));
+    await p.navigate(BASE);
+    check('touch-started workout survives reload without duplicating it or marking sets done', await E(`!!getSession() && getSession().id === ${J(touchSession)} && getSession().planId === 'pmC' && totalSetsDone() === 0`));
+    await E(`(clearSession(), saveState(), switchTab('trening'), renderTrening(), true)`);
+    for (let i = 0; i < 2; i++) {
+      await E(`document.querySelector('#plan-chips [data-plan-id="pmA"] .chip').focus()`);
+      await p.c.send('Input.dispatchKeyEvent', { type: 'keyDown', key: 'Enter', code: 'Enter', windowsVirtualKeyCode: 13, text: '\r', unmodifiedText: '\r' });
+      await p.c.send('Input.dispatchKeyEvent', { type: 'keyUp', key: 'Enter', code: 'Enter', windowsVirtualKeyCode: 13 });
+    }
+    check('keyboard activation still previews the plan; Start remains explicit', await E(`!getSession() && selectedPlan === 'pmA' && !document.getElementById('tr-detail').hidden`));
+
     console.log('== manage mode keeps handle, edit and reorder in the row');
     await tap('#btn-manage-plans');
     rc = await rowsCheck({ manage: true, maxH: 110 });
     check('in manage mode each row shows handle + plan + edit inside its full width, without overlap', await E(`planManageMode === true`) && rc.bad.length === 0 && !rc.overflow, rc);
+    await tap('#plan-chips [data-plan-id="pmB"] .chip', 0);
+    await tap('#plan-chips [data-plan-id="pmB"] .chip', 0);
+    check('double tap in manage mode never starts a workout', await E(`planManageMode && !getSession() && selectedPlan === 'pmB'`));
     const orderBefore = await E(`activePlanIds().join()`);
     await E(`(movePlan('pmC', -1), true)`);
     const orderAfter = await E(`activePlanIds().join()`);

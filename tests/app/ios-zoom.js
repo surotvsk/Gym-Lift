@@ -123,7 +123,7 @@ const TOUCH = (sel) => `(() => { const e = document.querySelector(${J(sel)}); re
       await tap(c1.x, c1.y, 120); await tap(c1.x, c1.y, 400);
       const log = await p.eval('window.__taps');
       check('double tap on a plan tile: second touch is handled by the app (iOS gets no double-tap)', log.filter((x) => x === 'end:prevented').length === 1, log);
-      check('…and both taps still act as taps (2 clicks, none lost or doubled)', log.filter((x) => x.startsWith('click:')).length === 2, log);
+      check('double tap starts the tapped plan without marking any sets done', await p.eval(`!!getSession() && getSession().planId === 'legs' && totalSetsDone() === 0 && document.getElementById('tr-pick').hidden`));
     } else check('plan tile found', false, tileSel);
     await p.eval('(window.__taps = [], 1)');
     const c2 = { x: 200, y: 400 };

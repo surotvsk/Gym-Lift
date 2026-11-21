@@ -311,6 +311,9 @@ sheets are in its `shots/` folder. The chosen options, **Workout A** (compact pl
   exercise is a tile (the one you are on is lavender, a finished one lime) with square set buttons
   showing reps and weight, and below them a pill per set for its reps, weight and failure mark, the
   ⋯ button and exercise details. The plan editor opens as a full-screen sheet.
+  Tap a plan row once to preview it, or double-tap the same row to start that workout immediately.
+  Mouse double-click works too; **Start** remains available for keyboard and single-tap use.
+  Double-tap does not start workouts while editing/managing plans or restart an ongoing workout.
 - **Rest timer** — a sheet (presets, custom time, managing timers) opened from **Rest**; a running timer
   is a lime pill above the menu on every tab.
 - **Stats** — Week (lime), Month and All tiles with workouts and sets, *Sets per week* for the last
