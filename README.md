@@ -248,19 +248,37 @@ All six app languages, including Arabic right-to-left, are supported.
 message alerts, reminders scheduled on the phone and optional Health Connect (heart rate from a watch
 after a workout; workouts saved to Health Connect). The website does not change for it.
 
-**Wear OS companion (Wear OS 3+).** The native `android/wear` app uses GymLift's dark/lime colours and
-offers workout start, rest and a read-only calendar. Pair the watch with Android first, install matching
-phone/watch builds, then choose it in **Settings → Watch** and explicitly allow access. The watch
-shows the selected phone workspace's data; it never receives account credentials or signs in separately.
-Changing workspace, signing out or unlinking revokes that access. Private snapshots expire within
-60 seconds; an offline watch cannot be wiped immediately.
+**Wear OS companion (Wear OS 3+).** The native `android/wear` app uses GymLift's dark/lime colours.
+Pair it with Android first, install matching phone/watch builds, then approve the selected watch in
+**Settings → Watch**. The phone remains the authoritative workout store; the watch never receives
+account credentials or signs in separately. Offline workouts and Messages each require separate consent.
+Changing sharing permissions requires unlinking and linking again.
 
-Phone commands require the phone app to be active and expire after ten seconds. An unconfirmed action
-is not reported as successful or retried blindly. **Phone timer** and **Watch only** are separate choices:
-the local watch timer works offline, supports pause/resume and +15 seconds, and survives an app restart.
-**Timer settings** explains alarm and notification permissions; without precise-alarm access,
-screen-off alerts are best-effort. Sound and vibration remain subject to watch/system settings.
-The calendar uses saved completed workouts and explicitly scheduled weekdays, not invented plan dates.
+With offline workouts enabled, the watch caches phone-issued plans for up to seven days and can start
+a provisional workout without the phone. An already shared active session keeps its original identity.
+Side-specific set marks and completion are saved on the watch before being displayed, then queued for
+reconnection. A phone receipt means **staged**, not saved to workout history. The phone reconciles
+pending work without overwriting intervening edits; conflicts can be reviewed and imported using the
+original recorded plan or explicitly discarded. Repeated delivery does not duplicate history or XP.
+Unlinking warns before deleting unsynced watch work. Account/workspace changes revoke access; an
+offline watch can erase its cache only when it receives that revocation.
+
+**Messages** mirrors a small phone inbox with short, online-only replies. Previews expire within
+60 seconds and disappear when disconnected; message text is not stored in the watch's offline cache.
+An uncertain reply is never retried automatically. Live phone-timer and reply commands expire after
+ten seconds and require the phone app to be active.
+
+**Phone timer** and **Watch only** remain independent. The local watch timer works offline even when
+unlinked, supports pause/resume and +15 seconds, and survives an app restart. **Timer settings** explains
+alarm and notification permissions; without precise-alarm access, screen-off alerts are best-effort.
+Sound and vibration follow watch/system settings. The read-only calendar shows saved completed
+workouts; the recommended plan rotation is not an invented date schedule.
+
+For a live native emulator preview, start the emulator and run `python3 tools/watch-preview.py --serial emulator-5554 --port 8127`.
+Open `http://localhost:8127/`: a smartwatch frame (round case, crown, side button) around the live Wear OS screen.
+Click the screen to tap, use the mouse wheel or arrow keys as the rotary crown, the crown for Home, the side button
+or Esc for Back. The page is also embedded at `http://localhost:8126/app/design-concepts/watch-offline/`.
+It does not touch 8124.
 
 Build both after `npm run android:sync` with `cd android && sh ./gradlew :app:bundleRelease :wear:bundleRelease`.
 Phone and watch use the same signing certificate and application id; debug builds add `.preview` so

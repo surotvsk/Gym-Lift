@@ -21763,6 +21763,12 @@ function normalizeActiveSession(raw) {
     if (!quick.length) return null;   // rýchly tréning bez cvikov nemá čo zobraziť
     out.quick = { exercises: quick };
   }
+  const wear = raw.wearJournal;
+  if (wear && typeof wear.epoch === 'string' && wear.epoch.length <= 160
+      && wear.sessionId === out.id && Number.isSafeInteger(wear.appliedSeq) && wear.appliedSeq > 0
+      && typeof wear.revision === 'string' && wear.revision.length <= 131072) {
+    out.wearJournal = { epoch: wear.epoch, sessionId: wear.sessionId, appliedSeq: wear.appliedSeq, revision: wear.revision };
+  }
   return out;
 }
 
@@ -24381,7 +24387,7 @@ function ensureSession(plan) {
   const p = plan || getPlan(selectedPlan);
   if (!p) return null;
   state.activeSession = {
-    id: uid(),
+    id: wearRandomId(),
     startedAt: Date.now(),
     planId: p.id,
     planName: recordedPlanName(p),
@@ -31112,6 +31118,10 @@ function communityAddChatMsg(m, mine) {
   if (box) box.innerHTML = communityChatMsgsHtml();
   if (atEnd) communityChatScrollToEnd();
 }
+function communityInsertMessage(sb, row) {
+  return sb.from('messages').insert(row)
+    .select(communityV5() ? 'id,conversation_id,sender_id,body,created_at,reply_to,attachment' : 'id,conversation_id,sender_id,body,created_at').single();
+}
 async function communitySendMessage() {
   const sb = communityClient();
   const el = document.getElementById('community-chat-text');
@@ -31123,8 +31133,7 @@ async function communitySendMessage() {
   try {
     const row = { conversation_id: communityChatId, sender_id: communityProfile.id, body: body.slice(0, COMMUNITY_MESSAGE_MAX) };
     if (communityV5() && communityReplyTo) row.reply_to = communityReplyTo.id;
-    res = await sb.from('messages').insert(row)
-      .select(communityV5() ? 'id,conversation_id,sender_id,body,created_at,reply_to,attachment' : 'id,conversation_id,sender_id,body,created_at').single();
+    res = await communityInsertMessage(sb, row);
   } catch (e) { res = { error: e }; }
   communitySending = false;
   if (res.error) { communitySetMessageText(communityErrText(res.error)); communityShowStatus(); return; }
@@ -36681,6 +36690,78 @@ function finishSaveFailed() {
   if (err) err.hidden = false;
 }
 
+/* Spoločný kanonický zápis: explicitná session a pôvodná šablóna, nikdy výmena aktívnej session.
+   Jediný trvalý zápis obsahuje históriu, ciele, pamäť aj úspechy; pri chybe sa všetko vráti. */
+function commitCanonicalWorkout(sess, template, date, endedAt, note) {
+  if (sess && state.history.some(w => w.id === sess.id)) return null;
+  const plan = template.plan, remembered = template.remembered || {};
+  const entry = { id: sess ? sess.id : wearRandomId(), planId: plan.id, planName: template.planName || recordedPlanName(plan),
+    date, endedAt, note: note || '', exercises: template.exercises,
+    xp: xpForNewWorkout(template.doneCount, date, phaseSnapshotForHistory(sess)) };
+  if (sess) entry.durationSeconds = Math.max(0, Math.floor((endedAt - sess.startedAt) / 1000));
+  const phases = phaseSnapshotForHistory(sess);
+  if (phases) entry.phases = phases;
+  if (sess && sess.restUsed === true) entry.restUsed = true;
+  if (sess && template.health && healthOn()) entry.health = {
+    start: new Date(endedAt - entry.durationSeconds * 1000).toISOString(), end: new Date(endedAt).toISOString() };
+  return commitCanonicalEntry(entry, plan, remembered);
+}
+function commitCanonicalEntry(entry, plan, remembered) {
+  /* Bod návratu: ak sa zápis histórie nepodarí, vrátia sa všetky zmeny stavu v pamäti (história, váhy, úspechy, cieľ týždňa). */
+  const goalBefore = JSON.stringify(state.goalHistory), memoryBefore0 = JSON.stringify(state.settings.exerciseMemory);
+  const demoBefore = state.demo, achievementsBefore = state.achievements;
+  const rowWeights = [];
+  for (const p of Object.values(state.plans || {})) {
+    if (p && Array.isArray(p.exercises)) for (const r of p.exercises) if (r) rowWeights.push([r, r.weight]);
+  }
+  const restoreJson = (obj, field, json) => { if (json === undefined) delete obj[field]; else obj[field] = JSON.parse(json); };
+
+  /* Spoločná pracovná váha: až po zostavení histórie (tá drží skutočné váhy), pred jediným zápisom nižšie. */
+  const rememberedAt = Date.now();
+  /* Pre Zrušiť tréning: čo bolo v pamäti pred zápisom (null = záznam neexistoval) a čo sa zapísalo. */
+  const memoryBefore = {}, memoryAfter = {}, memoryRowBefore = {};
+  for (const [identity, values] of Object.entries(remembered)) {
+    const cur = state.settings.exerciseMemory && Object.prototype.hasOwnProperty.call(state.settings.exerciseMemory, identity)
+      && state.settings.exerciseMemory[identity] && typeof state.settings.exerciseMemory[identity] === 'object'
+      ? Object.assign({}, state.settings.exerciseMemory[identity]) : null;
+    const rowsW = {};   // plánId -> váha prvého riadka cviku pred zápisom
+    for (const [pid, p] of Object.entries(state.plans || {})) {
+      const row = p && Array.isArray(p.exercises) ? p.exercises.find((r) => r && exerciseRowIdentity(r) === identity) : null;
+      if (row && typeof row.weight === 'number') rowsW[pid] = row.weight;
+    }
+    if (!applyExerciseDefaults(identity, values, rememberedAt, plan.id)) continue;   // váha len do plánu tohto tréningu
+    memoryBefore[identity] = cur;
+    memoryAfter[identity] = Object.assign({}, values);
+    if (Object.keys(rowsW).length) memoryRowBefore[identity] = rowsW;
+  }
+
+  for (const [field, map] of [['memoryBefore', memoryBefore], ['memoryAfter', memoryAfter], ['memoryRowBefore', memoryRowBefore]]) {
+    const clean = cleanMemoryTrail(map, field);
+    if (clean) entry[field] = clean;
+  }
+  state.history.push(entry);
+  syncGoalSnapshot();    // tento týždeň je teraz "pozorovaný" so svojím cieľom
+  state.demo = false;  // real workout → data is no longer demo
+  reconcileAchievements();
+  /* História sa musí zapísať ako PRVÁ: kým zápis nepreukázateľne uspel, session ostáva, nič sa nezruší ani neodmení
+     a v pamäti nezostane záznam, ktorý by sa pri ďalšom pokuse dal považovať za už uložený. */
+  if (!persistState()) {
+    const at = state.history.lastIndexOf(entry);
+    if (at >= 0) state.history.splice(at, 1);
+    restoreJson(state, 'goalHistory', goalBefore);
+    restoreJson(state.settings, 'exerciseMemory', memoryBefore0);
+    for (const [row, weight] of rowWeights) { if (weight === undefined) delete row.weight; else row.weight = weight; }
+    state.demo = demoBefore;
+    state.achievements = achievementsBefore;
+    suggestMemoReset();
+    xpCacheClear();
+    return;
+  }
+  syncNoteLocalChange();
+  leaderboardQueue();
+  try { localStorage.setItem(STORAGE_KEY + '_real', '1'); } catch (e) { /* pomocný príznak: stav už nesie demo = false */ }
+  return entry;
+}
 function confirmFinish() {
   /* Ochrana pred dvojitým uložením: potvrdzovacie okno je otvorené práve do prvého uloženia. */
   if (document.getElementById('modal-confirm').hidden) return;
@@ -36761,85 +36842,13 @@ function confirmFinish() {
   }
 
   const doneCount = totalSetsDone();
-  const xp = xpForNewWorkout(doneCount, todayISO(), phaseSnapshotForHistory(getSession()));
   const note = document.getElementById('confirm-note').value.trim();
   const trainData = trainActive() ? trainProgressData() : null;   // pred zrušením session
 
-  const entry = {
-    id: sess ? sess.id : uid(),
-    planId: plan.id,
-    planName: recordedPlanName(plan),
-    date: todayISO(),
-    xp,
-    note,
-    exercises,
-    endedAt: Date.now(),   // čas ukončenia (ms) pre prehľad regenerácie; staré záznamy ho nemajú
-  };
-  const phases = phaseSnapshotForHistory(sess);
-  if (phases) entry.phases = phases;
-  /* Trvanie sa zapíše len ak naozaj existuje rozbehnutá session – nikdy nevymýšľame nulu. */
-  if (sess) entry.durationSeconds = sessionElapsedSeconds(sess);
-  if (sess && sess.restUsed === true) entry.restUsed = true;   // aspoň raz bežal odpočet pauzy (úspech rest5)
-  /* Health Connect (Android): skutočný čas tréningu – podľa neho sa číta tep a zapíše cvičenie. */
-  if (sess && healthOn()) {
-    const end = Date.now();
-    entry.health = { start: new Date(end - entry.durationSeconds * 1000).toISOString(), end: new Date(end).toISOString() };
-  }
 
-  /* Bod návratu: ak sa zápis histórie nepodarí, vrátia sa všetky zmeny stavu v pamäti (história, váhy, úspechy, cieľ týždňa). */
-  const goalBefore = JSON.stringify(state.goalHistory), memoryBefore0 = JSON.stringify(state.settings.exerciseMemory);
-  const demoBefore = state.demo, achievementsBefore = state.achievements;
-  const rowWeights = [];
-  for (const p of Object.values(state.plans || {})) {
-    if (p && Array.isArray(p.exercises)) for (const r of p.exercises) if (r) rowWeights.push([r, r.weight]);
-  }
-  const restoreJson = (obj, field, json) => { if (json === undefined) delete obj[field]; else obj[field] = JSON.parse(json); };
-
-  /* Spoločná pracovná váha: až po zostavení histórie (tá drží skutočné váhy), pred jediným zápisom nižšie. */
-  const rememberedAt = Date.now();
-  /* Pre Zrušiť tréning: čo bolo v pamäti pred zápisom (null = záznam neexistoval) a čo sa zapísalo. */
-  const memoryBefore = {}, memoryAfter = {}, memoryRowBefore = {};
-  for (const [identity, values] of Object.entries(remembered)) {
-    const cur = state.settings.exerciseMemory && Object.prototype.hasOwnProperty.call(state.settings.exerciseMemory, identity)
-      && state.settings.exerciseMemory[identity] && typeof state.settings.exerciseMemory[identity] === 'object'
-      ? Object.assign({}, state.settings.exerciseMemory[identity]) : null;
-    const rowsW = {};   // plánId -> váha prvého riadka cviku pred zápisom
-    for (const [pid, p] of Object.entries(state.plans || {})) {
-      const row = p && Array.isArray(p.exercises) ? p.exercises.find((r) => r && exerciseRowIdentity(r) === identity) : null;
-      if (row && typeof row.weight === 'number') rowsW[pid] = row.weight;
-    }
-    if (!applyExerciseDefaults(identity, values, rememberedAt, plan.id)) continue;   // váha len do plánu tohto tréningu
-    memoryBefore[identity] = cur;
-    memoryAfter[identity] = Object.assign({}, values);
-    if (Object.keys(rowsW).length) memoryRowBefore[identity] = rowsW;
-  }
-
-  for (const [field, map] of [['memoryBefore', memoryBefore], ['memoryAfter', memoryAfter], ['memoryRowBefore', memoryRowBefore]]) {
-    const clean = cleanMemoryTrail(map, field);
-    if (clean) entry[field] = clean;
-  }
-  state.history.push(entry);
-  syncGoalSnapshot();    // tento týždeň je teraz "pozorovaný" so svojím cieľom
-  state.demo = false;  // real workout → data is no longer demo
-  reconcileAchievements();
-  /* História sa musí zapísať ako PRVÁ: kým zápis nepreukázateľne uspel, session ostáva, nič sa nezruší ani neodmení
-     a v pamäti nezostane záznam, ktorý by sa pri ďalšom pokuse dal považovať za už uložený. */
-  if (!persistState()) {
-    const at = state.history.lastIndexOf(entry);
-    if (at >= 0) state.history.splice(at, 1);
-    restoreJson(state, 'goalHistory', goalBefore);
-    restoreJson(state.settings, 'exerciseMemory', memoryBefore0);
-    for (const [row, weight] of rowWeights) { if (weight === undefined) delete row.weight; else row.weight = weight; }
-    state.demo = demoBefore;
-    state.achievements = achievementsBefore;
-    suggestMemoReset();
-    xpCacheClear();
-    finishSaveFailed();
-    return;
-  }
-  syncNoteLocalChange();
-  leaderboardQueue();
-  try { localStorage.setItem(STORAGE_KEY + '_real', '1'); } catch (e) { /* pomocný príznak: stav už nesie demo = false */ }
+  const entry = commitCanonicalWorkout(sess, { plan, exercises, remembered, doneCount, health: true },
+    todayISO(), Date.now(), note);
+  if (!entry) { finishSaveFailed(); return; }
   lastWorkoutId = entry.id;
 
   lastUnlocked = Object.keys(state.achievements).filter(id => !beforeUnlocked.includes(id));
@@ -46463,6 +46472,15 @@ const WEAR_I18N = {
   fr: { title: 'Montre', hint: 'Partage les plans, la séance, le repos et le calendrier uniquement avec la montre choisie. Les commandes nécessitent le téléphone actif et expirent après 10 secondes.', choose: 'Choisir une montre associée', consent: 'Autoriser cette montre à voir mes données et à contrôler les séances et le repos dans cet espace.', connect: 'Connecter la montre', refresh: 'Actualiser la liste', unlink: 'Déconnecter', unlinkBody: 'Révoquer l’accès de la montre ? Une montre déconnectée masque les données à la reconnexion ou à l’expiration de leur validité.', off: 'Non connectée', on: 'Connectée', absent: 'Aucune montre associée connectée.', error: 'Impossible de vérifier ou d’enregistrer la connexion. Réessaie.', phone: 'Téléphone' },
   ar: { title: 'الساعة', hint: 'شارك الخطط والتمرين والراحة والتقويم مع الساعة المختارة فقط. تتطلب الأوامر هاتفًا نشطًا وتنتهي بعد 10 ثوانٍ.', choose: 'اختر ساعة مقترنة', consent: 'السماح لهذه الساعة بعرض بياناتي والتحكم بالتمرين والراحة في مساحة العمل هذه.', connect: 'ربط الساعة', refresh: 'تحديث القائمة', unlink: 'إلغاء الربط', unlinkBody: 'هل تريد إلغاء وصول الساعة؟ إذا كانت غير متصلة فستُخفى البيانات عند الاتصال مجددًا أو عند انتهاء صلاحيتها.', off: 'غير مرتبطة', on: 'مرتبطة', absent: 'لا توجد ساعة مقترنة متصلة.', error: 'تعذر التحقق من الربط أو حفظه. حاول مجددًا.', phone: 'الهاتف' },
 };
+const WEAR_OFFLINE_I18N = {
+  sk: { offlineGrant: 'Povoliť tréningy bez telefónu (plány na 7 dní)', messagesGrant: 'Povoliť náhľady správ a online odpovede', privacy: 'Plány zostanú súkromne v hodinkách. Správy sú iba v pamäti. Zmenu oprávnení vyžaduje odpojenie a nové prepojenie.', unsynced: 'Neodoslaná práca sa môže stratiť. Najprv pripoj hodinky a skontroluj uloženie v telefóne. Súkromné údaje sa z hodiniek odstránia až pri ďalšom spojení.', review: 'Skontrolovať tréning z hodiniek', conflict: 'Plán alebo tréning sa zmenil. Záznam zostáva bezpečne odložený.', staged: 'Čaká na dokončenie alebo uvoľnenie tréningu v telefóne.', recorded: 'Importovať pôvodný záznam', discard: 'Zahodiť záznam', discardBody: 'Natrvalo zahodiť tento záznam z hodiniek?', importBody: 'Uložiť celý pôvodný tréning bez zmeny aktuálneho plánu alebo tréningu?' },
+  en: { offlineGrant: 'Allow workouts without the phone (7-day plans)', messagesGrant: 'Allow message previews and online replies', privacy: 'Plans stay privately on the watch. Messages stay in memory only. Change permissions by unlinking and linking again.', unsynced: 'Unsynced work may be lost. Connect the watch and check that the phone saved it first. Private watch data is cleared only on next contact.', review: 'Review watch workout', conflict: 'The plan or workout changed. The recording is safely retained for review.', staged: 'Waiting for completion or for the phone workout to become available.', recorded: 'Import as recorded', discard: 'Discard recording', discardBody: 'Permanently discard this watch recording?', importBody: 'Save the entire original workout as recorded without changing the current plan or workout?' },
+  es: { offlineGrant: 'Permitir entrenar sin teléfono (planes de 7 días)', messagesGrant: 'Permitir vistas de mensajes y respuestas en línea', privacy: 'Los planes quedan privados en el reloj. Los mensajes solo en memoria. Para cambiar permisos, desconecta y vuelve a conectar.', unsynced: 'Se puede perder trabajo sin sincronizar. Conecta el reloj y comprueba primero que el teléfono lo guardó. Los datos privados se borran del reloj al reconectarse.', review: 'Revisar entrenamiento del reloj', conflict: 'El plan o entrenamiento cambió. El registro se conserva para revisarlo.', staged: 'Esperando la finalización o que el entrenamiento del teléfono esté disponible.', recorded: 'Importar como registrado', discard: 'Descartar registro', discardBody: '¿Descartar permanentemente este registro del reloj?', importBody: '¿Guardar todo el entrenamiento original sin cambiar el plan ni el entrenamiento actual?' },
+  'pt-BR': { offlineGrant: 'Permitir treinos sem telefone (planos de 7 dias)', messagesGrant: 'Permitir prévias de mensagens e respostas online', privacy: 'Os planos ficam privados no relógio. Mensagens ficam só na memória. Para mudar permissões, desconecte e conecte novamente.', unsynced: 'Trabalho não sincronizado pode ser perdido. Conecte o relógio e confira primeiro se o telefone salvou. Dados privados são apagados do relógio só no próximo contato.', review: 'Revisar treino do relógio', conflict: 'O plano ou treino mudou. O registro foi preservado para revisão.', staged: 'Aguardando conclusão ou disponibilidade do treino no telefone.', recorded: 'Importar como registrado', discard: 'Descartar registro', discardBody: 'Descartar permanentemente este registro do relógio?', importBody: 'Salvar todo o treino original sem mudar o plano ou treino atual?' },
+  fr: { offlineGrant: 'Autoriser les séances sans téléphone (plans de 7 jours)', messagesGrant: 'Autoriser les aperçus de messages et réponses en ligne', privacy: 'Les plans restent privés sur la montre. Les messages restent uniquement en mémoire. Déconnecte puis reconnecte pour changer les autorisations.', unsynced: 'Les données non synchronisées peuvent être perdues. Connecte la montre et vérifie leur sauvegarde sur le téléphone avant. Les données privées de la montre sont effacées au prochain contact seulement.', review: 'Examiner la séance de la montre', conflict: 'Le plan ou la séance a changé. L’enregistrement est conservé pour examen.', staged: 'En attente de fin ou de disponibilité de la séance du téléphone.', recorded: 'Importer tel qu’enregistré', discard: 'Supprimer l’enregistrement', discardBody: 'Supprimer définitivement cet enregistrement de la montre ?', importBody: 'Enregistrer toute la séance originale sans modifier le plan ni la séance actuelle ?' },
+  ar: { offlineGrant: 'السماح بالتمارين دون الهاتف (خطط لمدة 7 أيام)', messagesGrant: 'السماح بمعاينات الرسائل والردود عبر الإنترنت', privacy: 'تبقى الخطط خاصة على الساعة. الرسائل في الذاكرة فقط. غيّر الأذونات بإلغاء الربط ثم الربط مجددًا.', unsynced: 'قد يُفقد العمل غير المتزامن. صِل الساعة وتحقق أولًا من حفظه على الهاتف. تُمسح بيانات الساعة الخاصة عند الاتصال التالي فقط.', review: 'مراجعة تمرين الساعة', conflict: 'تغيرت الخطة أو التمرين. تم الاحتفاظ بالتسجيل للمراجعة.', staged: 'بانتظار الانتهاء أو توفر تمرين الهاتف.', recorded: 'استيراد كما سُجل', discard: 'حذف التسجيل', discardBody: 'هل تريد حذف تسجيل الساعة نهائيًا؟', importBody: 'حفظ التمرين الأصلي كاملًا دون تغيير الخطة أو التمرين الحالي؟' },
+};
+for (const lang of Object.keys(WEAR_OFFLINE_I18N)) Object.assign(WEAR_I18N[lang], WEAR_OFFLINE_I18N[lang]);
 for (const lang of Object.keys(WEAR_I18N)) {
   for (const [key, value] of Object.entries(WEAR_I18N[lang])) I18N[lang]['wear.' + key] = value;
 }
@@ -46471,11 +46489,16 @@ let wearInitPromise = null, wearPublishTimer = null, wearHeartbeat = null;
 let wearNativeQueue = Promise.resolve(), wearCommandQueue = Promise.resolve();
 let wearRevision = 0, wearDirty = true, wearPayload = null, wearPayloadDay = '', wearSentContent = '';
 const wearMemoryResults = new Map();
+let wearPackContent = '', wearPackAt = 0;
+const wearPendingRecords = new Map();
+let wearDrainQueue = Promise.resolve();
 
 function wearRandomId() {
   if (typeof crypto.randomUUID === 'function') return crypto.randomUUID();
   const bytes = crypto.getRandomValues(new Uint8Array(16));
-  return Array.from(bytes, b => b.toString(16).padStart(2, '0')).join('');
+  bytes[6] = (bytes[6] & 15) | 64; bytes[8] = (bytes[8] & 63) | 128;
+  const hex = Array.from(bytes, b => b.toString(16).padStart(2, '0')).join('');
+  return hex.slice(0, 8) + '-' + hex.slice(8, 12) + '-' + hex.slice(12, 16) + '-' + hex.slice(16, 20) + '-' + hex.slice(20);
 }
 function wearOwnerFingerprint() {
   if (!wsSlot) return null;
@@ -46503,7 +46526,8 @@ function wearOwns(b) {
     const stored = wearRead(WEAR_BINDING_KEY, null);
     return !!(reg && reg.active === wsSlot.id && reg.slots && reg.slots[wsSlot.id]
       && JSON.stringify([wsSlot.id, reg.slots[wsSlot.id].owner || null]) === b.owner
-      && stored && stored.owner === b.owner && wearSameConfiguration(stored, b));
+      && stored && stored.owner === b.owner && wearSameConfiguration(stored, b)
+      && !!stored.grants?.offline === !!b.grants?.offline && !!stored.grants?.messages === !!b.grants?.messages);
   } catch (e) { return false; }
 }
 function wearNativeTask(task) {
@@ -46522,6 +46546,11 @@ function wearRevoke(configuration) {
   wearBinding = null;
   clearTimeout(wearPublishTimer); wearPublishTimer = null;
   wearPayload = null; wearDirty = true; wearSentContent = '';
+  wearPackContent = ''; wearPackAt = 0;
+  wearPendingRecords.clear();
+  for (const id of ['wear-offline', 'wear-messages']) {
+    const el = document.getElementById(id); if (el) el.checked = false;
+  }
   let disabled;
   try {
     const old = previous || wearRead(WEAR_BINDING_KEY, null);
@@ -46565,6 +46594,12 @@ function renderWearSetting() {
   select.disabled = linked || wearBusy;
   const consent = document.getElementById('wear-consent');
   consent.disabled = linked || wearBusy;
+  for (const [id, grant] of [['wear-offline', 'offline'], ['wear-messages', 'messages']]) {
+    const input = document.getElementById(id);
+    input.disabled = linked || wearBusy;
+    if (linked) input.checked = !!wearBinding.grants?.[grant];
+  }
+  renderWearReview();
   document.getElementById('wear-link').disabled = wearBusy || linked || !select.value || !consent.checked;
   document.getElementById('wear-unlink').hidden = !linked;
   document.getElementById('wear-unlink').disabled = wearBusy;
@@ -46594,7 +46629,9 @@ async function wearConsentLink() {
     if (revision !== wearRevision || owner !== wearOwnerFingerprint() || appYielded) return;
     if (!(status.nodes || []).some(n => n.id === peer)) throw new Error('node_unavailable');
     const b = { enabled: true, epoch: wearRandomId(), workspace: wearRandomId(),
-      peer, label: t('wear.phone'), owner, seq: 0 };
+      peer, label: t('wear.phone'), owner, seq: 0,
+      grants: { offline: document.getElementById('wear-offline').checked,
+        messages: document.getElementById('wear-messages').checked } };
     wearWrite(WEAR_BINDING_KEY, b);
     wearBinding = b;
     await wearNativeTask(() => {
@@ -46664,6 +46701,11 @@ function wearPublishNow(heartbeat) {
   if (!plugin || document.hidden || !wearOwns(b) || !wearNodes.some(n => n.id === b.peer)) return Promise.resolve();
   return wearNativeTask(async () => {
     if (document.hidden || !wearOwns(b)) return;
+    if (b.grants?.offline) {
+      try { await wearPublishPack(plugin, b); }
+      catch (e) { wearError = true; renderWearSetting(); }   // chyba cache nesmie zablokovať existujúce online ovládanie
+    }
+    if (!wearOwns(b)) return;
     if (wearDirty || !wearPayload || wearPayloadDay !== todayISO()) {
       wearPayload = wearBuildPayload(); wearPayloadDay = todayISO(); wearDirty = false;
     }
@@ -46673,12 +46715,362 @@ function wearPublishNow(heartbeat) {
     b.seq = (Number.isSafeInteger(b.seq) ? b.seq : 0) + 1;
     wearWrite(WEAR_BINDING_KEY, b);   // sekvencia sa nikdy nevráti späť ani po reload
     const snapshot = Object.assign({ v: 1, binding: wearConfiguration(b), seq: b.seq,
-      createdAt: now, expiresAt: now + 60000 }, wearPayload);
+      createdAt: now, expiresAt: now + 60000 }, wearPayload, {
+      grants: { offline: !!b.grants?.offline, messages: !!b.grants?.messages },
+      messages: await wearMessageSnapshot(b) });
+    if (!wearOwns(b)) return;
     await plugin.publish({ snapshot });
     if (wearOwns(b)) wearSentContent = content;
   });
 }
 
+/* Snímky sú iba z telefónu; verejné kľúče označujú presné pôvodné série. */
+function wearCopy(value) { return JSON.parse(JSON.stringify(value)); }
+function wearStable(value) {
+  if (Array.isArray(value)) return '[' + value.map(wearStable).join(',') + ']';
+  if (value && typeof value === 'object') return '{' + Object.keys(value).sort()
+    .filter(k => value[k] !== undefined).map(k => JSON.stringify(k) + ':' + wearStable(value[k])).join(',') + '}';
+  return JSON.stringify(value);
+}
+async function wearHash(value) {
+  const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(wearStable(value)));
+  return Array.from(new Uint8Array(digest), b => b.toString(16).padStart(2, '0')).join('');
+}
+function wearSessionRevision(sess) {
+  const copy = normalizeActiveSession(sess); delete copy.wearJournal;
+  return wearStable(copy);
+}
+function wearPlanFingerprint(plan) { return wearStable(plan || null); }
+function wearTemplate(plan, active) {
+  const baseline = active ? wearCopy(getSession()) : null;
+  const rows = [], slots = [], seen = {};
+  const infos = active ? exerciseSlots(plan) : (plan.exercises || []).map(src => {
+    const base = exerciseSessionKey(src), occ = seen[base] || 0; seen[base] = occ + 1;
+    const ex = Object.assign({}, src);
+    if (occ) ex.sessionKey = base + SESSION_DUP_TAG + occ;
+    const prescription = programPrescription(state.program, plan.id, src);
+    if (prescription) Object.assign(ex, prescription);
+    return { ex, slot: base + '#' + occ };
+  });
+  for (const info of infos) {
+    const segments = active ? exerciseChainGroups(info).flatMap(g => g.items.map(it => it.ex)) : [info.ex];
+    for (const [segmentIndex, ex] of segments.entries()) {
+      const n = active ? sessionSetCount(ex) : Math.min(99, Math.max(1, Math.round(Number(ex.sets) || 1)));
+      const entry = active ? historyExerciseEntry(ex, baseline) : {
+        name: ex.name, sets: n, reps: ex.reps, weight: ex.weight, setsDone: 0,
+        plannedFailureSets: cleanFailureSets(ex.plannedFailureSets, n), actualFailureSets: [] };
+      if (!active) {
+        if (builtinExerciseId(ex)) entry.exId = builtinExerciseId(ex);
+        else { entry.customId = exerciseRowIdentity(ex); const p = muscleProfile(ex);
+          entry.muscles = { primary: p.primary, secondary: p.secondary.slice() }; }
+        if (isAssisted(ex)) entry.assisted = true;
+        if (groupIdOf(ex)) entry.group = ex.group;
+        if (ex.unilateral) { entry.unilateral = true; entry.startSide = ex.startSide || 'left'; }
+        if (Array.isArray(ex.setWeights)) {
+          entry.setWeights = ex.setWeights.slice(0, n);
+          entry.plannedWeight = Number(ex.weight) || 0;
+        }
+        if (Array.isArray(ex.setReps)) entry.setReps = ex.setReps.slice(0, n);
+      }
+      const row = { entry, keys: [] }, sets = [], sides = exerciseSideOrder(ex);
+      for (let i = 0; i < n; i++) {
+        const set = { index: i, weight: active ? effectiveSetWeight(ex, i)
+          : Array.isArray(ex.setWeights) ? ex.setWeights[Math.min(i, ex.setWeights.length - 1)] : Number(ex.weight) || 0,
+          reps: active ? effectiveSetReps(ex, i)
+            : Array.isArray(ex.setReps) ? ex.setReps[Math.min(i, ex.setReps.length - 1)] : Number(ex.reps) || 0 };
+        for (const side of sides || [null]) row.keys.push({ local: setSessionKey(ex, i, side),
+          index: i, side, weight: active ? effectiveSetWeight(ex, i, side) : set.weight });
+        sets.push(set);
+      }
+      rows.push(row); slots.push({ slotKey: info.slot + '~' + segmentIndex,
+        name: String(exerciseDisplayName(ex)).slice(0, 300), sides: sides ? ['left', 'right'] : null, sets });
+    }
+  }
+  return { v: 1, plan: wearCopy(plan), planName: recordedPlanName(plan),
+    planFingerprint: wearPlanFingerprint(getPlan(plan.id)), programFingerprint: wearStable(state.program || null), baseline,
+    baselineRevision: baseline ? wearSessionRevision(baseline) : null, rows, slots };
+}
+async function wearFinalizeTemplate(template) {
+  for (let ri = 0; ri < template.rows.length; ri++) {
+    const row = template.rows[ri], slot = template.slots[ri];
+    for (const key of row.keys) {
+      key.key = await wearHash([template.plan.id, ri, key.local]);
+      const set = slot.sets[key.index];
+      if (key.side) { if (!set.setKeys) set.setKeys = {}; set.setKeys[key.side === 'left' ? 'L' : 'R'] = key.key; }
+      else set.setKey = key.key;
+    }
+    slot.slotKey = await wearHash([template.plan.id, ri, slot.slotKey]);
+  }
+  const planRev = await wearHash({ plan: template.plan, rows: template.rows, slots: template.slots });
+  const plan = { planId: template.plan.id, planRev, name: String(template.planName).slice(0, 300), slots: template.slots };
+  delete template.slots;
+  return plan;
+}
+function wearPackPlanFits(plan, template) {
+  return plan.slots.length > 0 && plan.slots.length <= 60
+    && template.rows.reduce((n, row) => n + row.keys.length, 0) <= 300
+    && JSON.stringify(template).length <= 131072;
+}
+async function wearPublishPack(plugin, b) {
+  const source = wearStable([state.plans, state.program, getSession(), activeLang(), activePlanIds()]);
+  if (source === wearPackContent && Date.now() - wearPackAt < 3600000) return;
+  const templates = {}, plans = [], now = Date.now();
+  const pack = { v: 1, epoch: b.epoch, workspace: b.workspace, packRev: '', createdAt: now,
+    expiresAt: now + 7 * 86400000, plans, active: null, truncated: false };
+  const sess = getSession(), activePlan = sess ? currentPlan() : null;
+  if (sess && activePlan) {
+    const template = wearTemplate(activePlan, true), plan = await wearFinalizeTemplate(template);
+    if (!wearPackPlanFits(plan, template)) throw new Error('active_pack_full');
+    const completedSets = {};
+    for (const row of template.rows) for (const k of row.keys) if (template.baseline.completedSets[k.local]) completedSets[k.key] = true;
+    const known = new Set(template.rows.flatMap(r => r.keys.map(k => k.local)));
+    if (Object.keys(template.baseline.completedSets).some(k => template.baseline.completedSets[k] && !known.has(k))) throw new Error('unmapped_seed');
+    templates.active = template;
+    pack.active = { sessionId: sess.id, planId: plan.planId, planRev: plan.planRev,
+      baselineRevision: await wearHash(template.baselineRevision), startedAt: sess.startedAt, completedSets, plan };
+    template.baselineRevision = pack.active.baselineRevision;
+  }
+  for (const id of activePlanIds()) {
+    const original = getPlan(id);
+    if (!original) continue;
+    const template = wearTemplate(original, false), plan = await wearFinalizeTemplate(template);
+    if (!wearPackPlanFits(plan, template)) { pack.truncated = true; continue; }
+    plans.push(plan);
+    if (new TextEncoder().encode(JSON.stringify(pack)).length > 89000 || plans.length > 20) {
+      plans.pop(); pack.truncated = true; continue;
+    }
+    templates[plan.planRev] = template;
+  }
+  if (new TextEncoder().encode(JSON.stringify(pack)).length > 90000) throw new Error('pack_full');
+  pack.packRev = await wearHash({ plans, active: pack.active });
+  if (!wearOwns(b) || !b.grants?.offline || source !== wearStable([state.plans, state.program, getSession(), activeLang(), activePlanIds()])) return;
+  await plugin.publishPack({ pack, templates });
+  if (!wearOwns(b)) return;
+  wearPackContent = source; wearPackAt = now;
+}
+function wearRecordOwned(record, b) {
+  return wearOwns(b) && !!b.grants?.offline && record.epoch === b.epoch && record.workspace === b.workspace;
+}
+async function wearRecordResult(plugin, b, record, status, error) {
+  if (!wearRecordOwned(record, b)) return;
+  await plugin.journalResult({ epoch: b.epoch, workspace: b.workspace, sessionId: record.sessionId,
+    status, appliedSeq: record.ackSeq, ...(error ? { error } : {}) });
+  if (!wearRecordOwned(record, b)) return;
+  if (['imported', 'duplicate', 'discarded'].includes(status)) wearPendingRecords.delete(record.sessionId);
+  else wearPendingRecords.set(record.sessionId, { record, status });
+  renderWearReview(); wearPublishSoon();
+}
+function wearReconstruct(record) {
+  const template = record.template;
+  if (!template || template.v !== 1 || !template.plan || template.plan.id !== record.planId
+      || !Array.isArray(template.rows) || !Array.isArray(record.ops) || !record.ops.length) throw new Error('invalid_record');
+  if (template.baseline ? record.baselineRevision !== template.baselineRevision : record.baselineRevision !== null) throw new Error('invalid_baseline');
+  const sess = template.baseline ? wearCopy(template.baseline) : {
+    id: record.sessionId, planId: record.planId, planName: template.planName, startedAt: record.startedAt,
+    completedSets: {}, actualFailureSets: {} };
+  if (sess.id !== record.sessionId || !Number.isFinite(sess.startedAt)) throw new Error('invalid_record');
+  const keys = new Map();
+  for (const row of template.rows) for (const key of row.keys) {
+    if (keys.has(key.key)) throw new Error('invalid_template');
+    keys.set(key.key, key);
+  }
+  let terminal = '', seq = 0;
+  for (const op of record.ops) {
+    if (op.seq !== ++seq || terminal || !Number.isFinite(op.at)) throw new Error('invalid_sequence');
+    if (seq === 1 ? op.type !== 'start' : op.type === 'start') throw new Error('invalid_sequence');
+    if (op.type === 'mark' || op.type === 'unmark') {
+      const key = keys.get(op.setKey);
+      if (!key) throw new Error('unknown_set');
+      if (op.type === 'mark') sess.completedSets[key.local] = true;
+      else { delete sess.completedSets[key.local]; delete sess.actualFailureSets[key.local]; }
+    } else if (op.type === 'finish' || op.type === 'discard') terminal = op.type;
+    else if (op.type !== 'start') throw new Error('invalid_record');
+  }
+  if (seq !== record.ackSeq) throw new Error('invalid_sequence');
+  const exercises = [], allLocal = new Set();
+  let doneCount = 0;
+  for (const row of template.rows) {
+    const entry = wearCopy(row.entry), done = [], sidesDone = { left: [], right: [] }, weights = [];
+    const failures = [], sidesFailure = { left: [], right: [] };
+    for (const key of row.keys) {
+      allLocal.add(key.local);
+      if (!sess.completedSets[key.local]) continue;
+      doneCount++; weights.push(key.weight);
+      if (key.side) sidesDone[key.side].push(key.index + 1); else done.push(key.index + 1);
+      if (sess.actualFailureSets[key.local]) {
+        failures.push(key.index + 1);
+        if (key.side) sidesFailure[key.side].push(key.index + 1);
+      }
+    }
+    entry.setsDone = done.length + sidesDone.left.length + sidesDone.right.length;
+    if (entry.unilateral) entry.sidesDone = sidesDone;
+    else { delete entry.doneSets; if (done.length) entry.doneSets = done; }
+    entry.actualFailureSets = Array.from(new Set(failures)).sort((a, b) => a - b);
+    if (entry.unilateral) entry.sidesFailure = sidesFailure;
+    if (weights.length) entry.weight = entry.assisted ? Math.min(...weights) : Math.max(...weights);
+    exercises.push(entry);
+  }
+  if (Object.keys(sess.completedSets).some(k => sess.completedSets[k] && !allLocal.has(k))) throw new Error('unknown_set');
+  return { sess, template: { plan: template.plan, planName: template.planName, exercises, doneCount },
+    terminal, endedAt: record.ops[record.ops.length - 1].at };
+}
+async function wearConsumeRecord(plugin, record, force) {
+  const b = wearBinding;
+  if (!wearRecordOwned(record, b)) return;
+  if (state.history.some(w => w.id === record.sessionId)) {
+    if (record.ops?.[record.ops.length - 1]?.type === 'finish') {
+      const cleanupError = wearRetireOwnSession(record, b);
+      if (cleanupError === 'phone_changed') {
+        await wearRecordResult(plugin, b, record, 'conflict', cleanupError); return;
+      }
+      if (cleanupError) throw new Error(cleanupError);
+      await wearRecordResult(plugin, b, record, 'duplicate');
+    } else await wearRecordResult(plugin, b, record, 'conflict', 'phone_finished');
+    return;
+  }
+  let rebuilt;
+  try { rebuilt = wearReconstruct(record); }
+  catch (e) { await wearRecordResult(plugin, b, record, 'conflict', 'invalid_record'); return; }
+  const { sess, template, terminal, endedAt } = rebuilt;
+  if (terminal === 'discard') { await wearRecordResult(plugin, b, record, 'discarded'); return; }
+  const current = getSession(), original = record.template;
+  const planChanged = wearPlanFingerprint(getPlan(record.planId)) !== original.planFingerprint
+    || wearStable(state.program || null) !== original.programFingerprint;
+  const continuing = !!original.baseline;
+  const marker = current && current.wearJournal;
+  const ownMarker = marker && marker.epoch === b.epoch && marker.sessionId === record.sessionId;
+  const expected = ownMarker ? marker.revision : original.baseline && wearSessionRevision(original.baseline);
+  const baselineConflict = continuing && (!current || current.id !== record.sessionId || wearSessionRevision(current) !== expected);
+  if (!force && (planChanged || baselineConflict || record.resultStatus === 'conflict')) {
+    await wearRecordResult(plugin, b, record, 'conflict', planChanged ? 'plan_changed' : 'phone_changed'); return;
+  }
+  if (force && terminal !== 'finish') return;
+  if (!terminal && !force) {
+    if (!continuing) { await wearRecordResult(plugin, b, record, 'staged'); return; }
+    if (ownMarker && marker.appliedSeq >= record.ackSeq) {
+      await wearRecordResult(plugin, b, record, 'active'); return;
+    }
+    const before = state.activeSession;
+    sess.wearJournal = { epoch: b.epoch, sessionId: record.sessionId, appliedSeq: record.ackSeq, revision: wearSessionRevision(sess) };
+    state.activeSession = sess;
+    if (!persistState()) { state.activeSession = before; throw new Error('state_write_failed'); }
+    syncNoteLocalChange(); renderAll();
+    await wearRecordResult(plugin, b, record, 'active'); return;
+  }
+  if (!wearRecordOwned(record, b)) return;
+  const entry = commitCanonicalWorkout(sess, template, localDateKey(new Date(endedAt)), endedAt, '');
+  if (!entry) throw new Error('state_write_failed');
+  const cleanupError = wearRetireOwnSession(record, b);
+  if (cleanupError === 'phone_changed') {
+    await wearRecordResult(plugin, b, record, 'conflict', cleanupError); return;
+  }
+  if (cleanupError) throw new Error(cleanupError);
+  renderAll();
+  await wearRecordResult(plugin, b, record, 'imported');
+}
+function wearRetireOwnSession(record, b) {
+  const current = getSession(), baseline = record.template?.baseline;
+  if (!wearRecordOwned(record, b)) return 'ownership_changed';
+  if (!current || current.id !== record.sessionId) return '';
+  if (!baseline) return 'phone_changed';
+  const marker = current.wearJournal;
+  const expected = marker && marker.epoch === b.epoch && marker.sessionId === record.sessionId
+    ? marker.revision : wearSessionRevision(baseline);
+  if (wearSessionRevision(current) !== expected) return 'phone_changed';
+  state.activeSession = null;
+  if (!persistState()) { state.activeSession = current; return 'state_write_failed'; }
+  syncNoteLocalChange(); workoutPhaseCancelOwner(); stopTimer();
+  return '';
+}
+function wearQueueJournals(plugin, records) {
+  const task = wearDrainQueue.then(async () => {
+    for (const record of records) await wearConsumeRecord(plugin, record, false);
+  });
+  wearDrainQueue = task.catch(() => {}); return task;
+}
+function renderWearReview() {
+  const box = document.getElementById('wear-review');
+  if (!box) return;
+  box.replaceChildren();
+  if (!wearOwns(wearBinding)) return;
+  for (const { record, status } of wearPendingRecords.values()) {
+    if (status === 'active') continue;
+    const panel = document.createElement('div'), title = document.createElement('h5'), note = document.createElement('p');
+    title.textContent = t('wear.review') + ' · ' + (record.template?.planName || '');
+    note.textContent = t(status === 'conflict' ? 'wear.conflict' : 'wear.staged');
+    panel.append(title, note);
+    for (const [key, action] of [['recorded', () => wearResolveReview(record.sessionId, false)],
+      ['discard', () => wearResolveReview(record.sessionId, true)]]) {
+      const button = document.createElement('button'); button.type = 'button'; button.className = 'btn btn-secondary';
+      button.textContent = t('wear.' + key);
+      if (key === 'recorded') button.disabled = record.ops?.[record.ops.length - 1]?.type !== 'finish';
+      if (key === 'discard') button.disabled = !['finish', 'discard'].includes(record.ops?.[record.ops.length - 1]?.type);
+      button.onclick = () => showGeneric(t('wear.review'), t('wear.' + key), () => {
+        const task = wearDrainQueue.then(action);
+        wearDrainQueue = task.catch(() => { wearError = true; renderWearSetting(); });
+      }, esc(t(key === 'discard' ? 'wear.discardBody' : 'wear.importBody')));
+      panel.append(button);
+    }
+    box.append(panel);
+  }
+}
+async function wearResolveReview(sessionId, discard) {
+  const b = wearBinding, plugin = wearPlugin;
+  if (!wearOwns(b)) return;
+  const drained = await plugin.drain();
+  if (!wearOwns(b)) return;
+  for (const receipt of drained.commands || []) await wearQueueCommand(plugin, receipt);
+  if (!wearOwns(b)) return;
+  const record = (drained.journals || []).find(r => r.sessionId === sessionId);
+  if (!record || !wearRecordOwned(record, b)) return;
+  if (discard) {
+    if (!['finish', 'discard'].includes(record.ops?.[record.ops.length - 1]?.type)) return;
+    await wearRecordResult(plugin, b, record, 'discarded');
+  }
+  else await wearConsumeRecord(plugin, record, true);
+}
+function wearMessagesAllowed(b, uid) {
+  return wearOwns(b) && !!b.grants?.messages && navigator.onLine && !document.hidden
+    && communityOptIn() && !!uid && communityProfile?.id === uid && wsSlot?.owner === uid;
+}
+async function wearMessageSnapshot(b) {
+  const uid = communityProfile?.id, sb = communityClient();
+  if (!sb || !wearMessagesAllowed(b, uid)) return [];
+  try {
+    const auth = await sb.auth.getSession();
+    if (!wearMessagesAllowed(b, uid) || auth.data?.session?.user?.id !== uid) return [];
+    const res = await sb.rpc('chat_list');
+    if (!wearMessagesAllowed(b, uid) || res.error) return [];
+    return (res.data || []).slice(0, 10).map(c => ({ conversationId: c.conversation_id,
+      name: String(c.other_name || t('community.unknownUser')).slice(0, 60),
+      last: String(c.last_body || '').slice(0, 160), unread: Math.max(0, Number(c.unread) || 0),
+      at: Number.isFinite(Date.parse(c.last_message_at)) ? Date.parse(c.last_message_at) : 0,
+      canSend: c.can_send === true }));
+  } catch (e) { return []; }
+}
+async function wearApplyMessage(receipt, b) {
+  const c = receipt.command, uid = communityProfile?.id, sb = communityClient(), args = c.args || {};
+  const gate = () => !wearCommandError(receipt, b) && wearMessagesAllowed(b, uid);
+  if (!sb || !gate()) return { status: 'rejected', error: 'message_unavailable' };
+  let attempted = false;
+  try {
+    const auth = await sb.auth.getSession();
+    if (!gate() || auth.data?.session?.user?.id !== uid) return { status: 'stale', error: 'ownership_changed' };
+    const list = await sb.rpc('chat_list');
+    if (!gate()) return { status: 'stale', error: 'ownership_changed' };
+    if (list.error || !(list.data || []).some(c => c.conversation_id === args.conversationId && c.can_send === true)) {
+      return { status: 'rejected', error: 'conversation_unavailable' };
+    }
+    /* Žiadny await medzi poslednou kontrolou a jediným pokusom o vloženie. */
+    attempted = true;
+    const res = await communityInsertMessage(sb, { conversation_id: args.conversationId, sender_id: uid, body: args.body.trim() });
+    if (!gate()) return { status: 'unknown', error: 'delivery_unknown' };
+    if (res.error) return { status: 'unknown', error: 'delivery_unknown' };
+    if (communityChatId === args.conversationId) communityAddChatMsg(res.data, true);
+    pushNotifyMessage(sb, res.data?.id);
+    return { status: 'applied' };
+  } catch (e) { return { status: attempted ? 'unknown' : 'rejected', error: attempted ? 'delivery_unknown' : 'message_unavailable' }; }
+}
 function wearCommandKey(nodeId, command) {
   return JSON.stringify([nodeId, command.epoch, command.workspace, command.id]);
 }
@@ -46703,6 +47095,13 @@ function wearCommandError(receipt, b) {
       || c.expiresAt <= c.issuedAt || !Number.isFinite(receipt.deadlineAt)
       || receipt.deadlineAt <= now) return 'expired';
   if (document.hidden || appYielded) return 'phone_inactive';
+  if (c.type === 'messageReply') {
+    const args = c.args || {};
+    if (!b.grants?.messages) return 'grant_required';
+    if (typeof args.conversationId !== 'string' || !/^[0-9a-f-]{36}$/i.test(args.conversationId)
+        || typeof args.body !== 'string' || !args.body.trim() || args.body.length > 280) return 'invalid_message';
+    return '';
+  }
   const sess = getSession(), rest = wearRestSnapshot();
   if (c.sessionId !== (sess ? sess.id : null) || c.restId !== (rest ? rest.id : null)) return 'identity_changed';
   if (!['startWorkout', 'restStart', 'restStop', 'restAdd'].includes(c.type)) return 'unknown_command';
@@ -46710,6 +47109,7 @@ function wearCommandError(receipt, b) {
 }
 function wearPrepareEffect(c) {
   const args = c.args || {};
+  if (c.type === 'messageReply') return { kind: 'messageReply' };   // trvalo iba redigovaný nárok, nikdy text ani adresát
   if (c.type === 'startWorkout') {
     if (getSession() || getActiveActivity() || editingPlan !== null) throw new Error('workout_busy');
     if (typeof args.planId !== 'string' || !activePlanIds().includes(args.planId)) throw new Error('plan_unavailable');
@@ -46792,14 +47192,17 @@ async function wearExecuteCommand(plugin, receipt) {
       /* Od prípravy po účinok nie je žiadny await. Identita aj absolútny deadline už sú na disku. */
       const gate = wearCommandError(receipt, b);
       if (gate) { result.status = 'stale'; result.error = gate; }
-      else {
+      else if (c.type === 'messageReply') {
+        Object.assign(result, await wearApplyMessage(receipt, b));
+      } else {
         const saved = wearApplyEffect(c, intent);
         result.status = saved ? 'applied' : 'unknown';
         if (!saved) result.error = 'persistence_unknown';
       }
     } catch (e) {
       result.status = pendingWritten ? 'unknown' : intent ? 'unknown' : 'rejected';
-      result.error = pendingWritten || intent ? 'persistence_unknown' : String(e.message || 'rejected');
+      result.error = c.type === 'messageReply' ? 'delivery_unknown'
+        : pendingWritten || intent ? 'persistence_unknown' : String(e.message || 'rejected');
     }
   }
   const final = { key, state: 'final', result };
@@ -46821,6 +47224,7 @@ async function wearResume(plugin) {
     await wearRefreshStatus(plugin);
     const queued = await plugin.drain();
     for (const receipt of queued.commands || []) await wearQueueCommand(plugin, receipt);
+    await wearQueueJournals(plugin, queued.journals || []);
     wearDirty = true;
     await wearPublishNow(true);
   } catch (e) { wearError = true; renderWearSetting(); }
@@ -46833,6 +47237,7 @@ function initWearBridge() {
   wearInitPromise = (async () => {
     try {
       await plugin.addListener('wearCommand', receipt => { wearQueueCommand(plugin, receipt).catch(() => {}); });
+      await plugin.addListener('wearJournal', () => { wearResume(plugin); });
       await plugin.addListener('wearUnlinked', async event => {
         const b = wearBinding;
         if (!b || event.nodeId !== b.peer || event.epoch !== b.epoch) return;
@@ -46855,14 +47260,15 @@ function initWearBridge() {
         wearRefreshStatus(plugin).catch(() => { wearError = true; renderWearSetting(); });
       });
       document.getElementById('wear-unlink').addEventListener('click', () => {
-        showGeneric(t('wear.title'), t('wear.unlink'), () => wearRevoke().catch(() => {}), esc(t('wear.unlinkBody')));
+        showGeneric(t('wear.title'), t('wear.unlink'), () => wearRevoke().catch(() => {}),
+          esc(t('wear.unlinkBody')) + '<p>' + esc(t('wear.unsynced')) + '</p>');
       });
       document.addEventListener('visibilitychange', () => { if (!document.hidden) wearResume(plugin); });
       const app = nativePlugin('App');
       if (app) await app.addListener('resume', () => wearResume(plugin));
       wearHeartbeat = setInterval(() => {
         if (document.hidden || !wearBinding || appYielded) return;
-        wearRefreshStatus(plugin).then(() => wearPublishNow(true)).catch(() => { wearError = true; renderWearSetting(); });
+        wearResume(plugin);
       }, 15000);
       await wearResume(plugin);
     } catch (e) { await wearRevoke().catch(() => {}); wearError = true; renderWearSetting(); }

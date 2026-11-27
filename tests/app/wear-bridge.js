@@ -12,7 +12,7 @@ const fs = require('fs');
 const os = require('os');
 const path = require('path');
 const REPO = path.resolve(__dirname, '..', '..');
-const PORT = Number(process.env.GQ_TEST_PORT || 8124);
+const PORT = Number(process.env.GQ_TEST_PORT || 8137);
 const BASE = 'http://localhost:' + PORT + '/';
 const WORK = process.env.GQ_WORK || path.join(os.tmpdir(), 'gq-wear-bridge');
 const J = JSON.stringify;
@@ -28,6 +28,13 @@ const NATIVE = `(() => {
   const test = window.wearTest = {
     active: false, nodes: [{ id: 'watch-left', name: 'Left watch' }, { id: 'watch-right', name: 'Right watch' }],
     snapshots: [], acks: [], queue: [], hold: false, validations: 0, validateOK: true, failConfigure: false,
+    pack: JSON.parse(sessionStorage.getItem('wear_native_pack') || 'null'),
+    journals: JSON.parse(sessionStorage.getItem('wear_native_inbox') || '[]'), results: [], failResult: false,
+    storeInbox() { sessionStorage.setItem('wear_native_inbox', JSON.stringify(this.journals)); },
+    stage(record) {
+      this.journals = this.journals.filter(r => r.sessionId !== record.sessionId); this.journals.push(copy(record));
+      this.storeInbox();
+    },
     activate() { this.active = true; },
     emit(name, payload) { for (const fn of handlers[name] || []) fn(copy(payload)); },
     release() { const open = this.open; this.open = null; this.hold = false; if (open) open(); },
@@ -51,6 +58,9 @@ const NATIVE = `(() => {
       if (configuration.enabled && !test.nodes.some(n => n.id === configuration.peer)) throw new Error('no_peer');
       sessionStorage.setItem('wear_native_configuration', JSON.stringify(configuration));
       test.queue = [];
+      if (!configuration.enabled) {
+        test.pack = null; test.journals = []; test.storeInbox(); sessionStorage.removeItem('wear_native_pack');
+      }
       return {};
     },
     async publish({ snapshot }) {
@@ -58,7 +68,23 @@ const NATIVE = `(() => {
       if (!config || !config.enabled || snapshot.binding.epoch !== config.epoch || snapshot.binding.peer !== config.peer) throw new Error('wrong_binding');
       test.snapshots.push(copy(snapshot)); return {};
     },
-    async drain() { const commands = test.queue; test.queue = []; return { commands: copy(commands) }; },
+    async publishPack(value) {
+      test.pack = copy(value); sessionStorage.setItem('wear_native_pack', JSON.stringify(value)); return {};
+    },
+    async journalResult(result) {
+      if (test.failResult) throw new Error('test_result_failure');
+      const record = test.journals.find(r => r.sessionId === result.sessionId);
+      if (!record || result.epoch !== record.epoch || result.workspace !== record.workspace) throw new Error('test_binding');
+      if (result.appliedSeq !== record.ackSeq) throw new Error('test_sequence');
+      record.resultStatus = result.status; record.appliedSeq = result.appliedSeq;
+      test.results.push(copy(result));
+      if (['imported', 'duplicate', 'discarded'].includes(result.status)) test.journals = test.journals.filter(r => r !== record);
+      test.storeInbox(); return {};
+    },
+    async drain() {
+      const commands = test.queue; test.queue = [];
+      return { commands: copy(commands), journals: copy(test.journals) };
+    },
     async validate() {
       test.validations++;
       if (test.hold) await new Promise(resolve => { test.open = resolve; });
@@ -218,6 +244,7 @@ const NATIVE = `(() => {
       await ev(`(setThemePref(${J(theme)}), true)`);
       check(theme + ': watch controls remain visible without horizontal overflow', await ev(`(() => { const b = document.getElementById('wear-setting'), s = getComputedStyle(document.getElementById('wear-peer')); return b.getBoundingClientRect().width > 0 && b.scrollWidth <= b.clientWidth + 1 && s.color !== s.backgroundColor; })()`));
     }
+    await require('./wear-offline')({ ev, check, reload, flush, link, waitFor });
 
     const oldEpoch = await ev(`wearBinding.epoch`);
     await ev(`(async () => { const c = await wearPlugin.status(); c.configuration.enabled = false; sessionStorage.setItem('wear_native_configuration', JSON.stringify(c.configuration)); wearTest.emit('wearUnlinked', { nodeId: c.configuration.peer, epoch: c.configuration.epoch }); return true; })()`);

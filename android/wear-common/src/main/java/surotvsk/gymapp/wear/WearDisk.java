@@ -8,7 +8,7 @@ import java.io.FileOutputStream;
 import java.nio.charset.StandardCharsets;
 
 /** Atómový lokálny denník vylúčený zo záloh. Volajúci serializuje prístup. */
-public final class WearDisk {
+public final class WearDisk implements WearStore {
     private final AtomicFile file;
     public WearDisk(Context c, String name) { file = new AtomicFile(new File(c.getNoBackupFilesDir(), name)); }
     public JSONObject read() {

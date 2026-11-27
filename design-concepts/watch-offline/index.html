@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GymLift · Live watch preview</title>
+<style>
+body{margin:0;padding:20px;background:#10110f;color:#f4f3ef;font:16px system-ui}
+main{max-width:840px;margin:auto}h1{font-size:24px}p{color:#a6a5a0;line-height:1.5}
+a{color:#d6f35a}code{overflow-wrap:anywhere}iframe{width:100%;height:820px;border:1px solid #333;border-radius:24px}
+</style>
+<main>
+<h1>GymLift watch preview</h1>
+<p>Actual Android emulator screen and controls. Offline workout examples use clearly identified sample data; this is not proof of phone pairing.</p>
+<iframe src="http://localhost:8127/" title="Live GymLift Wear OS emulator" allow=""></iframe>
+<p>If the viewer is unavailable, start the watch emulator, then run from the repository:</p>
+<pre><code>python3 tools/watch-preview.py --serial emulator-5554 --port 8127</code></pre>
+<p><a href="http://localhost:8127/">Open viewer directly</a> · <a href="/app/">Phone preview</a></p>
+</main>
+</html>

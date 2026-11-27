@@ -62,8 +62,21 @@ public class GymWearPlugin extends Plugin {
             phone.publish(snapshot); return new JSObject();
         });
     }
+    @PluginMethod public void publishPack(PluginCall call) {
+        run(call, phone -> {
+            JSONObject pack = call.getObject("pack"), templates = call.getObject("templates");
+            WearProtocol.require(pack != null && templates != null, "pack_required");
+            phone.publishPack(pack, templates); return new JSObject();
+        });
+    }
     @PluginMethod public void drain(PluginCall call) {
-        run(call, phone -> new JSObject().put("commands", phone.drain()));
+        run(call, phone -> new JSObject().put("commands", phone.drain()).put("journals", phone.journals()));
+    }
+    @PluginMethod public void journalResult(PluginCall call) {
+        run(call, phone -> {
+            JSONObject result = new JSONObject(call.getData().toString());
+            phone.journalResult(result); return new JSObject();
+        });
     }
     @PluginMethod public void validate(PluginCall call) {
         run(call, phone -> {
@@ -84,6 +97,11 @@ public class GymWearPlugin extends Plugin {
     }
     void commandEvent(JSONObject event) throws Exception {
         if (foreground) notifyListeners("wearCommand", new JSObject(event.toString()));
+    }
+    boolean isForeground() { return foreground; }
+    /** Signál bez obsahu: JS si denník vyžiada cez drain(). */
+    void journalEvent() {
+        if (foreground) notifyListeners("wearJournal", new JSObject());
     }
     void unlinkEvent(JSONObject event) throws Exception {
         if (foreground) notifyListeners("wearUnlinked", new JSObject(event.toString()));

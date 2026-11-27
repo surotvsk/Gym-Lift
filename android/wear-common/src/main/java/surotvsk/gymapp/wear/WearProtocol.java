@@ -15,6 +15,11 @@ public final class WearProtocol {
     public static final String COMMAND = "/gymlift/cmd";
     public static final String ACK = "/gymlift/ack";
     public static final String UNLINK = "/gymlift/unlink";
+    public static final String PACK = "/gymlift/pack";
+    public static final String PACK_REQUEST = "/gymlift/pack-req";
+    public static final String JOURNAL = "/gymlift/journal";
+    public static final String JOURNAL_ACK = "/gymlift/journal-ack";
+    public static final int MAX_REPLY = 280, MAX_MESSAGES = 10;
     /** Súkromný snapshot ide jednou správou MessageClient (limit Data Layer ~100 KB); 90000 B nechá rezervu. */
     public static final int MAX_SNAPSHOT = 90000;
     private WearProtocol() {}
@@ -76,6 +81,9 @@ public final class WearProtocol {
                 long seconds = number(args, "seconds");
                 require(seconds > 0 && seconds <= 86400, "seconds"); break;
             case "restStop": break;
+            case "messageReply":
+                text(args, "conversationId", 160);
+                require(text(args, "body", MAX_REPLY).trim().length() > 0 && args.length() == 2, "body"); break;
             default: throw new JSONException("command_type");
         }
         long issued = number(c, "issuedAt"), expires = number(c, "expiresAt");
@@ -127,8 +135,51 @@ public final class WearProtocol {
             require(status.equals("completed") || status.equals("planned"), "calendar_status");
             text(day, "title", 300);
         }
+        optionalOffline(s, binding.getBoolean("enabled"));
         if (!binding.getBoolean("enabled")) {
             require(plans.length() == 0 && calendar.length() == 0 && s.isNull("session") && s.isNull("rest"), "disabled_private_content");
         }
+    }
+    /** Telo príkazu messageReply sa nikdy neukladá: trvalý záznam nesie len prázdne args. */
+    public static JSONObject redacted(JSONObject command) throws JSONException {
+        JSONObject copy = new JSONObject(command.toString());
+        if ("messageReply".equals(copy.optString("type"))) copy.put("args", new JSONObject());
+        return copy;
+    }
+    /** Voliteľné polia offline/správ; staré telefóny ich nenesú (predvolene vypnuté, prázdne). */
+    private static void optionalOffline(JSONObject s, boolean enabled) throws JSONException {
+        if (s.has("grants")) {
+            JSONObject g = s.getJSONObject("grants");
+            require(g.get("offline") instanceof Boolean && g.get("messages") instanceof Boolean, "grants");
+            require(enabled || (!g.getBoolean("offline") && !g.getBoolean("messages")), "disabled_private_content");
+        }
+        if (s.has("packRev") && !s.isNull("packRev")) text(s, "packRev", 160);
+        if (s.has("journal")) {
+            JSONArray journal = s.getJSONArray("journal");
+            require(journal.length() <= 80 && (enabled || journal.length() == 0), "journal");
+            for (int i = 0; i < journal.length(); i++) {
+                JSONObject e = journal.getJSONObject(i);
+                require(JournalRules.isSessionId(text(e, "sessionId", 160)), "journal");
+                long seq = number(e, "ackSeq");
+                require(seq >= 0 && seq <= JournalRules.MAX_OPS, "journal");
+                String status = text(e, "status", 16);
+                require(status.equals("active") || status.equals("staged") || status.equals("conflict")
+                    || status.equals("imported") || status.equals("duplicate") || status.equals("discarded"), "journal");
+                if (e.has("error")) require(JournalRules.isCode(text(e, "error", 64)), "journal");
+            }
+        }
+        if (s.has("messages")) {
+            JSONArray messages = s.getJSONArray("messages");
+            require(messages.length() <= MAX_MESSAGES && (enabled || messages.length() == 0), "messages");
+            for (int i = 0; i < messages.length(); i++) {
+                JSONObject m = messages.getJSONObject(i);
+                text(m, "conversationId", 160); text(m, "name", 60, true); text(m, "last", 160, true);
+                require(number(m, "unread") >= 0 && number(m, "at") >= 0 && m.get("canSend") instanceof Boolean, "messages");
+            }
+        }
+    }
+    public static void packRequest(JSONObject r) throws JSONException {
+        require(number(r, "v") == 1, "version");
+        text(r, "epoch", 160); text(r, "workspace", 160);
     }
 }

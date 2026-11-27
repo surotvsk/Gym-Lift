@@ -35,7 +35,7 @@
     }, 4000);
   </script>
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
-  <link rel="stylesheet" href="style.css?v=124">
+  <link rel="stylesheet" href="style.css?v=125">
 </head>
 <body data-tab="dnes">
 
@@ -874,6 +874,16 @@
           <input type="checkbox" id="wear-consent">
           <span data-i18n="wear.consent"></span>
         </label>
+        <label class="wear-consent-label">
+          <input type="checkbox" id="wear-offline">
+          <span data-i18n="wear.offlineGrant"></span>
+        </label>
+        <label class="wear-consent-label">
+          <input type="checkbox" id="wear-messages">
+          <span data-i18n="wear.messagesGrant"></span>
+        </label>
+        <p class="card-note" data-i18n="wear.privacy"></p>
+        <div id="wear-review" aria-live="polite"></div>
         <div class="wear-actions">
           <button type="button" class="btn btn-secondary" id="wear-refresh" data-i18n="wear.refresh"></button>
           <button type="button" class="btn btn-primary" id="wear-link" data-i18n="wear.connect" disabled></button>
@@ -1529,8 +1539,8 @@
     <button type="button" class="btn btn-sm" id="btn-csv-undo" data-i18n="csv.undo">Undo import</button>
   </div>
 
-  <script src="community-config.js?v=124"></script>
-  <script src="vendor/supabase-js.js?v=124"></script>
-  <script src="script.js?v=124"></script>
+  <script src="community-config.js?v=125"></script>
+  <script src="vendor/supabase-js.js?v=125"></script>
+  <script src="script.js?v=125"></script>
 </body>
 </html>
