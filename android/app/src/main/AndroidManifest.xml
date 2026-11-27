@@ -45,6 +45,13 @@
             </intent-filter>
         </activity-alias>
 
+        <service android:name=".GymWearListenerService" android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.android.gms.wearable.MESSAGE_RECEIVED" />
+                <data android:scheme="wear" android:host="*" android:path="/gymlift/cmd" />
+                <data android:scheme="wear" android:host="*" android:path="/gymlift/unlink" />
+            </intent-filter>
+        </service>
         <receiver android:name=".GymRestReceiver" android:exported="false" />
         <service android:name=".GymRestService" android:exported="false"
             android:foregroundServiceType="shortService" />

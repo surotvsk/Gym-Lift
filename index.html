@@ -35,7 +35,7 @@
     }, 4000);
   </script>
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
-  <link rel="stylesheet" href="style.css?v=121">
+  <link rel="stylesheet" href="style.css?v=123">
 </head>
 <body data-tab="dnes">
 
@@ -157,7 +157,7 @@
         <span class="duration-note" id="duration-note" hidden></span>
         <span class="bt-line summary-bar" id="summary-bar"></span>
         <div class="mini">
-          <button type="button" class="mini-ghost" id="btn-open-rest"><svg class="kico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2M9.5 2.5h5"/></svg><span data-i18n="bento.rest">Oddych</span></button>
+          <button type="button" class="mini-ghost" id="btn-open-rest"><svg class="kico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2M9.5 2.5h5"/></svg><span data-i18n="nativeRest.channel">Časovač oddychu</span></button>
           <label class="phase-header-toggle"><input type="checkbox" id="phase-toggle-warmup"><span data-i18n="phase.warmup"></span></label>
           <label class="phase-header-toggle"><input type="checkbox" id="phase-toggle-stretching"><span data-i18n="phase.stretching"></span></label>
           <button type="button" class="mini-ghost sess-more" id="btn-session-more" aria-haspopup="true" aria-expanded="false" aria-controls="session-menu" data-i18n-aria="session.moreAria" aria-label="Ďalšie možnosti tréningu"><svg class="kico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1.3"/><circle cx="12" cy="12" r="1.3"/><circle cx="19" cy="12" r="1.3"/></svg></button>
@@ -586,6 +586,66 @@
     </div>
   </div>
 
+  <!-- ============ MODAL: nastavenia cviku počas tréningu (iba tento tréning, plán sa nemení) ============ -->
+  <div class="modal-backdrop" id="modal-ex-settings" hidden>
+    <div class="modal modal-form ex-settings" role="dialog" aria-modal="true" aria-labelledby="ex-settings-title" aria-describedby="ex-settings-name">
+      <div class="sheet-head">
+        <h3 id="ex-settings-title" data-i18n="exsettings.title">Nastavenia cviku</h3>
+        <button type="button" class="btn-icon" id="btn-ex-settings-close" data-i18n-title="exsettings.close" data-i18n-aria="exsettings.close">✕</button>
+      </div>
+      <p class="ex-settings-name" id="ex-settings-name"></p>
+      <p class="card-note ex-settings-done" id="ex-settings-done"></p>
+      <p class="ex-settings-alert" id="ex-settings-alert" role="status" hidden></p>
+      <fieldset class="ex-settings-fields" id="ex-settings-fields">
+        <legend class="sheet-label" data-i18n="exsettings.mode">Režim cvičenia</legend>
+        <div class="ex-settings-seg">
+          <button type="button" class="goal-chip" id="ex-settings-mode-both" aria-pressed="false" data-i18n="exsettings.modeBoth">Obe strany naraz</button>
+          <button type="button" class="goal-chip" id="ex-settings-mode-one" aria-pressed="false" data-i18n="exsettings.modeOne">Jedna strana po druhej</button>
+        </div>
+        <p class="card-note ex-settings-pair-hint" id="ex-settings-pair-hint" data-i18n="exsettings.perSideHint" hidden></p>
+        <div class="ex-settings-side" id="ex-settings-side-box" hidden>
+          <span class="sheet-label" data-i18n="exsettings.startSide">Začať stranou</span>
+          <div class="ex-settings-seg">
+            <button type="button" class="goal-chip" id="ex-settings-side-left" aria-pressed="false" data-i18n="unilateral.left">Ľavá</button>
+            <button type="button" class="goal-chip" id="ex-settings-side-right" aria-pressed="false" data-i18n="unilateral.right">Pravá</button>
+          </div>
+        </div>
+        <div class="ex-settings-field">
+          <label class="sheet-label" id="ex-settings-sets-label" for="ex-settings-sets"></label>
+          <div class="ex-settings-stepper">
+            <button type="button" class="btn btn-secondary" id="ex-settings-sets-minus" data-i18n-aria="exsettings.setsLess" data-i18n-title="exsettings.setsLess">−</button>
+            <input type="text" class="modal-input" id="ex-settings-sets" inputmode="numeric" autocomplete="off">
+            <button type="button" class="btn btn-secondary" id="ex-settings-sets-plus" data-i18n-aria="exsettings.setsMore" data-i18n-title="exsettings.setsMore">+</button>
+          </div>
+        </div>
+        <div class="ex-settings-field">
+          <label class="sheet-label" for="ex-settings-reps" data-i18n="session.reps">Opakovania</label>
+          <div class="ex-settings-stepper">
+            <button type="button" class="btn btn-secondary" id="ex-settings-reps-minus" data-i18n-aria="setReps.less" data-i18n-title="setReps.less">−</button>
+            <input type="text" class="modal-input" id="ex-settings-reps" inputmode="numeric" autocomplete="off">
+            <button type="button" class="btn btn-secondary" id="ex-settings-reps-plus" data-i18n-aria="setReps.more" data-i18n-title="setReps.more">+</button>
+          </div>
+        </div>
+        <div class="ex-settings-field">
+          <label class="sheet-label" id="ex-settings-weight-label" for="ex-settings-weight"></label>
+          <div class="ex-settings-stepper">
+            <button type="button" class="btn btn-secondary" id="ex-settings-weight-minus" data-i18n-aria="setWeight.less" data-i18n-title="setWeight.less">−</button>
+            <input type="text" class="modal-input" id="ex-settings-weight" inputmode="decimal" autocomplete="off">
+            <button type="button" class="btn btn-secondary" id="ex-settings-weight-plus" data-i18n-aria="setWeight.more" data-i18n-title="setWeight.more">+</button>
+          </div>
+        </div>
+        <div class="ex-settings-field">
+          <button type="button" class="goal-chip ex-settings-assisted" id="ex-settings-assisted" aria-pressed="false" data-i18n="exsettings.assisted">Asistovaný cvik</button>
+        </div>
+      </fieldset>
+      <p class="card-note ex-settings-plan" data-i18n="exsettings.planKept">Platí len pre tento tréning. Plán sa nezmení.</p>
+      <div class="ex-settings-actions">
+        <button type="button" class="btn btn-secondary" id="btn-ex-settings-cancel" data-i18n="common.cancel">Zrušiť</button>
+        <button type="button" class="btn btn-primary" id="btn-ex-settings-save" data-i18n="exsettings.save" disabled>Použiť v tomto tréningu</button>
+      </div>
+    </div>
+  </div>
+
   <!-- ============ MODAL: kalkulačka kotúčov ============ -->
   <div class="modal-backdrop" id="modal-plates" hidden>
     <div class="modal modal-form modal-plates" role="dialog" aria-modal="true" aria-labelledby="plates-title">
@@ -724,6 +784,7 @@
       <p id="confirm-text"></p>
       <label class="modal-label" data-i18n="trening.noteLabel">Poznámka (voliteľná)</label>
       <input type="text" id="confirm-note" class="modal-input" maxlength="200" placeholder="…">
+      <p class="storage-warning" id="confirm-error" data-i18n="app.storageError" role="alert" hidden></p>
       <div class="modal-actions">
         <button class="btn btn-secondary" id="btn-confirm-cancel" data-i18n="finish.keep">Pokračovať v tréningu</button>
         <button class="btn btn-primary" id="btn-confirm-ok" data-i18n="finish.save">Uložiť tréning</button>
@@ -799,6 +860,24 @@
           <p class="card-sub" data-i18n="settings.goalHint">Vyber si 1 až 7 tréningov týždenne.</p>
           <div class="goal-chips" id="settings-goal-chips"></div>
           <p class="card-note goal-error" id="settings-goal-error" hidden></p>
+        </div>
+      </section>
+
+      <!-- Len natívna appka s GymWear: súhlas viazaný na konkrétne spárované hodinky. -->
+      <section class="set-group" id="wear-setting" aria-labelledby="wear-title" hidden>
+        <h4 class="set-label" id="wear-title" data-i18n="wear.title">Hodinky</h4>
+        <p class="card-sub" data-i18n="wear.hint"></p>
+        <p class="card-note" id="wear-status" role="status"></p>
+        <label class="wear-peer-label" for="wear-peer" data-i18n="wear.choose"></label>
+        <select id="wear-peer"></select>
+        <label class="wear-consent-label">
+          <input type="checkbox" id="wear-consent">
+          <span data-i18n="wear.consent"></span>
+        </label>
+        <div class="wear-actions">
+          <button type="button" class="btn btn-secondary" id="wear-refresh" data-i18n="wear.refresh"></button>
+          <button type="button" class="btn btn-primary" id="wear-link" data-i18n="wear.connect" disabled></button>
+          <button type="button" class="btn btn-secondary" id="wear-unlink" data-i18n="wear.unlink" hidden></button>
         </div>
       </section>
 
@@ -1366,7 +1445,7 @@
       <div class="sheet-scroll" id="muscles-body">
         <div class="rec-map" id="muscles-map"></div>
         <p class="card-note rec-note" data-i18n="recovery.note"></p>
-        <p class="card-note rec-note" data-i18n="muscles.frontNote"></p>
+        <p class="card-note rec-note" data-i18n="muscles.mapNote"></p>
         <details class="mu-guide">
           <summary data-i18n="muscles.guide"></summary>
           <p class="card-note" data-i18n="muscles.anatomyHint"></p>
@@ -1450,8 +1529,8 @@
     <button type="button" class="btn btn-sm" id="btn-csv-undo" data-i18n="csv.undo">Undo import</button>
   </div>
 
-  <script src="community-config.js?v=121"></script>
-  <script src="vendor/supabase-js.js?v=121"></script>
-  <script src="script.js?v=121"></script>
+  <script src="community-config.js?v=123"></script>
+  <script src="vendor/supabase-js.js?v=123"></script>
+  <script src="script.js?v=123"></script>
 </body>
 </html>

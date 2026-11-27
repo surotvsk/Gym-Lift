@@ -3053,7 +3053,6 @@ const I18N = {
     "muscles.guide": "Sprievodca svalmi",
     "muscles.anatomyHint": "Biceps je vpredu na nadlaktí, triceps vzadu. Ramená zahŕňajú zaoblené deltové svaly aj menšie svaly, ktoré otáčajú a stabilizujú ramenný kĺb a lopatku. Zvýraznená oblasť je orientačná, nie presné zobrazenie každého svalu.",
     "muscles.armsNote": "Ruky zachovávajú všeobecné alebo staršie zaradenia bez rozlíšenia bicepsu a tricepsu. Série ostanú v zozname; mapa nehádá, ktorý sval pracoval.",
-    "muscles.frontNote": "Pohľad spredu zobrazuje stehná a lýtka. Chrbát, zadok, abduktory a adduktory bedra aj všeobecné Ruky/Nohy ostávajú započítané v zozname; mapa ich neodhaduje.",
     'muscle.legs': 'Nohy', 'muscle.glutes': 'Zadok', 'muscle.core': 'Stred tela', 'muscle.fullBody': 'Celé telo',
     'muscle.thighs': 'Stehná', 'muscle.calves': 'Lýtka', 'muscle.abductors': 'Abduktory bedra', 'muscle.adductors': 'Adduktory bedra',
     'muscles.legsNote': 'Stehná zahŕňajú prednú aj zadnú stranu hornej časti nohy, lýtka zadnú stranu predkolenia. Abduktory bedra pohybujú nohou von, adduktory dnu. Zadok je samostatná skupina. Staršie všeobecné Nohy sa nerozdeľujú odhadom; zostávajú v zozname.',
@@ -4454,7 +4453,6 @@ const I18N = {
     "muscles.guide": "Muscle guide",
     "muscles.anatomyHint": "Biceps are at the front of your upper arms; triceps are at the back. The Shoulders group includes the rounded deltoids and smaller muscles that rotate and stabilize the shoulder joint and shoulder blade. The highlighted region is approximate, not a drawing of every individual muscle.",
     "muscles.armsNote": "Arms keeps general or older assignments that do not specify biceps or triceps. These sets stay in the list; the diagram does not guess which muscle they trained.",
-    "muscles.frontNote": "Front view shows thighs and calves. Back, Glutes, Hip abductors/adductors and general Arms/Legs remain counted in the list; the map does not guess their regions.",
     'muscle.legs': 'Legs', 'muscle.glutes': 'Glutes', 'muscle.core': 'Core', 'muscle.fullBody': 'Full body',
     'muscle.thighs': 'Thighs', 'muscle.calves': 'Calves', 'muscle.abductors': 'Hip abductors', 'muscle.adductors': 'Hip adductors',
     'muscles.legsNote': 'Thighs includes the front and back of the upper leg; calves are at the back of the lower leg. Hip abductors move the leg outward; hip adductors move it inward. Glutes are separate. Older general Legs assignments are not split by guesswork; they stay in the list.',
@@ -5849,7 +5847,6 @@ const I18N = {
     "muscles.guide": "Guía muscular",
     "muscles.anatomyHint": "Los bíceps están delante del brazo y los tríceps detrás. La categoría Hombros incluye los deltoides redondeados y los músculos pequeños que rotan y estabilizan la articulación y la escápula. La zona resaltada es orientativa, no un dibujo exacto de cada músculo.",
     "muscles.armsNote": "Brazos conserva las asignaciones generales o antiguas sin distinguir bíceps y tríceps. Las series siguen en la lista; el mapa no adivina qué músculo trabajaron.",
-    "muscles.frontNote": "La vista frontal muestra muslos y pantorrillas. Espalda, glúteos, abductores/aductores de cadera y brazos/piernas generales siguen contándose en la lista; el mapa no adivina sus zonas.",
     'muscle.legs': 'Piernas', 'muscle.glutes': 'Glúteos', 'muscle.core': 'Core', 'muscle.fullBody': 'Cuerpo completo',
     'muscle.thighs': 'Muslos', 'muscle.calves': 'Pantorrillas', 'muscle.abductors': 'Abductores de cadera', 'muscle.adductors': 'Aductores de cadera',
     'muscles.legsNote': 'Muslos incluye la parte delantera y trasera de la zona superior de la pierna; las pantorrillas están detrás de la zona inferior. Los abductores de cadera alejan la pierna y los aductores la acercan. Los glúteos son independientes. Las asignaciones generales antiguas de Piernas se conservan en la lista sin dividirlas por suposición.',
@@ -7242,7 +7239,6 @@ const I18N = {
     "muscles.guide": "Guia dos músculos",
     "muscles.anatomyHint": "Os bíceps ficam na frente dos braços e os tríceps atrás. O grupo Ombros inclui os deltoides arredondados e os músculos menores que giram e estabilizam a articulação e a escápula. A região destacada é aproximada, não um desenho exato de cada músculo.",
     "muscles.armsNote": "Braços mantém as classificações gerais ou antigas que não distinguem bíceps e tríceps. As séries ficam na lista; o mapa não adivinha qual músculo foi treinado.",
-    "muscles.frontNote": "A vista frontal mostra coxas e panturrilhas. Costas, glúteos, abdutores/adutores do quadril e braços/pernas gerais continuam contados na lista; o mapa não adivinha as regiões.",
     'muscle.legs': 'Pernas', 'muscle.glutes': 'Glúteos', 'muscle.core': 'Centro do corpo', 'muscle.fullBody': 'Corpo inteiro',
     'muscle.thighs': 'Coxas', 'muscle.calves': 'Panturrilhas', 'muscle.abductors': 'Abdutores do quadril', 'muscle.adductors': 'Adutores do quadril',
     'muscles.legsNote': 'Coxas inclui a frente e a parte de trás da região superior da perna; as panturrilhas ficam atrás da região inferior. Os abdutores do quadril afastam a perna e os adutores a aproximam. Glúteos são separados. Classificações gerais antigas de Pernas ficam na lista, sem divisão por suposição.',
@@ -8635,7 +8631,6 @@ const I18N = {
     "muscles.guide": "Guide des muscles",
     "muscles.anatomyHint": "Les biceps sont à l’avant des bras, les triceps à l’arrière. Le groupe Épaules comprend les deltoïdes arrondis et les petits muscles qui font tourner et stabilisent l’articulation et l’omoplate. La zone colorée est indicative, pas un dessin exact de chaque muscle.",
     "muscles.armsNote": "Bras conserve les classements généraux ou anciens sans distinction entre biceps et triceps. Les séries restent dans la liste ; la carte ne devine pas quel muscle a travaillé.",
-    "muscles.frontNote": "La vue de face montre cuisses et mollets. Dos, fessiers, abducteurs/adducteurs de hanche et bras/jambes généraux restent comptés dans la liste ; la carte ne devine pas leurs zones.",
     'muscle.legs': 'Jambes', 'muscle.glutes': 'Fessiers', 'muscle.core': 'Gainage', 'muscle.fullBody': 'Corps entier',
     'muscle.thighs': 'Cuisses', 'muscle.calves': 'Mollets', 'muscle.abductors': 'Abducteurs de hanche', 'muscle.adductors': 'Adducteurs de hanche',
     'muscles.legsNote': 'Cuisses comprend les muscles avant et arrière du haut de la jambe ; les mollets sont derrière le bas de la jambe. Les abducteurs de hanche écartent la jambe, les adducteurs la rapprochent. Les fessiers restent séparés. Les anciens classements généraux Jambes restent dans la liste, sans répartition supposée.',
@@ -10049,7 +10044,6 @@ const I18N = {
     "muscles.guide": "دليل العضلات",
     "muscles.anatomyHint": "تقع البايسبس في مقدمة أعلى الذراع والترايسبس في الخلف. تشمل مجموعة الكتفين العضلات الدالية المستديرة والعضلات الصغيرة التي تدير مفصل الكتف ولوح الكتف وتثبتهما. المنطقة المظللة تقريبية ولا تمثل رسماً دقيقاً لكل عضلة.",
     "muscles.armsNote": "تحتفظ فئة الذراعين بالتصنيفات العامة أو القديمة التي لا تميّز البايسبس والترايسبس. تبقى المجموعات في القائمة، ولا تخمّن الخريطة العضلة التي تدربت.",
-    "muscles.frontNote": "يُظهر المنظر الأمامي الفخذين وعضلات الربلة. يبقى الظهر والأرداف ومبعدات ومقربات الورك وتصنيفا الذراعين والساقين العامان محسوبين في القائمة دون تخمين مناطقهم على الخريطة.",
     'muscle.legs': 'الساقان', 'muscle.glutes': 'الأرداف', 'muscle.core': 'منتصف الجسم', 'muscle.fullBody': 'الجسم كامل',
     'muscle.thighs': 'عضلات الفخذ', 'muscle.calves': 'عضلات الربلة', 'muscle.abductors': 'مبعدات الورك', 'muscle.adductors': 'مقربات الورك',
     'muscles.legsNote': 'تشمل عضلات الفخذ مقدمة أعلى الساق وخلفه، وتقع عضلات الربلة خلف أسفل الساق. تحرك مبعدات الورك الساق إلى الخارج والمقربات إلى الداخل. تبقى الأرداف مجموعة مستقلة. لا تُقسّم تصنيفات الساقين العامة القديمة بالتخمين؛ بل تبقى في القائمة.',
@@ -21017,6 +21011,7 @@ let timerEnd = 0;
 /* Každé spustenie odpočtu má vlastné id. Dokončenie sa viaže na konkrétne id,
    takže starý odpočet sa nikdy nemôže "dokončiť" dvakrát ani po návrate z pozadia. */
 let timerSessionId = 0;
+let timerPersistentId = null;  // trvalá identita oddychu, nezávislá od callbackov a koncového času
 let timerCompletedId = 0;      // id odpočtu, ktorého dokončenie už bolo spracované
 let timerHiddenAt = 0;         // kedy sa stránka skryla (0 = je viditeľná)
 let timerPausedLeft = null;    // zostávajúce ms pozastaveného odpočtu (null = beží)
@@ -21589,6 +21584,8 @@ function normalizeSubstituteExercise(raw) {
     out.unilateral = true;
     out.startSide = raw.startSide === 'right' ? 'right' : 'left';
   }
+  /* Asistovaná značka (nastavenia cviku počas tréningu): číslo je pomoc, nie záťaž. */
+  if (raw.assisted === true) out.assisted = true;
   const muscles = cleanExerciseMuscles(raw.muscles);
   if (muscles) out.muscles = muscles;
   if (muscles && muscles.primary === 'other' && typeof raw.musclesAuto === 'boolean' && !hasId) out.musclesAuto = raw.musclesAuto;
@@ -21672,11 +21669,14 @@ function normalizeActiveSession(raw) {
         const ex = normalizeSubstituteExercise(s.ex);
         if (!key || !ex) continue;
         const at = Number(s.at);
-        steps.push({
+        const step = {
           key, ex,
           oldName: typeof s.oldName === 'string' ? s.oldName : '',
           at: Number.isFinite(at) && at > 0 ? at : startedAt,
-        });
+        };
+        /* Chýbajúci `kind` = výmena cviku (staršie session zostávajú bez zmeny). */
+        if (s.kind === 'settings') step.kind = 'settings';
+        steps.push(step);
       }
       if (steps.length) substituted[slot] = steps;
     }
@@ -21817,6 +21817,9 @@ function normalizePlans() {
   state.planOrder = order;
 }
 
+/* Značka opakovaného riadku plánu v kľúči session: prvé opakovanie cviku nesie jeho pôvodný kľúč, každé ďalšie `kľúč~dupN`. */
+const SESSION_DUP_TAG = '~dup';
+
 /* Doplní id/flagy cvikov v plánoch a exId/planName v histórii. Zapísané názvy nikdy nemení. */
 /* Presun kľúčov rozbehnutého tréningu zo starého kľúča cviku na nový (iba pri cudzom id,
    ktoré backfill nahradil). Značky ('kľúč:i[:L|R]'), sloty ('kľúč#n') aj mapy podľa kľúča. */
@@ -21825,7 +21828,7 @@ function migrateSessionKeys(sess, map) {
   const swap = (key) => {
     for (const old of Object.keys(map)) {
       if (key === old) return map[old];
-      if (key.indexOf(old + ':') === 0 || key.indexOf(old + '#') === 0) return map[old] + key.slice(old.length);
+      if (key.indexOf(old + ':') === 0 || key.indexOf(old + '#') === 0 || key.indexOf(old + SESSION_DUP_TAG) === 0) return map[old] + key.slice(old.length);
     }
     return key;
   };
@@ -22183,6 +22186,7 @@ function persistState() {
     localSavedAt = Date.now();
     if (localSaveFailed && wsSlot) syncMetaUpdate((m) => { m.localStale = false; });
     localSaveFailed = false;
+    wearPublishSoon();   // aj história a plány bez aktívneho tréningu menia kalendár hodiniek
     return true;
   } catch (e) {
     console.error('Nepodarilo sa uložiť dáta:', e);
@@ -22389,6 +22393,18 @@ function samePlanAsHistory(w, plan, planId) {
   return w.planName === recordedPlanName(plan) || w.planName === planDisplayName(plan);
 }
 
+/* Záznam cviku v tréningu pre porovnanie a návrhy: prvý zhodný. Ak sa cvik počas tréningu rozpadol na segmenty
+   (zmena nastavení, `segment`), berie sa ten s najviac odcvičenými sériami – nie nutne ten prvý, krátky. */
+function historyLogicalEntry(w, matches) {
+  const found = w.exercises.find(matches);
+  if (!found || !found.segment) return found;
+  let best = found;
+  for (const e of w.exercises) {
+    if (e && e.segment && e.segment.id === found.segment.id && matches(e) && (Number(e.setsDone) || 0) > (Number(best.setsDone) || 0)) best = e;
+  }
+  return best;
+}
+
 /* Najnovší výskyt cviku v histórii pred daným dátumom – VŽDY z toho istého plánu.
    Porovnáva sa stabilné id plánu a stabilné id cviku; bez id platí zhoda názvu.
    Ak plán pre tento cvik predchádzajúci záznam nemá, vráti null (žiadne porovnanie). */
@@ -22399,7 +22415,7 @@ function previousWorkoutFor(ex, beforeDate, planId) {
     .sort((a, b) => b.date.localeCompare(a.date));
   for (const w of sorted) {
     const bid = builtinExerciseId(ex);
-    const found = w.exercises.find(e =>
+    const found = historyLogicalEntry(w, e =>
       (bid && e.exId === bid) || (!bid && e.name === ex.name)
     );
     if (found) return found;
@@ -22729,11 +22745,16 @@ function achievementReach(sorted) {
   const restDates = [];
   for (const w of sorted) {
     const perWorkout = {};
+    const seenSegment = {};   // logický cvik po zmene nastavení má viac záznamov, no do počtu ide raz
     for (const ex of (w.exercises || [])) {
       if (!achEntryDone(ex)) continue;
       const plainKey = ex.exId || ex.name;
       if (plainKey && !seenKey[plainKey]) { seenKey[plainKey] = true; exploreDates.push(w.date); }
-      if (ex.unilateral === true) balancedDates.push(w.date);
+      if (ex.unilateral === true) {
+        const sid = ex.segment && typeof ex.segment.id === 'string' ? ex.segment.id : null;
+        if (!sid || !seenSegment[sid]) balancedDates.push(w.date);
+        if (sid) seenSegment[sid] = true;
+      }
       const assisted = historyEntryAssisted(ex);
       const wt = Number(ex.weight);
       if (!Number.isFinite(wt) || wt < 0 || (wt === 0 && !assisted) || !plainKey) continue;
@@ -23679,8 +23700,8 @@ function getSession() {
 /* Stabilný kľúč cviku v rámci session. Používa stabilné id zabudovaného cviku, inak názov.
    Zobrazený názov sa pri prepnutí SK/EN prekladá, ale uložený názov cviku sa nemení,
    takže značky prežijú zmenu jazyka, váhy aj poradia cvikov v pláne.
-   `sessionKey` nesie IBA náhrada cviku počas tréningu (nikdy plán ani história) –
-   vďaka tomu sa náhrada nikdy nemôže zraziť so značkami iného cviku. */
+   `sessionKey` nesie náhrada cviku počas tréningu, krok zmeny nastavení a každé ďalšie opakovanie toho istého riadku
+   plánu (`kľúč~dupN`, viď exerciseSlots) – vďaka tomu sa nikdy nezrazia značky dvoch rôznych slotov. */
 function exerciseSessionKey(ex) {
   if (!ex) return '';
   if (ex.sessionKey) return String(ex.sessionKey);
@@ -23709,6 +23730,10 @@ function exerciseSlotCount(ex) {
   return ex.sets * (exerciseSideOrder(ex) ? 2 : 1);
 }
 
+/* Dočasný strop počtu sérií jedného cviku: pri zápise segmentu uzavretého zmenou nastavení do histórie
+   sa zapíše len práca po poslednú hotovú sériu (zvyšok prevzal nasledovník). { key, n } alebo null. */
+let sessionSetCountCap = null;
+
 /* Počet sérií cviku v rozbehnutom tréningu = plánované série + zmena v session
    (sess.setDelta[kľúč cviku], môže byť záporná; výsledok je aspoň 1, najviac 99).
    Chýbajúce pole (staršia session) = 0. Plán sa nikdy nemení. Bez session platí plán. */
@@ -23717,7 +23742,8 @@ function sessionSetCount(ex) {
   const planned = Math.max(0, Math.round(Number(snap && snap.sets !== undefined ? snap.sets : ex && ex.sets)) || 0);
   const sess = getSession();
   const d = sess && sess.setDelta && typeof sess.setDelta === 'object' ? Number(sess.setDelta[exerciseSessionKey(ex)]) : 0;
-  return Math.min(99, Math.max(1, planned + (Number.isInteger(d) ? d : 0)));
+  const n = Math.min(99, Math.max(1, planned + (Number.isInteger(d) ? d : 0)));
+  return sessionSetCountCap && sessionSetCountCap.key === exerciseSessionKey(ex) ? Math.min(n, sessionSetCountCap.n) : n;
 }
 
 /* Ako exerciseSlotCount, ale s počtom sérií z tréningu (použiť len pri cvikoch aktuálnej session,
@@ -23770,37 +23796,42 @@ function sessionSnapshotFor(ex) {
   return sess.snapshot[key + '#' + occ] || null;
 }
 
-/* Cviky tréningu = cviky plánu + cviky pridané počas tréningu (sess.extraExercises).
-   Plán sa nikdy nemení; rýchly tréning nesie svoje cviky priamo v plánovom pohľade. */
-function sessionExercises(plan) {
-  let base = plan && Array.isArray(plan.exercises) ? plan.exercises : [];
-  const sess = getSession();
-  if (sess && sess.programPlan && plan && plan.id === sess.planId) base = sess.programPlan.exercises;
-  if (sess && sess.snapshot) {
-    /* Snímka je po slotoch (kľúč#poradie), takže zdvojený cvik v pláne (napr. 60 kg a 80 kg) drží každý riadok osobitne. */
-    const seen = {};
-    base = base.map((ex) => {
-      const key = exerciseSessionKey(ex);
-      const occ = seen[key] || 0;
-      seen[key] = occ + 1;
-      return sessionSnapshotExercise(ex, sess.snapshot[key + '#' + occ]);
-    });
-  }
-  const extra = sess && Array.isArray(sess.extraExercises) ? sess.extraExercises : [];
-  return extra.length ? base.concat(extra) : base;
-}
-
-/* Slot = jeden cvik v pláne vrátane poradia duplicity (rovnaký cvik dvakrát v pláne). */
+/* Slot = jeden riadok tréningu aj s poradím opakovania (rovnaký cvik dvakrát v pláne): `base#occ`.
+   Cviky tréningu = riadky plánu + cviky pridané počas tréningu (sess.extraExercises); plán sa nikdy nemení,
+   rýchly tréning nesie svoje cviky priamo v plánovom pohľade. Snímka je po slotoch (kľúč#poradie), takže zdvojený
+   cvik v pláne (napr. 60 kg a 80 kg) drží každý riadok osobitne.
+   Každé ďalšie opakovanie (occ > 0) dostane aj vlastný kľúč sledovania (kópia riadku so `sessionKey` `base~dupN`):
+   značky, hodnoty, zámky, rozcvičky, dropy aj počty sérií duplicít sú tak nezávislé. Prvé opakovanie si ponecháva
+   pôvodný kľúč cviku, takže staršie značky, ktoré zdieľali obe opakovania, ostanú práve raz na prvom z nich a nikdy
+   sa nerozmnožia. Kľúč sa odvodzuje z poradia riadku, preto prežije aj obnovenie stránky. */
 function exerciseSlots(plan) {
+  const sess = getSession();
+  let rows = plan && Array.isArray(plan.exercises) ? plan.exercises : [];
+  if (sess && sess.programPlan && plan && plan.id === sess.planId) rows = sess.programPlan.exercises;
+  const extra = sess && Array.isArray(sess.extraExercises) ? sess.extraExercises : [];
   const seen = {};
-  const out = [];
-  for (const ex of sessionExercises(plan)) {
-    const base = exerciseSessionKey(ex);
+  return rows.concat(extra).map((src, i) => {
+    const base = exerciseSessionKey(src);
     const occ = seen[base] || 0;
     seen[base] = occ + 1;
-    out.push({ ex, base, occ, slot: base + '#' + occ });
-  }
-  return out;
+    let ex = src;
+    if (sess && sess.snapshot && i < rows.length) ex = sessionSnapshotExercise(src, sess.snapshot[base + '#' + occ]);
+    if (sess && occ > 0) {
+      if (ex === src) ex = Object.assign({}, src);
+      ex.sessionKey = base + SESSION_DUP_TAG + occ;
+    }
+    return { ex, base, occ, slot: base + '#' + occ };
+  });
+}
+
+function sessionExercises(plan) {
+  return exerciseSlots(plan).map((slot) => slot.ex);
+}
+
+/* Kľúč cviku bez značky opakovania (meno bezprizorného kľúča rozcvičiek). */
+function sessionPlainKey(key) {
+  const at = key.lastIndexOf(SESSION_DUP_TAG);
+  return at > 0 && /^\d+$/.test(key.slice(at + SESSION_DUP_TAG.length)) ? key.slice(0, at) : key;
 }
 
 /* Existuje pre tento cvik v pláne iba jeden slot? Pri duplicite sa výmena odmietne,
@@ -23847,26 +23878,498 @@ function exerciseSegments(info) {
   if (!steps.length) {
     return [{ ex: info.ex, kind: 'plan', readOnly: false, active: true, step: null, nextName: '' }];
   }
+  /* Uzavretý segment, po ktorom nasleduje krok „nastavenia“: jeho nesplnené série prevzal nasledovník,
+     takže sa ukážu iba série po poslednú hotovú (`shown`) a do súčtu sérií idú len hotové. */
+  const closed = (ex, step, next) => {
+    const seg = { ex, kind: 'replaced', readOnly: true, active: false, step, nextName: exerciseDisplayName(next.ex) };
+    if (next.kind === 'settings') { seg.settingsNext = true; seg.shown = exSettingsDoneExtent(ex); }
+    return seg;
+  };
   const segs = [];
-  if (countDoneSets(info.ex) > 0) {
-    segs.push({
-      ex: info.ex, kind: 'replaced', readOnly: true, active: false, step: null,
-      nextName: exerciseDisplayName(steps[0].ex),
-    });
-  }
+  if (countDoneSets(info.ex) > 0) segs.push(closed(info.ex, null, steps[0]));
   for (let i = 0; i < steps.length; i++) {
     const step = steps[i];
     const last = i === steps.length - 1;
     if (last) {
-      segs.push({ ex: step.ex, kind: 'substitute', readOnly: false, active: true, step, nextName: '' });
+      segs.push({ ex: step.ex, kind: step.kind === 'settings' ? 'settings' : 'substitute', readOnly: false, active: true, step, nextName: '' });
     } else if (countDoneSets(step.ex) > 0) {
-      segs.push({
-        ex: step.ex, kind: 'replaced', readOnly: true, active: false, step,
-        nextName: exerciseDisplayName(steps[i + 1].ex),
-      });
+      segs.push(closed(step.ex, step, steps[i + 1]));
     }
   }
   return segs;
+}
+
+/* ---------- Nastavenia cviku počas tréningu (session, NIE plán) ----------
+   Zmena režimu (jednostranný / obojstranný), strany štartu, počtu ZOSTÁVAJÚCICH sérií, opakovaní, váhy alebo
+   asistencie je ďalší krok reťazca sess.substituted[slot] s `kind: 'settings'` a novým `sessionKey`.
+   Odcvičené série (značky, hodnoty, zlyhania) zostávajú pod pôvodným kľúčom a sú iba na čítanie; nový krok
+   nesie len identitu cviku (id, názov, svaly) a zostávajúcu prácu – nikdy nie značky ani hodnoty starých sérií.
+   Rozpracované (neodcvičené) hodnoty zostávajú v staršom kroku, takže Späť je bezstratové. Rovnaká cesta platí
+   pre riadky plánu, duplicity aj cviky pridané počas tréningu. Plán ani pamäť váhy sa týmto nemenia. */
+const EXSETTINGS_I18N = {
+  sk: {
+    'exsettings.action': 'Nastavenia cviku', 'exsettings.title': 'Nastavenia cviku', 'exsettings.close': 'Zavrieť nastavenia cviku',
+    'exsettings.mode': 'Režim cvičenia', 'exsettings.modeBoth': 'Obe strany naraz', 'exsettings.modeOne': 'Jedna strana po druhej',
+    'exsettings.startSide': 'Začať stranou', 'exsettings.remaining': 'Zostávajúce série', 'exsettings.remainingPerSide': 'Zostávajúce série na každú stranu',
+    'exsettings.setsLess': 'Menej zostávajúcich sérií', 'exsettings.setsMore': 'Viac zostávajúcich sérií',
+    'exsettings.assisted': 'Asistovaný cvik (číslo je pomoc, nie záťaž)',
+    'exsettings.doneKept': 'Už hotové: {n}. Zostanú presne tak, ako sú zapísané.',
+    'exsettings.doneKeptPairs': 'Už hotové: {n} párov ľavá + pravá. Zostanú presne tak, ako sú zapísané.',
+    'exsettings.complete': 'Všetky plánované série sú hotové. Zadaj, koľko sérií pridať.',
+    'exsettings.finishPair': 'Najprv dokonči aktuálny pár ľavá/pravá (séria {sets}). Potom môžeš zmeniť nastavenia. Váhu a opakovania jednotlivých sérií môžeš upravovať aj teraz.',
+    'exsettings.finishPairReplace': 'Najprv dokonči aktuálny pár ľavá/pravá (séria {sets}). Potom môžeš cvik vymeniť.',
+    'exsettings.planKept': 'Platí len pre tento tréning. Plán sa nezmení.',
+    'exsettings.perSideHint': 'Jedna zostávajúca séria znamená jednu sériu vľavo a jednu vpravo.',
+    'exsettings.save': 'Použiť v tomto tréningu', 'exsettings.noChange': 'Zmeň nastavenie, aby sa dalo použiť.',
+    'exsettings.invalid': 'Zadaj 1–99 zostávajúcich sérií, 1–99 opakovaní a váhu 0–999.',
+    'exsettings.activeNote': 'Nastavenia sa zmenili počas tréningu. Skoršie série ostávajú zapísané.',
+    'exsettings.closedNote': '{n} hotových pred zmenou nastavení (ostáva zapísané)',
+    'exsettings.undo': 'Vrátiť zmenu nastavení',
+    'exsettings.undoDiscard': 'Vrátiť túto zmenu nastavení? Jej série ešte nie sú hotové, takže sa nestratí nič zapísané.',
+  },
+  en: {
+    'exsettings.action': 'Exercise settings', 'exsettings.title': 'Exercise settings', 'exsettings.close': 'Close exercise settings',
+    'exsettings.mode': 'Training mode', 'exsettings.modeBoth': 'Both sides together', 'exsettings.modeOne': 'One side at a time',
+    'exsettings.startSide': 'Start with', 'exsettings.remaining': 'Remaining sets', 'exsettings.remainingPerSide': 'Remaining sets per side',
+    'exsettings.setsLess': 'Fewer remaining sets', 'exsettings.setsMore': 'More remaining sets',
+    'exsettings.assisted': 'Assisted exercise (the number is help, not load)',
+    'exsettings.doneKept': 'Already done: {n}. These stay exactly as recorded.',
+    'exsettings.doneKeptPairs': 'Already done: {n} left + right pairs. These stay exactly as recorded.',
+    'exsettings.complete': 'All planned sets are done. Enter how many sets to add.',
+    'exsettings.finishPair': 'Finish the current left/right pair first (set {sets}). Then you can change these settings. You can still edit weight and reps on each set.',
+    'exsettings.finishPairReplace': 'Finish the current left/right pair first (set {sets}). Then you can replace this exercise.',
+    'exsettings.planKept': 'Applies to this workout only. Your plan stays the same.',
+    'exsettings.perSideHint': 'One remaining set means one set on the left and one on the right.',
+    'exsettings.save': 'Apply to this workout', 'exsettings.noChange': 'Change a setting to apply it.',
+    'exsettings.invalid': 'Use 1–99 remaining sets, 1–99 reps and a weight of 0–999.',
+    'exsettings.activeNote': 'Settings changed during this workout. Earlier sets stay as recorded.',
+    'exsettings.closedNote': '{n} done before the settings change (kept as recorded)',
+    'exsettings.undo': 'Undo settings change',
+    'exsettings.undoDiscard': 'Undo this settings change? Its sets are not done yet, so nothing recorded is lost.',
+  },
+  es: {
+    'exsettings.action': 'Ajustes del ejercicio', 'exsettings.title': 'Ajustes del ejercicio', 'exsettings.close': 'Cerrar ajustes del ejercicio',
+    'exsettings.mode': 'Modo de entrenamiento', 'exsettings.modeBoth': 'Ambos lados a la vez', 'exsettings.modeOne': 'Un lado cada vez',
+    'exsettings.startSide': 'Empezar por', 'exsettings.remaining': 'Series restantes', 'exsettings.remainingPerSide': 'Series restantes por lado',
+    'exsettings.setsLess': 'Menos series restantes', 'exsettings.setsMore': 'Más series restantes',
+    'exsettings.assisted': 'Ejercicio asistido (el número es la ayuda, no la carga)',
+    'exsettings.doneKept': 'Ya hechas: {n}. Se quedan exactamente como están registradas.',
+    'exsettings.doneKeptPairs': 'Ya hechos: {n} pares izquierda + derecha. Se quedan exactamente como están registrados.',
+    'exsettings.complete': 'Todas las series planificadas están hechas. Indica cuántas series añadir.',
+    'exsettings.finishPair': 'Primero termina el par izquierda/derecha actual (serie {sets}). Después podrás cambiar estos ajustes. Aún puedes editar el peso y las repeticiones de cada serie.',
+    'exsettings.finishPairReplace': 'Primero termina el par izquierda/derecha actual (serie {sets}). Después podrás sustituir este ejercicio.',
+    'exsettings.planKept': 'Solo se aplica a este entrenamiento. Tu plan no cambia.',
+    'exsettings.perSideHint': 'Una serie restante significa una serie a la izquierda y otra a la derecha.',
+    'exsettings.save': 'Aplicar a este entrenamiento', 'exsettings.noChange': 'Cambia un ajuste para poder aplicarlo.',
+    'exsettings.invalid': 'Usa de 1 a 99 series restantes, de 1 a 99 repeticiones y un peso de 0 a 999.',
+    'exsettings.activeNote': 'Los ajustes cambiaron durante este entrenamiento. Las series anteriores siguen registradas.',
+    'exsettings.closedNote': '{n} hechas antes del cambio de ajustes (se mantienen registradas)',
+    'exsettings.undo': 'Deshacer el cambio de ajustes',
+    'exsettings.undoDiscard': '¿Deshacer este cambio de ajustes? Sus series aún no están hechas, así que no se pierde nada registrado.',
+  },
+  'pt-BR': {
+    'exsettings.action': 'Ajustes do exercício', 'exsettings.title': 'Ajustes do exercício', 'exsettings.close': 'Fechar ajustes do exercício',
+    'exsettings.mode': 'Modo de treino', 'exsettings.modeBoth': 'Os dois lados juntos', 'exsettings.modeOne': 'Um lado de cada vez',
+    'exsettings.startSide': 'Começar pelo lado', 'exsettings.remaining': 'Séries restantes', 'exsettings.remainingPerSide': 'Séries restantes por lado',
+    'exsettings.setsLess': 'Menos séries restantes', 'exsettings.setsMore': 'Mais séries restantes',
+    'exsettings.assisted': 'Exercício assistido (o número é a ajuda, não a carga)',
+    'exsettings.doneKept': 'Já feitas: {n}. Elas ficam exatamente como foram registradas.',
+    'exsettings.doneKeptPairs': 'Já feitos: {n} pares esquerda + direita. Eles ficam exatamente como foram registrados.',
+    'exsettings.complete': 'Todas as séries planejadas foram feitas. Informe quantas séries adicionar.',
+    'exsettings.finishPair': 'Primeiro termine o par esquerda/direita atual (série {sets}). Depois você poderá mudar estes ajustes. Você ainda pode editar o peso e as repetições de cada série.',
+    'exsettings.finishPairReplace': 'Primeiro termine o par esquerda/direita atual (série {sets}). Depois você poderá trocar este exercício.',
+    'exsettings.planKept': 'Vale só para este treino. Seu plano não muda.',
+    'exsettings.perSideHint': 'Uma série restante significa uma série à esquerda e uma à direita.',
+    'exsettings.save': 'Aplicar a este treino', 'exsettings.noChange': 'Altere um ajuste para aplicá-lo.',
+    'exsettings.invalid': 'Use de 1 a 99 séries restantes, de 1 a 99 repetições e um peso de 0 a 999.',
+    'exsettings.activeNote': 'Os ajustes mudaram durante este treino. As séries anteriores continuam registradas.',
+    'exsettings.closedNote': '{n} feitas antes da mudança de ajustes (continuam registradas)',
+    'exsettings.undo': 'Desfazer a mudança de ajustes',
+    'exsettings.undoDiscard': 'Desfazer esta mudança de ajustes? As séries dela ainda não foram feitas, então nada registrado se perde.',
+  },
+  fr: {
+    'exsettings.action': "Réglages de l'exercice", 'exsettings.title': "Réglages de l'exercice", 'exsettings.close': "Fermer les réglages de l'exercice",
+    'exsettings.mode': "Mode d'entraînement", 'exsettings.modeBoth': 'Les deux côtés ensemble', 'exsettings.modeOne': 'Un côté à la fois',
+    'exsettings.startSide': 'Commencer par', 'exsettings.remaining': 'Séries restantes', 'exsettings.remainingPerSide': 'Séries restantes par côté',
+    'exsettings.setsLess': 'Moins de séries restantes', 'exsettings.setsMore': 'Plus de séries restantes',
+    'exsettings.assisted': "Exercice assisté (le nombre est l'aide, pas la charge)",
+    'exsettings.doneKept': 'Déjà faites : {n}. Elles restent exactement comme enregistrées.',
+    'exsettings.doneKeptPairs': 'Déjà faits : {n} paires gauche + droite. Ils restent exactement comme enregistrés.',
+    'exsettings.complete': 'Toutes les séries prévues sont faites. Indique combien de séries ajouter.',
+    'exsettings.finishPair': "Termine d'abord la paire gauche/droite en cours (série {sets}). Tu pourras ensuite changer ces réglages. Tu peux toujours modifier la charge et les répétitions de chaque série.",
+    'exsettings.finishPairReplace': "Termine d'abord la paire gauche/droite en cours (série {sets}). Tu pourras ensuite remplacer cet exercice.",
+    'exsettings.planKept': 'Valable pour cette séance seulement. Ton plan ne change pas.',
+    'exsettings.perSideHint': 'Une série restante = une série à gauche et une à droite.',
+    'exsettings.save': 'Appliquer à cette séance', 'exsettings.noChange': 'Modifie un réglage pour pouvoir l’appliquer.',
+    'exsettings.invalid': 'Utilise 1 à 99 séries restantes, 1 à 99 répétitions et une charge de 0 à 999.',
+    'exsettings.activeNote': 'Les réglages ont changé pendant cette séance. Les séries précédentes restent enregistrées.',
+    'exsettings.closedNote': '{n} faites avant le changement de réglages (elles restent enregistrées)',
+    'exsettings.undo': 'Annuler le changement de réglages',
+    'exsettings.undoDiscard': 'Annuler ce changement de réglages ? Ses séries ne sont pas encore faites, rien d’enregistré n’est perdu.',
+  },
+  ar: {
+    'exsettings.action': 'إعدادات التمرين', 'exsettings.title': 'إعدادات التمرين', 'exsettings.close': 'إغلاق إعدادات التمرين',
+    'exsettings.mode': 'نمط التدريب', 'exsettings.modeBoth': 'الجانبان معًا', 'exsettings.modeOne': 'جانب واحد في كل مرة',
+    'exsettings.startSide': 'ابدأ بالجانب', 'exsettings.remaining': 'المجموعات المتبقية', 'exsettings.remainingPerSide': 'المجموعات المتبقية لكل جانب',
+    'exsettings.setsLess': 'مجموعات متبقية أقل', 'exsettings.setsMore': 'مجموعات متبقية أكثر',
+    'exsettings.assisted': 'تمرين بمساعدة (الرقم هو المساعدة وليس الحِمل)',
+    'exsettings.doneKept': 'تم بالفعل: {n}. تبقى كما سُجّلت تمامًا.',
+    'exsettings.doneKeptPairs': 'تم بالفعل: {n} من أزواج اليسار + اليمين. تبقى كما سُجّلت تمامًا.',
+    'exsettings.complete': 'اكتملت كل المجموعات المخططة. أدخل عدد المجموعات التي تريد إضافتها.',
+    'exsettings.finishPair': 'أنهِ أولًا زوج اليسار/اليمين الحالي (المجموعة {sets}). بعدها يمكنك تغيير هذه الإعدادات. ما زال بإمكانك تعديل الوزن والتكرارات لكل مجموعة.',
+    'exsettings.finishPairReplace': 'أنهِ أولًا زوج اليسار/اليمين الحالي (المجموعة {sets}). بعدها يمكنك استبدال هذا التمرين.',
+    'exsettings.planKept': 'ينطبق على هذا التمرين فقط. خطتك لا تتغير.',
+    'exsettings.perSideHint': 'مجموعة متبقية واحدة تعني مجموعة على اليسار وأخرى على اليمين.',
+    'exsettings.save': 'تطبيق على هذا التمرين', 'exsettings.noChange': 'غيّر إعدادًا لتطبيقه.',
+    'exsettings.invalid': 'استخدم من 1 إلى 99 مجموعة متبقية، ومن 1 إلى 99 تكرارًا، ووزنًا من 0 إلى 999.',
+    'exsettings.activeNote': 'تغيّرت الإعدادات أثناء هذا التمرين. المجموعات السابقة تبقى مسجّلة.',
+    'exsettings.closedNote': '{n} تمت قبل تغيير الإعدادات (تبقى مسجّلة)',
+    'exsettings.undo': 'التراجع عن تغيير الإعدادات',
+    'exsettings.undoDiscard': 'التراجع عن تغيير الإعدادات هذا؟ مجموعاته لم تتم بعد، فلا يضيع شيء مسجّل.',
+  },
+};
+for (const lang of Object.keys(EXSETTINGS_I18N)) Object.assign(I18N[lang] || (I18N[lang] = {}), EXSETTINGS_I18N[lang]);
+
+/* Aktuálny cvik slotu: posledný krok reťazca, inak riadok plánu. */
+function chainCurrentEx(info) {
+  const steps = substitutionSteps(info.slot);
+  return steps.length ? steps[steps.length - 1].ex : info.ex;
+}
+
+/* Stav sérií jedného segmentu: hotové jednotky (séria alebo celý pár ľavá + pravá), nehotové a POLOVIČNÉ páry
+   (hotová je práve jedna strana). Indexy sú od 0. */
+function exSettingsState(ex) {
+  const sides = exerciseSideOrder(ex);
+  const count = sessionSetCount(ex);
+  const done = [], open = [], half = [];
+  for (let i = 0; i < count; i++) {
+    if (sides) {
+      const n = sides.filter((side) => setMark('done', ex, i, side)).length;
+      if (n === sides.length) done.push(i); else if (n === 0) open.push(i); else half.push(i);
+    } else if (setMark('done', ex, i)) done.push(i);
+    else open.push(i);
+  }
+  return { count, done, open, half, sides };
+}
+
+/* Najvyšší index série (+1), na ktorej je čokoľvek hotové; 0 = nič. Hotová práca končí tu. */
+function exSettingsDoneExtent(ex) {
+  const sides = exerciseSideOrder(ex);
+  let extent = 0;
+  for (let i = 0; i < sessionSetCount(ex); i++) {
+    if (sides ? sides.some((side) => setMark('done', ex, i, side)) : setMark('done', ex, i)) extent = i + 1;
+  }
+  return extent;
+}
+
+/* Predvolené hodnoty editora z AKTUÁLNEHO cviku: zostávajúce série = počet − hotové jednotky (nikdy nie
+   „všetky“), opakovania a váha z prvej nehotovej série (rozpracovaná hodnota sa tak prenesie), inak z poslednej. */
+function exSettingsDefaults(ex) {
+  const st = exSettingsState(ex);
+  const rows = setValueRows(ex);
+  const row = rows.find((r) => !setMark('done', ex, r.index, r.side)) || rows[rows.length - 1];
+  const reps = row ? effectiveSetReps(ex, row.index, row.side) : ex.reps;
+  const weight = row ? Number(effectiveSetWeight(ex, row.index, row.side)) : Number(ex.weight);
+  const lib = libraryEntry(builtinExerciseId(ex));
+  return {
+    state: st,
+    unilateral: !!st.sides,
+    startSide: ex.startSide === 'right' ? 'right' : 'left',
+    remaining: Math.max(0, st.count - st.done.length),
+    reps: Number.isInteger(reps) && reps >= 1 ? Math.min(99, reps) : 10,
+    weight: Number.isFinite(weight) ? Math.round(Math.min(999, Math.max(0, weight)) * 10) / 10 : 0,
+    assisted: isAssisted(ex),
+    assistedLocked: !!(lib && lib.assisted === true),
+  };
+}
+
+/* Overí vstup editora (reťazce aj čísla): { ok, change, noop }. Zostávajúce série a opakovania 1–99, váha 0–999. */
+function exSettingsParse(change, def) {
+  const int = (v, lo, hi) => {
+    const s = String(v == null ? '' : v).trim();
+    if (!/^\d+$/.test(s)) return null;
+    const n = Number(s);
+    return n >= lo && n <= hi ? n : null;
+  };
+  const remaining = int(change && change.remaining, 1, 99), reps = int(change && change.reps, 1, 99);
+  const ws = String(change && change.weight != null ? change.weight : '').trim().replace(',', '.');
+  const wn = /^\d+(\.\d+)?$/.test(ws) ? Number(ws) : NaN;
+  if (remaining === null || reps === null || !Number.isFinite(wn) || wn < 0 || wn > 999) return { ok: false };
+  const out = {
+    unilateral: change.unilateral === true,
+    startSide: change.startSide === 'right' ? 'right' : 'left',
+    remaining, reps,
+    weight: Math.round(wn * 10) / 10,
+    assisted: def.assistedLocked ? true : change.assisted === true,
+  };
+  const same = out.unilateral === def.unilateral && (!out.unilateral || out.startSide === def.startSide)
+    && out.assisted === def.assisted && out.remaining === def.remaining && out.reps === def.reps
+    && Math.abs(out.weight - def.weight) < 0.001;
+  return { ok: true, change: out, noop: same };
+}
+
+/* Je na cviku odcvičená akákoľvek práca (séria, rozcvička, drop)? Taký krok sa už nikdy nevymaže ani nevráti. */
+function exSettingsPerformed(ex) {
+  const sess = getSession();
+  if (!sess || !ex) return false;
+  if (countDoneSets(ex) > 0) return true;
+  const prefix = exerciseSessionKey(ex) + ':';
+  if (Object.keys(sess.completedSets || {}).some((k) => k.indexOf(prefix) === 0)) return true;
+  return sessionExtrasDone(ex);
+}
+
+/* Je na cviku hotová aspoň jedna rozcvička alebo drop séria? Taký segment sa do histórie zapíše aj bez hlavnej série. */
+function sessionExtrasDone(ex) {
+  return sessionWarmups(ex).some((d) => d && d.done) || sessionDrops(ex).some((d) => d && d.done);
+}
+
+/* Späť pre posledného nasledovníka (náhrada aj zmena nastavení) je zakázané, kým je niektorý pár ľavá/pravá
+   rozpracovaný (hotová práve jedna strana), a zmena nastavení s akoukoľvek odcvičenou prácou sa nikdy nevráti ani nevymaže. */
+function successorUndoBlocked(step) {
+  if (!step || !step.ex) return true;
+  if (exSettingsState(step.ex).half.length) return true;
+  return step.kind === 'settings' && exSettingsPerformed(step.ex);
+}
+
+/* Má neodcvičený krok nejaké rozpracované hodnoty (váhy, opakovania, počet sérií, rozcvičky, dropy)? */
+function exSettingsHasDrafts(ex) {
+  const sess = getSession();
+  if (!sess || !ex) return false;
+  const key = exerciseSessionKey(ex), prefix = key + ':';
+  for (const f of ['setWeights', 'setReps', 'setWeightLocks', 'setRepsLocks', 'setRpe']) {
+    if (sess[f] && Object.keys(sess[f]).some((k) => k.indexOf(prefix) === 0)) return true;
+  }
+  if (sess.setDelta && sess.setDelta[key] !== undefined) return true;
+  return sessionWarmups(ex).length > 0 || sessionDrops(ex).length > 0;
+}
+
+/* Logické skupiny reťazca slotu: pôvodný riadok alebo výmena + nasledujúce kroky „nastavenia“ patria k jednému
+   cviku (jedna skupina = jeden logický cvik, aj keď má viac segmentov). Výmena začína novú skupinu. */
+function exerciseChainGroups(info) {
+  const groups = [{ items: [{ ex: info.ex, step: null }] }];
+  for (const step of substitutionSteps(info.slot)) {
+    if (step.kind === 'settings') groups[groups.length - 1].items.push({ ex: step.ex, step });
+    else groups.push({ items: [{ ex: step.ex, step }] });
+  }
+  return groups;
+}
+
+/* Zápis jedného segmentu do histórie; segment uzavretý zmenou nastavení sa orezá po poslednú hotovú sériu. */
+function historyEntryForSegment(ex, sess, cap) {
+  if (!cap) return historyExerciseEntry(ex, sess);
+  sessionSetCountCap = { key: exerciseSessionKey(ex), n: cap };
+  try {
+    const entry = historyExerciseEntry(ex, sess);
+    entry.plannedFailureSets = cleanFailureSets(entry.plannedFailureSets, entry.sets);
+    return entry;
+  } finally {
+    sessionSetCountCap = null;
+  }
+}
+
+/* Zapíše zmenu nastavení slotu ako nový krok reťazca. Nič iné nemení: žiadne značky, hodnoty ani plán.
+   Vráti { ok: true, key } alebo { ok: false, reason: 'none' | 'pair' | 'invalid' | 'noop', sets? }.
+   Kým je niektorý pár ľavá/pravá rozpracovaný (hotová práve jedna strana), nezapíše sa NIČ. */
+function applySessionExerciseSettings(slot, change) {
+  const sess = getSession();
+  const plan = currentPlan();
+  if (!sess || !plan || !change) return { ok: false, reason: 'none' };
+  const info = exerciseSlots(plan).find((s) => s.slot === slot);
+  if (!info) return { ok: false, reason: 'none' };
+  const cur = chainCurrentEx(info);
+  const def = exSettingsDefaults(cur);
+  if (def.state.half.length) return { ok: false, reason: 'pair', sets: def.state.half.map((i) => i + 1) };
+  const parsed = exSettingsParse(change, def);
+  if (!parsed.ok) return { ok: false, reason: 'invalid' };
+  if (parsed.noop) return { ok: false, reason: 'noop' };
+  const c = parsed.change;
+  const next = {
+    name: cur.name == null ? '' : String(cur.name),
+    sets: c.remaining, reps: c.reps, weight: c.weight,
+    plannedFailureSets: [],
+    sessionKey: 'set_' + uid(),
+  };
+  /* Identita cviku zostáva rovnaká (zabudované id alebo stabilné cx-…); názov sa kopíruje bez zmeny. */
+  if (typeof cur.id === 'string' && (builtinExerciseId(cur) || cur.id.indexOf('cx-') === 0)) next.id = cur.id;
+  /* Plánované série do zlyhania nasledujú nehotové série: k-ta zostávajúca séria zdedí značku k-tej nehotovej. */
+  const planned = cleanFailureSets(cur.plannedFailureSets, cur.sets);
+  next.plannedFailureSets = cleanFailureSets(def.state.open.map((idx, k) => (k < c.remaining && planned.includes(idx + 1) ? k + 1 : 0)), c.remaining);
+  if (c.unilateral) { next.unilateral = true; next.startSide = c.startSide; }
+  if (c.assisted && !def.assistedLocked) next.assisted = true;
+  /* Svaly vlastného cviku sa kopírujú z pôvodu (rovnako ako snímka pri štarte), nikdy sa nehádajú nanovo. */
+  if (!builtinExerciseId(cur)) {
+    const profile = muscleProfile(cur);
+    next.muscles = { primary: profile.primary, secondary: profile.secondary.slice() };
+    if (profile.primary === 'other') next.musclesAuto = profile.source === 'unknown' || cur.musclesAuto === true;
+  }
+  if (!sess.substituted || typeof sess.substituted !== 'object' || Array.isArray(sess.substituted)) sess.substituted = {};
+  if (!Array.isArray(sess.substituted[slot])) sess.substituted[slot] = [];
+  sess.substituted[slot].push({ key: next.sessionKey, ex: next, oldName: recordedExerciseName(cur), at: Date.now(), kind: 'settings' });
+  saveState();
+  return { ok: true, key: next.sessionKey };
+}
+
+/* ---------- List „Nastavenia cviku“ (#modal-ex-settings) ---------- */
+let exSettingsCtx = null;   // { slot, opener, row, name, def, draft } práve otvoreného listu
+let exSettingsReady = false;
+
+function sessionExerciseSettingsOpen() {
+  const m = document.getElementById('modal-ex-settings');
+  return !!m && !m.hidden;
+}
+
+function exSettingsChip(id, pressed, disabled) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.classList.toggle('active', !!pressed);
+  el.setAttribute('aria-pressed', pressed ? 'true' : 'false');
+  if (disabled !== undefined) el.disabled = !!disabled;
+}
+
+/* Prekreslí stavové prvky listu zo `exSettingsCtx` (hodnoty polí sa tu nemenia, aby sa nestratil kurzor). */
+function exSettingsRender() {
+  const ctx = exSettingsCtx;
+  if (!ctx) return;
+  const def = ctx.def, d = ctx.draft, half = def.state.half;
+  const el = (id) => document.getElementById(id);
+  el('ex-settings-name').textContent = ctx.name;
+  el('ex-settings-done').textContent = t(def.unilateral ? 'exsettings.doneKeptPairs' : 'exsettings.doneKept', { n: def.state.done.length });
+  exSettingsChip('ex-settings-mode-both', !d.unilateral);
+  exSettingsChip('ex-settings-mode-one', d.unilateral);
+  el('ex-settings-side-box').hidden = !d.unilateral;
+  el('ex-settings-pair-hint').hidden = !d.unilateral;
+  exSettingsChip('ex-settings-side-left', d.startSide !== 'right');
+  exSettingsChip('ex-settings-side-right', d.startSide === 'right');
+  exSettingsChip('ex-settings-assisted', d.assisted, def.assistedLocked);
+  el('ex-settings-sets-label').textContent = t(d.unilateral ? 'exsettings.remainingPerSide' : 'exsettings.remaining');
+  el('ex-settings-weight-label').textContent = t(d.assisted ? 'session.assistance' : 'session.weight') + ' (' + t('units.kg') + ')';
+  el('ex-settings-fields').disabled = half.length > 0;
+  const alert = el('ex-settings-alert'), save = el('btn-ex-settings-save');
+  let kind = '', text = '', canSave = false;
+  if (half.length) {
+    kind = 'pair';
+    text = t('exsettings.finishPair', { sets: half.map((i) => i + 1).join(', ') });
+  } else {
+    const parsed = exSettingsParse(d, def);
+    if (!parsed.ok) {
+      const blank = String(d.remaining).trim() === '';
+      kind = def.remaining === 0 && blank ? 'complete' : 'invalid';
+      text = t(kind === 'complete' ? 'exsettings.complete' : 'exsettings.invalid');
+    } else if (parsed.noop) {
+      kind = 'nochange';
+      text = t('exsettings.noChange');
+    } else canSave = true;
+  }
+  alert.hidden = !text;
+  alert.textContent = text;
+  alert.dataset.kind = kind;
+  save.disabled = !canSave;
+}
+
+/* Otvorí list pre slot `info` (z ⋯ listu cviku). `opener` = prvok, na ktorý sa po zatvorení vráti fokus. */
+function openSessionExerciseSettings(info, opener) {
+  const modal = document.getElementById('modal-ex-settings');
+  const plan = currentPlan();
+  if (!modal || !getSession() || !plan || !info) return false;
+  const live = exerciseSlots(plan).find((s) => s.slot === info.slot);
+  if (!live) return false;
+  const cur = chainCurrentEx(live);
+  const def = exSettingsDefaults(cur);
+  const from = opener || document.activeElement;
+  const blk = from && from.closest ? from.closest('.exercise') : null;
+  closeSetWeightEditor();
+  exSettingsCtx = {
+    slot: live.slot, opener: from, row: blk ? blk.dataset.row : undefined, name: exerciseDisplayName(cur), def,
+    draft: {
+      unilateral: def.unilateral, startSide: def.startSide,
+      remaining: def.remaining > 0 ? String(def.remaining) : '',
+      reps: String(def.reps), weight: String(def.weight), assisted: def.assisted,
+    },
+  };
+  document.getElementById('ex-settings-sets').value = exSettingsCtx.draft.remaining;
+  document.getElementById('ex-settings-reps').value = exSettingsCtx.draft.reps;
+  document.getElementById('ex-settings-weight').value = exSettingsCtx.draft.weight;
+  exSettingsRender();
+  modal.hidden = false;
+  const first = def.state.half.length ? document.getElementById('btn-ex-settings-close')
+    : modal.querySelector('#ex-settings-fields .goal-chip.active:not(:disabled), #ex-settings-fields input');
+  if (first) { try { first.focus({ preventScroll: true }); } catch (e) { first.focus(); } }
+  return true;
+}
+
+function closeSessionExerciseSettings() {
+  const modal = document.getElementById('modal-ex-settings');
+  if (!modal || modal.hidden) return;
+  const opener = exSettingsCtx ? exSettingsCtx.opener : null;
+  modal.hidden = true;
+  exSettingsCtx = null;
+  restoreSheetFocus(opener);
+  refreshUpdateBanner();
+}
+
+/* Uloženie: zapíše krok reťazca, prekreslí tréning a fokus vráti na ⋯ toho istého cviku. Pri zablokovaní
+   (napr. rozpracovaný pár) sa nič nezapíše a list ukáže dôvod. */
+function exSettingsSave() {
+  const ctx = exSettingsCtx;
+  if (!ctx) return;
+  const res = applySessionExerciseSettings(ctx.slot, ctx.draft);
+  if (!res.ok) {
+    const plan = currentPlan();
+    const info = plan && exerciseSlots(plan).find((s) => s.slot === ctx.slot);
+    if (info) ctx.def = exSettingsDefaults(chainCurrentEx(info));
+    exSettingsRender();
+    return;
+  }
+  const row = ctx.row;
+  exSettingsCtx = null;
+  document.getElementById('modal-ex-settings').hidden = true;
+  setSessionNote(null, 0);
+  renderTrening();
+  refreshUpdateBanner();
+  if (row !== undefined) {
+    const all = document.querySelectorAll('#exercise-list .exercise[data-row="' + row + '"]:not(.exercise-closed) .btn-ex-more');
+    restoreSheetFocus(all[all.length - 1]);
+  }
+}
+
+function initSessionExerciseSettings() {
+  const modal = document.getElementById('modal-ex-settings');
+  if (!modal || exSettingsReady) return;
+  exSettingsReady = true;
+  const el = (id) => document.getElementById(id);
+  const draftSet = (patch) => { if (exSettingsCtx) { Object.assign(exSettingsCtx.draft, patch); exSettingsRender(); } };
+  el('btn-ex-settings-close').addEventListener('click', closeSessionExerciseSettings);
+  el('btn-ex-settings-cancel').addEventListener('click', closeSessionExerciseSettings);
+  el('btn-ex-settings-save').addEventListener('click', exSettingsSave);
+  modal.addEventListener('click', (e) => { if (e.target === modal) closeSessionExerciseSettings(); });
+  el('ex-settings-mode-both').addEventListener('click', () => draftSet({ unilateral: false }));
+  el('ex-settings-mode-one').addEventListener('click', () => draftSet({ unilateral: true }));
+  el('ex-settings-side-left').addEventListener('click', () => draftSet({ startSide: 'left' }));
+  el('ex-settings-side-right').addEventListener('click', () => draftSet({ startSide: 'right' }));
+  el('ex-settings-assisted').addEventListener('click', () => { if (exSettingsCtx && !exSettingsCtx.def.assistedLocked) draftSet({ assisted: !exSettingsCtx.draft.assisted }); });
+  /* Polia: sériu aj opakovania mení −/+ o 1, váhu o 2,5; písaním sa hodnota berie tak, ako je. */
+  const fields = [
+    ['sets', 'remaining', 1, 99, 1], ['reps', 'reps', 1, 99, 1], ['weight', 'weight', 0, 999, 2.5],
+  ];
+  for (const [name, field, lo, hi, step] of fields) {
+    const input = el('ex-settings-' + name);
+    input.addEventListener('input', () => draftSet({ [field]: input.value }));
+    input.addEventListener('keydown', (e) => {
+      if (e.key !== 'Enter') return;
+      e.preventDefault();
+      if (!el('btn-ex-settings-save').disabled) exSettingsSave();
+    });
+    const bump = (dir) => {
+      if (!exSettingsCtx) return;
+      const raw = String(exSettingsCtx.draft[field]).trim().replace(',', '.');
+      const base = /^\d+(\.\d+)?$/.test(raw) ? Number(raw) : (field === 'remaining' ? 0 : Number(exSettingsCtx.def[field]) || 0);
+      const next = Math.min(hi, Math.max(lo, Math.round((base + dir * step) * 10) / 10));
+      input.value = String(next);
+      draftSet({ [field]: String(next) });
+    };
+    el('ex-settings-' + name + '-minus').addEventListener('click', () => bump(-1));
+    el('ex-settings-' + name + '-plus').addEventListener('click', () => bump(1));
+  }
 }
 
 /* Vytvorí session, ak ešte neexistuje. Volá sa pri "Začať tréning" a pri prvom označení série,
@@ -24254,7 +24757,8 @@ function historyDropsText(ex) {
 function planExerciseCount(plan) {
   let n = 0;
   for (const info of exerciseSlots(plan)) {
-    for (const seg of exerciseSegments(info)) n += sessionSlotCount(seg.ex);
+    /* Uzavretý segment po zmene nastavení prispieva len hotovou prácou: jeho nesplnené série prevzal nasledovník. */
+    for (const seg of exerciseSegments(info)) n += seg.settingsNext ? countDoneSets(seg.ex) : sessionSlotCount(seg.ex);
   }
   return n;
 }
@@ -24465,9 +24969,10 @@ function groupInfoOf(rows, limit, history) {
     let j = i + 1;
     if (g) while (j < n && groupIdOf(rows[j]) === g) j++;
     const span = j - i;
-    /* História: po výmene cviku nesú skupinu aj pôvodný záznam, aj náhrada (substitutedFor) – počítajú sa odlišné sloty */
+    /* História: po výmene cviku nesú skupinu aj pôvodný záznam, aj náhrada (substitutedFor) – počítajú sa odlišné sloty;
+       ďalšie segmenty toho istého logického cviku po zmene nastavení (segment.n > 1) sú ten istý slot. */
     let size = span;
-    if (g && history) { size = 0; for (let k = i; k < j; k++) if (!(rows[k] && rows[k].substitutedFor)) size++; }
+    if (g && history) { size = 0; for (let k = i; k < j; k++) if (!(rows[k] && (rows[k].substitutedFor || (rows[k].segment && rows[k].segment.n > 1)))) size++; }
     if (g && size >= 2) {
       const label = String.fromCharCode(65 + (letter % 26)) + (letter >= 26 ? String(Math.floor(letter / 26)) : '');
       letter++;
@@ -24865,9 +25370,10 @@ function buildExerciseBlock(seg, info, plan) {
     lr.textContent = t('bento.lr');
     head.appendChild(lr);
   }
+  const shown = seg.settingsNext ? seg.shown : sessionSetCount(ex);   // uzavretý segment po zmene nastavení ukáže len odcvičenú prácu
   const meta = document.createElement('span');
   meta.className = 'exercise-meta';
-  meta.innerHTML = `${sessionSetCount(ex)} × ${ex.reps} &nbsp;·&nbsp; <b>${esc(exerciseLoadText(ex))}</b>`;
+  meta.innerHTML = `${shown} × ${ex.reps} &nbsp;·&nbsp; <b>${esc(exerciseLoadText(ex))}</b>`;
   head.appendChild(meta);
   div.appendChild(head);
 
@@ -24875,7 +25381,7 @@ function buildExerciseBlock(seg, info, plan) {
   if (sides) {
     const sideNote = document.createElement('p');
     sideNote.className = 'exercise-side-note';
-    sideNote.textContent = tPlural('unilateral.setsPerSide', sessionSetCount(ex));
+    sideNote.textContent = tPlural('unilateral.setsPerSide', shown);
     div.appendChild(sideNote);
   }
 
@@ -24885,11 +25391,18 @@ function buildExerciseBlock(seg, info, plan) {
     note.textContent = t('exercise.replacesNote', { name: seg.step.oldName });
     div.appendChild(note);
   }
+  if (seg.kind === 'settings') {
+    const note = document.createElement('p');
+    note.className = 'exercise-swap-note';
+    note.textContent = t('exsettings.activeNote');
+    div.appendChild(note);
+  }
   if (seg.readOnly) {
     const note = document.createElement('p');
     note.className = 'exercise-swap-note';
-    note.textContent = t('exercise.replacedNote', { name: seg.nextName || '' })
-      + ' · ' + t('exercise.replacedAfter', { n: countDoneSets(ex) });
+    note.textContent = seg.settingsNext
+      ? t('exsettings.closedNote', { n: countDoneSets(ex) })
+      : t('exercise.replacedNote', { name: seg.nextName || '' }) + ' · ' + t('exercise.replacedAfter', { n: countDoneSets(ex) });
     div.appendChild(note);
   }
 
@@ -24905,7 +25418,7 @@ function buildExerciseBlock(seg, info, plan) {
   const cap = (full, short) => '<span class="set-cap"><span class="cap-f">' + esc(t(full)) + '</span><span class="cap-s">' + esc(t(short)) + '</span></span>';
   heads.innerHTML = '<span></span>' + cap(isAssisted(ex) ? 'session.assistance' : 'session.weight', isAssisted(ex) ? 'session.assistanceShort' : 'session.weightShort') + cap('session.reps', 'session.repsShort');
   sets.appendChild(heads);
-  for (let i = 0; i < sessionSetCount(ex); i++) {
+  for (let i = 0; i < shown; i++) {
     if (sides) {
       for (const side of sides) sets.appendChild(buildSetItem(ex, i, plannedFailure, side, seg.readOnly));
     } else {
@@ -24935,12 +25448,15 @@ function buildExerciseBlock(seg, info, plan) {
     div.appendChild(mini);
   }
 
-  /* Posledná náhrada sa dá vrátiť späť – pôvodný cvik sa tým znova sprístupní. */
+  /* Posledný nasledovník (náhrada, zmena nastavení) sa dá vrátiť späť – pôvodný cvik sa tým znova sprístupní. Nikdy však nie
+     kým je rozpracovaný pár ľavá/pravá, a zmena nastavení nikdy s odcvičenou prácou (odcvičená práca sa nemaže). */
   if (seg.active && seg.step) {
     const undo = document.createElement('button');
     undo.type = 'button';
     undo.className = 'btn btn-secondary btn-block btn-undo-swap';
-    undo.textContent = t('exercise.undoReplace');
+    undo.textContent = t(seg.step.kind === 'settings' ? 'exsettings.undo' : 'exercise.undoReplace');
+    undo._step = seg.step;
+    undo.hidden = successorUndoBlocked(seg.step);
     undo.addEventListener('click', () => requestUndoSubstitution(info.slot));
     div.appendChild(undo);
   }
@@ -24992,6 +25508,8 @@ function buildSetItem(ex, index, plannedFailure, side, readOnly) {
     item.classList.toggle('set-done', on);
     setBtn.setAttribute('aria-pressed', on ? 'true' : 'false');
     syncEffortChip(item, ex, index, side, on, readOnly);
+    const undo = item.closest('.exercise')?.querySelector('.btn-undo-swap');
+    if (undo && undo._step) undo.hidden = successorUndoBlocked(undo._step);
   };
   syncDone();
   setBtn.setAttribute('aria-label', ariaPre + t('trening.setDoneAria', { n: index + 1 }));
@@ -25277,8 +25795,18 @@ function exerciseActionButtons(ex, info) {
     swap.type = 'button';
     swap.className = 'exercise-swap';
     swap.textContent = t('exercise.replace');
-    swap.addEventListener('click', () => openLibrary('replace', { slot: info.slot, base: info.base, ex }));
+    /* Rozpracovaný pár ľavá/pravá blokuje aj výmenu cviku (rovnako ako zmenu nastavení). */
+    swap.addEventListener('click', () => {
+      if (replaceBlockedByHalfPair(info)) return;
+      openLibrary('replace', { slot: info.slot, base: info.base, ex });
+    });
     out.push(swap);
+    const cfg = document.createElement('button');
+    cfg.type = 'button';
+    cfg.className = 'btn-ex-settings';
+    cfg.textContent = t('exsettings.action');
+    cfg.addEventListener('click', () => openSessionExerciseSettings(info));
+    out.push(cfg);
   }
   const prog = document.createElement('button');
   prog.type = 'button';
@@ -25879,34 +26407,40 @@ function workoutPhaseRampRows(slot) {
   };
   return { session: find(currentPlan()), saved: sess && sess.programPlan && sess.planId !== 'quick' ? find(getPlan(sess.planId)) : null };
 }
-/* One section per exercise key (warm-up rows are keyed that way). Every plan occurrence is initialised and keeps its own
-   ramp preference; replaced exercises that only own warm-up rows stay closed and are named from the substitution chain. */
+/* One section per exercise key (warm-up rows are keyed that way). Every plan occurrence has its own key, so a duplicated plan
+   row gets its own section (numbered #n) and keeps its own ramp preference; replaced exercises that only own warm-up rows
+   stay closed and are named from the substitution chain. */
 function workoutPhaseLegacyEntries(plan) {
   const sess = getSession(), entries = new Map();
-  const entryFor = (ex) => {
+  const slots = plan ? exerciseSlots(plan) : [];
+  const copies = {};
+  for (const slot of slots) copies[slot.base] = (copies[slot.base] || 0) + 1;
+  const entryFor = (ex, slot) => {
     const key = exerciseSessionKey(ex);
-    if (!entries.has(key)) entries.set(key, { key, ex, readOnly: true, ramps: [] });
+    if (!entries.has(key)) entries.set(key, { key, ex, readOnly: true, ramps: [], no: copies[slot.base] > 1 ? slot.occ + 1 : 0 });
     return entries.get(key);
   };
-  if (plan) for (const slot of exerciseSlots(plan)) {
+  for (const slot of slots) {
     const steps = substitutionSteps(slot.slot);
     const active = exerciseSegments(slot).filter(seg => !seg.readOnly).map(seg => seg.ex);
     for (const ex of [slot.ex].concat(steps.map(step => step.ex))) {
       if (active.includes(ex)) {
         autoWarmupRamp(ex);
-        const entry = entryFor(ex);
+        const entry = entryFor(ex, slot);
         if (entry.readOnly) { entry.ex = ex; entry.readOnly = false; }
         if (!steps.length && !isAssisted(ex)) {
           const rows = workoutPhaseRampRows(slot);
           if (rows.session) entry.ramps.push({ slot, rows });
         }
-      } else if (sessionWarmups(ex).length && !entries.has(exerciseSessionKey(ex))) entryFor(ex);
+      } else if (sessionWarmups(ex).length && !entries.has(exerciseSessionKey(ex))) entryFor(ex, slot);
     }
   }
   if (sess && sess.warmups) for (const key of Object.keys(sess.warmups)) {
     if (entries.has(key) || !Array.isArray(sess.warmups[key]) || !sess.warmups[key].length) continue;
-    const ex = BUILTIN_EXERCISE_IDS.has(key) ? { id: key, name: key } : { sessionKey: key, name: key.indexOf('c:') === 0 ? key.slice(2) : key };
-    entries.set(key, { key, ex, readOnly: true, ramps: [] });   // truly unresolved key: anonymous, locked
+    const plain = sessionPlainKey(key);
+    const ex = { sessionKey: key, name: plain.indexOf('c:') === 0 ? plain.slice(2) : plain };
+    if (BUILTIN_EXERCISE_IDS.has(plain)) ex.id = plain;
+    entries.set(key, { key, ex, readOnly: true, ramps: [], no: 0 });   // truly unresolved key: anonymous, locked
   }
   return [...entries.values()];
 }
@@ -25983,9 +26517,9 @@ function renderWorkoutPhaseLegacy() {
   const about = document.createElement('summary'); about.textContent = t('phase.legacyAbout'); help.appendChild(about);
   workoutPhaseText(help, 'phase.legacyHelp'); workoutPhaseText(help, 'phase.legacyIndependent');
   host.appendChild(help);
-  for (const { key, ex, readOnly, ramps } of entries) {
+  for (const { key, ex, readOnly, ramps, no } of entries) {
     const section = document.createElement('section'); section.className = 'phase-legacy-exercise'; section.dataset.exerciseKey = key;
-    const name = document.createElement('h4'); name.textContent = exerciseDisplayName(ex); section.appendChild(name);
+    const name = document.createElement('h4'); name.textContent = exerciseDisplayName(ex) + (no ? ' · #' + no : ''); section.appendChild(name);
     const rows = buildWarmupsBlock(ex, readOnly); if (rows) section.appendChild(rows);
     if (!readOnly) {
       const actions = document.createElement('div'); actions.className = 'phase-actions';
@@ -25994,7 +26528,7 @@ function renderWorkoutPhaseLegacy() {
       for (const { slot, rows: source } of ramps) {
         const label = document.createElement('label'), toggle = document.createElement('input'), text = document.createElement('span');
         toggle.type = 'checkbox'; toggle.className = 'phase-legacy-ramp'; toggle.checked = source.session.warmupRamp === true;
-        text.textContent = t('warmup.planToggle') + (ramps.length > 1 ? ' · #' + (slot.occ + 1) : '');
+        text.textContent = t('warmup.planToggle');
         toggle.addEventListener('change', () => {
           for (const row of [source.session, source.saved]) if (row) { if (toggle.checked) row.warmupRamp = true; else delete row.warmupRamp; }
           saveState(); renderWorkoutPhaseLegacy();
@@ -28772,6 +29306,14 @@ function exerciseMediaManifest() {
 /* Dátum pridania vizuálov (jeden pre celú dávku). */
 const MEDIA_ADDED_DATE = '2026-09-25';
 
+/* Rozpracovaný pár ľavá/pravá blokuje výmenu cviku (rovnako ako zmenu nastavení): ukáže dôvod a nič nezapíše. */
+function replaceBlockedByHalfPair(info) {
+  const half = exSettingsState(chainCurrentEx(info)).half;
+  if (!half.length) return false;
+  showGeneric(t('exercise.replaceTitle'), t('common.ok'), null, esc(t('exsettings.finishPairReplace', { sets: half.map((i) => i + 1).join(', ') })));
+  return true;
+}
+
 /* ---------- Aplikuje náhradu: zapíše sa IBA do session, plán používateľa zostáva nedotknutý. ---------- */
 function applySubstitution(entryId) {
   const target = libraryTarget;
@@ -28781,6 +29323,7 @@ function applySubstitution(entryId) {
   if (!plan) return;
   const info = exerciseSlots(plan).find((s) => s.slot === target.slot);
   if (!info) return;
+  if (replaceBlockedByHalfPair(info)) return;
   const sess = ensureSession();
   if (!sess) return;
 
@@ -28828,6 +29371,7 @@ function confirmSubstitution(entryId) {
     showGeneric(t('exercise.replaceTitle'), t('common.ok'), null, esc(t('exercise.replaceDuplicate')));
     return;
   }
+  if (replaceBlockedByHalfPair(info)) return;
   /* Opäť: hovorí sa o cviku, ktorý tam je TERAZ. */
   const existing = substitutionSteps(info.slot);
   const currentEx = existing.length ? existing[existing.length - 1].ex : info.ex;
@@ -28841,43 +29385,54 @@ function confirmSubstitution(entryId) {
 }
 
 /* Zrušenie výmeny: pôvodný cvik sa znova sprístupní so všetkými svojimi sériami.
-   Značky náhrady sa musia zahodiť, inak by ostali visieť bez cviku. */
+   Značky náhrady sa musia zahodiť, inak by ostali visieť bez cviku. Nikdy sa nevracia nasledovník s rozpracovaným
+   párom ľavá/pravá (pozri successorUndoBlocked) – kontrola sa opakuje aj po potvrdení, lebo stav sa medzitým mohol zmeniť. */
 function requestUndoSubstitution(slot) {
   const sess = getSession();
   if (!sess || !sess.substituted) return;
   const steps = substitutionSteps(slot);
   if (!steps.length) return;
   const last = steps[steps.length - 1];
+  if (successorUndoBlocked(last)) return;
   const doUndo = () => {
-    const map = sess.substituted;
-    if (!map || !Array.isArray(map[slot])) return;
+    const live = getSession();
+    const liveSteps = substitutionSteps(slot);
+    const now = liveSteps[liveSteps.length - 1];
+    if (!live || !now || now.key !== last.key || successorUndoBlocked(now)) { renderTrening(); return; }
+    const map = live.substituted;
     map[slot].pop();
     if (!map[slot].length) delete map[slot];
-    if (!Object.keys(map).length) delete sess.substituted;
-    const prefix = String(last.key) + ':';
-    for (const k of Object.keys(sess.completedSets)) if (k.indexOf(prefix) === 0) delete sess.completedSets[k];
-    for (const k of Object.keys(sess.actualFailureSets)) if (k.indexOf(prefix) === 0) delete sess.actualFailureSets[k];
+    if (!Object.keys(map).length) delete live.substituted;
+    const prefix = String(now.key) + ':';
+    for (const k of Object.keys(live.completedSets)) if (k.indexOf(prefix) === 0) delete live.completedSets[k];
+    for (const k of Object.keys(live.actualFailureSets)) if (k.indexOf(prefix) === 0) delete live.actualFailureSets[k];
     for (const field of ['setWeights', 'setReps', 'setWeightLocks', 'setRepsLocks', 'setRpe']) {
-      if (!sess[field]) continue;
-      for (const k of Object.keys(sess[field])) if (k.indexOf(prefix) === 0) delete sess[field][k];
-      if (!Object.keys(sess[field]).length) delete sess[field];
+      if (!live[field]) continue;
+      for (const k of Object.keys(live[field])) if (k.indexOf(prefix) === 0) delete live[field][k];
+      if (!Object.keys(live[field]).length) delete live[field];
     }
-    if (sess.setDelta) {
-      delete sess.setDelta[String(last.key)];
-      if (!Object.keys(sess.setDelta).length) delete sess.setDelta;
+    if (live.setDelta) {
+      delete live.setDelta[String(now.key)];
+      if (!Object.keys(live.setDelta).length) delete live.setDelta;
     }
-    if (sess.drops) {
-      delete sess.drops[String(last.key)];
-      if (!Object.keys(sess.drops).length) delete sess.drops;
+    if (live.drops) {
+      delete live.drops[String(now.key)];
+      if (!Object.keys(live.drops).length) delete live.drops;
     }
     for (const f of ['warmups', 'warmupsInit']) {
-      if (!sess[f]) continue;
-      delete sess[f][String(last.key)];
-      if (!Object.keys(sess[f]).length) delete sess[f];
+      if (!live[f]) continue;
+      delete live[f][String(now.key)];
+      if (!Object.keys(live[f]).length) delete live[f];
     }
     saveState();
     renderTrening();
   };
+  if (last.kind === 'settings') {
+    /* Neodcvičený nasledovník: rozpracované hodnoty (váhy, opakovania, rozcvičky) sa zahodia len po potvrdení. */
+    if (exSettingsHasDrafts(last.ex)) showGeneric(t('exsettings.undo'), t('exsettings.undo'), doUndo, esc(t('exsettings.undoDiscard')));
+    else doUndo();
+    return;
+  }
   const done = countDoneSets(last.ex);
   if (done > 0) {
     showGeneric(t('exercise.undoConfirm'), t('exercise.undoConfirm'), doUndo,
@@ -33341,6 +33896,7 @@ async function communityResendConfirmation() {
 async function communitySignOut() {
   if (googleAuthBusy) return;
   const sb = communitySb(); if (!sb) return;
+  await wearRevoke();
   await workoutPhaseCancelOwner(); stopTimer();
   await syncQuiesce();
   persistState();
@@ -33611,6 +34167,7 @@ function communityLeaveCommunity() {
 function communityDeleteAccount() {
   showGeneric(t('community.deleteAccountTitle'), t('community.deleteAccount'), async () => {
     const sb = communityClient(); if (!sb) return;
+    await wearRevoke();
     const user = await syncSessionUser();
     await syncQuiesce();   // žiadna synchronizácia nesmie po zmazaní zálohu znovu vytvoriť
     let res = null;
@@ -35834,8 +36391,7 @@ function renderAll() {
   if (muState && musclesModal && !musclesModal.hidden) {
     muState.trend = muscleTrend(8);
     muState.maxOff = muscleMaxOffset();
-    const map = document.getElementById('muscles-map');
-    if (map) map.innerHTML = bodyMapSvg(muscleRecovery(Date.now()), { size: 'full' });
+    refreshMusclesMap();
     renderMuscles();
   }
 }
@@ -35893,6 +36449,7 @@ function finishWorkout() {
   confirmText.innerHTML = t('trening.confirmText', { plan: esc(planDisplayName(plan)), done: doneCount, total: totalSets, xp })
     + (limited ? '<br>' + esc(t('xp.dailyLimit')) : '');
   document.getElementById('confirm-note').value = '';
+  document.getElementById('confirm-error').hidden = true;
   document.getElementById('modal-confirm').hidden = false;
   document.getElementById('confirm-note').focus();
 }
@@ -36118,6 +36675,12 @@ function historyApplyDrops(entry, ex) {
   if (list.length) entry.drops = list;
 }
 
+/* Zápis dokončenia sa nepodaril: okno ostáva otvorené (session, značky aj poznámka sa nemenia) a ukáže sa chyba ukladania. */
+function finishSaveFailed() {
+  const err = document.getElementById('confirm-error');
+  if (err) err.hidden = false;
+}
+
 function confirmFinish() {
   /* Ochrana pred dvojitým uložením: potvrdzovacie okno je otvorené práve do prvého uloženia. */
   if (document.getElementById('modal-confirm').hidden) return;
@@ -36125,6 +36688,9 @@ function confirmFinish() {
   if (!plan) return;
   const sess = getSession();
   if (sess && state.history.some(w => w.id === sess.id)) {
+    /* Záznam tohto tréningu v histórii už je (druhý zápis nedobehol alebo prišiel zo synchronizácie): nezapíše sa znova.
+       Session sa zruší až po úspešnom zápise stavu. */
+    if (!persistState()) { finishSaveFailed(); return; }
     workoutPhaseCancelOwner();
     clearSession(); stopTimer();
     document.getElementById('modal-confirm').hidden = true;
@@ -36138,45 +36704,60 @@ function confirmFinish() {
 
   /* Výmena cviku počas tréningu sa zapisuje POCTIVO: pôvodný cvik si ponechá svoje
      skutočne odcvičené série a náhrada sa zapíše zvlášť. Hotové série sa NIKDY
-     neprepisujú na nový cvik. Cvik bez jedinej série sa do histórie nedostane. */
+     neprepisujú na nový cvik. Cvik bez jedinej série ani rozcvičky či dropu sa do histórie nedostane.
+     Zmena nastavení (kind 'settings') nemení logický cvik: jeho segmenty sú jedna skupina so spoločnou
+     identitou (`segment`) a každý nesie len svoju odcvičenú prácu s vlastnými príznakmi. Segment s odcvičenou
+     rozcvičkou či dropom sa zapíše aj bez hlavnej série (s nulou hotových sérií) a jeho rozcvičky a dropy sa
+     nikdy nezlučujú do iného segmentu. */
   const exercises = [];
   const remembered = {};   // identita -> pracovná váha na ďalší tréning (z hotových hlavných sérií)
   const seenIdentity = {};
-  const noteWeight = (ex) => {
-    const identity = exerciseRowIdentity(ex);
+  /* `segments` = všetky segmenty toho istého logického cviku. Pracovná váha vychádza z hotových hlavných sérií len tých
+     segmentov, ktoré sú zlučiteľné s CIEĽOVÝM riadkom plánu (rovnaká asistencia aj režim obojstranný/jednostranný): váha pomoci
+     alebo jednej strany sa tak nikdy nezapíše do riadka s inou sémantikou. Bez zlučiteľného segmentu ostáva pamäť aj plán
+     bez zmeny. Zapisuje sa iba váha, nikdy nastavenia. */
+  const noteWeight = (segments) => {
+    const identity = exerciseRowIdentity(segments[0]);
     if (!identity || seenIdentity[identity]) return;   // váhu určuje PRVÝ slot cviku v tréningu
     seenIdentity[identity] = true;
     if (sess && Array.isArray(sess.editedIdentities) && sess.editedIdentities.includes(identity)) return;   // novšia úprava plánu vyhráva
-    const w = identity ? nextWorkingWeight(completedMainSets(ex, sess), { assisted: isAssisted(ex) }) : null;
+    const saved = state.plans && state.plans[plan.id];
+    const target = (saved && Array.isArray(saved.exercises) && saved.exercises.find((r) => r && exerciseRowIdentity(r) === identity)) || segments[0];
+    const compatible = (c) => exerciseRowIdentity(c) === identity && isAssisted(c) === isAssisted(target)
+      && (c.unilateral === true) === (target.unilateral === true);
+    const done = [];
+    for (const c of segments) if (compatible(c)) for (const s of completedMainSets(c, sess)) done.push(s);
+    const w = nextWorkingWeight(done, { assisted: isAssisted(target) });
     if (w !== null) remembered[identity] = { weight: w };
   };
   const finishGroups = supersetInfo(plan);
   for (const [si, info] of exerciseSlots(plan).entries()) {
-    const steps = substitutionSteps(info.slot);
-    const originalDone = countDoneSets(info.ex);
     const slotGroup = finishGroups.get(si);   // náhrada patrí do skupiny svojho slotu
     const tagGroup = (e) => { if (slotGroup) e.group = slotGroup.group; else delete e.group; return e; };
-    if (!steps.length || originalDone > 0) {
-      const entry = tagGroup(historyExerciseEntry(info.ex, sess));
-      noteWeight(info.ex);
-      if (steps.length) {
-        /* Zapíše sa cvik, ktorý pôvodný NAOZAJ vystriedal – pri reťazci teda prvý, nie posledný. */
-        entry.replacedBy = exerciseDisplayName(steps[0].ex);
-        entry.replacedAfterSets = originalDone;
+    const chain = exerciseChainGroups(info);
+    chain.forEach((grp, gi) => {
+      const items = grp.items;
+      let pushed = items.filter((it) => countDoneSets(it.ex) > 0 || sessionExtrasDone(it.ex));
+      /* Skupina bez odcvičenej práce: pôvodný riadok sa zapíše, len ak je jediný (ako doteraz); výmena vždy. */
+      if (!pushed.length && (gi > 0 || chain.length === 1)) pushed = [items[items.length - 1]];
+      if (!pushed.length) return;
+      const groupDone = items.reduce((n, it) => n + countDoneSets(it.ex), 0);
+      const entries = pushed.map((it) => {
+        /* Segment uzavretý zmenou nastavení: zapíše sa len práca po poslednú hotovú sériu. */
+        const cap = items.indexOf(it) < items.length - 1 ? exSettingsDoneExtent(it.ex) : 0;
+        return tagGroup(historyEntryForSegment(it.ex, sess, cap));
+      });
+      noteWeight(items.map((it) => it.ex));
+      if (gi > 0 && items[0].step && items[0].step.oldName) entries[0].substitutedFor = items[0].step.oldName;
+      /* Zapíše sa cvik, ktorý skupinu NAOZAJ vystriedal – pri reťazci teda ďalšia výmena, nie posledný krok. */
+      if (gi < chain.length - 1 && groupDone > 0) {
+        const last = entries[entries.length - 1];
+        last.replacedBy = exerciseDisplayName(chain[gi + 1].items[0].ex);
+        last.replacedAfterSets = groupDone;
       }
-      exercises.push(entry);
-    }
-    for (let i = 0; i < steps.length; i++) {
-      const entry = tagGroup(historyExerciseEntry(steps[i].ex, sess));
-      noteWeight(steps[i].ex);
-      if (steps[i].oldName) entry.substitutedFor = steps[i].oldName;
-      /* Aj náhrada, ktorá bola neskôr vymenená, si nechá svoje série a povie, kým bola nahradená. */
-      if (i < steps.length - 1 && countDoneSets(steps[i].ex) > 0) {
-        entry.replacedBy = exerciseDisplayName(steps[i + 1].ex);
-        entry.replacedAfterSets = countDoneSets(steps[i].ex);
-      }
-      exercises.push(entry);
-    }
+      if (items.length > 1) entries.forEach((e, k) => { e.segment = { id: info.slot + '~' + gi, n: k + 1, of: entries.length }; });
+      for (const e of entries) exercises.push(e);
+    });
   }
 
   const doneCount = totalSetsDone();
@@ -36204,9 +36785,17 @@ function confirmFinish() {
     const end = Date.now();
     entry.health = { start: new Date(end - entry.durationSeconds * 1000).toISOString(), end: new Date(end).toISOString() };
   }
-  trainOnWorkoutFinished(entry, trainData);   // "trénoval s …" + priateľ uvidí hotovo
 
-  /* Spoločná pracovná váha: až po zostavení histórie (tá drží skutočné váhy), pred jediným saveState nižšie. */
+  /* Bod návratu: ak sa zápis histórie nepodarí, vrátia sa všetky zmeny stavu v pamäti (história, váhy, úspechy, cieľ týždňa). */
+  const goalBefore = JSON.stringify(state.goalHistory), memoryBefore0 = JSON.stringify(state.settings.exerciseMemory);
+  const demoBefore = state.demo, achievementsBefore = state.achievements;
+  const rowWeights = [];
+  for (const p of Object.values(state.plans || {})) {
+    if (p && Array.isArray(p.exercises)) for (const r of p.exercises) if (r) rowWeights.push([r, r.weight]);
+  }
+  const restoreJson = (obj, field, json) => { if (json === undefined) delete obj[field]; else obj[field] = JSON.parse(json); };
+
+  /* Spoločná pracovná váha: až po zostavení histórie (tá drží skutočné váhy), pred jediným zápisom nižšie. */
   const rememberedAt = Date.now();
   /* Pre Zrušiť tréning: čo bolo v pamäti pred zápisom (null = záznam neexistoval) a čo sa zapísalo. */
   const memoryBefore = {}, memoryAfter = {}, memoryRowBefore = {};
@@ -36231,11 +36820,27 @@ function confirmFinish() {
   }
   state.history.push(entry);
   syncGoalSnapshot();    // tento týždeň je teraz "pozorovaný" so svojím cieľom
-  lastWorkoutId = entry.id;
   state.demo = false;  // real workout → data is no longer demo
-  localStorage.setItem(STORAGE_KEY + '_real', '1');
   reconcileAchievements();
-  saveState();
+  /* História sa musí zapísať ako PRVÁ: kým zápis nepreukázateľne uspel, session ostáva, nič sa nezruší ani neodmení
+     a v pamäti nezostane záznam, ktorý by sa pri ďalšom pokuse dal považovať za už uložený. */
+  if (!persistState()) {
+    const at = state.history.lastIndexOf(entry);
+    if (at >= 0) state.history.splice(at, 1);
+    restoreJson(state, 'goalHistory', goalBefore);
+    restoreJson(state.settings, 'exerciseMemory', memoryBefore0);
+    for (const [row, weight] of rowWeights) { if (weight === undefined) delete row.weight; else row.weight = weight; }
+    state.demo = demoBefore;
+    state.achievements = achievementsBefore;
+    suggestMemoReset();
+    xpCacheClear();
+    finishSaveFailed();
+    return;
+  }
+  syncNoteLocalChange();
+  leaderboardQueue();
+  try { localStorage.setItem(STORAGE_KEY + '_real', '1'); } catch (e) { /* pomocný príznak: stav už nesie demo = false */ }
+  lastWorkoutId = entry.id;
 
   lastUnlocked = Object.keys(state.achievements).filter(id => !beforeUnlocked.includes(id));
   lastAchXP = achievementXP() - beforeAchXP;
@@ -36243,6 +36848,7 @@ function confirmFinish() {
 
   lastXP = historyEntryXp(entry);
   selectedPlan = prevRecommended || selectedPlan;
+  trainOnWorkoutFinished(entry, trainData);   // "trénoval s …" + priateľ uvidí hotovo (až po zápise histórie)
   /* Session sa ruší až po uložení histórie – nikdy predtým. */
   clearSession();
   stopTimer();
@@ -36648,6 +37254,7 @@ function openSettings() {
   renderTourHelp();
   renderThemeChips();
   renderHealthSetting();
+  renderWearSetting();
   healthRecheck();
   renderGoalChips('settings-goal-chips', weeklyGoal());
   setGoalReadout(weeklyGoal());
@@ -37616,16 +38223,22 @@ function nativeRestSync(ask) {
   });
 }
 
-/* Uložená hodnota: JSON { v: 2, endAt, pausedLeftMs, totalMs, presetId }.
-   Staršia verzia (v96) ukladala len číslo = koniec odpočtu; to sa stále prijme. */
+/* Formát v2 s doplnkovou trvalou identitou a dokončením; starší v2 aj číselný koniec sa stále prijmú. */
 function persistRestTimer(on) {
   try {
     if (on) {
+      if (!timerPersistentId) timerPersistentId = wearRandomId();
       localStorage.setItem(REST_TIMER_KEY, JSON.stringify({
-        v: 2, endAt: timerEnd, pausedLeftMs: timerPausedLeft, totalMs: timerTotalMs, presetId: timerPresetId
+        v: 2, id: timerPersistentId, done: on === 'done',
+        endAt: timerEnd, pausedLeftMs: timerPausedLeft, totalMs: timerTotalMs, presetId: timerPresetId
       }));
-    } else localStorage.removeItem(REST_TIMER_KEY);
-  } catch (e) {}
+    } else {
+      localStorage.removeItem(REST_TIMER_KEY);
+      timerPersistentId = null;
+    }
+    wearPublishSoon();
+    return true;
+  } catch (e) { return false; }
 }
 
 function restoreRestTimerEnd() {
@@ -37642,6 +38255,8 @@ function restoreRestTimerEnd() {
     if (left === null && !(Number.isFinite(endAt) && endAt > 0)) return null;
     const total = Number(v.totalMs);
     return {
+      id: typeof v.id === 'string' && v.id ? v.id : wearRandomId(),
+      done: v.done === true,
       endAt: Number.isFinite(endAt) ? endAt : 0,
       pausedLeftMs: left,
       totalMs: Number.isFinite(total) && total > 0 ? total : 0,
@@ -37659,12 +38274,15 @@ function finishRestTimer(sessionId, withSound) {
   if (sessionId !== timerSessionId) return;      // beží už iný odpočet
   if (timerCompletedId === sessionId) return;    // toto dokončenie je už spracované
   timerCompletedId = sessionId;
+  const persistentId = timerPersistentId;
 
   const restPlugin = nativePlugin('GymRest');
   const restId = String(timerEnd);
   if (restPlugin) nativeRestQueue = nativeRestQueue.then(() => restPlugin.finish({ id: restId })).catch(() => {});
 
   stopTimer(true);
+  timerPersistentId = persistentId;
+  persistRestTimer('done');
   const bar = document.getElementById('timer-bar');
   bar.classList.add('done');
   bar.hidden = false;
@@ -37715,11 +38333,13 @@ function restoreRestTimer() {
   if (workoutPhaseLive()) { persistRestTimer(false); return; }
   if (!saved) return;
   timerSessionId++;
+  timerPersistentId = saved.id;
   timerEnd = saved.endAt;
   timerTotalMs = saved.totalMs;
   timerPresetId = saved.presetId;
   timerPausedLeft = saved.pausedLeftMs;
-  if (timerPausedLeft === null && Date.now() >= saved.endAt) {
+  persistRestTimer(saved.done ? 'done' : true);  // migrácia starého formátu len raz, s rovnakým id po obnovení
+  if (saved.done || (timerPausedLeft === null && Date.now() >= saved.endAt)) {
     finishRestTimer(timerSessionId, false);
     return;
   }
@@ -37734,7 +38354,7 @@ function restoreRestTimer() {
 
 /* Spustí odpočet. Ak práve iný beží, nahradí ho a hlásku "Nahradené X za Y" ukáže na karte.
    quiet = true pri Znova (rovnaký čas, nie je čo hlásiť). */
-function startTimer(seconds, presetId, quiet, replacementConfirmed) {
+function startTimer(seconds, presetId, quiet, replacementConfirmed, identity) {
   if (workoutPhaseLive() && !replacementConfirmed) {
     const p = getSession().phaseTimer;
     workoutPhaseReplace(t('phase.' + p.phase), t('bento.rest'),
@@ -37749,7 +38369,8 @@ function startTimer(seconds, presetId, quiet, replacementConfirmed) {
   stopTimer();
   unlockAudio();               // štart časovača je pokyn používateľa – odblokuje zvuk
   timerSessionId++;            // nový odpočet = nová identita (starý sa už nikdy nedokončí)
-  timerEnd = Date.now() + seconds * 1000;
+  timerPersistentId = identity ? identity.id : wearRandomId();
+  timerEnd = identity ? identity.endAt : Date.now() + seconds * 1000;
   timerPausedLeft = null;
   timerTotalMs = seconds * 1000;
   timerPresetId = presetId || null;
@@ -39085,7 +39706,7 @@ function suggestSessionsFor(ex, planId, today, limit = 2) {
     if (!w || typeof w.date !== 'string' || w.date >= today || !Array.isArray(w.exercises)) continue;
     if (best.length >= limit && w.date <= best[best.length - 1].date) continue;
     if (!samePlanAsHistory(w, plan, planId)) continue;
-    const found = w.exercises.find(matches);
+    const found = historyLogicalEntry(w, matches);
     if (!found) continue;
     let i = best.length;
     while (i > 0 && best[i - 1].date < w.date) i--;
@@ -42200,8 +42821,7 @@ function renderUnassignedMuscles() {
       if (!muState || !correctOtherMuscles(identity, picker.read())) return;
       muState.muscleDrafts.delete(identity);
       muState.trend = muscleTrend(8);
-      const map = document.getElementById('muscles-map');
-      if (map) map.innerHTML = bodyMapSvg(muscleRecovery(Date.now()), { size: 'full' });
+      refreshMusclesMap();
       renderMuscles();
       renderStatsGrid();
       const status = document.getElementById('muscles-assignment-status');
@@ -42308,8 +42928,7 @@ function openMuscles() {
   document.getElementById('muscles-assignment-status').hidden = true;
   /* Odvodené údaje sa počítajú raz pri otvorení: trend 8 týždňov a najstarší týždeň histórie. */
   muState = { off: 0, maxOff: muscleMaxOffset(), trend: muscleTrend(8), opener, muscleDrafts: new Map() };
-  const map = document.getElementById('muscles-map');
-  if (map) map.innerHTML = bodyMapSvg(muscleRecovery(Date.now()), { size: 'full' });
+  refreshMusclesMap();
   renderMuscles();
   modal.hidden = false;
   const body = document.getElementById('muscles-body');
@@ -42415,25 +43034,135 @@ function recoveryClass(v) {
   return x >= 85 ? 'rec-0' : x >= 60 ? 'rec-1' : x >= 35 ? 'rec-2' : 'rec-3';
 }
 
-/* Obrázok dodaný používateľom ostáva nezmenený. Priesvitné oblasti sedia na jeho prednej anatómii;
-   chrbát a zadok sú iba v zozname, nikdy sa nekreslia na nesprávne miesto. */
+/* Mapa tela. Predná kresba je nezmenený obrázok body-anatomy.webp s priesvitnými oblasťami (nikdy sa nekreslí na iné miesto).
+   Zadná kresba je čistý inline vektor v rovnakom ráme 572×1024: bez <use>, <defs>, <style> a id, takže sa nedajú zdvojiť id
+   ani rozbiť štýly v tieňovom strome. Vzhľad dávajú pravidlá `.body-map` v style.css; oblasti majú rovnaké data-muscle a triedy rec-*.
+   Skupiny bez vlastnej oblasti (abduktory, adduktory, všeobecné Ruky/Nohy) sa nekreslia a nikdy sa neodhadujú. */
+function bodyMapPair(path, cls) {
+  const c = cls ? ' class="' + cls + '"' : '';
+  /* ľavá polovica a jej zrkadlo okolo osi x = 274 */
+  return '<path' + c + ' d="' + path + '"/><path' + c + ' d="' + path + '" transform="translate(548 0) scale(-1 1)"/>';
+}
+
+const BODY_MAP_REAR_MUSCLES = ['back', 'shoulders', 'triceps', 'glutes', 'thighs', 'calves'];
+
+/* Statické časti zadnej kresby sa zložia raz: podklad, silueta, hlava, tvary svalov (spodná vrstva) a jemné čiary (vrchná vrstva);
+   farebné oblasti (`tint`) sa skladajú podľa regenerácie pri každom vykreslení. */
+function bodyMapRearArt() {
+  if (bodyMapRearArt.cache) return bodyMapRearArt.cache;
+  const shapes = {
+    /* chrbát: trapéz, lopatkové svaly, široký sval chrbta, vzpriamovač chrbtice */
+    back: [
+      'M274 134 L256 134 C255 150 253 168 246 182 C226 190 188 190 164 198 C176 215 196 232 210 250 C222 268 232 280 240 292 C252 306 264 322 274 336 Z',
+      'M164 198 C176 215 196 232 210 250 C222 268 232 280 240 292 C224 282 202 280 184 272 C190 256 186 236 174 218 C170 210 166 204 164 198 Z',
+      'M184 272 C202 280 224 282 240 292 C245 336 248 376 252 412 C232 428 212 424 197 410 C192 372 186 330 181 290 Z',
+      'M274 336 C264 322 252 306 240 292 C245 336 248 376 252 412 C260 430 268 440 274 446 Z'
+    ],
+    /* zadné rameno */
+    shoulders: ['M164 198 C140 204 124 226 120 256 C118 270 116 282 115 292 C140 296 168 286 184 270 C190 256 186 236 174 218 C170 210 166 204 164 198 Z'],
+    /* triceps */
+    triceps: ['M115 292 C140 296 168 286 184 270 L181 290 C176 318 168 346 160 372 C142 386 120 384 104 378 C108 346 112 316 115 292 Z'],
+    /* sedacie svaly (veľký a stredný) */
+    glutes: ['M274 446 C268 440 260 430 252 412 C232 428 212 424 197 410 C197 440 186 474 174 510 C170 524 167 536 167 546 C192 572 236 574 274 544 Z'],
+    /* zadná strana stehna */
+    thighs: ['M167 546 C192 572 236 574 274 544 C266 552 258 570 250 590 C240 618 228 640 222 662 C204 670 182 668 162 650 C161 616 163 580 167 546 Z'],
+    /* lýtko (obe hlavy) */
+    calves: ['M168 706 C182 700 200 702 214 712 C214 750 216 790 210 830 C206 856 198 872 190 884 C176 872 164 850 156 830 C150 788 154 742 168 706 Z']
+  };
+  const silhouette = 'M274 128 L256 130 C255 150 253 168 246 182 C226 190 188 190 164 198 C140 204 124 226 120 256 C114 292 108 336 104 378 C100 420 98 456 97 488 C92 522 92 562 100 598 C110 604 124 590 132 560 C138 536 142 512 144 488 C148 450 156 410 160 372 C168 344 176 318 181 290 C186 330 192 372 197 410 C197 440 186 474 174 510 C170 524 167 536 167 546 C163 580 161 616 162 650 C162 672 164 690 168 706 C154 742 150 788 156 830 C161 870 166 900 170 930 C160 952 152 972 154 988 C160 1002 188 1004 198 996 C202 975 198 950 196 928 C200 892 206 860 210 830 C216 790 214 750 214 712 C216 686 218 676 222 662 C228 640 240 618 250 590 C258 570 266 552 274 544 Z';
+  /* jemné detaily (nefarbia sa): lopatka, hlavy tricepsu, predlaktie, ruka, rozdelenie stehna, jamka kolena, hlavy lýtka, Achillova šľacha, päta */
+  const detail = [
+    'M174 214 C192 224 210 236 224 252', 'M224 252 C230 272 229 292 221 310', 'M221 310 C206 298 194 286 184 274',
+    'M150 212 C146 236 146 262 150 290', 'M152 296 C154 326 152 352 151 376', 'M170 286 C166 310 160 334 156 352',
+    'M112 394 C116 430 118 460 119 486', 'M130 392 C134 430 136 460 138 486',
+    'M106 544 L103 597', 'M116 542 L115 601', 'M126 546 L126 590',
+    'M258 350 C256 390 258 420 262 438', 'M200 430 C220 452 244 460 264 454', 'M262 452 L274 472',
+    'M214 578 C208 610 206 640 210 664', 'M170 684 C186 692 204 692 217 682',
+    'M192 704 C190 760 192 820 190 884', 'M186 884 C186 900 185 915 184 930', 'M196 884 C196 900 197 915 197 929',
+    'M158 986 C168 992 188 992 196 986'
+  ];
+  const base = '<rect class="bm-plate" width="572" height="1024"/>'
+    + '<ellipse class="bm-shadow" cx="178" cy="1004" rx="52" ry="8"/><ellipse class="bm-shadow" cx="370" cy="1004" rx="52" ry="8"/>'
+    + bodyMapPair(silhouette, 'bm-skin')
+    + '<path class="bm-skin" d="M231 70 C231 30 252 14 274 14 C296 14 317 30 317 70 C317 100 306 122 292 132 L256 132 C242 122 231 100 231 70 Z"/>'
+    + '<ellipse class="bm-skin" cx="230" cy="88" rx="6" ry="13"/><ellipse class="bm-skin" cx="318" cy="88" rx="6" ry="13"/>'
+    + BODY_MAP_REAR_MUSCLES.map((m) => shapes[m].map((d) => bodyMapPair(d, 'bm-muscle')).join('')).join('');
+  const lines = detail.map((d) => bodyMapPair(d, 'bm-line')).join('')
+    + '<path class="bm-dots" d="M274 188 L274 446"/>'
+    + '<path class="bm-line" d="M262 140 C264 160 268 176 274 190"/><path class="bm-line" d="M286 140 C284 160 280 176 274 190"/>'
+    + '<path class="bm-line" d="M274 446 L274 544"/>';
+  const tint = {};
+  for (const m of BODY_MAP_REAR_MUSCLES) tint[m] = shapes[m].map((d) => bodyMapPair(d)).join('');
+  return (bodyMapRearArt.cache = { base, lines, tint });
+}
+
+/* opts.size: 'mini' (predvolené, dekoratívne) | 'full'; opts.view: 'front' (predvolené) | 'rear'. */
 function bodyMapSvg(recovery, opts) {
   const rc = recovery && typeof recovery === 'object' ? recovery : {};
   const mini = !(opts && opts.size === 'full');
-  const pair = (path) => '<path d="' + path + '"/><path d="' + path + '" transform="translate(548 0) scale(-1 1)"/>';
-  const group = (muscle, path) => '<g data-muscle="' + muscle + '" class="' + recoveryClass(rc[muscle]) + '">' + pair(path) + '</g>';
-  return '<svg class="body-map ' + (mini ? 'mini' : 'full') + '" viewBox="0 0 572 1024" xmlns="http://www.w3.org/2000/svg"'
-    + (mini ? ' aria-hidden="true" focusable="false"' : ' role="img" aria-label="' + escAttr(t('recovery.mapAria')) + '"') + '>'
-    + '<image href="body-anatomy.webp" width="572" height="1024"/>'
-    + group('chest', 'M188 207 C211 199 249 204 268 217 L270 260 C265 279 245 288 222 285 C196 284 180 268 179 246 C177 231 180 216 188 207Z')
-    + group('shoulders', 'M180 182 C150 178 132 198 129 224 C126 244 130 262 142 273 L160 252 C163 232 169 215 187 205 L207 193Z')
-    + group('biceps', 'M159 257 C146 273 138 298 137 321 C138 333 145 343 153 346 C166 333 175 313 178 292 L178 266 L168 252Z')
-    + group('triceps', 'M128 265 C118 287 116 311 114 330 L122 350 L132 326 C131 303 138 282 145 272 L140 261Z')
-    + group('core', 'M267 290 C248 292 226 287 205 281 L192 304 L196 343 L191 381 C194 414 218 444 249 461 L270 478 L270 291Z')
-    + group('thighs', 'M204 431 C177 459 164 504 160 554 C154 596 160 637 177 666 L185 688 L205 684 C229 642 236 596 237 552 C237 511 224 464 204 431Z')
-    + group('calves', 'M178 706 C156 737 146 774 149 805 C153 840 161 876 159 915 L176 926 C189 890 191 855 190 823 C191 785 181 746 178 706Z')
-    + '</svg>';
+  const rear = !!(opts && opts.view === 'rear');
+  const group = (muscle, inner) => '<g data-muscle="' + muscle + '" class="' + recoveryClass(rc[muscle]) + '">' + inner + '</g>';
+  const frontGroup = (muscle, path) => group(muscle, bodyMapPair(path));
+  let art;
+  if (rear) {
+    const a = bodyMapRearArt();
+    art = a.base + BODY_MAP_REAR_MUSCLES.map((m) => group(m, a.tint[m])).join('') + a.lines;
+  } else {
+    art = '<image href="body-anatomy.webp" width="572" height="1024"/>'
+      + frontGroup('chest', 'M188 207 C211 199 249 204 268 217 L270 260 C265 279 245 288 222 285 C196 284 180 268 179 246 C177 231 180 216 188 207Z')
+      + frontGroup('shoulders', 'M180 182 C150 178 132 198 129 224 C126 244 130 262 142 273 L160 252 C163 232 169 215 187 205 L207 193Z')
+      + frontGroup('biceps', 'M159 257 C146 273 138 298 137 321 C138 333 145 343 153 346 C166 333 175 313 178 292 L178 266 L168 252Z')
+      + frontGroup('triceps', 'M128 265 C118 287 116 311 114 330 L122 350 L132 326 C131 303 138 282 145 272 L140 261Z')
+      + frontGroup('core', 'M267 290 C248 292 226 287 205 281 L192 304 L196 343 L191 381 C194 414 218 444 249 461 L270 478 L270 291Z')
+      + frontGroup('thighs', 'M204 431 C177 459 164 504 160 554 C154 596 160 637 177 666 L185 688 L205 684 C229 642 236 596 237 552 C237 511 224 464 204 431Z')
+      + frontGroup('calves', 'M178 706 C156 737 146 774 149 805 C153 840 161 876 159 915 L176 926 C189 890 191 855 190 823 C191 785 181 746 178 706Z');
+  }
+  return '<svg class="body-map ' + (rear ? 'rear ' : '') + (mini ? 'mini' : 'full') + '" viewBox="0 0 572 1024" xmlns="http://www.w3.org/2000/svg"'
+    + (mini ? ' aria-hidden="true" focusable="false"' : ' role="img" aria-label="' + escAttr(t(rear ? 'recovery.mapAriaRear' : 'recovery.mapAria')) + '"') + '>'
+    + art + '</svg>';
 }
+
+/* Svaly: predný a zadný pohľad vedľa seba, obe z tých istých skutočných údajov (muscleRecovery z histórie). */
+function bodyMapPairHtml(recovery) {
+  const fig = (view, key) => '<figure class="body-map-fig">' + bodyMapSvg(recovery, { size: 'full', view })
+    + '<figcaption aria-hidden="true">' + esc(t(key)) + '</figcaption></figure>';
+  return '<div class="body-map-pair">' + fig('front', 'muscles.viewFront') + fig('rear', 'muscles.viewBack') + '</div>';
+}
+
+/* Prekreslí obe mapy v liste Svaly. Volá sa pri otvorení, po priradení svalov aj po zmene dát alebo jazyka. */
+function refreshMusclesMap() {
+  const map = document.getElementById('muscles-map');
+  if (map) map.innerHTML = bodyMapPairHtml(muscleRecovery(Date.now()));
+}
+
+/* Preklady popiskov a poznámky mapy Svaly; všetkých 6 jazykov, pri štarte sa vlejú do I18N ako SYNC_I18N. */
+const MUSCLE_MAP_I18N = {
+  sk: {
+    'muscles.viewFront': 'Spredu', 'muscles.viewBack': 'Zozadu', 'recovery.mapAriaRear': 'Odhad zotavenia svalov, pohľad zozadu',
+    'muscles.mapNote': 'Pohľad spredu aj zozadu zobrazuje svalové skupiny, ktoré majú vlastnú oblasť. Abduktory a adduktory bedra aj všeobecné Ruky/Nohy ostávajú započítané v zozname; mapa ich neodhaduje.'
+  },
+  en: {
+    'muscles.viewFront': 'Front', 'muscles.viewBack': 'Back', 'recovery.mapAriaRear': 'Muscle recovery estimate, back view',
+    'muscles.mapNote': 'Front and back views show the muscle groups that have their own region. Hip abductors/adductors and general Arms/Legs remain counted in the list; the map does not guess their regions.'
+  },
+  es: {
+    'muscles.viewFront': 'Frente', 'muscles.viewBack': 'Espalda', 'recovery.mapAriaRear': 'Estimación de la recuperación muscular, vista posterior',
+    'muscles.mapNote': 'Las vistas frontal y posterior muestran los grupos musculares que tienen su propia zona. Abductores/aductores de cadera y brazos/piernas generales siguen contándose en la lista; el mapa no adivina sus zonas.'
+  },
+  'pt-BR': {
+    'muscles.viewFront': 'Frente', 'muscles.viewBack': 'Costas', 'recovery.mapAriaRear': 'Estimativa de recuperação muscular, vista posterior',
+    'muscles.mapNote': 'As vistas frontal e posterior mostram os grupos musculares que têm região própria. Abdutores/adutores do quadril e braços/pernas gerais continuam contados na lista; o mapa não adivinha as regiões.'
+  },
+  fr: {
+    'muscles.viewFront': 'Face', 'muscles.viewBack': 'Dos', 'recovery.mapAriaRear': 'Estimation de la récupération musculaire, vue de dos',
+    'muscles.mapNote': 'Les vues de face et de dos montrent les groupes musculaires qui ont leur propre zone. Abducteurs/adducteurs de hanche et bras/jambes généraux restent comptés dans la liste ; la carte ne devine pas leurs zones.'
+  },
+  ar: {
+    'muscles.viewFront': 'الأمام', 'muscles.viewBack': 'الخلف', 'recovery.mapAriaRear': 'تقدير تعافي العضلات، منظر خلفي',
+    'muscles.mapNote': 'يعرض المنظران الأمامي والخلفي المجموعات العضلية التي لها منطقة خاصة. تبقى مبعدات ومقربات الورك وتصنيفا الذراعين والساقين العامان محسوبة في القائمة دون تخمين مناطقها على الخريطة.'
+  }
+};
+for (const lang of Object.keys(MUSCLE_MAP_I18N)) Object.assign(I18N[lang] || (I18N[lang] = {}), MUSCLE_MAP_I18N[lang]);
 
 /* Tip na Dnes: zapamätaný deň je len v tomto zariadení (localStorage), nikdy v stave ani v synchronizovanom obsahu. */
 const RECOVERY_HINT_KEY = 'gymquest_recovery_hint_day';
@@ -42765,6 +43494,7 @@ function wsFreshRegistry() {
 }
 /* Prepnutie priestoru = uložiť, zastaviť synchronizáciu, zapísať register, znovu načítať. */
 async function wsSwitchTo(id) {
+  await wearRevoke();   // lokálne oprávnenie sa zruší ešte pred prvým await v wearRevoke
   await workoutPhaseCancelOwner();
   stopTimer();
   await syncQuiesce();
@@ -42809,6 +43539,7 @@ async function wsSlotHasData(slot) {
 }
 /* Pôvodné dáta sa priradia účtu: nič sa nekopíruje, mení sa len vlastník v registri. */
 function wsLinkLegacy(user) {
+  wearRevoke().catch(() => {});   // zmena vlastníka aj bez prepnutia priestoru nesmie zdediť súhlas
   const legacy = wsRegistry.slots.legacy;
   const meta = syncMetaRead(legacy);
   meta.owner = user.id;
@@ -42886,6 +43617,7 @@ async function wsResolveLink(choice) {
 function wsDetachAfterAccountDeletion(uid) {
   const slot = wsFindSlotByOwner(uid);
   if (!slot) return;
+  wearRevoke().catch(() => {});
   workoutPhaseCancelOwner(); stopTimer();
   const meta = syncMetaRead(slot);
   Object.assign(meta, { owner: null, rev: null, hash: null, conflict: null, published: {}, mediaFailed: [], disabled: false, guest: true });
@@ -43317,7 +44049,8 @@ function wsFollowRegistry() {
   try { reg = JSON.parse(localStorage.getItem(WS_REGISTRY_KEY) || 'null'); } catch (e) {}
   if (!reg || !reg.active || reg.active === wsSlot.id || !reg.slots || !reg.slots[reg.active]) return false;
   if (isBusy()) return false;
-  workoutPhaseCancelOwner().then(() => syncQuiesce()).then(() => { persistState(); location.reload(); });
+  const wearRevoked = wearRevoke();
+  wearRevoked.then(() => workoutPhaseCancelOwner()).then(() => syncQuiesce()).then(() => { persistState(); location.reload(); });
   return true;
 }
 
@@ -44428,6 +45161,7 @@ function setupEvents() {
     const ctPanel = document.getElementById('custom-timer');
     if (ctPanel && !ctPanel.hidden) { hideCustomTimer(); return; }
     if (presetManageMode) { setPresetManageMode(false); return; }
+    if (sessionExerciseSettingsOpen()) { closeSessionExerciseSettings(); return; }
     const exActionsSheet = document.getElementById('modal-ex-actions');
     if (exActionsSheet && !exActionsSheet.hidden) { closeExerciseActions(); return; }
     const platesSheet = document.getElementById('modal-plates');
@@ -44699,6 +45433,7 @@ function setupEvents() {
   on('btn-rest-close', closeRestSheet);
   initPlateSheet();
   initExerciseActions();
+  initSessionExerciseSettings();
   initPracticeSheet();
   initExerciseProgress();
   initMuscles();
@@ -44898,6 +45633,7 @@ function isBusy() {
   if (ctPanel && !ctPanel.hidden) return true;           // rozrobený vlastný čas pauzy
   const forms = ['modal-confirm', 'modal-history-edit', 'modal-settings', 'modal-setup', 'modal-generic',
     'modal-practice',
+    'modal-ex-settings',
     'modal-reminders',
     'modal-planchoice', 'modal-fullbody', 'modal-lang', 'modal-measure', 'modal-food',
     'modal-library', 'modal-exercise', 'modal-photo-add', 'modal-photo', 'modal-photo-compare',
@@ -45758,6 +46494,426 @@ function nativePlugin(name) {
   if (!isNativeApp()) return null;
   try { return (Capacitor.Plugins && Capacitor.Plugins[name]) || null; } catch (e) { return null; }
 }
+
+/* ---------- Wear: súhlas telefónu, snímka a príkazy ----------
+   Väzba aj denník žijú výlučne na zariadení, nikdy v state ani v synchronizácii.
+   Na drôt ide náhodná generácia; lokálny odtlačok vlastníka sa nikdy nepublikuje. */
+const WEAR_BINDING_KEY = 'gymquest_wear_binding';
+const WEAR_JOURNAL_KEY = 'gymquest_wear_journal';
+const WEAR_I18N = {
+  sk: { title: 'Hodinky', hint: 'Zdieľaj plány, tréning, oddych a kalendár len s vybranými hodinkami. Príkazy vyžadujú aktívny telefón; po 10 sekundách vypršia.', choose: 'Vyber spárované hodinky', consent: 'Povoľujem týmto hodinkám zobraziť moje tréningové údaje a ovládať tréning a oddych v tomto priestore.', connect: 'Prepojiť hodinky', refresh: 'Obnoviť zoznam', unlink: 'Odpojiť', unlinkBody: 'Zrušiť prístup hodiniek? Odpojené hodinky skryjú údaje pri ďalšom spojení alebo po vypršaní platnosti.', off: 'Neprepojené', on: 'Prepojené', absent: 'Žiadne pripojené spárované hodinky.', error: 'Prepojenie sa nepodarilo overiť alebo uložiť. Skús to znova.', phone: 'Telefón' },
+  en: { title: 'Watch', hint: 'Share plans, workout, rest and calendar only with the selected watch. Commands require the phone to be active and expire after 10 seconds.', choose: 'Choose a paired watch', consent: 'Allow this watch to view my workout data and control workouts and rest in this workspace.', connect: 'Link watch', refresh: 'Refresh list', unlink: 'Unlink', unlinkBody: 'Revoke watch access? A disconnected watch hides data on reconnection or when freshness expires.', off: 'Not linked', on: 'Linked', absent: 'No connected paired watch.', error: 'Could not verify or save the link. Try again.', phone: 'Phone' },
+  es: { title: 'Reloj', hint: 'Comparte planes, entrenamiento, descanso y calendario solo con el reloj elegido. Los comandos requieren el teléfono activo y caducan a los 10 segundos.', choose: 'Elige un reloj vinculado', consent: 'Permitir que este reloj vea mis datos y controle entrenamientos y descansos en este espacio.', connect: 'Conectar reloj', refresh: 'Actualizar lista', unlink: 'Desconectar', unlinkBody: '¿Revocar el acceso del reloj? Si está desconectado, ocultará los datos al reconectarse o al caducar su vigencia.', off: 'Sin conexión', on: 'Conectado', absent: 'No hay relojes vinculados conectados.', error: 'No se pudo verificar o guardar la conexión. Inténtalo de nuevo.', phone: 'Teléfono' },
+  'pt-BR': { title: 'Relógio', hint: 'Compartilhe planos, treino, descanso e calendário apenas com o relógio escolhido. Os comandos exigem o telefone ativo e expiram após 10 segundos.', choose: 'Escolha um relógio pareado', consent: 'Permitir que este relógio veja meus dados e controle treinos e descansos neste espaço.', connect: 'Conectar relógio', refresh: 'Atualizar lista', unlink: 'Desconectar', unlinkBody: 'Revogar o acesso do relógio? Se estiver desconectado, os dados serão ocultados ao reconectar ou quando a validade expirar.', off: 'Não conectado', on: 'Conectado', absent: 'Nenhum relógio pareado conectado.', error: 'Não foi possível verificar ou salvar a conexão. Tente novamente.', phone: 'Telefone' },
+  fr: { title: 'Montre', hint: 'Partage les plans, la séance, le repos et le calendrier uniquement avec la montre choisie. Les commandes nécessitent le téléphone actif et expirent après 10 secondes.', choose: 'Choisir une montre associée', consent: 'Autoriser cette montre à voir mes données et à contrôler les séances et le repos dans cet espace.', connect: 'Connecter la montre', refresh: 'Actualiser la liste', unlink: 'Déconnecter', unlinkBody: 'Révoquer l’accès de la montre ? Une montre déconnectée masque les données à la reconnexion ou à l’expiration de leur validité.', off: 'Non connectée', on: 'Connectée', absent: 'Aucune montre associée connectée.', error: 'Impossible de vérifier ou d’enregistrer la connexion. Réessaie.', phone: 'Téléphone' },
+  ar: { title: 'الساعة', hint: 'شارك الخطط والتمرين والراحة والتقويم مع الساعة المختارة فقط. تتطلب الأوامر هاتفًا نشطًا وتنتهي بعد 10 ثوانٍ.', choose: 'اختر ساعة مقترنة', consent: 'السماح لهذه الساعة بعرض بياناتي والتحكم بالتمرين والراحة في مساحة العمل هذه.', connect: 'ربط الساعة', refresh: 'تحديث القائمة', unlink: 'إلغاء الربط', unlinkBody: 'هل تريد إلغاء وصول الساعة؟ إذا كانت غير متصلة فستُخفى البيانات عند الاتصال مجددًا أو عند انتهاء صلاحيتها.', off: 'غير مرتبطة', on: 'مرتبطة', absent: 'لا توجد ساعة مقترنة متصلة.', error: 'تعذر التحقق من الربط أو حفظه. حاول مجددًا.', phone: 'الهاتف' },
+};
+for (const lang of Object.keys(WEAR_I18N)) {
+  for (const [key, value] of Object.entries(WEAR_I18N[lang])) I18N[lang]['wear.' + key] = value;
+}
+let wearPlugin = null, wearBinding = null, wearNodes = [], wearBusy = false, wearError = false;
+let wearInitPromise = null, wearPublishTimer = null, wearHeartbeat = null;
+let wearNativeQueue = Promise.resolve(), wearCommandQueue = Promise.resolve();
+let wearRevision = 0, wearDirty = true, wearPayload = null, wearPayloadDay = '', wearSentContent = '';
+const wearMemoryResults = new Map();
+
+function wearRandomId() {
+  if (typeof crypto.randomUUID === 'function') return crypto.randomUUID();
+  const bytes = crypto.getRandomValues(new Uint8Array(16));
+  return Array.from(bytes, b => b.toString(16).padStart(2, '0')).join('');
+}
+function wearOwnerFingerprint() {
+  if (!wsSlot) return null;
+  return JSON.stringify([wsSlot.id, wsSlot.owner || null]);
+}
+function wearRead(key, fallback) {
+  const raw = localStorage.getItem(key);
+  return raw ? JSON.parse(raw) : fallback;
+}
+function wearWrite(key, value) {
+  localStorage.setItem(key, JSON.stringify(value));
+}
+function wearConfiguration(b) {
+  return { enabled: b.enabled, epoch: b.epoch, workspace: b.workspace, peer: b.peer, label: b.label };
+}
+function wearSameConfiguration(a, b) {
+  return !!(a && b && a.enabled === b.enabled && a.epoch === b.epoch
+    && a.workspace === b.workspace && a.peer === b.peer && a.label === b.label);
+}
+function wearOwns(b) {
+  if (!wearPlugin || !b || b !== wearBinding || !b.enabled || appYielded
+      || b.owner !== wearOwnerFingerprint()) return false;
+  try {
+    const reg = wearRead(WS_REGISTRY_KEY, null);
+    const stored = wearRead(WEAR_BINDING_KEY, null);
+    return !!(reg && reg.active === wsSlot.id && reg.slots && reg.slots[wsSlot.id]
+      && JSON.stringify([wsSlot.id, reg.slots[wsSlot.id].owner || null]) === b.owner
+      && stored && stored.owner === b.owner && wearSameConfiguration(stored, b));
+  } catch (e) { return false; }
+}
+function wearNativeTask(task) {
+  const next = wearNativeQueue.then(task);
+  wearNativeQueue = next.catch(() => {});
+  return next;
+}
+
+/* Oprávnenie v JS aj uložený súhlas sa rušia SYNCHRÓNNE, pred volaním pluginu.
+   Návratový Promise musí volajúci pred reloadom počkať; pri chybe sa väzba neobnoví. */
+function wearRevoke(configuration) {
+  const plugin = wearPlugin || nativePlugin('GymWear');
+  if (!plugin) return Promise.resolve();
+  ++wearRevision;
+  const previous = wearBinding || configuration;
+  wearBinding = null;
+  clearTimeout(wearPublishTimer); wearPublishTimer = null;
+  wearPayload = null; wearDirty = true; wearSentContent = '';
+  let disabled;
+  try {
+    const old = previous || wearRead(WEAR_BINDING_KEY, null);
+    disabled = { enabled: false, epoch: old && old.epoch || wearRandomId(),
+      workspace: old && old.workspace || wearRandomId(), peer: old && old.peer || '', label: '' };
+    wearWrite(WEAR_BINDING_KEY, disabled);
+  } catch (e) {
+    wearError = true;
+    disabled = { enabled: false, epoch: wearRandomId(), workspace: wearRandomId(), peer: '', label: '' };
+    try { localStorage.removeItem(WEAR_BINDING_KEY); } catch (ignored) {}
+  }
+  renderWearSetting();
+  return wearNativeTask(() => plugin.configure({ configuration: disabled })).catch(error => {
+    wearError = true; renderWearSetting();
+    throw error;   // prepnutie/reload nesmie predbehnúť nepotvrdené natívne odvolanie
+  });
+}
+
+function renderWearSetting() {
+  const box = document.getElementById('wear-setting');
+  if (!box) return;
+  const plugin = wearPlugin || nativePlugin('GymWear');
+  box.hidden = !plugin;
+  if (!plugin) return;
+  const linked = wearOwns(wearBinding);
+  const status = document.getElementById('wear-status');
+  status.textContent = t(wearError ? 'wear.error' : linked ? 'wear.on' : 'wear.off');
+  status.setAttribute('role', wearError ? 'alert' : 'status');
+  const select = document.getElementById('wear-peer');
+  const selected = select.value;
+  select.replaceChildren();
+  const placeholder = document.createElement('option');
+  placeholder.value = ''; placeholder.textContent = t(wearNodes.length ? 'wear.choose' : 'wear.absent');
+  select.appendChild(placeholder);
+  for (const node of wearNodes) {
+    const option = document.createElement('option');
+    option.value = node.id; option.textContent = node.name;
+    select.appendChild(option);
+  }
+  select.value = wearNodes.some(n => n.id === selected) ? selected : '';
+  select.disabled = linked || wearBusy;
+  const consent = document.getElementById('wear-consent');
+  consent.disabled = linked || wearBusy;
+  document.getElementById('wear-link').disabled = wearBusy || linked || !select.value || !consent.checked;
+  document.getElementById('wear-unlink').hidden = !linked;
+  document.getElementById('wear-unlink').disabled = wearBusy;
+  document.getElementById('wear-refresh').disabled = wearBusy;
+}
+
+async function wearRefreshStatus(plugin) {
+  const b = wearBinding, revision = wearRevision;
+  const status = await plugin.status();
+  if (plugin !== wearPlugin || revision !== wearRevision) return;
+  wearError = false;
+  wearNodes = (status.nodes || []).filter(n => n && typeof n.id === 'string' && n.id
+    && typeof n.name === 'string').map(n => ({ id: n.id, name: n.name }));
+  if (b && (!wearOwns(b) || !wearSameConfiguration(status.configuration, b))) {
+    await wearRevoke(status.configuration);
+  }
+  renderWearSetting();
+}
+async function wearConsentLink() {
+  const plugin = wearPlugin;
+  const peer = document.getElementById('wear-peer').value;
+  if (!plugin || wearBusy || appYielded || !peer || !document.getElementById('wear-consent').checked) return;
+  const owner = wearOwnerFingerprint(), revision = ++wearRevision;
+  wearBusy = true; wearError = false; renderWearSetting();
+  try {
+    const status = await plugin.status();
+    if (revision !== wearRevision || owner !== wearOwnerFingerprint() || appYielded) return;
+    if (!(status.nodes || []).some(n => n.id === peer)) throw new Error('node_unavailable');
+    const b = { enabled: true, epoch: wearRandomId(), workspace: wearRandomId(),
+      peer, label: t('wear.phone'), owner, seq: 0 };
+    wearWrite(WEAR_BINDING_KEY, b);
+    wearBinding = b;
+    await wearNativeTask(() => {
+      if (!wearOwns(b)) throw new Error('ownership_changed');
+      return plugin.configure({ configuration: wearConfiguration(b) });
+    });
+    if (!wearOwns(b)) return;
+    document.getElementById('wear-consent').checked = false;
+    wearDirty = true; wearPayload = null; wearSentContent = '';
+    await wearRefreshStatus(plugin);
+    wearPublishSoon();
+  } catch (e) {
+    if (revision === wearRevision) { await wearRevoke().catch(() => {}); wearError = true; }
+  } finally { wearBusy = false; renderWearSetting(); }
+}
+
+function wearRestSnapshot() {
+  if (!timerPersistentId) return null;
+  const done = timerInterval === null && timerCompletedId === timerSessionId;
+  if (timerInterval === null && !done) return null;
+  return { id: timerPersistentId, endAt: timerEnd, pausedLeftMs: timerPausedLeft,
+    totalMs: timerTotalMs, done };
+}
+function wearBuildPayload() {
+  const recommended = recommendedPlan();
+  const plans = activePlanIds().map(id => {
+    const p = getPlan(id);
+    return { id, name: planDisplayName(p),
+      sets: (p.exercises || []).reduce((n, ex) => n + exerciseSlotCount(ex), 0),
+      recommended: id === recommended };
+  });
+  const sess = getSession(), plan = sess ? currentPlan() : null;
+  let exerciseName = '';
+  if (plan) {
+    outer: for (const slot of exerciseSlots(plan)) {
+      for (const seg of exerciseSegments(slot)) {
+        if (seg.active && countDoneSets(seg.ex) < sessionSlotCount(seg.ex)) {
+          exerciseName = exerciseDisplayName(seg.ex); break outer;
+        }
+      }
+    }
+  }
+  const since = new Date(); since.setDate(since.getDate() - 28);
+  const first = localDateKey(since), today = todayISO();
+  /* Appka nemá dátumový rozvrh: odporúčaná rotácia NIE JE plánovaný dátum. */
+  const calendar = (state.history || []).filter(w => typeof w.date === 'string'
+    && /^\d{4}-\d{2}-\d{2}$/.test(w.date) && w.date >= first && w.date <= today)
+    .map(w => ({ date: w.date, status: 'completed', title: historyPlanName(w) }))
+    .sort((a, b) => a.date.localeCompare(b.date));
+  return { language: activeLang(), plans, session: sess ? {
+    id: sess.id, planId: sess.planId, planName: plan ? planDisplayName(plan) : sess.planName,
+    done: totalSetsDone(), total: plan ? planExerciseCount(plan) : 0, exerciseName
+  } : null, rest: wearRestSnapshot(), calendar };
+}
+function wearPublishSoon() {
+  if (!wearPlugin) return;
+  wearDirty = true;
+  if (wearPublishTimer !== null) return;
+  wearPublishTimer = setTimeout(() => {
+    wearPublishTimer = null;
+    renderWearSetting();
+    wearPublishNow(false).catch(() => { wearError = true; renderWearSetting(); });
+  }, 120);
+}
+function wearPublishNow(heartbeat) {
+  const plugin = wearPlugin, b = wearBinding;
+  if (!plugin || document.hidden || !wearOwns(b) || !wearNodes.some(n => n.id === b.peer)) return Promise.resolve();
+  return wearNativeTask(async () => {
+    if (document.hidden || !wearOwns(b)) return;
+    if (wearDirty || !wearPayload || wearPayloadDay !== todayISO()) {
+      wearPayload = wearBuildPayload(); wearPayloadDay = todayISO(); wearDirty = false;
+    }
+    const content = JSON.stringify(wearPayload);
+    if (!heartbeat && content === wearSentContent) return;
+    const now = Date.now();
+    b.seq = (Number.isSafeInteger(b.seq) ? b.seq : 0) + 1;
+    wearWrite(WEAR_BINDING_KEY, b);   // sekvencia sa nikdy nevráti späť ani po reload
+    const snapshot = Object.assign({ v: 1, binding: wearConfiguration(b), seq: b.seq,
+      createdAt: now, expiresAt: now + 60000 }, wearPayload);
+    await plugin.publish({ snapshot });
+    if (wearOwns(b)) wearSentContent = content;
+  });
+}
+
+function wearCommandKey(nodeId, command) {
+  return JSON.stringify([nodeId, command.epoch, command.workspace, command.id]);
+}
+function wearJournal() {
+  const journal = wearRead(WEAR_JOURNAL_KEY, []);
+  if (!Array.isArray(journal)) throw new Error('journal_unreadable');
+  return journal;
+}
+function wearJournalPut(entry) {
+  const journal = wearJournal().filter(e => e.key !== entry.key);
+  journal.push(entry);
+  wearWrite(WEAR_JOURNAL_KEY, journal.slice(-200));
+}
+function wearCommandError(receipt, b) {
+  const c = receipt && receipt.command, now = Date.now();
+  if (!wearOwns(b)) return 'ownership_changed';
+  if (!c || c.v !== 1 || typeof c.id !== 'string'
+      || !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(c.id)) return 'malformed';
+  if (receipt.nodeId !== b.peer || c.epoch !== b.epoch || c.workspace !== b.workspace) return 'binding_changed';
+  if (!Number.isFinite(c.issuedAt) || !Number.isFinite(c.expiresAt)
+      || c.issuedAt > now + 5000 || c.expiresAt <= now || c.expiresAt > c.issuedAt + 10000
+      || c.expiresAt <= c.issuedAt || !Number.isFinite(receipt.deadlineAt)
+      || receipt.deadlineAt <= now) return 'expired';
+  if (document.hidden || appYielded) return 'phone_inactive';
+  const sess = getSession(), rest = wearRestSnapshot();
+  if (c.sessionId !== (sess ? sess.id : null) || c.restId !== (rest ? rest.id : null)) return 'identity_changed';
+  if (!['startWorkout', 'restStart', 'restStop', 'restAdd'].includes(c.type)) return 'unknown_command';
+  return '';
+}
+function wearPrepareEffect(c) {
+  const args = c.args || {};
+  if (c.type === 'startWorkout') {
+    if (getSession() || getActiveActivity() || editingPlan !== null) throw new Error('workout_busy');
+    if (typeof args.planId !== 'string' || !activePlanIds().includes(args.planId)) throw new Error('plan_unavailable');
+    return { id: c.id, startedAt: Date.now(), planId: args.planId };
+  }
+  const rest = wearRestSnapshot();
+  if (c.type === 'restStop') {
+    if (!rest || rest.done) throw new Error('rest_inactive');
+    return { id: rest.id };
+  }
+  if (c.type === 'restStart') {
+    if (workoutPhaseLive()) throw new Error('workout_phase_active');
+    if (!Number.isInteger(args.seconds) || args.seconds < 1 || args.seconds > REST_PRESET_MAX_SECONDS) throw new Error('invalid_seconds');
+    return { id: c.id, endAt: Date.now() + args.seconds * 1000, totalMs: args.seconds * 1000 };
+  }
+  if (!rest || rest.done || (rest.pausedLeftMs === null && rest.endAt <= Date.now())) throw new Error('rest_inactive');
+  if (!Number.isInteger(args.seconds) || args.seconds < 1 || args.seconds > REST_PRESET_MAX_SECONDS) throw new Error('invalid_seconds');
+  const cap = REST_PRESET_MAX_SECONDS * 1000;
+  /* Uloží sa VÝSLEDOK, nie prírastok. Nejasný pending sa nikdy znovu nevykoná. */
+  return { id: rest.id, endAt: rest.pausedLeftMs === null
+    ? Math.min(Date.now() + cap, rest.endAt + args.seconds * 1000) : rest.endAt,
+    pausedLeftMs: rest.pausedLeftMs === null ? null : Math.min(cap, rest.pausedLeftMs + args.seconds * 1000) };
+}
+function wearApplyEffect(c, intent) {
+  if (c.type === 'startWorkout') {
+    const plan = getPlan(intent.planId);
+    const sess = ensureSession(plan);
+    if (!sess) return false;
+    sess.id = intent.id; sess.startedAt = intent.startedAt; selectedPlan = plan.id;
+    const saved = saveState();
+    if (saved) { switchTab('trening'); renderAll(); }
+    return saved;
+  }
+  if (c.type === 'restStart') {
+    startTimer(intent.totalMs / 1000, null, true, false, intent);
+    return timerPersistentId === intent.id && timerEnd === intent.endAt && persistRestTimer(true) && !localSaveFailed;
+  }
+  if (c.type === 'restStop') { stopTimer(); return persistRestTimer(false); }
+  timerEnd = intent.endAt; timerPausedLeft = intent.pausedLeftMs;
+  const saved = persistRestTimer(true);
+  nativeRestSync(); renderRestCard(); updateTimerDisplay();
+  return saved;
+}
+async function wearAck(plugin, nodeId, result) {
+  try { await plugin.ack({ nodeId, id: result.id, result }); } catch (e) {}
+}
+async function wearExecuteCommand(plugin, receipt) {
+  if (!plugin || plugin !== wearPlugin || !receipt || !receipt.command) return;
+  const c = receipt.command, b = wearBinding;
+  if (typeof c.id !== 'string' || typeof receipt.nodeId !== 'string') return;
+  const key = wearCommandKey(receipt.nodeId, c);
+  let previous = wearMemoryResults.get(key);
+  try { if (!previous) previous = wearJournal().find(e => e.key === key); }
+  catch (e) { await wearAck(plugin, receipt.nodeId, { id: c.id, status: 'unknown', seq: b ? b.seq : 0, error: 'journal_unreadable' }); return; }
+  let validated = false;
+  try {
+    const check = await plugin.validate({ nodeId: receipt.nodeId, id: c.id, epoch: c.epoch, workspace: c.workspace });
+    validated = !!(check && check.valid === true);
+  } catch (e) {}
+  /* Aj počas await mohol prísť signout, nový odpočet alebo expirácia. Žiadne effects pred touto bránou. */
+  if (previous) {
+    const result = previous.result || { id: c.id, status: 'unknown', seq: b ? b.seq : 0, error: 'interrupted_pending' };
+    if (!previous.result) {
+      const final = { key, state: 'final', result };
+      try { wearJournalPut(final); } catch (e) {}
+      wearMemoryResults.set(key, final);
+    }
+    await wearAck(plugin, receipt.nodeId, result);
+    return;
+  }
+  const error = !validated ? 'native_validation' : wearCommandError(receipt, b);
+  let result = { id: c.id, status: error ? 'stale' : 'rejected', seq: b ? b.seq : 0 };
+  if (error) result.error = error;
+  else {
+    let intent, pendingWritten = false;
+    try {
+      intent = wearPrepareEffect(c);
+      wearJournalPut({ key, state: 'pending', intent });
+      pendingWritten = true;
+      /* Od prípravy po účinok nie je žiadny await. Identita aj absolútny deadline už sú na disku. */
+      const gate = wearCommandError(receipt, b);
+      if (gate) { result.status = 'stale'; result.error = gate; }
+      else {
+        const saved = wearApplyEffect(c, intent);
+        result.status = saved ? 'applied' : 'unknown';
+        if (!saved) result.error = 'persistence_unknown';
+      }
+    } catch (e) {
+      result.status = pendingWritten ? 'unknown' : intent ? 'unknown' : 'rejected';
+      result.error = pendingWritten || intent ? 'persistence_unknown' : String(e.message || 'rejected');
+    }
+  }
+  const final = { key, state: 'final', result };
+  try { wearJournalPut(final); }
+  catch (e) { result = { id: c.id, status: 'unknown', seq: b ? b.seq : 0, error: 'journal_write_failed' }; final.result = result; }
+  wearMemoryResults.set(key, final);
+  if (wearMemoryResults.size > 200) wearMemoryResults.delete(wearMemoryResults.keys().next().value);
+  wearPublishSoon();
+  await wearAck(plugin, receipt.nodeId, result);
+}
+function wearQueueCommand(plugin, receipt) {
+  const task = wearCommandQueue.then(() => wearExecuteCommand(plugin, receipt));
+  wearCommandQueue = task.catch(() => {});
+  return task;
+}
+async function wearResume(plugin) {
+  if (plugin !== wearPlugin || document.hidden || appYielded) return;
+  try {
+    await wearRefreshStatus(plugin);
+    const queued = await plugin.drain();
+    for (const receipt of queued.commands || []) await wearQueueCommand(plugin, receipt);
+    wearDirty = true;
+    await wearPublishNow(true);
+  } catch (e) { wearError = true; renderWearSetting(); }
+}
+function initWearBridge() {
+  const plugin = nativePlugin('GymWear');
+  if (!plugin) return Promise.resolve();
+  if (wearInitPromise) return wearInitPromise;
+  wearPlugin = plugin;
+  wearInitPromise = (async () => {
+    try {
+      await plugin.addListener('wearCommand', receipt => { wearQueueCommand(plugin, receipt).catch(() => {}); });
+      await plugin.addListener('wearUnlinked', async event => {
+        const b = wearBinding;
+        if (!b || event.nodeId !== b.peer || event.epoch !== b.epoch) return;
+        try { await wearRefreshStatus(plugin); } catch (e) { if (b === wearBinding) await wearRevoke().catch(() => {}); }
+      });
+      const status = await plugin.status();
+      const saved = wearRead(WEAR_BINDING_KEY, null);
+      if (saved && saved.enabled && saved.owner === wearOwnerFingerprint()
+          && typeof saved.epoch === 'string' && typeof saved.workspace === 'string'
+          && typeof saved.peer === 'string' && saved.peer
+          && Number.isSafeInteger(saved.seq) && saved.seq >= 0
+          && wearSameConfiguration(status.configuration, saved)) {
+        wearBinding = saved;
+        if (!wearOwns(saved)) await wearRevoke(status.configuration);
+      } else await wearRevoke(status.configuration);
+      document.getElementById('wear-peer').addEventListener('change', renderWearSetting);
+      document.getElementById('wear-consent').addEventListener('change', renderWearSetting);
+      document.getElementById('wear-link').addEventListener('click', wearConsentLink);
+      document.getElementById('wear-refresh').addEventListener('click', () => {
+        wearRefreshStatus(plugin).catch(() => { wearError = true; renderWearSetting(); });
+      });
+      document.getElementById('wear-unlink').addEventListener('click', () => {
+        showGeneric(t('wear.title'), t('wear.unlink'), () => wearRevoke().catch(() => {}), esc(t('wear.unlinkBody')));
+      });
+      document.addEventListener('visibilitychange', () => { if (!document.hidden) wearResume(plugin); });
+      const app = nativePlugin('App');
+      if (app) await app.addListener('resume', () => wearResume(plugin));
+      wearHeartbeat = setInterval(() => {
+        if (document.hidden || !wearBinding || appYielded) return;
+        wearRefreshStatus(plugin).then(() => wearPublishNow(true)).catch(() => { wearError = true; renderWearSetting(); });
+      }, 15000);
+      await wearResume(plugin);
+    } catch (e) { await wearRevoke().catch(() => {}); wearError = true; renderWearSetting(); }
+  })();
+  return wearInitPromise;
+}
 /* ---------- Návod: kedy sa ukáže ----------
    Prvé spustenie: hneď po zatvorení úvodného nastavenia, len ak zariadenie nemá TOUR_KEY a nie je čo stratiť
    (žiadna história ani aktivity – rovnaké "čerstvý vs. existujúci" ako poznámka o XP). Existujúci používateľ bez
@@ -45845,6 +47001,7 @@ const NATIVE_BACK_CLOSE = [
   ['modal-csv-import', '#btn-csv-import-close'],
   ['modal-practice', '#btn-practice-close'],
   ['modal-ex-actions', '#btn-ex-actions-close'],
+  ['modal-ex-settings', '#btn-ex-settings-close'],
   ['modal-plates', '#btn-plates-close'],
   ['modal-effort', '#btn-effort-close'],
   ['modal-suggest', '#btn-suggest-close'],
@@ -46373,6 +47530,7 @@ let nativeStarted = false;
 function nativeInit() {
   if (!isNativeApp() || nativeStarted) return;
   nativeStarted = true;
+  initWearBridge();
   const splash = nativePlugin('SplashScreen');
   if (splash) splash.hide().catch(() => {});
   nativeThemeBars(themeResolved());   // tému pri štarte nastavuje skript v <head>, lišta sa zladí tu
@@ -46497,6 +47655,7 @@ function appTakeOver() {
 /* Táto karta odovzdáva aplikáciu inej: dokončí synchronizáciu, uloží a viac nezapisuje. */
 async function appYield() {
   if (appYielded || !appLockRelease) return;
+  await wearRevoke();
   await workoutPhaseCancelOwner(); stopTimer();
   await gqHook('tab:yield');
   await syncQuiesce();

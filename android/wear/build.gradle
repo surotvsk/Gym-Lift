@@ -1,0 +1,45 @@
+apply plugin: 'com.android.application'
+
+// Rovnaký externý podpis ako telefón; žiadne kľúče v repozitári.
+def gqRoot = rootProject.projectDir.parentFile
+def gqSigningFile = new File(System.getenv('GQ_SIGNING') ?: (System.getProperty('user.home') + '/Documents/gymquest-backup-2026-10-10/claude-code/android-keys/signing.properties'))
+def gqSigning = new Properties()
+if (gqSigningFile.exists()) gqSigningFile.withInputStream { gqSigning.load(it) }
+def gqCacheMatch = (new File(gqRoot, 'sw.js').text =~ /CACHE_VERSION\s*=\s*'(v\d+)'/)
+def gqCacheVersion = gqCacheMatch.find() ? gqCacheMatch.group(1) : 'web'
+android {
+    namespace 'surotvsk.gymapp.wear'
+    compileSdk rootProject.ext.compileSdkVersion
+    defaultConfig {
+        applicationId 'surotvsk.gymapp'
+        minSdk 30
+        targetSdk rootProject.ext.targetSdkVersion
+        versionCode 1000000 + new File(gqRoot, 'tools/android/version.txt').text.trim().toInteger()
+        versionName '1.0.0 (' + gqCacheVersion + ')'
+    }
+    signingConfigs {
+        if (gqSigningFile.exists()) {
+            release {
+                storeFile project(':app').file(gqSigning.getProperty('storeFile'))
+                storePassword gqSigning.getProperty('storePassword')
+                keyAlias gqSigning.getProperty('keyAlias')
+                keyPassword gqSigning.getProperty('keyPassword')
+            }
+        }
+    }
+    buildTypes {
+        debug { applicationIdSuffix '.preview' }
+        release {
+            if (gqSigningFile.exists()) signingConfig signingConfigs.release
+            minifyEnabled false
+        }
+    }
+    sourceSets.main.java.srcDir '../wear-common/src/main/java'
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_21
+        targetCompatibility JavaVersion.VERSION_21
+    }
+}
+dependencies {
+    implementation 'com.google.android.gms:play-services-wearable:19.0.0'
+}

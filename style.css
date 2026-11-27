@@ -5222,6 +5222,19 @@ button.record-row::after { content: '\203A'; flex: 0 0 auto; color: var(--text-f
 .body-map .rec-1 > path { fill-opacity: .32; }
 .body-map .rec-2 > path { fill-opacity: .52; }
 .body-map .rec-3 > path { fill-opacity: .7; }
+/* Zadná kresba je čistý inline vektor bez <use>/<defs>: farby ilustrácie sú pevné ako predný obrázok (nemenia sa s režimom),
+   priesvitné oblasti farbí rovnaké pravidlo `[data-muscle] > path` s tokenom --body-map-green. */
+.body-map .bm-plate { fill: #EDEAE0; }
+.body-map .bm-shadow { fill: #000; fill-opacity: .08; }
+.body-map .bm-skin { fill: #E4E0D4; stroke: #6E6A5E; stroke-width: 2; stroke-linejoin: round; }
+.body-map .bm-muscle { fill: #F1EEE4; stroke: #7A7569; stroke-width: 1.5; stroke-linejoin: round; }
+.body-map .bm-line { fill: none; stroke: #6E6A5E; stroke-opacity: .55; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
+.body-map .bm-dots { fill: none; stroke: #6E6A5E; stroke-opacity: .5; stroke-width: 3.4; stroke-linecap: round; stroke-dasharray: .1 9; }
+/* Svaly: predný a zadný pohľad vedľa seba; v RTL sa poradie otočí, kresby samotné nie. */
+.body-map-pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--sp-2); max-width: 440px; margin-inline: auto; }
+.body-map-fig { margin: 0; min-width: 0; }
+.body-map-fig .body-map.full { width: 100%; max-width: 220px; }
+.body-map-fig figcaption { margin-top: var(--sp-2); text-align: center; font-size: var(--fs-sm); font-weight: var(--fw-bold); color: var(--text-dim); overflow-wrap: anywhere; }
 .mu-guide { margin-block: var(--sp-2); min-width: 0; }
 .mu-guide > summary { min-height: 44px; display: flex; align-items: center; cursor: pointer; font-weight: var(--fw-bold); overflow-wrap: anywhere; }
 .mu-guide .card-note { margin-block: var(--sp-2); }
@@ -5415,6 +5428,11 @@ html[dir="rtl"] .hr-note { direction: rtl; }
 .phase-header-toggle { display: inline-flex; align-items: center; gap: .4rem; min-height: 44px; cursor: pointer; font-size: .82rem; }
 .phase-header-toggle input, .phase-complete input, .phase-suggestions input, .phase-legacy-exercise input[type="checkbox"] { width: 20px; height: 20px; flex: 0 0 auto; accent-color: var(--accent); }
 .duration-row > .mini { flex-wrap: wrap; }
+/* Spúšťač Oddychu v hlavičke tréningu: limetková pilulka (min. 44 px) s hodinami a textom. Zalamuje sa, nikdy sa neprekrýva s ostatnými ovládačmi. */
+#btn-open-rest { flex: 0 1 auto; min-width: 0; max-width: 100%; min-height: 44px; padding: 8px 16px; padding-inline: 12px 16px; gap: 8px; background: var(--lime); color: var(--on-lime); font-size: 14px; font-weight: 700; line-height: 1.15; text-align: start; }
+#btn-open-rest .kico { width: 22px; height: 22px; stroke-width: 2; }
+#btn-open-rest > span { min-width: 0; overflow-wrap: anywhere; }
+#btn-open-rest:focus-visible { outline: 3px solid var(--b-on-dark); outline-offset: 2px; }
 .workout-phase-card { margin-block: 12px; padding: 16px; border: 1px solid var(--border); border-radius: 18px; background: var(--surface); color: var(--text); min-width: 0; }
 .workout-phase-card[hidden], .practice-launcher[hidden] { display: none; }
 .workout-phase-card h3 { margin: 0 0 8px; }
@@ -5456,3 +5474,41 @@ html[dir="rtl"] .hr-note { direction: rtl; }
 .edit-ramp-prefs[hidden] { display: none; }
 .edit-ramp-list label { display: flex; align-items: flex-start; gap: 10px; min-height: 44px; padding-block: 6px; cursor: pointer; font-size: .85rem; line-height: 1.4; overflow-wrap: anywhere; }
 .edit-ramp-list input { width: 20px; height: 20px; flex: 0 0 auto; margin-top: 2px; accent-color: var(--accent); }
+
+/* Hodinky: nastavenie sa sprístupní iba cez natívny GymWear. */
+#wear-setting[hidden] { display: none; }
+#wear-setting { min-width: 0; overflow-wrap: anywhere; }
+#wear-setting .wear-peer-label { display: block; margin-block: 12px 6px; }
+#wear-setting #wear-peer { width: 100%; min-width: 0; min-height: 44px; padding: 10px; border: 1px solid var(--border); border-radius: 12px; background: var(--surface); color: var(--text); font: inherit; }
+#wear-setting .wear-consent-label { display: flex; align-items: flex-start; gap: 10px; margin-block: 14px; line-height: 1.45; }
+#wear-setting .wear-consent-label input { flex: 0 0 auto; width: 22px; height: 22px; margin-block-start: 2px; accent-color: var(--accent); }
+#wear-setting .wear-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+#wear-setting .wear-actions button { flex: 1 1 130px; min-height: 44px; white-space: normal; }
+
+/* Nastavenia cviku počas tréningu (iba tento tréning): list #modal-ex-settings. */
+.ex-settings .sheet-head h3 { overflow-wrap: anywhere; }
+.ex-settings .ex-settings-name { margin: var(--sp-2) 0 0; font-size: var(--fs-md, 1rem); font-weight: 800; overflow-wrap: anywhere; text-align: start; }
+.ex-settings .ex-settings-done { margin: var(--sp-1) 0 var(--sp-3); }
+.ex-settings .ex-settings-alert {
+  margin: 0 0 var(--sp-3); padding: var(--sp-3); border: 1px solid var(--border); border-radius: 14px; background: var(--surface-2);
+  color: var(--text); font-size: var(--fs-sm); line-height: 1.45; text-align: start; overflow-wrap: anywhere;
+}
+.ex-settings .ex-settings-alert[hidden] { display: none; }
+.ex-settings .ex-settings-alert[data-kind="pair"] { border-color: var(--danger-line); background: var(--danger-soft); }
+.ex-settings .ex-settings-fields { margin: 0; padding: 0; border: 0; min-width: 0; }
+.ex-settings .ex-settings-fields:disabled { opacity: .55; }
+.ex-settings .ex-settings-fields legend { padding: 0; }
+.ex-settings .ex-settings-seg { display: flex; flex-wrap: wrap; gap: var(--sp-2); margin-block: var(--sp-1) var(--sp-2); }
+.ex-settings .ex-settings-seg .goal-chip { flex: 1 1 130px; min-height: 44px; justify-content: center; text-align: center; white-space: normal; }
+.ex-settings .ex-settings-side[hidden], .ex-settings .ex-settings-pair-hint[hidden] { display: none; }
+.ex-settings .ex-settings-side .sheet-label { display: block; }
+.ex-settings .ex-settings-field { margin-block-start: var(--sp-2); min-width: 0; }
+.ex-settings .ex-settings-field > .sheet-label { display: block; margin-block-start: var(--sp-2); }
+.ex-settings .ex-settings-stepper { display: flex; align-items: center; gap: var(--sp-2); min-width: 0; }
+.ex-settings .ex-settings-stepper .modal-input { flex: 1 1 auto; width: 100%; min-width: 0; min-height: 44px; margin: 0; box-sizing: border-box; text-align: center; font-variant-numeric: tabular-nums; }
+.ex-settings .ex-settings-stepper .btn { flex: 0 0 auto; min-width: 48px; min-height: 44px; padding-inline: var(--sp-3); }
+.ex-settings .ex-settings-assisted { width: 100%; min-height: 44px; justify-content: flex-start; text-align: start; white-space: normal; }
+.ex-settings .ex-settings-plan { margin-block: var(--sp-3) var(--sp-2); }
+.ex-settings .ex-settings-actions { display: flex; flex-wrap: wrap; gap: var(--sp-2); margin-block-start: var(--sp-3); }
+.ex-settings .ex-settings-actions .btn { flex: 1 1 140px; min-height: 48px; white-space: normal; }
+.ex-settings .ex-settings-actions .btn:disabled { opacity: .5; cursor: not-allowed; }

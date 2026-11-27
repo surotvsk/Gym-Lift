@@ -138,13 +138,13 @@ function check(name, ok, info) {
     await start('dA');
     check('second slot keeps its own planned 80 (snapshot per slot)', await E(`(() => { const s = exerciseSlots(currentPlan()); return s[0].ex.weight === 60 && s[1].ex.weight === 80 && effectiveSetWeight(state.plans['dA'].exercises[1], 0) === 80; })()`));
     await E(`(() => { const s = exerciseSlots(currentPlan()).map((x) => x.ex);
-      setSetWeight(s[0], 0, 62.5);   // poznámka: značky a výnimky sérií duplicity zdieľajú kľúč cviku (existujúci návrh)
+      setSetWeight(s[0], 0, 62.5);   // každé opakovanie riadku má vlastný sledovací kľúč: výnimka patrí len prvému riadku (a jeho neskorším sériám)
       for (const ex of s) { toggleSetMark('done', ex, 0, true); toggleSetMark('done', ex, 1, true); } return true; })()`);
     await finish();
     const dup = await E(`({ a0: state.plans['dA'].exercises[0].weight, a1: state.plans['dA'].exercises[1].weight, b: state.plans['dB'].exercises[0].weight,
-      mem: state.settings.exerciseMemory['bench-press'].weight, h: state.history[state.history.length - 1].exercises.map((e) => ({ sw: e.setWeights, pw: e.plannedWeight, w: e.weight })) })`);
+      mem: state.settings.exerciseMemory['bench-press'].weight, h: state.history[state.history.length - 1].exercises.map((e) => ({ planned: e.plannedWeight == null ? e.weight : e.plannedWeight, totals: muscleSetTotals(e) })) })`);
     check('A slot1 = 62.5, A slot2 stays 80, B keeps its own 60, memory 62.5', dup.a0 === 62.5 && dup.a1 === 80 && dup.b === 60 && dup.mem === 62.5, dup);
-    check('history records both slots with their own planned weight (60 / 80)', dup.h.length === 2 && dup.h[0].pw === 60 && dup.h[1].pw === 80 && J(dup.h[0].sw) === J([62.5, 62.5]), dup.h);
+    check('history keeps each duplicate’s planned weight and completed volume independent', dup.h.length === 2 && dup.h[0].planned === 60 && dup.h[1].planned === 80 && dup.h[0].totals.completed === 2 && dup.h[1].totals.completed === 2 && dup.h[0].totals.volume === 625 && dup.h[1].totals.volume === 800, dup.h);
 
     console.log('== Quick workout / library start uses the remembered weight');
     await E(`(() => { startQuickWorkout('bench-press'); return true; })()`);

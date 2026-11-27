@@ -65,16 +65,16 @@ function check(name, ok, info) {
 
     console.log('== sheet items');
     await open(0);
-    check('bench action sheet contains only drop/plates/swap/progress', J(await items()) === J(['btn-add-drop', 'btn-plates', 'exercise-swap', 'btn-ex-progress']), await items());
+    check('bench action sheet contains only drop/plates/swap/settings/progress', J(await items()) === J(['btn-add-drop', 'btn-plates', 'exercise-swap', 'btn-ex-settings', 'btn-ex-progress']), await items());
     check('the Progress item is visible and wired (task 3)', await p.eval(`(() => { const x = ${sheet}.querySelector('.btn-ex-progress'); return !!x && !x.hidden; })()`));
-    check('no warm-up/ramp action remains in the sheet', await p.eval(`!${sheet}.querySelector('.btn-add-warmup, .btn-warmup-ramp') && ${sheet}.querySelectorAll('#ex-actions-list button:not([hidden])').length === 4`));
+    check('no warm-up/ramp action remains in the sheet', await p.eval(`!${sheet}.querySelector('.btn-add-warmup, .btn-warmup-ramp') && ${sheet}.querySelectorAll('#ex-actions-list button:not([hidden])').length === 5`));
     check('sheet is in isBusy() and Back closes it', await p.eval(`(() => { const ok = isBusy(); return ok && nativeBack() === 'closed' && ${sheet}.hidden; })()`));
     check('NATIVE_BACK_CLOSE lists it', await p.eval(`NATIVE_BACK_CLOSE.some((e) => e[0] === 'modal-ex-actions' && !!document.querySelector(e[1]))`));
     await open(1);
-    check('dumbbell row: drop/swap/progress, no Plates', J(await items()) === J(['btn-add-drop', 'exercise-swap', 'btn-ex-progress']), await items());
+    check('dumbbell row: drop/swap/settings/progress, no Plates', J(await items()) === J(['btn-add-drop', 'exercise-swap', 'btn-ex-settings', 'btn-ex-progress']), await items());
     await esc();
     await open(2);
-    check('assisted row: drop/swap/progress, no phase controls or Plates', J(await items()) === J(['btn-add-drop', 'exercise-swap', 'btn-ex-progress']), await items());
+    check('assisted row: drop/swap/settings/progress, no phase controls or Plates', J(await items()) === J(['btn-add-drop', 'exercise-swap', 'btn-ex-settings', 'btn-ex-progress']), await items());
     await esc();
 
     console.log('== central practice capabilities replace the removed exercise actions');
@@ -173,7 +173,7 @@ function check(name, ok, info) {
         n: ${sheet}.querySelectorAll('#ex-actions-list button:not([hidden])').length,
         over: ${sheet}.querySelector('.modal').scrollWidth <= ${sheet}.querySelector('.modal').clientWidth + 1,
         miss: Object.keys(I18N.en).filter((k) => k.startsWith('exactions.') && I18N[${J(lang)}][k] === undefined) })`);
-      check(lang + ': translated, 4 retained items, no raw key, no overflow, no missing exactions.* key', x.n === 4 && !/exactions\./.test(x.raw) && x.title.length > 0 && x.over && x.miss.length === 0 && x.aria.length > 5, x);
+      check(lang + ': translated, 5 retained items, no raw key, no overflow, no missing exactions.* key', x.n === 5 && !/exactions\./.test(x.raw) && !/exsettings\./.test(x.raw) && x.title.length > 0 && x.over && x.miss.length === 0 && x.aria.length > 5, x);
       if (lang === 'ar') {
         check('ar: right-to-left', x.dir === 'rtl');
         if (process.env.GQ_SCREENSHOTS !== '0') {

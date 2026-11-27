@@ -11,6 +11,7 @@ public class MainActivity extends BridgeActivity {
         registerPlugin(GymRestPlugin.class);     // oddych pri vypnutej obrazovke
         registerPlugin(GymPhasePlugin.class);    // konečná sekvencia rozcvičky / strečingu
         registerPlugin(GymGooglePlugin.class);   // Google účet cez Credential Manager
+        registerPlugin(GymWearPlugin.class);     // schválené hodinky cez Data Layer
         super.onCreate(savedInstanceState);
     }
 }

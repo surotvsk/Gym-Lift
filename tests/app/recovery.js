@@ -123,6 +123,22 @@ const rec = (n, share, age, win, mult) => { if (age >= win) return 100; return M
     check('supplied body image decodes in the browser at its original resolution', await ev(`(async () => { const image = new Image(); image.src = ${J(m.image)}; await image.decode(); return image.naturalWidth === 572 && image.naturalHeight === 1024; })()`));
     check('missing recovery data leaves all visible regions neutral', await ev(`(() => { const d = document.createElement('div'); d.innerHTML = bodyMapSvg(null, { size: 'mini' }) + bodyMapSvg({ chest: NaN, biceps: 'x' }); return !/NaN|undefined/.test(d.innerHTML) && Array.from(d.querySelectorAll('[data-muscle]')).every(g => g.classList.contains('rec-0')); })()`));
 
+    console.log('== rear body map (pure inline vector)');
+    const rearMap = (await ev(`(() => { const d = document.createElement('div'); d.innerHTML = bodyMapSvg({ back: 20, shoulders: 50, triceps: 70, glutes: 10, thighs: 20, calves: 70, chest: 0, biceps: 0 }, { size: 'full', view: 'rear' });
+      const s = d.querySelector('svg'); const cls = {}; d.querySelectorAll('[data-muscle]').forEach((e) => { cls[e.dataset.muscle] = e.getAttribute('class'); });
+      const groups = Array.from(d.querySelectorAll('[data-muscle]'));
+      return { cls, ids: d.querySelectorAll('[id]').length, banned: d.querySelectorAll('use, image, style, defs, linearGradient').length, role: s.getAttribute('role'), aria: s.getAttribute('aria-label'),
+        cssClass: s.getAttribute('class'), onlyPaths: groups.every((g) => g.children.length > 0 && Array.from(g.children).every((c) => c.tagName === 'path')),
+        front: (() => { const f = document.createElement('div'); f.innerHTML = bodyMapSvg({}, { size: 'mini' }); return { rear: !!f.querySelector('.rear'), image: !!f.querySelector('image'), n: f.querySelectorAll('[data-muscle]').length }; })() }; })()`));
+    check('rear regions are exactly back, shoulders, triceps, glutes, thighs, calves (no chest/biceps/core/hip groups/Legs/Arms)', JSON.stringify(Object.keys(rearMap.cls).sort()) === JSON.stringify(['back', 'calves', 'glutes', 'shoulders', 'thighs', 'triceps']), rearMap.cls);
+    check('rear regions use the same recovery classes as the front map', /rec-3/.test(rearMap.cls.back) && /rec-2/.test(rearMap.cls.shoulders) && /rec-1/.test(rearMap.cls.triceps) && /rec-3/.test(rearMap.cls.glutes) && /rec-3/.test(rearMap.cls.thighs) && /rec-1/.test(rearMap.cls.calves), rearMap.cls);
+    check('rear drawing has no id, use, image, style, defs or gradient (no duplicate ids, no shadow-tree CSS)', rearMap.ids === 0 && rearMap.banned === 0 && rearMap.onlyPaths, rearMap);
+    check('rear full map is an accessible image with its own back-view label; default miniature stays front-only', rearMap.role === 'img' && /back view/i.test(rearMap.aria) && /rear/.test(rearMap.cssClass) && rearMap.front.rear === false && rearMap.front.image === true && rearMap.front.n === 7, rearMap);
+    const painted = (await ev(`(() => { const host = document.createElement('div'); host.style.cssText = 'position:absolute;left:0;top:0;width:200px'; host.innerHTML = bodyMapSvg({ back: 0, glutes: 100 }, { size: 'full', view: 'rear' }); document.body.appendChild(host);
+      const cs = (sel) => getComputedStyle(host.querySelector(sel)); const r = { backOpacity: cs('[data-muscle="back"] > path').fillOpacity, backFill: cs('[data-muscle="back"] > path').fill, glutesOpacity: cs('[data-muscle="glutes"] > path').fillOpacity,
+        skin: cs('.bm-skin').fill, muscle: cs('.bm-muscle').fill, plate: cs('.bm-plate').fill, box: host.firstChild.getBoundingClientRect().toJSON() }; host.remove(); return r; })()`));
+    check('rear tint is the translucent map green (never black), neutral when fresh; anatomy underneath is light', painted.backOpacity === '0.7' && painted.backFill === 'rgb(20, 83, 45)' && painted.glutesOpacity === '0' && painted.skin !== 'rgb(0, 0, 0)' && painted.muscle !== 'rgb(0, 0, 0)' && painted.plate !== 'rgb(0, 0, 0)' && painted.box.height > painted.box.width, painted);
+
     console.log('== tile and sheet');
     await p.eval(`(() => { ${DAY}
       state.history = [{ id: 'a1', date: day(0), planId: 'pp', planName: 'Push', endedAt: Date.now() - 3600000, exercises: [${J(bench(4))}, { name: "Squat", exId: "squats", sets: 3, reps: 5, weight: 120, setsDone: 3 }] }];
@@ -247,6 +263,56 @@ const rec = (n, share, age, win, mult) => { if (age >= win) return 100; return M
         colourLevels.every(v => v.a > 0 && v.a < 1) && colourLevels[0].contrast < colourLevels[1].contrast && colourLevels[1].contrast < colourLevels[2].contrast, colourLevels);
       await esc(); await wait(60);
     }
+    console.log('== Muscles sheet: front and back together from real history, 6 languages, 320 px, light/dark');
+    await p.c.send('Emulation.setDeviceMetricsOverride', { width: 320, height: 640, deviceScaleFactor: 2, mobile: true });
+    await setHist([wo('pair', Date.now() - 2 * H, [bench(4), { name: 'Squat', exId: 'squats', sets: 4, reps: 5, weight: 120, setsDone: 4 }, { name: 'Row', exId: 'bent-over-rows', sets: 4, reps: 8, weight: 60, setsDone: 4 }])]);
+    for (const lang of ['sk', 'en', 'es', 'pt-BR', 'fr', 'ar']) {
+      for (const theme of ['light', 'dark']) {
+        const x = JSON.parse(await ev(`JSON.stringify((() => {
+          setLang(${J(lang)}); document.documentElement.setAttribute('data-theme', ${J(theme)}); switchTab('pokrok'); setPokrokView('stats'); openMuscles();
+          const modal = ${sheet}.querySelector('.modal'), mr = modal.getBoundingClientRect(), rtl = document.documentElement.dir === 'rtl';
+          const figs = Array.from(document.querySelectorAll('#muscles-map .body-map-fig')), svgs = figs.map((f) => f.querySelector('svg')), r = svgs.map((s) => s.getBoundingClientRect());
+          const rec = muscleRecovery(Date.now()), cls = (s) => Array.from(s.querySelectorAll('[data-muscle]'), (g) => [g.dataset.muscle, g.getAttribute('class')]);
+          const note = document.querySelector('[data-i18n="muscles.mapNote"]');
+          return { n: figs.length, rtl, caps: figs.map((f) => f.querySelector('figcaption').textContent), want: [t('muscles.viewFront'), t('muscles.viewBack')],
+            aria: svgs.map((s) => s.getAttribute('aria-label')), roles: svgs.map((s) => s.getAttribute('role')), rear: svgs.map((s) => s.classList.contains('rear')),
+            ids: document.querySelectorAll('#muscles-map [id]').length,
+            fit: modal.scrollWidth <= modal.clientWidth + 1 && r.every((b) => b.left >= mr.left - 0.5 && b.right <= mr.right + 0.5 && b.width >= 100),
+            side: r.length === 2 && Math.abs(r[0].top - r[1].top) < 1 && (rtl ? r[1].right <= r[0].left + 0.5 : r[0].right <= r[1].left + 0.5),
+            real: svgs.every((s) => cls(s).every(([m, c]) => c === recoveryClass(rec[m]))), worked: ['back', 'thighs', 'chest'].filter((m) => rec[m] < 85),
+            rearWorked: cls(svgs[1]).filter(([m, c]) => c !== 'rec-0').map(([m]) => m), frontWorked: cls(svgs[0]).filter(([m, c]) => c !== 'rec-0').map(([m]) => m),
+            note: note ? note.textContent : '', wantNote: t('muscles.mapNote'), txt: ${sheet}.innerText };
+        })())`));
+        const tag = lang + '/' + theme;
+        check(tag + ': front and back are both shown side by side with localized captions and distinct accessible labels', x.n === 2 && x.caps[0] === x.want[0] && x.caps[1] === x.want[1] && x.caps[0] !== x.caps[1] && x.aria[0] && x.aria[1] && x.aria[0] !== x.aria[1] && x.roles.every((v) => v === 'img') && !x.rear[0] && x.rear[1] && x.side, x);
+        check(tag + ': both maps fit 320 px, with no duplicate ids and no raw keys', x.fit && x.ids === 0 && !/muscles\.|recovery\.|NaN|undefined/.test(x.txt) && x.note === x.wantNote && x.note.length > 40, x);
+        check(tag + ': both views come from muscleRecovery of the real history (back/glutes/thighs on the rear, chest/thighs on the front)', x.real && x.worked.length >= 2 && x.rearWorked.includes('back') && x.rearWorked.includes('thighs') && x.frontWorked.includes('chest') && x.frontWorked.includes('thighs'), x);
+        if (lang === 'ar') check('ar/' + theme + ': RTL puts the front first on the right and the drawings stay unmirrored', x.rtl && await ev(`getComputedStyle(${sheet}.querySelector('svg.body-map')).transform === 'none' && getComputedStyle(${sheet}.querySelector('svg.body-map.rear')).transform === 'none'`), x);
+        await esc(); await wait(40);
+      }
+    }
+    await p.eval(`(setLang('en'), true)`);
+    await p.eval(`(openMuscles(), setLang('fr'), true)`); await wait(60);
+    check('changing the language with the sheet open relabels both views', await ev(`(() => { const c = Array.from(document.querySelectorAll('#muscles-map figcaption'), (e) => e.textContent); const ok = c[0] === t('muscles.viewFront') && c[1] === t('muscles.viewBack') && c[0] === 'Face'; return ok; })()`));
+    await esc(); await wait(40);
+    await p.eval(`(setLang('en'), true)`);
+    await p.c.send('Emulation.setDeviceMetricsOverride', { width: 390, height: 844, deviceScaleFactor: 2, mobile: true });
+
+    console.log('== Muscles sheet: assigning an unassigned exercise refreshes both views');
+    await setHist([wo('unmapped', Date.now() - H, [{ name: 'Zzz Unmapped Move', sets: 4, reps: 8, weight: 50, setsDone: 4 }])]);
+    const views = () => ev(`JSON.stringify(Array.from(document.querySelectorAll('#muscles-map svg.body-map'), (s) => ({ rear: s.classList.contains('rear'), shoulders: s.querySelector('[data-muscle="shoulders"]').getAttribute('class') })))`).then(JSON.parse);
+    await ev(`(openMuscles(), document.getElementById('muscles-unassigned').open = true, renderMuscles(), true)`); await wait(100);
+    const beforeAssign = await views();
+    check('before assignment the unknown exercise leaves both views fresh', beforeAssign.length === 2 && beforeAssign.every((v) => v.shoulders === 'rec-0'), beforeAssign);
+    const assigned = await ev(`(() => { const row = document.querySelector('.mu-unassigned-row'); if (!row) return { row: false };
+      const sel = row.querySelector('.edit-muscle-primary'); sel.value = 'shoulders'; sel.dispatchEvent(new Event('change', { bubbles: true }));
+      const save = row.querySelector('.mu-assignment-save'); const enabled = !save.disabled; save.click(); return { row: true, enabled }; })()`);
+    await wait(150);
+    const afterAssign = await views();
+    const wantShoulders = await ev(`recoveryClass(muscleRecovery(Date.now()).shoulders)`);
+    check('assigning Shoulders updates the front and the back map with the new recovery class', assigned.row && assigned.enabled && afterAssign.length === 2 && wantShoulders !== 'rec-0' && afterAssign.every((v) => v.shoulders === wantShoulders), { assigned, beforeAssign, afterAssign, wantShoulders });
+    await esc(); await wait(60);
+
     check('no console errors', logs.length === 0, logs);
   } catch (e) { fail++; console.log('  FAIL threw ' + (e && e.stack || e)); }
   b.killHard(true); await server.close();

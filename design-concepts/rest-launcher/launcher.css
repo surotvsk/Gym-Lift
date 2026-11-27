@@ -1,0 +1,100 @@
+/* GymLift prototyp: spúšťač Oddychu v hlavičke tréningu. Farby podľa tokenov aplikácie (style.css), tu samostatne, aby prototyp nič nenačítal z aplikácie. */
+@font-face {
+  font-family: 'Space Grotesk';
+  src: url('../../fonts/space-grotesk-latin.woff2') format('woff2');
+  font-weight: 300 700;
+  font-display: swap;
+}
+
+:root, html[data-theme="light"] {
+  --bg: #E9E8E4; --surface: #FFFFFF; --text: #121212; --text-dim: #5F5D57;
+  --tile-dark: #121212; --on-dark: #F4F3EF; --tile-dark-ring: none;
+  --tile-lav: #CFC8FF; --tile-peach: #FFC9A8; --tile-lime: #D6F35A; --tile-fg: #121212;
+  --tile-shadow: none; --mini: rgba(0, 0, 0, .08);
+  --lime: #D6F35A; --on-lime: #121212; --lav-btn: #CFC8FF; --focus: #3550C8;
+  --sq: rgba(18, 18, 18, .12); --sq-now: #121212;
+  color-scheme: light;
+}
+html[data-theme="dark"] {
+  --bg: #0E0E0F; --surface: #1A1A1C; --text: #F4F3EF; --text-dim: #A3A19B;
+  --tile-dark: #000000; --on-dark: #F4F3EF; --tile-dark-ring: inset 0 0 0 1px #2C2C2F;
+  --tile-lav: #3B3470; --tile-peach: #6A3B22; --tile-lime: #4B5A13; --tile-fg: #F4F3EF;
+  --tile-shadow: inset 0 0 0 1px #2C2C2F; --mini: rgba(255, 255, 255, .14);
+  --focus: #D6F35A;
+  --sq: rgba(255, 255, 255, .16); --sq-now: #F4F3EF;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--bg); color: var(--text);
+  font: 400 16px/1.4 'Space Grotesk', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+html[dir="rtl"] body { font-family: 'Noto Sans Arabic', 'Geeza Pro', system-ui, -apple-system, Tahoma, sans-serif; }
+p { margin: 0; }
+button { font: inherit; color: inherit; }
+:where(button, input):focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+
+.gl-app { max-width: 430px; margin: 0 auto; padding: 12px 16px 24px; display: flex; flex-direction: column; gap: 8px; }
+.proto-badge { align-self: flex-start; background: var(--tile-peach); color: var(--tile-fg); font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; padding: 7px 12px; border-radius: 999px; margin-bottom: 4px; }
+html[dir="rtl"] .proto-badge { letter-spacing: 0; }
+.cap { font-size: 12px; color: var(--text-dim); margin-top: 4px; }
+
+/* ---------- Hlavička tréningu (zrkadlí .bt-session z aplikácie) ---------- */
+.bt-session {
+  display: flex; flex-direction: column; align-items: stretch; min-width: 0; text-align: start;
+  min-height: 176px; border-radius: 22px; padding: 14px; overflow: hidden;
+  background: var(--tile-dark); color: var(--on-dark); box-shadow: var(--tile-dark-ring);
+}
+.bt-session .tr-switch { align-self: flex-start; font-size: 12px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; line-height: 1.35; opacity: .6; }
+html[dir="rtl"] .bt-session .tr-switch { letter-spacing: 0; }
+.bt-session .duration-value { margin-top: auto; font-size: 40px; font-weight: 700; letter-spacing: -1.5px; line-height: 1; font-variant-numeric: tabular-nums; }
+.bt-session .bt-line { display: block; font-size: 12px; margin: 4px 0 0; opacity: .7; }
+.mini { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-top: 8px; }
+.mini > button {
+  border: 0; border-radius: 999px; padding: 6px 10px; cursor: pointer; background: var(--mini); color: inherit;
+  font: 600 12px 'Space Grotesk', system-ui, sans-serif; display: inline-flex; gap: 4px; align-items: center; min-height: 28px;
+}
+html[dir="rtl"] .mini > button { font-family: inherit; }
+.kico { width: 14px; height: 14px; flex: 0 0 auto; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; vertical-align: middle; }
+.mini .sess-more { min-width: 44px; min-height: 44px; justify-content: center; }
+.mini .sess-more .kico { width: 20px; height: 20px; }
+.phase-header-toggle { display: inline-flex; align-items: center; gap: .4rem; min-height: 44px; cursor: pointer; font-size: .82rem; }
+.phase-header-toggle input { width: 20px; height: 20px; flex: 0 0 auto; margin: 0; accent-color: var(--lime); }
+
+/* ---------- Spúšťač Oddychu: jediná vec, ktorá sa medzi variantmi líši ---------- */
+#btn-open-rest {
+  flex: 0 1 auto; min-width: 0; max-width: 100%; min-height: 44px; padding: 8px 16px; padding-inline: 12px 16px; gap: 8px;
+  font-size: 14px; font-weight: 700; line-height: 1.15; text-align: start;
+}
+#btn-open-rest .kico { width: 22px; height: 22px; stroke-width: 2; }
+#btn-open-rest > span { min-width: 0; overflow-wrap: anywhere; }
+/* A: limetková výplň (odporúčané do aplikácie) */
+html[data-variant="a"] #btn-open-rest { background: var(--lime); color: var(--on-lime); }
+/* B: kontrastný obrys */
+html[data-variant="b"] #btn-open-rest { background: transparent; color: var(--on-dark); box-shadow: inset 0 0 0 2px var(--on-dark); }
+/* C: levanduľová výplň */
+html[data-variant="c"] #btn-open-rest { background: var(--lav-btn); color: var(--on-lime); }
+#btn-open-rest:focus-visible { outline: 3px solid var(--on-dark); outline-offset: 2px; }
+
+/* ---------- Cvik (kontext, rovnaký vo všetkých variantoch) ---------- */
+.exercise {
+  display: flex; flex-direction: column; gap: 12px; border-radius: 22px; padding: 14px; min-height: 120px;
+  background: var(--tile-lav); color: var(--tile-fg);
+}
+.ex-head { display: flex; flex-direction: column; gap: 2px; }
+.ex-head b { font-size: 24px; line-height: 1.1; letter-spacing: -.02em; }
+.ex-head .meta { font-size: 12px; opacity: .75; }
+.sets { display: flex; gap: 6px; margin-top: auto; }
+.sq { width: 36px; height: 36px; border-radius: 10px; background: var(--sq); display: grid; place-items: center; font-size: 14px; font-weight: 700; }
+.sq.done { background: var(--tile-lime); color: var(--tile-fg); }
+.sq.now { box-shadow: inset 0 0 0 2.5px var(--sq-now); }
+
+@media (max-width: 359px) {
+  .gl-app { padding: 10px 12px 20px; }
+  .bt-session .duration-value { font-size: 36px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}

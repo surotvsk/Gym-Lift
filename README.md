@@ -80,9 +80,9 @@ everything on your own device.
   reps left); **RIR** records reps in reserve (0 means none left, 2 means two). Off by default;
   unilateral exercises are rated per side.
 - **One ⋯ sheet per exercise** — the secondary actions (**+ Warm-up**, **Warm-up ramp**, **+ Drop set**,
-  **Plates**, **Replace exercise** and **Progress**) live behind a single **⋯** button next to *Add set* and
+  **Plates**, **Replace exercise**, **Exercise settings** and **Progress**) live behind a single **⋯** button next to *Add set* and
   *Remove last set*, so the exercise tile stays calm. **Plates** appears only for barbell (and custom)
-  exercises, and **Replace exercise** only during a workout. In the plan editor, **More options** holds
+  exercises, and **Replace exercise** and **Exercise settings** only during a workout. In the plan editor, **More options** holds
   the warm-up ramp, **Link / Unlink** for supersets, and main/helper muscle selection for custom exercises.
 - **Exercise progress** — open **Progress** from the ⋯ sheet, or tap a record, an exercise in your history, or
   the exercise library page. A chart shows the **estimated 1RM**, the heaviest weight, the volume, or (for
@@ -127,12 +127,12 @@ everything on your own device.
   Choose main/helpers and save each exercise: the correction applies to its existing Other workouts
   across weeks, without changing raw history, weights, XP, or already assigned snapshots. Corrections
   survive backup/import and workout Undo; later deliberately-Other workouts are not retroactively included.
-- **Recovery map** — the Muscles tile and sheet use the owner's supplied detailed anatomical image,
-  unchanged, with straight empty arms. Dark green translucent highlights remain visible against its light
-  background in both themes; stronger recent work darkens progressively without hiding the muscle definition.
-  This is a **front view**: Thighs and Calves have independent highlights; Back, Glutes, Hip abductors/
-  adductors and general Arms/Legs count in the list rather than being drawn on guessed front-body regions.
-  It is an **estimate** from your last three to four days of sets, not medical advice or muscle-growth
+- **Recovery map** — the Muscles tile keeps the owner's original front anatomical image. Open Muscles to
+  see **Front and Back together**; the rear illustration includes Back, Shoulders, Triceps, Glutes,
+  Thighs and Calves. Both views recalculate from the same workout history, including muscle assignments
+  saved after a workout. Translucent green highlights darken with recent work in either theme.
+  Hip abductors/adductors and general Arms/Legs remain in the list, without guessed map regions.
+  This is an **estimate** from the last three to four days of sets, not medical advice or muscle-growth
   measurement. At most once a day Today adds a quiet recovery hint; there is no red/green judging.
 - **Supersets and circuits** — group two or more neighbouring exercises in the plan editor. The workout
   shows them as one lettered block and moves you to the next exercise in the group after each set.
@@ -247,6 +247,25 @@ All six app languages, including Arabic right-to-left, are supported.
 **Android app:** in preparation for Google Play (closed testing first). It is the same app with native
 message alerts, reminders scheduled on the phone and optional Health Connect (heart rate from a watch
 after a workout; workouts saved to Health Connect). The website does not change for it.
+
+**Wear OS companion (Wear OS 3+).** The native `android/wear` app uses GymLift's dark/lime colours and
+offers workout start, rest and a read-only calendar. Pair the watch with Android first, install matching
+phone/watch builds, then choose it in **Settings → Watch** and explicitly allow access. The watch
+shows the selected phone workspace's data; it never receives account credentials or signs in separately.
+Changing workspace, signing out or unlinking revokes that access. Private snapshots expire within
+60 seconds; an offline watch cannot be wiped immediately.
+
+Phone commands require the phone app to be active and expire after ten seconds. An unconfirmed action
+is not reported as successful or retried blindly. **Phone timer** and **Watch only** are separate choices:
+the local watch timer works offline, supports pause/resume and +15 seconds, and survives an app restart.
+**Timer settings** explains alarm and notification permissions; without precise-alarm access,
+screen-off alerts are best-effort. Sound and vibration remain subject to watch/system settings.
+The calendar uses saved completed workouts and explicitly scheduled weekdays, not invented plan dates.
+
+Build both after `npm run android:sync` with `cd android && sh ./gradlew :app:bundleRelease :wear:bundleRelease`.
+Phone and watch use the same signing certificate and application id; debug builds add `.preview` so
+device tests do not replace the owner's installed app. Wear version codes are `1000000 +` the phone
+code, keeping the artifacts distinct.
 
 **Android navigation bar.** With the system's 3-button navigation (back, home, recents) the tab bar is
 docked full-width above the system buttons instead of floating, so nothing is covered; with gesture
@@ -1020,6 +1039,40 @@ When you finish, the history records both sides honestly: the original with the 
 performed plus *Replaced by Push-up*, and the replacement with *Replaces Dips*. An exercise with no sets
 that was replaced is not written to history at all. If a plan lists the same exercise twice, GymQuest
 refuses the replacement and says why, rather than risk mixing the two up.
+
+### Exercise settings during a workout
+
+Tap the **⋯** button on an exercise and choose **Exercise settings** to change *this workout only*: both sides together or
+one side at a time (and which side starts), the **remaining** sets, reps, weight and the assisted mark. The editor always
+opens on the real state of the exercise and is labelled **Remaining sets** (per side for one-sided work), never the total.
+**Your plan is never changed.** Working weights are remembered only from performed segments with the plan's assistance
+and both-sides/one-side mode; a temporary mode cannot overwrite a differently interpreted plan weight. Starting side,
+set counts and the temporary training mode are never remembered.
+
+- **Done sets stay exactly as recorded.** A change adds a new step to the same chain used by *Replace*: the sets you
+  already finished (with their weights, reps and failure marks) stay in a dimmed, locked block, and the remaining work
+  continues in a new block. Nothing is copied, relabelled or rewritten. Exercises you added during the workout and
+  exercises listed twice in a plan use the same path; no extra exercise is ever added just to change a setting.
+- **Duplicate rows track separately.** Each occurrence has a stable workout identity, including after a reload.
+  For older sessions whose duplicate rows shared one set key, the existing marks belong to the first occurrence only;
+  GymQuest does not copy ambiguous work or award it twice.
+- **Remaining count.** The default is the sets still to do: three sets with two done offers 1 remaining; switching to
+  one-sided makes that 1 set per side, and two finished left/right pairs out of three switched to both sides together make
+  1 set. When everything planned is done, GymQuest does not invent work: enter a number to add more.
+- **A half-finished left/right pair blocks changes.** While exactly one side of a pair is done, every change that would
+  start a new step — mode, starting side, count, and also *Replace* — is blocked with *Finish the current left/right pair
+  first*. Nothing is changed or discarded; you can still edit each set's weight and reps and finish the other side.
+- **Undo** is offered only while the new step has nothing performed; discarding its unperformed values asks first.
+  Once a set, warm-up or drop set on it is done, change the settings again instead.
+- **Replacement Undo also waits for a complete pair.** Its confirmation rechecks the current exercise before discarding
+  anything; it cannot erase a newly completed side while the dialog was open.
+- **Completed practice and drop sets stay in their own segments**, with their original mode and assistance, even when
+  that segment has no completed main set.
+- **A failed save keeps the workout open for retry.** Finishing is not reported as successful until its history is saved.
+- **History and rewards use actual work.** The workout stores one entry per segment, with its own one-sided flag and
+  weights, tied together by a `segment` marker so they count as one exercise: XP comes from the sets actually done,
+  recovery weights bilateral sets fully and one-sided sets by half, and a one-sided exercise changed mid-workout counts
+  once for the *Balanced* achievement.
 
 ### Demonstrations: what is here, and what is not
 

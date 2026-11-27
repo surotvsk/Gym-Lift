@@ -404,9 +404,9 @@ function check(name, ok, info) {
           { id: 'bench-press', name: 'Bench', sets: 3, reps: 5, weight: 80, warmupRamp: true }] };
       selectedPlan = 'wdup'; ensureSession(getPlan('wdup')); switchTab('trening'); renderTrening(); return true; })()`);
     await wait(300);
-    check('a ramp on only the later occurrence is still filled once at start', await p.eval(`(() => { const want = warmupRamp(getPlan('wdup').exercises[1], 80).length; return want > 0 && getSession().warmupsInit['bench-press'] === true && sessionWarmups(getPlan('wdup').exercises[1]).length === want; })()`));
-    check('one shared practice section offers one preference per occurrence (off, on)', await p.eval(`(() => { const s = document.querySelectorAll('#workout-phase-legacy [data-exercise-key="bench-press"]'); return s.length === 1 && Array.from(s[0].querySelectorAll('.phase-legacy-ramp')).map((x) => x.checked).join() === 'false,true'; })()`));
-    await tickRamp('[data-exercise-key="bench-press"]', 1, false);
+    check('a ramp on only the later occurrence is filled once at start, under that occurrence\'s own key', await p.eval(`(() => { const s = exerciseSlots(currentPlan()), want = warmupRamp(getPlan('wdup').exercises[1], 80).length; return want > 0 && exerciseSessionKey(s[1].ex) === 'bench-press~dup1' && getSession().warmupsInit['bench-press~dup1'] === true && !getSession().warmupsInit['bench-press'] && sessionWarmups(s[1].ex).length === want && sessionWarmups(s[0].ex).length === 0; })()`));
+    check('every occurrence has its own practice section with its own preference (off, on)', await p.eval(`(() => { const sec = (k) => document.querySelectorAll('#workout-phase-legacy [data-exercise-key="' + k + '"]'); const a = sec('bench-press'), b = sec('bench-press~dup1'); const on = (s) => Array.from(s[0].querySelectorAll('.phase-legacy-ramp')).map((x) => x.checked).join(); return a.length === 1 && b.length === 1 && on(a) === 'false' && on(b) === 'true'; })()`));
+    await tickRamp('[data-exercise-key="bench-press~dup1"]', 0, false);
     await wait(150);
     await tickRamp('[data-exercise-key="bench-press"]', 0, true);
     await wait(150);

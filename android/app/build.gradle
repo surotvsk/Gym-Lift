@@ -40,12 +40,16 @@ android {
         }
     }
     buildTypes {
+        debug {
+            applicationIdSuffix '.preview'
+        }
         release {
             if (gqSigningFile.exists()) signingConfig signingConfigs.release
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    sourceSets.main.java.srcDir '../wear-common/src/main/java'
 }
 
 repositories {
@@ -65,7 +69,9 @@ dependencies {
     implementation 'androidx.credentials:credentials:1.5.0'
     implementation 'androidx.credentials:credentials-play-services-auth:1.5.0'
     implementation 'com.google.android.libraries.identity.googleid:googleid:1.1.1'
+    implementation 'com.google.android.gms:play-services-wearable:19.0.0'
     testImplementation "junit:junit:$junitVersion"
+    testImplementation 'org.json:json:20240303'   // WearProtocolTest: Android stubs v unit testoch nemajú skutočný JSON
     androidTestImplementation "androidx.test.ext:junit:$androidxJunitVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$androidxEspressoCoreVersion"
     implementation project(':capacitor-cordova-android-plugins')
@@ -81,6 +87,10 @@ try {
     def servicesJSON = file('google-services.json')
     if (servicesJSON.text) {
         apply plugin: 'com.google.gms.google-services'
+        // Izolovaný preview balík nemá produkčnú Firebase registráciu.
+        tasks.configureEach { task ->
+            if (task.name == 'processDebugGoogleServices') task.enabled = false
+        }
     }
 } catch(Exception e) {
     logger.info("google-services.json not found, google-services plugin not applied. Push Notifications won't work")

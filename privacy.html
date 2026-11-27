@@ -32,12 +32,12 @@
 
   <article lang="en" data-doc="en">
     <h1>GymQuest Privacy Policy</h1>
-    <p class="meta">Applies to the GymQuest website (surotvsk.github.io/Gymquest) and the GymQuest Android app. Last updated: 27 October 2026.</p>
+    <p class="meta">Applies to the GymQuest website (surotvsk.github.io/Gymquest) and the GymQuest Android app. Last updated: 27 November 2026.</p>
 
     <section class="card">
       <h2>In short</h2>
       <ul>
-        <li>Your workouts, plans, measurements, food log and progress photos stay on your device unless you turn on an account.</li>
+        <li>Your workouts, plans, measurements, food log and progress photos stay on your device unless you turn on an account or explicitly enable the watch sharing described below.</li>
         <li>No ads, no analytics, no tracking, and no data is ever sold.</li>
         <li>Heart rate from Health Connect is optional, stays private and is never shared in Community.</li>
       </ul>
@@ -58,6 +58,10 @@
     <h2>Notifications</h2>
     <p>If you turn on notifications, we store a technical address for your device: a Web Push subscription in browsers, or a Firebase Cloud Messaging (FCM) token in the Android app. Google Firebase delivers the Android notifications. A message notification contains only the sender's username and the chat – never the message text. Water, meal and workout reminders in the Android app are scheduled on your phone; on the web they are sent by our server at the times you choose.</p>
 
+    <h2>Optional Wear OS watch</h2>
+    <p>After you choose a paired watch and allow access in Settings → Watch, the Android app shares plan names and set counts, current workout progress and exercise name, rest-timer state, and completed/planned workout dates and titles with that watch through Google Play services' Data Layer. Account credentials, Community messages, progress photos and Health Connect heart-rate data are not sent to the watch.</p>
+    <p>Private watch snapshots are valid for at most 60 seconds. Unlinking, signing out or changing workspace revokes phone-side access. Cached data on a disconnected watch cannot be cleared immediately; it is hidden when it expires or the watch learns about revocation. The separate watch-only rest timer stays on the watch and does not change the phone timer.</p>
+
     <h2>Health Connect (Android app, optional)</h2>
     <p>If you connect GymQuest to Health Connect in Settings, the app:</p>
     <ul>
@@ -70,6 +74,7 @@
     <ul>
       <li>Supabase – account, private backup and Community data.</li>
       <li>Google Firebase Cloud Messaging – delivery of Android notifications.</li>
+      <li>Google Play services Data Layer – optional delivery to the paired watch you approve.</li>
       <li>GitHub Pages – hosting of the website.</li>
     </ul>
     <p>We do not share personal data with anyone else, except where required by law.</p>
@@ -105,12 +110,12 @@
 
   <article lang="sk" data-doc="sk" hidden>
     <h1>Zásady ochrany súkromia GymQuest</h1>
-    <p class="meta">Platia pre web GymQuest (surotvsk.github.io/Gymquest) a Android appku GymQuest. Posledná zmena: 27. októbra 2026.</p>
+    <p class="meta">Platia pre web GymQuest (surotvsk.github.io/Gymquest) a Android appku GymQuest. Posledná zmena: 27. novembra 2026.</p>
 
     <section class="card">
       <h2>Stručne</h2>
       <ul>
-        <li>Tréningy, plány, miery, jedálniček a fotky progresu zostávajú v tvojom zariadení, kým si nezapneš účet.</li>
+        <li>Tréningy, plány, miery, jedálniček a fotky progresu zostávajú v tvojom zariadení, kým si nezapneš účet alebo výslovne nepovolíš nižšie opísané zdieľanie s hodinkami.</li>
         <li>Žiadne reklamy, analytika ani sledovanie a údaje nikdy nepredávame.</li>
         <li>Tep z Health Connect je voliteľný, zostáva súkromný a nikdy sa nezdieľa v Community.</li>
       </ul>
@@ -131,6 +136,10 @@
     <h2>Upozornenia</h2>
     <p>Ak zapneš upozornenia, uložíme technickú adresu tvojho zariadenia: odber Web Push v prehliadači alebo token Firebase Cloud Messaging (FCM) v Android appke. Upozornenia v Androide doručuje Google Firebase. Upozornenie na správu obsahuje len meno odosielateľa a chat – nikdy text správy. Pripomienky vody, jedla a tréningu si Android appka plánuje priamo v telefóne; na webe ich posiela náš server v časoch, ktoré si zvolíš.</p>
 
+    <h2>Voliteľné hodinky Wear OS</h2>
+    <p>Ak v Nastaveniach → Hodinky vyberieš spárované hodinky a povolíš prístup, Android appka s nimi cez Google Play services Data Layer zdieľa názvy plánov a počty sérií, priebeh aktuálneho tréningu a názov cviku, stav časovača oddychu a dátumy a názvy dokončených a naplánovaných tréningov. Prihlasovacie údaje účtu, správy Community, fotky progresu a údaje o tepe z Health Connect sa do hodiniek neposielajú.</p>
+    <p>Snímky údajov na hodinkách platia najviac 60 sekúnd. Odpojenie, odhlásenie alebo zmena priestoru zruší prístup na strane telefónu. Údaje v odpojených hodinkách nemožno okamžite vymazať; skryjú sa po vypršaní platnosti alebo keď sa hodinky dozvedia o zrušení prístupu. Samostatný časovač oddychu na hodinkách zostáva na hodinkách a nemení časovač v telefóne.</p>
+
     <h2>Health Connect (Android appka, voliteľné)</h2>
     <p>Ak v Nastaveniach prepojíš GymQuest s Health Connect, appka:</p>
     <ul>
@@ -143,6 +152,7 @@
     <ul>
       <li>Supabase – účet, súkromná záloha a údaje Community.</li>
       <li>Google Firebase Cloud Messaging – doručovanie upozornení v Androide.</li>
+      <li>Google Play services Data Layer – voliteľné doručovanie do spárovaných hodiniek, ktoré schváliš.</li>
       <li>GitHub Pages – prevádzka webu.</li>
     </ul>
     <p>Osobné údaje s nikým iným nezdieľame, okrem prípadov, keď to vyžaduje zákon.</p>

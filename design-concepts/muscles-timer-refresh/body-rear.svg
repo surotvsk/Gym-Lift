@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- GymLift prototype: posterior (rear) muscle drawing. Same 572x1024 frame as ../../body-anatomy.webp.
+     Each muscle group is a g element with a data-muscle attribute, tinted by the CSS custom properties c (colour) and o (opacity); see class tint below.
+     Standalone it shows the neutral, untinted anatomy. Drawn as the left half and mirrored with a transform. -->
+<svg xmlns="http://www.w3.org/2000/svg" class="gl-rear" viewBox="0 0 572 1024" width="572" height="1024" role="img" aria-label="Rear view of the body with back, shoulders, triceps, glutes, hamstrings and calves (prototype)">
+  <title>Rear body muscle map (GymLift prototype)</title>
+  <style>
+    .plate { fill: #EDEAE0; }
+    .shadow { fill: #000; fill-opacity: .08; }
+    .skin { fill: #E4E0D4; stroke: #6E6A5E; stroke-width: 2; stroke-linejoin: round; }
+    .m-base { fill: url(#gl-mus); stroke: #7A7569; stroke-width: 1.5; stroke-linejoin: round; }
+    .tint { fill: var(--c, #000); fill-opacity: var(--o, 0); stroke: var(--sel, none); stroke-width: 3; stroke-linejoin: round; pointer-events: all; }
+    .line { fill: none; stroke: #6E6A5E; stroke-opacity: .55; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; pointer-events: none; }
+    .dots { fill: none; stroke: #6E6A5E; stroke-opacity: .5; stroke-width: 3.4; stroke-linecap: round; stroke-dasharray: .1 9; pointer-events: none; }
+    [data-muscle] { cursor: pointer; }
+  </style>
+
+  <defs>
+    <linearGradient id="gl-mus" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#F7F5EE"/>
+      <stop offset="1" stop-color="#DAD6C9"/>
+    </linearGradient>
+
+    <!-- Silhouette (left half): neck, trapezius slope, deltoid, arm, hand, torso side, hip, leg, heel, inner thigh -->
+    <path id="d-silh" d="M274 128 L256 130 C255 150 253 168 246 182 C226 190 188 190 164 198 C140 204 124 226 120 256 C114 292 108 336 104 378 C100 420 98 456 97 488 C92 522 92 562 100 598 C110 604 124 590 132 560 C138 536 142 512 144 488 C148 450 156 410 160 372 C168 344 176 318 181 290 C186 330 192 372 197 410 C197 440 186 474 174 510 C170 524 167 536 167 546 C163 580 161 616 162 650 C162 672 164 690 168 706 C154 742 150 788 156 830 C161 870 166 900 170 930 C160 952 152 972 154 988 C160 1002 188 1004 198 996 C202 975 198 950 196 928 C200 892 206 860 210 830 C216 790 214 750 214 712 C216 686 218 676 222 662 C228 640 240 618 250 590 C258 570 266 552 274 544 Z"/>
+
+    <!-- Back: trapezius (diamond), scapular muscles (infraspinatus/teres), latissimus, erector spinae -->
+    <path id="d-traps" d="M274 134 L256 134 C255 150 253 168 246 182 C226 190 188 190 164 198 C176 215 196 232 210 250 C222 268 232 280 240 292 C252 306 264 322 274 336 Z"/>
+    <path id="d-scap" d="M164 198 C176 215 196 232 210 250 C222 268 232 280 240 292 C224 282 202 280 184 272 C190 256 186 236 174 218 C170 210 166 204 164 198 Z"/>
+    <path id="d-lats" d="M184 272 C202 280 224 282 240 292 C245 336 248 376 252 412 C232 428 212 424 197 410 C192 372 186 330 181 290 Z"/>
+    <path id="d-erect" d="M274 336 C264 322 252 306 240 292 C245 336 248 376 252 412 C260 430 268 440 274 446 Z"/>
+    <!-- Rear deltoid and triceps (long + lateral head) -->
+    <path id="d-delt" d="M164 198 C140 204 124 226 120 256 C118 270 116 282 115 292 C140 296 168 286 184 270 C190 256 186 236 174 218 C170 210 166 204 164 198 Z"/>
+    <path id="d-tri" d="M115 292 C140 296 168 286 184 270 L181 290 C176 318 168 346 160 372 C142 386 120 384 104 378 C108 346 112 316 115 292 Z"/>
+    <!-- Gluteus maximus / medius -->
+    <path id="d-glute" d="M274 446 C268 440 260 430 252 412 C232 428 212 424 197 410 C197 440 186 474 174 510 C170 524 167 536 167 546 C192 572 236 574 274 544 Z"/>
+    <!-- Hamstrings (biceps femoris, semitendinosus, semimembranosus) -->
+    <path id="d-ham" d="M167 546 C192 572 236 574 274 544 C266 552 258 570 250 590 C240 618 228 640 222 662 C204 670 182 668 162 650 C161 616 163 580 167 546 Z"/>
+    <!-- Calf: gastrocnemius, medial and lateral head -->
+    <path id="d-calf" d="M168 706 C182 700 200 702 214 712 C214 750 216 790 210 830 C206 856 198 872 190 884 C176 872 164 850 156 830 C150 788 154 742 168 706 Z"/>
+
+    <g id="h-skin"><use href="#d-silh"/></g>
+
+    <g id="h-back">
+      <use href="#d-traps" class="m-base"/><use href="#d-scap" class="m-base"/><use href="#d-lats" class="m-base"/><use href="#d-erect" class="m-base"/>
+      <use href="#d-traps" class="tint"/><use href="#d-scap" class="tint"/><use href="#d-lats" class="tint"/><use href="#d-erect" class="tint"/>
+    </g>
+    <g id="h-shoulders"><use href="#d-delt" class="m-base"/><use href="#d-delt" class="tint"/></g>
+    <g id="h-triceps"><use href="#d-tri" class="m-base"/><use href="#d-tri" class="tint"/></g>
+    <g id="h-glutes"><use href="#d-glute" class="m-base"/><use href="#d-glute" class="tint"/></g>
+    <g id="h-thighs"><use href="#d-ham" class="m-base"/><use href="#d-ham" class="tint"/></g>
+    <g id="h-calves"><use href="#d-calf" class="m-base"/><use href="#d-calf" class="tint"/></g>
+
+    <!-- Fine anatomical detail (not tinted): scapula, heads of the triceps, forearm, hand, hamstring split, knee crease, calf heads, Achilles, heel -->
+    <g id="h-lines">
+      <path class="line" d="M174 214 C192 224 210 236 224 252"/>
+      <path class="line" d="M224 252 C230 272 229 292 221 310"/>
+      <path class="line" d="M221 310 C206 298 194 286 184 274"/>
+      <path class="line" d="M150 212 C146 236 146 262 150 290"/>
+      <path class="line" d="M152 296 C154 326 152 352 151 376"/>
+      <path class="line" d="M170 286 C166 310 160 334 156 352"/>
+      <path class="line" d="M112 394 C116 430 118 460 119 486"/>
+      <path class="line" d="M130 392 C134 430 136 460 138 486"/>
+      <path class="line" d="M106 544 L103 597"/>
+      <path class="line" d="M116 542 L115 601"/>
+      <path class="line" d="M126 546 L126 590"/>
+      <path class="line" d="M258 350 C256 390 258 420 262 438"/>
+      <path class="line" d="M200 430 C220 452 244 460 264 454"/>
+      <path class="line" d="M262 452 L274 472"/>
+      <path class="line" d="M214 578 C208 610 206 640 210 664"/>
+      <path class="line" d="M170 684 C186 692 204 692 217 682"/>
+      <path class="line" d="M192 704 C190 760 192 820 190 884"/>
+      <path class="line" d="M186 884 C186 900 185 915 184 930"/>
+      <path class="line" d="M196 884 C196 900 197 915 197 929"/>
+      <path class="line" d="M158 986 C168 992 188 992 196 986"/>
+    </g>
+  </defs>
+
+  <rect class="plate" width="572" height="1024"/>
+  <ellipse class="shadow" cx="178" cy="1004" rx="52" ry="8"/>
+  <ellipse class="shadow" cx="370" cy="1004" rx="52" ry="8"/>
+
+  <!-- Body base -->
+  <use href="#h-skin" class="skin"/>
+  <use href="#h-skin" class="skin" transform="translate(548 0) scale(-1 1)"/>
+
+  <!-- Head from behind (skull, ears) and nape -->
+  <path class="skin" d="M231 70 C231 30 252 14 274 14 C296 14 317 30 317 70 C317 100 306 122 292 132 L256 132 C242 122 231 100 231 70 Z"/>
+  <ellipse class="skin" cx="230" cy="88" rx="6" ry="13"/>
+  <ellipse class="skin" cx="318" cy="88" rx="6" ry="13"/>
+
+  <!-- Tintable muscle groups -->
+  <g data-muscle="back"><use href="#h-back"/><use href="#h-back" transform="translate(548 0) scale(-1 1)"/></g>
+  <g data-muscle="shoulders"><use href="#h-shoulders"/><use href="#h-shoulders" transform="translate(548 0) scale(-1 1)"/></g>
+  <g data-muscle="triceps"><use href="#h-triceps"/><use href="#h-triceps" transform="translate(548 0) scale(-1 1)"/></g>
+  <g data-muscle="glutes"><use href="#h-glutes"/><use href="#h-glutes" transform="translate(548 0) scale(-1 1)"/></g>
+  <g data-muscle="thighs"><use href="#h-thighs"/><use href="#h-thighs" transform="translate(548 0) scale(-1 1)"/></g>
+  <g data-muscle="calves"><use href="#h-calves"/><use href="#h-calves" transform="translate(548 0) scale(-1 1)"/></g>
+
+  <!-- Detail lines, spine and gluteal cleft -->
+  <use href="#h-lines"/>
+  <use href="#h-lines" transform="translate(548 0) scale(-1 1)"/>
+  <path class="dots" d="M274 188 L274 446"/>
+  <path class="line" d="M262 140 C264 160 268 176 274 190"/>
+  <path class="line" d="M286 140 C284 160 280 176 274 190"/>
+  <path class="line" d="M274 446 L274 544"/>
+</svg>

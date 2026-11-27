@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>GymLift prototype · muscle map and rest timer</title>
+<meta name="robots" content="noindex">
+<!-- Prototyp (nie je súčasť aplikácie, nie je v precache). Rozcestník bez parametrov; s parametrmi jedna variant: ?surface=muscles|rest&variant=a|b|c&theme=dark|light&lang=en|ar -->
+<script>
+  /* Téma pred prvým vykreslením, bez čítania úložiska: z URL alebo z nastavenia systému. */
+  (function () {
+    var q = new URLSearchParams(location.search);
+    var th = q.get('theme');
+    if (th !== 'dark' && th !== 'light') th = window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', th);
+    if (q.get('lang') === 'ar') { document.documentElement.setAttribute('lang', 'ar'); document.documentElement.setAttribute('dir', 'rtl'); }
+  })();
+</script>
+<link rel="stylesheet" href="shared.css">
+</head>
+<body>
+<div class="gl-app" id="app"></div>
+<noscript><p style="padding:16px">This prototype needs JavaScript.</p></noscript>
+<script src="shared.js"></script>
+<script src="muscles.js"></script>
+<script src="rest.js"></script>
+<script>GLProto.boot();</script>
+</body>
+</html>
