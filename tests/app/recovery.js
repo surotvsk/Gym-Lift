@@ -123,21 +123,20 @@ const rec = (n, share, age, win, mult) => { if (age >= win) return 100; return M
     check('supplied body image decodes in the browser at its original resolution', await ev(`(async () => { const image = new Image(); image.src = ${J(m.image)}; await image.decode(); return image.naturalWidth === 572 && image.naturalHeight === 1024; })()`));
     check('missing recovery data leaves all visible regions neutral', await ev(`(() => { const d = document.createElement('div'); d.innerHTML = bodyMapSvg(null, { size: 'mini' }) + bodyMapSvg({ chest: NaN, biceps: 'x' }); return !/NaN|undefined/.test(d.innerHTML) && Array.from(d.querySelectorAll('[data-muscle]')).every(g => g.classList.contains('rec-0')); })()`));
 
-    console.log('== rear body map (pure inline vector)');
+    console.log('== rear photo and muscle overlays');
     const rearMap = (await ev(`(() => { const d = document.createElement('div'); d.innerHTML = bodyMapSvg({ back: 20, shoulders: 50, triceps: 70, glutes: 10, thighs: 20, calves: 70, chest: 0, biceps: 0 }, { size: 'full', view: 'rear' });
       const s = d.querySelector('svg'); const cls = {}; d.querySelectorAll('[data-muscle]').forEach((e) => { cls[e.dataset.muscle] = e.getAttribute('class'); });
-      const groups = Array.from(d.querySelectorAll('[data-muscle]'));
-      return { cls, ids: d.querySelectorAll('[id]').length, banned: d.querySelectorAll('use, image, style, defs, linearGradient').length, role: s.getAttribute('role'), aria: s.getAttribute('aria-label'),
-        cssClass: s.getAttribute('class'), onlyPaths: groups.every((g) => g.children.length > 0 && Array.from(g.children).every((c) => c.tagName === 'path')),
+      return { cls, role: s.getAttribute('role'), aria: s.getAttribute('aria-label'), image: s.querySelector('image').getAttribute('href'),
+        cssClass: s.getAttribute('class'),
         front: (() => { const f = document.createElement('div'); f.innerHTML = bodyMapSvg({}, { size: 'mini' }); return { rear: !!f.querySelector('.rear'), image: !!f.querySelector('image'), n: f.querySelectorAll('[data-muscle]').length }; })() }; })()`));
     check('rear regions are exactly back, shoulders, triceps, glutes, thighs, calves (no chest/biceps/core/hip groups/Legs/Arms)', JSON.stringify(Object.keys(rearMap.cls).sort()) === JSON.stringify(['back', 'calves', 'glutes', 'shoulders', 'thighs', 'triceps']), rearMap.cls);
     check('rear regions use the same recovery classes as the front map', /rec-3/.test(rearMap.cls.back) && /rec-2/.test(rearMap.cls.shoulders) && /rec-1/.test(rearMap.cls.triceps) && /rec-3/.test(rearMap.cls.glutes) && /rec-3/.test(rearMap.cls.thighs) && /rec-1/.test(rearMap.cls.calves), rearMap.cls);
-    check('rear drawing has no id, use, image, style, defs or gradient (no duplicate ids, no shadow-tree CSS)', rearMap.ids === 0 && rearMap.banned === 0 && rearMap.onlyPaths, rearMap);
+    check('supplied rear photo decodes in the browser at its original resolution', await ev(`(async () => { const image = new Image(); image.src = ${J(rearMap.image)}; await image.decode(); return image.naturalWidth === 768 && image.naturalHeight === 1375; })()`));
     check('rear full map is an accessible image with its own back-view label; default miniature stays front-only', rearMap.role === 'img' && /back view/i.test(rearMap.aria) && /rear/.test(rearMap.cssClass) && rearMap.front.rear === false && rearMap.front.image === true && rearMap.front.n === 7, rearMap);
     const painted = (await ev(`(() => { const host = document.createElement('div'); host.style.cssText = 'position:absolute;left:0;top:0;width:200px'; host.innerHTML = bodyMapSvg({ back: 0, glutes: 100 }, { size: 'full', view: 'rear' }); document.body.appendChild(host);
       const cs = (sel) => getComputedStyle(host.querySelector(sel)); const r = { backOpacity: cs('[data-muscle="back"] > path').fillOpacity, backFill: cs('[data-muscle="back"] > path').fill, glutesOpacity: cs('[data-muscle="glutes"] > path').fillOpacity,
-        skin: cs('.bm-skin').fill, muscle: cs('.bm-muscle').fill, plate: cs('.bm-plate').fill, box: host.firstChild.getBoundingClientRect().toJSON() }; host.remove(); return r; })()`));
-    check('rear tint is the translucent map green (never black), neutral when fresh; anatomy underneath is light', painted.backOpacity === '0.7' && painted.backFill === 'rgb(20, 83, 45)' && painted.glutesOpacity === '0' && painted.skin !== 'rgb(0, 0, 0)' && painted.muscle !== 'rgb(0, 0, 0)' && painted.plate !== 'rgb(0, 0, 0)' && painted.box.height > painted.box.width, painted);
+        box: host.firstChild.getBoundingClientRect().toJSON() }; host.remove(); return r; })()`));
+    check('rear photo highlights stay translucent green and leave fresh muscles neutral', painted.backOpacity === '0.7' && painted.backFill === 'rgb(20, 83, 45)' && painted.glutesOpacity === '0' && painted.box.height > painted.box.width, painted);
 
     console.log('== tile and sheet');
     await p.eval(`(() => { ${DAY}

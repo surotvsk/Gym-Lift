@@ -128,7 +128,7 @@ everything on your own device.
   across weeks, without changing raw history, weights, XP, or already assigned snapshots. Corrections
   survive backup/import and workout Undo; later deliberately-Other workouts are not retroactively included.
 - **Recovery map** — the Muscles tile keeps the owner's original front anatomical image. Open Muscles to
-  see **Front and Back together**; the rear illustration includes Back, Shoulders, Triceps, Glutes,
+  see **Front and Back together**, using the supplied photos; the rear view includes Back, Shoulders, Triceps, Glutes,
   Thighs and Calves. Both views recalculate from the same workout history, including muscle assignments
   saved after a workout. Translucent green highlights darken with recent work in either theme.
   Hip abductors/adductors and general Arms/Legs remain in the list, without guessed map regions.

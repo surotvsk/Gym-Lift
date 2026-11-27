@@ -5222,14 +5222,6 @@ button.record-row::after { content: '\203A'; flex: 0 0 auto; color: var(--text-f
 .body-map .rec-1 > path { fill-opacity: .32; }
 .body-map .rec-2 > path { fill-opacity: .52; }
 .body-map .rec-3 > path { fill-opacity: .7; }
-/* Zadná kresba je čistý inline vektor bez <use>/<defs>: farby ilustrácie sú pevné ako predný obrázok (nemenia sa s režimom),
-   priesvitné oblasti farbí rovnaké pravidlo `[data-muscle] > path` s tokenom --body-map-green. */
-.body-map .bm-plate { fill: #EDEAE0; }
-.body-map .bm-shadow { fill: #000; fill-opacity: .08; }
-.body-map .bm-skin { fill: #E4E0D4; stroke: #6E6A5E; stroke-width: 2; stroke-linejoin: round; }
-.body-map .bm-muscle { fill: #F1EEE4; stroke: #7A7569; stroke-width: 1.5; stroke-linejoin: round; }
-.body-map .bm-line { fill: none; stroke: #6E6A5E; stroke-opacity: .55; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
-.body-map .bm-dots { fill: none; stroke: #6E6A5E; stroke-opacity: .5; stroke-width: 3.4; stroke-linecap: round; stroke-dasharray: .1 9; }
 /* Svaly: predný a zadný pohľad vedľa seba; v RTL sa poradie otočí, kresby samotné nie. */
 .body-map-pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--sp-2); max-width: 440px; margin-inline: auto; }
 .body-map-fig { margin: 0; min-width: 0; }

@@ -10,7 +10,7 @@ rm -rf www
 mkdir -p www/media www/vendor www/fonts
 
 cp index.html script.js style.css community-config.js manifest.json \
-   body-anatomy.webp icon-192.png icon-512.png apple-touch-icon.png www/
+   body-anatomy.webp body-anatomy-rear.jpg icon-192.png icon-512.png apple-touch-icon.png www/
 cp -r vendor/. www/vendor/
 cp -r fonts/. www/fonts/
 find media -maxdepth 1 -type f \( -iname '*.mp4' -o -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.png' -o -iname '*.webp' \) \

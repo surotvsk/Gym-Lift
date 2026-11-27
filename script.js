@@ -43034,67 +43034,22 @@ function recoveryClass(v) {
   return x >= 85 ? 'rec-0' : x >= 60 ? 'rec-1' : x >= 35 ? 'rec-2' : 'rec-3';
 }
 
-/* Mapa tela. Predná kresba je nezmenený obrázok body-anatomy.webp s priesvitnými oblasťami (nikdy sa nekreslí na iné miesto).
-   Zadná kresba je čistý inline vektor v rovnakom ráme 572×1024: bez <use>, <defs>, <style> a id, takže sa nedajú zdvojiť id
-   ani rozbiť štýly v tieňovom strome. Vzhľad dávajú pravidlá `.body-map` v style.css; oblasti majú rovnaké data-muscle a triedy rec-*.
-   Skupiny bez vlastnej oblasti (abduktory, adduktory, všeobecné Ruky/Nohy) sa nekreslia a nikdy sa neodhadujú. */
-function bodyMapPair(path, cls) {
-  const c = cls ? ' class="' + cls + '"' : '';
-  /* ľavá polovica a jej zrkadlo okolo osi x = 274 */
-  return '<path' + c + ' d="' + path + '"/><path' + c + ' d="' + path + '" transform="translate(548 0) scale(-1 1)"/>';
+/* Mapa tela: dodané fotografie s priesvitnými oblasťami v ich pôvodných súradniciach.
+   Skupiny bez vlastnej oblasti (abduktory, adduktory, všeobecné Ruky/Nohy) ostávajú v zozname. */
+function bodyMapPair(path) {
+  /* Predná fotografia: ľavá polovica a jej zrkadlo okolo osi x = 274. */
+  return '<path d="' + path + '"/><path d="' + path + '" transform="translate(548 0) scale(-1 1)"/>';
 }
 
-const BODY_MAP_REAR_MUSCLES = ['back', 'shoulders', 'triceps', 'glutes', 'thighs', 'calves'];
-
-/* Statické časti zadnej kresby sa zložia raz: podklad, silueta, hlava, tvary svalov (spodná vrstva) a jemné čiary (vrchná vrstva);
-   farebné oblasti (`tint`) sa skladajú podľa regenerácie pri každom vykreslení. */
-function bodyMapRearArt() {
-  if (bodyMapRearArt.cache) return bodyMapRearArt.cache;
-  const shapes = {
-    /* chrbát: trapéz, lopatkové svaly, široký sval chrbta, vzpriamovač chrbtice */
-    back: [
-      'M274 134 L256 134 C255 150 253 168 246 182 C226 190 188 190 164 198 C176 215 196 232 210 250 C222 268 232 280 240 292 C252 306 264 322 274 336 Z',
-      'M164 198 C176 215 196 232 210 250 C222 268 232 280 240 292 C224 282 202 280 184 272 C190 256 186 236 174 218 C170 210 166 204 164 198 Z',
-      'M184 272 C202 280 224 282 240 292 C245 336 248 376 252 412 C232 428 212 424 197 410 C192 372 186 330 181 290 Z',
-      'M274 336 C264 322 252 306 240 292 C245 336 248 376 252 412 C260 430 268 440 274 446 Z'
-    ],
-    /* zadné rameno */
-    shoulders: ['M164 198 C140 204 124 226 120 256 C118 270 116 282 115 292 C140 296 168 286 184 270 C190 256 186 236 174 218 C170 210 166 204 164 198 Z'],
-    /* triceps */
-    triceps: ['M115 292 C140 296 168 286 184 270 L181 290 C176 318 168 346 160 372 C142 386 120 384 104 378 C108 346 112 316 115 292 Z'],
-    /* sedacie svaly (veľký a stredný) */
-    glutes: ['M274 446 C268 440 260 430 252 412 C232 428 212 424 197 410 C197 440 186 474 174 510 C170 524 167 536 167 546 C192 572 236 574 274 544 Z'],
-    /* zadná strana stehna */
-    thighs: ['M167 546 C192 572 236 574 274 544 C266 552 258 570 250 590 C240 618 228 640 222 662 C204 670 182 668 162 650 C161 616 163 580 167 546 Z'],
-    /* lýtko (obe hlavy) */
-    calves: ['M168 706 C182 700 200 702 214 712 C214 750 216 790 210 830 C206 856 198 872 190 884 C176 872 164 850 156 830 C150 788 154 742 168 706 Z']
-  };
-  const silhouette = 'M274 128 L256 130 C255 150 253 168 246 182 C226 190 188 190 164 198 C140 204 124 226 120 256 C114 292 108 336 104 378 C100 420 98 456 97 488 C92 522 92 562 100 598 C110 604 124 590 132 560 C138 536 142 512 144 488 C148 450 156 410 160 372 C168 344 176 318 181 290 C186 330 192 372 197 410 C197 440 186 474 174 510 C170 524 167 536 167 546 C163 580 161 616 162 650 C162 672 164 690 168 706 C154 742 150 788 156 830 C161 870 166 900 170 930 C160 952 152 972 154 988 C160 1002 188 1004 198 996 C202 975 198 950 196 928 C200 892 206 860 210 830 C216 790 214 750 214 712 C216 686 218 676 222 662 C228 640 240 618 250 590 C258 570 266 552 274 544 Z';
-  /* jemné detaily (nefarbia sa): lopatka, hlavy tricepsu, predlaktie, ruka, rozdelenie stehna, jamka kolena, hlavy lýtka, Achillova šľacha, päta */
-  const detail = [
-    'M174 214 C192 224 210 236 224 252', 'M224 252 C230 272 229 292 221 310', 'M221 310 C206 298 194 286 184 274',
-    'M150 212 C146 236 146 262 150 290', 'M152 296 C154 326 152 352 151 376', 'M170 286 C166 310 160 334 156 352',
-    'M112 394 C116 430 118 460 119 486', 'M130 392 C134 430 136 460 138 486',
-    'M106 544 L103 597', 'M116 542 L115 601', 'M126 546 L126 590',
-    'M258 350 C256 390 258 420 262 438', 'M200 430 C220 452 244 460 264 454', 'M262 452 L274 472',
-    'M214 578 C208 610 206 640 210 664', 'M170 684 C186 692 204 692 217 682',
-    'M192 704 C190 760 192 820 190 884', 'M186 884 C186 900 185 915 184 930', 'M196 884 C196 900 197 915 197 929',
-    'M158 986 C168 992 188 992 196 986'
-  ];
-  const base = '<rect class="bm-plate" width="572" height="1024"/>'
-    + '<ellipse class="bm-shadow" cx="178" cy="1004" rx="52" ry="8"/><ellipse class="bm-shadow" cx="370" cy="1004" rx="52" ry="8"/>'
-    + bodyMapPair(silhouette, 'bm-skin')
-    + '<path class="bm-skin" d="M231 70 C231 30 252 14 274 14 C296 14 317 30 317 70 C317 100 306 122 292 132 L256 132 C242 122 231 100 231 70 Z"/>'
-    + '<ellipse class="bm-skin" cx="230" cy="88" rx="6" ry="13"/><ellipse class="bm-skin" cx="318" cy="88" rx="6" ry="13"/>'
-    + BODY_MAP_REAR_MUSCLES.map((m) => shapes[m].map((d) => bodyMapPair(d, 'bm-muscle')).join('')).join('');
-  const lines = detail.map((d) => bodyMapPair(d, 'bm-line')).join('')
-    + '<path class="bm-dots" d="M274 188 L274 446"/>'
-    + '<path class="bm-line" d="M262 140 C264 160 268 176 274 190"/><path class="bm-line" d="M286 140 C284 160 280 176 274 190"/>'
-    + '<path class="bm-line" d="M274 446 L274 544"/>';
-  const tint = {};
-  for (const m of BODY_MAP_REAR_MUSCLES) tint[m] = shapes[m].map((d) => bodyMapPair(d)).join('');
-  return (bodyMapRearArt.cache = { base, lines, tint });
-}
+/* Zadná fotografia má 768 × 1375 px; obe strany sa trasujú samostatne, bez zrkadlenia fotografie. */
+const BODY_MAP_REAR_PATHS = {
+  back: 'M332 176 C331 204 307 216 280 226 L232 247 C242 252 247 259 247 265 C231 281 223 302 214 322 L231 350 C239 392 247 445 260 490 L252 546 C286 544 325 554 361 579 L364 233 C351 218 341 201 332 176Z M397 176 C398 204 422 216 449 226 L497 247 C487 252 482 259 482 265 C498 281 506 302 515 322 L498 350 C490 392 482 445 469 490 L477 546 C443 544 404 554 368 579 L365 233 C378 218 388 201 397 176Z',
+  shoulders: 'M230 247 C198 242 174 264 164 294 C157 314 156 336 161 355 C176 351 195 338 214 322 C223 302 231 281 247 265Z M493 246 C523 242 548 265 558 293 C564 313 566 337 560 355 C544 350 524 338 508 322 C500 302 492 281 478 265Z',
+  triceps: 'M161 355 C178 353 196 340 213 325 C225 352 232 380 225 414 L215 465 C200 482 178 495 151 491 C151 449 152 396 161 355Z M570 355 C552 353 534 340 517 325 C505 352 498 380 505 414 L515 465 C530 482 552 495 579 491 C579 449 578 396 570 355Z',
+  glutes: 'M359 582 C333 559 296 549 257 549 C238 574 230 614 226 655 C220 686 226 715 247 729 C285 751 337 732 359 709 C365 678 363 618 359 582Z M368 582 C395 559 435 549 471 549 C490 574 498 614 502 655 C508 686 502 715 481 729 C443 751 391 732 369 709 C363 678 365 618 368 582Z',
+  thighs: 'M229 737 C267 752 313 741 353 723 C345 785 324 855 303 909 L286 956 C270 977 245 968 229 946 C213 900 209 836 215 780Z M498 737 C460 752 414 741 374 723 C382 785 403 855 424 909 L441 956 C457 977 482 968 498 946 C514 900 518 836 512 780Z',
+  calves: 'M228 985 C206 1019 194 1052 203 1090 C211 1124 225 1160 235 1183 L250 1209 C271 1177 287 1138 291 1102 C296 1060 280 1009 264 986 C251 979 238 979 228 985Z M503 985 C525 1019 537 1052 528 1090 C520 1124 506 1160 496 1183 L481 1209 C460 1177 444 1138 440 1102 C435 1060 451 1009 467 986 C480 979 493 979 503 985Z'
+};
 
 /* opts.size: 'mini' (predvolené, dekoratívne) | 'full'; opts.view: 'front' (predvolené) | 'rear'. */
 function bodyMapSvg(recovery, opts) {
@@ -43105,8 +43060,8 @@ function bodyMapSvg(recovery, opts) {
   const frontGroup = (muscle, path) => group(muscle, bodyMapPair(path));
   let art;
   if (rear) {
-    const a = bodyMapRearArt();
-    art = a.base + BODY_MAP_REAR_MUSCLES.map((m) => group(m, a.tint[m])).join('') + a.lines;
+    art = '<image href="body-anatomy-rear.jpg" width="768" height="1375"/>'
+      + Object.entries(BODY_MAP_REAR_PATHS).map(([muscle, path]) => group(muscle, '<path d="' + path + '"/>')).join('');
   } else {
     art = '<image href="body-anatomy.webp" width="572" height="1024"/>'
       + frontGroup('chest', 'M188 207 C211 199 249 204 268 217 L270 260 C265 279 245 288 222 285 C196 284 180 268 179 246 C177 231 180 216 188 207Z')
@@ -43117,7 +43072,7 @@ function bodyMapSvg(recovery, opts) {
       + frontGroup('thighs', 'M204 431 C177 459 164 504 160 554 C154 596 160 637 177 666 L185 688 L205 684 C229 642 236 596 237 552 C237 511 224 464 204 431Z')
       + frontGroup('calves', 'M178 706 C156 737 146 774 149 805 C153 840 161 876 159 915 L176 926 C189 890 191 855 190 823 C191 785 181 746 178 706Z');
   }
-  return '<svg class="body-map ' + (rear ? 'rear ' : '') + (mini ? 'mini' : 'full') + '" viewBox="0 0 572 1024" xmlns="http://www.w3.org/2000/svg"'
+  return '<svg class="body-map ' + (rear ? 'rear ' : '') + (mini ? 'mini' : 'full') + '" viewBox="' + (rear ? '0 0 768 1375' : '0 0 572 1024') + '" xmlns="http://www.w3.org/2000/svg"'
     + (mini ? ' aria-hidden="true" focusable="false"' : ' role="img" aria-label="' + escAttr(t(rear ? 'recovery.mapAriaRear' : 'recovery.mapAria')) + '"') + '>'
     + art + '</svg>';
 }
