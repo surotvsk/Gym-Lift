@@ -377,6 +377,13 @@ public final class WatchActivity extends Activity {
         } else if (s.optBoolean("review")) {
             // Prácu nikdy nemažeme potichu: používateľ ju môže zahodiť až po potvrdení.
             note(R.string.review_kept);
+            String reviewId = s.optString("sessionId");
+            // Prechodné chyby (plný zásobník, úložisko telefónu) sa po oprave samy odošlú znova; zahodenie sa neponúka.
+            if (!WatchJournal.transientError(s.optString("error"))) button(getString(R.string.discard_workout), true, () -> new AlertDialog.Builder(this)
+                .setTitle(R.string.discard_title).setMessage(R.string.discard_message).setNegativeButton(R.string.cancel, null)
+                .setPositiveButton(R.string.discard, (d, w) -> {
+                    try { link.dropReview(reviewId); go("workout"); } catch (RuntimeException e) { failure(errorText(e)); }
+                }).show());
         }
         // Vysvetlenia ostávajú dostupné, no pod ovládaním, aby sa prvé sety zmestili na prvú obrazovku.
         if (open && s.optBoolean("provisional") && s.optLong("ackSeq") == 0) note(R.string.status_provisional);
@@ -560,7 +567,7 @@ public final class WatchActivity extends Activity {
         if (snapshot != null) text(getString(R.string.linked_to, snapshot.optJSONObject("binding").optString("label")), 15, LIME);
         else note(link.linkedGeneration() ? R.string.unavailable : R.string.not_linked);
         note(R.string.unlinked_help);
-        if (link.linkedGeneration()) button(R.string.unlink, () -> {
+        if (link.linkedGeneration() || link.journal().unreadable()) button(R.string.unlink, () -> {
             int pending = link.unsynced();
             String message = getString(R.string.unlink_message);
             if (pending > 0) message = message + "\n\n" + getString(R.string.unlink_unsynced_message, pending);

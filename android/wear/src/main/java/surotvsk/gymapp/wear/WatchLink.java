@@ -40,7 +40,7 @@ final class WatchLink {
     private int outcome = R.string.command_idle;
     private boolean checking;
     private WatchLink(Context c) {
-        context = c; disk = new WearDisk(c, "gymwear-link.json"); state = disk.read();
+        context = c; disk = new WearDisk(c, "gymwear-link.json"); state = disk.readOrEmpty();
         final Context app = c;
         journal = new WatchJournal(new WearDisk(c, "gymwear-journal.json"), new WearEnv() {
             @Override public long wall() { return System.currentTimeMillis(); }
@@ -136,6 +136,7 @@ final class WatchLink {
             if (same && (!binding.getString("workspace").equals(state.optString("workspace"))
                 || s.getLong("seq") <= state.optLong("seq", -1))) return;
             // Súkromná práca starej väzby sa zahodí PRED prijatím novej; zlyhanie zápisu snapshot odmietne.
+            if (journal.unreadable()) journal.reload();
             journal.bind(epoch, binding.getString("workspace"));
             if (!same) {
                 snapshot = null;
@@ -178,9 +179,8 @@ final class WatchLink {
             if (!linkedGeneration() || !source.equals(state.optString("phone"))) return;
             JSONObject ack = WearProtocol.parse(payload, JournalRules.MAX_ACK_BYTES);
             JournalRules.ack(ack);
-            if (journal.ack(ack)) revision++;
-            lastSend.remove(ack.getString("sessionId"));
-            syncNow();
+            // Rovnaké odmietnutie (alebo opakované ACK) nič nemení; okamžité opätovné odoslanie by vytvorilo slučku bez odstupu.
+            if (journal.ack(ack)) { revision++; lastSend.remove(ack.getString("sessionId")); syncNow(); }
         } catch (Exception e) {
             if (e instanceof RuntimeException) log("Journal ack ignored", (RuntimeException) e);
             else android.util.Log.w("GymWear", "Journal ack ignored: " + e.getClass().getSimpleName());
@@ -188,6 +188,7 @@ final class WatchLink {
     }
     /** Odošle dávky nepotvrdených operácií a v prípade potreby vyžiada balík. Bez spojenia nerobí nič (práca ostáva uložená). */
     synchronized void syncNow() {
+        if (journal.unreadable()) journal.reload();
         try {
             String phone = state.optString("phone");
             if (!linkedGeneration() || phone.isEmpty() || !connected.contains(phone)
@@ -233,6 +234,8 @@ final class WatchLink {
     synchronized void toggle(String sessionId, String key) { journal.toggle(sessionId, key); revision++; syncNow(); }
     synchronized void finishSession(String sessionId) { journal.finish(sessionId); revision++; lastSend.remove(sessionId); syncNow(); }
     synchronized void discardSession(String sessionId) { journal.discard(sessionId); revision++; lastSend.remove(sessionId); syncNow(); }
+    /** Používateľ vedome opúšťa prácu, ktorú telefón odmietol; vždy po potvrdení v UI. */
+    synchronized void dropReview(String sessionId) { journal.dropReview(sessionId); revision++; lastSend.remove(sessionId); }
     synchronized int unsynced() { return journal.outstanding(); }
     synchronized boolean grant(String name) {
         JSONObject g = snapshot == null ? null : snapshot.optJSONObject("grants");

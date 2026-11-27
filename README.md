@@ -274,6 +274,15 @@ alarm and notification permissions; without precise-alarm access, screen-off ale
 Sound and vibration follow watch/system settings. The read-only calendar shows saved completed
 workouts; the recommended plan rotation is not an invented date schedule.
 
+**If a watch file is damaged** (rare): the apps start with empty state instead of crashing. The phone-side inbox and the watch
+journal are re-read on every use and never overwritten automatically. The small link and timer state files are different: a damaged
+one starts empty and is replaced on the next save, which unlinks the watch (the phone then removes the link, and the inbox with it),
+so workouts that were still waiting on the phone are lost. To clear an unreadable phone-side inbox, turn the watch off and on again
+in *Settings → Watch*; this also removes workouts still waiting on the watch, so check that they are saved on the phone first
+(a damaged inbox can't confirm that). On the watch, *Unlink* also appears when its journal is unreadable and rewrites it. Work the
+phone rejected can be discarded on the watch after a confirmation; temporary rejections (full or unreadable phone inbox) are
+retried instead.
+
 For a live native emulator preview, start the emulator and run `python3 tools/watch-preview.py --serial emulator-5554 --port 8127`.
 Open `http://localhost:8127/`: a smartwatch frame (round case, crown, side button) around the live Wear OS screen.
 Click the screen to tap, use the mouse wheel or arrow keys as the rotary crown, the crown for Home, the side button

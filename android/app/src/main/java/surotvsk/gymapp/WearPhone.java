@@ -39,7 +39,7 @@ final class WearPhone {
     /** Telo odpovede a ID konverzácie žijú LEN tu v pamäti; na disk ani do logu sa nedostanú. */
     private final Map<String, JSONObject> transientArgs = new HashMap<>();
     private WearPhone(Context c) {
-        context = c; disk = new WearDisk(c, "gymwear-phone.json"); data = disk.read();
+        context = c; disk = new WearDisk(c, "gymwear-phone.json"); data = disk.readOrEmpty();
         final Context app = c;
         inbox = new PhoneInbox(new WearDisk(c, "gymwear-inbox.json"), new WearEnv() {
             @Override public long wall() { return System.currentTimeMillis(); }
@@ -104,8 +104,16 @@ final class WearPhone {
         }
     }
     private void scopeInbox(JSONObject config) {
-        try { inbox.ensureScope(config); }
+        try {
+            // Zmena väzby je vedomá akcia používateľa; nečitateľný zásobník by inak zablokoval každé ďalšie pripojenie hodiniek.
+            if (inbox.unreadable()) inbox.wipe();
+            inbox.ensureScope(config);
+        }
         catch (RuntimeException e) { android.util.Log.w("GymWear", "Inbox scope not updated: " + e.getMessage()); }
+    }
+    /** Nečitateľný zásobník sa pri ďalšom použití skúsi len znova načítať; prepísanie robí výlučne vedomá zmena väzby (scopeInbox). */
+    private void healInbox() {
+        if (inbox.unreadable()) inbox.reload();
     }
     /** Atómový zápis kópie: pamäť sa zmení až po úspešnom zápise, takže odpojenie a povinnosť doručenia nikdy nerozídu. */
     private void mutate(java.util.function.Consumer<JSONObject> change) {
@@ -188,6 +196,7 @@ final class WearPhone {
         WearProtocol.require(input.getLong("seq") > data.optLong("seq", -1), "snapshot_sequence");
         // Súhlasy z JS sa zapamätajú; denník, packRev a povolenie správ určuje výhradne natívna schránka.
         JSONObject grants = input.optJSONObject("grants");
+        healInbox();
         inbox.grants(config, grants == null ? null : (Boolean) grants.optBoolean("offline"), grants != null && grants.optBoolean("messages"));
         JSONObject snapshot = new JSONObject(input.toString());
         boolean offline = inbox.offlineGranted(config), messages = inbox.messagesGranted(config);
@@ -212,6 +221,7 @@ final class WearPhone {
     void publishPack(JSONObject pack, JSONObject templates) throws Exception {
         JSONObject config = configuration();
         WearProtocol.require(config != null, "wear_disabled");
+        healInbox();
         try {
             JSONObject stored = inbox.publishPack(config, pack, templates);
             sendPack(config.getString("peer"), stored);
@@ -231,6 +241,7 @@ final class WearPhone {
     }
     JSONArray journals() throws Exception {
         JSONObject config = configuration();
+        healInbox();
         try { inbox.ensureScope(config); return inbox.drain(config); }
         catch (JournalError e) { throw new Exception(e.code, e); }
     }
@@ -276,6 +287,13 @@ final class WearPhone {
         // Odpoveď na správu nesie len pevný kód chyby, nikdy text servera, ktorý by mohol uniknúť obsah.
         if (receipt.optBoolean("redacted") && out.has("error")
             && !(out.get("error") instanceof String && surotvsk.gymapp.wear.JournalRules.isCode(out.getString("error")))) out.put("error", "error");
+        // Odpoveď na správu sa uloží aj odošle len v pevnom tvare; ďalšie polia od JS (aj text) sa zahodia.
+        if (receipt.optBoolean("redacted")) {
+            JSONObject fixed = new JSONObject().put("id", out.getString("id")).put("status", status);
+            if (out.has("seq")) fixed.put("seq", out.get("seq"));
+            if (out.has("error")) fixed.put("error", out.get("error"));
+            out = fixed;
+        }
         WearProtocol.require(WearProtocol.number(out, "seq") >= 0 && WearProtocol.bytes(out).length <= 4096, "ack_result");
         if (!status.equals("queued")) remember(node, id, out);
         send(node, out);
@@ -292,7 +310,7 @@ final class WearPhone {
             if (id.isEmpty() || id.length() > 36) return;
             // Cudzí uzol nedostane žiadne informácie o konfigurácii ani výsledkoch.
             if (!bound(node, command)) {
-                send(node, result(id, "rejected", "binding_mismatch")); return;
+                send(node, new JSONObject().put("id", id).put("status", "rejected").put("seq", 0).put("error", "binding_mismatch")); return;
             }
             confirmAdopted(node, command);
             JSONObject prior = finals().optJSONObject(key(node, id));
@@ -339,6 +357,7 @@ final class WearPhone {
     private void journal(String node, byte[] bytes) throws Exception {
         JSONObject config = configuration();
         if (config == null || !config.optBoolean("enabled") || !node.equals(config.optString("peer"))) return;
+        healInbox();
         JSONObject batch = WearProtocol.parse(bytes, surotvsk.gymapp.wear.JournalRules.MAX_BATCH_BYTES);
         confirmAdopted(node, batch);
         PhoneInbox.Accepted accepted = inbox.accept(config, node, batch);

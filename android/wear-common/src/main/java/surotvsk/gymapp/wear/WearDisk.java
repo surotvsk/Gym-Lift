@@ -16,6 +16,14 @@ public final class WearDisk implements WearStore {
         try { return new JSONObject(new String(file.readFully(), StandardCharsets.UTF_8)); }
         catch (Exception e) { throw new IllegalStateException("wear_storage_read", e); }
     }
+    /**
+     * Spustenie nesmie nikdy zlyhať na poškodenom súbore (inak appka padá pri každom štarte a používateľ sa k odpojeniu
+     * nedostane): nečitateľný súbor sa berie ako prázdny stav a prepíše sa až pri prvom zápise. Obsah sa nikam nekopíruje.
+     */
+    public JSONObject readOrEmpty() {
+        try { return read(); }
+        catch (IllegalStateException e) { return new JSONObject(); }
+    }
     public void write(JSONObject value) {
         FileOutputStream out = null;
         try {

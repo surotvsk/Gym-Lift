@@ -28,7 +28,7 @@ final class WatchTimer {
     private final Context context;
     private final WearDisk disk;
     private JSONObject state;
-    private WatchTimer(Context c) { context = c; disk = new WearDisk(c, "gymwear-timer.json"); state = disk.read(); }
+    private WatchTimer(Context c) { context = c; disk = new WearDisk(c, "gymwear-timer.json"); state = disk.readOrEmpty(); }
     synchronized JSONObject state() { reconcile(false); return state; }
     synchronized long remaining() {
         reconcile(false);

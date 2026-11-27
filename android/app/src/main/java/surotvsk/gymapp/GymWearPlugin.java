@@ -70,7 +70,14 @@ public class GymWearPlugin extends Plugin {
         });
     }
     @PluginMethod public void drain(PluginCall call) {
-        run(call, phone -> new JSObject().put("commands", phone.drain()).put("journals", phone.journals()));
+        run(call, phone -> {
+            // Najprv rozsah zásobníka; zlyhanie zásobníka nesmie zastaviť doručenie príkazov (len sa nahlási kódom).
+            Object journals = new JSArray(); String journalsError = null;
+            try { journals = phone.journals(); } catch (Exception e) { journalsError = e.getMessage(); }
+            JSObject out = new JSObject().put("commands", phone.drain()).put("journals", journals);
+            if (journalsError != null) out.put("journalsError", journalsError);
+            return out;
+        });
     }
     @PluginMethod public void journalResult(PluginCall call) {
         run(call, phone -> {

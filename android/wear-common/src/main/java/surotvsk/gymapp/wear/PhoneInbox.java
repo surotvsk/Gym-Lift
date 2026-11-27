@@ -95,6 +95,27 @@ public final class PhoneInbox {
     /** Pri zmene väzby, odvolaní alebo odpojení zmizne všetko, čo patrilo starej epoche (volajúci varoval používateľa). */
     public void ensureScope(JSONObject config) { commit(tx -> { scope(tx, config); return null; }); }
     public synchronized boolean unreadable() { return unreadable; }
+    /**
+     * Nečitateľný zásobník: súbor sa skúsi prečítať znova (prechodná chyba I/O sa tak sama vyrieši). NIKDY nič neprepíše;
+     * trvalé poškodenie rieši až vedomá zmena väzby (odpojenie/opätovné pripojenie hodiniek), ktorá volá wipe().
+     * @return true, ak je zásobník opäť použiteľný
+     */
+    public synchronized boolean reload() {
+        if (!unreadable) return true;
+        try {
+            JSONObject read = store.read();
+            if (read.length() == 0) { state = fresh(); unreadable = false; return true; }
+            if (read.optInt("v") == 1 && read.optJSONObject("sessions") != null) { state = read; unreadable = false; return true; }
+        } catch (RuntimeException e) { /* ostáva nečitateľný */ }
+        return false;
+    }
+    /** Úplné prepísanie zásobníka (aj nečitateľného) novým prázdnym stavom; chyba zápisu sa nikdy nepotlačí. */
+    public synchronized void wipe() {
+        JSONObject next = fresh();
+        try { store.write(next); } catch (RuntimeException e) { throw new JournalError("storage", e); }
+        state = next;
+        unreadable = false;
+    }
 
     /* ---------- súhlasy ---------- */
     /** Voliteľný offline súhlas sa mení len ak ho snapshot nesie; správy sú vždy podľa posledného snapshotu. */

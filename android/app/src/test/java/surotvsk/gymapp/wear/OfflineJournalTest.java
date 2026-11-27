@@ -161,6 +161,90 @@ public class OfflineJournalTest {
         assertEquals("open", s.getString("state"));
     }
 
+    @Test public void rejectedWorkoutCanBeDroppedOnlyByExplicitCallAndFreesItsSlot() throws Exception {
+        publish(null);
+        String id = watch.startPlan("plan-1");
+        watch.toggle(id, "k-b0"); sync();
+        assertEquals("rejected", assertThrows(JournalError.class, () -> watch.dropReview(id)).code);   // nie je v review: nič sa nezahodí
+        assertNotNull(watch.session(id));
+        watch.phoneStatuses(new JSONArray().put(new JSONObject().put("sessionId", id).put("ackSeq", 2).put("status", "imported")));
+        assertEquals("review", WatchJournal.status(watch.session(id)));
+        watch.dropReview(id);
+        assertNull(watch.session(id));
+        assertEquals(0, watch.outstanding());
+        assertNotNull(watch.startPlan("plan-1"));                   // uvoľnené miesto: nový tréning sa dá začať
+    }
+
+    @Test public void unreadablePhoneInboxIsOverwrittenOnlyByExplicitWipeAndFailedWipeChangesNothing() throws Exception {
+        MemoryStore store = new MemoryStore();
+        store.content = "{not json";
+        PhoneInbox bad = new PhoneInbox(store, env);
+        assertTrue(bad.unreadable());
+        assertEquals("storage_unreadable", assertThrows(JournalError.class, () -> bad.ensureScope(config)).code);
+        store.failWrites = true;
+        assertEquals("storage", assertThrows(JournalError.class, bad::wipe).code);
+        assertTrue(bad.unreadable());
+        assertEquals("{not json", store.content);
+        store.failWrites = false;
+        bad.wipe();
+        assertFalse(bad.unreadable());
+        bad.ensureScope(config);                                      // odblokované: odteraz sa dá znova prepojiť
+        assertFalse(new PhoneInbox(store, env).unreadable());        // aj po reštarte procesu
+    }
+
+    @Test public void reloadRetriesTheReadAndNeverOverwritesAnUnreadableFile() throws Exception {
+        final MemoryStore real = new MemoryStore();
+        new PhoneInbox(real, env).ensureScope(config);                 // na disku je platný stav s väzbou
+        final boolean[] failRead = {true};
+        WearStore flaky = new WearStore() {
+            @Override public JSONObject read() { if (failRead[0]) throw new IllegalStateException("io"); return real.read(); }
+            @Override public void write(JSONObject value) { real.write(value); }
+        };
+        PhoneInbox inbox2 = new PhoneInbox(flaky, env);
+        assertTrue(inbox2.unreadable());
+        assertFalse(inbox2.reload());                                   // I/O stále zlyháva: nič sa nestane
+        assertTrue(inbox2.unreadable());
+        failRead[0] = false;
+        int writes = real.writes;
+        assertTrue(inbox2.reload());
+        assertFalse(inbox2.unreadable());
+        assertEquals(writes, real.writes);                              // nič sa neprepísalo
+        assertTrue(real.content.contains(config.getString("epoch")));
+
+        MemoryStore corrupt = new MemoryStore();
+        corrupt.content = "{bad";
+        PhoneInbox bad = new PhoneInbox(corrupt, env);
+        assertFalse(bad.reload());                                      // trvalé poškodenie: bez vedomého wipe() ostáva nedotknuté
+        assertTrue(bad.unreadable());
+        assertEquals("{bad", corrupt.content);
+        assertEquals(0, corrupt.writes);
+        assertTrue(WatchJournal.transientError("storage_unreadable"));  // watch pošle prácu znova po oprave telefónu
+    }
+
+    @Test public void watchJournalReloadsAfterATransientReadFailureWithoutOverwriting() throws Exception {
+        final MemoryStore real = new MemoryStore();
+        WatchJournal seeded = new WatchJournal(real, env); seeded.bind(EPOCH, WS);   // hodinky majú platný zapísaný stav
+        final boolean[] failRead = {true};
+        WearStore flaky = new WearStore() {
+            @Override public JSONObject read() { if (failRead[0]) throw new IllegalStateException("io"); return real.read(); }
+            @Override public void write(JSONObject value) { real.write(value); }
+        };
+        WatchJournal j = new WatchJournal(flaky, env);
+        assertTrue(j.unreadable());
+        assertFalse(j.reload());
+        failRead[0] = false;
+        int writes = real.writes;
+        assertTrue(j.reload());
+        assertFalse(j.unreadable());
+        assertEquals(EPOCH, j.epoch());
+        assertEquals(writes, real.writes);
+        MemoryStore corrupt = new MemoryStore();
+        corrupt.content = "{bad";
+        WatchJournal bad = new WatchJournal(corrupt, env);
+        assertFalse(bad.reload());
+        assertEquals("{bad", corrupt.content);
+    }
+
     /* ---------- bezpečnosť dávok ---------- */
     @Test public void gapsAreNeverAcceptedAndMismatchedRepeatsAreRejected() throws Exception {
         publish(null);

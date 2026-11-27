@@ -66,6 +66,17 @@ public final class WatchJournal {
 
     /* ---------- väzba ---------- */
     public synchronized boolean unreadable() { return unreadable; }
+    /** Nečitateľný denník: súbor sa skúsi prečítať znova (prechodná chyba I/O sa sama vyrieši). Nikdy nič neprepíše. */
+    public synchronized boolean reload() {
+        if (!unreadable) return true;
+        JSONObject read;
+        try { read = store.read(); } catch (RuntimeException e) { return false; }
+        if (read.length() == 0) state = fresh();
+        else if (read.optInt("v") != 1 || read.optJSONObject("sessions") == null || read.optJSONArray("order") == null) return false;
+        else state = read;
+        unreadable = false;
+        return true;
+    }
     public synchronized String epoch() { return state.optString("epoch"); }
     /** Nová epocha alebo pracovný priestor zahodí súkromnú vyrovnávaciu pamäť aj relácie starej väzby. */
     public void bind(String epoch, String workspace) {
@@ -219,6 +230,14 @@ public final class WatchJournal {
             session.put("state", "discarded"); tx.dirty = true; return null;
         });
     }
+    /** Relácia, ktorú telefón zamietol a nikdy neprijme, sa dá opustiť len vedome; po zrušení zostane len krátky záznam. */
+    public void dropReview(String sessionId) {
+        commit(tx -> {
+            JSONObject s = tx.s.getJSONObject("sessions").optJSONObject(sessionId);
+            if (s == null || !s.optBoolean("review")) throw new JournalError("rejected");
+            retire(tx, sessionId, "discarded"); return null;
+        });
+    }
     private static void remove(JSONObject s, String id) throws JSONException {
         s.getJSONObject("sessions").remove(id);
         JSONArray order = s.getJSONArray("order"), next = new JSONArray();
@@ -255,7 +274,10 @@ public final class WatchJournal {
         if (ack >= last) return "staged";
         return ack == 0 ? "local" : "waiting";
     }
-    static boolean transientError(String error) { return "inbox_full".equals(error) || "storage_failed".equals(error); }
+    /** Chyby na strane telefónu, ktoré sa po oprave samy vyriešia: relácia sa znova pošle, používateľ ju nemusí zahadzovať. */
+    public static boolean transientError(String error) {
+        return "inbox_full".equals(error) || "storage_failed".equals(error) || "storage_unreadable".equals(error);
+    }
 
     /* ---------- synchronizácia ---------- */
     /**
